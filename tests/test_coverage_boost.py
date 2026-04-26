@@ -287,7 +287,7 @@ class TestTraining:
     def test_mlp_forward(self) -> None:
         import torch
 
-        from ml.training import MLP
+        from ml.model import MLP
 
         model = MLP(input_dim=4)
         x = torch.randn(2, 4)
@@ -297,7 +297,7 @@ class TestTraining:
     def test_mlp_output_dtype(self) -> None:
         import torch
 
-        from ml.training import MLP
+        from ml.model import MLP
 
         model = MLP(input_dim=3)
         x = torch.randn(1, 3)
@@ -364,7 +364,7 @@ class TestTrainingCalibDCA:
     def test_mlp_forward(self) -> None:
         import torch
 
-        from ml.training_calib_dca import MLP
+        from ml.model import MLP  # was ml.training_calib_dca.MLP before refactor
 
         model = MLP(input_dim=5)
         x = torch.randn(3, 5)

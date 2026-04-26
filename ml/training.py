@@ -14,22 +14,10 @@ from ml.audit_hooks import (
     record_train_completed,
     record_train_started,
 )
+from ml.model import MLP
 from typing import Any
 
 torch.set_default_dtype(torch.float32)  # type: ignore[no-untyped-call]
-
-class MLP(nn.Module):  # type: ignore[misc]
-    def __init__(self, input_dim: int) -> None:
-        super().__init__()
-        self.net = nn.Sequential(
-            nn.Linear(input_dim, 32),
-            nn.ReLU(),
-            nn.Linear(32, 16),
-            nn.ReLU(),
-            nn.Linear(16, 2)
-        )
-    def forward(self, x: Any) -> Any:
-        return self.net(x)
 
 def load_tabular(csv_path: str = "outputs/diagnosis_log_pro.csv") -> tuple[np.ndarray, np.ndarray, list[str]]:
     df = pd.read_csv(csv_path)

@@ -9,7 +9,7 @@ import pandas as pd
 import torch
 
 from ml.robust import score_tabular, load_stats, score_energy, ENERGY_JSON
-from ml.training import MLP
+from ml.model import MLP
 
 _REPO_ROOT: Path = Path(__file__).resolve().parent.parent
 

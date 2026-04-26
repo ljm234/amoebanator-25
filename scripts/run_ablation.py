@@ -79,7 +79,7 @@ def _ci(metric_fn: Any, y: np.ndarray, p: np.ndarray) -> dict[str, float] | None
 
 def _amoebanator_proba(X: np.ndarray) -> np.ndarray:
     """Run the trained MLP + temperature scaling on a feature matrix."""
-    from ml.training import MLP
+    from ml.model import MLP
 
     model_dir = REPO_ROOT / "outputs" / "model"
     feats = json.loads((model_dir / "features.json").read_text())

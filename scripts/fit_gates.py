@@ -52,7 +52,7 @@ def _recompute_val_logits() -> np.ndarray:
     X, y, _ = load_tabular(str(LOG_CSV))
     _, Xva, _, _ = train_test_split(X, y, test_size=0.2, stratify=y, random_state=42)
 
-    from ml.training import MLP  # noqa: E402
+    from ml.model import MLP  # noqa: E402
     model = MLP(X.shape[1])
     model.load_state_dict(torch.load(MODEL_DIR / "model.pt", map_location="cpu"))
     model.eval()

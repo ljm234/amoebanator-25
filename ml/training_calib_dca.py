@@ -5,7 +5,7 @@
 
 import os
 import json
-from typing import Any, cast
+from typing import cast
 import numpy as np
 import pandas as pd
 import torch
@@ -21,20 +21,7 @@ from ml.audit_hooks import (
     record_train_completed,
     record_train_started,
 )
-
-# ---------- Model ----------
-class MLP(nn.Module):  # type: ignore[misc]
-    def __init__(self, input_dim: int):
-        super().__init__()
-        self.net = nn.Sequential(
-            nn.Linear(input_dim, 32),
-            nn.ReLU(),
-            nn.Linear(32, 16),
-            nn.ReLU(),
-            nn.Linear(16, 2),
-        )
-    def forward(self, x: Any) -> Any:
-        return self.net(x)
+from ml.model import MLP
 
 # ---------- Data ----------
 def load_tabular(csv_path: str = "outputs/diagnosis_log_pro.csv") -> tuple[np.ndarray, np.ndarray, list[str]]:
