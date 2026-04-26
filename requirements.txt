@@ -1,0 +1,32 @@
+# Amoebanator V1.0 — runtime dependencies, exact pins.
+# Versions match the ones the V1.0 sprint was tested against on macOS 14
+# (Apple Silicon, Python 3.12.11). CPU-only PyTorch by default — uncomment
+# the torch index URL block at the bottom for explicit CPU wheels in CI.
+
+# ML core
+torch==2.9.1
+scikit-learn==1.8.0
+numpy==2.2.6
+pandas==2.3.3
+scipy==1.16.3
+
+# Plotting + dashboard
+matplotlib==3.10.6
+streamlit==1.52.0
+
+# Optional baselines (Phase 3.3) — uncomment if you want the LightGBM
+# backend; the GBM baseline auto-falls-back to sklearn.GradientBoostingClassifier
+# when LightGBM is absent.
+# lightgbm==4.6.0
+
+# ─── Dev / test / lint (CI-only; production image can omit these) ─────────
+pytest==9.0.2
+pytest-cov==7.0.0
+hypothesis==6.149.1
+ruff==0.14.10
+mypy==1.19.1
+
+# ─── Notes ────────────────────────────────────────────────────────────────
+# To install CPU-only torch wheels on Linux (CI), prepend:
+#   --extra-index-url https://download.pytorch.org/whl/cpu
+# and replace torch==2.9.1 above with the matching CPU wheel name.

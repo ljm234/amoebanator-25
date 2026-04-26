@@ -1,0 +1,32 @@
+# Amoebanator V1.0 — local-development compose file.
+# Brings up the Streamlit dashboard on http://localhost:8501 backed by the
+# bundled simulated dataset and the bundled model artefacts.
+#
+# Usage:
+#   docker compose up --build
+#   docker compose down
+
+services:
+  dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: amoebanator:v1.0
+    container_name: amoebanator-dashboard
+    ports:
+      - "8501:8501"
+    environment:
+      AMOEBANATOR_AUDIT_PATH: /app/outputs/audit/audit.jsonl
+      AMOEBANATOR_IRB_BYPASS: "1"  # synthetic dataset; no real IRB record needed
+      STREAMLIT_SERVER_HEADLESS: "true"
+      STREAMLIT_BROWSER_GATHER_USAGE_STATS: "false"
+    volumes:
+      # Persist audit log + retraining artefacts across restarts.
+      - ./outputs:/app/outputs
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8501/_stcore/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s

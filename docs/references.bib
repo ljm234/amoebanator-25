@@ -1,0 +1,234 @@
+% Amoebanator V1.0 — bibliography
+%
+% All entries verified against PubMed / DOI / arXiv records during the
+% Phase 8.5 sprint research. Every claim cited from these references is
+% pinned to a specific fact in README.md, docs/model_card.md,
+% docs/data_card.md, docs/decide-ai.md, docs/tripod-ai.md, or
+% docs/rare_class_design.md.
+
+% ─── PAM clinical and epidemiologic baseline ──────────────────────────
+
+@article{cope2016pam,
+  author  = {Cope, Jennifer R. and Ali, Ibne Karim M.},
+  title   = {Primary Amebic Meningoencephalitis: What Have We Learned in the Last 5 Years?},
+  journal = {Current Infectious Disease Reports},
+  year    = {2016},
+  volume  = {18},
+  number  = {10},
+  pages   = {31},
+  doi     = {10.1007/s11908-016-0539-4},
+  pmid    = {27614893},
+  note    = {CSF abnormalities reported qualitatively only; for numeric per-case CSF values see Capewell 2015 (PMID 26582886)}
+}
+
+@article{yoder2010pam,
+  author  = {Yoder, Jonathan S. and Eddy, Bryan A. and Visvesvara, Govinda S. and Capewell, Linda and Beach, Michael J.},
+  title   = {The epidemiology of primary amoebic meningoencephalitis in the {USA}, 1962--2008},
+  journal = {Epidemiology and Infection},
+  year    = {2010},
+  volume  = {138},
+  number  = {7},
+  pages   = {968--975},
+  doi     = {10.1017/S0950268809991014},
+  pmid    = {19845995}
+}
+
+@article{capewell2015pam,
+  author  = {Capewell, Linda G. and Harris, Aimee M. and Yoder, Jonathan S. and Cope, Jennifer R. and Eddy, Bryan A. and Roy, Sharon L. and Visvesvara, Govinda S. and Fox, LeAnne M. and Beach, Michael J.},
+  title   = {Diagnosis, Clinical Course, and Treatment of Primary Amoebic Meningoencephalitis in the United States, 1937--2013: A Review of the Historical Literature},
+  journal = {Journal of the Pediatric Infectious Diseases Society},
+  year    = {2015},
+  volume  = {4},
+  number  = {4},
+  pages   = {e68--e75},
+  doi     = {10.1093/jpids/piu103},
+  pmid    = {26582886},
+  note    = {Tabulated per-case CSF values for U.S. PAM cohort; cited as the primary source for numeric PAM CSF distributions}
+}
+
+@misc{cdc2025pam,
+  author       = {{Centers for Disease Control and Prevention}},
+  title        = {About Primary Amebic Meningoencephalitis ({PAM})},
+  howpublished = {\url{https://www.cdc.gov/naegleria/about/index.html}},
+  year         = {2025},
+  note         = {Most recent CDC-stated case-fatality > 97\%; cumulative 167 U.S. cases and 4 survivors through 2024 (last verified 2026-04-24)}
+}
+
+% ─── Methods: calibration, conformal, OOD, DCA ──────────────────────────
+
+@inproceedings{guo2017calibration,
+  author    = {Guo, Chuan and Pleiss, Geoff and Sun, Yu and Weinberger, Kilian Q.},
+  title     = {On Calibration of Modern Neural Networks},
+  booktitle = {Proceedings of the 34th International Conference on Machine Learning ({ICML})},
+  year      = {2017},
+  volume    = {70},
+  pages     = {1321--1330},
+  eprint    = {1706.04599},
+  archivePrefix = {arXiv}
+}
+
+@book{vovk2005alrw,
+  author    = {Vovk, Vladimir and Gammerman, Alex and Shafer, Glenn},
+  title     = {Algorithmic Learning in a Random World},
+  publisher = {Springer},
+  year      = {2005},
+  edition   = {2nd ed., 2022}
+}
+
+@article{vovk2013mondrian,
+  author  = {Vovk, Vladimir},
+  title   = {Conditional validity of inductive conformal predictors},
+  journal = {Machine Learning},
+  year    = {2013},
+  volume  = {92},
+  number  = {2--3},
+  pages   = {349--376},
+  doi     = {10.1007/s10994-013-5355-6},
+  eprint  = {1209.2673},
+  archivePrefix = {arXiv},
+  note    = {Foundational reference for label-conditional / Mondrian split conformal}
+}
+
+@article{lei2018distributionfree,
+  author  = {Lei, Jing and G'Sell, Max and Rinaldo, Alessandro and Tibshirani, Ryan J. and Wasserman, Larry},
+  title   = {Distribution-Free Predictive Inference for Regression},
+  journal = {Journal of the American Statistical Association},
+  year    = {2018},
+  volume  = {113},
+  number  = {523},
+  pages   = {1094--1111},
+  doi     = {10.1080/01621459.2017.1307116},
+  note    = {Source of the split-conformal coverage bound 1 - alpha + 2/(n+2) cited in ml/conformal_advanced.py}
+}
+
+@inproceedings{liu2020energy,
+  author    = {Liu, Weitang and Wang, Xiaoyun and Owens, John D. and Li, Yixuan},
+  title     = {Energy-based Out-of-distribution Detection},
+  booktitle = {Advances in Neural Information Processing Systems ({NeurIPS})},
+  year      = {2020},
+  volume    = {33},
+  pages     = {21464--21475},
+  eprint    = {2010.03759},
+  archivePrefix = {arXiv}
+}
+
+@inproceedings{lee2018mahalanobis,
+  author    = {Lee, Kimin and Lee, Kibok and Lee, Honglak and Shin, Jinwoo},
+  title     = {A Simple Unified Framework for Detecting Out-of-Distribution Samples and Adversarial Attacks},
+  booktitle = {Advances in Neural Information Processing Systems ({NeurIPS})},
+  year      = {2018},
+  volume    = {31},
+  pages     = {7167--7177},
+  eprint    = {1807.03888},
+  archivePrefix = {arXiv}
+}
+
+@article{vickers2006dca,
+  author  = {Vickers, Andrew J. and Elkin, Elena B.},
+  title   = {Decision curve analysis: a novel method for evaluating prediction models},
+  journal = {Medical Decision Making},
+  year    = {2006},
+  volume  = {26},
+  number  = {6},
+  pages   = {565--574},
+  doi     = {10.1177/0272989X06295361},
+  pmid    = {17099194}
+}
+
+% ─── Reporting standards ────────────────────────────────────────────────
+
+@inproceedings{mitchell2019modelcards,
+  author    = {Mitchell, Margaret and Wu, Simone and Zaldivar, Andrew and Barnes, Parker and Vasserman, Lucy and Hutchinson, Ben and Spitzer, Elena and Raji, Inioluwa Deborah and Gebru, Timnit},
+  title     = {Model Cards for Model Reporting},
+  booktitle = {Proceedings of the Conference on Fairness, Accountability, and Transparency ({FAT*})},
+  year      = {2019},
+  pages     = {220--229},
+  publisher = {ACM},
+  doi       = {10.1145/3287560.3287596},
+  eprint    = {1810.03993},
+  archivePrefix = {arXiv}
+}
+
+@article{vasey2022decideai,
+  author  = {Vasey, Baptiste and Nagendran, Myura and Campbell, Bruce and Clifton, David A. and Collins, Gary S. and Denaxas, Spiros and Denniston, Alastair K. and Faes, Livia and Geerts, Bart and Ibrahim, Mudathir and Liu, Xiaoxuan and Mateen, Bilal A. and Mathur, Piyush and McCradden, Melissa D. and Morgan, Lauren and Ordish, Johan and Rogers, Campbell and Saria, Suchi and Ting, Daniel S. W. and Watkinson, Peter and Weber, Wim and Wheatstone, Pete and McCulloch, Peter},
+  title   = {Reporting guideline for the early-stage clinical evaluation of decision support systems driven by artificial intelligence: {DECIDE-AI}},
+  journal = {Nature Medicine},
+  year    = {2022},
+  volume  = {28},
+  number  = {5},
+  pages   = {924--933},
+  doi     = {10.1038/s41591-022-01772-9},
+  pmid    = {35585198}
+}
+
+@article{collins2024tripodai,
+  author  = {Collins, Gary S. and Moons, Karel G. M. and Dhiman, Paula and Riley, Richard D. and Beam, Andrew L. and Van Calster, Ben and Ghassemi, Marzyeh and Liu, Xiaoxuan and Reitsma, Johannes B. and van Smeden, Maarten and others},
+  title   = {{TRIPOD+AI} statement: updated guidance for reporting clinical prediction models that use regression or machine learning methods},
+  journal = {BMJ},
+  year    = {2024},
+  volume  = {385},
+  pages   = {e078378},
+  doi     = {10.1136/bmj-2023-078378},
+  pmid    = {38626948}
+}
+
+@article{collins2015tripod,
+  author  = {Collins, Gary S. and Reitsma, Johannes B. and Altman, Douglas G. and Moons, Karel G. M.},
+  title   = {Transparent Reporting of a multivariable prediction model for Individual Prognosis Or Diagnosis ({TRIPOD}): the {TRIPOD} statement},
+  journal = {Annals of Internal Medicine},
+  year    = {2015},
+  volume  = {162},
+  number  = {1},
+  pages   = {55--63},
+  doi     = {10.7326/M14-0697},
+  note    = {Original 2015 TRIPOD; superseded for AI/ML models by TRIPOD+AI 2024}
+}
+
+@article{gebru2021datasheets,
+  author  = {Gebru, Timnit and Morgenstern, Jamie and Vecchione, Briana and Vaughan, Jennifer Wortman and Wallach, Hanna and Daum{\'e} III, Hal and Crawford, Kate},
+  title   = {Datasheets for Datasets},
+  journal = {Communications of the ACM},
+  year    = {2021},
+  volume  = {64},
+  number  = {12},
+  pages   = {86--92},
+  doi     = {10.1145/3458723},
+  eprint  = {1803.09010},
+  archivePrefix = {arXiv}
+}
+
+% ─── Calibration of related baselines ───────────────────────────────────
+
+@inproceedings{platt1999probabilistic,
+  author    = {Platt, John C.},
+  title     = {Probabilistic Outputs for Support Vector Machines and Comparisons to Regularized Likelihood Methods},
+  booktitle = {Advances in Large Margin Classifiers},
+  year      = {1999},
+  publisher = {MIT Press}
+}
+
+@inproceedings{niculescu2005calibration,
+  author    = {Niculescu-Mizil, Alexandru and Caruana, Rich},
+  title     = {Predicting Good Probabilities With Supervised Learning},
+  booktitle = {Proceedings of the 22nd International Conference on Machine Learning ({ICML})},
+  year      = {2005},
+  pages     = {625--632}
+}
+
+@inproceedings{ke2017lightgbm,
+  author    = {Ke, Guolin and Meng, Qi and Finley, Thomas and Wang, Taifeng and Chen, Wei and Ma, Weidong and Ye, Qiwei and Liu, Tie-Yan},
+  title     = {{LightGBM}: A Highly Efficient Gradient Boosting Decision Tree},
+  booktitle = {Advances in Neural Information Processing Systems ({NeurIPS})},
+  year      = {2017},
+  volume    = {30},
+  pages     = {3146--3154}
+}
+
+% ─── Regulatory / standards background ─────────────────────────────────
+
+@misc{hipaa2012deident,
+  author       = {{U.S. Department of Health and Human Services, Office for Civil Rights}},
+  title        = {Guidance Regarding Methods for De-identification of Protected Health Information in Accordance with the {HIPAA} Privacy Rule},
+  howpublished = {\url{https://www.hhs.gov/hipaa/for-professionals/special-topics/de-identification/index.html}},
+  year         = {2012}
+}

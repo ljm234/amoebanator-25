@@ -1,0 +1,22 @@
+{
+    "extraPaths": ["."],
+    "exclude": [
+        "tests/",
+        "**/node_modules",
+        "**/__pycache__",
+        "**/.*",
+        "**/.venv",
+        "**/venv"
+    ],
+    "reportMissingModuleSource": false,
+    "reportMissingImports": false,
+    "reportMissingTypeStubs": false,
+    "reportReturnType": false,
+    "reportUnknownMemberType": false,
+    "reportUnknownParameterType": false,
+    "reportUnknownVariableType": false,
+    "reportUnknownArgumentType": false,
+    "reportMissingTypeArgument": false,
+    "reportMissingParameterType": false,
+    "typeCheckingMode": "basic"
+}
