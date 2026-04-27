@@ -54,7 +54,40 @@
   note         = {Most recent CDC-stated case-fatality > 97\%; cumulative 167 U.S. cases and 4 survivors through 2024 (last verified 2026-04-24)}
 }
 
+@article{tunkel2004idsa,
+  author  = {Tunkel, Allan R. and Hartman, Barry J. and Kaplan, Sheldon L. and Kaufman, Bruce A. and Roos, Karen L. and Scheld, W. Michael and Whitley, Richard J.},
+  title   = {Practice guidelines for the management of bacterial meningitis},
+  journal = {Clinical Infectious Diseases},
+  year    = {2004},
+  volume  = {39},
+  number  = {9},
+  pages   = {1267--1284},
+  doi     = {10.1086/425368},
+  pmid    = {15494903},
+  note    = {IDSA practice guidelines, the canonical clinical reference for bacterial meningitis triage. Used in the Phase 4.5 web demo Q11 inline-tooltip heuristic for the always-shown bucket and the bacterial-vs-viral 0.3-0.7 p_high band.}
+}
+
+@article{seehusen2003csf,
+  author  = {Seehusen, Dean A. and Reeves, Mark M. and Fomin, Demitri A.},
+  title   = {Cerebrospinal fluid analysis},
+  journal = {American Family Physician},
+  year    = {2003},
+  volume  = {68},
+  number  = {6},
+  pages   = {1103--1108},
+  pmid    = {14524396},
+  note    = {AAFP review of normal vs abnormal CSF interpretation. Used in the Phase 4.5 web demo Q11 inline-tooltip heuristic for the normal-CSF (p_high < 0.3) band.}
+}
+
 % ─── Methods: calibration, conformal, OOD, DCA ──────────────────────────
+%
+% NOTE: ML methodology references (guo2017, lei2018, liu2020, lee2018,
+% mitchell2019, ke2017) are foundational and intentionally retained at
+% their original publication year. Post-2022 companion citations
+% (Wang ViM 2022, Sun KNN-OOD 2022, HF Model Card 2022 spec) will be
+% added during preprint prep (Phase 8.5 target Oct 2026). The web demo
+% does not require methodology currency.
+% ─────────────────────────────────────────────────────────────────────────
 
 @inproceedings{guo2017calibration,
   author    = {Guo, Chuan and Pleiss, Geoff and Sun, Yu and Weinberger, Kilian Q.},
