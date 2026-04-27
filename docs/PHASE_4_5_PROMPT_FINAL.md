@@ -372,10 +372,42 @@ If any check fails, STOP and tell Jordan. Do not proceed to T1.1.
 
 #### T1.4 — Update `ml/audit_hooks.py` (delete 11 dead + add 3 WEB_*)
 
-- Identify the 11 dead `AuditEventType` values via `for v in AuditEventType: ...; grep -rn "AuditEventType.<v>" --include="*.py" | wc -l` — values with zero callers.
-- Delete them.
-- Add `WEB_PREDICT_RECEIVED`, `WEB_PREDICT_RETURNED`, `WEB_RATE_LIMIT_HIT`, `WEB_PRESET_LOADED`, `AUDIT_EXPORT_REQUESTED`.
-- Bump schema version field in audit.jsonl genesis entry to `"2"`.
+**Dead `AuditEventType` values to DELETE** (verified during audit; cross-ref D14 in repo's git history at commits 6654877 + b8f62e3):
+
+```
+- DATA_TRANSFERRED
+- DATA_QUARANTINED
+- DATA_DELETED
+- ACCESS_GRANTED
+- ACCESS_REVOKED
+- ATTESTATION_SIGNED
+- ENCRYPTION_APPLIED
+- DECRYPTION_APPLIED
+- CHECKSUM_VERIFIED
+- CHECKSUM_FAILED
+- INTEGRITY_VIOLATION  (NOTE: this name is being REUSED below — see Q15.A correlation-ID; the deletion-then-re-addition is intentional schema cleanup)
+```
+
+**NEW `WEB_*` values to ADD in the same commit:**
+
+```
+- WEB_PREDICT_RECEIVED
+- WEB_PREDICT_RETURNED
+- WEB_RATE_LIMIT_HIT
+- WEB_PRESET_LOADED            (used by pages/01_predict.py preset-button click)
+- AUDIT_EXPORT_REQUESTED       (used by app/audit_export.py export_audit_to_csv())
+- INTEGRITY_VIOLATION          (re-added with NEW semantics — Q15.A correlation-ID error path)
+```
+
+**Net delta:** -8 enum values (10 deleted unique + 1 deleted-then-re-added with new semantics; 5 added net of the re-add).
+
+**Implementation steps:**
+1. Edit `ml/audit_hooks.py` (or `ml/data/audit_trail.py`, depending on where `AuditEventType` enum lives — verify with `grep -rn "class AuditEventType" --include="*.py"`).
+2. Delete the 10 unique dead values + the old `INTEGRITY_VIOLATION` definition.
+3. Add the 5 new values + the re-added `INTEGRITY_VIOLATION` (with updated semantics for Q15.A correlation-ID error path).
+4. Run `grep -rn "AuditEventType.\(DATA_TRANSFERRED\|DATA_QUARANTINED\|DATA_DELETED\|ACCESS_GRANTED\|ACCESS_REVOKED\|ATTESTATION_SIGNED\|ENCRYPTION_APPLIED\|DECRYPTION_APPLIED\|CHECKSUM_VERIFIED\|CHECKSUM_FAILED\)" --include="*.py" .` — must return zero matches in production code (test files may have stale references; delete those assertion lines).
+5. Bump schema version field in audit.jsonl genesis entry to `"2"`.
+6. Run `pytest tests/test_audit_integration.py tests/test_irb_gate.py -v` — must stay green.
 - **Acceptance:** `pytest tests/test_audit_integration.py -v` → all green. `pytest -q --collect-only | tail -3` shows test count unchanged or +1 from any new audit-emit test.
 - **Verification:** `pyright ml/audit_hooks.py` → 0 new errors vs baseline.
 - **Rollback:** `git checkout HEAD -- ml/audit_hooks.py` (the `b8f62e3` baseline).
@@ -400,15 +432,89 @@ If any check fails, STOP and tell Jordan. Do not proceed to T1.1.
 
 #### T1.7 — Create `tests/test_pages_predict.py` (18 tests)
 
-- Create `tests/test_pages_predict.py` with the 18 enumerated tests from PHASE_4_5_PLAN.md §4.3.
-- **Acceptance:** `pytest tests/test_pages_predict.py -v` → 18/18 green (or 17/18 + 1 xfail).
+**The 18 tests to implement** (verbatim enumeration; one-line description per test):
+
+```
+1.  test_module_imports_cleanly                          — `import pages.predict` succeeds without exceptions
+2.  test_form_renders_8_widgets                          — AppTest verifies 8 widgets present (age, csf_glucose, csf_protein, csf_wbc, pcr, microscopy, exposure, symptoms)
+3.  test_form_uses_neutral_defaults                      — verify age=12, csf_glucose=65.0, csf_protein=30.0, csf_wbc=3, pcr=False, microscopy=False, exposure=False, symptoms=[]
+4.  test_neutral_defaults_predict_low_p_high_lt_001      — submit with neutrals, assert p_high < 0.001 (sanity gate per Q11.A)
+5.  test_three_preset_buttons_render                     — assert 3 buttons with labels matching PRESETS keys
+6.  test_loading_high_risk_pam_preset_populates_form     — click button, verify session state updated for all 8 input fields
+7.  test_submit_calls_infer_one_with_built_row           — mock `infer_one`, verify dict shape passed (8 keys, correct types)
+8.  test_no_submit_returns_early                         — no `infer_one` call when submit not pressed
+9.  test_filenotfounderror_renders_graceful_banner       — mock `infer_one` to raise FNFE, assert yellow warning banner present, assert Run button disabled
+10. test_uncaught_exception_emits_correlation_id_audit   — mock to raise generic Exception, assert INTEGRITY_VIOLATION event with error_id metadata + 12-char display
+11. test_double_submit_within_30s_blocked                — set st.session_state.predicting=True, submit again, assert no new infer_one call
+12. test_stale_lock_recovers_after_30s                   — set predicting_at to 31s ago, submit, assert infer_one called
+13. test_decision_badge_renders_with_icon_and_bold       — strip color tags, assert icon + bold present
+14. test_decision_badge_color_blind_safe                 — same as above but parametrized over all 4 prediction states (High, Low, Moderate, ABSTAIN)
+15. test_t_027_badge_renders_with_tooltip                — assert badge + hover tooltip text present (verbatim Q3 tooltip)
+16. test_smallcalibrationwarning_fires_for_n_below_30    — mock output with n_cal=6, assert yellow warning rendered
+17. test_three_state_regime_badge_invalid_at_n6_alpha010 — assert 🔴 INVALID badge present (k=7 > n=6 → INVALID)
+18. test_d18_limitation_banner_only_on_bacterial_preset  — set active_preset to bacterial, assert banner; set to others, assert no banner
+```
+
+- **Acceptance:** `pytest tests/test_pages_predict.py -v` → 18/18 green (or 17/18 + 1 xfail if any test gets xfail-decorated for known-flaky reason).
 - **Verification:** Cumulative test count = 1233 + 18 (or +20 from T1.4 audit-emit tests).
 - **Rollback:** `rm tests/test_pages_predict.py`.
 - **Commit:** `test(4.5.1): test_pages_predict.py with 18 tests covering form + presets + error paths + IRB_BYPASS`. Closes: Q11.A, Q12.A, Q12.C, Q15.A-D. Refs: PHASE_4_5_PLAN.md §4.3.
 
 #### T1.8 — Create `tests/test_app_presets.py` (20 tests) + `tests/test_app_disclaimer.py` (12 tests) + `tests/test_audit_export.py` (10 tests)
 
-- Three test files per PHASE_4_5_PLAN.md §4.3 spec.
+**`tests/test_app_presets.py` — 20 tests** (3 presets × 5 per-preset assertions + 5 cross-preset tests):
+
+```
+Per preset (parametrized for high_risk_pam, bacterial_meningitis_limitation, normal_csf):
+  1.  test_preset_dict_has_all_required_fields[<preset>]      — schema check: label, description, inputs, current_behavior, limitation_banner present
+  2.  test_preset_inputs_has_all_8_features[<preset>]         — age, csf_glucose, csf_protein, csf_wbc, pcr, microscopy, exposure, symptoms all present
+  3.  test_preset_current_behavior_has_snapshot_date[<preset>] — current_behavior contains snapshot_date="2026-04-26"
+  4.  test_preset_load_populates_form[<preset>]               — submit triggers infer_one with exact built_row from preset.inputs
+  5.  test_preset_live_snapshot_matches[<preset>]              — actual infer_one output matches current_behavior.prediction (xfail decorator on bacterial)
+  → 5 × 3 = 15 parametrized tests
+
+Plus 1 special xfail test (per Q12.B):
+  16. test_preset_bacterial_limitation_returns_high            — @pytest.mark.xfail(strict=False, reason="D18 limitation: ...") — Phase 6 fix triggers XPASS
+
+Plus 4 cross-preset tests:
+  17. test_three_presets_total_count                            — len(PRESETS) == 3
+  18. test_preset_keys_are_snake_case                           — all keys match r"^[a-z_]+$"
+  19. test_only_bacterial_has_limitation_banner_true            — exactly 1 preset has limitation_banner=True
+  20. test_all_presets_have_snapshot_date_2026_04_26            — every current_behavior.snapshot_date is the locked date
+```
+
+**`tests/test_app_disclaimer.py` — 12 tests:**
+
+```
+1.  test_disclaimer_text_contains_5_mandatory_tokens          — "NOT a medical device", "n=30", "limited to", "ORCID", "lmontenegrocalla@mail.weber.edu" all in DISCLAIMER_TEXT
+2.  test_disclaimer_link_targets_are_https                    — no "javascript:" or "http://" URLs in disclaimer
+3.  test_orcid_format_regex                                   — ORCID matches r"\d{4}-\d{4}-\d{4}-\d{4}"
+4.  test_email_format_regex                                   — email matches RFC 5322 simplified regex
+5.  test_disclaimer_on_every_page                             — parametrize over 4 pages, assert 5 tokens render on each (Mini-1 covers 1 page; Mini-2 expands to 4)
+6.  test_wcag_aa_contrast_error_combo                         — wcag_contrast_ratio("#B71C1C", "#FFEBEE") >= 4.5 (computed: 7.18:1)
+7.  test_wcag_aa_contrast_info_combo                          — wcag_contrast_ratio("#0D47A1", "#E3F2FD") >= 4.5 (computed: 8.21:1)
+8.  test_wcag_aa_contrast_success_combo                       — wcag_contrast_ratio("#1B5E20", "#E8F5E9") >= 4.5 (computed: 7.59:1)
+9.  test_widget_keys_unique_across_pages                      — collect all key= values across 4 pages, assert set length == list length (Q15.5.B)
+10. test_reduced_motion_css_block_present                     — assert _INJECTED_CSS contains "prefers-reduced-motion" string
+11. test_utils_fmt_metric_handles_nan                         — _fmt_metric({"x": float("nan")}, "x") returns "—"
+12. test_utils_fmt_metric_handles_inf                         — _fmt_metric({"x": float("inf")}, "x") returns "—"
+```
+
+**`tests/test_audit_export.py` — 10 tests:**
+
+```
+1.  test_export_returns_bytes                                 — export_audit_to_csv() returns bytes type
+2.  test_export_csv_has_required_columns                      — parse CSV, assert columns: timestamp, event_type, previous_hash, current_hash, schema_version
+3.  test_export_preserves_all_rows                            — write 10 events, export, count rows = 10
+4.  test_round_trip_hash_chain_byte_equal                     — write 10 → export → re-parse → byte-equal hash chain (Mini-1 closure gate criterion #4)
+5.  test_verify_csv_chain_integrity_pass                      — round-trip + verify_csv_chain_integrity returns True
+6.  test_verify_csv_chain_integrity_fail_on_tamper            — modify one row's metadata, verify returns False
+7.  test_export_filename_format                               — filename matches f"amoebanator_audit_{session_id}_{ISO_timestamp}.csv" pattern
+8.  test_export_handles_empty_log                             — export empty JSONL returns CSV with header row only
+9.  test_export_preserves_metadata_json                       — nested metadata JSON survives round-trip
+10. test_export_emits_audit_event                             — calling export_audit_to_csv emits AuditEventType.AUDIT_EXPORT_REQUESTED
+```
+
 - **Acceptance:** `pytest tests/test_app_*.py tests/test_audit_export.py -v` → 42/42 green (1 xfail for bacterial-limitation in test_app_presets).
 - **Verification:** Cumulative test count ≥ 1233 + 18 + 42 = 1293.
 - **Rollback:** `rm tests/test_app_presets.py tests/test_app_disclaimer.py tests/test_audit_export.py`.
@@ -674,7 +780,39 @@ Eight documented failure modes with recovery procedures. Read this section befor
 **Recovery:**
 1. Verify Dockerfile: `grep AMOEBANATOR_IRB_BYPASS Dockerfile`. MUST show `ENV AMOEBANATOR_IRB_BYPASS=1` (not just commented-out reference).
 2. If Dockerfile has it: HF Space may have ENV cleared by Space-level secret override. Check Space settings → Variables tab: `AMOEBANATOR_IRB_BYPASS` should NOT be present (Space secrets override Dockerfile ENV when set). If present and set to `0`, delete the Space-level override OR set to `1` explicitly.
-3. Verify multi-line safety comment is intact in Dockerfile (per PHASE_4_5_PLAN.md §7.4) — accidentally deleting the comment block during edit may have removed the ENV line too.
+3. Verify the multi-line safety comment is intact in Dockerfile — accidentally deleting the comment block during edit may have removed the ENV line too. The verbatim comment block that MUST precede the `ENV AMOEBANATOR_IRB_BYPASS=1` line:
+
+```dockerfile
+# AMOEBANATOR_IRB_BYPASS — IRB gate bypass switch
+#
+# WHY THIS EXISTS:
+#   The Phase 4.5 demo trains on n=30 synthetic patient vignettes derived from
+#   published case-series marginals (Yoder 2010, Cope 2016, CDC 2025). No real
+#   PHI, no human subjects. Hence no IRB review is required — but the IRB gate
+#   in ml/irb_gate.py refuses to boot the app without an IRB JSON record. This
+#   bypass env var short-circuits the gate WITH a mandatory audit log emission
+#   (AuditEventType.IRB_STATUS_CHANGE → actor="env_var") so the bypass is
+#   never silent.
+#
+# WHEN TO FLIP TO 0:
+#   Phase 6 lands real MIMIC-IV cohort (target n>=200, includes bacterial vs
+#   viral meningitis labels). MIMIC-IV is PhysioNet-credentialed PHI, requires
+#   Weber State IRB exempt determination (USER_ASSIGNMENTS Step 2). When that
+#   IRB record exists at outputs/governance/irb_record.json with irb_status in
+#   {approved, conditionally_approved}, flip this to 0 AND remove the bypass
+#   audit emission code path.
+#
+# CHECKLIST BEFORE FLIPPING:
+#   [ ] outputs/governance/irb_record.json exists
+#   [ ] irb_status field == "approved" or "conditionally_approved"
+#   [ ] expiration_date is in the future
+#   [ ] All MIMIC-IV cohort code paths emit AuditEventType.PHI_ACCESS events
+#   [ ] tests/test_irb_gate.py::test_real_phi_path_requires_irb_record passes
+#
+ENV AMOEBANATOR_IRB_BYPASS=1
+```
+
+If the comment block above is missing or truncated in the deployed Dockerfile, restore it verbatim. The 5 bullets in CHECKLIST BEFORE FLIPPING are the load-bearing safety check — flipping to 0 without all 5 satisfied risks booting the app without a valid IRB record (which is a real-world compliance violation, not just a test failure).
 
 ### 6.8 Audit JSONL corruption (hash chain broken)
 
