@@ -204,11 +204,12 @@ def infer_one(row_in: dict | pd.Series) -> dict:
     Returns a dict with `prediction` (one of "Low", "High", "Moderate",
     "ABSTAIN"), calibrated `p_high` in [0, 1], conformal band membership,
     Mahalanobis distance, and energy-gate readout. ABSTAIN always carries
-    a `reason` field: "OOD", "LogitEnergyBelowInDistFloor", or
+    a `reason` field: "OOD", "LogitEnergyAboveOODShift", or
     "ConformalAmbiguity". The energy-gate reason name is precise on three
-    dimensions: (1) signal = logit energy, (2) direction = below floor,
-    (3) reference = in-distribution validation set — NOT Liu 2020
-    OOD-shift semantics. See git log for refactor history.
+    dimensions: (1) signal = logit energy, (2) direction = above OOD shift,
+    (3) reference = above the in-distribution validation 95th percentile —
+    Liu 2020 canonical semantics (high energy → OOD). See git log for
+    refactor history.
     """
     row = pd.Series(row_in) if not isinstance(row_in, pd.Series) else row_in
     stats = load_stats()
@@ -233,10 +234,10 @@ def infer_one(row_in: dict | pd.Series) -> dict:
     tau_e = _energy_tau()
     p_high = _softmax_high(lo, hi)
     neg_e, neg_e_tau, ood_neg = _neg_energy_signal(p_high)
-    if energy < tau_e:
+    if energy > tau_e:
         return {
             "prediction": "ABSTAIN",
-            "reason": "LogitEnergyBelowInDistFloor",
+            "reason": "LogitEnergyAboveOODShift",
             "p_high": p_high,
             "mahalanobis_d2": float(d2),
             "d2_tau": float(tau_d2),
