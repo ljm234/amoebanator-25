@@ -168,7 +168,7 @@ pipeline; every claim is defensible against a current run.
 * **Mitigation strategies.** Three production gates fire on every
   inference call: Mahalanobis OOD (returns ABSTAIN/OOD when feature
   vectors leave the training cloud), logit-energy gate (returns
-  ABSTAIN/LowEnergy when model confidence is below the validation 95th
+  ABSTAIN/LogitEnergyBelowInDistFloor when model confidence is below the validation 95th
   percentile), conformal abstain (returns ABSTAIN/ConformalAmbiguity
   when the prediction set contains both classes). Every model output
   carries the abstain reason field. The Streamlit widget displays the

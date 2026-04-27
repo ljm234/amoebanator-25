@@ -67,7 +67,7 @@ def test_build_row_strips_blank_symptom_tokens() -> None:
         ("Low", None, "LOW"),
         ("Moderate", None, "MODERATE"),
         ("ABSTAIN", "OOD", "ABSTAIN — OOD"),
-        ("ABSTAIN", "LowEnergy", "ABSTAIN — LowEnergy"),
+        ("ABSTAIN", "LogitEnergyBelowInDistFloor", "ABSTAIN — LogitEnergyBelowInDistFloor"),
         ("ABSTAIN", "ConformalAmbiguity", "ABSTAIN — ConformalAmbiguity"),
         ("ABSTAIN", None, "ABSTAIN — unspecified"),
         ("", None, "unknown"),
