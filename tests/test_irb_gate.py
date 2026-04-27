@@ -143,3 +143,54 @@ def test_evaluate_returns_decision_object(tmp_path: Path) -> None:
     assert isinstance(decision, IRBDecision)
     assert decision.permitted is True
     assert decision.record["irb_protocol_id"] == "WSU-2026-0042"
+
+
+# ─── Q7.B — assert AuditEventType emission on the IRB gate path ──────────────
+# These tests close two D-finding gaps surfaced in the Phase 4.5 discovery
+# audit (commit 3fd05ed): ACCESS_DENIED and IRB_STATUS_CHANGE were emitted
+# from ml/irb_gate.py:173 in production but no test asserted on the emitted
+# event_type. Behavior is already covered above — this just tightens the
+# audit-emission contract.
+
+
+def test_approved_record_emits_irb_status_change_audit_event(
+    tmp_path: Path, tmp_audit: Path
+) -> None:
+    rec = tmp_path / "irb.json"
+    rec.write_text(json.dumps(_approved_record()))
+    df = pd.DataFrame({"source": ["real_ehr"] * 3})
+    with patch.dict(os.environ, {IRB_PATH_ENV: str(rec)}):
+        check_irb_or_raise(df=df)
+
+    assert tmp_audit.exists(), "audit log file must be written on IRB gate evaluation"
+    entries = [json.loads(line) for line in tmp_audit.read_text().splitlines() if line.strip()]
+    irb_entries = [e for e in entries if e["event_type"] == "irb_status_change"]
+    assert irb_entries, (
+        "approved IRB record must emit an AuditEventType.IRB_STATUS_CHANGE entry; "
+        "regression of this assertion would mean the audit chain silently drops "
+        "the approval transition."
+    )
+    assert irb_entries[0]["actor"] == "ml.irb_gate.check_irb_or_raise"
+    assert irb_entries[0]["metadata"]["permitted"] is True
+
+
+def test_blocked_record_emits_access_denied_audit_event(
+    tmp_path: Path, tmp_audit: Path
+) -> None:
+    rec = tmp_path / "irb.json"
+    bad = _approved_record()
+    bad["irb_status"] = "revisions_requested"
+    rec.write_text(json.dumps(bad))
+    df = pd.DataFrame({"source": ["real_ehr"] * 3})
+    with patch.dict(os.environ, {IRB_PATH_ENV: str(rec)}), pytest.raises(IRBGateBlocked):
+        check_irb_or_raise(df=df)
+
+    assert tmp_audit.exists()
+    entries = [json.loads(line) for line in tmp_audit.read_text().splitlines() if line.strip()]
+    denied_entries = [e for e in entries if e["event_type"] == "access_denied"]
+    assert denied_entries, (
+        "blocked IRB record must emit an AuditEventType.ACCESS_DENIED entry; "
+        "regression would mean the audit chain silently drops the rejection."
+    )
+    assert denied_entries[0]["metadata"]["permitted"] is False
+    assert denied_entries[0]["metadata"]["status"] == "revisions_requested"
