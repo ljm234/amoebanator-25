@@ -38,29 +38,31 @@ These are the audit findings most likely to be detected by a senior clinical-ML 
 
 ### 1.3 Decisions locked by the audit (summary table)
 
+Legend: ~~strikethrough~~ ✓ = decision implemented during audit phase (commit landed). Plain text = decision deferred to sprint Mini-1, Mini-2, or USER ASSIGNMENT.
+
 | Q# | Topic | Locked decision | Implementation |
 |---|---|---|---|
-| Q1 | Module count | Move `apex/` to sister directory `~/Desktop/apex/`; init fresh git | Done in commit `46f33c4` |
-| Q2 | MLP location | Extract `MLP` class to `ml/model.py`; decouple inference from training | Done in commit `bed84df` |
+| ~~Q1~~ ✓ | ~~Module count~~ | ~~Move `apex/` to sister directory `~/Desktop/apex/`; init fresh git~~ | ~~Done in commit `46f33c4`~~ ✓ |
+| ~~Q2~~ ✓ | ~~MLP location~~ | ~~Extract `MLP` class to `ml/model.py`; decouple inference from training~~ | ~~Done in commit `bed84df`~~ ✓ |
 | Q3 | Temperature scaling surface | Render T=0.27 + n=6 banner in UI, not just docs | Sprint Mini-1 |
-| Q4 | Conformal alpha | α=0.10 headline + advanced slider; 3-state regime badge | Sprint Mini-1 (math routing done in `67039e3`) |
-| Q5 | Logit-energy gate semantics | Rename to `LogitEnergyBelowInDistFloor` then flip math + rename to `LogitEnergyAboveOODShift` | Done in commits `3fd05ed` and `b8f62e3` |
-| Q6 | Hosting | HF Spaces, Streamlit Docker SDK, free CPU Basic, public | Pre-locked from prior conversation |
-| Q7 | AuditEventType inventory | Delete 11 dead values + add 3 WEB_* in same Mini-1 commit; add 2 IRB emission tests now | Test commit `6654877`; remainder in Sprint Mini-1 |
-| Q8 | references.bib | Add Tunkel 2004 IDSA + Seehusen 2003 AFP for Q11 buckets; defer methodology refresh to Phase 8.5 (preprint prep) | Done in commit `6f02a75` (22 entries total) |
+| Q4 (math part ✓) | Conformal alpha | α=0.10 headline + advanced slider; 3-state regime badge | ~~Math routing done in `67039e3`~~ ✓; UI badge + slider Sprint Mini-1 |
+| ~~Q5~~ ✓ | ~~Logit-energy gate semantics~~ | ~~Rename to `LogitEnergyBelowInDistFloor` then flip math + rename to `LogitEnergyAboveOODShift`~~ | ~~Done in commits `3fd05ed` and `b8f62e3`~~ ✓ |
+| ~~Q6~~ ✓ | ~~Hosting~~ | ~~HF Spaces, Streamlit Docker SDK, free CPU Basic, public~~ | ~~Pre-locked from prior conversation~~ ✓ |
+| Q7 (tests ✓) | AuditEventType inventory | Delete 11 dead values + add 3 WEB_* in same Mini-1 commit; add 2 IRB emission tests now | ~~Test commit `6654877`~~ ✓; enum cleanup remainder in Sprint Mini-1 |
+| ~~Q8~~ ✓ | ~~references.bib~~ | ~~Add Tunkel 2004 IDSA + Seehusen 2003 AFP for Q11 buckets; defer methodology refresh to Phase 8.5 (preprint prep)~~ | ~~Done in commit `6f02a75` (22 entries total)~~ ✓ |
 | Q9 | Vercel /playground | Link-out only; no iframe (HF blocks SAMEORIGIN); no parallel Next form | Sprint post-deploy USER ASSIGNMENT |
-| Q10 | USER_ASSIGNMENTS step | Backup `page.tsx → page.tsx.bak`; gitignore `*.tsx.bak`; add Step 0 cwd check | Doc-only edit at Phase J |
+| ~~Q10~~ ✓ | ~~USER_ASSIGNMENTS step~~ | ~~Backup `page.tsx → page.tsx.bak`; gitignore `*.tsx.bak`; add Step 0 cwd check~~ | ~~Doc-only edit at Phase J~~ ✓ |
 | Q11 | Form spec + neutral defaults | 8 widgets, neutral defaults (`csf_glucose=65`, `csf_protein=30`, `csf_wbc=3`, `pcr=False`, `microscopy=False`, `exposure=False`, `symptoms=[]`, `age=12`), 3-symptom KNOWN list | Sprint Mini-1 |
 | Q12 | Preset spec | 3 presets (`high_risk_pam`, `bacterial_meningitis_limitation`, `normal_csf`); xfail decorator on bacterial test; field renamed `expected → current_behavior` + `snapshot_date` | Sprint Mini-1 |
 | Q13 | Audit log retention | Append-only ephemeral; in-UI CSV export for chain portability; full-session display with banner; defer `.dockerignore` to 4.5.4 | Sprint Mini-1 (utils + CSV export); Sprint Mini-2 (audit page) |
-| Q14 | Sprint shape | Split-after-predict-page (B): Mini-1 ~600 LOC + Mini-2 ~350 LOC | Locked spec |
+| ~~Q14~~ ✓ | ~~Sprint shape~~ | ~~Split-after-predict-page (B): Mini-1 ~600 LOC + Mini-2 ~350 LOC~~ | ~~Locked spec~~ ✓ |
 | Q15 | Error handling | Correlation-ID + `INTEGRITY_VIOLATION` audit; fail-with-banner + button-disable on missing stats; 10k-row dataframe cap; session-state debounce with 30s stale-lock recovery | Sprint Mini-1 |
 | Q15.5 | Accessibility | Color + icon + weight on all 4 badges; key= audit; `st.table` for audit; WCAG-AA wash+border CSS; `prefers-reduced-motion` respected | Sprint Mini-1 + Mini-2 |
 | Q16 | Cosmetic batch | Conventional Commits + Closes/Refs footer; neutral-medical theme; verified `config.toml` (port 8501, no deprecations) | Sprint Mini-1 onward |
 | Q17 | SHAP / explainability | Defer SHAP to Phase 6; ship `\|w_i\|` panel on About page (range 9.1%-11.5%, 1.27× ratio confirms n=30 near-equal weighting) | Sprint Mini-2 |
-| Q18 | Cold-start | Passive-accept 30s; no cron warmup (HF ToS gray area); already lazy-loaded so no optimization gain | Documented; no code change |
+| ~~Q18~~ ✓ | ~~Cold-start~~ | ~~Passive-accept 30s; no cron warmup (HF ToS gray area); already lazy-loaded so no optimization gain~~ | ~~Documented; no code change~~ ✓ |
 | Q19 | Disclaimer wording | Variant (ii) "limited to the n=30 training distribution" + ORCID + email + `github.com/ljm234/amoebanator-25` after rename | Sprint Mini-1 |
-| Q20 | Test count gate | Mini-1 ≥1280, Mini-2 ≥1320; 7 closure criteria including visual regression text-snapshot baseline; CSV audit export round-trip stays in Mini-1 | Sprint Mini-1 + Mini-2 |
+| ~~Q20~~ ✓ | ~~Test count gate~~ | ~~Mini-1 ≥1280, Mini-2 ≥1320; 7 closure criteria including visual regression text-snapshot baseline; CSV audit export round-trip stays in Mini-1~~ | ~~Locked spec~~ ✓ |
 
 ### 1.4 What changed in the repo during the audit
 
@@ -502,8 +504,559 @@ This text appears on every page (predict, audit, about, references) via the shar
 
 ---
 
-## §3.C — Standard Q findings (continued in next commit)
+### §3.C Standard Q findings
 
-The remaining 16 standard-density Q sections (Q1, Q2, Q3, Q6, Q7, Q8, Q9, Q10, Q11 (form spec, separate from Q11.A.fix above), Q14, Q15, Q16, Q17, Q18, Q20) plus §4 cross-cutting discoveries (D1-D18), §5 decisions ledger, §6 commits ledger, §7 limitations, §8 references, and §9 appendix continue in the next commit ("docs(4.5): AUDIT_REPORT.md (complete — §3.C-§9)").
+#### Q1 — Module count reconciliation + apex/ removal
 
-This partial commit (`§1 + §2 + §3.A + §3.B`) represents approximately 1,400 lines of the ~3,200-3,400 line target. The split point is intentional: the Tier 1 + Tier 2 content above is the audit's most consequential material (the high-density catches and locked specs that drive the sprint) and stands as a self-contained reviewer-defensible artifact even before §3.C-§9 land.
+**Asked.** "Encontré N módulos en ml/ (excl. _wip/ y __pycache__/). Brief decía 38. ¿Está correcto el número o miro otra vez? Y qué es apex/ — no veo imports desde ml/ ni app.py."
+
+**Evidence.** `find ml -type f -name "*.py" -not -path "*/__pycache__/*" -not -path "*/_wip/*" | wc -l` returned 38, matching the brief. The `apex/` subdirectory (separate top-level dir) was found unexpectedly: zero imports from `ml/` or `app.py` (verified via `grep -rn "from apex\|import apex" ml/ app.py` returning empty). Contents of `apex/` were unrelated cryptography/post-quantum/zkp code — entirely off-topic for a PAM triage repo.
+
+**Options.** (a) keep apex/ in repo; (b) move to `ml/data/_wip/`; (c) move to sister directory `~/Desktop/apex/` outside the repo entirely.
+
+**User vote.** **(c) move to sister directory.** Verbatim reasoning: *"(1) limpieza de import graph; (2) reviewer hygiene — si Beam/Zitnik clonan el repo y ven crypto/post_quantum/zkp en un paper de PAM triage, van a preguntar y eso es ruido; (3) git history limpio; (4) reversible si rompe algo."*
+
+**Locked decision.** `mv apex /Users/jordanmontenegro/Desktop/apex` executed. Repo re-initialized: `rm -rf .git; git init; git add .; git commit -m "Pre-Phase-4.5 baseline (apex/ moved out, 1229 tests passing)"`.
+
+**Implementation status.** Done in commit `46f33c4` (baseline).
+
+#### Q2 — MLP architecture confirmation + extract to ml/model.py
+
+**Asked.** "Esta es la arquitectura que vi en `ml/training.py:line` — `Linear(10,32)→ReLU→Linear(32,16)→ReLU→Linear(16,2)`, 914 params, tensor shapes verified against `model.pt`. ¿Es la canónica o hay otra versión? Y `ml/infer.py` importa `MLP` desde `ml/training` — code smell?"
+
+**Evidence.** Architecture confirmed via `torch.load(model.pt, weights_only=True)` returning state_dict with keys `net.0.weight (32,10)`, `net.0.bias (32,)`, `net.2.weight (16,32)`, `net.2.bias (16,)`, `net.4.weight (2,16)`, `net.4.bias (2,)`. Total 914 params matches MLP forward pass. `MLP` class duplicated in both `ml/training.py` and `ml/training_calib_dca.py`; `ml/infer.py` imports from `ml/training` (training-module dependency from inference path).
+
+**Options.** (a) keep current import; (b) inline duplicate in infer.py; (c) extract MLP to `ml/model.py`, import from there everywhere.
+
+**User vote.** **(c) extract.** Reasoning: inference depending on training-module imports is itself a code smell; reviewer-grade convention puts model in `model.py`.
+
+**Locked decision.** Created `ml/model.py` (~35 LOC) with canonical `MLP` class. Updated `ml/training.py`, `ml/training_calib_dca.py`, `ml/infer.py`, `tests/test_coverage_boost.py`, `scripts/fit_gates.py`, `scripts/run_ablation.py` to `from ml.model import MLP`. Removed unused `from typing import Any` post-refactor in `training_calib_dca.py`. Pyright caught 4 stragglers beyond the obvious 3.
+
+**Implementation status.** Done in commit `bed84df`. 1229/1229 tests still passing.
+
+#### Q3 — Calibration confirmation + T < 1 amplification surface (D11)
+
+**Asked.** "Calibración por temperature scaling, Guo 2017, optimizada con L-BFGS. Qué n de calibración y qué split? Documentado dónde?"
+
+**Evidence.** `outputs/metrics/temperature.json` shows `{T: 0.2723, n_cal: 6, optimizer: "L-BFGS"}`. n=6 is the validation split from `train_and_save` (random_state=42, test_size=0.2, n_train=24, n_val=6). T=0.27 is mathematically equivalent to dividing logits by 0.27 (multiplying by 3.7×) — the *opposite* of typical Guo 2017 behavior where T > 1 attenuates overconfidence. On n=6, this T value is essentially noise-optimized.
+
+**Options.** (a) tooltip-only in docs; (b) UI badge "T=0.27 (n=6)" with hover tooltip + `SmallCalibrationWarning` banner above result; (c) re-fit on synthetic-from-Yoder marginals to get a more typical T.
+
+**User vote.** **(b) with sharper tooltip.** Reject (c) as sampling-from-prior teatro.
+
+**Locked decision.** Mini-1 surfaces a `T=0.27 (n=6)` badge next to calibrated `p_high` with hover tooltip explaining the amplification semantics. `SmallCalibrationWarning` banner (yellow) fires above the result when n_calibration < 30. Tooltip text locked in §1.4 of this report. `/v1/health` endpoint returns `n_cal` + current `T` for verification without cloning.
+
+**Implementation status.** Deferred to Mini-1.
+
+**Discoveries emitted.** D11 (T<1 amplifying logits, atypical Guo 2017 direction).
+
+#### Q6 — Hosting (pre-locked)
+
+**Asked.** "Hosting choice — HF Spaces vs Fly.io vs Vercel+API split."
+
+**Evidence.** Pre-locked from prior conversation: HF Spaces, Streamlit Docker SDK, Public, free CPU Basic. Space already created at `huggingface.co/spaces/luisjordanmontenegro/amoebanator-25`. HF_TOKEN saved in macOS Keychain (Q3 sub-decision).
+
+**Options.** None re-opened.
+
+**User vote.** Confirmed pre-lock; no change.
+
+**Locked decision.** HF Spaces, Streamlit Docker SDK, free CPU Basic (16 GB RAM, 2 vCPU, ~50 GB ephemeral disk), Public visibility. Cold start ~30s on first visit after ~48h idle.
+
+**Implementation status.** Pre-locked. HF Space exists; Mini-2 deploys to it via `git push`.
+
+#### Q7 — AuditEventType inventory + 11 dead values + 3 new WEB_* + IRB tests
+
+**Asked.** "List every AuditEventType. Verify each is actually emitted somewhere AND has at least one test. Dead enum values are the audit-fantasy version of dead code."
+
+**Evidence.** `ml/audit_hooks.py` declares N enum values; `grep -rn "AuditEventType\." --include="*.py"` revealed 11 values declared but never reached by any `_emit()` call AND with no test asserting on them. IRB gate (`ml/irb_gate.py`) emits `ACCESS_DENIED` and `IRB_STATUS_CHANGE` events but has no test asserting the emission.
+
+**Options.** 7.A — (a) delete 11 dead values in-sprint; (b) keep as future-proof reserve. 7.B — add 2 IRB emission tests now or in-sprint. 7.C — naming for 3 new web events: (a) dedicated `WEB_PREDICT_RECEIVED` / `WEB_PREDICT_RETURNED` / `WEB_RATE_LIMIT_HIT`; (b) reuse existing `DATA_RECEIVED` etc.; (c) polymorphic via metadata field.
+
+**User vote.** **(a) in-sprint / (a) tests now / (a) dedicated.**
+
+**Locked decision.** Mini-1 Subphase 4.5.1 deletes 11 dead enum values + adds 3 new `WEB_*` values in same commit (net delta -8). The 2 IRB emission tests added pre-sprint as commit `6654877` (test-only commit, doesn't count against refactor cap per same precedent as commit `67039e3` warning-emission test).
+
+**Implementation status.** Tests done in commit `6654877` (+2 tests). Enum cleanup deferred to Mini-1.
+
+**Discoveries emitted.** D14 (11 dead AuditEventType values).
+
+#### Q8 — references.bib coverage + Tunkel + Seehusen additions
+
+**Asked.** "20 entries in `docs/references.bib`. ¿Definitivas para medRxiv o agregás más? Y para Q11 inline tooltip strategy: 4 buckets (always-shown, p_high>0.7, 0.3-0.7, <0.3) — ¿coverage actual?"
+
+**Evidence.** `grep -cE "^@" docs/references.bib` returned 20. Mapping to Q11 buckets revealed 2 of 4 buckets had no canonical reference: bacterial-vs-viral discrimination (no Tunkel 2004 IDSA bacterial meningitis guidelines, PMID 15494903) and normal CSF interpretation (no Seehusen 2003 AFP, PMID 14524396).
+
+**Options.** 8.A — (a) add Tunkel + Seehusen NOW as content-only commit; (b) defer. 8.B — (a) refresh ML methodology refs (Wang ViM 2022, Sun KNN-OOD 2022); (b) keep foundational; (c) defer methodology refresh to Phase 8.5 preprint prep. 8.C — Q11 tooltip wording: (a) full heuristic with sticky deterministic order + click-to-expand; (b) random rotation; (c) inline always.
+
+**User vote.** **(a) add now / (c) defer to Phase 8.5 / (a) full heuristic.**
+
+**Locked decision.** Tunkel 2004 + Seehusen 2003 added to `docs/references.bib` (count: 20 → 22). Comment header notes ML methodology refs intentionally retained at original publication year; post-2022 companion citations added during Phase 8.5 preprint prep. Q11 tooltip uses sticky deterministic order: `[1] CDC 2025 + [2] Tunkel 2004` always-shown; `[3] Cope 2016 + [4] Yoder 2010 + [5] Capewell 2015` for `p_high > 0.7`; `[6] Tunkel cross-ref + viral placeholder` for 0.3-0.7; `[7] Seehusen 2003` for `< 0.3`. Click-to-expand `+N more` row for full bucket.
+
+**Implementation status.** Refs added in commit `6f02a75` (22 entries verified). Tooltip wiring deferred to Mini-2 (references page + inline `st.expander` keyed by p_high band).
+
+#### Q9 — Vercel /playground link-out only (no iframe, no parallel form)
+
+**Asked.** "jordanmontenegrocalla.com/playground — link-out, iframe-embed, or parallel Next form?"
+
+**Evidence.** Local check confirmed `/playground` is a placeholder (mock sparklines + fake form, no API client wired). HF Spaces injects `X-Frame-Options: SAMEORIGIN` headers — iframe from any other domain blocked at HF policy level (not config-overridable on free tier). Streamlit exposes no JSON API: a parallel Next form would require either custom FastAPI inside the Space (doubles maintenance) or scraping Streamlit websocket (fragile, breaks on every Streamlit version bump).
+
+**Options.** (a) link-out only; (b) iframe; (c) parallel Next form.
+
+**User vote.** **(a) link-out only.** Three reinforcing reasons: (1) iframe technically blocked, (2) parallel form is the CNN+RAG fantasy pattern, (3) link-out is industry standard in ML academia (Stanford CRFM, Google AI, MIT BMI, Harvard DBMI all host on HF Spaces).
+
+**Locked decision.** Vercel `/playground` page replaced with a button: text *"Launch interactive demo →"*, URL `https://huggingface.co/spaces/luisjordanmontenegro/amoebanator-25`, target `_blank`, caption *"Hosted on Hugging Face Spaces (free CPU tier; cold-start ~30s on first visit after idle period). Research prototype — not for clinical use."* The disclaimer fragment is intentionally redundant with the in-app banner.
+
+**Implementation status.** USER ASSIGNMENT (post-sprint). Sprint blast-radius contained to Amoebanator repo; Vercel website repo touched manually by Jordan. Step locked in `USER_ASSIGNMENTS.md`.
+
+#### Q10 — USER_ASSIGNMENTS step text + cwd guard + .tsx.bak
+
+**Asked.** "Lock the USER_ASSIGNMENTS step that updates Vercel /playground. Backup filename, gitignore?"
+
+**Evidence.** Jordan has multiple repos open in different terminals — accidental backup of wrong file is a real risk. Backup with `.bak.tsx` extension still gets parsed by Next dev hot-reload (warning noise hides real warnings).
+
+**Options.** Backup as (a) `page.tsx.bak`; (b) timestamped tarball; (c) `.bak.tsx` in same dir.
+
+**User vote.** **(a) `page.tsx.bak`.** Plus add Step 0: `pwd` + `git remote -v` cwd-verification guard.
+
+**Locked decision.** USER_ASSIGNMENTS step written with: Step 0 cwd verification, Step 2 backup as `page.tsx.bak`, Step 3 `*.tsx.bak` to `.gitignore`. Updated text locked in `PHASE_4_5_PLAN.md` and `USER_ASSIGNMENTS.md`.
+
+**Implementation status.** Doc-only edit during Phase J.
+
+#### Q11 — Form spec (8 widgets, neutral defaults, KNOWN_SYMPTOMS trim)
+
+**Asked.** "For each of the 10 features: widget type, range, step, default, unit display, tooltip. Bring 3 evidence sources: empirical from `outputs/diagnosis_log_pro.csv`, clinical from Tunkel/Cope/Seehusen, existing from `ml/ui_live_patient.py`."
+
+**Evidence.** Sub-table built (11 columns × 10 features). Critical sub-findings: pcr/microscopy are binary {0,1} → checkboxes; age is continuous int 0-120; sym_* are binary symptoms; exposure is single binary; csf_glucose in mg/dL, csf_protein in mg/dL, csf_wbc in cells/µL. The original `ui_live_patient.py` defaults pre-loaded the form to a **PAM-positive scenario** (csf_glucose=18, csf_protein=420, csf_wbc=2100, pcr=True, microscopy=True, exposure=True, symptoms=[fever,headache,nuchal_rigidity]).
+
+**Options (11.A).** (a) preserve current PAM-typical defaults; (b) override to NEUTRAL/normal defaults representing "ER doc at start of workup, before any results."
+
+**User vote.** **(a) override to NEUTRAL.** Verbatim: *"current defaults pre-load the form to a PAM-positive scenario. A PI opening the demo will see p_high high BEFORE typing anything. That's encrypted teatro — the model looks more impressive than it is because the user hasn't done any work yet."*
+
+**Locked default changes:**
+
+| feature | old | new | rationale |
+|---|---|---|---|
+| csf_glucose | 18.0 | **65.0** | mid Tunkel 50-80 normal |
+| csf_protein | 420.0 | **30.0** | mid Tunkel 15-45 normal |
+| csf_wbc | 2100 | **3** | normal (Seehusen <5) |
+| pcr | True | **False** | test not yet performed |
+| microscopy | True | **False** | test not yet performed |
+| exposure | True | **False** | no exposure assumed default |
+| symptoms | 3 selected | **[]** | empty multiselect |
+| age | 12 | **12** | KEEP — Yoder median, clinically motivated |
+
+**11.B + 11.C.** Trim `KNOWN_SYMPTOMS` to exact 3 the model sees: `("fever", "headache", "nuchal_rigidity")`. The 4 currently-dropped (altered_mental_status, photophobia, nausea_vomiting, seizure) deferred to Phase 6 with MIMIC-IV retrain. Trim happens inside Mini-1 alongside the multi-page nav rewrite (same file gets refactored anyway).
+
+**Implementation status.** Deferred to Mini-1 (form spec + KNOWN_SYMPTOMS trim land together).
+
+**Discoveries emitted.** D16 (KNOWN_SYMPTOMS exposes 7 but model scores 3).
+
+#### Q14 — Sprint shape: split-after-predict-page (B)
+
+**Asked.** "950 LOC sprint — single mega run, two minis with checkpoint, three minis, four minis?"
+
+**Evidence.** Inference path now reviewer-grade clean post 4 refactor commits. Most original "split after 4.5.1 to define API surface" justification dissolved: 4.5.1 collapsed because `infer_one` IS the API surface. New question: what's the actual blast radius?
+
+**Options.** (A) single mega 950 LOC run; (B) **split after predict page** — Mini-1 ~600 LOC (utils + presets + disclaimer + pages/01_predict.py + 3 test files + audit export), Mini-2 ~350 LOC (audit page + about + references + app.py nav + remaining tests); (C) split after utility code (220 LOC + 730 LOC); (D) 3 checkpoints.
+
+**User vote.** **(B) split after predict page.** Verbatim: *"950 LOC es harto, no quiero que se rompa pages/02_audit y perder el predict page que ya quedó bien. Ese es el peor escenario y B lo evita."*
+
+**Locked decision.** Mini-1 ships ~600 LOC + ~50 tests + closure-gate audit export round-trip. Mini-2 ships ~350 LOC + ~40 tests. Split point: after `pages/01_predict.py` is fully tested and committed.
+
+**Mini-1 acceptance criteria upgrades** (Jordan's additions, locked):
+1. **Cold-start test** — first prediction after container restart must work within 5s of "ready" (no race condition with load_stats / model.pt / read audit.jsonl).
+2. **Out-of-range form input handling** — `csf_glucose=9999` or `age=-5` → `st.error` with clear message + button-disable, NOT silent clamp or crash.
+3. **Disclaimer banner verified visible on EVERY page in test** — parametrized canonical test over all 4 pages.
+4. **Preset CSV export round-trip test** — download → pandas read → `verify_chain()` returns True.
+
+**Implementation status.** Locked spec; deferred to Mini-1 + Mini-2.
+
+#### Q15 — Error handling (correlation ID + graceful banners + 10k cap + debounce)
+
+**Asked.** "What happens when (a) `infer_one()` raises, (b) `load_stats()` returns None, (c) RAM hits 16 GB ceiling, (d) PI clicks Run twice quickly?"
+
+**Evidence.** Streamlit defaults show traceback in red on uncaught exceptions (leaks filesystem info, horrible UX). No graceful-degradation path on missing Mahalanobis stats. No request-debounce on Streamlit page rerender.
+
+**Options + votes.**
+- 15.A — **(a) correlation ID + structured audit log.** PI sees *"Prediction failed (error ID: a3b9f2c1)"*; server-side audit log captures full traceback via `AuditEventType.INTEGRITY_VIOLATION`. Use `uuid4().hex` (32 chars) full server-side, truncate to 12 for display.
+- 15.B — **(b) fail at first prediction with explicit warning banner.** Boot-time failure tears down demo for a recoverable file = bad UX. Show "OOD gate is unconfigured (Mahalanobis stats file missing). All predictions return ABSTAIN/OOD until re-fit." Above the result. Disable Run button or rename to "Run anyway (gate unconfigured)".
+- 15.C — **(a) cap audit dataframe load at last 10,000 rows.** Cheap insurance. Banner: "Showing last 10,000 of N entries (oldest entries trimmed for display; full chain still intact in the underlying file). Use Download CSV to export the full session."
+- 15.D — **(a) session-state debounce with 30s stale-lock recovery.** Original proposal had a finally-block bug (KeyboardInterrupt / OOM kill skips finally → predicting stays True forever). Fix: timestamp the lock, treat >30s lock as stale and fall through.
+
+**Locked decision.** All four locked for Mini-1. No pre-sprint commits.
+
+**Implementation status.** Deferred to Mini-1.
+
+#### Q16 — Cosmetic batch (commit conventions + theme + config.toml)
+
+**Asked.** "Commit message convention for sprint, Streamlit theme choice, `.streamlit/config.toml` content."
+
+**Evidence.** HF Space repo cloned to `/tmp` revealed the auto-Dockerfile uses `EXPOSE 8501` and `--server.port=8501` (Streamlit default), NOT 7860 (Gradio default). Initial `config.toml` proposal had wrong port. Streamlit 1.52 verified against config keys: zero deprecations.
+
+**Options + votes.**
+- 16.a — **(a) Conventional Commits + subphase + body + footer.** Footer: `Closes: Q11.A (neutral defaults), Q12.B (PRESETS dict)` + `Refs: PHASE_4_5_PLAN.md §3.2`. Enables `git log --grep="Q11.A"` traceability.
+- 16.b — **(i) neutral-medical theme.** Primary `#0D47A1` (Material Blue 900) on white. Rationale: clinical-adjacent demo; "branded" theming reads as marketing.
+- 16.c — **accept-with-upgrades** to config.toml: (1) `[server] runOnSave=false, fileWatcherType="none"`; (2) **port 8501** (corrected from 7860 after HF Space repo inspection); (3) `[global] developmentMode=false, suppressDeprecationWarnings=true`; (4) `[client] showSidebarNavigation=true`.
+
+**Locked decision.** Conventional Commits + Closes/Refs footer mandatory on every sprint commit. Neutral-medical theme. `config.toml` with 4 upgrades + verified port + zero deprecations.
+
+**Implementation status.** Conventions apply from Mini-1 commit 1 onward. `config.toml` lands in Mini-1.
+
+#### Q17 — SHAP defer + |w_i| panel as honest substitute
+
+**Asked.** "SHAP attribution per-prediction, model-level explainability, or defer?"
+
+**Evidence.** SHAP not in `requirements.txt`, zero imports. SHAP on n=30 background data is mathematically vacuous. Live evidence ran feature importance via `|w_i|` of first `Linear(10,32)` layer averaged → range 9.1%-11.5%, ratio max/min = 1.27×. Confirms n=30 model treats all 10 features near-equally.
+
+**Options.**
+- 17.A — (a) defer SHAP to Phase 6 + ship `|w_i|` panel; (b) ship SHAP now; (c) skip explainability entirely.
+- 17.B — `|w_i|` panel location: (α) About page only; (β) Predict page adjacent to result; (γ) both.
+- 17.C — caption text accept verbatim or override.
+
+**User vote.** **(a) defer SHAP + |w_i| / (α) About page only / (a) caption verbatim.** Reasoning on (α): `|w_i|` values are model-level NOT input-level; showing on Predict page would imply input-specificity that doesn't exist. Reviewer catches that in 30 seconds.
+
+**Locked decision.** Mini-2 About page renders `|w_i|` panel with locked caption explaining: model-level (not per-prediction attribution), the actual numerical range (9.1%-11.5%, 1.27×), interpretation (treats all features near-equally, consistent with n=30 limitation), Phase 6 SHAP plan, link to model card §Caveats.
+
+**Implementation status.** Deferred to Mini-2 (About page).
+
+#### Q18 — Cold-start passive accept (no cron warmup)
+
+**Asked.** "30s cold-start on free tier — accept passive or add active warmup (GitHub Actions ping every 6h)?"
+
+**Evidence.** HF docs: external pinging to keep Spaces always-on is gray area at best, explicitly discouraged ("Spaces are not designed to be kept always-on by external pinging") with paid hardware as the upgrade path. Risk: future ToS tightening, free-tier revocation. Live measurement: HF container provisioning ~25s + Python imports ~3.7s + model load 0.06s = inevitable floor. PyTorch import is the dominant 3.7s cost, NOT model load (overturned audit's earlier 500ms estimate). `@st.cache_resource` would be redundant with existing `@lru_cache`.
+
+**Options.**
+- 18.A — (a) passive accept 30s; (b) cron warmup.
+- 18.B — (a) add `@st.cache_resource` to first-request lazy-load; (b) leave as-is.
+
+**User vote.** **(a) passive / (b) leave as-is.**
+
+**Locked decision.** Cold-start documented honestly in the Q9.1 caption ("cold-start ~30s on first visit after idle period"). No code change. The 3ms/call `load_stats()` re-read overhead documented as known-minor in `pages/utils/api.py` docstring — invisible vs 50ms+ HF proxy RTT, premature optimization.
+
+**Implementation status.** Documented; no code change.
+
+#### Q20 — Test count gate + 7 closure criteria + visual regression
+
+**Asked.** "Mini-1 closure gate: ≥1300 tests? Beyond just count, what concrete pass/fail criteria?"
+
+**Evidence.** Current pytest: 1233 collected (verified post-`b8f62e3`). Mini-1 spec adds: test_pages_predict.py (~18) + test_app_presets.py (~20) + test_app_disclaimer.py (~12) + test_audit_export.py (~10) + visual snapshot baseline (1) = ~61 new tests → 1294 total.
+
+**Options.**
+- count gate — (α) Mini-1 ≥1280, Mini-2 ≥1320; (β) hold ≥1300 with parametrize padding.
+- closure gates — 6 criteria or add 7th visual regression.
+- CSV criterion — keep in Mini-1 or defer to Mini-2.
+
+**User vote.** **(α) honest density + 7 gates including visual regression + CSV stays in Mini-1.** Verbatim: *"the count is downstream of behavior; gating on a round number invites cargo-cult tests reviewers spot in 30 seconds. ≥1280 honesto > ≥1300 padded."*
+
+**Locked decision.** Mini-1 gate: ≥1280 tests, all 7 closure criteria green:
+1. Test count + pass rate (≥1280 collected, 0 fail/0 error, ≤5 documented xfails).
+2. Pyright purity (0 new errors/warnings vs `b8f62e3` baseline).
+3. AppTest boot <5s wall-clock.
+4. CSV audit export round-trip hash-equal.
+5. Disclaimer presence on every page (parametrized canonical test).
+6. IRB_BYPASS=1 vs =0 branches both green.
+7. Visual regression text-snapshot drift <5% chars (baseline captured in Mini-1).
+
+Mini-2 gate: ≥1320 cumulative + same 7 criteria + cumulative visual snapshot for 4 pages.
+
+**Implementation status.** Closure gates locked; verification at Mini-1 / Mini-2 close.
+
+---
+
+## §4. Cross-cutting Discoveries (D1-D18)
+
+The audit emitted 18 cross-cutting discoveries. Each Dxx is a finding that surfaced during one specific Q but has implications beyond that Q. Severity classifications: **blocker** (must fix before sprint), **sprint** (fix in Mini-1 or Mini-2), **post-sprint** (defer to Phase 5+), **permanent-known-limitation** (cannot fix at current n; document and move on).
+
+### D1 — apex/ subdirectory unrelated to project (severity: cleanup)
+Unrelated cryptography/post-quantum/zkp code in `apex/` with zero imports from `ml/` or `app.py`. **Resolution:** moved to sister directory in commit `46f33c4` (Q1).
+
+### D2 — MLP class duplicated in ml/training.py and ml/training_calib_dca.py (severity: cleanup)
+Same `MLP` class defined twice with identical body. **Resolution:** extracted to `ml/model.py` in commit `bed84df` (Q2).
+
+### D3 — Inference imports from training module (severity: code smell)
+`ml/infer.py` originally `from ml.training import MLP` — inference depending on training is reviewer-bait. **Resolution:** rerouted to `from ml.model import MLP` in commit `bed84df` (Q2).
+
+### D4 — Pyright catches 4 import stragglers (severity: cleanup)
+Beyond the obvious 3 import sites (`infer.py`, `training.py`, `training_calib_dca.py`), pyright caught 4 more in `tests/test_coverage_boost.py`, `scripts/fit_gates.py`, `scripts/run_ablation.py`. **Resolution:** all updated in commit `bed84df` (Q2).
+
+### D5 — Unused `from typing import Any` in training_calib_dca.py (severity: cleanup)
+Bonus pyright catch post-MLP-extraction. **Resolution:** removed in commit `bed84df` (Q2).
+
+### D6 — Conformal alpha = 0.10 with n=6 produces k > n (severity: permanent-known-limitation)
+Standard split-conformal guarantee mathematically inapplicable: `k = ⌈(n+1)(1-α)⌉ = 7 > 6`. **Resolution:** `compute_qhat` clamps `k = min(max(k, 1), n)`; 3-state regime badge documents the 🔴 INVALID status (Q4).
+
+### D7 — `SmallCalibrationWarning` silent in scripts/conformal_fit_from_probs.py (severity: bug, sprint)
+Standalone script bypassed canonical `compute_qhat`, suppressing the n<100 warning. **Resolution:** routed through `ml.conformal_advanced.compute_qhat` in commit `67039e3` + warning-emission test in commit `67039e3` (Q4.B).
+
+### D8 — `LowEnergy` enum name doesn't match Liu 2020 semantics (severity: rename)
+Variable name implied "below in-dist floor" but Liu 2020 fires "above OOD shift." **Resolution:** initially renamed `LogitEnergyBelowInDistFloor` in `3fd05ed`, then renamed again to `LogitEnergyAboveOODShift` in `b8f62e3` after D17 surfaced (Q5 + Q11.A.fix).
+
+### D9 — Energy gate threshold tau fit at q=0.05 (severity: bug, blocker)
+Original threshold fit used the 5th percentile (confidence-floor framing). Liu 2020 canonical is q=0.95 (95th-percentile ceiling). **Resolution:** re-fit at q=0.95 alongside math flip in commit `b8f62e3` (Q11.A.fix).
+
+### D10 — Train-only Mahalanobis fit verified as no-leakage (severity: confirmed-clean)
+`scripts/refit_mahalanobis_train.py` re-derives the train indices the same way `ml/training_calib_dca.py` does (`random_state=42, test_size=0.2, stratify=y`) so per-feature stats never see val/test rows. Audit-flagged subtle leakage from prior phase confirmed gone. **Resolution:** none needed; documented for reviewers.
+
+### D11 — T = 0.27 amplifies logits, atypical Guo 2017 direction (severity: permanent-known-limitation)
+T < 1 means dividing logits by 0.27 ≈ multiplying by 3.7×. Standard temperature scaling has T > 1 (attenuation). On n=6, this T is essentially noise-optimized. **Resolution:** UI badge `T=0.27 (n=6)` + hover tooltip + `SmallCalibrationWarning` banner (Q3). Cannot be fixed at current n; documented in model card.
+
+### D12 — Conformal q-hat math duplicated across 3 call sites (severity: bug, refactor)
+`ml/conformal_advanced.compute_qhat` + inline math in `scripts/conformal_fit_from_probs.py` + inline math in `scripts/refit_conformal_held_out.py`. **Resolution:** standalone script rerouted in commit `67039e3` (Q4.B); held-out script's inline copy left intact (it's a different reproducibility entry point, not a bug class duplicate).
+
+### D13 — IRB gate emits AuditEventType but no test asserts emission (severity: test gap)
+`ml/irb_gate.py` emits `ACCESS_DENIED` and `IRB_STATUS_CHANGE` but no test verified these emissions before the audit. **Resolution:** 2 emission tests added in commit `6654877` (Q7.B).
+
+### D14 — 11 dead AuditEventType enum values (severity: cleanup, sprint)
+Declared but never reached by any `_emit()` call AND no test asserts on them. **Resolution:** delete 11 values + add 3 new `WEB_*` in same Mini-1 commit (Q7.A). Net delta -8.
+
+### D15 — references.bib 22 entries, 0 true orphans (severity: confirmed-clean)
+Initial regex grep suggested orphans but manual narrative cross-check confirmed every entry is cited in either README, model card, governance_integration.md, or inline tooltip plan. **Resolution:** none needed; methodology refresh deferred to Phase 8.5 preprint prep (Q8).
+
+### D16 — KNOWN_SYMPTOMS exposes 7 symptoms but model scores 3 (severity: bug, sprint)
+`ml/ui_live_patient.py` originally exposed 7 symptom checkboxes (fever, headache, nuchal_rigidity, altered_mental_status, photophobia, nausea_vomiting, seizure) but the model only scores 3. **Resolution:** trim to 3 in Mini-1 alongside multi-page nav rewrite (Q11.B/C). Future expansion deferred to Phase 6 with MIMIC-IV retrain.
+
+### D17 — Logit-energy gate fires on 4 of 4 clinical presets (severity: bug, blocker)
+**Audit's biggest catch.** Preset coverage exposed that the gate fired on every input, including unambiguously in-distribution NEUTRAL and NORMAL cases. Root cause: inverted comparison direction (`if energy < tau`). **Resolution:** flipped to `>` and re-fit at q=0.95 in commit `b8f62e3`; renamed to `LogitEnergyAboveOODShift` in same commit (Q11.A.fix). Post-flip re-verification in §3.A confirms 4 of 4 in-dist presets no longer fire.
+
+### D18 — Model can't distinguish bacterial-NOT-PAM from PAM (severity: permanent-known-limitation, n=30)
+Live preset re-verification: bacterial-meningitis preset returns `prediction=High, p_high=1.0`, identical to PAM preset. Root cause: n=30 training set has zero non-PAM bacterial cases. **Resolution:** preserve as explicit "limitations demo" Preset 2 with red banner co-located with result; xfail-decorated test with `strict=False` so Phase 6 fix triggers XPASS signal (Q12). Cannot be fixed pre-Phase 6.
+
+---
+
+## §5. Decisions Ledger
+
+Single canonical greppable table. Legend: ~~strikethrough~~ ✓ rows = decision implemented during audit phase (commit landed or doc-only Phase J edit complete). Plain rows = pending sprint Mini-1 / Mini-2 / USER ASSIGNMENT.
+
+| Q# | topic | locked decision | implementation | doc-ref |
+|---|---|---|---|---|
+| ~~Q1~~ ✓ | ~~apex/ removal + git init~~ | ~~move to ~/Desktop/apex/, git init fresh~~ | ~~commit 46f33c4~~ ✓ | §3.C Q1 |
+| ~~Q2~~ ✓ | ~~MLP location~~ | ~~extract to ml/model.py~~ | ~~commit bed84df~~ ✓ | §3.C Q2 |
+| Q3 | T=0.27 surface | UI badge + hover tooltip + SmallCalibrationWarning banner | Mini-1 | §3.C Q3 |
+| Q4.A | conformal alpha | α=0.10 headline + Advanced expander slider {0.05,0.10,0.20} | Mini-1 + Mini-2 | §3.B Q4 |
+| ~~Q4.B~~ ✓ | ~~conformal math dedup~~ | ~~route conformal_fit_from_probs.py through canonical~~ | ~~commit 67039e3~~ ✓ | §3.B Q4 |
+| Q4.C | regime badge | 3-state badge 🟢 ASYMPTOTIC / 🟡 FINITE-SAMPLE / 🔴 INVALID | Mini-1 | §3.B Q4 |
+| ~~Q5~~ ✓ | ~~logit-energy gate semantics~~ | ~~Liu 2020: energy>tau → ABSTAIN + rename LogitEnergyAboveOODShift~~ | ~~commits 3fd05ed + b8f62e3~~ ✓ | §3.A Q5+Q11.A.fix |
+| ~~Q6~~ ✓ | ~~hosting~~ | ~~HF Spaces, Streamlit Docker SDK, free CPU Basic, public~~ | ~~pre-locked~~ ✓ | §3.C Q6 |
+| Q7.A | dead enum cleanup | delete 11 dead + add 3 WEB_* in Mini-1 same commit | Mini-1 | §3.C Q7 |
+| ~~Q7.B~~ ✓ | ~~IRB emission tests~~ | ~~add 2 tests now (test-only commit)~~ | ~~commit 6654877~~ ✓ | §3.C Q7 |
+| Q7.C | new web event naming | dedicated WEB_PREDICT_RECEIVED / WEB_PREDICT_RETURNED / WEB_RATE_LIMIT_HIT | Mini-1 | §3.C Q7 |
+| ~~Q8.A~~ ✓ | ~~references.bib coverage~~ | ~~add Tunkel 2004 + Seehusen 2003 (22 entries)~~ | ~~commit 6f02a75~~ ✓ | §3.C Q8 |
+| Q8.B | methodology refresh | defer to Phase 8.5 preprint prep | post-sprint | §3.C Q8 |
+| Q8.C | tooltip wording | full heuristic + sticky deterministic order + click-to-expand | Mini-2 | §3.C Q8 |
+| Q9 | Vercel /playground | link-out only via "Launch interactive demo →" button | USER ASSIGNMENT post-sprint | §3.C Q9 |
+| ~~Q10~~ ✓ | ~~USER_ASSIGNMENTS step text~~ | ~~Step 0 cwd guard, page.tsx.bak, *.tsx.bak gitignore~~ | ~~doc-only Phase J~~ ✓ | §3.C Q10 |
+| Q11.A | form spec defaults | NEUTRAL/normal defaults (csf_glucose=65, csf_protein=30, csf_wbc=3, pcr/microscopy/exposure=False, symptoms=[], age=12) | Mini-1 | §3.C Q11 |
+| Q11.B | KNOWN_SYMPTOMS trim | 3 only (fever, headache, nuchal_rigidity) | Mini-1 | §3.C Q11 |
+| ~~Q11.A.fix~~ ✓ | ~~gate flip~~ | ~~flip < to > + re-fit q=0.95 + rename to LogitEnergyAboveOODShift~~ | ~~commit b8f62e3~~ ✓ | §3.A Q5+Q11.A.fix |
+| Q12.A | preset count | 3 buttons + neutral default state | Mini-1 | §3.B Q12 |
+| Q12.B | PRESETS dict | 3 presets locked (high_risk_pam, bacterial_meningitis_limitation, normal_csf) + xfail decorator + current_behavior + snapshot_date | Mini-1 | §3.B Q12 |
+| Q12.C | D18 banner placement | co-located with result, NOT before Run inference | Mini-1 | §3.B Q12 |
+| Q13.A | audit retention | append-only ephemeral + CSV export | Mini-1 (utils) + Mini-2 (page) | §3.B Q13 |
+| Q13.B | audit page display | full session events with banner + 10k row cap | Mini-2 | §3.B Q13 |
+| Q13.C | dockerignore audit dir | defer to Subphase 4.5.4 | Mini-2 | §3.B Q13 |
+| ~~Q14~~ ✓ | ~~sprint shape~~ | ~~(B) split after predict page: Mini-1 ~600 LOC + Mini-2 ~350 LOC~~ | ~~locked spec~~ ✓ | §3.C Q14 |
+| Q15.A | error handling | correlation ID (uuid4 full server, 12-char display) + INTEGRITY_VIOLATION audit | Mini-1 | §3.C Q15 |
+| Q15.B | missing stats handling | fail-with-banner + button-disable | Mini-1 | §3.C Q15 |
+| Q15.C | dataframe row cap | 10,000 rows + display banner | Mini-1 | §3.C Q15 |
+| Q15.D | request debounce | session-state debounce + 30s stale-lock recovery | Mini-1 | §3.C Q15 |
+| Q15.5.A | a11y badges | full coverage all 4 badges with icon + weight + color | Mini-1 | §3.A Q15.5 |
+| Q15.5.B | a11y key= audit | unique-key cross-page assertion test | Mini-1 | §3.A Q15.5 |
+| Q15.5.C | audit page render | st.table over st.dataframe (screen-reader semantics) | Mini-2 | §3.A Q15.5 |
+| Q15.5.D | WCAG-AA contrast | wash + border + deep text CSS pattern (≥7.18:1) | Mini-1 | §3.A Q15.5 |
+| Q15.5.E | reduced-motion | prefers-reduced-motion CSS injection | Mini-1 | §3.A Q15.5 |
+| Q16.a | commit conventions | Conventional Commits + Closes/Refs footer mandatory | Mini-1 onward | §3.C Q16 |
+| Q16.b | theme | neutral-medical (Material Blue 900 on white) | Mini-1 | §3.C Q16 |
+| Q16.c | config.toml | port 8501 + 4 upgrades + zero deprecations | Mini-1 | §3.C Q16 |
+| Q17.A | SHAP defer | defer to Phase 6 + ship \|w_i\| panel | Mini-2 | §3.C Q17 |
+| Q17.B | \|w_i\| panel location | About page only (model-level, not input-level) | Mini-2 | §3.C Q17 |
+| Q17.C | caption text | accept verbatim | Mini-2 | §3.C Q17 |
+| ~~Q18.A~~ ✓ | ~~cold-start~~ | ~~passive accept 30s, no cron~~ | ~~documented~~ ✓ | §3.C Q18 |
+| ~~Q18.B~~ ✓ | ~~optimization~~ | ~~leave as-is (no @st.cache_resource needed)~~ | ~~no change~~ ✓ | §3.C Q18 |
+| Q19.A | disclaimer wording | variant (ii) "limited to the n=30 training distribution" | Mini-1 | §3.B Q19 |
+| Q19.B | disclaimer presence | mandatory on every page | Mini-1 + Mini-2 | §3.B Q19 |
+| Q19.C | ORCID inclusion | yes (0009-0000-7851-7139) | Mini-1 | §3.B Q19 |
+| Q19.D | source URL | github.com/ljm234/amoebanator-25 (after rename) | USER ASSIGNMENT pre-sprint | §3.B Q19 |
+| ~~Q20~~ ✓ | ~~Mini-1 closure gate~~ | ~~≥1280 tests + 7 criteria + visual snapshot (locked spec)~~ | ~~locked spec~~ ✓ | §3.C Q20 |
+
+---
+
+## §6. Commits Ledger
+
+7 commits landed during the audit. Listed in topological order (oldest first).
+
+### 46f33c4 — Pre-Phase-4.5 baseline
+- **Type:** baseline
+- **Files:** `apex/` moved out (mv to ~/Desktop/apex/); `.git/` re-initialized; `.gitignore` created
+- **LOC delta:** N/A (baseline)
+- **Tests delta:** +1229 (initial tests collected)
+- **Q-ref:** Q1
+- **Why:** establish a clean git history rooted in the audited state. Prior repo had `apex/` cruft that would have polluted the medRxiv reproducibility appendix.
+
+### bed84df — refactor: extract MLP to ml/model.py
+- **Type:** refactor
+- **Files:** `ml/model.py` (new, ~35 LOC); `ml/training.py`, `ml/training_calib_dca.py`, `ml/infer.py`, `tests/test_coverage_boost.py`, `scripts/fit_gates.py`, `scripts/run_ablation.py` (modified, single-line import changes)
+- **LOC delta:** +35 / -22 (MLP class moved, not rewritten)
+- **Tests delta:** 0 (1229/1229 still passing)
+- **Q-ref:** Q2 (D2, D3, D4, D5)
+- **Why:** de-duplicate MLP class + decouple inference path from training-module imports. Pyright caught 4 stragglers beyond the obvious 3.
+
+### 67039e3 — refactor: route scripts/conformal_fit_from_probs.py through ml.conformal_advanced
+- **Type:** refactor
+- **Files:** `scripts/conformal_fit_from_probs.py` (modified to call canonical `compute_qhat`); `tests/test_conformal_fit_script.py` (new, +2 tests asserting `SmallCalibrationWarning` fires on round-trip)
+- **LOC delta:** +28 / -47 (math removed, replaced with canonical call + warning round-trip test)
+- **Tests delta:** +2 (1229 → 1231)
+- **Q-ref:** Q4.B (D7, D12)
+- **Why:** eliminate 1 of 3 conformal math duplicates + restore `SmallCalibrationWarning` emission in standalone script path.
+
+### 3fd05ed — refactor: rename LowEnergy → LogitEnergyBelowInDistFloor
+- **Type:** refactor (later superseded by `b8f62e3`)
+- **Files:** `ml/audit_hooks.py`, `ml/infer.py`, `tests/test_coverage_boost.py`, `tests/test_infer_integration.py`, `tests/test_ood_combined.py`, `docs/model_card.md`
+- **LOC delta:** +12 / -12 (string replace + docstring update)
+- **Tests delta:** 0 (1231/1231 still passing)
+- **Q-ref:** Q5.A (D8)
+- **Why:** make the original (unusual) confidence-floor semantics explicit in the variable name. Math left unchanged at this commit. Subsequently retroactively re-renamed in `b8f62e3` after D17 surfaced.
+
+### 6654877 — test: assert AuditEventType emission in IRB gate
+- **Type:** test-only
+- **Files:** `tests/test_irb_gate.py` (modified, +2 tests asserting `ACCESS_DENIED` and `IRB_STATUS_CHANGE` emissions)
+- **LOC delta:** +47 / -0 (2 new test functions)
+- **Tests delta:** +2 (1231 → 1233)
+- **Q-ref:** Q7.B (D13)
+- **Why:** tighten IRB gate contract. Test-only commits don't count against the 3-then-4 refactor cap (same precedent as `67039e3` warning-emission test).
+
+### 6f02a75 — docs: add Tunkel 2004 IDSA + Seehusen 2003 AFP refs for Q11 heuristic bucket coverage
+- **Type:** docs (content-only)
+- **Files:** `docs/references.bib` (modified, +2 entries: tunkel2004 + seehusen2003)
+- **LOC delta:** +18 / -0 (2 BibTeX entries + comment header about methodology refresh deferral)
+- **Tests delta:** 0
+- **Q-ref:** Q8.A
+- **Why:** without these 2 refs, 2 of 4 Q11 inline-tooltip buckets render empty — worse UX than no feature. Methodology refresh (Wang ViM 2022, Sun KNN-OOD 2022, etc.) explicitly deferred to Phase 8.5 preprint prep.
+
+### b8f62e3 — fix: flip logit-energy gate semantics + rename to match Liu 2020
+- **Type:** fix (4th and absolute-last pre-sprint refactor)
+- **Files:** `ml/infer.py:232` (comparison `<` → `>`); `ml/ood_combined.py:117-130` (combiner adapter direction flip); `outputs/metrics/energy_threshold.json` (re-fit at q=0.95); `ml/audit_hooks.py`, `tests/test_coverage_boost.py`, `tests/test_infer_integration.py`, `tests/test_ood_combined.py`, `docs/model_card.md` (rename `LogitEnergyBelowInDistFloor` → `LogitEnergyAboveOODShift`)
+- **LOC delta:** +35 / -28 (rename + 3 test fixture rewrites with tau direction flips)
+- **Tests delta:** 0 (1233/1233 passing post-flip; 3 fixtures rewritten in place)
+- **Q-ref:** Q11.A.fix (D9, D17)
+- **Why:** The audit's biggest catch. Preset coverage (Q11 live verification) exposed gate firing on 4 of 4 in-dist presets. Root cause: inverted comparison direction. Fix flips math + re-fits threshold at correct Liu 2020 quantile + renames atomically (math change without rename = lying audit log). Cap raised from 3 to 4 with explicit rationale (see §2.4).
+
+**Refactor cap audit:** 4/4 used. None reverted. None landed without an associated Q-decision.
+
+---
+
+## §7. Limitations & Honest Caveats
+
+### 7.1 The n=30 dataset is the load-bearing limitation
+Every uncertainty caveat in this audit traces back to `n_train=24, n_val=6`. Specifically:
+- **D11** (T=0.27 amplifying logits) is a noise-fit on n=6. Not a model defect; a sample-size artifact.
+- **D6** (conformal k > n at α=0.10) is a hard mathematical consequence of n=6. The 🔴 INVALID badge is the honest framing.
+- **D18** (bacterial-NOT-PAM indistinguishable from PAM) reflects zero non-PAM bacterial cases in the n=30 cohort. Cannot be fixed pre-Phase 6.
+
+The audit chose to surface these limitations in the UI rather than hide them in `docs/model_card.md` §Caveats. Reviewer-grade behavior: a reviewer who clicks the calibration badge sees `n=6`, who clicks the limitation banner sees `n=30` cohort composition, who clicks the about-page `|w_i|` panel sees the 1.27× near-equal-weighting evidence. The honest disclosure is everywhere the metric is.
+
+### 7.2 Synthetic vignette generation has no real-world calibration
+The n=30 training set is synthetic patient vignettes drawn to match published case-series marginals (Yoder 2010, Cope 2016, CDC 2025). This is reproducibility-friendly but not externally validated. Phase 6 (MIMIC-IV cohort, target n≥200, includes bacterial vs viral meningitis labels) is the first phase that will produce externally-grounded calibration.
+
+### 7.3 The L-BFGS calibration is a noise-optimized point estimate
+T=0.2723 was found by running L-BFGS optimization of the negative log-likelihood on n=6 validation samples. With n=6 the optimization landscape has insufficient curvature to constrain T meaningfully — different random subsets of n=6 would produce different T values in the range 0.1-2.0. The reported T should be treated as a sample-specific point estimate, not as evidence of structural under/overconfidence.
+
+### 7.4 HF Space ephemeral filesystem means audit log doesn't persist
+The audit chain is preserved per session via in-UI CSV export (Q13.A locked feature) but is wiped across container restarts (~48h idle or any deploy). For permanent audit trails, the deploy needs paid hardware or external storage (S3/Postgres) — both out of scope for this sprint.
+
+### 7.5 Single-author audit, no peer code review
+The audit was conducted by one human (Jordan Montenegro-Calla) with one LLM (Claude Code Opus 4.7). No second pair of human eyes reviewed the audit's findings or the 7 commits before this report was written. Reviewer-grade defensibility relies on: (i) the verbatim user prompts in §9 Appendix A (showing the discovery process was real, not retconned), (ii) the per-commit Q-traceability via the Closes/Refs footer convention (Q16.a), and (iii) the post-flip preset re-verification table (§3.A Q5+Q11.A.fix) being independently re-runnable from `outputs/model/model.pt` (sha256 in §1).
+
+### 7.6 The discovery prompt itself is non-deterministic
+Different LLM sessions running the same Phase 4.5 PRE-FLIGHT prompt would surface different Dxx findings in different orders. The 18 D-findings in §4 are not exhaustive — they are the findings this audit surfaced. A rerun with a different LLM or different ordering of Q evidence could produce additional findings the sprint should incorporate. The audit's defensibility rests on the findings it *did* surface being correctly handled, not on having found everything findable.
+
+### 7.7 Three permanent known limitations the demo will not hide
+1. **n=30 cohort.** Disclosed in disclaimer on every page (Q19), in `T=0.27 (n=6)` UI badge (Q3), in 🔴 INVALID conformal regime badge (Q4.C), in `|w_i|` panel caption (Q17.C), in D18 limitation banner on Preset 2 (Q12.C).
+2. **Cannot distinguish bacterial-NOT-PAM from PAM.** D18 limitation banner adjacent to bacterial preset result.
+3. **Cold-start ~30s on free tier.** Q9.1 caption *"cold-start ~30s on first visit after idle period."* Disclosed in advance, no surprise.
+
+These three are documented in the disclaimer, the model card, and the about page. A reviewer cannot reach the prediction result without seeing at least two of these three disclosures.
+
+---
+
+## §8. References
+
+The audit relies on 22 BibTeX entries in `docs/references.bib` (post-`6f02a75` count). Listed alphabetically with in-doc anchor.
+
+- **capewell2015** — Capewell LG et al. *J Pediatric Infect Dis Soc* 2015. PMID 26582870. PAM CSF tabulation. Anchor: §3.C Q8 tooltip bucket [5].
+- **cdc2025** — CDC. *About PAM.* 2025. Anchor: §3.C Q8 tooltip bucket [1]; §1.4 (97% mortality citation).
+- **collins2024** — Collins GS et al. TRIPOD+AI. *BMJ* 2024. Anchor: `docs/tripod-ai.md` (Phase 8.3).
+- **collins2015** — Collins GS et al. TRIPOD 2015. Anchor: `docs/tripod-ai.md` comparison table.
+- **cope2016** — Cope JR et al. *Clin Infect Dis* 2016. PMID 27154388. Anchor: §3.C Q8 tooltip bucket [3]; §1.4; D18 (qualitative CSF patterns).
+- **gebru2021** — Gebru T et al. Datasheets for Datasets. *Comm ACM* 2021. Anchor: `docs/data_card.md` (Phase 8.4).
+- **guo2017** — Guo C et al. On Calibration of Modern Neural Networks. *ICML* 2017. Anchor: §3.C Q3 (temperature scaling).
+- **hhs2012** — HHS HIPAA Safe Harbor Guidance. 2012. Anchor: `ml/data_loader.py` Safe Harbor wrapper.
+- **ke2017** — Ke G et al. LightGBM. *NeurIPS* 2017. Anchor: `ml/baselines/gbm.py`.
+- **lee2018** — Lee K et al. Mahalanobis OOD. *NeurIPS* 2018. Anchor: §4 D6, §3.B Q4.
+- **lei2018** — Lei J et al. Distribution-free predictive inference. *JASA* 2018. Anchor: §3.B Q4 (3-state regime badge).
+- **liu2020** — Liu W et al. Energy-based OOD. *NeurIPS* 2020. Anchor: §3.A Q5+Q11.A.fix; D8, D9, D17.
+- **mitchell2019** — Mitchell M et al. Model Cards. *FAccT* 2019. Anchor: `docs/model_card.md` (Phase 8.1).
+- **niculescu2005** — Niculescu-Mizil A & Caruana R. Predicting good probabilities. *ICML* 2005. Anchor: `ml/baselines/random_forest.py` isotonic calibration.
+- **platt1999** — Platt J. Probabilistic outputs for SVMs. *Adv Large-Margin Classifiers* 1999. Anchor: `ml/baselines/logistic.py` Platt scaling.
+- **seehusen2003** — Seehusen DA et al. *Am Fam Physician* 2003. PMID 14524396. Anchor: §3.C Q8 tooltip bucket [7]; §3.A Q11.A (csf_wbc <5 normal).
+- **tunkel2004** — Tunkel AR et al. IDSA bacterial meningitis guidelines. *Clin Infect Dis* 2004. PMID 15494903. Anchor: §3.C Q8 tooltip bucket [2,6]; §3.A Q11.A (csf_glucose 50-80, csf_protein 15-45 normal ranges).
+- **vasey2022** — Vasey B et al. DECIDE-AI. *BMJ* 2022. Anchor: `docs/decide-ai.md` (Phase 8.2).
+- **vickers2006** — Vickers AJ & Elkin EB. Decision curve analysis. *Med Decis Making* 2006. Anchor: Phase 6 DCA (deferred).
+- **vovk2005** — Vovk V et al. Algorithmic Learning in a Random World. Springer 2005. Anchor: §3.B Q4 (split conformal).
+- **vovk2013** — Vovk V. Conditional validity of inductive conformal predictors. *Mach Learn* 2013. Anchor: `ml/conformal_advanced.label_conditional_qhats` (Mondrian).
+- **yoder2010** — Yoder JS et al. *Epidemiol Infect* 2010. PMID 19922683. Anchor: §3.C Q8 tooltip bucket [4]; §1.4; §3.A Q11.A (age_median=12 default).
+
+---
+
+## §9. Appendix
+
+### A. Verbatim audit-phase user prompts (chronological)
+
+The full chronological user-message log from the audit phase has been extracted to `/tmp/audit_extract/00_audit_user_msgs.md` (170 KB, 3,403 lines covering 22 user messages from `msg #98` paste-ready audit prompt through `msg #205` outline approvals). The extract is a working artifact, not a permanent commitment — the canonical audit transcript lives in the Claude Code session jsonl at `/Users/jordanmontenegro/.claude/projects/-Users-jordanmontenegro-Desktop-Amoebanator-25/a62ae6d8-9c41-48c4-aa08-f855fdc6cfb5.jsonl` (6.2 MB, 1,836 lines, 543 user msgs / 820 assistant msgs).
+
+For reviewer audit-trail defensibility, the most consequential verbatim user excerpts have already been embedded throughout §3 (e.g., Q5 self-correction recognition at §3.A Q5+Q11.A.fix; refactor cap override at §2.4; Q11.A NEUTRAL defaults reasoning at §3.C Q11; Q19 "limited to" micro-correction at §3.B Q19; Q20 honest-density anti-padding reasoning at §3.C Q20). The decision to embed verbatim only the load-bearing excerpts (rather than the full chronological log) was made at §3 outline approval (Phase J Doc 1 outline, "AUDIT_REPORT §3 verbatim user prompts: condensed in §3 + full in Appendix A").
+
+The extracted log at `/tmp/audit_extract/` should be either: (i) committed to `docs/_archive/audit_2026_04_27_user_msgs.md` if the user wants the verbatim trail in-repo (~170 KB markdown), or (ii) preserved only via the source jsonl at the path above. The audit's recommendation: option (ii). The jsonl is the single canonical source; copying it to a markdown file invites drift.
+
+### B. Pytest baseline collection (1233 tests, top-10 file breakdown)
+
+```
+$ python -m pytest --collect-only -q 2>&1 | tail -5
+... (1233 tests collected in 3.28s)
+
+Top 10 files by test count (post-b8f62e3):
+  182  tests/test_phase1_1_compliance.py        (14.8%)
+  166  tests/test_phase1_1_clinical.py          (13.5%)
+  151  tests/test_phase1_1_deidentification.py  (12.2%)
+  146  tests/test_phase1_1_microscopy.py        (11.8%)
+  130  tests/test_phase1_1_audit_trail.py       (10.5%)
+  126  tests/test_phase1_1_acquisition.py       (10.2%)
+  113  tests/test_ml_core.py                     (9.2%)
+   39  tests/test_coverage_boost.py              (3.2%)
+   31  tests/test_infer_integration.py           (2.5%)
+   16  tests/test_ui_live_patient.py             (1.3%)
+```
+
+Phase-1.1 fixtures: 901 tests (73%). ML/OOD/conformal core: 235 tests (19%). UI/integration: 97 tests (8%). The UI surface — Mini-1 + Mini-2 territory — is currently exercised by a single 16-test file. Mini-1 adds ~50 tests (test_pages_predict.py + test_app_presets.py + test_app_disclaimer.py + test_audit_export.py + visual snapshot baseline) → 1294 total → ≥1280 gate satisfied with 14 tests of headroom.
+
+### C. File-level LOC inventory (selected)
+
+```
+ml/infer.py             303 LOC
+ml/audit_hooks.py       286 LOC
+ml/conformal_advanced.py ~250 LOC
+ml/ood_combined.py      159 LOC
+ml/ui_live_patient.py   176 LOC
+ml/model.py              35 LOC (created during audit)
+docs/AUDIT_REPORT.md    ~2,400 LOC (this doc, post-§3.C-§9 commit)
+docs/SPRINT_LOG.md      566 LOC
+docs/USER_ASSIGNMENTS.md 182 LOC
+docs/AMOEBANATOR_MASTER_PROMPT.md 492 LOC
+```
+
+### D. Pyright baseline error/warning snapshot at b8f62e3
+
+`pyright` clean state at `b8f62e3`: 0 errors, 0 warnings on every file touched by audit-phase commits. The Q20 closure gate criterion #2 ("Pyright purity: 0 new errors/warnings vs `b8f62e3` baseline") is anchored against this snapshot. Sprint Mini-1 will re-snapshot at sprint kickoff and the closure gate will compare deltas, not absolutes (allowing for Streamlit dynamic-attribute access patterns that may require targeted ignores with comments).
+
+---
+
+**End of AUDIT_REPORT.md.** Doc 2 (`PHASE_4_5_PLAN.md`) consumes the §3 + §4 + §5 material above as input. Doc 3 (`PHASE_4_5_PROMPT_FINAL.md`) consumes Doc 2's spec. Doc 4 (`INFORMATION_RECAP.md`) synthesizes all three in narrative form for human reading.
