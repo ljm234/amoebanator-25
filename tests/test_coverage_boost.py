@@ -174,8 +174,8 @@ class TestInfer:
         with patch("ml.infer.ENERGY_JSON", tmp_path / "no.json"):
             assert _energy_tau() == -2.0
 
-    def test_infer_one_low_energy_abstain(self, tmp_path: Path) -> None:
-        """When energy < tau, prediction should be ABSTAIN with LowEnergy reason."""
+    def test_infer_one_logit_energy_below_in_dist_floor_abstain(self, tmp_path: Path) -> None:
+        """When energy < tau, prediction should be ABSTAIN with LogitEnergyBelowInDistFloor reason."""
         from ml.infer import infer_one
 
         met = tmp_path / "metrics"
@@ -201,7 +201,7 @@ class TestInfer:
         ):
             out = infer_one(row)
         assert out["prediction"] == "ABSTAIN"
-        assert out["reason"] == "LowEnergy"
+        assert out["reason"] == "LogitEnergyBelowInDistFloor"
 
     def test_infer_one_conformal_ambiguity(self, tmp_path: Path) -> None:
         """When both include_high and include_low are True → ConformalAmbiguity."""

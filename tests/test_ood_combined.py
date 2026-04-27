@@ -88,7 +88,7 @@ def test_signals_handle_garbage_values_gracefully() -> None:
 def test_combined_decision_end_to_end() -> None:
     out = {
         "mahalanobis_d2": 19.0, "d2_tau": 26.7,        # not OOD (d2 < tau)
-        "energy": 363.7, "energy_tau": 86.24,          # not LowEnergy (energy > tau)
+        "energy": 363.7, "energy_tau": 86.24,          # not LogitEnergyBelowInDistFloor (energy > tau)
         "energy_neg": -18.4, "energy_neg_tau": -1e-8,  # confident (very negative)
         "ood_abstain_energy_neg": False,
     }
@@ -98,7 +98,7 @@ def test_combined_decision_end_to_end() -> None:
 
 
 def test_logit_energy_flag_inverted_correctly() -> None:
-    """ml.infer treats `energy < tau` as LowEnergy abstain — the adapter should preserve that."""
+    """ml.infer treats `energy < tau` as LogitEnergyBelowInDistFloor abstain — the adapter should preserve that."""
     out = {"energy": -9.84, "energy_tau": 86.24}
     sigs = signals_from_infer_output(out)
     le = next(s for s in sigs if s["name"] == "logit_energy")
