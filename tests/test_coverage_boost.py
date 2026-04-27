@@ -174,8 +174,8 @@ class TestInfer:
         with patch("ml.infer.ENERGY_JSON", tmp_path / "no.json"):
             assert _energy_tau() == -2.0
 
-    def test_infer_one_logit_energy_below_in_dist_floor_abstain(self, tmp_path: Path) -> None:
-        """When energy < tau, prediction should be ABSTAIN with LogitEnergyBelowInDistFloor reason."""
+    def test_infer_one_logit_energy_above_ood_shift_abstain(self, tmp_path: Path) -> None:
+        """When energy > tau, prediction should be ABSTAIN with LogitEnergyAboveOODShift reason (Liu 2020 semantics)."""
         from ml.infer import infer_one
 
         met = tmp_path / "metrics"
@@ -190,8 +190,9 @@ class TestInfer:
             "tau": 999.0,  # very permissive — won't trigger OOD
         }
         (met / "feature_stats.json").write_text(json.dumps(stats))
-        # Energy tau very high → any real energy will be below → ABSTAIN
-        (met / "energy_threshold.json").write_text(json.dumps({"tau": 999.0}))
+        # Energy tau very low → any real energy will be above → ABSTAIN.
+        # Real model energies are typically in [-50, -1], all > -999.
+        (met / "energy_threshold.json").write_text(json.dumps({"tau": -999.0}))
 
         row = {"age": 30}
         with (
@@ -201,7 +202,7 @@ class TestInfer:
         ):
             out = infer_one(row)
         assert out["prediction"] == "ABSTAIN"
-        assert out["reason"] == "LogitEnergyBelowInDistFloor"
+        assert out["reason"] == "LogitEnergyAboveOODShift"
 
     def test_infer_one_conformal_ambiguity(self, tmp_path: Path) -> None:
         """When both include_high and include_low are True → ConformalAmbiguity."""
@@ -219,7 +220,9 @@ class TestInfer:
             "tau": 999.0,
         }
         (met / "feature_stats.json").write_text(json.dumps(stats))
-        (met / "energy_threshold.json").write_text(json.dumps({"tau": -999.0}))
+        # Energy tau very high → real energies will be below → gate stays quiet,
+        # so the conformal-ambiguity branch can be exercised.
+        (met / "energy_threshold.json").write_text(json.dumps({"tau": 999.0}))
         # qhat=0.99 → include_high = p_high >= 0.01, include_low = p_high <= 0.99 → ambiguity
         (met / "conformal.json").write_text(json.dumps({"qhat": 0.99, "alpha": 0.01}))
 
@@ -255,7 +258,8 @@ class TestInfer:
             "tau": 999.0,
         }
         (met / "feature_stats.json").write_text(json.dumps(stats))
-        (met / "energy_threshold.json").write_text(json.dumps({"tau": -999.0}))
+        # Energy tau very high → gate stays quiet so age-group routing can be observed.
+        (met / "energy_threshold.json").write_text(json.dumps({"tau": 999.0}))
         (met / "conformal.json").write_text(json.dumps({"qhat": 0.10, "alpha": 0.10}))
         (met / "conformal_grouped.json").write_text(json.dumps({
             "alpha": 0.10,

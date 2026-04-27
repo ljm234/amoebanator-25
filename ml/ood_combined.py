@@ -118,10 +118,12 @@ def signals_from_infer_output(out: dict[str, object]) -> list[GateSignal]:
         try:
             e_f = float(e)  # type: ignore[arg-type]
             tau_f = float(e_tau) if e_tau is not None else None  # type: ignore[arg-type]
-            # ml/infer.py treats `energy < tau` as "low confidence → abstain".
-            # We invert the difference so larger == worse for the WEIGHTED rule.
-            flag = (tau_f is not None) and (e_f < tau_f)
-            score_for_combo = (tau_f - e_f) if tau_f is not None else 0.0
+            # ml/infer.py treats `energy > tau` as "above the in-dist 95th percentile
+            # → likely OOD → abstain" (Liu 2020 canonical semantics).
+            # score_for_combo = (energy - tau): larger positive == further above the
+            # OOD shift threshold == stronger trigger for the WEIGHTED rule.
+            flag = (tau_f is not None) and (e_f > tau_f)
+            score_for_combo = (e_f - tau_f) if tau_f is not None else 0.0
             signals.append({
                 "name": "logit_energy",
                 "score": float(score_for_combo),
