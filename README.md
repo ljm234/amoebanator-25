@@ -1,3 +1,17 @@
+---
+title: Amoebanator 25
+emoji: 🚀
+colorFrom: red
+colorTo: red
+sdk: docker
+app_port: 8501
+tags:
+- streamlit
+pinned: false
+short_description: Clinical ML safety framework for rare-pathogen triage (PAM).
+license: mit
+---
+
 # Amoebanator
 
 Research codebase for a calibrated, abstention-aware triage signal for Primary Amebic
