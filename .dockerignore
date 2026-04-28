@@ -19,6 +19,11 @@ build/
 dist/
 htmlcov/
 docs/_build/
-outputs/audit/audit.jsonl
+# Q13.C locked: exclude the entire audit dir, not just the file.
+# The dev-machine audit log carries dev-side actor strings + filesystem
+# paths that should never ship to a public HF Space build. Container
+# starts with an empty audit dir on every cold-boot; the genesis entry
+# is emitted on first prediction.
+outputs/audit/
 outputs/metrics/*.png
 outputs/model/__pycache__/
