@@ -51,6 +51,35 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     STREAMLIT_SERVER_PORT=8501 \
     STREAMLIT_SERVER_ADDRESS=0.0.0.0
 
+# AMOEBANATOR_IRB_BYPASS — IRB gate bypass switch
+#
+# WHY THIS EXISTS:
+#   The Phase 4.5 demo trains on n=30 synthetic patient vignettes derived from
+#   published case-series marginals (Yoder 2010, Cope 2016, CDC 2025). No real
+#   PHI, no human subjects. Hence no IRB review is required — but the IRB gate
+#   in ml/irb_gate.py refuses to boot the app without an IRB JSON record. This
+#   bypass env var short-circuits the gate WITH a mandatory audit log emission
+#   (AuditEventType.IRB_STATUS_CHANGE → actor="env_var") so the bypass is
+#   never silent.
+#
+# WHEN TO FLIP TO 0:
+#   Phase 6 lands real MIMIC-IV cohort (target n>=200, includes bacterial vs
+#   viral meningitis labels). MIMIC-IV is PhysioNet-credentialed PHI, requires
+#   an IRB record (independent researcher justification + DUA reference per
+#   USER_ASSIGNMENTS.md §4 Step 9). When that IRB record exists at
+#   outputs/governance/irb_record.json with irb_status in {approved,
+#   conditionally_approved}, flip this to 0 AND remove the bypass audit
+#   emission code path.
+#
+# CHECKLIST BEFORE FLIPPING:
+#   [ ] outputs/governance/irb_record.json exists
+#   [ ] irb_status field == "approved" or "conditionally_approved"
+#   [ ] expiration_date is in the future
+#   [ ] All MIMIC-IV cohort code paths emit AuditEventType.PHI_ACCESS events
+#   [ ] tests/test_irb_gate.py::test_real_phi_path_requires_irb_record passes
+#
+ENV AMOEBANATOR_IRB_BYPASS=1
+
 # Runtime needs libomp for LightGBM (if installed) and tini for clean signal handling.
 RUN apt-get update && apt-get install -y --no-install-recommends \
         libomp-dev \
@@ -76,4 +105,7 @@ HEALTHCHECK --interval=5m --timeout=2m --retries=3 \
 EXPOSE 8501
 
 ENTRYPOINT ["/usr/bin/tini", "--"]
-CMD ["streamlit", "run", "app.py"]
+# Phase 4.5 multi-page entry: app/app.py wires st.navigation across the 4
+# pages (Predict / Audit / About / References). The legacy single-file
+# entry was renamed to legacy_app.py in Phase 4.5 Mini-1 spec-gap #8 fix.
+CMD ["streamlit", "run", "app/app.py"]
