@@ -102,37 +102,41 @@ CHECKPOINT_INTERVAL: Final[int] = 100
 # ═══════════════════════════════════════════════════════════════════════════
 
 class AuditEventType(Enum):
-    """Classification of audit events."""
+    """Classification of audit events.
+
+    Cleanup history — Q7.A (Phase 4.5 sprint): 10 dead values removed
+    (no production callers, no behavior coverage in tests). The 5
+    test-fixture references in tests/test_phase1_1_audit_trail.py were
+    substituted with kept values (the tests verify audit-trail
+    infrastructure on arbitrary event types, not production emission).
+    INTEGRITY_VIOLATION kept — Q15.A correlation-ID error path uses it.
+    3 new WEB_* values added for the Phase 4.5 web layer.
+    """
 
     # Data lifecycle events
     DATA_RECEIVED = "data_received"
-    DATA_TRANSFERRED = "data_transferred"
     DATA_VERIFIED = "data_verified"
-    DATA_QUARANTINED = "data_quarantined"
     DATA_RELEASED = "data_released"
-    DATA_DELETED = "data_deleted"
 
     # Access events
-    ACCESS_GRANTED = "access_granted"
     ACCESS_DENIED = "access_denied"
-    ACCESS_REVOKED = "access_revoked"
 
     # Compliance events
     COMPLIANCE_CHECK = "compliance_check"
     IRB_STATUS_CHANGE = "irb_status_change"
-    ATTESTATION_SIGNED = "attestation_signed"
 
     # Security events
-    ENCRYPTION_APPLIED = "encryption_applied"
-    DECRYPTION_APPLIED = "decryption_applied"
-    CHECKSUM_VERIFIED = "checksum_verified"
-    CHECKSUM_FAILED = "checksum_failed"
-    INTEGRITY_VIOLATION = "integrity_violation"
+    INTEGRITY_VIOLATION = "integrity_violation"  # Q15.A correlation-ID error path
 
     # System events
     SESSION_START = "session_start"
     SESSION_END = "session_end"
     CONFIGURATION_CHANGE = "configuration_change"
+
+    # Web layer events (Phase 4.5 Q7.C)
+    WEB_PREDICT_RECEIVED = "web_predict_received"
+    WEB_PREDICT_RETURNED = "web_predict_returned"
+    WEB_RATE_LIMIT_HIT = "web_rate_limit_hit"
 
 
 class IntegrityStatus(Enum):
