@@ -137,6 +137,8 @@ class AuditEventType(Enum):
     WEB_PREDICT_RECEIVED = "web_predict_received"
     WEB_PREDICT_RETURNED = "web_predict_returned"
     WEB_RATE_LIMIT_HIT = "web_rate_limit_hit"
+    WEB_PRESET_LOADED = "web_preset_loaded"           # Q12.A preset-button click
+    AUDIT_EXPORT_REQUESTED = "audit_export_requested"  # Q13.A CSV download click
 
 
 class IntegrityStatus(Enum):

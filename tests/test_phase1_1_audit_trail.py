@@ -140,8 +140,9 @@ class TestAuditEventType:
 
     def test_total_event_types(self) -> None:
         # Q7.A cleanup: 3 data-lifecycle + 1 access + 2 compliance + 1 security
-        # + 3 system + 3 web = 13 (was 20 pre-cleanup)
-        assert len(AuditEventType) == 13
+        # + 3 system + 5 web (3 from T1.4 + 2 from T1.5 audit_export) = 15
+        # (was 20 pre-cleanup)
+        assert len(AuditEventType) == 15
 
 
 # ═══════════════════════════════════════════════════════════════════════════
