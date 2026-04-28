@@ -58,10 +58,15 @@ def test_email_format_regex() -> None:
 
 # ─── Every-page parametrized presence (1 test, parametrized) ─────────
 
-# Mini-1 covers 1 page (predict). Mini-2 will expand the param list to
-# include audit, about, references — and the closure-gate canonical
-# test will validate all 4 in one shot.
-_PAGES_TO_CHECK = ["pages/01_predict.py"]
+# Mini-2 expanded to all 4 pages: closure-gate canonical test now
+# validates disclaimer presence + widget-key uniqueness across the
+# full nav surface in one shot.
+_PAGES_TO_CHECK = [
+    "pages/01_predict.py",
+    "pages/02_audit.py",
+    "pages/03_about.py",
+    "pages/04_references.py",
+]
 
 
 @pytest.mark.parametrize("page_path", _PAGES_TO_CHECK)
