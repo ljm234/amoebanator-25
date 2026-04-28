@@ -215,3 +215,9 @@ __marimo__/
 docs/AI/
 docs/PHD_APPLICATION_PLAN_2026.md
 apex/
+
+# Phase 4.5 Q13.C: dev-machine audit log is ephemeral, never tracked.
+# .dockerignore already excludes outputs/audit/ from the Docker build
+# context (commit 079d2a8). This entry adds the corresponding git-side
+# guard so test runs that emit audit events don't dirty the working tree.
+outputs/audit/
