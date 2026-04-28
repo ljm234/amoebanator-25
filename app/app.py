@@ -14,21 +14,31 @@ Run via:
 """
 from __future__ import annotations
 
+from pathlib import Path
+
 import streamlit as st
+
+
+# st.Page resolves paths relative to the entry script's directory.
+# Since this entry lives at app/app.py but the pages live at the
+# repo root pages/ directory, we resolve absolute paths here so the
+# nav works regardless of cwd at `streamlit run` time.
+_REPO_ROOT = Path(__file__).resolve().parent.parent
+_PAGES_DIR = _REPO_ROOT / "pages"
 
 
 pages = {
     "🔬 Predict": [
-        st.Page("pages/01_predict.py", title="Predict", icon="🔬"),
+        st.Page(_PAGES_DIR / "01_predict.py", title="Predict", icon="🔬"),
     ],
     "📜 Audit": [
-        st.Page("pages/02_audit.py", title="Audit", icon="📜"),
+        st.Page(_PAGES_DIR / "02_audit.py", title="Audit", icon="📜"),
     ],
     "ℹ️ About": [
-        st.Page("pages/03_about.py", title="About", icon="ℹ️"),
+        st.Page(_PAGES_DIR / "03_about.py", title="About", icon="ℹ️"),
     ],
     "📚 References": [
-        st.Page("pages/04_references.py", title="References", icon="📚"),
+        st.Page(_PAGES_DIR / "04_references.py", title="References", icon="📚"),
     ],
 }
 
