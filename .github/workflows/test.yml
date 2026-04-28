@@ -72,7 +72,9 @@ jobs:
           pip install ruff==0.14.10 mypy==1.19.1
 
       - name: ruff
-        run: ruff check ml/ scripts/ tests/ app.py
+        # Phase 4.5: app.py renamed to legacy_app.py (Mini-1 spec-gap #8 fix,
+        # commit 07b5b35); new app/ + pages/ packages added in Mini-1+Mini-2.
+        run: ruff check ml/ scripts/ tests/ app/ pages/ legacy_app.py
 
       - name: mypy on the wired modules
         run: |

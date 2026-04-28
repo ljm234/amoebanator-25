@@ -8,9 +8,23 @@ Each entry: source task / discovery → action → owner → trigger.
 
 ## Mini-2 cleanup items
 
+### Closure-gate parameterization to mirror CI workflow exactly
+
+**Source:** Spec-gap #9 (post-Mini-2 push, surfaced by CI failure on commit `079d2a8`).
+
+**Issue:** Mini-1 + Mini-2 closure protocols ran 7 gates (test count, pyright, AppTest boot, CSV roundtrip, disclaimer parametrized, IRB_BYPASS, visual snapshot) but did NOT include `ruff check ...` matching the CI workflow. Result: 6 ruff violations (1× `E741` ambiguous `l`, 5× `F541` unused f-string prefixes) shipped to GitHub and broke CI on the first push of the Mini-1+Mini-2 commits. Hot-fixed in the post-push cleanup commit; underlying gap is that the closure protocol should mirror CI commands exactly.
+
+**Action:** Next sprint kickoff (Phase 5 or successor): add `ruff check <paths>` and `mypy <wired modules>` to the closure-gate list. The closure-gate spec in `PHASE_4_5_PROMPT_FINAL.md` §3.3 should be regenerated for the next sprint with these gates included.
+
+**Owner:** Phase 5 sprint kickoff.
+
+**Trigger:** Convenient — does not block any current work.
+
+---
+
 ### Documentation drift: `streamlit run app.py` references
 
-**Source:** Mini-1 spec-gap #8 (T1.x legacy_app.py rename).
+**Source:** Mini-1 spec-gap #8 (T1.x legacy_app.py rename). **Status:** PARTIALLY DONE — `.github/workflows/test.yml` ruff path updated post-Mini-2 (commit hot-fix). README/SPRINT_LOG/REPRODUCIBILITY.md still pending.
 
 **Issue:** Phase 4.5 Mini-1 renamed top-level `app.py` → `legacy_app.py` to unblock the `app/` package shadowing collision. Multiple docs still reference `streamlit run app.py` as the entry point:
 

@@ -155,7 +155,7 @@ def test_export_handles_empty_log(tmp_audit_log: Path) -> None:
     # Header line only (no data rows). The export self-emits
     # AUDIT_EXPORT_REQUESTED but writes the file BEFORE the emit, so
     # this output is empty-of-data.
-    lines = [l for l in text.splitlines() if l]
+    lines = [line for line in text.splitlines() if line]
     assert len(lines) == 1, f"expected header only, got {len(lines)} lines"
     assert lines[0].startswith("schema_version,")
 
