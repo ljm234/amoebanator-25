@@ -132,16 +132,16 @@ class TestAuditEventType:
 
     def test_data_lifecycle_events(self) -> None:
         assert AuditEventType.DATA_RECEIVED.value == "data_received"
-        assert AuditEventType.DATA_TRANSFERRED.value == "data_transferred"
-        assert AuditEventType.DATA_DELETED.value == "data_deleted"
+        assert AuditEventType.DATA_VERIFIED.value == "data_verified"
+        assert AuditEventType.DATA_RELEASED.value == "data_released"
 
     def test_security_events(self) -> None:
-        assert AuditEventType.ENCRYPTION_APPLIED.value == "encryption_applied"
         assert AuditEventType.INTEGRITY_VIOLATION.value == "integrity_violation"
 
     def test_total_event_types(self) -> None:
-        # 6 data-lifecycle + 3 access + 3 compliance + 5 security + 3 system
-        assert len(AuditEventType) == 20
+        # Q7.A cleanup: 3 data-lifecycle + 1 access + 2 compliance + 1 security
+        # + 3 system + 3 web = 13 (was 20 pre-cleanup)
+        assert len(AuditEventType) == 13
 
 
 # ═══════════════════════════════════════════════════════════════════════════
@@ -366,8 +366,10 @@ class TestAuditLog:
 
     def test_record_with_metadata(self) -> None:
         log = create_audit_log()
+        # Q7.A substitution: ENCRYPTION_APPLIED → DATA_VERIFIED
+        # (test verifies metadata persistence; event type is arbitrary fixture)
         entry = log.record(
-            AuditEventType.ENCRYPTION_APPLIED,
+            AuditEventType.DATA_VERIFIED,
             actor="system",
             resource="data.bin",
             action_detail="AES-256-GCM applied",
@@ -1042,11 +1044,13 @@ class TestAuditSearchEngine:
             "Verified checksums", metadata={"batch": "B001"},
         )
         log.record(
-            AuditEventType.ACCESS_GRANTED, "alice", "file2.csv",
+            # Q7.A substitution: ACCESS_GRANTED → DATA_RELEASED
+            AuditEventType.DATA_RELEASED, "alice", "file2.csv",
             "Granted access to dataset", metadata={"role": "pi"},
         )
         log.record(
-            AuditEventType.DATA_DELETED, "system", "file3.csv",
+            # Q7.A substitution: DATA_DELETED → SESSION_END
+            AuditEventType.SESSION_END, "system", "file3.csv",
             "Purged expired data",
         )
         return log
@@ -1319,7 +1323,8 @@ class TestAuditLogArchiver:
             entry_id="SEARCH-PRE-000000",
             sequence_number=0,
             timestamp="2020-01-01T00:00:00+00:00",
-            event_type=AuditEventType.ACCESS_GRANTED.value,
+            # Q7.A substitution: ACCESS_GRANTED → DATA_RECEIVED
+            event_type=AuditEventType.DATA_RECEIVED.value,
             actor="analyst@lab.org",
             resource="/data/old.csv",
             action_detail="early read",
@@ -1331,7 +1336,8 @@ class TestAuditLogArchiver:
             entry_id="SEARCH-PRE-000001",
             sequence_number=1,
             timestamp="2024-06-01T00:00:00+00:00",
-            event_type=AuditEventType.ACCESS_GRANTED.value,
+            # Q7.A substitution: ACCESS_GRANTED → DATA_RECEIVED
+            event_type=AuditEventType.DATA_RECEIVED.value,
             actor="analyst@lab.org",
             resource="/data/new.csv",
             action_detail="late read",
@@ -1471,7 +1477,8 @@ def _build_populated_log() -> AuditLog:
         action_detail="Received 500 records from WHO portal",
     )
     log.record(
-        event_type=AuditEventType.ACCESS_GRANTED,
+        # Q7.A substitution: ACCESS_GRANTED → DATA_VERIFIED
+        event_type=AuditEventType.DATA_VERIFIED,
         actor="researcher@university.edu",
         resource="/data/batch_001.csv",
         action_detail="Read access for IRB PRJ-2024-0019",
@@ -1611,7 +1618,8 @@ class TestAuditExporter:
         assert report.first_entry_timestamp is not None
         assert report.last_entry_timestamp is not None
         assert report.events_by_type[AuditEventType.DATA_RECEIVED.value] == 1
-        assert report.events_by_type[AuditEventType.ACCESS_GRANTED.value] == 1
+        # Q7.A substitution: ACCESS_GRANTED → DATA_VERIFIED (matches fixture above)
+        assert report.events_by_type[AuditEventType.DATA_VERIFIED.value] == 1
         assert report.events_by_type[AuditEventType.COMPLIANCE_CHECK.value] == 1
 
     def test_compliance_report_empty_log(self) -> None:
