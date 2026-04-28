@@ -98,9 +98,9 @@ st.download_button(
 # Small footer surfacing the schema version + chain integrity contract
 # so a reviewer reading the downloaded CSV knows what to verify.
 st.caption(
-    f"Exported under CSV schema version 1. To verify chain integrity, "
-    f"run `app.audit_export.verify_csv_chain_integrity(<bytes>)` on the "
-    f"downloaded file from a cloned repo. Each row includes "
-    f"`previous_hash` + `entry_hash` columns; the verifier recomputes "
-    f"the hash and asserts the chain links."
+    "Exported under CSV schema version 1. To verify chain integrity, "
+    "run `app.audit_export.verify_csv_chain_integrity(<bytes>)` on the "
+    "downloaded file from a cloned repo. Each row includes "
+    "`previous_hash` + `entry_hash` columns; the verifier recomputes "
+    "the hash and asserts the chain links."
 )
