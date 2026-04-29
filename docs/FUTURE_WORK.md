@@ -8,6 +8,22 @@ Each entry: source task / discovery → action → owner → trigger.
 
 ## Mini-2 cleanup items
 
+### HF Space entrypoint namespace collision (`app/` package vs. root entry)
+
+**Source:** Spec-gap #10 (post-Mini-2 push, surfaced by HF Space build crash on commit `447c493`).
+
+**Issue:** HF Space's default Streamlit discovery expects an entrypoint file at the repo root (`app.py` or `streamlit_app.py`). The Mini-2 layout placed the navigation entry at `app/app.py`, but the `app/` package directory at the same level shadowed the resolution and the Space build crashed before Streamlit started. Hot-fixed by renaming `app/app.py` → `streamlit_app.py` (commit `e3a26d0`), with `Dockerfile` `CMD` and `tests/test_app_navigation.py` import path updated to match.
+
+**Action:** Two forward items:
+- Add an "HF Space build smoke-test" gate to the closure protocol (either `docker build .` locally with the Space's expected layout, or a CI job that runs `streamlit run streamlit_app.py --server.headless true` and checks for clean boot).
+- Document the entrypoint convention (`streamlit_app.py` at root, `app/` package for modules only) in `docs/REPRODUCIBILITY.md` so the collision can't be reintroduced by future renames.
+
+**Owner:** Phase 5 sprint kickoff (closure-gate addition); Mini-2 cleanup or Phase 5 entry (docs update).
+
+**Trigger:** Convenient — does not block current work, but should land before any future entrypoint reshuffling.
+
+---
+
 ### Closure-gate parameterization to mirror CI workflow exactly
 
 **Source:** Spec-gap #9 (post-Mini-2 push, surfaced by CI failure on commit `079d2a8`).
