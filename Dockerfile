@@ -105,7 +105,10 @@ HEALTHCHECK --interval=5m --timeout=2m --retries=3 \
 EXPOSE 8501
 
 ENTRYPOINT ["/usr/bin/tini", "--"]
-# Phase 4.5 multi-page entry: app/app.py wires st.navigation across the 4
-# pages (Predict / Audit / About / References). The legacy single-file
-# entry was renamed to legacy_app.py in Phase 4.5 Mini-1 spec-gap #8 fix.
-CMD ["streamlit", "run", "app/app.py"]
+# Phase 4.5 multi-page entry: streamlit_app.py wires st.navigation across
+# the 4 pages (Predict / Audit / About / References). Lives at the repo
+# root per the HF Spaces docker-app convention; an earlier draft placed
+# it at app/app.py but that shadowed the app/ package on container boot
+# (spec-gap #10). The legacy single-file entry was renamed to
+# legacy_app.py in Phase 4.5 Mini-1 spec-gap #8 fix.
+CMD ["streamlit", "run", "streamlit_app.py", "--server.port=8501", "--server.address=0.0.0.0"]
