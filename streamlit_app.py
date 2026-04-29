@@ -7,10 +7,14 @@ Audit (chain viewer + CSV download) → About (model card + |w_i| panel)
 
 Run via:
 
-    streamlit run app/app.py
+    streamlit run streamlit_app.py
 
-(After Mini-1 spec-gap #8 fix, the legacy single-file entry lives at
-``legacy_app.py``; this is the canonical Phase 4.5 entry.)
+This entry lives at the repo root (HF Spaces docker-app convention).
+Earlier Mini-2 placed it at ``app/app.py``, but that made Python register
+"app" as the script module name when Streamlit booted, shadowing the
+``app/`` package directory and breaking ``from app.disclaimer import …``
+on the Hugging Face Space (spec-gap #10). The legacy single-file entry
+lives at ``legacy_app.py``; this is the canonical Phase 4.5 entry.
 """
 from __future__ import annotations
 
@@ -20,10 +24,10 @@ import streamlit as st
 
 
 # st.Page resolves paths relative to the entry script's directory.
-# Since this entry lives at app/app.py but the pages live at the
-# repo root pages/ directory, we resolve absolute paths here so the
-# nav works regardless of cwd at `streamlit run` time.
-_REPO_ROOT = Path(__file__).resolve().parent.parent
+# This entry lives at the repo root, so the pages/ directory is a
+# direct sibling. Resolve absolute paths so nav works regardless of
+# cwd at `streamlit run` time.
+_REPO_ROOT = Path(__file__).resolve().parent
 _PAGES_DIR = _REPO_ROOT / "pages"
 
 
