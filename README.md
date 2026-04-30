@@ -1,6 +1,6 @@
 ---
 title: Amoebanator 25
-emoji: 
+emoji: 🚀
 colorFrom: red
 colorTo: red
 sdk: docker
