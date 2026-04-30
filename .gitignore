@@ -221,3 +221,8 @@ apex/
 # context (commit 079d2a8). This entry adds the corresponding git-side
 # guard so test runs that emit audit events don't dirty the working tree.
 outputs/audit/
+
+# Internal planning docs (NEVER commit to public repo)
+docs/AMOEBANATOR_MASTER_PROMPT.md
+docs/_archive/*MASTER_PROMPT*
+**/MASTER_PROMPT*.md
