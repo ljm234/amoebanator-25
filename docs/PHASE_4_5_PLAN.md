@@ -1,16 +1,16 @@
-# Phase 4.5 Plan — Locked Sprint Specification
+# Phase 4.5 Plan, Locked Sprint Specification
 
 **Author:** Jordan Montenegro-Calla (ORCID 0009-0000-7851-7139)
 **Locked:** 2026-04-27
 **Version:** v1.0
 **Supersedes:** none (first formal sprint plan after Phase 4.5 PRE-FLIGHT discovery audit)
 **Companion docs:**
-- `docs/AUDIT_REPORT.md` — reviewer-grade evidence + per-Q rationale (1,062 lines)
-- `docs/PHASE_4_5_PROMPT_FINAL.md` — sprint-trigger prompt for fresh Claude Code session (pending)
-- `docs/INFORMATION_RECAP.md` — narrative knowledge transfer for humans (pending)
-- `docs/USER_ASSIGNMENTS.md` — out-of-band actions Jordan executes (updated at Phase J)
+- `docs/AUDIT_REPORT.md`, reviewer-grade evidence + per-Q rationale (1,062 lines)
+- `docs/PHASE_4_5_PROMPT_FINAL.md`, sprint-trigger prompt for fresh Claude Code session (pending)
+- `docs/INFORMATION_RECAP.md`, narrative knowledge transfer for humans (pending)
+- `docs/USER_ASSIGNMENTS.md`, out-of-band actions Jordan executes (updated at Phase J)
 
-This document is the locked specification for the Phase 4.5 web-layer sprint. Every spec here is imperative ("MUST do X with parameters Y"), not narrative. The audit's evidence and rationale lives in `AUDIT_REPORT.md`; this doc is what the sprint executes against. If a sprint commit deviates from anything in this plan, the deviation is a bug — not a judgment call.
+This document is the locked specification for the Phase 4.5 web-layer sprint. Every spec here is imperative ("MUST do X with parameters Y"), not narrative. The audit's evidence and rationale lives in `AUDIT_REPORT.md`; this doc is what the sprint executes against. If a sprint commit deviates from anything in this plan, the deviation is a bug, not a judgment call.
 
 **Scope at a glance.** Two minis totaling ~950 LOC + ~90 new tests. Mini-1 (~600 LOC + ~50 tests) ships the form, presets, disclaimer, and audit utilities. Mini-2 (~350 LOC + ~40 tests) ships the audit page, about page, references page, and multi-page navigation. Deploy target: Hugging Face Spaces, Streamlit Docker SDK, free CPU Basic. Test gate: Mini-1 ≥1280 collected / Mini-2 ≥1320 cumulative, with 7 closure criteria each.
 
@@ -20,13 +20,13 @@ This document is the locked specification for the Phase 4.5 web-layer sprint. Ev
 
 ### 1.1 Goals (must-ship)
 
-The sprint is scoped against five must-ship goals. If any one slips, the sprint does NOT close — it stops, reports, and waits for direction.
+The sprint is scoped against five must-ship goals. If any one slips, the sprint does NOT close, it stops, reports, and waits for direction.
 
 1. **Multi-page Streamlit app deployable to HF Spaces free tier.** Four pages (Predict, Audit, About, References) navigable via `st.navigation`. Cold-boot to first prediction within 30s on free CPU Basic. Container-restart-resilient (no race condition between audit hooks and model load).
 
-2. **Four clinical presets demonstrating model behavior + limitations.** Three buttons + neutral default state (Q12.A locked). Three presets: PAM-positive (`high_risk_pam`), bacterial-NOT-PAM limitation demo (`bacterial_meningitis_limitation` — D18 honesty banner), normal CSF negative control (`normal_csf`). Plus the page-load NEUTRAL state which functions as a fourth scenario.
+2. **Four clinical presets demonstrating model behavior + limitations.** Three buttons + neutral default state (Q12.A locked). Three presets: PAM-positive (`high_risk_pam`), bacterial-NOT-PAM limitation demo (`bacterial_meningitis_limitation`, D18 honesty banner), normal CSF negative control (`normal_csf`). Plus the page-load NEUTRAL state which functions as a fourth scenario.
 
-3. **Disclaimer on every page.** Locked variant (ii) text from Q19.A: *"⚠ Research prototype, NOT a medical device. Trained on n=30 synthetic patient vignettes (n_train=24, n_val=6); contains zero real PHI. Outputs are calibrated probabilities, **limited to** the n=30 training distribution — not diagnoses. Not for clinical decision support, not validated. Source + caveats: github.com/ljm234/amoebanator-25 — Contact: lmontenegrocalla@mail.weber.edu (ORCID 0009-0000-7851-7139)"*. Enforced via parametrized canonical test over 4 pages.
+3. **Disclaimer on every page.** Locked variant (ii) text from Q19.A: *"⚠ Research prototype, NOT a medical device. Trained on n=30 synthetic patient vignettes (n_train=24, n_val=6); contains zero real PHI. Outputs are calibrated probabilities, **limited to** the n=30 training distribution, not diagnoses. Not for clinical decision support, not validated. Source + caveats: github.com/ljm234/amoebanator-25, Contact: lmontenegrocalla@mail.weber.edu (ORCID 0009-0000-7851-7139)"*. Enforced via parametrized canonical test over 4 pages.
 
 4. **Audit log CSV export with hash-chain preservation.** In-UI `st.download_button` exports session audit log as CSV preserving `previous_hash` + `current_hash` chain pointers. Round-trip test (Mini-1 closure gate): write 10 events → export → re-parse → byte-equal hash chain.
 
@@ -43,7 +43,7 @@ The following are explicitly NOT in scope for Phase 4.5. If any surfaces during 
 - **Mobile-responsive layout.** Defer to Phase 5. Streamlit's default desktop-first layout is acceptable for the PI-skim-on-laptop target use case.
 - **i18n / Spanish translation of disclaimer.** Defer to Phase 5. The sprint ships English-only; Spanish translation would double the disclaimer surface and the test matrix.
 - **SHAP / per-prediction attribution.** Defer to Phase 6 (Q17.A locked). The `|w_i|` panel on About page is the honest substitute at n=30.
-- **Persistent audit log storage.** Sprint accepts ephemeral; CSV export is the portability feature (Q13.A). Permanent storage requires paid HF hardware or external S3/Postgres — out of scope.
+- **Persistent audit log storage.** Sprint accepts ephemeral; CSV export is the portability feature (Q13.A). Permanent storage requires paid HF hardware or external S3/Postgres, out of scope.
 - **Real-time inference latency budget below 200ms.** Free-tier inference is ~100ms warm; 200ms p95 is the gate. Anything tighter requires caching infra not justified for n=30 model.
 - **GitHub Actions cron warmup of HF Space.** Q18.A locked: passive accept 30s cold-start, no cron (HF ToS gray area). Documented in Q9.1 caption.
 
@@ -68,7 +68,7 @@ This section restates every Q-decision from the audit as an imperative spec the 
 | ~~Q11.A.fix~~ ✓ | ~~`ml/infer.py:232` MUST use `if energy > tau_e:` (NOT `<`). `ml/ood_combined.py:117-130` MUST use matching direction. Threshold re-fit at q=0.95. All 4 in-distribution clinical presets MUST NOT trigger the gate; OOD positive control MUST trigger it.~~ | ~~commit `b8f62e3` (math flip + 3 test fixture rewrites + 5-preset live re-verification table)~~ ✓ |
 | ~~Q14~~ ✓ | ~~Sprint MUST be split as (B) split-after-predict-page: Mini-1 ~600 LOC + Mini-2 ~350 LOC. Mini-1 → Mini-2 transition requires explicit "go" from Jordan after all 7 closure gates green.~~ | ~~Locked spec~~ ✓ |
 | ~~Q18.A~~ ✓ | ~~Cold-start MUST be passively accepted. NO GitHub Actions cron warmup. NO third-party uptime ping. The Vercel `/playground` button caption MUST disclose "cold-start ~30s on first visit after idle period."~~ | ~~Documented; no code change~~ ✓ |
-| ~~Q18.B~~ ✓ | ~~`load_stats()` MUST NOT be wrapped in `@st.cache_resource` — existing `@lru_cache` is sufficient. The 3ms/call overhead is invisible vs HF proxy RTT.~~ | ~~No code change required~~ ✓ |
+| ~~Q18.B~~ ✓ | ~~`load_stats()` MUST NOT be wrapped in `@st.cache_resource`, existing `@lru_cache` is sufficient. The 3ms/call overhead is invisible vs HF proxy RTT.~~ | ~~No code change required~~ ✓ |
 | ~~Q20~~ ✓ | ~~Mini-1 closure gate: ≥1280 tests collected, 0 fail/0 error, ≤5 documented xfails. Mini-2 closure gate: ≥1320 cumulative + same 7 criteria. CSV audit export round-trip stays in Mini-1.~~ | ~~Locked spec~~ ✓ |
 
 ### 2.2 Mini-1 decisions (sprint must implement)
@@ -77,28 +77,28 @@ This section restates every Q-decision from the audit as an imperative spec the 
 |---|---|---|
 | Q3 | A `T=0.27 (n=6)` badge MUST render next to calibrated `p_high` on the predict page result. Hover tooltip MUST explain that T<1 amplifies logits (atypical Guo 2017 direction) and is fit on n=6 validation. A `SmallCalibrationWarning` banner (yellow) MUST fire above the result when `n_calibration < 30`. Tooltip text locked at AUDIT_REPORT §3.C Q3. | `pages/01_predict.py` |
 | Q4.A | The predict page MUST render α=0.10 as the headline conformal level. Mini-2 adds the Advanced expander slider over α ∈ {0.05, 0.10, 0.20}. | `pages/01_predict.py` (headline); `pages/03_about.py` or dedicated conformal page (slider, Mini-2) |
-| Q4.C | Every conformal-fit operation MUST emit a 3-state regime badge computed from `(n, α, k)`: 🟢 ASYMPTOTIC (n ≥ k AND n ≥ 100), 🟡 FINITE-SAMPLE (n ≥ k AND n < 100), 🔴 INVALID (n < k). At current state (n=6, α=0.10, k=7) the badge MUST display 🔴 INVALID. | `pages/01_predict.py` (adjacent to prediction set) |
+| Q4.C | Every conformal-fit operation MUST emit a 3-state regime badge computed from `(n, α, k)`:  ASYMPTOTIC (n ≥ k AND n ≥ 100),  FINITE-SAMPLE (n ≥ k AND n < 100),  INVALID (n < k). At current state (n=6, α=0.10, k=7) the badge MUST display  INVALID. | `pages/01_predict.py` (adjacent to prediction set) |
 | Q7.A | Mini-1 commit `feat(4.5.1): AuditEventType cleanup + 3 new WEB_*` MUST delete the 11 dead enum values (list in AUDIT_REPORT D14) AND add `WEB_PREDICT_RECEIVED`, `WEB_PREDICT_RETURNED`, `WEB_RATE_LIMIT_HIT`. Net delta: -8 values. | `ml/audit_hooks.py` (single commit) |
-| Q7.C | The 3 new web event types MUST be dedicated values, NOT polymorphic-via-metadata. Reuse of existing `DATA_RECEIVED` for web-layer events is forbidden — preserves filter semantics for audit replay. | `ml/audit_hooks.py` |
+| Q7.C | The 3 new web event types MUST be dedicated values, NOT polymorphic-via-metadata. Reuse of existing `DATA_RECEIVED` for web-layer events is forbidden, preserves filter semantics for audit replay. | `ml/audit_hooks.py` |
 | Q11.A | The form MUST have 8 widgets with the following NEUTRAL defaults: `age=12`, `csf_glucose=65.0`, `csf_protein=30.0`, `csf_wbc=3`, `pcr=False`, `microscopy=False`, `exposure=False`, `symptoms=[]`. Sanity gate: `infer_one` against these defaults MUST return `Low` with `p_high < 0.001`. | `pages/01_predict.py` |
-| Q11.B | `KNOWN_SYMPTOMS` MUST be the exact tuple `("fever", "headache", "nuchal_rigidity")` — the 3 symptoms the model scores. The 4 currently-dropped symptoms (altered_mental_status, photophobia, nausea_vomiting, seizure) are deferred to Phase 6 with MIMIC-IV retrain. | `app/utils.py` or `ml/ui_live_patient.py` |
+| Q11.B | `KNOWN_SYMPTOMS` MUST be the exact tuple `("fever", "headache", "nuchal_rigidity")`, the 3 symptoms the model scores. The 4 currently-dropped symptoms (altered_mental_status, photophobia, nausea_vomiting, seizure) are deferred to Phase 6 with MIMIC-IV retrain. | `app/utils.py` or `ml/ui_live_patient.py` |
 | Q12.A | The predict page MUST have exactly 3 preset buttons (NOT 2, NOT 4): `Load PAM-likely example`, `Load bacterial meningitis (limitation demo)`, `Load normal CSF example`. The page-load state functions as a 4th implicit "neutral" scenario. | `pages/01_predict.py` |
-| Q12.B | The literal `PRESETS` dict MUST be embedded in `app/presets.py` exactly as specified in AUDIT_REPORT §3.B Q12. Field schema: `key` (snake_case), `label`, `description`, `inputs`, `current_behavior` (with `snapshot_date: "2026-04-26"`), `limitation_banner` (bool, explicit). Field name `current_behavior` (NOT `expected`) is mandatory — the rename was a Q12 override for normative-vocabulary reasons. | `app/presets.py` |
+| Q12.B | The literal `PRESETS` dict MUST be embedded in `app/presets.py` exactly as specified in AUDIT_REPORT §3.B Q12. Field schema: `key` (snake_case), `label`, `description`, `inputs`, `current_behavior` (with `snapshot_date: "2026-04-26"`), `limitation_banner` (bool, explicit). Field name `current_behavior` (NOT `expected`) is mandatory, the rename was a Q12 override for normative-vocabulary reasons. | `app/presets.py` |
 | Q12.C | The D18 limitation banner MUST appear ONLY adjacent to the result panel, NOT before "Run inference". When `bacterial_meningitis_limitation` preset is active, banner MUST render with red wash + deep-red border + deep-red text (Q15.5.D pattern, ≥7.18:1 contrast). | `pages/01_predict.py` |
 | Q13.A | An `app/audit_export.py` module MUST provide `export_audit_to_csv(jsonl_path) -> bytes` that converts the audit JSONL to CSV preserving `previous_hash`, `current_hash`, all metadata, genesis timestamp, schema version. The predict-page-or-audit-page UI MUST expose `st.download_button` labeled "Download session audit log (CSV)" with filename `f"amoebanator_audit_{session_id}_{ISO_timestamp}.csv"`. | `app/audit_export.py` (utils, Mini-1); `pages/02_audit.py` (button, Mini-2) |
 | Q15.A | Every uncaught exception in the predict path MUST be caught by an outer try/except that: (a) generates `error_id_full = uuid4().hex` (32 chars), (b) truncates to `error_id_user = error_id_full[:12]` for display, (c) renders `st.error(f"Prediction failed (error ID: {error_id_user}). Server-side log captured.")`, (d) emits `_emit(AuditEventType.INTEGRITY_VIOLATION, metadata={"error_id": error_id_full, "exception_type": type(e).__name__, "exception_repr": repr(e)})`. | `pages/01_predict.py` |
 | Q15.B | If `load_stats()` raises `FileNotFoundError` (Mahalanobis stats file missing), the predict page MUST: (a) render a yellow banner above the result *"OOD gate is unconfigured (Mahalanobis stats file missing). All predictions return ABSTAIN/OOD until re-fit."*, (b) disable the Run button OR rename it to "Run anyway (gate unconfigured)". The page MUST NOT crash. | `pages/01_predict.py` |
 | Q15.C | The audit page (Mini-2) MUST cap dataframe load at the last 10,000 rows. Display banner: *"Showing last 10,000 of N entries (oldest entries trimmed for display; full chain still intact in the underlying file). Use Download CSV to export the full session."* | `pages/02_audit.py` (Mini-2) |
 | Q15.D | The Run-inference button MUST implement a session-state debounce with 30s stale-lock recovery. Specifically: `if st.session_state.get("predicting") and (time.time() - st.session_state.get("predicting_at", 0)) < 30: return`. Lock cleared in `finally` block AND on stale-detection. NO infinite lockout possible. | `pages/01_predict.py` |
-| Q15.5.A | All 4 prediction badges (`High`, `Low`, `Moderate`, `ABSTAIN`) MUST render with icon + weight + color: `🔴 **HIGH**`, `🟢 **LOW**`, `🔵 **MODERATE**`, `⚠️ **ABSTAIN**`. A test MUST strip color tags and assert icon + bold text alone convey the prediction state. | `app/utils.py` (`decision_badge` function); `tests/test_pages_predict.py` |
+| Q15.5.A | All 4 prediction badges (`High`, `Low`, `Moderate`, `ABSTAIN`) MUST render with icon + weight + color: ` **HIGH**`, ` **LOW**`, `🔵 **MODERATE**`, `**ABSTAIN**`. A test MUST strip color tags and assert icon + bold text alone convey the prediction state. | `app/utils.py` (`decision_badge` function); `tests/test_pages_predict.py` |
 | Q15.5.B | A test MUST collect every `st.button(key=)`, `st.checkbox(key=)`, `st.number_input(key=)`, `st.multiselect(key=)` key across all 4 pages and assert the set has the same length as the list (no duplicate keys). Catches `DuplicateWidgetID` runtime errors at test time. | `tests/test_app_disclaimer.py::test_widget_keys_unique_across_pages` |
-| Q15.5.C | The audit page MUST use `st.table(df)`, NOT `st.dataframe(df)` — `st.table` emits true HTML `<table>` semantics for screen readers (NVDA, VoiceOver). Empirical verification MUST happen at sprint time: if 10k-row `st.table` freezes the browser at >2s CPU, drop cap to 1k with banner *"Showing last 1k of N rows; download CSV for full"*; if 1k freezes, drop to 500. | `pages/02_audit.py` (Mini-2) |
+| Q15.5.C | The audit page MUST use `st.table(df)`, NOT `st.dataframe(df)`, `st.table` emits true HTML `<table>` semantics for screen readers (NVDA, VoiceOver). Empirical verification MUST happen at sprint time: if 10k-row `st.table` freezes the browser at >2s CPU, drop cap to 1k with banner *"Showing last 1k of N rows; download CSV for full"*; if 1k freezes, drop to 500. | `pages/02_audit.py` (Mini-2) |
 | Q15.5.D | `app/disclaimer.py` MUST inject a CSS block defining the wash + border + deep-text pattern for `.stAlert[kind="error"]`, `.stAlert[kind="warning"]`, `.stAlert[kind="info"]`, `.stAlert[kind="success"]`. Computed contrast ratios MUST be ≥4.5:1 (AA threshold); locked colors achieve ≥7.18:1. A test (`test_wcag_aa_contrast`) MUST hand-roll relative-luminance ratio math (no axe-core dep) and assert each combo. | `app/disclaimer.py` (CSS); `tests/test_app_disclaimer.py` |
 | Q15.5.E | The same CSS injection block MUST include `@media (prefers-reduced-motion: reduce) { * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } .stSpinner { display: none !important; } }`. Test is manual (browser-side media query): documented in §6 Risk R4 verification checklist. | `app/disclaimer.py` (CSS) |
 | Q16.a | Every commit in Mini-1 + Mini-2 MUST follow Conventional Commits + subphase + body + footer: `<type>(<subphase>): <subject>` followed by body paragraph followed by mandatory footer `Closes: Q-refs` + `Refs: PHASE_4_5_PLAN.md §section`. Example: `feat(4.5.2): pages/01_predict.py with 3 presets + form\n\n[body]\n\nCloses: Q11.A, Q12.A, Q12.B, Q12.C\nRefs: PHASE_4_5_PLAN.md §4.2`. | every sprint commit |
 | Q16.b | The Streamlit theme MUST be neutral-medical: primary `#0D47A1` (Material Blue 900), white background, dark slate text. NO branded color palette. NO portfolio-site visual identity. Rationale: clinical-adjacent demo; "branded" theming reads as marketing. | `.streamlit/config.toml` |
 | Q16.c | `.streamlit/config.toml` MUST contain: `[server] runOnSave=false, fileWatcherType="none", port=8501`; `[global] developmentMode=false, suppressDeprecationWarnings=true`; `[client] showSidebarNavigation=true`; `[theme] primaryColor="#0D47A1"`. Port 8501 (NOT 7860) verified against HF auto-Dockerfile (`EXPOSE 8501`, `--server.port=8501`). All keys verified against Streamlit 1.52: zero deprecations. | `.streamlit/config.toml` |
-| Q19.A | `app/disclaimer.py` MUST contain the locked variant (ii) text as a module-level constant `DISCLAIMER_TEXT`. The render function MUST emit it via `st.markdown` (NOT `st.info` or `st.warning` — those carry framework-injected styling that competes with the wash+border CSS). | `app/disclaimer.py` |
+| Q19.A | `app/disclaimer.py` MUST contain the locked variant (ii) text as a module-level constant `DISCLAIMER_TEXT`. The render function MUST emit it via `st.markdown` (NOT `st.info` or `st.warning`, those carry framework-injected styling that competes with the wash+border CSS). | `app/disclaimer.py` |
 | Q19.B | The disclaimer MUST render on every page (Predict, Audit, About, References). Enforced via `tests/test_app_disclaimer.py::test_disclaimer_on_every_page`, parametrized over the 4 pages, asserting the 5 mandatory tokens (`NOT a medical device`, `n=30`, `limited to`, `ORCID`, `lmontenegrocalla@mail.weber.edu`) render on each. | `app/disclaimer.py` (render); `tests/test_app_disclaimer.py` (test) |
 | Q19.C | The disclaimer text MUST include `ORCID 0009-0000-7851-7139` and `lmontenegrocalla@mail.weber.edu`. Format: `... (ORCID 0009-0000-7851-7139)` parenthetical at end. | `app/disclaimer.py` |
 
@@ -111,7 +111,7 @@ This section restates every Q-decision from the audit as an imperative spec the 
 | Q8.C | Inline tooltips on the predict page MUST render references in sticky deterministic order per p_high bucket: `[1] CDC 2025 + [2] Tunkel 2004` always-shown; `[3] Cope 2016 + [4] Yoder 2010 + [5] Capewell 2015` for `p_high > 0.7`; `[6] Tunkel cross-ref + viral placeholder` for 0.3-0.7; `[7] Seehusen 2003` for `< 0.3`. Click-to-expand `+N more references for this risk band ↓` row. | `pages/01_predict.py` (tooltip rendering); `pages/04_references.py` (full list page) |
 | Q13.B | The audit page MUST display the full session events via `st.table`, capped at 10k rows per Q15.C. Banner above the table: *"Showing all events from current session. Earlier sessions wiped on container restart (HF free-tier ephemeral disk). Use 'Download session audit log' to preserve."* | `pages/02_audit.py` |
 | Q13.C | `outputs/audit/` MUST be added to `.dockerignore` in Subphase 4.5.4 (Mini-2 Dockerfile work). The dev-machine audit log leak is minor (125 entries, no PHI/tokens/secrets). A smoke test MUST verify: first prediction on a fresh Space cold-start emits the genesis entry (no inherited entries from dev machine). | `.dockerignore`; `tests/test_dockerfile_smoke.py` |
-| Q17.A | The About page MUST include a feature-importance panel computed from `|w_i|` of the first `Linear(10,32)` layer averaged over the 32 output dims. Range MUST be 9.1%-11.5% (1.27× max/min ratio) — verified live against current `model.pt`. | `pages/03_about.py` |
+| Q17.A | The About page MUST include a feature-importance panel computed from `|w_i|` of the first `Linear(10,32)` layer averaged over the 32 output dims. Range MUST be 9.1%-11.5% (1.27× max/min ratio), verified live against current `model.pt`. | `pages/03_about.py` |
 | Q17.B | The `|w_i|` panel MUST render ONLY on the About page, NOT on the Predict page adjacent to result. `|w_i|` is model-level NOT input-level; placement on Predict would imply input-specificity that doesn't exist. | `pages/03_about.py` only |
 | Q17.C | The `|w_i|` panel caption MUST verbatim include: definition (model-level mean of first Linear layer weights), what it does NOT tell you (NOT per-prediction attribution), numerical range (9.1% to 11.5%, 1.27×), interpretation (treats all features near-equally), why (consistent with n=30 limitation), where SHAP fits (Phase 6 with MIMIC-IV n≥200), where to dig further (`docs/model_card.md` §Caveats). | `pages/03_about.py` |
 
@@ -119,7 +119,7 @@ This section restates every Q-decision from the audit as an imperative spec the 
 
 | # | Decision | Owner |
 |---|---|---|
-| Q9 | The Vercel `/playground` page MUST be replaced with a button: text *"Launch interactive demo →"*, URL `https://huggingface.co/spaces/luisjordanmontenegro/amoebanator-25`, target `_blank`, caption *"Hosted on Hugging Face Spaces (free CPU tier; cold-start ~30s on first visit after idle period). Research prototype — not for clinical use."* This edit happens in the Vercel website repo (separate from Amoebanator), executed by Jordan post-sprint. | Jordan, post-sprint (Step 7 in §7) |
+| Q9 | The Vercel `/playground` page MUST be replaced with a button: text *"Launch interactive demo →"*, URL `https://huggingface.co/spaces/luisjordanmontenegro/amoebanator-25`, target `_blank`, caption *"Hosted on Hugging Face Spaces (free CPU tier; cold-start ~30s on first visit after idle period). Research prototype, not for clinical use."* This edit happens in the Vercel website repo (separate from Amoebanator), executed by Jordan post-sprint. | Jordan, post-sprint (Step 7 in §7) |
 | Q19.D | The GitHub repo MUST be renamed from `ljm234/Amoebanator_25` to `ljm234/amoebanator-25` via `gh repo rename` to match the HF Space slug. Local remote URL MUST be updated. The disclaimer URL `github.com/ljm234/amoebanator-25` only works after this rename. | Jordan, pre-sprint (Step 8 in §7) |
 
 ---
@@ -151,22 +151,22 @@ Amoebanator 25/
 
 ```
 Amoebanator 25/
-├── app/                            (NEW — sprint module)
+├── app/                            (NEW, sprint module)
 │   ├── __init__.py
 │   ├── app.py                      (multi-page entry, st.navigation)
 │   ├── utils.py                    (build_row, decision_badge, _fmt_metric)
 │   ├── presets.py                  (PRESETS dict from Q12.B)
 │   ├── disclaimer.py               (DISCLAIMER_TEXT + render + CSS)
 │   └── audit_export.py             (export_audit_to_csv)
-├── pages/                          (NEW — Streamlit pages dir)
+├── pages/                          (NEW, Streamlit pages dir)
 │   ├── 01_predict.py               (form + presets + result + tooltips)
 │   ├── 02_audit.py                 (st.table + CSV download button)
 │   ├── 03_about.py                 (model card excerpt + |w_i| panel + α slider)
 │   └── 04_references.py            (22 refs with anchor links)
 ├── .streamlit/
-│   └── config.toml                 (NEW — Q16.c spec)
+│   └── config.toml                 (NEW, Q16.c spec)
 ├── tests/_snapshots/
-│   └── predict.md.snap             (NEW — visual regression baseline)
+│   └── predict.md.snap             (NEW, visual regression baseline)
 ├── ml/                             (unchanged from audit)
 │   └── audit_hooks.py              (-8 enum values, +3 WEB_*)
 ├── tests/                          (1320+ tests across 27 files)
@@ -231,9 +231,9 @@ Amoebanator 25/
 
 - **Cached:** `_load_model_artifacts()` in `ml/infer.py` (already `@lru_cache`-wrapped; do not double-wrap with `@st.cache_resource`).
 - **Cached:** `load_presets()` in `app/presets.py` (small dict; cache for clean idempotency under Streamlit's rerun model).
-- **NOT cached:** `infer_one()` itself — every call must execute the full inference path so the audit log emits per-prediction.
-- **NOT cached:** `export_audit_to_csv()` — must read fresh from disk on every download click.
-- **NOT cached:** `decision_badge()`, `_fmt_metric()` — pure functions, caching adds complexity without benefit.
+- **NOT cached:** `infer_one()` itself, every call must execute the full inference path so the audit log emits per-prediction.
+- **NOT cached:** `export_audit_to_csv()`, must read fresh from disk on every download click.
+- **NOT cached:** `decision_badge()`, `_fmt_metric()`, pure functions, caching adds complexity without benefit.
 
 ### 3.4 Audit-log write path
 
@@ -275,12 +275,12 @@ def decision_badge(prediction: str, reason: str | None = None) -> str:
     """Return a Streamlit-markdown badge string for the given prediction state.
     
     Renders icon + bold weight + color tag for High/Low/Moderate/ABSTAIN.
-    For ABSTAIN, includes the reason in the badge text (e.g., "ABSTAIN — OOD").
+    For ABSTAIN, includes the reason in the badge text (e.g., "ABSTAIN, OOD").
     Empty/unknown prediction returns "unknown" badge.
     """
 
 def _fmt_metric(out: dict[str, Any], key: str, fmt: str = "{:.3f}") -> str:
-    """Tolerant metric formatter. Returns "—" for missing/None/non-numeric values.
+    """Tolerant metric formatter. Returns "-" for missing/None/non-numeric values.
     
     Used for rendering Mahalanobis d², energy, conformal qhat, etc. without
     crashing on partial output dicts (some inference branches don't populate all fields).
@@ -290,9 +290,9 @@ def _fmt_metric(out: dict[str, Any], key: str, fmt: str = "{:.3f}") -> str:
 Edge cases enumerated in `tests/test_pages_predict.py`:
 - `build_row` with `symptoms=[""]` → empty string in output
 - `build_row` with `symptoms=["fever", "", "headache"]` → `"fever;headache"`
-- `decision_badge("ABSTAIN", "OOD")` → contains `"ABSTAIN — OOD"`
-- `decision_badge("ABSTAIN", None)` → contains `"ABSTAIN — unspecified"`
-- `_fmt_metric({"x": "garbage"}, "x")` → `"—"`
+- `decision_badge("ABSTAIN", "OOD")` → contains `"ABSTAIN, OOD"`
+- `decision_badge("ABSTAIN", None)` → contains `"ABSTAIN, unspecified"`
+- `_fmt_metric({"x": "garbage"}, "x")` → `"-"`
 - `_fmt_metric({"x": 1.5}, "x", "{:.1f}")` → `"1.5"`
 
 #### `app/presets.py` (~95 LOC)
@@ -355,7 +355,7 @@ def verify_csv_chain_integrity(csv_bytes: bytes) -> bool:
 The bulk of Mini-1. Structure:
 
 ```python
-"""Predict page — Phase 4.5 Mini-1."""
+"""Predict page, Phase 4.5 Mini-1."""
 import streamlit as st
 from app.disclaimer import render_disclaimer
 from app.presets import PRESETS, load_preset
@@ -365,7 +365,7 @@ from ml.audit_hooks import _emit, AuditEventType
 import time
 import uuid
 
-st.set_page_config(page_title="Predict — Amoebanator 25", page_icon="🔬")
+st.set_page_config(page_title="Predict, Amoebanator 25", page_icon="")
 render_disclaimer()
 
 st.title("PAM Risk Prediction")
@@ -394,7 +394,7 @@ if submitted:
     if st.session_state.get("predicting"):
         lock_age = time.time() - st.session_state.get("predicting_at", 0)
         if lock_age < 30:
-            st.warning("Already processing — wait for the current prediction to complete.")
+            st.warning("Already processing, wait for the current prediction to complete.")
             st.stop()
     
     st.session_state.predicting = True
@@ -429,7 +429,7 @@ def render_result(out: dict) -> None:
     st.markdown(f"### Result: {badge}")
     
     # T=0.27 (n=6) badge with hover tooltip (Q3)
-    st.markdown('<span title="Calibrated by temperature scaling (Guo 2017, L-BFGS, n=6 validation). T=0.27 means the calibrator amplifies the model\'s raw confidence — typical temperature scaling has T>1 (attenuation); T<1 here is unusual and reflects fitting on only 6 samples. ECE and coverage estimates are empirical-only, not asymptotic. See docs/model_card.md §9.">T=0.27 (n=6)</span>', unsafe_allow_html=True)
+    st.markdown('<span title="Calibrated by temperature scaling (Guo 2017, L-BFGS, n=6 validation). T=0.27 means the calibrator amplifies the model\'s raw confidence, typical temperature scaling has T>1 (attenuation); T<1 here is unusual and reflects fitting on only 6 samples. ECE and coverage estimates are empirical-only, not asymptotic. See docs/model_card.md §9.">T=0.27 (n=6)</span>', unsafe_allow_html=True)
     
     # SmallCalibrationWarning banner if n_cal < 30
     if out.get("n_cal", 6) < 30:
@@ -439,11 +439,11 @@ def render_result(out: dict) -> None:
     n, alpha = 6, 0.10
     k = math.ceil((n + 1) * (1 - alpha))
     if n >= k and n >= 100:
-        st.success("🟢 ASYMPTOTIC: Guarantee holds; finite-sample bound 1−α + 2/(n+2) is tight.")
+        st.success(" ASYMPTOTIC: Guarantee holds; finite-sample bound 1−α + 2/(n+2) is tight.")
     elif n >= k:
-        st.info("🟡 FINITE-SAMPLE: bound holds but loose; treat reported coverage as empirical.")
+        st.info(" FINITE-SAMPLE: bound holds but loose; treat reported coverage as empirical.")
     else:
-        st.error(f"🔴 INVALID: Order-statistic clamped (k clipped from {k} to n={n}); the formal guarantee 1−α is mathematically inapplicable.")
+        st.error(f" INVALID: Order-statistic clamped (k clipped from {k} to n={n}); the formal guarantee 1−α is mathematically inapplicable.")
     
     # ... metrics ...
     st.markdown(f"p_high: {_fmt_metric(out, 'p_high')}")
@@ -451,7 +451,7 @@ def render_result(out: dict) -> None:
     st.markdown(f"Logit energy: {_fmt_metric(out, 'energy')} (τ={_fmt_metric(out, 'energy_tau')})")
 ```
 
-This is illustrative — the actual implementation will likely differ in widget ordering, key naming, and result-rendering structure. The locked specs are: 8 widgets + 3 preset buttons + Run button with debounce + correlation-ID error handling + missing-stats graceful banner + result rendering with all 4 badges (decision, T=0.27, SmallCalibrationWarning, 3-state regime).
+This is illustrative, the actual implementation will likely differ in widget ordering, key naming, and result-rendering structure. The locked specs are: 8 widgets + 3 preset buttons + Run button with debounce + correlation-ID error handling + missing-stats graceful banner + result rendering with all 4 badges (decision, T=0.27, SmallCalibrationWarning, 3-state regime).
 
 ### 4.3 File-by-file spec (tests)
 
@@ -459,24 +459,24 @@ This is illustrative — the actual implementation will likely differ in widget 
 
 Each test is a one-liner enumeration here; full implementations follow standard Streamlit AppTest patterns.
 
-1. `test_module_imports_cleanly` — `import pages.predict` succeeds without exceptions
-2. `test_form_renders_8_widgets` — AppTest verifies 8 widgets present
-3. `test_form_uses_neutral_defaults` — verify `age=12`, `csf_glucose=65.0`, `csf_protein=30.0`, `csf_wbc=3`, `pcr=False`, `microscopy=False`, `exposure=False`, `symptoms=[]`
-4. `test_neutral_defaults_predict_low_p_high_lt_001` — submit with neutrals, assert `p_high < 0.001` (sanity gate)
-5. `test_three_preset_buttons_render` — assert 3 buttons with labels matching PRESETS keys
-6. `test_loading_high_risk_pam_preset_populates_form` — click button, verify session state updated
-7. `test_submit_calls_infer_one_with_built_row` — mock `infer_one`, verify dict shape passed
-8. `test_no_submit_returns_early` — no `infer_one` call when submit not pressed
-9. `test_filenotfounderror_renders_graceful_banner` — mock `infer_one` to raise FNFE, assert warning banner present
-10. `test_uncaught_exception_emits_correlation_id_audit` — mock to raise generic Exception, assert `INTEGRITY_VIOLATION` event with `error_id` metadata
-11. `test_double_submit_within_30s_blocked` — set `st.session_state.predicting=True`, submit again, assert no new infer_one call
-12. `test_stale_lock_recovers_after_30s` — set `predicting_at` to 31s ago, submit, assert infer_one called
-13. `test_decision_badge_renders_with_icon_and_bold` — strip color tags, assert icon + bold present
-14. `test_decision_badge_color_blind_safe` — same as above but for all 4 prediction states
-15. `test_t_027_badge_renders_with_tooltip` — assert badge + hover tooltip present
-16. `test_smallcalibrationwarning_fires_for_n_below_30` — mock output with `n_cal=6`, assert warning rendered
-17. `test_three_state_regime_badge_invalid_at_n6_alpha010` — assert 🔴 INVALID badge present
-18. `test_d18_limitation_banner_only_on_bacterial_preset` — set active_preset to bacterial, assert banner; set to others, assert no banner
+1. `test_module_imports_cleanly`, `import pages.predict` succeeds without exceptions
+2. `test_form_renders_8_widgets`, AppTest verifies 8 widgets present
+3. `test_form_uses_neutral_defaults`, verify `age=12`, `csf_glucose=65.0`, `csf_protein=30.0`, `csf_wbc=3`, `pcr=False`, `microscopy=False`, `exposure=False`, `symptoms=[]`
+4. `test_neutral_defaults_predict_low_p_high_lt_001`, submit with neutrals, assert `p_high < 0.001` (sanity gate)
+5. `test_three_preset_buttons_render`, assert 3 buttons with labels matching PRESETS keys
+6. `test_loading_high_risk_pam_preset_populates_form`, click button, verify session state updated
+7. `test_submit_calls_infer_one_with_built_row`, mock `infer_one`, verify dict shape passed
+8. `test_no_submit_returns_early`, no `infer_one` call when submit not pressed
+9. `test_filenotfounderror_renders_graceful_banner`, mock `infer_one` to raise FNFE, assert warning banner present
+10. `test_uncaught_exception_emits_correlation_id_audit`, mock to raise generic Exception, assert `INTEGRITY_VIOLATION` event with `error_id` metadata
+11. `test_double_submit_within_30s_blocked`, set `st.session_state.predicting=True`, submit again, assert no new infer_one call
+12. `test_stale_lock_recovers_after_30s`, set `predicting_at` to 31s ago, submit, assert infer_one called
+13. `test_decision_badge_renders_with_icon_and_bold`, strip color tags, assert icon + bold present
+14. `test_decision_badge_color_blind_safe`, same as above but for all 4 prediction states
+15. `test_t_027_badge_renders_with_tooltip`, assert badge + hover tooltip present
+16. `test_smallcalibrationwarning_fires_for_n_below_30`, mock output with `n_cal=6`, assert warning rendered
+17. `test_three_state_regime_badge_invalid_at_n6_alpha010`, assert  INVALID badge present
+18. `test_d18_limitation_banner_only_on_bacterial_preset`, set active_preset to bacterial, assert banner; set to others, assert no banner
 
 #### `tests/test_app_presets.py` (~110 LOC, 20 tests)
 
@@ -505,31 +505,31 @@ Plus 4 cross-preset tests:
 
 #### `tests/test_app_disclaimer.py` (~95 LOC, 12 tests)
 
-1. `test_disclaimer_text_contains_5_mandatory_tokens` — assert `NOT a medical device`, `n=30`, `limited to`, `ORCID`, `lmontenegrocalla@mail.weber.edu` all in `DISCLAIMER_TEXT`
-2. `test_disclaimer_link_targets_are_https` — assert no `javascript:` or `http://` URLs in disclaimer
-3. `test_orcid_format_regex` — assert ORCID matches `\d{4}-\d{4}-\d{4}-\d{4}` pattern
-4. `test_email_format_regex` — assert email matches RFC 5322 simplified regex
-5. `test_disclaimer_on_every_page` — parametrize over 4 pages, assert 5 tokens render on each (at Mini-2 close)
-6. `test_wcag_aa_contrast_error_combo` — assert `wcag_contrast_ratio("#B71C1C", "#FFEBEE") >= 4.5`
-7. `test_wcag_aa_contrast_info_combo` — assert ≥4.5 for blue combo
-8. `test_wcag_aa_contrast_success_combo` — assert ≥4.5 for green combo
-9. `test_widget_keys_unique_across_pages` — collect all `key=` values, assert set length == list length (Q15.5.B)
-10. `test_reduced_motion_css_block_present` — assert `_INJECTED_CSS` contains `prefers-reduced-motion`
-11. `test_utils_fmt_metric_handles_nan` — `_fmt_metric({"x": float("nan")}, "x")` returns `"—"`
-12. `test_utils_fmt_metric_handles_inf` — `_fmt_metric({"x": float("inf")}, "x")` returns `"—"`
+1. `test_disclaimer_text_contains_5_mandatory_tokens`, assert `NOT a medical device`, `n=30`, `limited to`, `ORCID`, `lmontenegrocalla@mail.weber.edu` all in `DISCLAIMER_TEXT`
+2. `test_disclaimer_link_targets_are_https`, assert no `javascript:` or `http://` URLs in disclaimer
+3. `test_orcid_format_regex`, assert ORCID matches `\d{4}-\d{4}-\d{4}-\d{4}` pattern
+4. `test_email_format_regex`, assert email matches RFC 5322 simplified regex
+5. `test_disclaimer_on_every_page`, parametrize over 4 pages, assert 5 tokens render on each (at Mini-2 close)
+6. `test_wcag_aa_contrast_error_combo`, assert `wcag_contrast_ratio("#B71C1C", "#FFEBEE") >= 4.5`
+7. `test_wcag_aa_contrast_info_combo`, assert ≥4.5 for blue combo
+8. `test_wcag_aa_contrast_success_combo`, assert ≥4.5 for green combo
+9. `test_widget_keys_unique_across_pages`, collect all `key=` values, assert set length == list length (Q15.5.B)
+10. `test_reduced_motion_css_block_present`, assert `_INJECTED_CSS` contains `prefers-reduced-motion`
+11. `test_utils_fmt_metric_handles_nan`, `_fmt_metric({"x": float("nan")}, "x")` returns `"-"`
+12. `test_utils_fmt_metric_handles_inf`, `_fmt_metric({"x": float("inf")}, "x")` returns `"-"`
 
 #### `tests/test_audit_export.py` (~85 LOC, 10 tests)
 
-1. `test_export_returns_bytes` — `export_audit_to_csv()` returns `bytes` type
-2. `test_export_csv_has_required_columns` — parse CSV, assert columns include `timestamp`, `event_type`, `previous_hash`, `current_hash`, `schema_version`
-3. `test_export_preserves_all_rows` — write 10 events, export, count rows = 10
-4. `test_round_trip_hash_chain_byte_equal` — write 10 → export → re-parse → byte-equal hash chain (Mini-1 closure gate criterion #4)
-5. `test_verify_csv_chain_integrity_pass` — round-trip + verify_csv_chain_integrity returns True
-6. `test_verify_csv_chain_integrity_fail_on_tamper` — modify one row's metadata, verify returns False
-7. `test_export_filename_format` — filename matches `f"amoebanator_audit_{session_id}_{ISO_timestamp}.csv"` pattern
-8. `test_export_handles_empty_log` — export empty JSONL returns CSV with header row only
-9. `test_export_preserves_metadata_json` — nested metadata JSON survives round-trip
-10. `test_export_emits_audit_event` — calling `export_audit_to_csv` emits `AuditEventType.AUDIT_EXPORT_REQUESTED`
+1. `test_export_returns_bytes`, `export_audit_to_csv()` returns `bytes` type
+2. `test_export_csv_has_required_columns`, parse CSV, assert columns include `timestamp`, `event_type`, `previous_hash`, `current_hash`, `schema_version`
+3. `test_export_preserves_all_rows`, write 10 events, export, count rows = 10
+4. `test_round_trip_hash_chain_byte_equal`, write 10 → export → re-parse → byte-equal hash chain (Mini-1 closure gate criterion #4)
+5. `test_verify_csv_chain_integrity_pass`, round-trip + verify_csv_chain_integrity returns True
+6. `test_verify_csv_chain_integrity_fail_on_tamper`, modify one row's metadata, verify returns False
+7. `test_export_filename_format`, filename matches `f"amoebanator_audit_{session_id}_{ISO_timestamp}.csv"` pattern
+8. `test_export_handles_empty_log`, export empty JSONL returns CSV with header row only
+9. `test_export_preserves_metadata_json`, nested metadata JSON survives round-trip
+10. `test_export_emits_audit_event`, calling `export_audit_to_csv` emits `AuditEventType.AUDIT_EXPORT_REQUESTED`
 
 #### `tests/_snapshots/predict.md.snap` (~30 LOC, 1 baseline snapshot)
 
@@ -544,7 +544,7 @@ All 7 MUST be green to ship Mini-1 → Mini-2:
 3. **Streamlit AppTest boot.** `app/app.py` boots in AppTest in **<5s wall-clock** and renders `Predict` page without exceptions.
 4. **CSV audit export round-trip.** Write 10 events → `export_audit_to_csv()` → re-parse → byte-equal hash chain. Test in `tests/test_audit_export.py::test_round_trip_hash_chain_byte_equal`.
 5. **Disclaimer presence on every page.** `tests/test_app_disclaimer.py::test_disclaimer_on_every_page` parametrizes over 4 pages and asserts the 5 mandatory tokens render on each. Single canonical test, NOT 4 copies.
-6. **IRB_BYPASS=1 vs =0 branches.** With `AMOEBANATOR_IRB_BYPASS=1`, predict page renders extra red banner *"IRB bypass active — research mode only"* AND emits `IRB_STATUS_CHANGE` audit event with `actor='env_var'`. With env var unset, no banner + no event. Both branches tested in `tests/test_pages_predict.py`.
+6. **IRB_BYPASS=1 vs =0 branches.** With `AMOEBANATOR_IRB_BYPASS=1`, predict page renders extra red banner *"IRB bypass active, research mode only"* AND emits `IRB_STATUS_CHANGE` audit event with `actor='env_var'`. With env var unset, no banner + no event. Both branches tested in `tests/test_pages_predict.py`.
 7. **Visual regression text-snapshot.** AppTest captures predict page markdown, diff vs `tests/_snapshots/predict.md.snap` baseline. Drift <5% character delta = pass; drift >5% = either intentional (regenerate via `--snapshot-update`) or a regression (investigate).
 
 ---
@@ -568,7 +568,7 @@ The `st.navigation` entry point. Registers the 4 pages. Triggers `render_disclai
 import streamlit as st
 
 pages = {
-    "🔬 Predict": [st.Page("pages/01_predict.py", title="Predict", icon="🔬")],
+    " Predict": [st.Page("pages/01_predict.py", title="Predict", icon="")],
     "📜 Audit": [st.Page("pages/02_audit.py", title="Audit", icon="📜")],
     "ℹ️ About": [st.Page("pages/03_about.py", title="About", icon="ℹ️")],
     "📚 References": [st.Page("pages/04_references.py", title="References", icon="📚")],
@@ -590,7 +590,7 @@ import pandas as pd
 import pathlib
 import datetime
 
-st.set_page_config(page_title="Audit — Amoebanator 25", page_icon="📜")
+st.set_page_config(page_title="Audit, Amoebanator 25", page_icon="📜")
 render_disclaimer()
 
 st.title("Audit Log (Current Session)")
@@ -661,49 +661,49 @@ Same 7 criteria as Mini-1 (§4.4) + cumulative test count ≥1320. Visual regres
 
 Eight risks ranked by likelihood × impact. Each with mitigation.
 
-### R1 — HF Space cold-boot exceeds 5s, breaking AppTest assumption (high likelihood, medium impact)
+### R1, HF Space cold-boot exceeds 5s, breaking AppTest assumption (high likelihood, medium impact)
 
 **Risk:** Mini-1 closure gate criterion #3 requires AppTest boot in <5s. HF Space cold-boot is 25-30s wall-clock (PyTorch import ~3.7s + container provisioning ~25s). If the AppTest gate runs in CI against an HF-equivalent environment, it will fail.
 
 **Mitigation:** AppTest gate runs in local Docker, NOT against deployed HF Space. Local boot is ~4s (PyTorch import dominates). Document this separation explicitly: *"AppTest closure gate measures local boot, not HF cold-start. HF cold-start is acknowledged 30s per Q18.A."*
 
-### R2 — Pyright strict catches new Streamlit dynamic-attribute access (medium likelihood, low impact)
+### R2, Pyright strict catches new Streamlit dynamic-attribute access (medium likelihood, low impact)
 
 **Risk:** Streamlit's `st.session_state` uses dynamic attribute access (`st.session_state.foo` rather than `st.session_state["foo"]`). Pyright in strict mode flags these as `reportAttributeAccessIssue`.
 
 **Mitigation:** Use bracket-style `st.session_state["foo"]` consistently in all sprint code. Where bracket style is awkward (e.g., `st.session_state.update({...})`), add targeted `# pyright: ignore[reportAttributeAccessIssue]` with a comment explaining why. Snapshot pyright baseline at sprint kickoff and gate on deltas, not absolutes.
 
-### R3 — AuditEventType migration leaves stale JSONL entries (medium likelihood, low impact)
+### R3, AuditEventType migration leaves stale JSONL entries (medium likelihood, low impact)
 
 **Risk:** Mini-1 deletes 11 dead enum values + adds 3 new `WEB_*`. Existing audit JSONL files on dev machine contain references to the deleted enum values. Reading these via `AuditEventType[entry["event_type"]]` raises `KeyError`.
 
-**Mitigation:** (a) `app/audit_export.py` reads event_type as string, not as enum — survives schema migrations; (b) bump schema version field in audit.jsonl genesis entry to `"2"` post-Mini-1; (c) document migration in `docs/SPRINT_LOG.md` Mini-1 entry.
+**Mitigation:** (a) `app/audit_export.py` reads event_type as string, not as enum, survives schema migrations; (b) bump schema version field in audit.jsonl genesis entry to `"2"` post-Mini-1; (c) document migration in `docs/SPRINT_LOG.md` Mini-1 entry.
 
-### R4 — Visual snapshot drift on harmless reorder (medium likelihood, low impact)
+### R4, Visual snapshot drift on harmless reorder (medium likelihood, low impact)
 
 **Risk:** Mini-2 nav refactor or any cosmetic change might shift page markdown by >5% characters, failing closure gate criterion #7 even though no behavior changed.
 
 **Mitigation:** (a) Threshold tuned to 5% (not 0%) for tolerance; (b) `pytest --snapshot-update` workflow documented for intentional changes; (c) snapshot diff renders visually via `pytest -v --snapshot-diff` before regenerate. Manual checklist for `prefers-reduced-motion`: *"Open demo in Chrome with prefers-reduced-motion: reduce enabled in DevTools → Rendering → confirm no animations play."*
 
-### R5 — D18 limitation-demo preset confuses non-clinical reviewers (low likelihood, medium impact)
+### R5, D18 limitation-demo preset confuses non-clinical reviewers (low likelihood, medium impact)
 
 **Risk:** A reviewer without clinical background clicks bacterial preset, sees `prediction=High`, doesn't read the limitation banner, concludes the model is broken or being deceptive.
 
-**Mitigation:** (a) Banner positioned adjacent to result panel (Q12.C) so it's impossible to miss; (b) Banner uses red wash + deep red text + bold weight (Q15.5.D); (c) First sentence of banner *"⚠ This preset is a known model limitation"* is the load-bearing reframe — reviewers see "limitation" before they see "High"; (d) Last sentence *"Try the other 2 presets to see the model's working regime"* steers them to a successful demo path.
+**Mitigation:** (a) Banner positioned adjacent to result panel (Q12.C) so it's impossible to miss; (b) Banner uses red wash + deep red text + bold weight (Q15.5.D); (c) First sentence of banner *"⚠ This preset is a known model limitation"* is the load-bearing reframe, reviewers see "limitation" before they see "High"; (d) Last sentence *"Try the other 2 presets to see the model's working regime"* steers them to a successful demo path.
 
-### R6 — Phase 6 IRB record creation gap (high likelihood when triggered, high impact)
+### R6, Phase 6 IRB record creation gap (high likelihood when triggered, high impact)
 
 **Risk:** When MIMIC-IV cohort lands in Phase 6, `AMOEBANATOR_IRB_BYPASS=0` requires a real IRB JSON record. If the env var is flipped before the IRB record is created, the app fails to boot with `IRBGateBlocked`. This is a future-self trap.
 
 **Mitigation:** (a) Dockerfile `ENV AMOEBANATOR_IRB_BYPASS=1` line MUST be preceded by a multi-line safety comment explaining (i) why bypass exists (synthetic data only), (ii) when to flip to 0 (Phase 6 with MIMIC-IV), (iii) what's required first (IRB record at `outputs/governance/irb_record.json` with `irb_status` ∈ {`approved`, `conditionally_approved`}); (b) `docs/USER_ASSIGNMENTS.md` Step 9 (future) documents the flip procedure with checklist. See §7.4 for full spec.
 
-### R7 — HF Space 16 GB RAM exceeded by audit log dataframe (low likelihood, low impact)
+### R7, HF Space 16 GB RAM exceeded by audit log dataframe (low likelihood, low impact)
 
 **Risk:** Audit log grows large enough that `pd.read_json(...)` exceeds free-tier RAM.
 
-**Mitigation:** Largely preventive — already addressed via Q15.C 10k row cap. Per-row size ~500 bytes; 10k rows = 5 MB, trivial vs 16 GB. Risk only materializes if audit log file itself grows beyond cap before display read; in that case `pd.read_json` may load full file before tail-trim. Defensive: stream the JSONL and tail-trim during read.
+**Mitigation:** Largely preventive, already addressed via Q15.C 10k row cap. Per-row size ~500 bytes; 10k rows = 5 MB, trivial vs 16 GB. Risk only materializes if audit log file itself grows beyond cap before display read; in that case `pd.read_json` may load full file before tail-trim. Defensive: stream the JSONL and tail-trim during read.
 
-### R8 — Cold-start race condition between audit hooks and model load (medium likelihood, medium impact)
+### R8, Cold-start race condition between audit hooks and model load (medium likelihood, medium impact)
 
 **Risk:** First request after container restart may hit `infer_one()` before `_load_model_artifacts()` completes, raising `RuntimeError: model not loaded`. Audit hook emit happens before the exception is caught.
 
@@ -713,11 +713,11 @@ Eight risks ranked by likelihood × impact. Each with mitigation.
 
 ## §7. User Assignments
 
-The sprint includes out-of-band actions that only Jordan can execute (account credentials, external repo edits, HF Space deploys). These are tracked in `docs/USER_ASSIGNMENTS.md` as a tiered structure: Pre-sprint (must complete BEFORE Mini-1 starts), During-sprint (none required — sprint is autonomous), Post-sprint (after Mini-2 closes), Future (Phase 6+).
+The sprint includes out-of-band actions that only Jordan can execute (account credentials, external repo edits, HF Space deploys). These are tracked in `docs/USER_ASSIGNMENTS.md` as a tiered structure: Pre-sprint (must complete BEFORE Mini-1 starts), During-sprint (none required, sprint is autonomous), Post-sprint (after Mini-2 closes), Future (Phase 6+).
 
 ### 7.1 Pre-sprint assignments (run BEFORE Mini-1 starts)
 
-#### Step 6 (existing) — Upload HF_TOKEN secret to GitHub Actions
+#### Step 6 (existing), Upload HF_TOKEN secret to GitHub Actions
 
 **Why:** GitHub Actions deploy workflow needs the HF token to push to the Space. Token must be uploaded as repo-level secret, NOT committed to repo.
 
@@ -739,7 +739,7 @@ unset HF_TOKEN_TMP
 
 **Verification:** `gh secret list` shows `HF_TOKEN` in the output. The actual token value is unreadable post-upload (GitHub encrypts).
 
-#### Step 8 (NEW from Q19.D) — Rename GitHub repo Amoebanator_25 → amoebanator-25
+#### Step 8 (NEW from Q19.D), Rename GitHub repo Amoebanator_25 → amoebanator-25
 
 **Why:** The HF Space slug is `luisjordanmontenegro/amoebanator-25` (lowercase + dash, npm/pypi convention). The current GitHub repo is `ljm234/Amoebanator_25` (capital + underscore). Match the repo slug to the HF slug so the disclaimer URL `github.com/ljm234/amoebanator-25` works and so the segment a PI pastes is identical across both URLs.
 
@@ -758,7 +758,7 @@ git remote -v  # must show https://github.com/ljm234/amoebanator-25.git
 gh repo view --json url --jq .url  # must show https://github.com/ljm234/amoebanator-25
 ```
 
-**Why this is path (b) and not (c) full rebrand:** The username mismatch (`ljm234` GitHub vs `luisjordanmontenegro` HF) is a one-line addition to the About page (`pages/03_about.py`): *"Repo: github.com/ljm234/amoebanator-25 — HuggingFace Space: huggingface.co/spaces/luisjordanmontenegro/amoebanator-25 (same author, separate handles)."* Full rebrand to `luisjordanmontenegro` GitHub account costs re-auth, secret regen, and ownership transfer for one-line disclosure benefit. Rejected.
+**Why this is path (b) and not (c) full rebrand:** The username mismatch (`ljm234` GitHub vs `luisjordanmontenegro` HF) is a one-line addition to the About page (`pages/03_about.py`): *"Repo: github.com/ljm234/amoebanator-25, HuggingFace Space: huggingface.co/spaces/luisjordanmontenegro/amoebanator-25 (same author, separate handles)."* Full rebrand to `luisjordanmontenegro` GitHub account costs re-auth, secret regen, and ownership transfer for one-line disclosure benefit. Rejected.
 
 **Verification:** Disclaimer URL `https://github.com/ljm234/amoebanator-25` returns 200 in browser.
 
@@ -768,7 +768,7 @@ gh repo view --json url --jq .url  # must show https://github.com/ljm234/amoeban
 
 ### 7.3 Post-sprint assignments (after Mini-2 closes)
 
-#### Step 7 (existing) — Update Vercel /playground link-out
+#### Step 7 (existing), Update Vercel /playground link-out
 
 **Why:** Q9 locked link-out only. The Vercel website repo (separate from Amoebanator) needs the `/playground` page replaced with a button to the HF Space.
 
@@ -790,7 +790,7 @@ git add .gitignore && git commit -m "chore: ignore .tsx.bak rollback files"
 # Button: "Launch interactive demo →"
 # URL: https://huggingface.co/spaces/luisjordanmontenegro/amoebanator-25
 # Target: _blank
-# Caption: "Hosted on Hugging Face Spaces (free CPU tier; cold-start ~30s on first visit after idle period). Research prototype — not for clinical use."
+# Caption: "Hosted on Hugging Face Spaces (free CPU tier; cold-start ~30s on first visit after idle period). Research prototype, not for clinical use."
 
 # 4. Commit + push
 git add app/playground/page.tsx
@@ -806,19 +806,19 @@ git push origin main
 
 ### 7.4 Future assignments (Phase 6+)
 
-#### Step 9 (NEW, future) — Flip AMOEBANATOR_IRB_BYPASS=1 → 0 when MIMIC-IV cohort lands
+#### Step 9 (NEW, future), Flip AMOEBANATOR_IRB_BYPASS=1 → 0 when MIMIC-IV cohort lands
 
 **Why:** Phase 6 introduces real PHI from MIMIC-IV. The IRB gate must enforce real IRB approval, not synthetic-data bypass. Current Dockerfile sets `ENV AMOEBANATOR_IRB_BYPASS=1` because n=30 cohort is fully synthetic (no PHI, no human subjects).
 
 **Multi-line safety comment for Dockerfile (mandatory):**
 
 ```dockerfile
-# AMOEBANATOR_IRB_BYPASS — IRB gate bypass switch
+# AMOEBANATOR_IRB_BYPASS, IRB gate bypass switch
 #
 # WHY THIS EXISTS:
 #   The Phase 4.5 demo trains on n=30 synthetic patient vignettes derived from
 #   published case-series marginals (Yoder 2010, Cope 2016, CDC 2025). No real
-#   PHI, no human subjects. Hence no IRB review is required — but the IRB gate
+#   PHI, no human subjects. Hence no IRB review is required, but the IRB gate
 #   in ml/irb_gate.py refuses to boot the app without an IRB JSON record. This
 #   bypass env var short-circuits the gate WITH a mandatory audit log emission
 #   (AuditEventType.ACCESS_DENIED → reason="env_var_bypass") so the bypass is
@@ -915,7 +915,7 @@ Things considered during the audit and explicitly deferred or rejected. Each wit
 
 ## §9. Appendix
 
-### A. Quick reference — locked clinical presets
+### A. Quick reference, locked clinical presets
 
 ```python
 PRESETS = {
@@ -930,7 +930,7 @@ NEUTRAL_DEFAULTS = {"age": 12, "csf_glucose": 65.0, "csf_protein": 30.0, "csf_wb
 ### B. Disclaimer text (verbatim, copy-paste ready)
 
 ```
-⚠ Research prototype, NOT a medical device. Trained on n=30 synthetic patient vignettes (n_train=24, n_val=6); contains zero real PHI. Outputs are calibrated probabilities, **limited to** the n=30 training distribution — not diagnoses. Not for clinical decision support, not validated. Source + caveats: github.com/ljm234/amoebanator-25 — Contact: lmontenegrocalla@mail.weber.edu (ORCID 0009-0000-7851-7139)
+⚠ Research prototype, NOT a medical device. Trained on n=30 synthetic patient vignettes (n_train=24, n_val=6); contains zero real PHI. Outputs are calibrated probabilities, **limited to** the n=30 training distribution, not diagnoses. Not for clinical decision support, not validated. Source + caveats: github.com/ljm234/amoebanator-25, Contact: lmontenegrocalla@mail.weber.edu (ORCID 0009-0000-7851-7139)
 ```
 
 The 5 mandatory tokens enforced by `tests/test_app_disclaimer.py::test_disclaimer_on_every_page`:
@@ -942,7 +942,7 @@ The 5 mandatory tokens enforced by `tests/test_app_disclaimer.py::test_disclaime
 
 ### C. Pyright config delta (none expected; document if any)
 
-Sprint may not modify `pyrightconfig.json` from the `b8f62e3` baseline. If a Streamlit dynamic-attribute access requires a targeted ignore, use inline `# pyright: ignore[reportAttributeAccessIssue]` with a comment explaining why — do NOT loosen the project-wide config.
+Sprint may not modify `pyrightconfig.json` from the `b8f62e3` baseline. If a Streamlit dynamic-attribute access requires a targeted ignore, use inline `# pyright: ignore[reportAttributeAccessIssue]` with a comment explaining why, do NOT loosen the project-wide config.
 
 ### D. Color palette (locked, WCAG-AA compliant)
 
@@ -959,7 +959,7 @@ Sprint may not modify `pyrightconfig.json` from the `b8f62e3` baseline. If a Str
 ```
 <type>(<subphase>): <subject under 70 chars>
 
-<body paragraph explaining the WHY of the change, not the WHAT —
+<body paragraph explaining the WHY of the change, not the WHAT -
 what's already in the diff. Body is optional for trivial changes
 but mandatory for any commit closing a Q-decision.>
 

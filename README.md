@@ -1,6 +1,6 @@
 ---
 title: Amoebanator 25
-emoji: 🚀
+emoji: 
 colorFrom: red
 colorTo: red
 sdk: docker
@@ -33,8 +33,8 @@ analysis at clinically realistic prevalences.
 
 PAM is rare and near-uniformly fatal. The CDC's *About Primary Amebic
 Meningoencephalitis* page (last verified 2026-04-24) reports **167 cumulative
-US cases between 1962 and 2024 with 4 survivors** — a case-fatality rate of
-163 / 167 ≈ **97.6 %** — and notes that "typically, fewer than 10 people a
+US cases between 1962 and 2024 with 4 survivors**, a case-fatality rate of
+163 / 167 ≈ **97.6 %**, and notes that "typically, fewer than 10 people a
 year in the United States get PAM." See also Cope JR & Ali IK, *Curr Infect
 Dis Rep* 2016;18(10):31 (PMID 27614893) for clinical context, and Yoder JS et
 al., *Epidemiol Infect* 2010;138(7):968–975 (PMID 19845995) for the
@@ -196,7 +196,7 @@ tests/                       # 1100+ unit + integration tests
   FAccT 2019.
 * **PAM clinical baseline.** Cope JR, Ali IK. "Primary Amebic Meningoencephalitis:
   What Have We Learned in the Last 5 Years?" Curr Infect Dis Rep 2016;18(10):31.
-  CDC. *Parasites — Naegleria fowleri / Primary Amebic Meningoencephalitis (PAM).*
+  CDC. *Parasites, Naegleria fowleri / Primary Amebic Meningoencephalitis (PAM).*
 
 ---
 

@@ -218,20 +218,21 @@ class ResearcherIdentity:
     Attributes
     ----------
     orcid : str
-        ORCID iD in format 0009-0000-7851-7139.
+        ORCID iD in canonical hyphenated format.
     full_name : str
-        Luis Jordan Montenegro Calla
+        Researcher full legal name.
     email : str
-        lmontenegrocalla@mail.weber.edu
-        ljm234@ensign.edu
+        Institutional email address.
     institution : str
-        Ensign College / Weber State University. #I am only an student, not faculty or staff, so I am not an "independent researcher" in the traditional sense. --- IGNORE ---, 
+        Affiliated research institution.
+    department : str
+        Department or unit within the institution.
     role : str
-        Independent research, principal investigator.
-    citi_completions : tuple[citicompletion, ...]
-        completed citi training modules.
-    verified_at : datetime | none
-        timestamp of identity verification.
+        Researcher role label.
+    citi_completions : tuple[CITICompletion, ...]
+        Completed CITI training modules.
+    verified_at : datetime | None
+        UTC timestamp of identity verification.
     """
 
     orcid: str

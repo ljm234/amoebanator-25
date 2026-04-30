@@ -11,7 +11,7 @@ evaluation protocol so Phases 3–5 can be reproduced from this document alone.
 A patient presents with acute meningitis-like syndrome (fever, headache,
 nuchal rigidity, altered mental status). The clinician must decide, in the
 first minutes of the workup, how aggressively to escalate. The worst
-outcome — Primary Amebic Meningoencephalitis (PAM) — is functionally
+outcome, Primary Amebic Meningoencephalitis (PAM), is functionally
 untreatable once intracranial pressure rises, so the cost of *missing* a
 PAM case is catastrophic. The cost of *over-triaging* a benign meningitis
 is a few hours of additional workup and one extra dose of broad-spectrum
@@ -26,7 +26,7 @@ cases between 1962 and 2024 (CDC, *About Primary Amebic Meningoencephalitis*,
 2025). Yoder et al. 2010 (Epidemiol Infect 138(7):968–975) document 111
 cases over a 47-year window with a case-fatality rate of 99.1%. A standard
 80/10/10 split on this corpus yields a test set that is single-digit
-positive — incapable of distinguishing model behaviour from sampling noise.
+positive, incapable of distinguishing model behaviour from sampling noise.
 
 The proxy task substitutes a *related* high-prevalence supervised problem
 that exercises the same triage decision and the same calibration / OOD
@@ -39,13 +39,13 @@ held-out set.
 `hosp.microbiologyevents`) filtered to admissions with at least one CSF
 analyte and at least one ICD-10 code in the meningitis ranges:
 
-  * **G00.x** — Bacterial meningitis (positive class, "High")
-  * **A87.x** — Viral meningitis (negative class, "Low")
-  * **B60.2** — Naegleriasis / PAM (held-out OOD class)
+  * **G00.x**, Bacterial meningitis (positive class, "High")
+  * **A87.x**, Viral meningitis (negative class, "Low")
+  * **B60.2**, Naegleriasis / PAM (held-out OOD class)
 
 The labeling rule treats bacterial meningitis as the positive class because
-the clinical decision the model supports — *should the patient receive
-empiric antibacterial therapy now?* — maps onto bacterial-vs-viral
+the clinical decision the model supports, *should the patient receive
+empiric antibacterial therapy now?*, maps onto bacterial-vs-viral
 discrimination at exactly the clinically actionable boundary. PAM and
 other amebic encephalitides (B60.x) sit outside the training distribution
 and are reserved for OOD evaluation.
@@ -56,7 +56,7 @@ and are reserved for OOD evaluation.
 |---------|--------|-------|
 | `csf_glucose` | labevents itemid 51790 | median over admissions |
 | `csf_protein` | labevents itemid 51802 | median |
-| `csf_wbc`     | labevents itemid 52286 | "Total Nucleated Cells, CSF" — closest available; MIMIC-IV does not carry a "WBC, CSF" item |
+| `csf_wbc`     | labevents itemid 52286 | "Total Nucleated Cells, CSF", closest available; MIMIC-IV does not carry a "WBC, CSF" item |
 | `csf_polys_pct` | labevents itemid 52281 | neutrophil predominance proxy |
 | `microscopy` | microbiologyevents | 1 if any positive CSF Gram stain |
 | `age` | patients table | computed at admission |
@@ -88,7 +88,7 @@ For each combination of model and ablation cell (Phase 3.4) we report:
     PAM rows.
 
 The target empirical coverage matches 1 − α to within ±2 / (n+2) per the
-Lei et al. 2018 bound. The PAM OOD AUC target is ≥ 0.85 — well above
+Lei et al. 2018 bound. The PAM OOD AUC target is ≥ 0.85, well above
 chance, distinctly below the perfect 1.0 that would suggest data leakage.
 
 ## 5. Why this is honest
@@ -107,7 +107,7 @@ chance, distinctly below the perfect 1.0 that would suggest data leakage.
 
 ## 6. Open dependencies (user assignments)
 
-* PhysioNet credentialed access (CITI training + DUA) — see
+* PhysioNet credentialed access (CITI training + DUA), see
   `docs/USER_ASSIGNMENTS.md`. Blocks all real-data evaluation.
 * Optional: Capewell LG et al., *J Pediatric Infect Dis Soc* 2015;4(4):e68–e75
   (PMID 26582886) for tabulated per-case PAM CSF values. Cope 2016 reports
