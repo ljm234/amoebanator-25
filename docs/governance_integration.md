@@ -4,7 +4,7 @@
 wired into the production training pipeline, where the wiring lives, and
 which modules remain `_wip/` scaffolding for future versions.
 
-The Phase 7 goal was *honest* governance — not a paper claim that audit
+The Phase 7 goal was *honest* governance, not a paper claim that audit
 trails / Safe Harbor / IRB checks "exist somewhere in the codebase," but
 load-bearing wires that fire on every real training run and would block,
 log, or remediate a misuse before it produces a model artefact.
@@ -15,9 +15,9 @@ log, or remediate a misuse before it produces a model artefact.
 
 | # | Concern | Source module | Production wrapper | Hook points |
 |---|---------|---------------|--------------------|-------------|
-| 7.1 | Tamper-evident audit log | `ml/data/audit_trail.py` (1748 LOC, hash-chained + Merkle-checkpointed) | `ml/audit_hooks.py` — JSONL persistence + singleton + 5 typed event helpers | `ml/training.py` (5 sites) and `ml/training_calib_dca.py` (5 sites) |
-| 7.2 | HIPAA Safe Harbor de-identification | `ml/data/deidentification.py` (1951 LOC; SafeHarborProcessor + 17 supporting types) | `ml/data_loader.py` — dataframe-aware wrapper that pre-scrubs ages > 89, blanks actor fields, generalises dates to year, filters free text | `load_tabular_safe_harbor()` callable from any data load path |
-| 7.3 | IRB approval gate | `ml/data/compliance.py` (2102 LOC; IRBStatus + IRBApplication + ComplianceGate) | `ml/irb_gate.py` — pre-training check; auto-bypass for synthetic-only data; raises `IRBGateBlocked` with remediation message | Top of every training entry point that touches non-synthetic data |
+| 7.1 | Tamper-evident audit log | `ml/data/audit_trail.py` (1748 LOC, hash-chained + Merkle-checkpointed) | `ml/audit_hooks.py`, JSONL persistence + singleton + 5 typed event helpers | `ml/training.py` (5 sites) and `ml/training_calib_dca.py` (5 sites) |
+| 7.2 | HIPAA Safe Harbor de-identification | `ml/data/deidentification.py` (1951 LOC; SafeHarborProcessor + 17 supporting types) | `ml/data_loader.py`, dataframe-aware wrapper that pre-scrubs ages > 89, blanks actor fields, generalises dates to year, filters free text | `load_tabular_safe_harbor()` callable from any data load path |
+| 7.3 | IRB approval gate | `ml/data/compliance.py` (2102 LOC; IRBStatus + IRBApplication + ComplianceGate) | `ml/irb_gate.py`, pre-training check; auto-bypass for synthetic-only data; raises `IRBGateBlocked` with remediation message | Top of every training entry point that touches non-synthetic data |
 
 All three integrations carry their own integration test suite:
 `tests/test_audit_integration.py` (8 tests), `tests/test_deident_integration.py`
@@ -43,7 +43,7 @@ flowchart LR
 Every event the pipeline emits is appended as one JSON line to
 `outputs/audit/audit.jsonl` with a SHA-256 chain back to the genesis hash.
 Out-of-band edits to that file are detectable by
-`ml.audit_hooks.verify_persisted_chain()` — the test suite covers this
+`ml.audit_hooks.verify_persisted_chain()`, the test suite covers this
 explicitly with `test_tampering_detected`.
 
 ---
@@ -118,8 +118,8 @@ Default behaviour:
   is recorded as `ACCESS_DENIED` in the audit chain.
 
 Override knobs:
-* `AMOEBANATOR_IRB_PATH` — point at a non-default IRB JSON
-* `AMOEBANATOR_IRB_BYPASS=1` — skip the check (still audit-logged so it is
+* `AMOEBANATOR_IRB_PATH`, point at a non-default IRB JSON
+* `AMOEBANATOR_IRB_BYPASS=1`, skip the check (still audit-logged so it is
   never invisible)
 
 ---
@@ -128,7 +128,7 @@ Override knobs:
 
 These ten modules were moved to `ml/data/_wip/` in Phase 7.4. They are not
 imported by `ml/data/__init__.py` and any attempt to `from ml.data.X import
-…` raises `ModuleNotFoundError` — by design. Each remains research-grade
+…` raises `ModuleNotFoundError`, by design. Each remains research-grade
 scaffolding without a real backend or unit-test coverage:
 
 | Module                  | Why not wired |
@@ -160,7 +160,7 @@ For the V1.0 sprint:
   acquisition, clinical, compliance, deidentification, microscopy) keep
   their existing tests in `tests/test_phase1_1_*.py` passing.
 * The **ten WIP modules** are explicitly fenced out of the production import
-  graph. The roadmap commits them to V1.1, V1.2, or V2.0 unblock — see
+  graph. The roadmap commits them to V1.1, V1.2, or V2.0 unblock, see
   `ml/data/_wip/README.md`.
 
 A reviewer asking "does the audit trail actually fire on every training

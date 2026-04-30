@@ -1,9 +1,9 @@
-# Data card — Amoebanator bundled dataset
+# Data card, Amoebanator bundled dataset
 
 Per Gebru T et al., *Datasheets for Datasets*, Communications of the ACM
 2021;64(12):86–92 (DOI 10.1145/3458723; arXiv:1803.09010).
 
-This card documents `outputs/diagnosis_log_pro.csv` — the only dataset that
+This card documents `outputs/diagnosis_log_pro.csv`, the only dataset that
 ships with the V1.0 release. It is **30 simulated patient vignettes**, not
 real patient data. The card also documents the *planned* MIMIC-IV cohort
 (V1.1 roadmap) so that the data lineage of any future preprint figure is
@@ -23,7 +23,7 @@ traceable.
   research). No institutional dataset commission.
 * **Funding.** Unfunded.
 * **Other comments.** The synthetic vignettes are clinically *plausible*
-  — feature distributions mimic published PAM presentations
+ , feature distributions mimic published PAM presentations
   (Yoder JS et al., *Epidemiol Infect* 2010;138:968–975; Cope JR &
   Ali IK, *Curr Infect Dis Rep* 2016;18:31). They are *not* drawn from
   any patient population.
@@ -40,13 +40,13 @@ traceable.
   included for audit-chain attribution.
 * **How many instances?** **30 rows.** Stratified 80/20 train/val split
   yields **n_train = 24**, **n_val = 6**.
-* **Is the dataset a sample of a larger set?** No — every row was
+* **Is the dataset a sample of a larger set?** No, every row was
   generated synthetically. The dataset is not a sample of a clinical
   population.
 * **What does each instance consist of?** Raw tabular features (16
   columns). Labels (`risk_label`, `risk_score`). Provenance fields
   (`case_id`, `source`, `physician`, `timestamp_tz`, `comments`).
-* **Is there a label/target?** Yes — binary `risk_label` ∈ {"Low",
+* **Is there a label/target?** Yes, binary `risk_label` ∈ {"Low",
   "High"} (encoded as `y = 1` for High in the trainer). 11 of 30 rows
   are High in the bundled CSV.
 * **Is any information missing?** Every row is complete (no missing
@@ -81,7 +81,7 @@ traceable.
 * **Mechanisms / procedures.** Manual authoring (no software
   generation). The `ml.case_series.synthesize_yoder_cohort` function
   (Phase 2.3) provides a programmatic synthesis path that draws from
-  Yoder 2010 marginals — rows it produces carry
+  Yoder 2010 marginals, rows it produces carry
   `source = "synthetic_from_yoder2010"` and are not part of the bundled
   30-row CSV today.
 * **Sampling strategy.** Not applicable (no underlying population).
@@ -89,7 +89,7 @@ traceable.
   or annotators.
 * **Timeframe.** 2025–2026 (the `timestamp_tz` field carries plausible
   but synthetic dates within this window).
-* **Ethical review.** Not required — no human subjects. Real-data
+* **Ethical review.** Not required, no human subjects. Real-data
   extension via MIMIC-IV is gated by Weber State IRB exemption (see
   `docs/USER_ASSIGNMENTS.md` step 2) and PhysioNet DUA (step 1).
 * **Data relate to people?** No real people.
@@ -110,7 +110,7 @@ traceable.
      `df[feats].fillna(0).astype(float).values`.
   Bundled rows do not contain any age > 89, so the cap is a no-op
   today; it is load-bearing for any future MIMIC-IV-shaped CSV.
-* **Raw data preserved?** Yes — `outputs/diagnosis_log_pro.csv` is the
+* **Raw data preserved?** Yes, `outputs/diagnosis_log_pro.csv` is the
   raw form. Preprocessed `(X, y, feats)` is computed in-memory and not
   persisted as a separate artefact.
 * **Preprocessing software.** All in `ml/training.py`, `ml/training_calib_dca.py`,
@@ -118,7 +118,7 @@ traceable.
 
 ## 5. Uses
 
-* **Used for any tasks already?** Yes — the bundled MLP in
+* **Used for any tasks already?** Yes, the bundled MLP in
   `outputs/model/model.pt` was trained on this dataset. Calibration,
   conformal qhat, energy thresholds, DCA threshold, ablation table, and
   coverage sweep figures all derive from it. Every figure under
@@ -133,7 +133,7 @@ traceable.
 * **Composition / collection issues that impact future use?** The most
   important issue: **n = 30 is too small to fit anything reliably.**
   Any quoted metric must be paired with the n caveat. The dataset is
-  not intended as a benchmark for model performance — it is a
+  not intended as a benchmark for model performance, it is a
   load-bearing fixture for the surrounding safety machinery.
 * **Tasks for which the dataset should not be used.**
   - Quoting AUC / recall / sensitivity / specificity as if they were
@@ -143,15 +143,15 @@ traceable.
 
 ## 6. Distribution
 
-* **Distributed to third parties?** Yes — bundled with the open-source
+* **Distributed to third parties?** Yes, bundled with the open-source
   Amoebanator code release.
 * **How will it be distributed?** Same channel as the code (Git
   repository).
-* **When?** Now — included in the V1.0 release.
+* **When?** Now, included in the V1.0 release.
 * **License.** Released under the same license as the code: research
   and educational use only, no commercial / clinical redistribution
   (see `README.md` → License and disclaimer).
-* **Third-party IP restrictions.** None — all rows are synthetic.
+* **Third-party IP restrictions.** None, all rows are synthetic.
 * **Export / regulatory restrictions.** None applicable to synthetic
   data.
 
@@ -162,14 +162,14 @@ traceable.
   email on file.
 * **Errata?** None at V1.0 release. Errata will be tracked in
   `docs/SPRINT_LOG.md`.
-* **Will the dataset be updated?** Yes — the V1.1 milestone replaces
+* **Will the dataset be updated?** Yes, the V1.1 milestone replaces
   the bundled 30-row synthetic CSV with a MIMIC-IV-derived
   bacterial-vs-viral meningitis cohort once PhysioNet credentialed
   access lands. The bundled synthetic CSV will remain in the
   repository as a fixture for the test suite, but headline metrics
   will switch to the real-data cohort.
 * **Retention limits?** Not applicable (synthetic).
-* **Older versions supported?** Yes — `git tag` will mark the V1.0
+* **Older versions supported?** Yes, `git tag` will mark the V1.0
   release commit; the V1.0 CSV remains accessible through the
   repository history.
 * **Mechanism for contributions.** Pull requests via the project
@@ -191,7 +191,7 @@ the lineage of any future preprint figure is traceable from this card.
 | `subject_id` | `hosp.patients.subject_id` | Surrogate ID; never a real MRN |
 | `csf_glucose` | `hosp.labevents` itemid 51790 | mg/dL; median per subject |
 | `csf_protein` | `hosp.labevents` itemid 51802 | mg/dL; median per subject |
-| `csf_wbc` | `hosp.labevents` itemid 52286 | "Total Nucleated Cells, CSF" — closest available; MIMIC-IV does not carry "WBC, CSF" |
+| `csf_wbc` | `hosp.labevents` itemid 52286 | "Total Nucleated Cells, CSF", closest available; MIMIC-IV does not carry "WBC, CSF" |
 | `csf_polys_pct` | `hosp.labevents` itemid 52281 | neutrophil % proxy |
 | `microscopy` | `hosp.microbiologyevents` | 1 if any positive Gram stain on `spec_type_desc == 'CSF;SPINAL FLUID'` |
 | `risk_label` | `hosp.diagnoses_icd` | High = G00.x bacterial; Low = A87.x viral; OOD held-out = B60.2 PAM |

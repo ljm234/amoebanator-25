@@ -1,4 +1,4 @@
-# TRIPOD+AI checklist — Amoebanator V1.0
+# TRIPOD+AI checklist, Amoebanator V1.0
 
 Per Collins GS et al., *TRIPOD+AI statement: updated guidance for reporting
 clinical prediction models that use regression or machine learning methods*,
@@ -31,7 +31,7 @@ and patient/public involvement.
 | 7 | Data preparation | DONE | Pipeline: `pd.read_csv` → Safe Harbor scrub (`ml/data_loader.deidentify_dataframe`) → one-hot symptom expansion → `df.fillna(0)` → stratified split (`ml/splits.stratified_split`). Median-impute used inside Mahalanobis. Linkage: subject_id only, no cross-table linkage in V1.0. |
 | 8 | Outcome | DONE | Binary outcome: `risk_label == "High"` (mapped from bacterial / amebic ICD codes in the planned MIMIC-IV cohort; encoded as `risk_label` in the bundled CSV). Assessed at row time. No blinding (retrospective records). |
 | 9 | Predictors | DONE | Ten predictors: `age`, four CSF labs (glucose, protein, WBC/Total Nucleated Cells, polys%), three binary clinical findings (PCR, microscopy, exposure), three symptom indicators (fever, headache, nuchal rigidity). Pre-selected by domain knowledge per Cope 2016 / Yoder 2010; no automated feature selection. |
-| 10 | Sample size | DONE (with caveat) | Current: n_train = 24, n_val = 6 — flagged in every report. Phase 4.1 framework refuses to ship conformal qhats fit on n_cal < 100. Planned MIMIC-IV cohort is expected to exceed 1000 admissions. |
+| 10 | Sample size | DONE (with caveat) | Current: n_train = 24, n_val = 6, flagged in every report. Phase 4.1 framework refuses to ship conformal qhats fit on n_cal < 100. Planned MIMIC-IV cohort is expected to exceed 1000 admissions. |
 | 11 | Missing data | DONE | Tabular missingness handled via `df.fillna(0)` in the trainer (matches the per-row `_build_feature_vector` behaviour at inference time). Mahalanobis tolerates per-feature NaN by median-imputing before the Z-transform. |
 | 12 | Analytical methods | DONE | Architecture: 32-16-2 MLP (PyTorch). Loss: cross-entropy with class weight clamped to [1, 10]. Optimiser: Adam (lr=1e-3, 60 epochs, full-batch). Calibration: L-BFGS temperature scaling on validation logits (Guo 2017). Hyperparameters fixed (no tuning sweep at n = 24). Software: Python 3.12, PyTorch 2.9.1, sklearn 1.8.0; pinned in `requirements.txt`. |
 | 13 | Class imbalance | DONE | Class-weighted cross-entropy with the positive-class weight `w_pos = max(1, neg/pos)` clamped to [1, 10]. The clamp prevents the small-fold instability that produced exploding losses without the bound. |
@@ -53,9 +53,9 @@ and patient/public involvement.
 | # | Item | Status |
 |---|------|--------|
 | 21 | Participants | Bundled-data only: n_train = 24, n_val = 6, n_test = 6 per `ml.splits.stratified_split` defaults (60/20/20). Real-data flow pending Phase 6. |
-| 22 | Model development | DONE — final model spec in `outputs/model/model.pt` + `outputs/model/features.json` + `outputs/model/temperature_scale.json`. Predictor-importance analysis pending real-data evaluation. |
-| 23 | Model performance | Partial — `outputs/metrics/metrics.json` reports AUC = 1.0 / recall = 1.0 on n = 6 with the standing caveat. Bootstrap CI table at `outputs/metrics/ablation_table.{json,csv}`. Subgroup / fairness results pending Phase 6. |
-| 24 | Model updating | Not applicable — no recalibration in V1.0 (single training pass per re-run). |
+| 22 | Model development | DONE, final model spec in `outputs/model/model.pt` + `outputs/model/features.json` + `outputs/model/temperature_scale.json`. Predictor-importance analysis pending real-data evaluation. |
+| 23 | Model performance | Partial, `outputs/metrics/metrics.json` reports AUC = 1.0 / recall = 1.0 on n = 6 with the standing caveat. Bootstrap CI table at `outputs/metrics/ablation_table.{json,csv}`. Subgroup / fairness results pending Phase 6. |
+| 24 | Model updating | Not applicable, no recalibration in V1.0 (single training pass per re-run). |
 
 ## Discussion
 
@@ -72,18 +72,18 @@ and patient/public involvement.
 This checklist exposes the five places TRIPOD+AI is more demanding than the
 original 2015 statement, and how Amoebanator V1.0 responds:
 
-1. **Item 13 (class imbalance) — new in 2024.** Amoebanator: clamped class
+1. **Item 13 (class imbalance), new in 2024.** Amoebanator: clamped class
    weight, documented in the model card.
-2. **Item 18 (fairness) — new in 2024.** Amoebanator: not yet, deferred to
+2. **Item 18 (fairness), new in 2024.** Amoebanator: not yet, deferred to
    Phase 6 with the protocol pre-specified.
-3. **Item 19 (open science) — elevated to standalone item in 2024.**
+3. **Item 19 (open science), elevated to standalone item in 2024.**
    Amoebanator: full code + audit chain + reproducibility instructions in
    `docs/REPRODUCIBILITY.md` (Phase 9.5).
-4. **Item 20 (PPI) — new in 2024.** Amoebanator: not yet, planned for the
+4. **Item 20 (PPI), new in 2024.** Amoebanator: not yet, planned for the
    DECIDE-AI study.
-5. **Item 12 (computational reproducibility) — expanded in 2024.**
+5. **Item 12 (computational reproducibility), expanded in 2024.**
    Amoebanator: pinned `requirements.txt`, Dockerfile, GitHub Actions CI,
-   pinned random seeds — see Phase 9 deliverables.
+   pinned random seeds, see Phase 9 deliverables.
 
 ## Status summary
 

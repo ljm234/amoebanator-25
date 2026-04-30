@@ -1,4 +1,4 @@
-# Model card — Amoebanator MLP triage classifier
+# Model card, Amoebanator MLP triage classifier
 
 Per Mitchell et al., *Model Cards for Model Reporting*, FAccT 2019
 (DOI 10.1145/3287560.3287596). All quantitative figures below come from
@@ -120,7 +120,7 @@ pipeline; every claim is defensible against a current run.
 
 ## 6. Training data
 
-* **Source.** `outputs/diagnosis_log_pro.csv` — 30 simulated rows generated
+* **Source.** `outputs/diagnosis_log_pro.csv`, 30 simulated rows generated
   to mimic published PAM presentations. Every row carries `source =
   "simulated"` and `physician = "demo"`. No real patient data is included.
 * **Distribution over factors.** The bundled marginals were tuned to match
@@ -139,7 +139,7 @@ pipeline; every claim is defensible against a current run.
   perfect separation on a 6-row validation set and **are not evidence of
   clinical accuracy.**
 * **Intersectional results.** Not reported. The validation split has
-  insufficient counts to support stratified analysis — formal subgroup
+  insufficient counts to support stratified analysis, formal subgroup
   reporting is a Phase 6 deliverable.
 * **Ablation table.** `outputs/metrics/ablation_table.{json,csv}`
   contains the four-cell ablation (base / +calibration / +conformal /
@@ -159,7 +159,7 @@ pipeline; every claim is defensible against a current run.
   exemption (`docs/USER_ASSIGNMENTS.md` step 2) and PhysioNet DUA
   (step 1).
 * **Model effects on human life / rights / safety.** *Potential* effects
-  in the deployment scenario the model targets are catastrophic — PAM is
+  in the deployment scenario the model targets are catastrophic, PAM is
   near-uniformly fatal. The model card's *Out-of-scope use cases* (§ 2)
   exists to prevent this from being read as a deployable triage signal.
   Misuse risk is concentrated on the demo dashboard: a clinician seeing
@@ -193,7 +193,7 @@ pipeline; every claim is defensible against a current run.
   `source = "synthetic_from_yoder2010"` so they can be filtered out of
   any real-data quoted metric.
 * **Conformal coverage guarantee.** Holds at 1 − α only as n_cal grows.
-  At n = 6 the slack is ±1/(n+1) ≈ ±0.143 around the target — the
+  At n = 6 the slack is ±1/(n+1) ≈ ±0.143 around the target, the
   `SmallCalibrationWarning` makes this explicit and the held-out
   framework refuses to ship a population-level claim until n ≥ 100.
 * **No bacterial / viral / fungal class labels yet.** Phase 5.5

@@ -1,4 +1,4 @@
-# User Assignments — work that requires Jordan, not Claude Code
+# User Assignments, work that requires Jordan, not Claude Code
 
 **Last refreshed:** 2026-04-27 (Phase 4.5 PRE-FLIGHT audit close)
 **Companion docs:** `PHASE_4_5_PLAN.md` §7, `PHASE_4_5_PROMPT_FINAL.md` §7
@@ -6,10 +6,10 @@
 This is the single source of truth for everything the Amoebanator pipeline needs from a human. Each entry is self-contained: why it matters, what to do, how long it realistically takes, and the verification command that proves it succeeded.
 
 The structure follows a 4-tier timeline:
-- **§1 Pre-sprint** — must be done BEFORE Phase 4.5 sprint kickoff
-- **§2 During-sprint** — touchpoints between Mini-1 and Mini-2 (autonomous; no user action required)
-- **§3 Post-sprint** — after Mini-2 closure
-- **§4 Future Phase 6+** — deferred until MIMIC-IV cohort lands
+- **§1 Pre-sprint**, must be done BEFORE Phase 4.5 sprint kickoff
+- **§2 During-sprint**, touchpoints between Mini-1 and Mini-2 (autonomous; no user action required)
+- **§3 Post-sprint**, after Mini-2 closure
+- **§4 Future Phase 6+**, deferred until MIMIC-IV cohort lands
 
 Completed Phase 1-9 historical assignments are listed at the bottom (§5) with strikethrough markers for traceability.
 
@@ -17,7 +17,7 @@ Completed Phase 1-9 historical assignments are listed at the bottom (§5) with s
 
 ## §1. Pre-sprint assignments (must complete BEFORE Mini-1 kickoff)
 
-### Step 1 — Verify backup tar.gz exists
+### Step 1, Verify backup tar.gz exists
 
 **Why:** Cheap insurance before sprint commits land. If anything in Mini-1 / Mini-2 goes catastrophically wrong, the backup is the unconditional rollback path.
 
@@ -42,7 +42,7 @@ ls -lh ~/amoebanator-pre-4.5-sprint.tar.gz  # verify
 
 ---
 
-### Step 2 — Verify HF Space exists
+### Step 2, Verify HF Space exists
 
 **Why:** Sprint deploys to an existing HF Space. Creating it mid-sprint adds friction and changes the deploy URL.
 
@@ -55,13 +55,13 @@ curl -s -o /dev/null -w "%{http_code}\n" \
 
 **Expected:** `200`.
 
-If `404`, the Space needs to be created via the HF Hub UI (https://huggingface.co/new-space) with: Owner=`luisjordanmontenegro`, Space name=`amoebanator-25`, SDK=Docker (not Streamlit native — Docker SDK is required for the locked Dockerfile + `.streamlit/config.toml` setup), Visibility=Public, Hardware=CPU Basic (free tier).
+If `404`, the Space needs to be created via the HF Hub UI (https://huggingface.co/new-space) with: Owner=`luisjordanmontenegro`, Space name=`amoebanator-25`, SDK=Docker (not Streamlit native, Docker SDK is required for the locked Dockerfile + `.streamlit/config.toml` setup), Visibility=Public, Hardware=CPU Basic (free tier).
 
 **Realistic timeline:** 30 seconds verify; 5 minutes create if missing.
 
 ---
 
-### Step 3 — Verify HF token in macOS Keychain
+### Step 3, Verify HF token in macOS Keychain
 
 **Why:** GitHub Actions deploy workflow reads the HF token from Keychain (via the wrapper script that resolves Keychain → env var). Token must be in Keychain BEFORE Step 4 uploads it to GitHub.
 
@@ -77,7 +77,7 @@ If missing, add via interactive prompt (NEVER paste the token to shell history):
 
 ```bash
 security add-generic-password -a "$USER" -s "hf-amoebanator-25" -w
-# Terminal will prompt for password — paste the hf_... token there.
+# Terminal will prompt for password, paste the hf_... token there.
 # It is NOT stored in shell history because no -W argument was used.
 ```
 
@@ -85,7 +85,7 @@ security add-generic-password -a "$USER" -s "hf-amoebanator-25" -w
 
 ---
 
-### Step 4 — Verify GitHub auth + HF_TOKEN secret uploaded
+### Step 4, Verify GitHub auth + HF_TOKEN secret uploaded
 
 **Why:** GitHub Actions workflow (`.github/workflows/deploy_hf.yml` if exists, or future addition) needs `HF_TOKEN` as a repo-level secret to push to the HF Space.
 
@@ -123,21 +123,21 @@ unset HF_TOKEN_TMP
 
 ---
 
-### Step 5 — PhysioNet credentialed-access form (already submitted)
+### Step 5, PhysioNet credentialed-access form (already submitted)
 
 **Status:** Submitted 2026-04-25. Awaiting review confirmation.
 
-**Background:** Required for downloading MIMIC-IV CSVs (Phase 6 dependency). Phase 4.5 sprint does NOT depend on this — the sprint uses synthetic n=30 data only. This step is listed here because Phase 6 will need the CSVs, but it does not block Phase 4.5 kickoff.
+**Background:** Required for downloading MIMIC-IV CSVs (Phase 6 dependency). Phase 4.5 sprint does NOT depend on this, the sprint uses synthetic n=30 data only. This step is listed here because Phase 6 will need the CSVs, but it does not block Phase 4.5 kickoff.
 
 **Reviewer of record:** Abdias Valdiviezo (PhysioNet credentialing).
 
-**No action needed unless rejected** — if rejection email arrives, re-submit with reference contact (Dr. Brett Pickett at BYU as suggested in original Phase 1-9 form).
+**No action needed unless rejected**, if rejection email arrives, re-submit with reference contact (Dr. Brett Pickett at BYU as suggested in original Phase 1-9 form).
 
 ---
 
-### Step 6 — NEW — `gh repo rename` Amoebanator_25 → amoebanator-25
+### Step 6, NEW, `gh repo rename` Amoebanator_25 → amoebanator-25
 
-**Why:** The HF Space slug is `luisjordanmontenegro/amoebanator-25` (lowercase + dash, npm/pypi convention). The current GitHub repo is `ljm234/Amoebanator_25` (capital + underscore). The locked Phase 4.5 disclaimer URL is `github.com/ljm234/amoebanator-25` — that URL only resolves after the rename. Match the repo slug to the HF slug so the segment a PI pastes is identical across both URLs (citation hygiene).
+**Why:** The HF Space slug is `luisjordanmontenegro/amoebanator-25` (lowercase + dash, npm/pypi convention). The current GitHub repo is `ljm234/Amoebanator_25` (capital + underscore). The locked Phase 4.5 disclaimer URL is `github.com/ljm234/amoebanator-25`, that URL only resolves after the rename. Match the repo slug to the HF slug so the segment a PI pastes is identical across both URLs (citation hygiene).
 
 **Procedure:**
 
@@ -158,7 +158,7 @@ gh repo view --json url --jq .url
 # Expected: "https://github.com/ljm234/amoebanator-25"
 ```
 
-**Why path (b) rename and NOT path (c) full rebrand to luisjordanmontenegro GitHub account:** Per Q19.D vote, full rebrand costs re-auth + secret regen + ownership transfer for one-line disclosure benefit. The username mismatch (`ljm234` GitHub vs `luisjordanmontenegro` HF) is handled by a one-line addition to the About page (`pages/03_about.py`): *"Repo: github.com/ljm234/amoebanator-25 — HuggingFace Space: huggingface.co/spaces/luisjordanmontenegro/amoebanator-25 (same author, separate handles)."*
+**Why path (b) rename and NOT path (c) full rebrand to luisjordanmontenegro GitHub account:** Per Q19.D vote, full rebrand costs re-auth + secret regen + ownership transfer for one-line disclosure benefit. The username mismatch (`ljm234` GitHub vs `luisjordanmontenegro` HF) is handled by a one-line addition to the About page (`pages/03_about.py`): *"Repo: github.com/ljm234/amoebanator-25, HuggingFace Space: huggingface.co/spaces/luisjordanmontenegro/amoebanator-25 (same author, separate handles)."*
 
 **Realistic timeline:** 2 minutes.
 
@@ -172,15 +172,15 @@ gh repo view --json url --jq .url
 
 The Mini-1 → Mini-2 transition is a Claude Code pause for explicit user vote (per `PHASE_4_5_PROMPT_FINAL.md` §5.2 standing instruction): after all 7 Mini-1 closure gates green, Claude waits for "go Mini-2" from Jordan before continuing. This is a verification + approval touchpoint, not a coding action.
 
-If Mini-1 reports any closure gate fail, Claude stops and reports — Jordan decides whether to fix-and-retry, redirect, or pause.
+If Mini-1 reports any closure gate fail, Claude stops and reports, Jordan decides whether to fix-and-retry, redirect, or pause.
 
 ---
 
 ## §3. Post-sprint assignments (after Mini-2 closure)
 
-### Step 7 — Update `jordanmontenegrocalla.com/playground` link-out (Vercel Next.js repo)
+### Step 7, Update `jordanmontenegrocalla.com/playground` link-out (Vercel Next.js repo)
 
-**Why:** Q9 locked link-out only — the Vercel `/playground` page replaces its placeholder content with a button to the HF Space. This edit happens in the **Vercel website repo** (separate from Amoebanator), executed by Jordan post-sprint.
+**Why:** Q9 locked link-out only, the Vercel `/playground` page replaces its placeholder content with a button to the HF Space. This edit happens in the **Vercel website repo** (separate from Amoebanator), executed by Jordan post-sprint.
 
 **Procedure (executed in the Next.js repo, NOT the Amoebanator repo):**
 
@@ -206,7 +206,7 @@ git diff --cached --quiet || git commit -m "chore: ignore .tsx.bak rollback file
 #   Target:      _blank (open in new tab)
 #   Caption (under button, smaller font):
 #     "Hosted on Hugging Face Spaces (free CPU tier; cold-start ~30s
-#      on first visit after idle period). Research prototype — not
+#      on first visit after idle period). Research prototype, not
 #      for clinical use."
 
 # Step 4: Commit + push
@@ -227,9 +227,9 @@ git push origin main
 
 ---
 
-## §4. Future Phase 6+ assignments (deferred — when MIMIC-IV cohort lands)
+## §4. Future Phase 6+ assignments (deferred, when MIMIC-IV cohort lands)
 
-### Step 8 — Download MIMIC-IV CSVs after PhysioNet approval
+### Step 8, Download MIMIC-IV CSVs after PhysioNet approval
 
 **Trigger:** PhysioNet approval email arrives (~1-3 weeks after Step 5 form submission).
 
@@ -271,7 +271,7 @@ print(f'cohort rows={len(cohort)}, balance={task_balance(cohort)}')
 
 ---
 
-### Step 9 — Create real IRB record + flip `AMOEBANATOR_IRB_BYPASS=0`
+### Step 9, Create real IRB record + flip `AMOEBANATOR_IRB_BYPASS=0`
 
 **Trigger:** Phase 6 Mini-X is ready to integrate real PHI from MIMIC-IV.
 
@@ -287,7 +287,7 @@ cat > outputs/governance/irb_record.json <<EOF
   "irb_status": "approved",
   "approval_date": "<YYYY-MM-DD>",
   "expiration_date": "<YYYY-MM-DD>",
-  "approving_body": "Independent researcher — MIMIC-IV DUA",
+  "approving_body": "Independent researcher, MIMIC-IV DUA",
   "data_use_agreement": "MIMIC-IV PhysioNet DUA (signed <YYYY-MM-DD>)",
   "justification": "Independent research on de-identified MIMIC-IV cohort (Beth Israel Deaconess). PhysioNet credentialing approved per Step 5. No new PHI generated; analysis on existing de-identified records under 45 CFR §46.104(d)(4)."
 }
@@ -301,7 +301,7 @@ EOF
 #   [ ] tests/test_irb_gate.py::test_real_phi_path_requires_irb_record passes
 
 # 3. Edit Dockerfile: change ENV AMOEBANATOR_IRB_BYPASS=1 to =0
-# (or remove the env var entirely — ml/irb_gate.py treats missing/0 as "enforce")
+# (or remove the env var entirely, ml/irb_gate.py treats missing/0 as "enforce")
 # Reference the verbatim 5-bullet safety comment block in PHASE_4_5_PROMPT_FINAL.md §6.7
 
 # 4. Run full test suite, especially the new IRB enforcement tests
@@ -309,12 +309,12 @@ pytest tests/test_irb_gate.py -v
 
 # 5. Re-deploy to HF Space
 git add Dockerfile outputs/governance/irb_record.json
-git commit -m "fix(safety): IRB_BYPASS=0 with real PHI cohort (Phase 6 — MIMIC-IV)"
+git commit -m "fix(safety): IRB_BYPASS=0 with real PHI cohort (Phase 6, MIMIC-IV)"
 git push origin main
 git push hf main  # trigger HF Space rebuild
 ```
 
-**Verification:** App boots successfully with `AMOEBANATOR_IRB_BYPASS=0`. Without the IRB record, `IRBGateBlocked` raises and the app refuses to start (correct behavior — fail-loud over fail-silent).
+**Verification:** App boots successfully with `AMOEBANATOR_IRB_BYPASS=0`. Without the IRB record, `IRBGateBlocked` raises and the app refuses to start (correct behavior, fail-loud over fail-silent).
 
 **Realistic timeline:** 30 minutes (record creation + checklist verification + Dockerfile edit + test run + deploy).
 
@@ -328,7 +328,7 @@ These are Phase 1-9 era items, retained for traceability. All completed before t
 
 CITI training completed. PhysioNet form submitted with reference contact + 1-paragraph research description. Awaiting review confirmation. (See current §1 Step 5 for status; downstream MIMIC-IV download deferred to §4 Step 8.)
 
-### ~~Phase 1-9 §2. Weber State IRB exemption letter~~ — REMOVED
+### ~~Phase 1-9 §2. Weber State IRB exemption letter~~, REMOVED
 
 **Original status:** REQUIRED for medRxiv preprint submission.
 
@@ -338,7 +338,7 @@ CITI training completed. PhysioNet form submitted with reference contact + 1-par
 
 `lightgbm==4.6.0` installed. `GBMIsotonic.backend_ = "lightgbm"` verified end-to-end. Ablation table at `outputs/metrics/ablation_table.json` uses LightGBM for the GBM cell.
 
-### ~~Phase 1-9 §4. (Optional) Capewell 2015 PDF extraction~~ — STILL OPTIONAL
+### ~~Phase 1-9 §4. (Optional) Capewell 2015 PDF extraction~~, STILL OPTIONAL
 
 Optional enrichment for `ml/case_series.synthesize_yoder_cohort` to sample from empirical PAM CSF distribution rather than broader bacterial-meningitis-pattern range. Defer to Phase 6 with MIMIC-IV (real CSF distributions will supersede the published-case-series synthesis approach).
 
@@ -356,13 +356,13 @@ No standalone user action required. Loader handles the fungal/parasitic OOD held
 | §1 Pre-sprint | 2 | Verify HF Space exists | **REQUIRED before sprint** |
 | §1 Pre-sprint | 3 | Verify HF token in Keychain | **REQUIRED before sprint** |
 | §1 Pre-sprint | 4 | Verify GitHub HF_TOKEN secret | **REQUIRED before sprint** |
-| §1 Pre-sprint | 5 | PhysioNet form (submitted, awaiting) | ✅ submitted 2026-04-25 |
+| §1 Pre-sprint | 5 | PhysioNet form (submitted, awaiting) | submitted 2026-04-25 |
 | §1 Pre-sprint | 6 | gh repo rename Amoebanator_25 → amoebanator-25 | **REQUIRED before sprint** |
-| §2 During-sprint | — | (none) | autonomous |
+| §2 During-sprint |, | (none) | autonomous |
 | §3 Post-sprint | 7 | Vercel /playground link-out | scheduled post-sprint |
 | §4 Future | 8 | MIMIC-IV CSV download | deferred until PhysioNet approval |
 | §4 Future | 9 | IRB_BYPASS flip + irb_record.json | deferred until Phase 6 Mini-X |
-| §5 Historical | — | Phase 1-9 completed items | reference only |
+| §5 Historical |, | Phase 1-9 completed items | reference only |
 
 **Sprint kickoff blocker:** Steps 1, 2, 3, 4, 6 in §1 must all be ✓ before pasting `PHASE_4_5_PROMPT_FINAL.md` into a fresh Claude Code session. Step 5 is informational (does not block Phase 4.5; blocks Phase 6).
 

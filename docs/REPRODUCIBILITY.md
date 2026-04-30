@@ -5,7 +5,7 @@ numbers in the model card / preprint?"
 
 ---
 
-## TL;DR — three commands
+## TL;DR, three commands
 
 ```bash
 cd "/Users/jordanmontenegro/Desktop/Amoebanator 25/Amoebanator 25"
@@ -36,7 +36,7 @@ don't, see "Known sources of non-determinism."
 The CI matrix in `.github/workflows/test.yml` runs on Ubuntu / Python 3.12
 with CPU-only PyTorch wheels. Headline metrics (`auc_calibrated`, `T`,
 `qhat`, `tau`) are bit-identical between Apple MPS and Linux CPU when the
-model is small (32-16-2) and the seed is pinned — this has been verified
+model is small (32-16-2) and the seed is pinned, this has been verified
 across the V1.0 sprint.
 
 For exact replication on a different machine, prefer the Docker image:
@@ -71,7 +71,7 @@ Override the seed without touching code via the environment variable:
 AMOEBANATOR_SEED=7 PYTHONPATH=. python -m ml.training_calib_dca
 ```
 
-The default seed is **42** — the same value used by every
+The default seed is **42**, the same value used by every
 `train_test_split(..., random_state=42)` call in the trainer, so the val
 fold is bit-identical across runs.
 
@@ -121,21 +121,21 @@ job can post a digest.
 
 ## Known sources of non-determinism
 
-1. **L-BFGS temperature scaling** — the L-BFGS optimizer in
+1. **L-BFGS temperature scaling**, the L-BFGS optimizer in
    `ml/calibration.py` may converge to a slightly different `T` if the
    underlying BLAS routine emits floating-point operations in a
    different order across runtimes. Tolerance in the determinism test
    is 1e-5 to absorb this.
-2. **Bootstrap CI** — `ml/metrics/bootstrap.py` accepts a `seed`
+2. **Bootstrap CI**, `ml/metrics/bootstrap.py` accepts a `seed`
    parameter (default 0). All scripts that invoke it pass the same seed
    so the percentile boundaries are deterministic for a given
    (y_true, y_score) pair.
-3. **Stratified split warning** — when `ml.splits.stratified_split` is
+3. **Stratified split warning**, when `ml.splits.stratified_split` is
    called with a `groups` array that forces extreme class drift, the
    per-group draw can vary slightly across pytest re-orderings. The
    `test_group_split_warns_when_class_drift_large` test tolerates this
    by trying multiple seeds before asserting the drift warning fires.
-4. **MPS vs CPU** — Apple's MPS backend uses different reduction kernels
+4. **MPS vs CPU**, Apple's MPS backend uses different reduction kernels
    than CPU. Across the small models in this repo the differences are
    below the test tolerances; do not assume bit-identity for larger
    models.

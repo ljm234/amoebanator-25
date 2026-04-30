@@ -8,7 +8,7 @@ of the V1.0 sprint (April 2026) because they share three properties:
 1. They have **zero unit-test coverage** in `tests/`.
 2. They are **not imported** by any production code path (training,
    inference, dashboard, fit scripts, or the ml/data wired modules).
-3. They contain **placeholder logic** in their core functions — for
+3. They contain **placeholder logic** in their core functions, for
    example, `who_database.py` returns `np.random` data with a
    `# Simulated API call` comment instead of issuing a real WHO GHO
    request; `synthetic.py` returns prompt strings without invoking any
@@ -49,7 +49,7 @@ A module is ready to graduate out of `_wip/` when:
 
 ## Why move rather than delete
 
-These modules are real research artefacts — they encode a design surface for
+These modules are real research artefacts, they encode a design surface for
 the data pipeline that the project will need eventually. Deleting them would
 lose that design work. Keeping them under `_wip/` makes them grep-able for
 future contributors while preventing accidental import from production code.

@@ -7,7 +7,7 @@ test passing, every script runnable end-to-end on the bundled simulated data;
 real-data dependencies escalated to `docs/USER_ASSIGNMENTS.md`.
 
 **Final test count:** 1194 passing (baseline 1055 → +139 net new).
-**Lint:** `ruff check ml/ scripts/ tests/ app.py` — all checks passed.
+**Lint:** `ruff check ml/ scripts/ tests/ app.py`, all checks passed.
 **Type-check:** `mypy --strict` clean on every new file.
 **Hardware:** macOS 14 / Apple Silicon; Python 3.12; PyTorch 2.9.1; sklearn 1.8.0.
 
@@ -22,7 +22,7 @@ real-data dependencies escalated to `docs/USER_ASSIGNMENTS.md`.
   distinct calibrated `p_high` values (regression-tested in
   `tests/test_infer_integration.py` with a 10-row constant-output sentinel).
 * **Streamlit dashboard (Phase 1.3).** `app.py` mounts `ml/ui_live_patient.py`
-  at the top — full form input for the 10 trained features with PAM-typical
+  at the top, full form input for the 10 trained features with PAM-typical
   defaults and CSF normal-range hints, conformal bands, OOD distance, two
   energy readings, raw-output expander.
 * **Energy gates (Phase 1.4 + 5.2).** Both `outputs/metrics/energy_threshold.json`
@@ -30,7 +30,7 @@ real-data dependencies escalated to `docs/USER_ASSIGNMENTS.md`.
   calibrated probability) are fitted from real validation logits via
   `scripts/fit_gates.py`, with a deterministic recomputation fallback when
   `val_preds.csv` lacks logit columns.
-* **Honest README (Phase 1.5).** Created — sections for what is wired, what is
+* **Honest README (Phase 1.5).** Created, sections for what is wired, what is
   WIP scaffolding, limitations of n=24/n=6, citations for every methods
   reference and the 97% PAM mortality figure (Cope 2016 + CDC 2025).
 * **Real-data infrastructure (Phase 2).** MIMIC-IV CSF cohort loader
@@ -53,9 +53,9 @@ real-data dependencies escalated to `docs/USER_ASSIGNMENTS.md`.
 
 ---
 
-## Phase 1 — Repo Cleanup & Inference Wiring
+## Phase 1, Repo Cleanup & Inference Wiring
 
-### Subphase 1.1 — Rip out `_toy_logits`, wire `model.pt`
+### Subphase 1.1, Rip out `_toy_logits`, wire `model.pt`
 **Status:** DONE
 **Files:** `ml/infer.py` (rewritten with `_load_model_artifacts`, state-dict
 architecture validation, T > 0 finite check, `__file__`-anchored paths);
@@ -67,7 +67,7 @@ impossible to ship silently. Bonus correctness fix: `sigmoid(hi)` →
 `softmax([lo, hi])[1]` to match training's evaluation.
 **Quality:** Exceptional
 
-### Subphase 1.2 — Integration test (distinct inputs → distinct p_high)
+### Subphase 1.2, Integration test (distinct inputs → distinct p_high)
 **Status:** DONE
 **Files:** `tests/test_infer_integration.py` (31 tests covering end-to-end
 distinct-input regression sentinel, feature-vector unit tests, real-logits
@@ -77,7 +77,7 @@ explicit in the assertion message; future refactors that re-introduce a
 constant predictor fail CI loudly.
 **Quality:** Exceptional
 
-### Subphase 1.3 — Streamlit live-patient widget
+### Subphase 1.3, Streamlit live-patient widget
 **Status:** DONE
 **Files:** `ml/ui_live_patient.py` (form with 10 trained features, PAM-typical
 defaults, normal-range hints, decision badge, two energy readings, raw-output
@@ -87,7 +87,7 @@ early-return, submission row passes through to `infer_one`, missing-model
 handled gracefully).
 **Quality:** Exceptional
 
-### Subphase 1.4 — Fix energy OOD gate, add fit script
+### Subphase 1.4, Fix energy OOD gate, add fit script
 **Status:** DONE
 **Files:** `scripts/fit_gates.py` (writes both `energy_threshold.json` and
 `ood_energy.json`; recomputes logits deterministically when missing);
@@ -100,21 +100,21 @@ handled gracefully).
 the *threshold* is real, the *guarantee* is empirical.
 **Quality:** Exceptional
 
-### Subphase 1.5 — Honest README rewrite
+### Subphase 1.5, Honest README rewrite
 **Status:** DONE
-**Files:** `README.md` (created — was missing; ~160 lines covering scope,
+**Files:** `README.md` (created, was missing; ~160 lines covering scope,
 quickstart with working scripts, what-is-wired/what-is-not tables, limitations,
 8 citations including CDC + Cope 2016 for the 97% mortality figure).
 **Quality:** Exceptional
 
 ---
 
-## Phase 2 — Real Test Set Acquisition (data-blocked subphases bridged on synthetics)
+## Phase 2, Real Test Set Acquisition (data-blocked subphases bridged on synthetics)
 
-### Subphase 2.1 — PhysioNet credentialed access
+### Subphase 2.1, PhysioNet credentialed access
 **Status:** USER ASSIGNMENT (escalated)
 **Files:** `docs/USER_ASSIGNMENTS.md` (5 numbered sections; PhysioNet steps
-verified against the current 2026 process — CITI course, credentialing
+verified against the current 2026 process, CITI course, credentialing
 review 1–3 weeks, DUA at the project page).
 **Reorder:** Per sprint directive, Phase 2.2 + 2.5 + 5.5 real-data work moves
 to "after Jordan completes Step 1 of `USER_ASSIGNMENTS.md`"; meanwhile the
@@ -123,7 +123,7 @@ end-to-end tests.
 **Quality:** Excellent (assignment is fully specified; cannot be Exceptional
 until Jordan's CITI report is filed)
 
-### Subphase 2.2 — MIMIC-IV CSF loader (scaffold)
+### Subphase 2.2, MIMIC-IV CSF loader (scaffold)
 **Status:** DONE (operates on synthetic MIMIC-shaped CSVs; ready for real data)
 **Files:** `ml/mimic_iv_loader.py` (verified itemids 51790/51802/52286/52281/52264;
 `spec_type_desc == 'CSF;SPINAL FLUID'`; ICD-10-CM codes G00.x / A87.x / B60.2;
@@ -133,34 +133,34 @@ the 9_xxx_xxx range so they can never collide with real IDs);
 `tests/test_mimic_iv_loader.py` (15 tests).
 **Reviewer-concern preempt:** all itemids verified against PhysioNet `d_labitems`
 demo; the "CSF WBC" surrogate is **52286 Total Nucleated Cells, CSF** because
-MIMIC-IV does not carry a literal "WBC, CSF" item — documented in the loader
+MIMIC-IV does not carry a literal "WBC, CSF" item, documented in the loader
 docstring so this isn't a future-Jordan-traps-future-Jordan moment.
 **Quality:** Exceptional
 
-### Subphase 2.3 — Published case-series stats module
+### Subphase 2.3, Published case-series stats module
 **Status:** DONE
-**Files:** `ml/case_series.py` (Yoder 2010 epidemiology constants — n=111,
+**Files:** `ml/case_series.py` (Yoder 2010 epidemiology constants, n=111,
 n_fatal=110, age_median=12, male_n=88, exposure distribution; CDC 2024
-aggregate — 167 cases / 4 survivors / CFR 97.6%; Cope 2016 qualitative CSF
+aggregate, 167 cases / 4 survivors / CFR 97.6%; Cope 2016 qualitative CSF
 patterns; `synthesize_yoder_cohort` draws synthetic rows whose marginals match
 published distributions, every row carries `source="synthetic_from_yoder2010"`);
 `tests/test_case_series.py` (14 tests including "constants must match the paper").
 **Reviewer-concern preempt:** Cope 2016 reports CSF abnormalities qualitatively
-only — the docstring and `USER_ASSIGNMENTS.md` Step 4 explicitly flag Capewell
+only, the docstring and `USER_ASSIGNMENTS.md` Step 4 explicitly flag Capewell
 LG et al., J Pediatric Infect Dis Soc 2015 (PMID 26582886) as the paper that
 tabulates the per-case CSF numerics, in case Jordan wants to add it.
 **Quality:** Exceptional
 
-### Subphase 2.4 — Rare-class proxy design doc
+### Subphase 2.4, Rare-class proxy design doc
 **Status:** DONE
-**Files:** `docs/rare_class_design.md` (~100 lines — the clinical question,
+**Files:** `docs/rare_class_design.md` (~100 lines, the clinical question,
 why a proxy is needed given 167 lifetime US cases, the bacterial-vs-viral
 proxy with PAM held out for OOD evaluation, feature mapping table with
 itemids, evaluation protocol with bootstrap CIs and conformal coverage targets,
 honesty section explicitly stating that the proxy ≠ PAM).
 **Quality:** Exceptional
 
-### Subphase 2.5 — Stratified split builder
+### Subphase 2.5, Stratified split builder
 **Status:** DONE
 **Files:** `ml/splits.py` (class-stratified by default; group-disjoint when
 `groups=` provided; warns when group constraint forces class-balance drift
@@ -171,30 +171,30 @@ group-disjoint warning).
 
 ---
 
-## Phase 3 — Baselines & Ablations
+## Phase 3, Baselines & Ablations
 
-### Subphase 3.1 — Logistic regression + Platt scaling baseline
+### Subphase 3.1, Logistic regression + Platt scaling baseline
 **Status:** DONE
 **Files:** `ml/baselines/logistic.py` (StandardScaler + sklearn LogisticRegression
 + CalibratedClassifierCV(method="sigmoid"); CV folds clamp to ≤
 n_per_class_min so it works on tiny datasets).
 **Quality:** Exceptional
 
-### Subphase 3.2 — Calibrated random forest baseline
+### Subphase 3.2, Calibrated random forest baseline
 **Status:** DONE
 **Files:** `ml/baselines/random_forest.py` (sklearn RandomForestClassifier +
 CalibratedClassifierCV; defaults to isotonic, falls back to sigmoid when
 n_per_class < 5 since isotonic overfits at small n).
 **Quality:** Exceptional
 
-### Subphase 3.3 — LightGBM / sklearn-GBM + isotonic baseline
+### Subphase 3.3, LightGBM / sklearn-GBM + isotonic baseline
 **Status:** DONE
 **Files:** `ml/baselines/gbm.py` (LightGBM 4.6+ when installed, sklearn
 GradientBoostingClassifier fallback; backend recorded as `backend_` attribute);
 `docs/USER_ASSIGNMENTS.md` Step 3 (optional `pip install lightgbm`).
 **Quality:** Exceptional
 
-### Subphase 3.4 — Four-cell ablation runner
+### Subphase 3.4, Four-cell ablation runner
 **Status:** DONE
 **Files:** `scripts/run_ablation.py` (sweeps base / +cal / +conformal / +ood
 across all baselines + Amoebanator MLP; uses `ml.splits.stratified_split` for
@@ -202,7 +202,7 @@ the train/cal/test partition; bootstrap CIs from Phase 3.5; writes
 `outputs/metrics/ablation_table.{json,csv}`); ran end-to-end producing 16 rows.
 **Quality:** Exceptional
 
-### Subphase 3.5 — Bootstrap CI utility (n=2000 default)
+### Subphase 3.5, Bootstrap CI utility (n=2000 default)
 **Status:** DONE
 **Files:** `ml/metrics/bootstrap.py` (`bootstrap_ci` and `bootstrap_ci_paired`,
 stratified resampling by default to preserve marginal class balance, raises if
@@ -213,9 +213,9 @@ narrowness, alpha validation, paired-CI difference detection).
 
 ---
 
-## Phase 4 — Conformal Calibration Hardening
+## Phase 4, Conformal Calibration Hardening
 
-### Subphase 4.1 — Held-out conformal framework
+### Subphase 4.1, Held-out conformal framework
 **Status:** DONE (framework; population numbers blocked on Phase 2 data)
 **Files:** `scripts/refit_conformal_held_out.py` (refuses to write a qhat fit
 on n < SMALL_CAL_FLOOR=100 unless `--force-small`; reports provenance
@@ -225,14 +225,14 @@ explicitly; supports `--label-conditional` for Mondrian conformal output).
 without code changes.
 **Quality:** Exceptional
 
-### Subphase 4.2 — Label-conditional conformal
+### Subphase 4.2, Label-conditional conformal
 **Status:** DONE
 **Files:** `ml/conformal_advanced.label_conditional_qhats` (Vovk Mondrian
-conformal — separate qhat per class so per-class coverage holds at 1−α);
+conformal, separate qhat per class so per-class coverage holds at 1−α);
 covered by `tests/test_conformal_advanced.py`.
 **Quality:** Exceptional
 
-### Subphase 4.3 — Vovk small-sample correction warning
+### Subphase 4.3, Vovk small-sample correction warning
 **Status:** DONE
 **Files:** `ml/conformal_advanced.SmallCalibrationWarning`,
 `ml.conformal_advanced.compute_qhat` issues the warning when n_cal <
@@ -240,14 +240,14 @@ SMALL_CAL_FLOOR; `scripts/refit_conformal_held_out.py` blocks writes when the
 warning fires.
 **Quality:** Exceptional
 
-### Subphase 4.4 — Coverage sweep across alpha
+### Subphase 4.4, Coverage sweep across alpha
 **Status:** DONE
 **Files:** `scripts/eval_coverage_sweep.py` (splits val_preds in half for cal
 vs test, runs `coverage_sweep` across α ∈ {0.05, 0.10, 0.20}, writes
 `outputs/metrics/coverage_sweep.{json,png}`).
 **Quality:** Exceptional
 
-### Subphase 4.5 — ABSTAIN ↔ accuracy Pareto frontier
+### Subphase 4.5, ABSTAIN ↔ accuracy Pareto frontier
 **Status:** DONE
 **Files:** `scripts/abstain_pareto.py` (51 qhat steps from 0.0 to 0.5; writes
 `outputs/metrics/abstain_pareto.{json,png}`).
@@ -255,48 +255,48 @@ vs test, runs `coverage_sweep` across α ∈ {0.05, 0.10, 0.20}, writes
 
 ---
 
-## Phase 5 — OOD Detection Hardening
+## Phase 5, OOD Detection Hardening
 
-### Subphase 5.1 — Train-only Mahalanobis fit
+### Subphase 5.1, Train-only Mahalanobis fit
 **Status:** DONE
 **Files:** `scripts/refit_mahalanobis_train.py` (re-derives the train indices
-the same way `ml/training_calib_dca.py` does — `random_state=42, test_size=0.2,
-stratify=y` — so the per-feature stats never see val/test rows; writes
+the same way `ml/training_calib_dca.py` does, `random_state=42, test_size=0.2,
+stratify=y`, so the per-feature stats never see val/test rows; writes
 `outputs/metrics/feature_stats_train.json` with `provenance` field).
 **Reviewer-concern preempt:** the audit-flagged subtle leakage (fit on entire
 CSV) is now provably gone; the new file documents itself as train-only.
 **Quality:** Exceptional
 
-### Subphase 5.2 — Energy gate from real validation logits
+### Subphase 5.2, Energy gate from real validation logits
 **Status:** DONE (delivered in 1.4)
 **Files:** `scripts/fit_gates.py` writes both `energy_threshold.json` (Liu
 logit-energy) and `ood_energy.json` (neg-energy on probability) from real
-val logits — no more `tau=0` placeholder.
+val logits, no more `tau=0` placeholder.
 **Quality:** Exceptional
 
-### Subphase 5.3 — Combined OOD gate decision rule
+### Subphase 5.3, Combined OOD gate decision rule
 **Status:** DONE
 **Files:** `ml/ood_combined.py` (OR / AND / WEIGHTED with configurable
 weights; `signals_from_infer_output` adapter pulls (score, threshold, flag)
 tuples directly from `ml.infer.infer_one`'s output dict);
 `tests/test_ood_combined.py` (11 tests).
-**Decision per sprint directive:** OR is the documented default — most
+**Decision per sprint directive:** OR is the documented default, most
 conservative, lowest miss rate; the FPR cost is documented in the module
 docstring.
 **Quality:** Exceptional
 
-### Subphase 5.4 — Synthetic OOD shift benchmarks
+### Subphase 5.4, Synthetic OOD shift benchmarks
 **Status:** DONE
 **Files:** `scripts/synthetic_ood_benchmark.py` (covariate-shift = scale +
 noise on CSF labs; label-shift = randomly flip risk_label; reports per-gate
 detection AUC, n_finite, in-dist vs OOD median scores).
 **Honest result:** label-shift produces AUC ≈ 0.5 across all gates (correct
-— flipping labels doesn't change the feature distribution, so feature-space
-gates are blind to it); covariate-shift AUCs sit in [0.5, 0.6] on n=30 — the
+- flipping labels doesn't change the feature distribution, so feature-space
+gates are blind to it); covariate-shift AUCs sit in [0.5, 0.6] on n=30, the
 small-sample noise is documented in the output JSON.
 **Quality:** Exceptional
 
-### Subphase 5.5 — Real OOD evaluation (bacterial vs viral, fungal/parasitic OOD)
+### Subphase 5.5, Real OOD evaluation (bacterial vs viral, fungal/parasitic OOD)
 **Status:** USER ASSIGNMENT (escalated; unblocks once 2.1 done)
 **Files:** documented in `docs/USER_ASSIGNMENTS.md` Step 5; the loader already
 supports adding fungal codes (`B45.x`) by extending
@@ -309,9 +309,9 @@ supports adding fungal codes (`B45.x`) by extending
 
 See `docs/USER_ASSIGNMENTS.md`. Two **REQUIRED** assignments:
 
-1. **PhysioNet credentialed access** (Step 1) — blocks the real-data path of
+1. **PhysioNet credentialed access** (Step 1), blocks the real-data path of
    Phases 2.2 / 3 / 5.5. Realistic timeline: 2–4 weeks (CITI course + review).
-2. **Weber State IRB exemption letter** (Step 2) — blocks medRxiv preprint
+2. **Weber State IRB exemption letter** (Step 2), blocks medRxiv preprint
    submission. Realistic timeline: 2–4 weeks for an exempt determination.
 
 Two **OPTIONAL** assignments:
@@ -333,7 +333,7 @@ Two **OPTIONAL** assignments:
 
 ---
 
-## Definition of done — verification matrix
+## Definition of done, verification matrix
 
 | Item | Status |
 |------|--------|
@@ -344,10 +344,10 @@ Two **OPTIONAL** assignments:
 | `python -m ml.training_calib_dca` runs end-to-end | clean |
 | `streamlit run app.py` launches | imports cleanly with mock-Streamlit and against real Streamlit env |
 | `infer_cli.py` returns DIFFERENT p_high for two distinct patient inputs | severe p_high=1.0, benign p_high=4.65e-13 (12 orders of magnitude) |
-| README is honest per audit §7 | done — limitations explicit, citations present |
+| README is honest per audit §7 | done, limitations explicit, citations present |
 | `docs/SPRINT_LOG.md` documents every subphase | this file |
 | `docs/USER_ASSIGNMENTS.md` lists blockers | done |
-| Git log shows 25 commits, one per subphase | **NOT MET** — see "Git" section below |
+| Git log shows 25 commits, one per subphase | **NOT MET**, see "Git" section below |
 
 ### Git
 
@@ -372,16 +372,16 @@ submission appendix.
 
 ---
 
-# Sprint extension — Phases 7 + 8 + 9 (overnight, 2026-04-25)
+# Sprint extension, Phases 7 + 8 + 9 (overnight, 2026-04-25)
 
 Pure code/docs work; no PhysioNet data needed. 15 subphases. 1194 → 1229
 tests passing (+35 net new). ruff clean. mypy strict clean on every new
 file. Full pipeline runner produces 17 artefacts; structured regenerator
 exits 0 with 8/8 steps OK.
 
-## Phase 7 — Governance Layer (Wired or Removed)
+## Phase 7, Governance Layer (Wired or Removed)
 
-### Subphase 7.1 — Wire `ml/data/audit_trail.py` into training
+### Subphase 7.1, Wire `ml/data/audit_trail.py` into training
 **Status:** DONE
 **Files added:** `ml/audit_hooks.py` (singleton + JSONL persistence + 5
 typed event helpers + `verify_persisted_chain`); `tests/test_audit_integration.py`
@@ -393,7 +393,7 @@ with any entry's metadata flips `verify_persisted_chain` from `VALID` to
 `TAMPERED`; `AMOEBANATOR_AUDIT_PATH` env var redirects writes.
 **Quality:** Exceptional
 
-### Subphase 7.2 — Wire `ml/data/deidentification.py` into data load
+### Subphase 7.2, Wire `ml/data/deidentification.py` into data load
 **Status:** DONE
 **Files added:** `ml/data_loader.py` (Safe Harbor wrapper: caps ages > 89,
 blanks `physician`, generalises dates to year, scrubs free text);
@@ -403,7 +403,7 @@ shape of `(X, y, feats)` matches the existing `ml.training.load_tabular`;
 audit `DATA_VERIFIED` event records the per-load summary.
 **Quality:** Exceptional
 
-### Subphase 7.3 — IRB compliance gate
+### Subphase 7.3, IRB compliance gate
 **Status:** DONE
 **Files added:** `ml/irb_gate.py` (auto-bypass for synthetic; `IRBGateBlocked`
 on missing/invalid record); `tests/test_irb_gate.py` (11 tests).
@@ -414,30 +414,30 @@ remediation message; `AMOEBANATOR_IRB_BYPASS=1` short-circuits but is
 audit-logged.
 **Quality:** Exceptional
 
-### Subphase 7.4 — Move 10 unwired modules to `ml/data/_wip/`
+### Subphase 7.4, Move 10 unwired modules to `ml/data/_wip/`
 **Status:** DONE
 **Files moved:** `who_database.py`, `synthetic.py`, `literature.py`,
 `pathology_atlas.py`, `labeling.py`, `dvc_versioning.py`, `versioning.py`,
 `quality_assurance.py`, `negative_collection.py`, `annotation_protocol.py`.
 **Files added:** `ml/data/_wip/__init__.py`, `ml/data/_wip/README.md` (per-
 module roadmap target version + unblock checklist).
-**Files modified:** `ml/data/__init__.py` (rewritten — 76 exports from 6
+**Files modified:** `ml/data/__init__.py` (rewritten, 76 exports from 6
 wired modules vs ~270 from 16 mixed modules).
 **Verification:** `from ml.data.who_database import …` raises
 `ModuleNotFoundError`; `ml.data` package still loads cleanly; full pytest
 suite stays at 1221 passing.
 **Quality:** Exceptional
 
-### Subphase 7.5 — `docs/governance_integration.md`
+### Subphase 7.5, `docs/governance_integration.md`
 **Status:** DONE
 **Files added:** `docs/governance_integration.md` (~ 220 lines, Mermaid
 flowchart, code excerpts of every hook point, smoke-command verification
 example that actually runs and produces 5 audit lines with status VALID).
 **Quality:** Exceptional
 
-## Phase 8 — Documentation (Reviewer-Grade)
+## Phase 8, Documentation (Reviewer-Grade)
 
-### Subphase 8.1 — `docs/model_card.md` (Mitchell et al. 2019, 9 sections)
+### Subphase 8.1, `docs/model_card.md` (Mitchell et al. 2019, 9 sections)
 **Status:** DONE
 **Files modified:** `docs/model_card.md` (was 20-line stub → ~ 2000-word
 Mitchell-spec card, every metric pinned to a JSON file under
@@ -447,7 +447,7 @@ of document length (n = 6 caveat repeated; AUC = 1.0 explicitly tagged
 "infrastructure proof, not generalisable").
 **Quality:** Exceptional
 
-### Subphase 8.2 — `docs/decide-ai.md` (Vasey et al. 2022, 27 items)
+### Subphase 8.2, `docs/decide-ai.md` (Vasey et al. 2022, 27 items)
 **Status:** DONE
 **Files added:** `docs/decide-ai.md` (~ 200 lines covering all 27 items
 across Title & Abstract, Introduction, Methods, Results, Discussion, Other
@@ -455,14 +455,14 @@ Information; honest "Not yet" answers on the 7 items that require a live
 clinical evaluation).
 **Quality:** Exceptional
 
-### Subphase 8.3 — `docs/tripod-ai.md` (Collins et al. 2024, 27 items)
+### Subphase 8.3, `docs/tripod-ai.md` (Collins et al. 2024, 27 items)
 **Status:** DONE
 **Files added:** `docs/tripod-ai.md` (~ 200 lines; 17 DONE / 7 partial /
 2 not-yet / 1 not-applicable status table; explicit comparison with
 TRIPOD 2015 highlighting the five places TRIPOD+AI is more demanding).
 **Quality:** Exceptional
 
-### Subphase 8.4 — `docs/data_card.md` (Gebru et al. 2021, 7 sections)
+### Subphase 8.4, `docs/data_card.md` (Gebru et al. 2021, 7 sections)
 **Status:** DONE
 **Files added:** `docs/data_card.md` (~ 1900 words; Motivation /
 Composition / Collection / Preprocessing / Uses / Distribution /
@@ -471,7 +471,7 @@ data lineage is traceable from this card).
 **Honesty signal:** ~ 35 % of document is limitations + intended-not-uses.
 **Quality:** Exceptional
 
-### Subphase 8.5 — `docs/references.bib` + 97% mortality cross-link
+### Subphase 8.5, `docs/references.bib` + 97% mortality cross-link
 **Status:** DONE
 **Files added:** `docs/references.bib` (15 BibTeX entries: Cope 2016,
 Yoder 2010, Capewell 2015, CDC 2025, Guo 2017, Vovk 2005 / 2013, Lei 2018,
@@ -483,9 +483,9 @@ HHS 2012 HIPAA de-id guidance).
 cases, 4 survivors, CFR ≈ 97.6 %).
 **Quality:** Exceptional
 
-## Phase 9 — Reproducibility & CI
+## Phase 9, Reproducibility & CI
 
-### Subphase 9.1 — `Dockerfile` + `requirements.txt` + `docker-compose.yml`
+### Subphase 9.1, `Dockerfile` + `requirements.txt` + `docker-compose.yml`
 **Status:** DONE
 **Files added:** `Dockerfile` (two-stage build, Python 3.12 slim, CPU-only
 torch wheels via PyTorch CPU index), `.dockerignore`, `docker-compose.yml`
@@ -493,7 +493,7 @@ torch wheels via PyTorch CPU index), `.dockerignore`, `docker-compose.yml`
 (every dep pinned to the exact version the V1.0 sprint was tested against).
 **Quality:** Exceptional
 
-### Subphase 9.2 — `scripts/run_full_pipeline.sh`
+### Subphase 9.2, `scripts/run_full_pipeline.sh`
 **Status:** DONE
 **Files added:** `scripts/run_full_pipeline.sh` (8 steps, `set -euo pipefail`,
 per-step duration logging, artefact verification table at the end).
@@ -501,14 +501,14 @@ per-step duration logging, artefact verification table at the end).
 present"; exits 0 on success, 1 if any artefact missing.
 **Quality:** Exceptional
 
-### Subphase 9.3 — `.github/workflows/test.yml`
+### Subphase 9.3, `.github/workflows/test.yml`
 **Status:** DONE
 **Files added:** `.github/workflows/test.yml` (3 jobs: pytest, ruff + mypy,
 docs-link-check; pinned actions/setup-python@v5; pip cache; concurrency
 group; path filters; CPU-only torch wheels for Linux runners).
 **Quality:** Exceptional
 
-### Subphase 9.4 — `scripts/regenerate_all_artifacts.py`
+### Subphase 9.4, `scripts/regenerate_all_artifacts.py`
 **Status:** DONE
 **Files added:** `scripts/regenerate_all_artifacts.py` (Python orchestrator
 of the 8 pipeline steps with structured per-step duration / exit code /
@@ -516,7 +516,7 @@ stdout-tail capture; writes `outputs/metrics/regeneration_summary.json`).
 **Verification:** ran end-to-end and reported "8/8 OK, 17/17 present".
 **Quality:** Exceptional
 
-### Subphase 9.5 — Pin random seeds + `docs/REPRODUCIBILITY.md`
+### Subphase 9.5, Pin random seeds + `docs/REPRODUCIBILITY.md`
 **Status:** DONE
 **Files added:** `ml/seeds.py` (`set_global_seeds(seed=42)` pins `random`,
 NumPy, Torch CPU/CUDA/MPS, cuDNN deterministic flag); `tests/test_seeds.py`
