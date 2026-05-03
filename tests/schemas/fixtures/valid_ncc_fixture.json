@@ -1,0 +1,116 @@
+{
+  "schema_version": "2.0",
+  "case_id": "NCC-001-Pathogens-2023-AllenTumbes",
+  "ground_truth_class": 7,
+  "demographics": {
+    "age_years": 41,
+    "sex": "female",
+    "ethnicity": "mestizo",
+    "geography_region": "peru_tumbes",
+    "altitude_residence_m": 25
+  },
+  "history": {
+    "symptom_onset_to_presentation_days": 1.0,
+    "chief_complaint": "seizure",
+    "prodrome_description": "First-ever generalized tonic-clonic seizure 12 hours ago in a previously healthy adult; brief postictal confusion. No fever or neck stiffness on presentation. Lifetime exposure to free-roaming pigs in rural Tumbes household.",
+    "red_flags_present": [
+      "taenia_household_contact"
+    ]
+  },
+  "exposure": {
+    "freshwater_exposure_within_14d": false,
+    "freshwater_exposure_type": null,
+    "altitude_exposure_within_7d_m": null,
+    "pork_consumption_or_taenia_contact": true,
+    "mosquito_endemic_area_exposure": false,
+    "immunocompromise_status": "none",
+    "hiv_status": "negative",
+    "cd4_count_cells_per_uL": null
+  },
+  "vitals": {
+    "temperature_celsius": 36.9,
+    "heart_rate_bpm": 84,
+    "systolic_bp_mmHg": 124,
+    "diastolic_bp_mmHg": 76,
+    "glasgow_coma_scale": 15,
+    "oxygen_saturation_pct": 99,
+    "respiratory_rate_breaths_per_min": 16
+  },
+  "exam": {
+    "mental_status_grade": "alert",
+    "neck_stiffness": false,
+    "kernig_or_brudzinski_positive": false,
+    "focal_neurological_deficit": false,
+    "cranial_nerve_palsy": "none",
+    "skin_lesion_centrofacial_chronic": false,
+    "petechial_or_purpuric_rash": false,
+    "papilledema_on_fundoscopy": false
+  },
+  "labs": {
+    "wbc_blood_per_uL": 7600,
+    "platelets_per_uL": 252000,
+    "alt_ast_U_per_L": 22,
+    "crp_mg_per_L": 4.0,
+    "procalcitonin_ng_per_mL": 0.08,
+    "serum_sodium_mEq_per_L": 140
+  },
+  "csf": {
+    "opening_pressure_cmH2O": 16.0,
+    "csf_wbc_per_mm3": 8,
+    "csf_neutrophil_pct": 5,
+    "csf_lymphocyte_pct": 80,
+    "csf_eosinophil_pct": 15,
+    "csf_glucose_mg_per_dL": 62,
+    "csf_protein_mg_per_dL": 38,
+    "csf_lactate_mmol_per_L": 1.8,
+    "csf_ada_U_per_L": 2.0,
+    "csf_crag_lfa_result": "negative",
+    "csf_wet_mount_motile_amoebae": "not_done",
+    "csf_xanthochromia_present": false,
+    "csf_rbc_per_mm3": 4,
+    "csf_rbc_decreasing_across_tubes": null
+  },
+  "imaging": {
+    "imaging_modality": "mri_with_dwi_flair",
+    "imaging_pattern": "cysticercosis_cysts_with_scolex",
+    "imaging_finding_count": 3,
+    "imaging_text_summary": "MRI brain showing three vesicular-stage parenchymal cysts with visible eccentric scolex (the absolute Del Brutto 2017 criterion); two right-frontal and one left-parietal; minimal surrounding edema; no hydrocephalus."
+  },
+  "diagnostic_tests": {
+    "results": [
+      {
+        "test_name": "Serum EITB cysticercosis",
+        "result": "Positive (3 of 7 diagnostic bands)",
+        "sensitivity_pct": 98.0,
+        "specificity_pct": 100.0,
+        "citation_pmid_or_doi": "PMID:38003778"
+      }
+    ]
+  },
+  "adjudication": {
+    "adjudicator_ids": [
+      "ADJ-001",
+      "ADJ-002"
+    ],
+    "cohen_kappa": 0.95,
+    "disagreement_resolution": null,
+    "anchoring_documentation": "Anchored to Allen et al. Pathogens 2023 (PMID 38003778) Tumbes Peru community-based NCC + epilepsy cohort (38% community-acquired epilepsy NCC-positive). Adult mestiza Tumbes resident with first-ever seizure, vesicular cysts with scolex on MRI (Del Brutto 2017 absolute criterion), positive EITB.",
+    "inclusion_decision": "include"
+  },
+  "literature_anchors": [
+    {
+      "anchor_type": "cohort",
+      "pmid": "38003778",
+      "doi": "10.3390/pathogens12111313"
+    }
+  ],
+  "provenance": {
+    "generation_timestamp_utc": "2026-05-02T18:00:00Z",
+    "generator_model_identifier": "manual-fixture-2026-05-02",
+    "prompt_hash_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "schema_version": "2.0",
+    "inclusion_decision_rationale": "Fixture canonical neurocysticercosis case (Tumbes Peru, vesicular stage with scolex). Imaging directly anchored to Del Brutto 2017 absolute diagnostic criterion. CSF mild eosinophilic pleocytosis IMPUTED_FROM_LITERATURE consistent with active vesicular cysts."
+  },
+  "narrative_es": "Mujer mestiza de 41 anos, residente en Tumbes (zona endemica), con primera crisis convulsiva tonico-clonica generalizada hace 12 horas. Antecedente de exposicion familiar a cerdos no controlados. Examen neurologico normal. RM cerebral muestra tres quistes vesiculares con escolex visible (criterio absoluto Del Brutto 2017). EITB serico positivo. Diagnostico: neurocisticercosis activa.",
+  "narrative_en": "41-year-old mestiza woman, Tumbes (endemic-area) resident, with first-ever generalized tonic-clonic seizure 12 hours ago. Household exposure to free-roaming pigs. Normal neurologic exam. Brain MRI shows three vesicular cysts with visible scolex (Del Brutto 2017 absolute criterion). Serum EITB positive. Diagnosis: active neurocysticercosis."
+}
