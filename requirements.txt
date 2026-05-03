@@ -30,3 +30,7 @@ mypy==1.19.1
 # To install CPU-only torch wheels on Linux (CI), prepend:
 #   --extra-index-url https://download.pytorch.org/whl/cpu
 # and replace torch==2.9.1 above with the matching CPU wheel name.
+
+# Subphase 1.1 — Vignette schema
+pydantic>=2.5.0
+jsonschema>=4.20.0
