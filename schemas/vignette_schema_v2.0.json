@@ -1,0 +1,1148 @@
+{
+  "$defs": {
+    "AdjudicationMetadata": {
+      "additionalProperties": false,
+      "description": "Physician adjudication metadata for vignette inclusion in corpus.\n\nCitations:\n    - Cohen 1960 (original kappa coefficient)\n    - Landis & Koch 1977 (substantial agreement >=0.61 threshold)\n    - McHugh 2012 PMC3900052 (>=0.7 preferred for clinical/high-stakes)\n    - Cochrane handbook for systematic reviews (disagreement resolution)",
+      "properties": {
+        "adjudicator_ids": {
+          "description": "Adjudicator unique identifiers. Minimum 2 required for inter-rater reliability calculation per Cohen 1960; McHugh 2012 PMC3900052.",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 2,
+          "title": "Adjudicator Ids",
+          "type": "array"
+        },
+        "cohen_kappa": {
+          "description": "Cohen's kappa coefficient. Inclusion threshold >=0.61 (Landis & Koch 1977 'substantial'); >=0.7 preferred for clinical (McHugh 2012).",
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Cohen Kappa",
+          "type": "number"
+        },
+        "disagreement_resolution": {
+          "anyOf": [
+            {
+              "enum": [
+                "consensus_discussion",
+                "third_adjudicator",
+                "excluded"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Pre-registered disagreement resolution protocol per Cochrane handbook for systematic reviews adapted to vignette QA.",
+          "title": "Disagreement Resolution"
+        },
+        "anchoring_documentation": {
+          "description": "Free text linking vignette to source paper(s) used as clinical anchor.",
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Anchoring Documentation",
+          "type": "string"
+        },
+        "inclusion_decision": {
+          "description": "Final inclusion decision after adjudication.",
+          "enum": [
+            "include",
+            "exclude",
+            "hold_for_revision"
+          ],
+          "title": "Inclusion Decision",
+          "type": "string"
+        }
+      },
+      "required": [
+        "adjudicator_ids",
+        "cohen_kappa",
+        "anchoring_documentation",
+        "inclusion_decision"
+      ],
+      "title": "AdjudicationMetadata",
+      "type": "object"
+    },
+    "CSFProfile": {
+      "additionalProperties": false,
+      "description": "CSF analysis results — the primary diagnostic discriminator across 9 classes.\n\nCitations:\n    - IDSA Tunkel 2004 (bacterial cutoffs from van de Beek 422-pt analysis)\n    - Huynh Lancet Neurol 2022 (TB CSF patterns)\n    - NIH OI cryptococcosis (OP>=25 in 60-80%)\n    - Ye TM&IH 2023 doi:10.1111/tmi.13849 (ADA cutoff 10 U/L)\n    - Prasad Cureus 2023 doi:10.7759/cureus.39896 (ADA confirmation)\n    - Williams CID 2015 (CrAg LFA near-100% sensitivity)\n    - StatPearls NBK535447 (PAM wet mount diagnosis)\n    - Perry BMJ 2015 PMID 25739953 (xanthochromia + RBC for SAH)\n    - Sakushima J Infect 2011 (lactate>3.5 favors bacterial)\n    - Del Brutto 2017 (eosinophilic CSF in racemose NCC)",
+      "properties": {
+        "opening_pressure_cmH2O": {
+          "description": "Opening pressure cmH2O. >=25 cmH2O in 60-80% of HIV-cryptococcal (NIH OI guidelines, AMBITION-cm); >=30 = therapeutic LP trigger.",
+          "maximum": 60,
+          "minimum": 5,
+          "title": "Opening Pressure Cmh2O",
+          "type": "number"
+        },
+        "csf_wbc_per_mm3": {
+          "description": "CSF white blood cell count per mm3. PAM 1k-30k neutrophilic; bacterial 1k-5k neutrophilic; viral 50-1k lymphocytic; TB 100-500 lymphocytic. IDSA Tunkel 2004.",
+          "maximum": 50000,
+          "minimum": 0,
+          "title": "Csf Wbc Per Mm3",
+          "type": "integer"
+        },
+        "csf_neutrophil_pct": {
+          "description": "CSF neutrophil percentage. Bacterial 80-95% neutrophilic; PAM neutrophilic; viral/TB/fungal lymphocytic.",
+          "maximum": 100,
+          "minimum": 0,
+          "title": "Csf Neutrophil Pct",
+          "type": "integer"
+        },
+        "csf_lymphocyte_pct": {
+          "description": "CSF lymphocyte percentage. Required complement to neutrophil%; sum-to-100 validator with eosinophil%.",
+          "maximum": 100,
+          "minimum": 0,
+          "title": "Csf Lymphocyte Pct",
+          "type": "integer"
+        },
+        "csf_eosinophil_pct": {
+          "default": 0,
+          "description": "CSF eosinophil percentage. >10% suggests parasitic - racemose NCC, Angiostrongylus, schistosomiasis (Del Brutto 2017).",
+          "maximum": 100,
+          "minimum": 0,
+          "title": "Csf Eosinophil Pct",
+          "type": "integer"
+        },
+        "csf_glucose_mg_per_dL": {
+          "description": "CSF glucose mg/dL. <34 mg/dL or CSF:serum <0.23 = >=99% specific for bacterial vs viral (IDSA Tunkel 2004).",
+          "maximum": 200,
+          "minimum": 0,
+          "title": "Csf Glucose Mg Per Dl",
+          "type": "integer"
+        },
+        "csf_protein_mg_per_dL": {
+          "description": "CSF protein mg/dL. Bacterial often >220 (>=99% specific cutoff); TB typically 100-500; viral <=150.",
+          "maximum": 3000,
+          "minimum": 5,
+          "title": "Csf Protein Mg Per Dl",
+          "type": "integer"
+        },
+        "csf_lactate_mmol_per_L": {
+          "anyOf": [
+            {
+              "maximum": 20,
+              "minimum": 0.5,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "CSF lactate mmol/L. >3.5 favors bacterial; <3.5 viral. Confounded by post-antibiotic exposure (Sakushima 2011).",
+          "title": "Csf Lactate Mmol Per L"
+        },
+        "csf_ada_U_per_L": {
+          "anyOf": [
+            {
+              "maximum": 100,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "CSF adenosine deaminase U/L. >=10 U/L = optimal cutoff for TB meningitis (Ye TM&IH 2023; Prasad Cureus 2023; AUC 0.94).",
+          "title": "Csf Ada U Per L"
+        },
+        "csf_crag_lfa_result": {
+          "anyOf": [
+            {
+              "enum": [
+                "positive",
+                "negative",
+                "not_done"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": "not_done",
+          "description": "CSF cryptococcal antigen lateral flow assay. Near-100% sensitivity in HIV-cryptococcal (Williams CID 2015).",
+          "title": "Csf Crag Lfa Result"
+        },
+        "csf_wet_mount_motile_amoebae": {
+          "anyOf": [
+            {
+              "enum": [
+                "positive",
+                "negative",
+                "not_done"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": "not_done",
+          "description": "CSF wet mount for motile trophozoites. N. fowleri commonly visible (unlike Balamuthia/Acanthamoeba). CDC: Gram stain destroys organism.",
+          "title": "Csf Wet Mount Motile Amoebae"
+        },
+        "csf_xanthochromia_present": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "CSF xanthochromia. Present ~100% at 12h post-bleed (SAH). Perry BMJ 2015 PMID 25739953.",
+          "title": "Csf Xanthochromia Present"
+        },
+        "csf_rbc_per_mm3": {
+          "anyOf": [
+            {
+              "maximum": 1000000,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "CSF red blood cell count per mm3. >2000 non-decreasing across tubes plus xanthochromia = SAH.",
+          "title": "Csf Rbc Per Mm3"
+        },
+        "csf_rbc_decreasing_across_tubes": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "RBC count decreasing tube 1 to 4 = traumatic tap; non-decreasing with xanthochromia = SAH.",
+          "title": "Csf Rbc Decreasing Across Tubes"
+        }
+      },
+      "required": [
+        "opening_pressure_cmH2O",
+        "csf_wbc_per_mm3",
+        "csf_neutrophil_pct",
+        "csf_lymphocyte_pct",
+        "csf_glucose_mg_per_dL",
+        "csf_protein_mg_per_dL"
+      ],
+      "title": "CSFProfile",
+      "type": "object"
+    },
+    "ClassLabel": {
+      "description": "9-class differential diagnosis ground-truth labels.\n\nClass assignments are mutually exclusive at the per-vignette level.\nSee SCHEMA_README.md for full diagnostic criteria mapping.",
+      "enum": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "title": "ClassLabel",
+      "type": "integer"
+    },
+    "Demographics": {
+      "additionalProperties": false,
+      "description": "Demographic context for vignette.\n\nCitations:\n    - PAM bimodal age: Gharpure et al. CID 2021 (PMID 32369575)\n    - NMDAR sex distribution: Graus Lancet Neurol 2016 (doi:10.1016/S1474-4422(15)00401-9)\n    - HACE altitude threshold: Wilderness Medical Society 2024 (PMID 37833187)\n    - Peru regional epidemiology: MMWR 2024-2025; Allen Pathogens 2023",
+      "properties": {
+        "age_years": {
+          "description": "Age in years. PAM bimodal (median ~14 y, Gharpure CID 2021); HSV-1 bimodal <20 / >50; NCC 20-40 in endemic regions.",
+          "maximum": 110,
+          "minimum": 0,
+          "title": "Age Years",
+          "type": "integer"
+        },
+        "sex": {
+          "description": "Biological sex. PAM ~75% male (recreational water exposure pattern, Gharpure 2021); NMDAR ~80% female (Graus 2016).",
+          "enum": [
+            "male",
+            "female",
+            "intersex"
+          ],
+          "title": "Sex",
+          "type": "string"
+        },
+        "ethnicity": {
+          "anyOf": [
+            {
+              "enum": [
+                "hispanic_latino",
+                "indigenous_andean",
+                "mestizo",
+                "afro_peruvian",
+                "asian",
+                "white_non_hispanic",
+                "other",
+                "unknown"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Self-identified ethnicity. Hispanic/mestizo overrepresentation in Balamuthia documented in Latin American series (Bravo PMC8760460).",
+          "title": "Ethnicity"
+        },
+        "geography_region": {
+          "description": "Geographic region. Maps to disease epidemiology: Loreto/Madre de Dios to arboviral/malaria; Cusco/Puno >3000m to HACE; Tumbes to NCC endemic; coastal Peru to Balamuthia; US South to PAM; Karachi to ablution-PAM.",
+          "enum": [
+            "peru_lima_coast",
+            "peru_loreto_amazon",
+            "peru_cusco_altitude",
+            "peru_puno_altitude",
+            "peru_tumbes",
+            "peru_madre_de_dios",
+            "us_south",
+            "pakistan_karachi",
+            "other_latam",
+            "other_global"
+          ],
+          "title": "Geography Region",
+          "type": "string"
+        },
+        "altitude_residence_m": {
+          "anyOf": [
+            {
+              "maximum": 5000,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Altitude of residence in meters. HACE risk threshold >2,500 m (WMS 2024 PMID 37833187). Cusco 3,399 m; Puno 3,827 m.",
+          "title": "Altitude Residence M"
+        }
+      },
+      "required": [
+        "age_years",
+        "sex",
+        "geography_region"
+      ],
+      "title": "Demographics",
+      "type": "object"
+    },
+    "DiagnosticTests": {
+      "additionalProperties": false,
+      "description": "Diagnostic test results array.\n\nIncludes Gram stain, blood/CSF cultures, HSV-1/enterovirus PCR, FilmArray ME panel\n(sensitivity 90% / specificity 97% pooled meta-analysis, PMID 31760115),\nXpert MTB/RIF (85%/98% Hernandez TM&IH 2021), Xpert Ultra (Cresswell CID 2020),\nEITB cysticercosis (~98% >=2 viable cysts, Tsang 1989), Balamuthia IFA, brain\nbiopsy histology, malaria thick/thin smear, dengue NS1, mNGS for free-living amebae.",
+      "properties": {
+        "results": {
+          "items": {
+            "$ref": "#/$defs/DxResult"
+          },
+          "title": "Results",
+          "type": "array"
+        }
+      },
+      "title": "DiagnosticTests",
+      "type": "object"
+    },
+    "DxResult": {
+      "additionalProperties": false,
+      "description": "Single diagnostic test result with sensitivity/specificity attribution.",
+      "properties": {
+        "test_name": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Test Name",
+          "type": "string"
+        },
+        "result": {
+          "maxLength": 500,
+          "minLength": 1,
+          "title": "Result",
+          "type": "string"
+        },
+        "sensitivity_pct": {
+          "anyOf": [
+            {
+              "maximum": 100,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Sensitivity Pct"
+        },
+        "specificity_pct": {
+          "anyOf": [
+            {
+              "maximum": 100,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Specificity Pct"
+        },
+        "citation_pmid_or_doi": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Citation Pmid Or Doi",
+          "type": "string"
+        }
+      },
+      "required": [
+        "test_name",
+        "result",
+        "citation_pmid_or_doi"
+      ],
+      "title": "DxResult",
+      "type": "object"
+    },
+    "ExposureHistory": {
+      "additionalProperties": false,
+      "description": "Exposure history including PAM always-flag fields.\n\nCitations:\n    - CDC PAM 2017 case definition (ndc.services.cdc.gov)\n    - MMWR 2025 splash pad (PMID 40146665)\n    - Karachi ablution-PAM: PMC10620794\n    - WMS 2024 HACE (PMID 37833187)\n    - Del Brutto 2017 NCC criteria (PMID 28017213)\n    - Ford CID 2018 cryptococcal CD4 threshold (PMC5850628)",
+      "properties": {
+        "freshwater_exposure_within_14d": {
+          "description": "CRITICAL FIELD for PAM always-flag rule (CDC 2017 case definition). True if patient had recreational freshwater exposure or nasal irrigation/ablution within 14 days before symptom onset.",
+          "title": "Freshwater Exposure Within 14D",
+          "type": "boolean"
+        },
+        "freshwater_exposure_type": {
+          "anyOf": [
+            {
+              "enum": [
+                "lake",
+                "river",
+                "hot_spring",
+                "splash_pad",
+                "swimming_pool_unchlorinated",
+                "neti_pot_tap_water",
+                "ritual_ablution_wudu",
+                "none"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Type of freshwater exposure. Splash pad documented in MMWR 2025 (Arkansas case PMID 40146665). Ablution dominant in Karachi.",
+          "title": "Freshwater Exposure Type"
+        },
+        "altitude_exposure_within_7d_m": {
+          "anyOf": [
+            {
+              "maximum": 6000,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Maximum altitude reached in past 7 days, in meters. HACE risk begins ~2,500 m; serious risk >3,500 m (WMS 2024 PMID 37833187).",
+          "title": "Altitude Exposure Within 7D M"
+        },
+        "pork_consumption_or_taenia_contact": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Pork consumption or household Taenia contact. Minor epidemiologic criterion in Del Brutto 2017 NCC. Tumbes Peru cohort 38% NCC.",
+          "title": "Pork Consumption Or Taenia Contact"
+        },
+        "mosquito_endemic_area_exposure": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Mosquito-endemic area exposure (Aedes for dengue, Anopheles for P. falciparum). Loreto/Madre de Dios documented hot zones.",
+          "title": "Mosquito Endemic Area Exposure"
+        },
+        "immunocompromise_status": {
+          "description": "Immunocompromise status. CD4<100 to cryptococcal screening threshold (Ford CID 2018 PMC5850628). HSCT to highest Acanthamoeba GAE risk.",
+          "enum": [
+            "none",
+            "hiv_cd4_under100",
+            "hiv_cd4_100_200",
+            "hiv_cd4_over200",
+            "transplant_solid_organ",
+            "transplant_hsct",
+            "malignancy_active",
+            "immunosuppressive_drugs",
+            "diabetes",
+            "unknown"
+          ],
+          "title": "Immunocompromise Status",
+          "type": "string"
+        },
+        "hiv_status": {
+          "description": "HIV status. Independent of CD4 absolute count for class-conditional validation (NIH OI guidelines).",
+          "enum": [
+            "positive_on_art",
+            "positive_not_on_art",
+            "negative",
+            "unknown"
+          ],
+          "title": "Hiv Status",
+          "type": "string"
+        },
+        "cd4_count_cells_per_uL": {
+          "anyOf": [
+            {
+              "maximum": 2000,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "CD4 count cells/uL. Required when HIV+ for cryptococcal disease diagnosis (Ford CID 2018; <100 = high CrAg risk).",
+          "title": "Cd4 Count Cells Per Ul"
+        }
+      },
+      "required": [
+        "freshwater_exposure_within_14d",
+        "immunocompromise_status",
+        "hiv_status"
+      ],
+      "title": "ExposureHistory",
+      "type": "object"
+    },
+    "History": {
+      "additionalProperties": false,
+      "description": "History of present illness.\n\nCitations:\n    - PAM time course: MMWR 2025 (PMID 40146665) - 1-12 days, median 5\n    - TB time course: Huynh Lancet Neurol 2022\n    - Cryptococcal subacute: NIH OI cryptococcosis",
+      "properties": {
+        "symptom_onset_to_presentation_days": {
+          "description": "Days from symptom onset to presentation. PAM 1-12 d; bacterial 1-3 d; viral days-week; TB 14-56 d; cryptococcal 7-84 d (subacute).",
+          "maximum": 180,
+          "minimum": 0,
+          "title": "Symptom Onset To Presentation Days",
+          "type": "number"
+        },
+        "chief_complaint": {
+          "description": "Primary chief complaint. Thunderclap to SAH/RCVS; gait ataxia + altitude to HACE; behavioral change + dyskinesia to NMDAR (Graus 2016).",
+          "enum": [
+            "headache",
+            "fever_with_headache",
+            "altered_mental_status",
+            "seizure",
+            "focal_deficit",
+            "neck_stiffness",
+            "vomiting",
+            "behavioral_change",
+            "thunderclap_headache",
+            "gait_ataxia"
+          ],
+          "title": "Chief Complaint",
+          "type": "string"
+        },
+        "prodrome_description": {
+          "anyOf": [
+            {
+              "maxLength": 500,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Free-text prodrome description (e.g., genital lesions before HSV-2 meningitis, AMS prodrome before HACE, viral URI before enteroviral).",
+          "title": "Prodrome Description"
+        },
+        "red_flags_present": {
+          "description": "Clinical red flags requiring specific diagnostic consideration per IDSA/CDC guidance.",
+          "items": {
+            "enum": [
+              "immunocompromise",
+              "recent_neurosurgery",
+              "fresh_water_exposure_14d",
+              "high_altitude_ascent_7d",
+              "pregnancy_postpartum",
+              "sah_thunderclap_history",
+              "animal_bite",
+              "taenia_household_contact"
+            ],
+            "type": "string"
+          },
+          "title": "Red Flags Present",
+          "type": "array"
+        }
+      },
+      "required": [
+        "symptom_onset_to_presentation_days",
+        "chief_complaint"
+      ],
+      "title": "History",
+      "type": "object"
+    },
+    "Imaging": {
+      "additionalProperties": false,
+      "description": "Neuroimaging findings.\n\nCitations:\n    - IDSA Tunkel 2008 (MRI preferred for encephalitis)\n    - Del Brutto 2017 NCC (scolex within cyst absolute criterion)\n    - StatPearls NBK557643 (HSV-1 mesial temporal FLAIR >90% MRI)\n    - Lancet Neurol Huynh 2022 (TB basal meningeal enhancement)\n    - Hinchey NEJM 1996 (PRES parieto-occipital)\n    - Hackett HAH 1998 (HACE microhemorrhages)",
+      "properties": {
+        "imaging_modality": {
+          "description": "Imaging modality. MRI with FLAIR/DWI preferred per IDSA 2008 encephalitis; CT first-line for SAH (~99% sensitivity <6h).",
+          "enum": [
+            "none",
+            "ct_noncontrast",
+            "ct_contrast",
+            "mri_noncontrast",
+            "mri_contrast",
+            "mri_with_dwi_flair"
+          ],
+          "title": "Imaging Modality",
+          "type": "string"
+        },
+        "imaging_pattern": {
+          "anyOf": [
+            {
+              "enum": [
+                "normal",
+                "mesial_temporal_t2_flair_hyperintensity",
+                "basal_meningeal_enhancement_with_hydrocephalus",
+                "dilated_virchow_robin_with_pseudocysts",
+                "multiple_ring_enhancing_lesions",
+                "cysticercosis_cysts_with_scolex",
+                "calcified_cysts",
+                "parenchymal_calcifications_no_cyst",
+                "diffuse_cerebral_edema_basilar_meningeal_enhancement",
+                "brain_swelling_arboviral",
+                "vasogenic_edema_microhemorrhages",
+                "basal_cistern_hyperdensity",
+                "parieto_occipital_vasogenic_edema",
+                "segmental_vasoconstriction"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Class-discriminative imaging pattern. HSV-1: mesial-temporal FLAIR. TB: basal meningeal enhancement + hydrocephalus. Cryptococcal: dilated VR spaces. Balamuthia/GAE: multiple ring-enhancing. NCC: cysts +/- scolex (Del Brutto 2017). PAM: cerebral edema. HACE: vasogenic edema + microhemorrhages. SAH: hyperdense basal cisterns. PRES: parieto-occipital edema. RCVS: segmental vasoconstriction.",
+          "title": "Imaging Pattern"
+        },
+        "imaging_finding_count": {
+          "anyOf": [
+            {
+              "maximum": 50,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Number/staging of lesions. Supports NCC staging (vesicular/colloidal/granular nodular/calcified per Del Brutto) and GAE multifocality.",
+          "title": "Imaging Finding Count"
+        },
+        "imaging_text_summary": {
+          "anyOf": [
+            {
+              "maxLength": 1000,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Free-text radiologist impression for adjudicator context.",
+          "title": "Imaging Text Summary"
+        }
+      },
+      "required": [
+        "imaging_modality"
+      ],
+      "title": "Imaging",
+      "type": "object"
+    },
+    "Labs": {
+      "additionalProperties": false,
+      "description": "Peripheral lab values.\n\nCitations:\n    - IDSA Tunkel 2004 (bacterial WBC patterns)\n    - WHO Dengue Guidelines 2023 (platelet thresholds)\n    - Sormunen Pediatrics 1999 (CRP>40 favors bacterial)\n    - Vikse 2015 meta-analysis (procalcitonin)\n    - AAFP Hyponatremia 2015 (Na<125 severe)\n    - Marais Lancet ID 2010 (TB SIADH)",
+      "properties": {
+        "wbc_blood_per_uL": {
+          "description": "Peripheral WBC count cells/uL. Leukocytosis supports bacterial sepsis; lymphopenia in severe dengue/malaria.",
+          "maximum": 80000,
+          "minimum": 100,
+          "title": "Wbc Blood Per Ul",
+          "type": "integer"
+        },
+        "platelets_per_uL": {
+          "description": "Platelet count cells/uL. <100k strongly supports dengue/severe malaria; DIC in meningococcal.",
+          "maximum": 800000,
+          "minimum": 5000,
+          "title": "Platelets Per Ul",
+          "type": "integer"
+        },
+        "alt_ast_U_per_L": {
+          "anyOf": [
+            {
+              "maximum": 10000,
+              "minimum": 5,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "ALT/AST U/L. Elevation in dengue (>1000 = severe dengue criterion), Plasmodium hepatic involvement.",
+          "title": "Alt Ast U Per L"
+        },
+        "crp_mg_per_L": {
+          "anyOf": [
+            {
+              "maximum": 500,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "C-reactive protein mg/L. >40 mg/L favors bacterial over viral (Sormunen Pediatrics 1999).",
+          "title": "Crp Mg Per L"
+        },
+        "procalcitonin_ng_per_mL": {
+          "anyOf": [
+            {
+              "maximum": 200,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Procalcitonin ng/mL. >0.5 ng/mL favors bacterial (Vikse 2015 meta).",
+          "title": "Procalcitonin Ng Per Ml"
+        },
+        "serum_sodium_mEq_per_L": {
+          "description": "Serum sodium mEq/L. <125 = severe symptomatic hyponatremia (non-infectious mimic class); SIADH common in TB meningitis.",
+          "maximum": 170,
+          "minimum": 100,
+          "title": "Serum Sodium Meq Per L",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "wbc_blood_per_uL",
+        "platelets_per_uL",
+        "serum_sodium_mEq_per_L"
+      ],
+      "title": "Labs",
+      "type": "object"
+    },
+    "LiteratureAnchor": {
+      "additionalProperties": false,
+      "description": "Peer-reviewed literature anchor for vignette clinical fidelity.\n\nCitations:\n    - PMID format spec (NLM PubMed)\n    - DOI format spec (ISO 26324:2022)",
+      "properties": {
+        "anchor_type": {
+          "description": "Type of literature anchor. Used by adjudicators to weight clinical fidelity (case_report < cohort < meta_analysis < rct).",
+          "enum": [
+            "case_report",
+            "guideline",
+            "review",
+            "surveillance",
+            "meta_analysis",
+            "cohort",
+            "rct",
+            "prospective_observational"
+          ],
+          "title": "Anchor Type",
+          "type": "string"
+        },
+        "pmid": {
+          "anyOf": [
+            {
+              "pattern": "^\\d{7,9}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "PubMed ID (7-9 digits). At least one of pmid or doi required.",
+          "title": "Pmid"
+        },
+        "doi": {
+          "anyOf": [
+            {
+              "pattern": "^10\\.\\d{4,9}/.+$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Digital Object Identifier. At least one of pmid or doi required.",
+          "title": "Doi"
+        }
+      },
+      "required": [
+        "anchor_type"
+      ],
+      "title": "LiteratureAnchor",
+      "type": "object"
+    },
+    "PhysicalExam": {
+      "additionalProperties": false,
+      "description": "Physical examination findings.\n\nCitations:\n    - IDSA bacterial meningitis 2004 (van de Beek triad)\n    - IDSA encephalitis 2008\n    - Bravo PMC8760460 (centrofacial Balamuthia 73%)\n    - StatPearls Meningococcal NBK549849 (petechiae 62-81%)\n    - Lancet Neurol Huynh 2022 (CN VI in TB ~30%)",
+      "properties": {
+        "mental_status_grade": {
+          "description": "Categorical mental status. Required for IDSA encephalitis case definition (Tunkel 2008): altered MS, behavioral change, seizure, focal.",
+          "enum": [
+            "alert",
+            "confused",
+            "somnolent",
+            "stuporous",
+            "comatose"
+          ],
+          "title": "Mental Status Grade",
+          "type": "string"
+        },
+        "neck_stiffness": {
+          "description": "Neck stiffness (meningismus). Triad sensitivity 44% in bacterial meningitis (van de Beek NEJM 2004).",
+          "title": "Neck Stiffness",
+          "type": "boolean"
+        },
+        "kernig_or_brudzinski_positive": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Kernig and/or Brudzinski sign. Low sensitivity (~5% individually) but high specificity for meningeal irritation (Thomas CID 2002).",
+          "title": "Kernig Or Brudzinski Positive"
+        },
+        "focal_neurological_deficit": {
+          "description": "Focal neurological deficit. Raises probability of HSV-1, TB (CN palsy 30%), NCC, GAE, SAH; rare in pure aseptic meningitis.",
+          "title": "Focal Neurological Deficit",
+          "type": "boolean"
+        },
+        "cranial_nerve_palsy": {
+          "default": "none",
+          "description": "Cranial nerve palsy. CN VI palsy in ~30% of TB meningitis (basilar exudate, Lancet Neurol Huynh 2022).",
+          "enum": [
+            "none",
+            "CN_VI",
+            "CN_III",
+            "CN_VII",
+            "multiple",
+            "other"
+          ],
+          "title": "Cranial Nerve Palsy",
+          "type": "string"
+        },
+        "skin_lesion_centrofacial_chronic": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Centrofacial skin lesion preceding CNS by months. 73% of Peruvian Balamuthia cases (Bravo PMC8760460); median 15 months pre-CNS.",
+          "title": "Skin Lesion Centrofacial Chronic"
+        },
+        "petechial_or_purpuric_rash": {
+          "description": "Petechial or purpuric rash. 62-81% in meningococcal meningitis (van de Beek 2008); rapidly evolving suggests purpura fulminans.",
+          "title": "Petechial Or Purpuric Rash",
+          "type": "boolean"
+        },
+        "papilledema_on_fundoscopy": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Papilledema. Suggests elevated ICP: cryptococcal (60-80% with OP>=25), TB hydrocephalus, PRES, SAH, severe NCC.",
+          "title": "Papilledema On Fundoscopy"
+        }
+      },
+      "required": [
+        "mental_status_grade",
+        "neck_stiffness",
+        "focal_neurological_deficit",
+        "petechial_or_purpuric_rash"
+      ],
+      "title": "PhysicalExam",
+      "type": "object"
+    },
+    "Provenance": {
+      "additionalProperties": false,
+      "description": "Vignette generation provenance for audit trail and reproducibility.\n\nCitations:\n    - Mitchell et al. 2019 (Model Cards framework, doi:10.1145/3287560.3287596)\n    - FAIR data principles 2016\n    - SHA-256 spec (NIST FIPS 180-4)",
+      "properties": {
+        "generation_timestamp_utc": {
+          "description": "ISO-8601 UTC timestamp of vignette generation. Required for reproducibility audit per FAIR principles.",
+          "format": "date-time",
+          "title": "Generation Timestamp Utc",
+          "type": "string"
+        },
+        "generator_model_identifier": {
+          "description": "Model identifier string used for generation (e.g., 'claude-sonnet-4.5/2026-04-15' or 'manual-fixture-2026-05-02').",
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Generator Model Identifier",
+          "type": "string"
+        },
+        "prompt_hash_sha256": {
+          "description": "SHA-256 hash of generation prompt. NIST FIPS 180-4 spec; 64 lowercase hex characters.",
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Prompt Hash Sha256",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "2.0",
+          "description": "Schema version for migration management. Locked to '2.0'.",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "inclusion_decision_rationale": {
+          "description": "Free-text rationale for inclusion decision; readable by adjudicators.",
+          "maxLength": 1000,
+          "title": "Inclusion Decision Rationale",
+          "type": "string"
+        }
+      },
+      "required": [
+        "generation_timestamp_utc",
+        "generator_model_identifier",
+        "prompt_hash_sha256",
+        "schema_version",
+        "inclusion_decision_rationale"
+      ],
+      "title": "Provenance",
+      "type": "object"
+    },
+    "VitalSigns": {
+      "additionalProperties": false,
+      "description": "Vital signs at presentation.\n\nCitations:\n    - GCS: Teasdale & Jennett Lancet 1974\n    - Sepsis-3 criteria: Singer JAMA 2016\n    - WHO cerebral malaria GCS<11: WHO 2023 Malaria Guidelines\n    - PRES BP: Hinchey NEJM 1996",
+      "properties": {
+        "temperature_celsius": {
+          "description": "Body temperature in Celsius. Fever >38C supports infection. Afebrile coma possible in cerebral malaria.",
+          "maximum": 42.5,
+          "minimum": 34.0,
+          "title": "Temperature Celsius",
+          "type": "number"
+        },
+        "heart_rate_bpm": {
+          "description": "Heart rate in beats per minute. Tachycardia plus hypotension supports septic shock (Sepsis-3, Singer JAMA 2016).",
+          "maximum": 220,
+          "minimum": 30,
+          "title": "Heart Rate Bpm",
+          "type": "integer"
+        },
+        "systolic_bp_mmHg": {
+          "description": "Systolic blood pressure mmHg. Severe HTN >180 supports PRES (Hinchey NEJM 1996); SBP<90 with shock supports meningococcal Waterhouse-Friderichsen.",
+          "maximum": 260,
+          "minimum": 50,
+          "title": "Systolic Bp Mmhg",
+          "type": "integer"
+        },
+        "diastolic_bp_mmHg": {
+          "description": "Diastolic blood pressure mmHg.",
+          "maximum": 160,
+          "minimum": 30,
+          "title": "Diastolic Bp Mmhg",
+          "type": "integer"
+        },
+        "glasgow_coma_scale": {
+          "description": "Glasgow Coma Scale 3-15. Severe <=8; cerebral malaria <11 per WHO. Teasdale & Jennett Lancet 1974.",
+          "maximum": 15,
+          "minimum": 3,
+          "title": "Glasgow Coma Scale",
+          "type": "integer"
+        },
+        "oxygen_saturation_pct": {
+          "anyOf": [
+            {
+              "maximum": 100,
+              "minimum": 50,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "SpO2 percent. HAPE coexistent with HACE if SpO2<85% at altitude.",
+          "title": "Oxygen Saturation Pct"
+        },
+        "respiratory_rate_breaths_per_min": {
+          "description": "Respiratory rate breaths/min. RR>30 plus altered MS in WHO severe malaria criteria.",
+          "maximum": 60,
+          "minimum": 6,
+          "title": "Respiratory Rate Breaths Per Min",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "temperature_celsius",
+        "heart_rate_bpm",
+        "systolic_bp_mmHg",
+        "diastolic_bp_mmHg",
+        "glasgow_coma_scale",
+        "respiratory_rate_breaths_per_min"
+      ],
+      "title": "VitalSigns",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Top-level vignette container for 9-class meningitis/encephalitis differential.\n\nAll sub-models are required except where Optional is annotated. Cross-field\nvalidators enforce class-conditional clinical rules:\n\n1. PAM always-flag rule (CDC PAM 2017 case definition):\n   If ground_truth_class == ClassLabel.PAM, then\n   exposure.freshwater_exposure_within_14d MUST be True.\n\n2. Cryptococcal CD4 consistency (Ford CID 2018 PMC5850628):\n   If ground_truth_class == ClassLabel.CRYPTOCOCCAL_FUNGAL and HIV+,\n   then cd4_count_cells_per_uL MUST be set.\n\n3. Schema version lock: schema_version is Literal['2.0'] at top level\n   (mirrors provenance.schema_version for redundant safety).",
+  "properties": {
+    "schema_version": {
+      "const": "2.0",
+      "default": "2.0",
+      "description": "Schema version locked to '2.0'. Top-level lock mirrors provenance.schema_version for migration safety.",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "case_id": {
+      "description": "Unique case identifier within corpus. Convention: '<CLASS>-<NNN>-<ANCHOR-PMID>' (e.g., 'PAM-001-MMWR-2025-Arkansas').",
+      "maxLength": 200,
+      "minLength": 1,
+      "title": "Case Id",
+      "type": "string"
+    },
+    "ground_truth_class": {
+      "$ref": "#/$defs/ClassLabel",
+      "description": "Ground-truth diagnostic class (1-9) per ClassLabel IntEnum."
+    },
+    "demographics": {
+      "$ref": "#/$defs/Demographics"
+    },
+    "history": {
+      "$ref": "#/$defs/History"
+    },
+    "exposure": {
+      "$ref": "#/$defs/ExposureHistory"
+    },
+    "vitals": {
+      "$ref": "#/$defs/VitalSigns"
+    },
+    "exam": {
+      "$ref": "#/$defs/PhysicalExam"
+    },
+    "labs": {
+      "$ref": "#/$defs/Labs"
+    },
+    "csf": {
+      "$ref": "#/$defs/CSFProfile"
+    },
+    "imaging": {
+      "$ref": "#/$defs/Imaging"
+    },
+    "diagnostic_tests": {
+      "$ref": "#/$defs/DiagnosticTests"
+    },
+    "adjudication": {
+      "$ref": "#/$defs/AdjudicationMetadata"
+    },
+    "literature_anchors": {
+      "description": "At least one peer-reviewed literature anchor required.",
+      "items": {
+        "$ref": "#/$defs/LiteratureAnchor"
+      },
+      "minItems": 1,
+      "title": "Literature Anchors",
+      "type": "array"
+    },
+    "provenance": {
+      "$ref": "#/$defs/Provenance"
+    },
+    "narrative_es": {
+      "anyOf": [
+        {
+          "maxLength": 4000,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "Spanish-language clinical narrative for bilingual deployment (UPCH/Peru target).",
+      "title": "Narrative Es"
+    },
+    "narrative_en": {
+      "anyOf": [
+        {
+          "maxLength": 4000,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "English-language clinical narrative for bilingual deployment.",
+      "title": "Narrative En"
+    }
+  },
+  "required": [
+    "case_id",
+    "ground_truth_class",
+    "demographics",
+    "history",
+    "exposure",
+    "vitals",
+    "exam",
+    "labs",
+    "csf",
+    "imaging",
+    "diagnostic_tests",
+    "adjudication",
+    "literature_anchors",
+    "provenance"
+  ],
+  "title": "VignetteSchema",
+  "type": "object"
+}
