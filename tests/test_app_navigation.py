@@ -1,11 +1,11 @@
-"""Tests for streamlit_app.py — Phase 4.5 Mini-2 T2.5 (4 of 4).
+"""Tests for streamlit_app.py, Phase 4.5 Mini-2 T2.5 (4 of 4).
 
 Covers the multi-page nav entry: 4 pages registered with absolute
-path resolution + correct titles + icons + landing-page order.
+path resolution, plain-text titles, and landing-page order.
 
 The entry lives at the repo root (HF Spaces docker-app convention).
 An earlier draft placed it at app/app.py, which shadowed the app/
-package on container boot — see spec-gap #10 in FUTURE_WORK.md.
+package on container boot. See spec-gap #10 in FUTURE_WORK.md.
 """
 from __future__ import annotations
 
@@ -24,7 +24,7 @@ def test_module_imports_cleanly() -> None:
 
 
 def test_app_app_boots_to_predict_landing() -> None:
-    """First page in nav dict is Predict; AppTest renders that as default."""
+    """First page in nav list is Predict; AppTest renders that as default."""
     at = AppTest.from_file(APP_PATH)
     at.run(timeout=30)
     # Predict page renders 'PAM Risk Prediction' title
@@ -74,15 +74,17 @@ def test_references_page_registered() -> None:
     assert 'title="References"' in src
 
 
-def test_page_icons_present() -> None:
-    """All 4 pages have explicit icons."""
+def test_page_titles_plain_text_present() -> None:
+    """All 4 pages registered with plain-text titles, no icon kwargs."""
     src = Path(APP_PATH).read_text(encoding="utf-8")
-    for icon in ["🔬", "📜", "ℹ️", "📚"]:
-        assert icon in src, f"page icon {icon!r} missing"
+    for title in ["Predict", "Audit", "About", "References"]:
+        assert f'title="{title}"' in src, f"page title {title!r} missing"
+    # Icon kwarg should not appear (Option B locked)
+    assert "icon=" not in src, "icon kwarg should not appear in flat-list nav"
 
 
 def test_app_app_boots_under_5s() -> None:
-    """Mini-2 closure gate criterion #3 inherits this — boot must stay <5s."""
+    """Mini-2 closure gate criterion #3: boot must stay <5s."""
     import time
     t0 = time.time()
     at = AppTest.from_file(APP_PATH)
