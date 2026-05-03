@@ -1,0 +1,121 @@
+{
+  "schema_version": "2.0",
+  "case_id": "BACT-001-NEJM-2004-VanDeBeek",
+  "ground_truth_class": 2,
+  "demographics": {
+    "age_years": 47,
+    "sex": "male",
+    "ethnicity": "white_non_hispanic",
+    "geography_region": "other_global",
+    "altitude_residence_m": 5
+  },
+  "history": {
+    "symptom_onset_to_presentation_days": 2.0,
+    "chief_complaint": "fever_with_headache",
+    "prodrome_description": "Acute febrile headache with neck stiffness and progressive confusion over 36 hours; preceded by upper respiratory tract symptoms.",
+    "red_flags_present": []
+  },
+  "exposure": {
+    "freshwater_exposure_within_14d": false,
+    "freshwater_exposure_type": null,
+    "altitude_exposure_within_7d_m": null,
+    "pork_consumption_or_taenia_contact": false,
+    "mosquito_endemic_area_exposure": false,
+    "immunocompromise_status": "none",
+    "hiv_status": "negative",
+    "cd4_count_cells_per_uL": null
+  },
+  "vitals": {
+    "temperature_celsius": 39.4,
+    "heart_rate_bpm": 118,
+    "systolic_bp_mmHg": 124,
+    "diastolic_bp_mmHg": 78,
+    "glasgow_coma_scale": 12,
+    "oxygen_saturation_pct": 96,
+    "respiratory_rate_breaths_per_min": 22
+  },
+  "exam": {
+    "mental_status_grade": "confused",
+    "neck_stiffness": true,
+    "kernig_or_brudzinski_positive": true,
+    "focal_neurological_deficit": false,
+    "cranial_nerve_palsy": "none",
+    "skin_lesion_centrofacial_chronic": false,
+    "petechial_or_purpuric_rash": false,
+    "papilledema_on_fundoscopy": false
+  },
+  "labs": {
+    "wbc_blood_per_uL": 19200,
+    "platelets_per_uL": 215000,
+    "alt_ast_U_per_L": 38,
+    "crp_mg_per_L": 220.0,
+    "procalcitonin_ng_per_mL": 12.5,
+    "serum_sodium_mEq_per_L": 135
+  },
+  "csf": {
+    "opening_pressure_cmH2O": 28.0,
+    "csf_wbc_per_mm3": 5400,
+    "csf_neutrophil_pct": 94,
+    "csf_lymphocyte_pct": 6,
+    "csf_eosinophil_pct": 0,
+    "csf_glucose_mg_per_dL": 22,
+    "csf_protein_mg_per_dL": 380,
+    "csf_lactate_mmol_per_L": 7.2,
+    "csf_ada_U_per_L": null,
+    "csf_crag_lfa_result": "negative",
+    "csf_wet_mount_motile_amoebae": "not_done",
+    "csf_xanthochromia_present": false,
+    "csf_rbc_per_mm3": 8,
+    "csf_rbc_decreasing_across_tubes": null
+  },
+  "imaging": {
+    "imaging_modality": "ct_noncontrast",
+    "imaging_pattern": "normal",
+    "imaging_finding_count": null,
+    "imaging_text_summary": "Non-contrast CT head without acute intracranial process or mass effect; no contraindication to lumbar puncture."
+  },
+  "diagnostic_tests": {
+    "results": [
+      {
+        "test_name": "CSF Gram stain",
+        "result": "Gram-positive diplococci",
+        "sensitivity_pct": 70.0,
+        "specificity_pct": 99.0,
+        "citation_pmid_or_doi": "PMID:15509818"
+      },
+      {
+        "test_name": "CSF culture",
+        "result": "Streptococcus pneumoniae",
+        "sensitivity_pct": 80.0,
+        "specificity_pct": 99.0,
+        "citation_pmid_or_doi": "PMID:15509818"
+      }
+    ]
+  },
+  "adjudication": {
+    "adjudicator_ids": [
+      "ADJ-001",
+      "ADJ-002"
+    ],
+    "cohen_kappa": 0.91,
+    "disagreement_resolution": null,
+    "anchoring_documentation": "Anchored to van de Beek 2004 NEJM (PMID 15509818) Dutch community-acquired bacterial meningitis cohort (n=696). S. pneumoniae representative case; CSF and clinical parameters within reported cohort ranges.",
+    "inclusion_decision": "include"
+  },
+  "literature_anchors": [
+    {
+      "anchor_type": "cohort",
+      "pmid": "15509818",
+      "doi": "10.1056/NEJMoa040845"
+    }
+  ],
+  "provenance": {
+    "generation_timestamp_utc": "2026-05-02T18:00:00Z",
+    "generator_model_identifier": "manual-fixture-2026-05-02",
+    "prompt_hash_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "schema_version": "2.0",
+    "inclusion_decision_rationale": "Fixture canonical bacterial meningitis (S. pneumoniae) case for schema TDD. CSF/labs derived from van de Beek 2004 cohort medians; vital signs IMPUTED_FROM_LITERATURE consistent with sepsis criteria (Sepsis-3 Singer JAMA 2016). No Peru-specific cohort available for adult community-acquired bacterial meningitis (gap documented in SCHEMA_README.md limitations)."
+  },
+  "narrative_es": "Varón de 47 años, previamente sano, con cuadro de 2 días de fiebre alta (39.4 C), cefalea severa, rigidez de cuello y confusion progresiva. LCR turbio con WBC 5400/mm3 (94% neutrofilos), glucosa 22 mg/dL, proteina 380 mg/dL, lactato 7.2 mmol/L. Tincion de Gram positiva para diplococos Gram positivos; cultivo posterior confirmo Streptococcus pneumoniae.",
+  "narrative_en": "47-year-old previously healthy male, 2 days of high fever (39.4 C), severe headache, neck stiffness, and progressive confusion. Turbid CSF with WBC 5400/mm3 (94% neutrophils), glucose 22 mg/dL, protein 380 mg/dL, lactate 7.2 mmol/L. Gram stain positive for Gram-positive diplococci; subsequent culture confirmed Streptococcus pneumoniae."
+}

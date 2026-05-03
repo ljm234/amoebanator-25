@@ -1,0 +1,123 @@
+{
+  "schema_version": "2.0",
+  "case_id": "PAM-001-MMWR-2025-Arkansas",
+  "ground_truth_class": 1,
+  "demographics": {
+    "age_years": 16,
+    "sex": "male",
+    "ethnicity": "white_non_hispanic",
+    "geography_region": "us_south",
+    "altitude_residence_m": 100
+  },
+  "history": {
+    "symptom_onset_to_presentation_days": 5.0,
+    "chief_complaint": "fever_with_headache",
+    "prodrome_description": "Severe frontal headache, photophobia, neck stiffness, vomiting; rapidly progressive over 48 hours.",
+    "red_flags_present": ["fresh_water_exposure_14d"]
+  },
+  "exposure": {
+    "freshwater_exposure_within_14d": true,
+    "freshwater_exposure_type": "splash_pad",
+    "altitude_exposure_within_7d_m": null,
+    "pork_consumption_or_taenia_contact": false,
+    "mosquito_endemic_area_exposure": false,
+    "immunocompromise_status": "none",
+    "hiv_status": "negative",
+    "cd4_count_cells_per_uL": null
+  },
+  "vitals": {
+    "temperature_celsius": 39.8,
+    "heart_rate_bpm": 128,
+    "systolic_bp_mmHg": 110,
+    "diastolic_bp_mmHg": 70,
+    "glasgow_coma_scale": 11,
+    "oxygen_saturation_pct": 96,
+    "respiratory_rate_breaths_per_min": 24
+  },
+  "exam": {
+    "mental_status_grade": "confused",
+    "neck_stiffness": true,
+    "kernig_or_brudzinski_positive": true,
+    "focal_neurological_deficit": false,
+    "cranial_nerve_palsy": "none",
+    "skin_lesion_centrofacial_chronic": false,
+    "petechial_or_purpuric_rash": false,
+    "papilledema_on_fundoscopy": false
+  },
+  "labs": {
+    "wbc_blood_per_uL": 18500,
+    "platelets_per_uL": 245000,
+    "alt_ast_U_per_L": 42,
+    "crp_mg_per_L": 88.0,
+    "procalcitonin_ng_per_mL": 2.1,
+    "serum_sodium_mEq_per_L": 138
+  },
+  "csf": {
+    "opening_pressure_cmH2O": 38.0,
+    "csf_wbc_per_mm3": 4200,
+    "csf_neutrophil_pct": 92,
+    "csf_lymphocyte_pct": 8,
+    "csf_eosinophil_pct": 0,
+    "csf_glucose_mg_per_dL": 28,
+    "csf_protein_mg_per_dL": 280,
+    "csf_lactate_mmol_per_L": 6.8,
+    "csf_ada_U_per_L": null,
+    "csf_crag_lfa_result": "not_done",
+    "csf_wet_mount_motile_amoebae": "positive",
+    "csf_xanthochromia_present": false,
+    "csf_rbc_per_mm3": 12,
+    "csf_rbc_decreasing_across_tubes": null
+  },
+  "imaging": {
+    "imaging_modality": "mri_with_dwi_flair",
+    "imaging_pattern": "diffuse_cerebral_edema_basilar_meningeal_enhancement",
+    "imaging_finding_count": null,
+    "imaging_text_summary": "Diffuse cerebral edema with effacement of cortical sulci and basal cisternal enhancement; findings consistent with primary amebic meningoencephalitis."
+  },
+  "diagnostic_tests": {
+    "results": [
+      {
+        "test_name": "CSF wet mount microscopy",
+        "result": "Motile trophozoites consistent with Naegleria fowleri",
+        "sensitivity_pct": null,
+        "specificity_pct": null,
+        "citation_pmid_or_doi": "PMID:40146665"
+      },
+      {
+        "test_name": "CSF PCR Naegleria fowleri",
+        "result": "Positive",
+        "sensitivity_pct": 95.0,
+        "specificity_pct": 99.0,
+        "citation_pmid_or_doi": "PMID:40146665"
+      }
+    ]
+  },
+  "adjudication": {
+    "adjudicator_ids": ["ADJ-001", "ADJ-002"],
+    "cohen_kappa": 0.92,
+    "disagreement_resolution": null,
+    "anchoring_documentation": "Anchored to MMWR 2025 splash pad-associated PAM case, Pulaski County Arkansas (PMID 40146665). Demographic and CSF parameters within reported case ranges.",
+    "inclusion_decision": "include"
+  },
+  "literature_anchors": [
+    {
+      "anchor_type": "surveillance",
+      "pmid": "40146665",
+      "doi": null
+    },
+    {
+      "anchor_type": "guideline",
+      "pmid": null,
+      "doi": "10.1086/425368"
+    }
+  ],
+  "provenance": {
+    "generation_timestamp_utc": "2026-05-02T18:00:00Z",
+    "generator_model_identifier": "manual-fixture-2026-05-02",
+    "prompt_hash_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "schema_version": "2.0",
+    "inclusion_decision_rationale": "Fixture canonical PAM case for schema TDD validation; values verified against MMWR 2025 (PMID 40146665) and CDC PAM 2017 case definition."
+  },
+  "narrative_es": "Adolescente varón de 16 años, previamente sano, con cuadro de 5 días de fiebre alta (39.8 C), cefalea frontal severa, fotofobia y rigidez de cuello progresiva. Antecedente de exposición a parque acuatico (splash pad) hace 7 dias. LCR con WBC 4200/mm3 (92% neutrofilos), glucosa 28 mg/dL, proteina 280 mg/dL, lactato 6.8 mmol/L. Examen directo de LCR positivo para trofozoitos moviles. RM con edema cerebral difuso y realce meningeo basal.",
+  "narrative_en": "16-year-old previously healthy male, 5 days of high fever (39.8 C), severe frontal headache, photophobia, and progressive neck stiffness. History of splash pad exposure 7 days prior. CSF WBC 4200/mm3 (92% neutrophils), glucose 28 mg/dL, protein 280 mg/dL, lactate 6.8 mmol/L. CSF wet mount positive for motile trophozoites. MRI with diffuse cerebral edema and basal meningeal enhancement."
+}

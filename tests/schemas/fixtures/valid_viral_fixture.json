@@ -1,0 +1,114 @@
+{
+  "schema_version": "2.0",
+  "case_id": "VIR-001-EpidemiolInfect-2016-MontanoPeru",
+  "ground_truth_class": 3,
+  "demographics": {
+    "age_years": 38,
+    "sex": "female",
+    "ethnicity": "mestizo",
+    "geography_region": "peru_lima_coast",
+    "altitude_residence_m": 154
+  },
+  "history": {
+    "symptom_onset_to_presentation_days": 6.0,
+    "chief_complaint": "behavioral_change",
+    "prodrome_description": "Subacute fever with progressive personality change, expressive aphasia, and one witnessed focal seizure with secondary generalization 24 hours prior to admission.",
+    "red_flags_present": []
+  },
+  "exposure": {
+    "freshwater_exposure_within_14d": false,
+    "freshwater_exposure_type": null,
+    "altitude_exposure_within_7d_m": null,
+    "pork_consumption_or_taenia_contact": false,
+    "mosquito_endemic_area_exposure": false,
+    "immunocompromise_status": "none",
+    "hiv_status": "negative",
+    "cd4_count_cells_per_uL": null
+  },
+  "vitals": {
+    "temperature_celsius": 38.6,
+    "heart_rate_bpm": 102,
+    "systolic_bp_mmHg": 132,
+    "diastolic_bp_mmHg": 84,
+    "glasgow_coma_scale": 13,
+    "oxygen_saturation_pct": 98,
+    "respiratory_rate_breaths_per_min": 18
+  },
+  "exam": {
+    "mental_status_grade": "confused",
+    "neck_stiffness": false,
+    "kernig_or_brudzinski_positive": false,
+    "focal_neurological_deficit": true,
+    "cranial_nerve_palsy": "none",
+    "skin_lesion_centrofacial_chronic": false,
+    "petechial_or_purpuric_rash": false,
+    "papilledema_on_fundoscopy": false
+  },
+  "labs": {
+    "wbc_blood_per_uL": 8400,
+    "platelets_per_uL": 232000,
+    "alt_ast_U_per_L": 28,
+    "crp_mg_per_L": 12.0,
+    "procalcitonin_ng_per_mL": 0.18,
+    "serum_sodium_mEq_per_L": 138
+  },
+  "csf": {
+    "opening_pressure_cmH2O": 18.0,
+    "csf_wbc_per_mm3": 180,
+    "csf_neutrophil_pct": 8,
+    "csf_lymphocyte_pct": 90,
+    "csf_eosinophil_pct": 2,
+    "csf_glucose_mg_per_dL": 58,
+    "csf_protein_mg_per_dL": 88,
+    "csf_lactate_mmol_per_L": 2.2,
+    "csf_ada_U_per_L": 4.0,
+    "csf_crag_lfa_result": "negative",
+    "csf_wet_mount_motile_amoebae": "not_done",
+    "csf_xanthochromia_present": false,
+    "csf_rbc_per_mm3": 22,
+    "csf_rbc_decreasing_across_tubes": null
+  },
+  "imaging": {
+    "imaging_modality": "mri_with_dwi_flair",
+    "imaging_pattern": "mesial_temporal_t2_flair_hyperintensity",
+    "imaging_finding_count": 1,
+    "imaging_text_summary": "MRI brain with FLAIR/DWI showing left mesial temporal lobe T2/FLAIR hyperintensity with restricted diffusion and asymmetric gyral enhancement; classic HSV-1 encephalitis pattern."
+  },
+  "diagnostic_tests": {
+    "results": [
+      {
+        "test_name": "CSF HSV-1 PCR",
+        "result": "Positive (5.4 log10 copies/mL)",
+        "sensitivity_pct": 96.0,
+        "specificity_pct": 99.0,
+        "citation_pmid_or_doi": "PMID:26733400"
+      }
+    ]
+  },
+  "adjudication": {
+    "adjudicator_ids": [
+      "ADJ-001",
+      "ADJ-002"
+    ],
+    "cohen_kappa": 0.88,
+    "disagreement_resolution": null,
+    "anchoring_documentation": "Anchored to Montano et al. Epidemiol Infect 2016 (PMID 26733400) Peru 5-city HSV-1 encephalitis surveillance. Adult mestiza Lima resident; mesial temporal MRI pattern and CSF profile within reported series ranges.",
+    "inclusion_decision": "include"
+  },
+  "literature_anchors": [
+    {
+      "anchor_type": "surveillance",
+      "pmid": "26733400",
+      "doi": "10.1017/S0950268815003222"
+    }
+  ],
+  "provenance": {
+    "generation_timestamp_utc": "2026-05-02T18:00:00Z",
+    "generator_model_identifier": "manual-fixture-2026-05-02",
+    "prompt_hash_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "schema_version": "2.0",
+    "inclusion_decision_rationale": "Fixture canonical HSV-1 encephalitis case (Peruvian adult). MRI pattern and CSF lymphocytic profile from Montano 2016. Vital signs IMPUTED_FROM_LITERATURE consistent with non-septic encephalitic presentation per IDSA Tunkel 2008."
+  },
+  "narrative_es": "Mujer mestiza de 38 anos, residente en Lima costera, con cuadro de 6 dias de fiebre, cefalea, cambio de personalidad progresivo y una crisis focal secundariamente generalizada. RM cerebral con hiperintensidad T2/FLAIR en lobulo temporal mesial izquierdo. PCR de HSV-1 en LCR positiva. Diagnostico: encefalitis por HSV-1.",
+  "narrative_en": "38-year-old mestiza woman, Lima coastal resident, with 6 days of fever, headache, progressive personality change, and one focal seizure with secondary generalization. Brain MRI with left mesial temporal T2/FLAIR hyperintensity. CSF HSV-1 PCR positive. Diagnosis: HSV-1 encephalitis."
+}

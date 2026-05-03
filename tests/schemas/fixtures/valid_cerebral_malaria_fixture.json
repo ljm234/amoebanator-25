@@ -1,0 +1,121 @@
+{
+  "schema_version": "2.0",
+  "case_id": "MAL-001-RPMESP-2022-ParedesObandoLoreto",
+  "ground_truth_class": 8,
+  "demographics": {
+    "age_years": 24,
+    "sex": "male",
+    "ethnicity": "mestizo",
+    "geography_region": "peru_loreto_amazon",
+    "altitude_residence_m": 106
+  },
+  "history": {
+    "symptom_onset_to_presentation_days": 4.0,
+    "chief_complaint": "altered_mental_status",
+    "prodrome_description": "Cyclic fevers with rigors over 4 days, evolving to vomiting and progressive obtundation; works as river boatman with daily mosquito exposure in Iquitos riverine settlements.",
+    "red_flags_present": []
+  },
+  "exposure": {
+    "freshwater_exposure_within_14d": false,
+    "freshwater_exposure_type": null,
+    "altitude_exposure_within_7d_m": null,
+    "pork_consumption_or_taenia_contact": false,
+    "mosquito_endemic_area_exposure": true,
+    "immunocompromise_status": "none",
+    "hiv_status": "negative",
+    "cd4_count_cells_per_uL": null
+  },
+  "vitals": {
+    "temperature_celsius": 40.1,
+    "heart_rate_bpm": 132,
+    "systolic_bp_mmHg": 102,
+    "diastolic_bp_mmHg": 64,
+    "glasgow_coma_scale": 9,
+    "oxygen_saturation_pct": 94,
+    "respiratory_rate_breaths_per_min": 28
+  },
+  "exam": {
+    "mental_status_grade": "stuporous",
+    "neck_stiffness": false,
+    "kernig_or_brudzinski_positive": false,
+    "focal_neurological_deficit": false,
+    "cranial_nerve_palsy": "none",
+    "skin_lesion_centrofacial_chronic": false,
+    "petechial_or_purpuric_rash": false,
+    "papilledema_on_fundoscopy": false
+  },
+  "labs": {
+    "wbc_blood_per_uL": 6800,
+    "platelets_per_uL": 48000,
+    "alt_ast_U_per_L": 142,
+    "crp_mg_per_L": 168.0,
+    "procalcitonin_ng_per_mL": 4.8,
+    "serum_sodium_mEq_per_L": 134
+  },
+  "csf": {
+    "opening_pressure_cmH2O": 18.0,
+    "csf_wbc_per_mm3": 4,
+    "csf_neutrophil_pct": 20,
+    "csf_lymphocyte_pct": 78,
+    "csf_eosinophil_pct": 2,
+    "csf_glucose_mg_per_dL": 64,
+    "csf_protein_mg_per_dL": 42,
+    "csf_lactate_mmol_per_L": 2.4,
+    "csf_ada_U_per_L": 2.0,
+    "csf_crag_lfa_result": "negative",
+    "csf_wet_mount_motile_amoebae": "not_done",
+    "csf_xanthochromia_present": false,
+    "csf_rbc_per_mm3": 6,
+    "csf_rbc_decreasing_across_tubes": null
+  },
+  "imaging": {
+    "imaging_modality": "mri_with_dwi_flair",
+    "imaging_pattern": "brain_swelling_arboviral",
+    "imaging_finding_count": null,
+    "imaging_text_summary": "MRI brain showing diffuse mild cerebral swelling without focal lesion or restricted diffusion territory; no leptomeningeal enhancement; pattern consistent with severe systemic infection-related cerebral swelling rather than primary CNS infection."
+  },
+  "diagnostic_tests": {
+    "results": [
+      {
+        "test_name": "Peripheral blood thick smear (Giemsa)",
+        "result": "Plasmodium vivax detected; parasitemia ~1.4% with mixed-stage trophozoites",
+        "sensitivity_pct": 95.0,
+        "specificity_pct": 99.0,
+        "citation_pmid_or_doi": "PMID:36477327"
+      },
+      {
+        "test_name": "Plasmodium RDT (HRP-2 / pLDH)",
+        "result": "pLDH positive (vivax/non-falciparum band); HRP-2 negative",
+        "sensitivity_pct": 92.0,
+        "specificity_pct": 98.0,
+        "citation_pmid_or_doi": "PMID:36477327"
+      }
+    ]
+  },
+  "adjudication": {
+    "adjudicator_ids": [
+      "ADJ-001",
+      "ADJ-002"
+    ],
+    "cohen_kappa": 0.92,
+    "disagreement_resolution": null,
+    "anchoring_documentation": "Anchored to Paredes-Obando et al. RPMESP 2022 (PMID 36477327) Iquitos Loreto P. vivax cerebral involvement series. Adult mestizo Loreto riverine resident with cyclic fevers, thrombocytopenia, GCS 9, transaminitis, P. vivax thick-smear positive. P. vivax cerebral malaria documented as Peru-specific clinical entity (vs P. falciparum African paradigm).",
+    "inclusion_decision": "include"
+  },
+  "literature_anchors": [
+    {
+      "anchor_type": "prospective_observational",
+      "pmid": "36477327",
+      "doi": "10.17843/rpmesp.2022.392.10739"
+    }
+  ],
+  "provenance": {
+    "generation_timestamp_utc": "2026-05-02T18:00:00Z",
+    "generator_model_identifier": "manual-fixture-2026-05-02",
+    "prompt_hash_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "schema_version": "2.0",
+    "inclusion_decision_rationale": "Fixture canonical cerebral malaria case (P. vivax, Loreto Peru). CSF largely normal as expected in cerebral malaria (per WHO 2023 Malaria Guidelines: CSF excludes meningitis but does not confirm CM). Vitals consistent with WHO severe malaria criteria (GCS<11, RR>30, hyperparasitemia for P. vivax). P. vivax (not P. falciparum) reflects Peru epidemiologic reality."
+  },
+  "narrative_es": "Varon mestizo de 24 anos, boatman fluvial en Iquitos (Loreto), con cuadro de 4 dias de fiebres ciclicas con escalofrios, vomitos y obnubilacion progresiva. Examen: estupor (GCS 9), taquipnea, sin signos meningeos focales. Laboratorio: trombocitopenia 48k, transaminasas elevadas, CRP 168. Frotis grueso periferico positivo para Plasmodium vivax (parasitemia ~1.4%). LCR normal. Diagnostico: malaria cerebral por P. vivax.",
+  "narrative_en": "24-year-old mestizo male, river boatman in Iquitos (Loreto), with 4 days of cyclic fevers with rigors, vomiting, and progressive obtundation. Exam: stupor (GCS 9), tachypnea, no focal meningeal signs. Labs: thrombocytopenia 48k, transaminases elevated, CRP 168. Peripheral thick smear positive for Plasmodium vivax (~1.4% parasitemia). CSF normal. Diagnosis: P. vivax cerebral malaria."
+}

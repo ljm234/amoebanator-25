@@ -1,0 +1,123 @@
+{
+  "schema_version": "2.0",
+  "case_id": "CRYPTO-001-NEJM-2022-AMBITION",
+  "ground_truth_class": 5,
+  "demographics": {
+    "age_years": 36,
+    "sex": "male",
+    "ethnicity": "other",
+    "geography_region": "other_global",
+    "altitude_residence_m": 1200
+  },
+  "history": {
+    "symptom_onset_to_presentation_days": 18.0,
+    "chief_complaint": "headache",
+    "prodrome_description": "Subacute progressive headache over 2-3 weeks, low-grade fevers, increasing somnolence and visual blurring in the past 5 days; established HIV with poor adherence.",
+    "red_flags_present": [
+      "immunocompromise"
+    ]
+  },
+  "exposure": {
+    "freshwater_exposure_within_14d": false,
+    "freshwater_exposure_type": null,
+    "altitude_exposure_within_7d_m": null,
+    "pork_consumption_or_taenia_contact": false,
+    "mosquito_endemic_area_exposure": false,
+    "immunocompromise_status": "hiv_cd4_under100",
+    "hiv_status": "positive_not_on_art",
+    "cd4_count_cells_per_uL": 38
+  },
+  "vitals": {
+    "temperature_celsius": 37.8,
+    "heart_rate_bpm": 92,
+    "systolic_bp_mmHg": 118,
+    "diastolic_bp_mmHg": 74,
+    "glasgow_coma_scale": 13,
+    "oxygen_saturation_pct": 97,
+    "respiratory_rate_breaths_per_min": 18
+  },
+  "exam": {
+    "mental_status_grade": "somnolent",
+    "neck_stiffness": true,
+    "kernig_or_brudzinski_positive": false,
+    "focal_neurological_deficit": false,
+    "cranial_nerve_palsy": "none",
+    "skin_lesion_centrofacial_chronic": false,
+    "petechial_or_purpuric_rash": false,
+    "papilledema_on_fundoscopy": true
+  },
+  "labs": {
+    "wbc_blood_per_uL": 4200,
+    "platelets_per_uL": 168000,
+    "alt_ast_U_per_L": 35,
+    "crp_mg_per_L": 18.0,
+    "procalcitonin_ng_per_mL": 0.22,
+    "serum_sodium_mEq_per_L": 132
+  },
+  "csf": {
+    "opening_pressure_cmH2O": 38.0,
+    "csf_wbc_per_mm3": 60,
+    "csf_neutrophil_pct": 5,
+    "csf_lymphocyte_pct": 92,
+    "csf_eosinophil_pct": 3,
+    "csf_glucose_mg_per_dL": 32,
+    "csf_protein_mg_per_dL": 95,
+    "csf_lactate_mmol_per_L": 3.0,
+    "csf_ada_U_per_L": 5.0,
+    "csf_crag_lfa_result": "positive",
+    "csf_wet_mount_motile_amoebae": "not_done",
+    "csf_xanthochromia_present": false,
+    "csf_rbc_per_mm3": 6,
+    "csf_rbc_decreasing_across_tubes": null
+  },
+  "imaging": {
+    "imaging_modality": "mri_contrast",
+    "imaging_pattern": "dilated_virchow_robin_with_pseudocysts",
+    "imaging_finding_count": null,
+    "imaging_text_summary": "MRI brain showing prominent dilated Virchow-Robin spaces in basal ganglia bilaterally with mild leptomeningeal enhancement; no mass effect; pattern consistent with HIV-associated cryptococcal meningitis."
+  },
+  "diagnostic_tests": {
+    "results": [
+      {
+        "test_name": "CSF cryptococcal antigen LFA (titer)",
+        "result": "Positive 1:2048",
+        "sensitivity_pct": 99.0,
+        "specificity_pct": 100.0,
+        "citation_pmid_or_doi": "PMID:35320642"
+      },
+      {
+        "test_name": "CSF India ink",
+        "result": "Encapsulated yeast forms seen",
+        "sensitivity_pct": 86.0,
+        "specificity_pct": 99.0,
+        "citation_pmid_or_doi": "PMID:35320642"
+      }
+    ]
+  },
+  "adjudication": {
+    "adjudicator_ids": [
+      "ADJ-001",
+      "ADJ-002"
+    ],
+    "cohen_kappa": 0.94,
+    "disagreement_resolution": null,
+    "anchoring_documentation": "Anchored to AMBITION-cm trial Jarvis NEJM 2022 (PMID 35320642) sub-Saharan Africa HIV-cryptococcal meningitis. Adult ART-naive HIV+ with CD4 38; markedly elevated OP, CrAg-positive, India ink positive, mononuclear CSF; canonical AMBITION-cm trial enrollment profile.",
+    "inclusion_decision": "include"
+  },
+  "literature_anchors": [
+    {
+      "anchor_type": "rct",
+      "pmid": "35320642",
+      "doi": "10.1056/NEJMoa2111904"
+    }
+  ],
+  "provenance": {
+    "generation_timestamp_utc": "2026-05-02T18:00:00Z",
+    "generator_model_identifier": "manual-fixture-2026-05-02",
+    "prompt_hash_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "schema_version": "2.0",
+    "inclusion_decision_rationale": "Fixture canonical HIV-cryptococcal meningitis case (sub-Saharan Africa proxy; no Peru AMBITION-equivalent cohort exists per Subphase 1.1 limitations). cd4_count_cells_per_uL=38 satisfies VignetteSchema cryptococcal+HIV+CD4-required validator. OP and CrAg titer match AMBITION-cm enrollment criteria."
+  },
+  "narrative_es": "Varon de 36 anos con VIH conocido, sin TARV, CD4 38 celulas/uL, con cuadro subagudo de 18 dias de cefalea progresiva, fiebres bajas y somnolencia. Examen: rigidez de cuello, papiledema. LCR: presion de apertura 38 cmH2O, WBC 60/mm3 (92% linfocitos), glucosa 32 mg/dL, proteina 95 mg/dL, antigeno criptococcico positivo titulo 1:2048, tinta china con levaduras encapsuladas.",
+  "narrative_en": "36-year-old male with known HIV, ART-naive, CD4 38 cells/uL, with 18 days of subacute progressive headache, low-grade fevers, and increasing somnolence. Exam: neck stiffness, papilledema. CSF: opening pressure 38 cmH2O, WBC 60/mm3 (92% lymphocytes), glucose 32 mg/dL, protein 95 mg/dL, cryptococcal antigen positive titer 1:2048, India ink with encapsulated yeasts."
+}

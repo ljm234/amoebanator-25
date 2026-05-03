@@ -1,0 +1,121 @@
+{
+  "schema_version": "2.0",
+  "case_id": "TBM-001-BMCInfectDis-2018-SoriaHNDM",
+  "ground_truth_class": 4,
+  "demographics": {
+    "age_years": 32,
+    "sex": "male",
+    "ethnicity": "mestizo",
+    "geography_region": "peru_lima_coast",
+    "altitude_residence_m": 154
+  },
+  "history": {
+    "symptom_onset_to_presentation_days": 28.0,
+    "chief_complaint": "fever_with_headache",
+    "prodrome_description": "Subacute progressive headache with low-grade fevers, weight loss, and night sweats over 4 weeks; new-onset diplopia in the past 5 days.",
+    "red_flags_present": []
+  },
+  "exposure": {
+    "freshwater_exposure_within_14d": false,
+    "freshwater_exposure_type": null,
+    "altitude_exposure_within_7d_m": null,
+    "pork_consumption_or_taenia_contact": false,
+    "mosquito_endemic_area_exposure": false,
+    "immunocompromise_status": "none",
+    "hiv_status": "negative",
+    "cd4_count_cells_per_uL": null
+  },
+  "vitals": {
+    "temperature_celsius": 38.2,
+    "heart_rate_bpm": 96,
+    "systolic_bp_mmHg": 118,
+    "diastolic_bp_mmHg": 72,
+    "glasgow_coma_scale": 14,
+    "oxygen_saturation_pct": 97,
+    "respiratory_rate_breaths_per_min": 20
+  },
+  "exam": {
+    "mental_status_grade": "confused",
+    "neck_stiffness": true,
+    "kernig_or_brudzinski_positive": true,
+    "focal_neurological_deficit": false,
+    "cranial_nerve_palsy": "CN_VI",
+    "skin_lesion_centrofacial_chronic": false,
+    "petechial_or_purpuric_rash": false,
+    "papilledema_on_fundoscopy": true
+  },
+  "labs": {
+    "wbc_blood_per_uL": 7800,
+    "platelets_per_uL": 268000,
+    "alt_ast_U_per_L": 22,
+    "crp_mg_per_L": 24.0,
+    "procalcitonin_ng_per_mL": 0.32,
+    "serum_sodium_mEq_per_L": 122
+  },
+  "csf": {
+    "opening_pressure_cmH2O": 32.0,
+    "csf_wbc_per_mm3": 320,
+    "csf_neutrophil_pct": 18,
+    "csf_lymphocyte_pct": 80,
+    "csf_eosinophil_pct": 2,
+    "csf_glucose_mg_per_dL": 28,
+    "csf_protein_mg_per_dL": 240,
+    "csf_lactate_mmol_per_L": 4.6,
+    "csf_ada_U_per_L": 18.0,
+    "csf_crag_lfa_result": "negative",
+    "csf_wet_mount_motile_amoebae": "not_done",
+    "csf_xanthochromia_present": false,
+    "csf_rbc_per_mm3": 4,
+    "csf_rbc_decreasing_across_tubes": null
+  },
+  "imaging": {
+    "imaging_modality": "mri_contrast",
+    "imaging_pattern": "basal_meningeal_enhancement_with_hydrocephalus",
+    "imaging_finding_count": null,
+    "imaging_text_summary": "MRI with gadolinium showing thick basal meningeal enhancement, mild communicating hydrocephalus, and small early left middle cerebral artery territory infarct; pattern consistent with tuberculous meningitis."
+  },
+  "diagnostic_tests": {
+    "results": [
+      {
+        "test_name": "Xpert MTB/RIF Ultra (CSF)",
+        "result": "Detected (medium); rifampicin susceptible",
+        "sensitivity_pct": 70.0,
+        "specificity_pct": 98.0,
+        "citation_pmid_or_doi": "PMID:30611205"
+      },
+      {
+        "test_name": "CSF AFB smear",
+        "result": "Negative",
+        "sensitivity_pct": 25.0,
+        "specificity_pct": 99.0,
+        "citation_pmid_or_doi": "PMID:30611205"
+      }
+    ]
+  },
+  "adjudication": {
+    "adjudicator_ids": [
+      "ADJ-001",
+      "ADJ-002"
+    ],
+    "cohen_kappa": 0.93,
+    "disagreement_resolution": null,
+    "anchoring_documentation": "Anchored to Soria et al. BMC Infect Dis 2018 (PMID 30611205) Hospital Nacional Dos de Mayo Lima TB meningitis cohort. Adult HIV-negative case; CSF lymphocytic-pleocytosis, low glucose, high protein, ADA elevated, basal meningeal MRI enhancement, CN VI palsy, and SIADH-mediated hyponatremia all consistent with reported cohort presentation.",
+    "inclusion_decision": "include"
+  },
+  "literature_anchors": [
+    {
+      "anchor_type": "cohort",
+      "pmid": "30611205",
+      "doi": "10.1186/s12879-018-3633-4"
+    }
+  ],
+  "provenance": {
+    "generation_timestamp_utc": "2026-05-02T18:00:00Z",
+    "generator_model_identifier": "manual-fixture-2026-05-02",
+    "prompt_hash_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "schema_version": "2.0",
+    "inclusion_decision_rationale": "Fixture canonical TB meningitis case (Lima Peru, HIV-negative). CSF and imaging directly mapped to Soria 2018 cohort medians. Vital signs IMPUTED_FROM_LITERATURE consistent with subacute presentation. Hyponatremia cited from Marais Lancet ID 2010 SIADH association."
+  },
+  "narrative_es": "Varon mestizo de 32 anos, sin VIH, con cuadro de 4 semanas de cefalea progresiva, fiebres bajas, perdida de peso y sudoracion nocturna; diplopia reciente. Examen: rigidez de cuello, paralisis del VI par derecho, papiledema. LCR: WBC 320/mm3 (80% linfocitos), glucosa 28 mg/dL, proteina 240 mg/dL, ADA 18 U/L. RM: realce meningeo basal e hidrocefalia comunicante leve. Xpert MTB/RIF Ultra positivo en LCR.",
+  "narrative_en": "32-year-old HIV-negative mestizo male with 4 weeks of progressive headache, low-grade fevers, weight loss, night sweats; recent diplopia. Exam: neck stiffness, right CN VI palsy, papilledema. CSF: WBC 320/mm3 (80% lymphocytes), glucose 28 mg/dL, protein 240 mg/dL, ADA 18 U/L. MRI: basal meningeal enhancement and mild communicating hydrocephalus. CSF Xpert MTB/RIF Ultra positive."
+}

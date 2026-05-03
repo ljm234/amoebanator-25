@@ -1,0 +1,121 @@
+{
+  "schema_version": "2.0",
+  "case_id": "NMIM-001-CaseRepNeurolMed-2014-Keller",
+  "ground_truth_class": 9,
+  "demographics": {
+    "age_years": 22,
+    "sex": "female",
+    "ethnicity": "other",
+    "geography_region": "other_global",
+    "altitude_residence_m": 50
+  },
+  "history": {
+    "symptom_onset_to_presentation_days": 14.0,
+    "chief_complaint": "behavioral_change",
+    "prodrome_description": "Two-week subacute prodrome of psychiatric symptoms (paranoia, mood lability, hallucinations) initially attributed to primary psychiatric disorder, evolving to orofacial dyskinesias and reduced consciousness; one focal seizure 48 hours prior to admission. No infectious prodrome.",
+    "red_flags_present": []
+  },
+  "exposure": {
+    "freshwater_exposure_within_14d": false,
+    "freshwater_exposure_type": null,
+    "altitude_exposure_within_7d_m": null,
+    "pork_consumption_or_taenia_contact": false,
+    "mosquito_endemic_area_exposure": false,
+    "immunocompromise_status": "none",
+    "hiv_status": "negative",
+    "cd4_count_cells_per_uL": null
+  },
+  "vitals": {
+    "temperature_celsius": 37.1,
+    "heart_rate_bpm": 108,
+    "systolic_bp_mmHg": 138,
+    "diastolic_bp_mmHg": 86,
+    "glasgow_coma_scale": 12,
+    "oxygen_saturation_pct": 98,
+    "respiratory_rate_breaths_per_min": 18
+  },
+  "exam": {
+    "mental_status_grade": "confused",
+    "neck_stiffness": false,
+    "kernig_or_brudzinski_positive": false,
+    "focal_neurological_deficit": false,
+    "cranial_nerve_palsy": "none",
+    "skin_lesion_centrofacial_chronic": false,
+    "petechial_or_purpuric_rash": false,
+    "papilledema_on_fundoscopy": false
+  },
+  "labs": {
+    "wbc_blood_per_uL": 7800,
+    "platelets_per_uL": 268000,
+    "alt_ast_U_per_L": 24,
+    "crp_mg_per_L": 6.0,
+    "procalcitonin_ng_per_mL": 0.1,
+    "serum_sodium_mEq_per_L": 138
+  },
+  "csf": {
+    "opening_pressure_cmH2O": 16.0,
+    "csf_wbc_per_mm3": 22,
+    "csf_neutrophil_pct": 4,
+    "csf_lymphocyte_pct": 94,
+    "csf_eosinophil_pct": 2,
+    "csf_glucose_mg_per_dL": 62,
+    "csf_protein_mg_per_dL": 42,
+    "csf_lactate_mmol_per_L": 1.8,
+    "csf_ada_U_per_L": 2.0,
+    "csf_crag_lfa_result": "negative",
+    "csf_wet_mount_motile_amoebae": "not_done",
+    "csf_xanthochromia_present": false,
+    "csf_rbc_per_mm3": 4,
+    "csf_rbc_decreasing_across_tubes": null
+  },
+  "imaging": {
+    "imaging_modality": "mri_with_dwi_flair",
+    "imaging_pattern": "normal",
+    "imaging_finding_count": 0,
+    "imaging_text_summary": "MRI brain with FLAIR/DWI showing no parenchymal signal abnormality and no leptomeningeal enhancement; structurally normal study (per Graus 2016, MRI normal in approximately half of anti-NMDAR encephalitis cases)."
+  },
+  "diagnostic_tests": {
+    "results": [
+      {
+        "test_name": "CSF anti-NMDA receptor antibodies (cell-based assay)",
+        "result": "Positive",
+        "sensitivity_pct": 100.0,
+        "specificity_pct": 100.0,
+        "citation_pmid_or_doi": "PMID:25400967"
+      },
+      {
+        "test_name": "Pelvic ultrasound (paraneoplastic workup)",
+        "result": "Right ovarian teratoma identified",
+        "sensitivity_pct": null,
+        "specificity_pct": null,
+        "citation_pmid_or_doi": "PMID:25400967"
+      }
+    ]
+  },
+  "adjudication": {
+    "adjudicator_ids": [
+      "ADJ-001",
+      "ADJ-002"
+    ],
+    "cohen_kappa": 0.93,
+    "disagreement_resolution": null,
+    "anchoring_documentation": "Anchored to Keller et al. Case Rep Neurol Med 2014 (PMID 25400967) anti-NMDAR encephalitis case; demographics and presentation also consistent with Graus et al. Lancet Neurol 2016 autoimmune encephalitis criteria. Young woman with subacute psychiatric prodrome, dyskinesias, mild lymphocytic CSF, normal MRI, CSF anti-NMDA-R antibodies positive, ovarian teratoma identified.",
+    "inclusion_decision": "include"
+  },
+  "literature_anchors": [
+    {
+      "anchor_type": "case_report",
+      "pmid": "25400967",
+      "doi": "10.1155/2014/868325"
+    }
+  ],
+  "provenance": {
+    "generation_timestamp_utc": "2026-05-02T18:00:00Z",
+    "generator_model_identifier": "manual-fixture-2026-05-02",
+    "prompt_hash_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "schema_version": "2.0",
+    "inclusion_decision_rationale": "Fixture canonical anti-NMDAR encephalitis case (non-infectious mimic class). Demographics (young woman with ovarian teratoma) anchor to Keller 2014 + Graus 2016. CSF mild lymphocytic pleocytosis with normal glucose IMPUTED_FROM_LITERATURE consistent with autoimmune encephalitis (Graus 2016 criteria)."
+  },
+  "narrative_es": "Mujer joven de 22 anos con prodromo psiquiatrico subagudo (paranoia, alucinaciones) de 2 semanas, evolucionando a discinesias orofaciales y disminucion de consciencia; una crisis focal hace 48 horas. Sin fiebre ni signos infecciosos. LCR con pleocitosis linfocitica leve (22/mm3, 94% linfocitos), glucosa y proteinas normales. RM cerebral normal. Anticuerpos anti-NMDA-R en LCR positivos. Ecografia pelvica: teratoma ovarico derecho. Diagnostico: encefalitis anti-NMDAR.",
+  "narrative_en": "22-year-old young woman with 2-week subacute psychiatric prodrome (paranoia, hallucinations), evolving to orofacial dyskinesias and reduced consciousness; one focal seizure 48 hours prior. No fever or infectious signs. CSF with mild lymphocytic pleocytosis (22/mm3, 94% lymphocytes), normal glucose and protein. Brain MRI normal. CSF anti-NMDA-R antibodies positive. Pelvic ultrasound: right ovarian teratoma. Diagnosis: anti-NMDAR encephalitis."
+}
