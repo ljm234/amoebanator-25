@@ -65,6 +65,9 @@ _REQUIRED_PMID_KEYS = {
 }
 _PMID_DIGIT_RE = re.compile(r"^\d{7,8}$")
 _DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+# Acceptable verification dates: Day 1 sweep + Day 2 corrections sweep.
+# See docs/PMID_CORRECTIONS_2026-05-04.md for the audit trail.
+_VALID_VERIFICATION_DATES = {"2026-05-03", "2026-05-04"}
 
 
 @pytest.mark.parametrize("pmid", sorted(PMID_REGISTRY.keys()))
@@ -83,8 +86,11 @@ def test_pmid_metadata_completeness(pmid, pmid_registry):
     assert _DATE_RE.match(meta["last_verified_date"]), \
         f"PMID {pmid} last_verified_date not YYYY-MM-DD: " \
         f"{meta['last_verified_date']!r}"
-    assert meta["last_verified_date"] == "2026-05-03", \
-        f"PMID {pmid} last_verified_date != Day 1 verification date"
+    assert meta["last_verified_date"] in _VALID_VERIFICATION_DATES, (
+        f"PMID {pmid} last_verified_date {meta['last_verified_date']!r} "
+        f"not in approved verification sweep dates "
+        f"{sorted(_VALID_VERIFICATION_DATES)}"
+    )
     assert meta["verification_confidence"], \
         f"PMID {pmid} verification_confidence is empty"
 

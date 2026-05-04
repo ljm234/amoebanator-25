@@ -59,7 +59,12 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "pmid": "40146665",
         "doi": "10.15585/mmwr.mm7410a2",
         "authors_short": "Dulski TM et al.",
-        "authors_full": "",
+        "authors_full": [
+            "Dulski TM", "Montgomery F", "Ramos JM", "Rosenbaum ER",
+            "Boyanton BL Jr", "Cox CM", "Dahl S", "Kitchens C", "Paul T",
+            "Kahler A", "Roundtree A", "Mattioli M", "Hlavsa MC",
+            "Ali IK", "Roy S", "Haston JC", "Patil N",
+        ],
         "journal": "MMWR Morb Mortal Wkly Rep",
         "journal_short_code": "MMWR",
         "year": 2025,
@@ -68,15 +73,16 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "pages": "",
         "title": "Splash pad-associated primary amebic meningoencephalitis, Pulaski County, Arkansas",
         "anchor_type": "surveillance",
+        "pmc_id": "PMC11949314",
         "verification_confidence": "VERIFIED",
-        "last_verified_date": "2026-05-03",
+        "last_verified_date": "2026-05-04",
         "caveat": "",
     },
     "37470480": {
         "pmid": "37470480",
         "doi": "",
         "authors_short": "Eger L, Pence MA",
-        "authors_full": "",
+        "authors_full": ["Eger L", "Pence MA"],
         "journal": "J Clin Microbiol",
         "journal_short_code": "JCM",
         "year": 2023,
@@ -85,15 +91,21 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "pages": "",
         "title": "The Brief Case: Splash pad PAM (Texas)",
         "anchor_type": "case_report",
+        "pmc_id": "PMC10358179",
         "verification_confidence": "VERIFIED",
-        "last_verified_date": "2026-05-03",
+        "last_verified_date": "2026-05-04",
         "caveat": "Full text required for full demographics; abstract is brief.",
     },
     "22238170": {
         "pmid": "22238170",
         "doi": "",
         "authors_short": "Kemble SK et al.",
-        "authors_full": "",
+        "authors_full": [
+            "Kemble SK", "Lynfield R", "DeVries AS", "Drehner DM",
+            "Pomputius WF 3rd", "Beach MJ", "Visvesvara GS",
+            "da Silva AJ", "Hill VR", "Yoder JS", "Xiao L",
+            "Smith KE", "Danila R",
+        ],
         "journal": "Clin Infect Dis",
         "journal_short_code": "CID",
         "year": 2012,
@@ -103,14 +115,18 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "title": "Fatal Naegleria fowleri infection acquired in Minnesota: possible expanded northern range",
         "anchor_type": "case_report",
         "verification_confidence": "VERIFIED",
-        "last_verified_date": "2026-05-03",
+        "last_verified_date": "2026-05-04",
         "caveat": "",
     },
     "34307045": {
         "pmid": "34307045",
-        "doi": "",
+        "doi": "10.1016/j.idcr.2021.e01208",
         "authors_short": "Anjum SK et al.",
-        "authors_full": "",
+        "authors_full": [
+            "Anjum SK", "Mangrola K", "Fitzpatrick G", "Stockdale K",
+            "Matthias L", "Ali IKM", "Cope JR", "O'Laughlin K",
+            "Collins S", "Beal SG", "Saccoccio FM",
+        ],
         "journal": "IDCases",
         "journal_short_code": "IDCases",
         "year": 2021,
@@ -119,25 +135,38 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "pages": "",
         "title": "North Florida primary amebic meningoencephalitis in an adolescent",
         "anchor_type": "case_report",
+        "pmc_id": "PMC8258632",
+        "article_id": "e01208",
         "verification_confidence": "VERIFIED",
-        "last_verified_date": "2026-05-03",
-        "caveat": "",
+        "last_verified_date": "2026-05-04",
+        "caveat": (
+            "Article identifier is e01208 (not e01218); DOI corrected to "
+            "match. Anjum bylines 'Ibne Karim M Ali' (initials IKM)."
+        ),
     },
     "37460088": {
         "pmid": "37460088",
         "doi": "10.4269/ajtmh.23-0211",
         "authors_short": "Maloney P et al.",
-        "authors_full": "",
+        "authors_full": [
+            "Maloney P", "Mowrer C", "Jansen L", "Karre T", "Bedrnicek J",
+            "Obaro SK", "Iwen PC", "McCutchen E", "Wetzel C",
+            "Frederick J", "Ashraf MS", "Donahue M",
+        ],
         "journal": "Am J Trop Med Hyg",
         "journal_short_code": "AJTMH",
         "year": 2023,
         "volume": "",
         "issue": "",
-        "pages": "",
+        "pages": "322-326",
         "title": "Fatal primary amebic meningoencephalitis acquired in Nebraska",
         "anchor_type": "case_report",
+        "pmc_id": "PMC10397427",
+        "erratum": "AJTMH 2025 Apr 2;112(4):942",
+        "erratum_doi": "10.4269/ajtmh.23-0211cor",
+        "erratum_pmc": "PMC11965766",
         "verification_confidence": "VERIFIED",
-        "last_verified_date": "2026-05-03",
+        "last_verified_date": "2026-05-04",
         "caveat": (
             "Pair with 2025 erratum DOI 10.4269/ajtmh.23-0211cor "
             "(AJTMH 112(4):942, PMC11965766). Erratum has no separate PMID; "
@@ -146,43 +175,67 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
     },
     "22919000": {
         "pmid": "22919000",
-        "doi": "",
+        "doi": "10.1093/cid/cis626",
         "authors_short": "Yoder JS et al.",
-        "authors_full": "",
+        "authors_full": [
+            "Yoder JS", "Straif-Bourgeois S", "Roy SL", "Moore TA",
+            "Visvesvara GS", "Ratard RC", "Hill VR", "Wilson JD",
+            "Linscott AJ", "Crager R", "Kozak NA", "Sriram R",
+            "Narayanan J", "Mull B", "Kahler AM", "Schneeberger C",
+            "da Silva AJ", "Poudel M", "Baumgarten KL", "Xiao L",
+            "Beach MJ",
+        ],
         "journal": "Clin Infect Dis",
         "journal_short_code": "CID",
         "year": 2012,
-        "volume": "",
-        "issue": "",
-        "pages": "",
+        "volume": "55",
+        "issue": "9",
+        "pages": "e79-e85",
         "title": "Primary amebic meningoencephalitis deaths associated with sinus irrigation using contaminated tap water",
         "anchor_type": "case_report",
+        "pmc_id": "PMC11307261",
+        "nihmsid": "NIHMS2012368",
         "verification_confidence": "VERIFIED",
-        "last_verified_date": "2026-05-03",
-        "caveat": "",
+        "last_verified_date": "2026-05-04",
+        "caveat": (
+            "PMC11307261 is an NIHMS author-manuscript deposit posted "
+            "retroactively (2024) for the 2012 paper. Publisher of record "
+            "is Clin Infect Dis 2012;55(9):e79-e85, DOI 10.1093/cid/cis626."
+        ),
     },
     "40440212": {
         "pmid": "40440212",
         "doi": "",
         "authors_short": "Smith et al.",
-        "authors_full": "",
+        "authors_full": [
+            "Smith OA", "Tillman W", "Lewis JB", "White S", "Mattioli M",
+            "Haston J", "Dorris M", "Kahler A", "Roundtree A", "Ali IK",
+            "Roy S", "Yakubik T", "Sisco L", "Kunz J",
+        ],
         "journal": "MMWR Morb Mortal Wkly Rep",
         "journal_short_code": "MMWR",
         "year": 2025,
-        "volume": "",
-        "issue": "",
-        "pages": "",
+        "volume": "74",
+        "issue": "19",
+        "pages": "334-335",
         "title": "PAM associated with RV nasal rinse, Texas",
         "anchor_type": "surveillance",
+        "pmc_id": "PMC12121732",
         "verification_confidence": "VERIFIED",
-        "last_verified_date": "2026-05-03",
-        "caveat": "Step D must confirm full citation via direct PubMed fetch.",
+        "last_verified_date": "2026-05-04",
+        "caveat": (
+            "5-pass verified 14 authors (NOT 13). Kunz J added as author "
+            "#14 (corresponding author). Citation: MMWR 74(19):334-335."
+        ),
     },
     "31513557": {
         "pmid": "31513557",
         "doi": "",
         "authors_short": "Vugia DJ et al.",
-        "authors_full": "",
+        "authors_full": [
+            "Vugia DJ", "Richardson J", "Tarro T", "Vareechon C",
+            "Pannaraj PS", "Traub E", "Cope JR", "Balter S",
+        ],
         "journal": "MMWR Morb Mortal Wkly Rep",
         "journal_short_code": "MMWR",
         "year": 2019,
@@ -191,15 +244,19 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "pages": "",
         "title": "Fatal PAM after hot-spring exposure, Inyo County California, 2018",
         "anchor_type": "surveillance",
+        "pmc_id": "PMC6753969",
         "verification_confidence": "VERIFIED",
-        "last_verified_date": "2026-05-03",
+        "last_verified_date": "2026-05-04",
         "caveat": "",
     },
     "27123690": {
         "pmid": "27123690",
         "doi": "",
         "authors_short": "Johnson RO, Cope JR et al.",
-        "authors_full": "",
+        "authors_full": [
+            "Johnson RO", "Cope JR", "Moskowitz M", "Kahler A", "Hill V",
+            "Behrendt K", "Molina L", "Fullerton KE", "Beach MJ",
+        ],
         "journal": "MMWR Morb Mortal Wkly Rep",
         "journal_short_code": "MMWR",
         "year": 2016,
@@ -209,14 +266,17 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "title": "PAM associated with overland-pipe spring-fed pool, Inyo County California, 2015",
         "anchor_type": "surveillance",
         "verification_confidence": "VERIFIED",
-        "last_verified_date": "2026-05-03",
+        "last_verified_date": "2026-05-04",
         "caveat": "",
     },
     "21291600": {
         "pmid": "21291600",
         "doi": "",
         "authors_short": "Shakoor S et al.",
-        "authors_full": "",
+        "authors_full": [
+            "Shakoor S", "Beg MA", "Mahmood SF", "Bandea R", "Sriram R",
+            "Noman F", "Ali F", "Visvesvara GS", "Zafar A",
+        ],
         "journal": "Emerg Infect Dis",
         "journal_short_code": "EID",
         "year": 2011,
@@ -225,15 +285,19 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "pages": "258-261",
         "title": "Primary amebic meningoencephalitis caused by Naegleria fowleri, Karachi, Pakistan",
         "anchor_type": "case_report",
+        "pmc_id": "PMC3204751",
         "verification_confidence": "VERIFIED",
-        "last_verified_date": "2026-05-03",
+        "last_verified_date": "2026-05-04",
         "caveat": "13-case Karachi series; ritual ablution exposure inferred (no aquatic activity).",
     },
     "29016297": {
         "pmid": "29016297",
         "doi": "",
         "authors_short": "Ghanchi NK et al.",
-        "authors_full": "",
+        "authors_full": [
+            "Ghanchi NK", "Jamil B", "Khan E", "Ansar Z", "Samreen A",
+            "Zafar A", "Hasan Z",
+        ],
         "journal": "Am J Trop Med Hyg",
         "journal_short_code": "AJTMH",
         "year": 2017,
@@ -242,8 +306,9 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "pages": "",
         "title": "Naegleria fowleri meningoencephalitis associated with public water supply, Karachi, Pakistan",
         "anchor_type": "cohort",
+        "pmc_id": "PMC5817751",
         "verification_confidence": "VERIFIED",
-        "last_verified_date": "2026-05-03",
+        "last_verified_date": "2026-05-04",
         "caveat": (
             "Quote precisely: 19 PCR-confirmed cases of 116 suspected at AKU "
             "2014-2015, median age 28y, 84% male, 16% female."
@@ -253,7 +318,10 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "pmid": "25625800",
         "doi": "",
         "authors_short": "Abrahams-Sandi E et al.",
-        "authors_full": "",
+        "authors_full": [
+            "Abrahams-Sandí E", "Retana-Moreira L", "Castro-Castillo A",
+            "Reyes-Batlle M", "Lorenzo-Morales J",
+        ],
         "journal": "Emerg Infect Dis",
         "journal_short_code": "EID",
         "year": 2015,
@@ -262,15 +330,23 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "pages": "382-384",
         "title": "Naegleria fowleri meningoencephalitis from hot-spring exposure, Costa Rica",
         "anchor_type": "case_report",
+        "pmc_id": "PMC4313663",
         "verification_confidence": "VERIFIED",
-        "last_verified_date": "2026-05-03",
-        "caveat": "Used as LATAM substitute; no Peru-specific PAM PMID exists.",
+        "last_verified_date": "2026-05-04",
+        "caveat": (
+            "Used as LATAM substitute; no Peru-specific PAM PMID exists. "
+            "Diacritic on Sandí preserved per 5-pass UTF-8 verification."
+        ),
     },
     "8458963": {
         "pmid": "8458963",
         "doi": "",
         "authors_short": "Lares-Villa F et al.",
-        "authors_full": "",
+        "authors_full": [
+            "Lares-Villa F", "De Jonckheere JF", "De Moura H",
+            "Rechi-Iruretagoyena A", "Ferreira-Guerrero E",
+            "Fernandez-Quintanilla G", "Ruiz-Matus C", "Visvesvara GS",
+        ],
         "journal": "J Clin Microbiol",
         "journal_short_code": "JCM",
         "year": 1993,
@@ -280,14 +356,32 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "title": "Five cases of PAM in Mexicali, Mexico, plus canal-water environmental isolate",
         "anchor_type": "case_report",
         "verification_confidence": "VERIFIED",
-        "last_verified_date": "2026-05-03",
-        "caveat": "First Mexican human N. fowleri isolations.",
+        "last_verified_date": "2026-05-04",
+        "caveat": (
+            "First Mexican human N. fowleri isolations. "
+            "Fernandez-Quintanilla unaccented per original 1993 JCM "
+            "publication (5-pass diacritic check)."
+        ),
     },
     "38526236": {
         "pmid": "38526236",
         "doi": "",
         "authors_short": "Burki et al.",
-        "authors_full": "",
+        "authors_full": [
+            "Burki AMK", "Satti L", "Mahboob S", "Anwar SOZ", "Bizanjo M",
+            "Rafique M", "Ghanchi NK",
+        ],
+        "aliases": {"first_author": ["Burqi AMK"]},
+        "alias_rationale": (
+            "PubMed XML indexes 'Burqi AMK' due to transcription error "
+            "originating in EID 'Suggested citation' field. Author's "
+            "preferred form is 'Burki' per: (1) EID HTML byline, (2) EID "
+            "affiliation footer, (3) EID author bio note, (4) Aga Khan "
+            "University Scholars repository, (5) author's other "
+            "PubMed-indexed publication Pak Armed Forces Med J 2023, "
+            "(6) ResearchGate scientific contributions, (7) Pakmedinet, "
+            "(8) PMC body text. Evidence ratio: Burki 8/10, Burqi 2/10."
+        ),
         "journal": "Emerg Infect Dis",
         "journal_short_code": "EID",
         "year": 2024,
@@ -296,9 +390,15 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "pages": "",
         "title": "Adult Pakistani PAM survivor on multi-drug regimen",
         "anchor_type": "case_report",
+        "pmc_id": "PMC10977850",
         "verification_confidence": "VERIFIED",
-        "last_verified_date": "2026-05-03",
-        "caveat": "Adult survivor on full ICU 6-drug regimen; non-US explicit metadata flag.",
+        "last_verified_date": "2026-05-04",
+        "caveat": (
+            "Adult survivor on full ICU 6-drug regimen; non-US explicit "
+            "metadata flag. First author surname spelling: canonical "
+            "'Burki' (publisher byline + author's institutional and "
+            "self-reported form); PubMed XML alias 'Burqi'."
+        ),
     },
     "40009134": {
         "pmid": "40009134",
@@ -318,6 +418,202 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "caveat": (
             "Author list verified via PubMed UI Pass 5: 6 authors, "
             "Sehgal R was added in Pass 5."
+        ),
+    },
+    # ------------------------------------------------------------------------
+    # Added 2026-05-04 from 4-pass verification (compass_artifact_wf-82607ea9).
+    # See docs/PMID_CORRECTIONS_2026-05-04.md for full audit trail.
+    # ------------------------------------------------------------------------
+    "8923775": {
+        "pmid": "8923775",
+        "doi": None,
+        "authors_short": "DeNapoli et al.",
+        "authors_full": ["DeNapoli TS", "Rutman JY", "Robinson JR", "Rhodes MM"],
+        "journal": "Tex Med",
+        "journal_short_code": "TexMed",
+        "year": 1996,
+        "volume": "92",
+        "issue": "10",
+        "pages": "59-63",
+        "title": (
+            "Primary amoebic meningoencephalitis after swimming in the Rio "
+            "Grande"
+        ),
+        "anchor_type": "case_report_pediatric_river",
+        "pmc_id": None,
+        "verification_confidence": 99,
+        "last_verified_date": "2026-05-04",
+        "caveat": (
+            "Author attribution corrected from prior misrouting. NOT "
+            "Lares-Villa (PMID 8458963 is the correct Lares-Villa Mexicali "
+            "paper). 1996 pre-DOI era: no DOI assigned."
+        ),
+    },
+    "26582886": {
+        "pmid": "26582886",
+        "doi": "10.1093/jpids/piu103",
+        "authors_short": "Capewell et al.",
+        "authors_full": [
+            "Capewell LG", "Harris AM", "Yoder JS", "Cope JR", "Eddy BA",
+            "Roy SL", "Visvesvara GS", "Fox LM", "Beach MJ",
+        ],
+        "journal": "J Pediatric Infect Dis Soc",
+        "journal_short_code": "JPIDS",
+        "year": 2015,
+        "volume": "4",
+        "issue": "4",
+        "pages": "e68-e75",
+        "title": (
+            "Diagnosis, Clinical Course, and Treatment of Primary Amoebic "
+            "Meningoencephalitis in the United States, 1937-2013"
+        ),
+        "anchor_type": "review_us_surveillance",
+        "pmc_id": None,
+        "verification_confidence": 99,
+        "last_verified_date": "2026-05-04",
+        "caveat": (
+            "Review article (US PAM 1937-2013, approximately 140-145 cases "
+            "over 76 years). PMC ID NOT confirmable - cite PMID + DOI only. "
+            "Use as Tier 4 IMPUTED_FROM_LITERATURE_REVIEW anchor only. "
+            "Prior PMC4622028 attribution removed (unconfirmable in any of 6 "
+            "independent reference lists)."
+        ),
+    },
+    "33350926": {
+        "pmid": "33350926",
+        "doi": "10.3201/eid2701.202119",
+        "authors_short": "Gharpure et al.",
+        "authors_full": [
+            "Gharpure R", "Gleason M", "Salah Z", "Blackstock AJ",
+            "Hess-Homeier D", "Yoder JS", "Ali IKM", "Collier SA", "Cope JR",
+        ],
+        "journal": "Emerg Infect Dis",
+        "journal_short_code": "EID",
+        "year": 2021,
+        "volume": "27",
+        "issue": "1",
+        "pages": "",
+        "title": (
+            "Geographic Range of Recreational Water-Associated Primary "
+            "Amebic Meningoencephalitis, United States, 1978-2018"
+        ),
+        "anchor_type": "review_us_geographic_range",
+        "pmc_id": "PMC7774533",
+        "verification_confidence": 99,
+        "last_verified_date": "2026-05-04",
+        "caveat": (
+            "First author corrected from Cope to Gharpure. Documents "
+            "northward range expansion 1978-2018."
+        ),
+    },
+    "25595746": {
+        "pmid": "25595746",
+        "doi": "10.1093/cid/ciu936",
+        "authors_short": "Cope et al.",
+        "authors_full": [
+            "Cope JR", "Ratard RC", "Hill VR", "Sokol T", "Causey JJ",
+            "Yoder JS", "Mirani G", "Mull B", "Mukerjee KA", "Narayanan J",
+            "Doucet M", "Qvarnstrom Y", "Poole CN", "Akingbola OA",
+            "Ritter JM", "Xiong Z", "da Silva AJ", "Roellig D",
+            "Van Dyke RB", "Stern H", "Xiao L", "Beach MJ",
+        ],
+        "journal": "Clin Infect Dis",
+        "journal_short_code": "CID",
+        "year": 2015,
+        "volume": "",
+        "issue": "",
+        "pages": "",
+        "title": (
+            "The first association of a primary amebic meningoencephalitis "
+            "death with culturable Naegleria fowleri in tap water from a US "
+            "treated public drinking water system"
+        ),
+        "anchor_type": "case_report_treated_tap_water",
+        "pmc_id": "PMC4627687",
+        "verification_confidence": 99,
+        "last_verified_date": "2026-05-04",
+        "caveat": (
+            "First reported PAM case associated with culturable N. fowleri "
+            "in treated US tap water (Louisiana 2013). PMC ID confirmed "
+            "PMC4627687 (NOT PMC4622028, which was the prior misattribution "
+            "to Capewell 2015)."
+        ),
+    },
+    "40697059": {
+        "pmid": "40697059",
+        "doi": "10.1080/14787210.2025.2536827",
+        "authors_short": "Siddiqui et al.",
+        "authors_full": ["Siddiqui R", "Maciver SK", "Khan NA"],
+        "journal": "Expert Rev Anti Infect Ther",
+        "journal_short_code": "ExpertRevAntiInfect",
+        "year": 2025,
+        "volume": "23",
+        "issue": "9",
+        "pages": "753-761",
+        "title": (
+            "Naegleria fowleri: emerging therapies and translational "
+            "challenges"
+        ),
+        "anchor_type": "review_therapeutic_recent",
+        "pmc_id": None,
+        "verification_confidence": 99,
+        "last_verified_date": "2026-05-04",
+        "caveat": (
+            "Most recent (2025) PAM therapeutic review. No PMC mirror "
+            "(Taylor & Francis paywall, normal)."
+        ),
+    },
+    "19845995": {
+        "pmid": "19845995",
+        "doi": "10.1017/S0950268809991014",
+        "authors_short": "Yoder et al.",
+        "authors_full": [
+            "Yoder JS", "Eddy BA", "Visvesvara GS", "Capewell L", "Beach MJ",
+        ],
+        "journal": "Epidemiol Infect",
+        "journal_short_code": "EpidemiolInfect",
+        "year": 2010,
+        "volume": "138",
+        "issue": "7",
+        "pages": "968-975",
+        "title": (
+            "The epidemiology of primary amoebic meningoencephalitis in "
+            "the USA, 1962-2008"
+        ),
+        "anchor_type": "review_us_surveillance_foundational",
+        "pmc_id": None,
+        "verification_confidence": 99,
+        "last_verified_date": "2026-05-04",
+        "caveat": (
+            "Foundational US PAM surveillance covering 111 cases 1962-2008."
+        ),
+    },
+    "32369575": {
+        "pmid": "32369575",
+        "doi": "10.1093/cid/ciaa520",
+        "authors_short": "Gharpure et al.",
+        "authors_full": [
+            "Gharpure R", "Bliton J", "Goodman A", "Ali IKM", "Yoder J",
+            "Cope JR",
+        ],
+        "journal": "Clin Infect Dis",
+        "journal_short_code": "CID",
+        "year": 2021,
+        "volume": "73",
+        "issue": "1",
+        "pages": "e19-e27",
+        "title": (
+            "Epidemiology and Clinical Characteristics of Primary Amebic "
+            "Meningoencephalitis Caused by Naegleria fowleri: A Global "
+            "Review"
+        ),
+        "anchor_type": "review_global",
+        "pmc_id": "PMC8739754",
+        "verification_confidence": 99,
+        "last_verified_date": "2026-05-04",
+        "caveat": (
+            "Global PAM review, 381 cases 1937-2018, US 41% / Pakistan 11% "
+            "/ Mexico 9%. Companion to Capewell 2015 (US-only)."
         ),
     },
 }
