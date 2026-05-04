@@ -130,18 +130,27 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "journal": "IDCases",
         "journal_short_code": "IDCases",
         "year": 2021,
-        "volume": "",
-        "issue": "",
-        "pages": "",
-        "title": "North Florida primary amebic meningoencephalitis in an adolescent",
+        "volume": "25",
+        "issue": None,
+        "pages": "e01208",
+        "title": "A case report of primary amebic meningoencephalitis in North Florida",
         "anchor_type": "case_report",
+        "anchor_subtype": "case_report_us_tap_water_north_florida",
         "pmc_id": "PMC8258632",
         "article_id": "e01208",
-        "verification_confidence": "VERIFIED",
+        "verification_confidence": 1.00,
         "last_verified_date": "2026-05-04",
+        "verification_method": "user_pubmed_ui_direct_fetch",
         "caveat": (
-            "Article identifier is e01208 (not e01218); DOI corrected to "
-            "match. Anjum bylines 'Ibne Karim M Ali' (initials IKM)."
+            "US tap-water-associated PAM 2020s. Pairs with USVI ablution "
+            "case (PMID 24226628) for tap-water transmission cluster "
+            "adjudication. 11 authors confirmed (Saccoccio FM at end). "
+            "DOI is e01208 (NOT e01218). Author 8 'O'Laughlin K' preserves "
+            "apostrophe. Author 6 'Ibne Karim M Ali' renders as Vancouver "
+            "'Ali IKM' (3 initials). Authors: Saad K Anjum, Karna Mangrola, "
+            "Garrett Fitzpatrick, Kimberly Stockdale, Laura Matthias, "
+            "Ibne Karim M Ali, Jennifer R Cope, Kevin O'Laughlin, "
+            "Shelley Collins, Stacy G Beal, Frances M Saccoccio."
         ),
     },
     "37460088": {
@@ -365,39 +374,55 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
     },
     "38526236": {
         "pmid": "38526236",
-        "doi": "",
-        "authors_short": "Burki et al.",
+        "doi": "10.3201/eid3004.230979",
+        "authors_short": "Burki AMK et al.",
         "authors_full": [
             "Burki AMK", "Satti L", "Mahboob S", "Anwar SOZ", "Bizanjo M",
             "Rafique M", "Ghanchi NK",
         ],
-        "aliases": {"first_author": ["Burqi AMK"]},
+        "author_aliases": {
+            "Burki AMK": ["Burqi AMK"],
+        },
         "alias_rationale": (
-            "PubMed XML indexes 'Burqi AMK' due to transcription error "
-            "originating in EID 'Suggested citation' field. Author's "
-            "preferred form is 'Burki' per: (1) EID HTML byline, (2) EID "
-            "affiliation footer, (3) EID author bio note, (4) Aga Khan "
-            "University Scholars repository, (5) author's other "
-            "PubMed-indexed publication Pak Armed Forces Med J 2023, "
-            "(6) ResearchGate scientific contributions, (7) Pakmedinet, "
-            "(8) PMC body text. Evidence ratio: Burki 8/10, Burqi 2/10."
+            "PubMed XML indexes 'Burqi AMK' due to a transcription error "
+            "propagated from the EID 'Suggested citation' field. Author's "
+            "preferred surname 'Burki' confirmed by 8 of 10 authoritative "
+            "sources: (1) EID byline at top of article, (2) EID author "
+            "biographical note 'Dr. Burki is a consultant intensive care "
+            "specialist...', (3) EID author-affiliation footer 'A.M.K. "
+            "Burki', (4) Aga Khan University Scholars institutional "
+            "repository, (5) author's other PubMed-indexed publication "
+            "(Pak Armed Forces Med J 2023), (6) ResearchGate scientific "
+            "contributions page, (7) Pakmedinet author database, (8) PMC "
+            "HTML body rendering. The 'Burqi' form appears only in (a) "
+            "PubMed XML index and (b) EID Suggested citation (single "
+            "transcription event propagated). Canonical = Burki; alias = "
+            "Burqi for search recall. Verified by user PubMed UI fetch "
+            "May 4, 2026 confirming PubMed currently still indexes as "
+            "'Burqi'. NLM correction not yet propagated."
         ),
-        "journal": "Emerg Infect Dis",
-        "journal_short_code": "EID",
+        "journal": "Emerging Infectious Diseases",
+        "journal_short_code": "Emerg Infect Dis",
         "year": 2024,
-        "volume": "",
-        "issue": "",
-        "pages": "",
-        "title": "Adult Pakistani PAM survivor on multi-drug regimen",
+        "volume": "30",
+        "issue": "4",
+        "pages": "788-791",
+        "title": "Successful Treatment of Confirmed Naegleria fowleri Primary Amebic Meningoencephalitis",
         "anchor_type": "case_report",
+        "anchor_subtype": "case_report_adult_SURVIVOR_pakistan_first_pakistani_survivor",
         "pmc_id": "PMC10977850",
-        "verification_confidence": "VERIFIED",
+        "verification_confidence": 1.00,
         "last_verified_date": "2026-05-04",
+        "verification_method": "user_pubmed_ui_direct_fetch",
         "caveat": (
-            "Adult survivor on full ICU 6-drug regimen; non-US explicit "
-            "metadata flag. First author surname spelling: canonical "
-            "'Burki' (publisher byline + author's institutional and "
-            "self-reported form); PubMed XML alias 'Burqi'."
+            "22yo M Pakistan 2023, 8th confirmed N. fowleri SURVIVOR "
+            "globally (1971-2023). PNS Shifa Hospital Karachi. Pairs "
+            "naturally with Linam 2015 Kali Hardig (PMID 25667249) for "
+            "outcome-contrast adjudication. Co-author Ghanchi NK also "
+            "first author of PMID 27648572 (2016 EID Pakistan public "
+            "water supply). Authors: Ahmed Mujadid Khan Burki, Luqman "
+            "Satti, Saira Mahboob, Syed Onaiz Zulfiqar Anwar, Mahwash "
+            "Bizanjo, Muhammad Rafique, Najia Karim Ghanchi."
         ),
     },
     "40009134": {
@@ -614,6 +639,211 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "caveat": (
             "Global PAM review, 381 cases 1937-2018, US 41% / Pakistan 11% "
             "/ Mexico 9%. Companion to Capewell 2015 (US-only)."
+        ),
+    },
+    # ------------------------------------------------------------------------
+    # Added 2026-05-04 from 6th-pass triple-check verification
+    # (compass_artifact_wf-13eb5fad). All 6 PMIDs verified at 1.00 confidence
+    # via user-side PubMed UI direct fetches. See
+    # docs/PMID_DAY2_CANONIZATION_2026-05-04.md for full audit trail.
+    # ------------------------------------------------------------------------
+    "39606118": {
+        "pmid": "39606118",
+        "doi": "10.3389/fmicb.2024.1463822",
+        "authors_short": "Lin L et al.",
+        "authors_full": [
+            "Lin L", "Luo L", "Wu M", "Chen J", "Liao Y", "Zhang H",
+        ],
+        "journal": "Frontiers in Microbiology",
+        "journal_short_code": "Front Microbiol",
+        "year": 2024,
+        "volume": "15",
+        "issue": None,
+        "pages": "1463822",
+        "title": (
+            "Utilizing metagenomic next-generation sequencing and "
+            "phylogenetic analysis to identify a rare pediatric case of "
+            "Naegleria fowleri infection presenting with fulminant "
+            "myocarditis"
+        ),
+        "anchor_type": "case_report",
+        "anchor_subtype": "case_report_pediatric_fatal_atypical_myocarditis_indoor_pool",
+        "pmc_id": "PMC11599265",
+        "verification_confidence": 1.00,
+        "last_verified_date": "2026-05-04",
+        "verification_method": "user_pubmed_ui_direct_fetch",
+        "caveat": (
+            "6yo F Sichuan China, indoor heated pool 7d pre-onset April "
+            "2024, fulminant myocarditis presentation, ECMO-managed, "
+            "novel candidate genotype k39_3, FATAL despite AmpB + "
+            "rifampin. Same index patient as Li J 2025 Front Med "
+            "(PMID 40969815) field investigation companion paper. "
+            "Authors: Liangkang Lin, Lili Luo, Mei Wu, Jun Chen, "
+            "Yi Liao, Haiyang Zhang."
+        ),
+    },
+    "40969815": {
+        "pmid": "40969815",
+        "doi": "10.3389/fmed.2025.1623909",
+        "authors_short": "Li J et al.",
+        "authors_full": [
+            "Li J", "Feng S", "Wang Y", "Li C", "Li P", "Zhang L",
+            "Dai Y", "Tan K", "Wang L",
+        ],
+        "journal": "Frontiers in Medicine",
+        "journal_short_code": "Front Med (Lausanne)",
+        "year": 2025,
+        "volume": "12",
+        "issue": None,
+        "pages": "1623909",
+        "title": (
+            "A primary amoebic meningoencephalitis case suspected to be "
+            "infected by indoor swimming, China, 2024"
+        ),
+        "anchor_type": "surveillance",
+        "anchor_subtype": "epi_field_investigation_pediatric_fatal_indoor_pool",
+        "pmc_id": "PMC12440956",
+        "verification_confidence": 1.00,
+        "last_verified_date": "2026-05-04",
+        "verification_method": "user_pubmed_ui_direct_fetch",
+        "caveat": (
+            "Same April 2024 6yo Chengdu index patient as Lin et al. "
+            "2024 Front Microbiol myocarditis paper (PMID 39606118). "
+            "This is the Chengdu CDC field investigation. Death 7 days "
+            "after symptom onset. Authors: Junfan Li (equal contrib), "
+            "Songqi Feng (equal contrib), Yao Wang, Chao Li, Peng Li, "
+            "Lijie Zhang, Yingxue Dai, Kaike Tan, Liang Wang."
+        ),
+    },
+    "32752181": {
+        "pmid": "32752181",
+        "doi": "10.3390/pathogens9080629",
+        "authors_short": "Retana Moreira L et al.",
+        "authors_full": [
+            "Retana Moreira L", "Zamora Rojas L", "Grijalba Murillo M",
+            "Molina Castro SE", "Abrahams Sandí E",
+        ],
+        "journal": "Pathogens",
+        "journal_short_code": "Pathogens",
+        "year": 2020,
+        "volume": "9",
+        "issue": "8",
+        "pages": "629",
+        "title": (
+            "Primary Amebic Meningoencephalitis Related to Groundwater "
+            "in Costa Rica: Diagnostic Confirmation of Three Cases and "
+            "Environmental Investigation"
+        ),
+        "anchor_type": "case_report",
+        "anchor_subtype": "case_series_environmental_groundwater_central_america",
+        "pmc_id": "PMC7459727",
+        "verification_confidence": 1.00,
+        "last_verified_date": "2026-05-04",
+        "verification_method": "user_pubmed_ui_direct_fetch",
+        "caveat": (
+            "3 Costa Rica cases first trimester 2020. One survivor "
+            "among the three (per Frontiers 2025 PMC12089049). "
+            "Diacritic preservation: 'Sandí' (UTF-8 c3 ad). Author "
+            "surnames are unhyphenated compound surnames in publication "
+            "form (Retana Moreira, Abrahams Sandí). NOT 'Retana-Moreira' "
+            "or 'Abrahams-Sandí'. Some downstream Spanish-language "
+            "reviews re-hyphenate; preserve un-hyphenated PubMed "
+            "canonical form. Authors: Lissette Retana Moreira, Leidy "
+            "Zamora Rojas, Muriel Grijalba Murillo, Silvia Elena Molina "
+            "Castro, Elizabeth Abrahams Sandí."
+        ),
+    },
+    "35463884": {
+        "pmid": "35463884",
+        "doi": "10.3389/fped.2022.785735",
+        "authors_short": "Zhou W et al.",
+        "authors_full": [
+            "Zhou W", "Ouyang Y", "Zhang D", "Liao S", "Liang H",
+            "Zhao L", "Chen C",
+        ],
+        "journal": "Frontiers in Pediatrics",
+        "journal_short_code": "Front Pediatr",
+        "year": 2022,
+        "volume": "10",
+        "issue": None,
+        "pages": "785735",
+        "title": (
+            "Case Report and Literature Review: Bacterial "
+            "Meningoencephalitis or Not? Naegleria fowleri Related "
+            "Primary Amoebic Meningoencephalitis in China"
+        ),
+        "anchor_type": "case_report",
+        "anchor_subtype": "case_report_pediatric_fatal_misdiagnosis_as_bacterial_meningitis",
+        "pmc_id": "PMC9033202",
+        "verification_confidence": 1.00,
+        "last_verified_date": "2026-05-04",
+        "verification_method": "user_pubmed_ui_direct_fetch",
+        "caveat": (
+            "China pediatric case + literature review. Strong "
+            "physician-adjudicator anchor for misdiagnosis-as-bacterial-"
+            "meningitis differential. 7 authors confirmed (NOT 6 as "
+            "initially inferred from snippets). Authors: Wenjuan Zhou, "
+            "Yuzhen Ouyang, Di Zhang, Sheng Liao, Hui Liang, Lingling "
+            "Zhao, Chunyuan Chen."
+        ),
+    },
+    "34906097": {
+        "pmid": "34906097",
+        "doi": "10.1186/s12879-021-06932-9",
+        "authors_short": "Huang S et al.",
+        "authors_full": [
+            "Huang S", "Liang X", "Han Y", "Zhang Y", "Li X", "Yang Z",
+        ],
+        "journal": "BMC Infectious Diseases",
+        "journal_short_code": "BMC Infect Dis",
+        "year": 2021,
+        "volume": "21",
+        "issue": "1",
+        "pages": "1251",
+        "title": (
+            "A pediatric case of primary amoebic meningoencephalitis "
+            "due to Naegleria fowleri diagnosed by next-generation "
+            "sequencing of cerebrospinal fluid and blood samples"
+        ),
+        "anchor_type": "case_report",
+        "anchor_subtype": "case_report_pediatric_fatal_mNGS_dual_compartment_china",
+        "pmc_id": "PMC8670243",
+        "verification_confidence": 1.00,
+        "last_verified_date": "2026-05-04",
+        "verification_method": "user_pubmed_ui_direct_fetch",
+        "caveat": (
+            "China pediatric mNGS dual-compartment positivity (CSF + "
+            "blood, rare blood positivity). Authors 1+2 contributed "
+            "equally. Author 'Xiu'an Liang' contains apostrophe in "
+            "given name (UTF-8 preserved); Vancouver renders as "
+            "'Liang X'. Authors: Shiqin Huang, Xiu'an Liang, Yunli "
+            "Han, Yanyan Zhang, Xinhui Li, Zhiyong Yang."
+        ),
+    },
+    "33381798": {
+        "pmid": "33381798",
+        "doi": "10.1093/tropej/fmaa100",
+        "authors_short": "Celik Y, Arslankoylu AE",
+        "authors_full": ["Celik Y", "Arslankoylu AE"],
+        "journal": "Journal of Tropical Pediatrics",
+        "journal_short_code": "J Trop Pediatr",
+        "year": 2021,
+        "volume": "67",
+        "issue": "2",
+        "pages": "fmaa100",
+        "title": "A Newborn with Brain-Eating Ameba Infection",
+        "anchor_type": "case_report",
+        "anchor_subtype": "case_report_newborn_fatal_extreme_age_atypical",
+        "pmc_id": None,
+        "verification_confidence": 1.00,
+        "last_verified_date": "2026-05-04",
+        "verification_method": "user_pubmed_ui_direct_fetch",
+        "caveat": (
+            "NEWBORN with brain-eating amoeba (extreme age "
+            "presentation). Tests differential diagnosis at age "
+            "extremes. Authors: Yalcin Celik, Ali Ertuğ Arslankoylu. "
+            "Diacritic preservation: 'Ertuğ' (UTF-8 c4 9f for ğ) - "
+            "given name only, collapses to initial in Vancouver."
         ),
     },
 }
@@ -1003,7 +1233,16 @@ def _build_provenance(spec: dict[str, Any], pmid_meta: dict[str, Any]) -> dict[s
             f"to hospital discharge."
         )
     if pmid_meta.get("caveat"):
-        rationale += f" Citation caveat: {pmid_meta['caveat']}"
+        # Schema caps inclusion_decision_rationale at 1000 chars. The
+        # registry holds the full verbose caveat (bibliographic detail,
+        # author lists, alias rationale, etc.); the rationale only
+        # carries as much as fits, with a truncation marker if needed.
+        suffix = f" Citation caveat: {pmid_meta['caveat']}"
+        budget = 1000 - len(rationale)
+        if len(suffix) <= budget:
+            rationale += suffix
+        elif budget > 30:
+            rationale += suffix[: budget - 3] + "..."
     return {
         "generation_timestamp_utc": "2026-05-03T12:00:00Z",
         "generator_model_identifier": "scripts.generate_pam_vignettes/v1",
