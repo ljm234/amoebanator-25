@@ -237,3 +237,25 @@ All 22 `PMID_REGISTRY` entries now have populated `authors_full` lists:
 | 40697059 | 3 | Siddiqui R |
 
 Zero empty entries.
+
+---
+
+## Tag Re-annotation + authors_short Consistency Fix (2026-05-04)
+
+Within minutes of creating tag v2.1.1-pmid-corrections-5pass, detected two related diacritic preservation issues:
+
+1. The tag's human-readable annotation message was created via shell heredoc, which stripped the í diacritic from "Abrahams-Sandí" rendering it as "Abrahams-Sandi" in the annotation text only. Re-annotated using `git tag -F` with a UTF-8 file-sourced message to preserve the diacritic. The commit hash 3fb40b3 was unchanged; only the tag's annotation text was corrected.
+
+2. The PMID_REGISTRY entry for PMID 25625800 had `authors_short` rendered as 'Abrahams-Sandi E et al.' (without diacritic) while `authors_full[0]` correctly preserved 'Abrahams-Sandí E' with diacritic. Since `authors_short` is rendered into adjudication anchoring text by `_build_adjudication`, this inconsistency would have surfaced in physician-facing review output. Updated `authors_short` to 'Abrahams-Sandí E et al.' for consistency with `authors_full`.
+
+Both fixes preserve the U+00ED diacritic byte-pattern (UTF-8 c3 ad). The registry source data was already correct in `authors_full`; only the human-readable surfaces (tag annotation, authors_short rendering) needed alignment. Standard git hygiene applied within the tag's first hour of life.
+
+### Verification
+- Tag annotation hex inspection confirms c3 ad UTF-8 sequence present (2 instances in body text)
+- `PMID_REGISTRY['25625800']['authors_short']` and `['authors_full'][0]` both contain U+00ED
+- Both remotes (origin, hf) updated with new tag SHA pointing to commit 3fb40b3
+- Tests still pass (55 passed, 1 skipped)
+- Tag SHA chain: e3c561d (broken-form) -> 50f194e (UTF-8 corrected); both deref to commit 3fb40b3
+
+### Reversibility
+The original tag annotation was backed up to /tmp/original_tag_v2.1.1_message_BACKUP.txt before deletion; the backup was retained until verification of the new tag completed, then cleaned up alongside the new tag message file in Phase 4.

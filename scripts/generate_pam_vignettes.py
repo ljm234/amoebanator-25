@@ -317,7 +317,7 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
     "25625800": {
         "pmid": "25625800",
         "doi": "",
-        "authors_short": "Abrahams-Sandi E et al.",
+        "authors_short": "Abrahams-Sandí E et al.",
         "authors_full": [
             "Abrahams-Sandí E", "Retana-Moreira L", "Castro-Castillo A",
             "Reyes-Batlle M", "Lorenzo-Morales J",
