@@ -286,9 +286,18 @@ def test_pmid_assignments_match_distribution(distribution, generated_vignettes):
 # ----------------------------------------------------------------------
 
 
-_ALLOWED_JOURNAL_CODES = {"MMWR", "JCM", "CID", "IDCases", "AJTMH", "EID", "IJP"}
+_ALLOWED_JOURNAL_CODES = {
+    "MMWR", "JCM", "CID", "IDCases", "AJTMH", "EID", "IJP",
+    # Vancouver MEDLINE-style abbreviations (Day 2 canonization 2026-05-04):
+    "Emerg Infect Dis", "Front Microbiol", "Front Med (Lausanne)",
+    "Pathogens", "Front Pediatr", "BMC Infect Dis", "J Trop Pediatr",
+    "TexMed", "JPIDS", "EpidemiolInfect", "ExpertRevAntiInfect",
+}
+# Journal portion may now contain spaces and parentheses (Vancouver style).
+# Use a non-greedy capture for the journal segment, terminated by `-NNNN-`
+# (a 4-digit year) so the journal can include any chars except newline.
 _CASE_ID_RE = re.compile(
-    r"^PAM-D1-(\d{3})-([A-Za-z]+)-(\d{4})-(.+)$"
+    r"^PAM-D1-(\d{3})-(.+?)-(\d{4})-(.+)$"
 )
 
 
