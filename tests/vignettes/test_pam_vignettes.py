@@ -65,9 +65,10 @@ _REQUIRED_PMID_KEYS = {
 }
 _PMID_DIGIT_RE = re.compile(r"^\d{7,8}$")
 _DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
-# Acceptable verification dates: Day 1 sweep + Day 2 corrections sweep.
-# See docs/PMID_CORRECTIONS_2026-05-04.md for the audit trail.
-_VALID_VERIFICATION_DATES = {"2026-05-03", "2026-05-04"}
+# Acceptable verification dates: Day 1 sweep + Day 2 corrections sweep + Day 2
+# bonus canonization. See docs/PMID_CORRECTIONS_2026-05-04.md and
+# docs/PMID_DAY2_BONUS_CANONIZATION_2026-05-05.md for the audit trails.
+_VALID_VERIFICATION_DATES = {"2026-05-03", "2026-05-04", "2026-05-05"}
 
 
 @pytest.mark.parametrize("pmid", sorted(PMID_REGISTRY.keys()))
