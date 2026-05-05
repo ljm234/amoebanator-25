@@ -853,6 +853,531 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
             "given name only, collapses to initial in Vancouver."
         ),
     },
+    # ------------------------------------------------------------------------
+    # Added 2026-05-05 from Commit 2 of 5 sequential safe path.
+    # Methodology mix: 11 research_mode_4pass_triple_check + 3
+    # user_pubmed_ui_direct_fetch (Cogo, Heggie, Kou - high-risk dual-form).
+    # Source: compass_artifact_wf-313f302a-5956-4f61-b5c3-c116819753df
+    # Audit trail: docs/PMID_DAY2_BONUS_CANONIZATION_2026-05-05.md
+    # ------------------------------------------------------------------------
+    "39795618": {
+        "pmid": "39795618",
+        "doi": "10.3390/diagnostics15010089",
+        "authors_short": "Phung NTN et al.",
+        "authors_full": [
+            "Phung NTN", "Pham HT", "Tran TT", "Dinh VH", "Tran NM",
+            "Tran NAN", "Ngo MQN", "Nguyen HTT", "Tran DK", "Le TKT",
+            "Quek C", "Pham VH", "Pham ST",
+        ],
+        "journal": "Diagnostics (Basel)",
+        "journal_short_code": "Diagnostics",
+        "year": 2025,
+        "volume": "15",
+        "issue": "1",
+        "pages": "89",
+        "title": "Naegleria fowleri: Portrait of a Cerebral Killer",
+        "anchor_type": "case_report",
+        "anchor_subtype": "asia_vietnam_cryptic_pediatric_fatal_prolonged_survival",
+        "pmc_id": "PMC11719733",
+        "verification_confidence": 1.00,
+        "last_verified_date": "2026-05-05",
+        "verification_method": "research_mode_4pass_triple_check",
+        "caveat": (
+            "10mo F Mekong Delta Vietnam, FATAL with 14-day prolonged "
+            "survival on intensive treatment (longest pediatric PAM "
+            "survival durations); MPL-rPCR + microscopy + sequencing "
+            "diagnosis. Cryptic exposure (no documented direct freshwater "
+            "exposure). 13 authors. Vietnamese compound surnames "
+            "preserved un-hyphenated per PubMed XML (Tran NAN = Nuong Ai "
+            "Nguyen Tran; Ngo MQN = Minh Quang Ngoc Ngo). Authors: "
+            "Nguyen The Nguyen Phung, Huong Thien Pham, Thuc Thanh Tran, "
+            "Vu Hoang Dinh, Nhut Minh Tran, Nuong Ai Nguyen Tran, Minh "
+            "Quang Ngoc Ngo, Huong Thanh Thi Nguyen, Duy Khanh Tran, "
+            "Thao Kieu Thi Le, Camelia Quek, Van Hung Pham, Son Truong "
+            "Pham."
+        ),
+    },
+    "30055569": {
+        "pmid": "30055569",
+        "doi": "10.1186/s12879-018-3261-z",
+        "authors_short": "Wang Q et al.",
+        "authors_full": [
+            "Wang Q", "Li J", "Ji J", "Yang L", "Chen L", "Zhou R",
+            "Yang Y", "Zheng H", "Yuan J", "Li L", "Bi Y", "Gao GF",
+            "Ma J", "Liu Y",
+        ],
+        "journal": "BMC Infectious Diseases",
+        "journal_short_code": "BMC Infect Dis",
+        "year": 2018,
+        "volume": "18",
+        "issue": "1",
+        "pages": "349",
+        "title": "A case of Naegleria fowleri related primary amoebic meningoencephalitis in China diagnosed by next-generation sequencing",
+        "anchor_type": "case_report",
+        "anchor_subtype": "asia_china_first_mainland_NGS_diagnosis_fatal",
+        "pmc_id": "PMC6064090",
+        "verification_confidence": 1.00,
+        "last_verified_date": "2026-05-05",
+        "verification_method": "research_mode_4pass_triple_check",
+        "caveat": (
+            "42yo M Shenzhen Third People's Hospital (acquired Hangzhou); "
+            "first reported mainland China PAM case; FATAL; NGS "
+            "diagnosed. 14 authors including Gao GF (George F. Gao, "
+            "CCDC Director-General). Author 14 'Liu Y' = Yingxia Liu "
+            "(single Liu in this paper, no disambiguation needed). "
+            "Authors: Qiang Wang, Jianming Li, Jingkai Ji, Liuqing Yang, "
+            "Li Chen, Rongrong Zhou, Yang Yang, Haixia Zheng, Jing Yuan, "
+            "Liqiang Li, Yuhai Bi, George F. Gao, Jinmin Ma, Yingxia Liu."
+        ),
+    },
+    "39174030": {
+        "pmid": "39174030",
+        "doi": "10.3201/eid3009.231604",
+        "authors_short": "Wei HY et al.",
+        "authors_full": [
+            "Wei HY", "Lai YW", "Li SY", "Lee YI", "Hu MK", "Ji DD",
+            "Su CP",
+        ],
+        "journal": "Emerging Infectious Diseases",
+        "journal_short_code": "Emerg Infect Dis",
+        "year": 2024,
+        "volume": "30",
+        "issue": "9",
+        "pages": "1922-1925",
+        "title": "Fatal Case of Naegleria fowleri Primary Amebic Meningoencephalitis from Indoor Surfing Center, Taiwan, 2023",
+        "anchor_type": "case_report",
+        "anchor_subtype": "asia_taiwan_indoor_surfing_recreational_fatal",
+        "pmc_id": "PMC11346987",
+        "verification_confidence": 1.00,
+        "last_verified_date": "2026-05-05",
+        "verification_method": "research_mode_4pass_triple_check",
+        "caveat": (
+            "30yo F northern Taiwan, indoor surfing center July 2023, "
+            "symptom onset 26 Jul 2023, died 1 Aug 2023; first Taiwan "
+            "PAM in 12 years (since Su et al. 2013 PMID 23710088). 7 "
+            "authors. Author 7 'Su CP' rendered Chia-ping Su (lowercase "
+            "p) in publisher byline; PubMed normalizes to Su CP. "
+            "Authors: Hsin-Yi Wei, Yi-Wen Lai, Shu-Ying Li, Yen-I Lee, "
+            "Meng-Kai Hu, Da-Der Ji, Chia-ping Su."
+        ),
+    },
+    "37727924": {
+        "pmid": "37727924",
+        "doi": "10.3349/ymj.2023.0189",
+        "authors_short": "Hong KW et al.",
+        "authors_full": [
+            "Hong KW", "Jeong JH", "Byun JH", "Hong SH", "Ju JW", "Bae IG",
+        ],
+        "journal": "Yonsei Medical Journal",
+        "journal_short_code": "Yonsei Med J",
+        "year": 2023,
+        "volume": "64",
+        "issue": "10",
+        "pages": "641-645",
+        "title": "Fatal Primary Amebic Meningoencephalitis Due to Naegleria fowleri: The First Imported Case in Korea",
+        "anchor_type": "case_report",
+        "anchor_subtype": "asia_korea_imported_thailand_travel_fatal",
+        "pmc_id": "PMC10522881",
+        "verification_confidence": 1.00,
+        "last_verified_date": "2026-05-05",
+        "verification_method": "research_mode_4pass_triple_check",
+        "caveat": (
+            "Korean man in 50s, 4-month Thailand stay, returned Korea "
+            "10 Dec 2022, symptoms began evening of arrival, admitted "
+            "11 Dec, died 21 Dec 2022 (13d post-onset); first imported "
+            "PAM case in Korea; KDCA-confirmed 99.6% genetic match to "
+            "overseas PAM strain. atypical_type=travel_imported_lake. "
+            "6 authors with hyphenated Korean given names (Kyung-Wook, "
+            "Jong-Hwan, Jung-Hyun, Sung-Hee, Jung-Won, In-Gyu). "
+            "Authors: Kyung-Wook Hong, Jong Hwan Jeong, Jung-Hyun "
+            "Byun, Sung-Hee Hong, Jung-Won Ju, In-Gyu Bae."
+        ),
+    },
+    "15504272": {
+        "pmid": "15504272",
+        "doi": "10.3201/eid1010.040273",
+        "authors_short": "Cogo PE et al.",
+        "authors_full": [
+            "Cogo PE", "Scaglia M", "Gatti S", "Rossetti F", "Alaggio R",
+            "Laverda AM", "Zhou L", "Xiao L", "Visvesvara GS",
+        ],
+        "author_aliases": {
+            "Scaglia M": ["Scagli M"],
+        },
+        "alias_rationale": (
+            "PubMed XML truncates author 2 surname mid-string ('Scaglia' "
+            "-> 'Scagli'; trailing 'a' lost in early NLM ingest of this "
+            "2004 dispatch). Canonical 'Scaglia M' confirmed by: (1) CDC "
+            "EID publisher byline at top of article 'Massimo Scaglia + "
+            "University-IRCCS S. Matteo, Pavia, Italy', (2) PMC3323261 "
+            "full-text rendering, (3) Massimo Scaglia documented "
+            "researcher with prior Naegleria papers (PMID 3587066 "
+            "Microbiologica 1987, Trans R Soc Trop Med Hyg 1983, Exp "
+            "Parasitol 1989), (4) Padova/Pavia institutional records. "
+            "PubMed UI fetch 2026-05-05 confirmed 'Scagli M' truncation "
+            "persists in NLM index. Verified user_pubmed_ui_direct_fetch "
+            "on this entry to lock the dual-form decision."
+        ),
+        "journal": "Emerging Infectious Diseases",
+        "journal_short_code": "Emerg Infect Dis",
+        "year": 2004,
+        "volume": "10",
+        "issue": "10",
+        "pages": "1835-1837",
+        "title": "Fatal Naegleria fowleri meningoencephalitis, Italy",
+        "anchor_type": "case_report",
+        "anchor_subtype": "europe_italy_first_european_pediatric_genotype1_fatal",
+        "pmc_id": "PMC3323261",
+        "verification_confidence": 1.00,
+        "last_verified_date": "2026-05-05",
+        "verification_method": "user_pubmed_ui_direct_fetch",
+        "caveat": (
+            "9yo immunocompetent boy Italy (Veneto/Padova region, "
+            "admitted Este hospital); swam in polluted Po River water "
+            "hole July 2003 ~10d pre-onset; FIRST documented Italian "
+            "PAM case; postmortem dx by IIF + histology; N. fowleri "
+            "genotype I (genotype 1) by PCR; FATAL. 9 authors. NLM "
+            "truncation artifact: PubMed XML shows 'Scagli M' but "
+            "canonical published byline = 'Scaglia M' (Massimo "
+            "Scaglia, University-IRCCS S. Matteo, Pavia). Authors: "
+            "Paola E. Cogo, Massimo Scaglia, Simonetta Gatti, Flavio "
+            "Rossetti, Rita Alaggio, Anna Maria Laverda, Ling Zhou, "
+            "Lihua Xiao, Govinda S. Visvesvara."
+        ),
+    },
+    "31734864": {
+        "pmid": "31734864",
+        "doi": "10.1007/s00436-019-06463-y",
+        "authors_short": "Sazzad HMS et al.",
+        "authors_full": [
+            "Sazzad HMS", "Luby SP", "Sejvar J", "Rahman M", "Gurley ES",
+            "Hill V", "Murphy JL", "Roy S", "Cope JR", "Ali IKM",
+        ],
+        "journal": "Parasitology Research",
+        "journal_short_code": "Parasitol Res",
+        "year": 2020,
+        "volume": "119",
+        "issue": "1",
+        "pages": "339-344",
+        "title": "A case of primary amebic meningoencephalitis caused by Naegleria fowleri in Bangladesh",
+        "anchor_type": "case_report",
+        "anchor_subtype": "south_asia_bangladesh_first_nasal_rinsing_groundwater_fatal",
+        "pmc_id": None,
+        "verification_confidence": 1.00,
+        "last_verified_date": "2026-05-05",
+        "verification_method": "research_mode_4pass_triple_check",
+        "caveat": (
+            "15yo M Bangladesh; daily nasal rinsing with untreated "
+            "groundwater + bathing in untreated groundwater/river water; "
+            "FATAL <6 days post-onset; first recognized Bangladesh PAM "
+            "case. 10 authors ending Cope JR, Ali IKM. No PMC mirror "
+            "(Springer paywall, expected). Authors: Hossain M.S. Sazzad, "
+            "Stephen P. Luby, James Sejvar, Mahmudur Rahman, Emily S. "
+            "Gurley, Vincent Hill, Jennifer L. Murphy, Shantanu Roy, "
+            "Jennifer R. Cope, Ibne K.M. Ali."
+        ),
+    },
+    "36046566": {
+        "pmid": "36046566",
+        "doi": "10.18502/ijpa.v17i1.9015",
+        "authors_short": "Aurongzeb M et al.",
+        "authors_full": [
+            "Aurongzeb M", "Rashid Y", "Naqvi SHA", "Khatoon A",
+            "Haq SA", "Azim MK", "Kaleem I", "Bashir S",
+        ],
+        "journal": "Iranian Journal of Parasitology",
+        "journal_short_code": "Iran J Parasitol",
+        "year": 2022,
+        "volume": "17",
+        "issue": "1",
+        "pages": "43-52",
+        "title": "Naegleria fowleri from Pakistan Has Type-2 Genotype",
+        "anchor_type": "case_report",
+        "anchor_subtype": "south_asia_pakistan_karachi_ablution_genotype2_first",
+        "pmc_id": "PMC9375727",
+        "verification_confidence": 1.00,
+        "last_verified_date": "2026-05-05",
+        "verification_method": "research_mode_4pass_triple_check",
+        "caveat": (
+            "28yo Karachi Pakistan May 2019 (Imam Zain-Ul-Abdin "
+            "Hospital); ablution exposure; FIRST Pakistani N. fowleri "
+            "characterized as type-2 (genotype 2). 8 authors. DISTINCT "
+            "from Aurongzeb M et al. Sci Rep 2022;12 mitochondrial "
+            "genome paper (PMID 35909191, DOI 10.1038/s41598-022-17006-4) "
+            "- co-temporal but separate works. Authors: Muhammad "
+            "Aurongzeb, Yasmeen Rashid, Syed Habib Ahmed Naqvi, Ambrina "
+            "Khatoon, Sadia Abdul Haq, Mohammad Kamran Azim, Imdad "
+            "Kaleem, Shahid Bashir."
+        ),
+    },
+    "24226628": {
+        "pmid": "24226628",
+        "doi": None,
+        "authors_short": "Centers for Disease Control and Prevention (CDC)",
+        "authors_full": ["Centers for Disease Control and Prevention (CDC)"],
+        "journal": "MMWR Morbidity and Mortality Weekly Report",
+        "journal_short_code": "MMWR Morb Mortal Wkly Rep",
+        "year": 2013,
+        "volume": "62",
+        "issue": "45",
+        "pages": "903",
+        "title": "Notes from the field: primary amebic meningoencephalitis associated with ritual nasal rinsing--St. Thomas, U.S. Virgin islands, 2012",
+        "anchor_type": "case_report",
+        "anchor_subtype": "americas_usvi_caribbean_ablution_nasal_rinsing_tap_water_fatal",
+        "pmc_id": "PMC4585351",
+        "verification_confidence": 1.00,
+        "last_verified_date": "2026-05-05",
+        "verification_method": "research_mode_4pass_triple_check",
+        "caveat": (
+            "47yo M U.S. Virgin Islands St. Thomas; only freshwater "
+            "exposure was tap water for daily household activities + "
+            "Islamic ablution (ritual cleansing including nasal "
+            "rinsing); FATAL Nov 21 2012; first PAM death in USVI "
+            "territory; environmental investigation found untreated "
+            "groundwater well + untreated rainwater cistern as "
+            "household water sources. Pre-DOI MMWR Notes from Field, "
+            "no DOI expected. PubMed byline: corporate single author "
+            "'Centers for Disease Control and Prevention (CDC)'. "
+            "Longer companion report at PMC4585351. Pairs with Anjum "
+            "2021 N Florida (PMID 34307045) for tap-water transmission "
+            "cluster adjudication."
+        ),
+    },
+    "27648572": {
+        "pmid": "27648572",
+        "doi": "10.3201/eid2210.151236",
+        "authors_short": "Ghanchi NK et al.",
+        "authors_full": [
+            "Ghanchi NK", "Khan E", "Khan A", "Muhammad W", "Malik FR",
+            "Zafar A",
+        ],
+        "journal": "Emerging Infectious Diseases",
+        "journal_short_code": "Emerg Infect Dis",
+        "year": 2016,
+        "volume": "22",
+        "issue": "10",
+        "pages": "1835-1837",
+        "title": "Naegleria fowleri Meningoencephalitis Associated with Public Water Supply, Pakistan, 2014",
+        "anchor_type": "case_report",
+        "anchor_subtype": "south_asia_pakistan_karachi_public_water_supply_AKU",
+        "pmc_id": "PMC5038392",
+        "verification_confidence": 1.00,
+        "last_verified_date": "2026-05-05",
+        "verification_method": "research_mode_4pass_triple_check",
+        "caveat": (
+            "EID Letter (no abstract). 6 authors. DISTINCT from "
+            "Ghanchi 2017 AJTMH case series (PMID 29016297) already in "
+            "registry - different author roster (2017 = Ghanchi NK, "
+            "Jamil B, Khan E, Ansar Z, Samreen A, Zafar A, Hasan Z; "
+            "2016 = this entry). Aga Khan University + Karachi Water "
+            "and Sewerage Board + WHO Karachi affiliations. Authors: "
+            "Najia K. Ghanchi, Erum Khan, Azam Khan, Wali Muhammad, "
+            "Faisal Riaz Malik, Afia Zafar."
+        ),
+    },
+    "25667249": {
+        "pmid": "25667249",
+        "doi": "10.1542/peds.2014-2292",
+        "authors_short": "Linam WM et al.",
+        "authors_full": [
+            "Linam WM", "Ahmed M", "Cope JR", "Chu C", "Visvesvara GS",
+            "da Silva AJ", "Qvarnstrom Y", "Green J",
+        ],
+        "journal": "Pediatrics",
+        "journal_short_code": "Pediatrics",
+        "year": 2015,
+        "volume": "135",
+        "issue": "3",
+        "pages": "e744-e748",
+        "title": "Successful Treatment of an Adolescent With Naegleria fowleri Primary Amebic Meningoencephalitis",
+        "anchor_type": "case_report",
+        "anchor_subtype": "americas_usa_arkansas_third_north_american_survivor_miltefosine_hypothermia",
+        "pmc_id": "PMC4634363",
+        "verification_confidence": 1.00,
+        "last_verified_date": "2026-05-05",
+        "verification_method": "research_mode_4pass_triple_check",
+        "caveat": (
+            "12yo F (Kali Hardig); Willow Springs Water Park Arkansas "
+            "July 2013; SURVIVED with combination antimicrobials "
+            "(including miltefosine) + therapeutic hypothermia + ICP "
+            "management on TBI principles; THIRD documented North "
+            "American PAM survivor. 8 authors; preserve lowercase 'da' "
+            "particle in 'da Silva AJ' per PubMed XML. Definitive case "
+            "report subsequently invoked by Linam-Cope letter of "
+            "concern PMID 28501613 against Heggie/Küpper PMID "
+            "28013053. Pairs with Burki 2024 Pakistan SURVIVOR (PMID "
+            "38526236) for outcome-contrast adjudication. Authors: W. "
+            "Matthew Linam, Mubbasheer Ahmed, Jennifer R. Cope, Craig "
+            "Chu, Govinda S. Visvesvara, Alexandre J. da Silva, Yvonne "
+            "Qvarnstrom, Jerril Green."
+        ),
+    },
+    "28013053": {
+        "pmid": "28013053",
+        "doi": "10.1016/j.tmaid.2016.12.005",
+        "authors_short": "Heggie TW, Küpper T",
+        "authors_full": ["Heggie TW", "Küpper T"],
+        "author_aliases": {
+            "Küpper T": ["Kupper T"],
+        },
+        "alias_rationale": (
+            "Author 2 surname Küpper preserves UTF-8 ü (U+00FC, c3 bc) "
+            "per PubMed XML and ScienceDirect publisher byline. PubMed "
+            "UI fetch 2026-05-05 confirmed: search URL itself contains "
+            "URL-encoded 'K%C3%BCpper' confirming UTF-8 preservation in "
+            "NLM index. Multiple downstream citations strip diacritic "
+            "to 'Kupper T' (CDC PMC6112607 Linam letter of concern, "
+            "BMC Infect Dis Wang 2018 reference list, ResearchGate "
+            "metadata, Acta Parasitologica). Canonical = 'Küpper T' "
+            "(preserve diacritic verbatim per PubMed XML and Travel "
+            "Med Infect Dis publisher byline); alias = 'Kupper T' for "
+            "downstream search recall. Verified user_pubmed_ui_direct_"
+            "fetch on this entry to lock dual-form decision."
+        ),
+        "journal": "Travel Medicine and Infectious Disease",
+        "journal_short_code": "Travel Med Infect Dis",
+        "year": 2017,
+        "volume": "16",
+        "issue": None,
+        "pages": "49-51",
+        "title": "Surviving Naegleria fowleri infections: A successful case report and novel therapeutic approach",
+        "anchor_type": "case_report",
+        "anchor_subtype": "americas_usa_third_survivor_secondary_report_subject_of_letter_of_concern",
+        "pmc_id": None,
+        "verification_confidence": 1.00,
+        "last_verified_date": "2026-05-05",
+        "verification_method": "user_pubmed_ui_direct_fetch",
+        "caveat": (
+            "2 authors. UTF-8 dual-form (Burki/Burqi pattern, Option "
+            "3): canonical 'Küpper T' with U+00FC ü preserved per "
+            "PubMed XML and ScienceDirect publisher byline. "
+            "Affiliations: Bowling Green State University (Heggie); "
+            "RWTH Aachen Technical University Institute of "
+            "Occupational and Social Medicine (Küpper). Subject of "
+            "Linam-Cope letter of concern PMID 28501613 (already in "
+            "registry); response is Heggie 2017 PMID 29241583 (this "
+            "commit). Authors: Travis W. Heggie, Thomas Küpper."
+        ),
+    },
+    "29241583": {
+        "pmid": "29241583",
+        "doi": "10.1016/j.tmaid.2017.11.010",
+        "authors_short": "Heggie TW",
+        "authors_full": ["Heggie TW"],
+        "journal": "Travel Medicine and Infectious Disease",
+        "journal_short_code": "Travel Med Infect Dis",
+        "year": 2017,
+        "volume": "20",
+        "issue": None,
+        "pages": "66",
+        "title": "Surviving Naegleria fowleri infections: Response",
+        "anchor_type": "case_report",
+        "anchor_subtype": "americas_usa_response_to_letter_of_concern_linam_chain_completion",
+        "pmc_id": None,
+        "verification_confidence": 1.00,
+        "last_verified_date": "2026-05-05",
+        "verification_method": "research_mode_4pass_triple_check",
+        "caveat": (
+            "Closes the Linam 3-chain: (a) Linam 2015 PMID 25667249 "
+            "-> (b) Heggie & Küpper 2017 PMID 28013053 -> (c) "
+            "Linam-Cope LoC 2017 PMID 28501613 (already in registry) "
+            "-> (d) Heggie 2017 Response PMID 29241583 (this entry). "
+            "Sole author Heggie - Küpper not co-signing the response. "
+            "Authors: Travis W. Heggie."
+        ),
+    },
+    "38182931": {
+        "pmid": "38182931",
+        "doi": "10.1007/s00436-023-08094-w",
+        "authors_short": "Hall AD et al.",
+        "authors_full": [
+            "Hall AD", "Kumar JE", "Golba CE", "Luckett KM", "Bryant WK",
+        ],
+        "journal": "Parasitology Research",
+        "journal_short_code": "Parasitol Res",
+        "year": 2024,
+        "volume": "123",
+        "issue": "1",
+        "pages": "84",
+        "title": "Primary amebic meningoencephalitis: a review of Naegleria fowleri and analysis of successfully treated cases",
+        "anchor_type": "review",
+        "anchor_subtype": "review_survivor_analysis_university_of_cincinnati_2024",
+        "pmc_id": None,
+        "verification_confidence": 1.00,
+        "last_verified_date": "2026-05-05",
+        "verification_method": "research_mode_4pass_triple_check",
+        "caveat": (
+            "REVIEW article (NOT case report) analyzed 52 case-report "
+            "articles covering 98 patients (17F/81M); geographic "
+            "distribution 17 USA / 8 India / 7 China / 4 Pakistan / 2 "
+            "UK / 1 each Thailand Korea Japan Italy Iran Norway Turkey "
+            "Costa Rica Zambia Australia Taiwan Venezuela Mexico. 5 "
+            "authors all University of Cincinnati College of Medicine "
+            "(Internal Medicine ID / Emergency Medicine / Environmental "
+            "Public Health Sciences). No PMC (Springer paywall, "
+            "expected). Useful 2024 corpus anchor for survivor-rate "
+            "denominator and global epidemiology cross-reference. "
+            "Authors: Ashton D. Hall, Julia E. Kumar, Claire E. Golba, "
+            "Keith M. Luckett, Whitney K. Bryant."
+        ),
+    },
+    "40676680": {
+        "pmid": "40676680",
+        "doi": "10.1186/s40249-025-01347-z",
+        "authors_short": "Kou Y et al.",
+        "authors_full": [
+            "Kou Y", "Zhang J", "Wang D", "Cui L", "Sun Q", "Lv Y",
+            "Liu Y", "He Z", "Zhao Y", "Zhang H", "Su J", "Liu Y",
+            "Deng Y",
+        ],
+        "author_aliases": {
+            "Lv Y": ["Lyu Y", "Lü Y"],
+        },
+        "alias_rationale": (
+            "Author 6 'Lv Y' = Yanqi Lv (PubMed/Springer canonical "
+            "romanization of the Chinese surname). PubMed UI fetch "
+            "2026-05-05 confirmed canonical 'Lv Y' (no umlaut) in NLM "
+            "author byline. Intra-paper acknowledgment paragraph uses "
+            "umlaut form 'Yanqi Lü' (U+00FC); occasional 'Lyu Y' "
+            "pinyin variant in some Springer prose. Soft dual-form: "
+            "canonical 'Lv Y' (PubMed XML), aliases 'Lyu Y' and 'Lü Y' "
+            "for search recall. Lower-stakes than Burki/Burqi or "
+            "Scaglia/Scagli decisions but worth recording. NOTE: Two "
+            "'Liu Y' co-authors at positions 7 and 12 (Vancouver "
+            "positional convention - render twice): position 7 = Ying "
+            "Liu (Henan CDC); position 12 = Yaobao Liu (Jiangsu "
+            "Institute of Parasitic Diseases / Nanjing Medical "
+            "University SPH; corresponding author)."
+        ),
+        "journal": "Infectious Diseases of Poverty",
+        "journal_short_code": "Infect Dis Poverty",
+        "year": 2025,
+        "volume": "14",
+        "issue": None,
+        "pages": "69",
+        "title": "Rare Naegleria fowleri meningoencephalitis diagnosed via combined molecular biology and metagenomic sequencing techniques: a case report",
+        "anchor_type": "case_report",
+        "anchor_subtype": "asia_china_henan_lushan_pediatric_bathhouse_mNGS_fatal_2024",
+        "pmc_id": "PMC12273379",
+        "verification_confidence": 1.00,
+        "last_verified_date": "2026-05-05",
+        "verification_method": "user_pubmed_ui_direct_fetch",
+        "caveat": (
+            "6yo child Lushan County Henan Province China; symptom "
+            "onset 5 Dec 2024; transferred Eastern District Henan "
+            "Children's Hospital 7 Dec; AmpB + fluconazole + "
+            "rifampicin; FATAL 9 Dec 2024; epidemiology suggests "
+            "public bathhouse exposure ~5 days pre-onset. Diagnosed "
+            "by combined molecular biology + metagenomic sequencing. "
+            "13 authors. Co-first authors: Yuanjing Kou and Jiayao "
+            "Zhang. TWO 'Liu Y' co-authors (positions 7 + 12 - "
+            "Vancouver positional render). Author 6 dual-form: 'Lv Y' "
+            "canonical / 'Lyu Y' / 'Lü Y' aliases. Authors: Yuanjing "
+            "Kou, Jiayao Zhang, Dan Wang, Lidan Cui, Qi Sun, Yanqi "
+            "Lv, Ying Liu, Zhiquan He, Yuling Zhao, Hongwei Zhang, "
+            "Jun Su, Yaobao Liu, Yan Deng."
+        ),
+    },
 }
 
 
