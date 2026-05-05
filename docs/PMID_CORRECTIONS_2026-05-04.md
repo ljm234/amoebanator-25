@@ -1,7 +1,7 @@
 # PMID Corrections Applied 2026-05-04
 
 ## Source
-4-pass triple-check verification (compass_artifact_wf-82607ea9-54e4-4560-8928-59f91005997a)
+4-pass verification audit verification (compass_artifact_wf-82607ea9-54e4-4560-8928-59f91005997a)
 
 Applied to `scripts/generate_pam_vignettes.py` `PMID_REGISTRY` before Day 2 vignette generation. All 24/24 existing tests still pass (no schema modifications, no Day 1 vignette regeneration changes).
 
