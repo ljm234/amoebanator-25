@@ -3,7 +3,7 @@
 ## Date: May 5, 2026
 
 ## Source
-Triple-check research mode audit:
+Verification audit research mode audit:
 compass_artifact_wf-c3f74c5c-0e6d-4116-8cdf-4c03dc486879
 
 Plus user-side PubMed UI verification for 2 high-priority items
@@ -21,7 +21,7 @@ Plus user-side PubMed UI verification for 2 high-priority items
   - PMC10977850
   - CDC EID journal page (wwwnc.cdc.gov/eid/article/30/4/23-0979_article)
   - Aga Khan University institutional page
-- Verification method: research_mode_4pass_triple_check_with_revalidation_2026-05-05
+- Verification method: research_mode_4pass_revalidated_2026-05-05
 
 #### 2. PMID 35463884 Zhou 2022 China - geography precision
 - Registry pre-fix: caveat said only "China pediatric case" without province
@@ -31,7 +31,7 @@ Plus user-side PubMed UI verification for 2 high-priority items
   - PubMed affiliations
   - PMC9033202 body text
   - Frontiers article page
-- Verification method: research_mode_4pass_triple_check_with_revalidation_2026-05-05
+- Verification method: research_mode_4pass_revalidated_2026-05-05
 - Caveat now contains explicit negation ("NOT Hainan") for adjudicator clarity.
 
 ### HIGH-PRIORITY items (2)
@@ -51,7 +51,7 @@ Plus user-side PubMed UI verification for 2 high-priority items
   - Section 2 Case Presentation states: "passed away after 11 days of hospitalization"
   - Section 3 Discussion states: "passed away 14 days after disease onset"
   - Both numbers are accurate, measure different things (hospitalization vs onset-to-death)
-- Verification method: research_mode_4pass_triple_check_plus_user_mdpi_fulltext_2026-05-05
+- Verification method: research_mode_4pass_plus_user_mdpi_fulltext_2026-05-05
 
 ## Bookkeeping Check
 - PMID 39174030 (Wei Taiwan) uniqueness verified: 1 occurrence (correct, no duplicate)
@@ -65,9 +65,9 @@ Plus user-side PubMed UI verification for 2 high-priority items
 - verification_method coverage: 22/42 - 4 entries updated to reflect re-verification
 
 ## Methodology Mix Update
-- research_mode_4pass_triple_check_with_revalidation_2026-05-05: 2 entries (Burki, Zhou)
+- research_mode_4pass_revalidated_2026-05-05: 2 entries (Burki, Zhou)
 - user_pubmed_ui_direct_fetch_2026-05-05: 1 entry (Celik)
-- research_mode_4pass_triple_check_plus_user_mdpi_fulltext_2026-05-05: 1 entry (Phung)
+- research_mode_4pass_plus_user_mdpi_fulltext_2026-05-05: 1 entry (Phung)
 
 ## Hainan/Hunan literal count rationale (audit-trail design choice)
 The Zhou caveat now contains 2 occurrences of "Hainan" as explanatory negations

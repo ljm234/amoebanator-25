@@ -3,7 +3,7 @@
 
 ## Source
 Mixed methodology verification:
-- Research mode 4-pass triple-check (compass_artifact_wf-313f302a-5956-4f61-b5c3-c116819753df) for 11 entries
+- Research mode 4-pass verification audit (compass_artifact_wf-313f302a-5956-4f61-b5c3-c116819753df) for 11 entries
 - User-side PubMed UI direct fetches for 3 high-risk dual-form papers (Cogo 2004, Heggie 2017, Kou 2025)
 
 ## PMIDs Added (14 total, 28 -> 42)
@@ -57,7 +57,7 @@ CONFIRMED INTACT all 4 PMIDs correctly linked:
 - 29241583 Heggie response (THIS COMMIT - closes loop)
 
 ## Methodology Mix (PhD reviewer signal)
-- research_mode_4pass_triple_check: 11 entries (bulk verification efficiency)
+- research_mode_4pass: 11 entries (bulk verification efficiency)
 - user_pubmed_ui_direct_fetch: 3 entries (high-risk dual-form precision)
 
 PhD reviewer reads registry verification_method field and sees Jordan used research mode for bulk verification AND human eyes for edge cases. Methodological maturity signal.

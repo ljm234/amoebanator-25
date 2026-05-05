@@ -2,7 +2,7 @@
 ## Amoebanator Subphase 1.2 - May 4, 2026
 
 ## Source
-6th-pass independent triple-check verification (compass_artifact_wf-13eb5fad)
+6th-pass independent verification audit verification (compass_artifact_wf-13eb5fad)
 + user-side PubMed UI direct fetches for all 8 PMIDs.
 
 ## PMIDs Applied (8 entries; 6 new + 2 update-in-place)

@@ -413,7 +413,7 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "pmc_id": "PMC10977850",
         "verification_confidence": 1.00,
         "last_verified_date": "2026-05-05",
-        "verification_method": "research_mode_4pass_triple_check_with_revalidation_2026-05-05",
+        "verification_method": "research_mode_4pass_revalidated_2026-05-05",
         "caveat": (
             "22yo M Pakistan 2023, 8th confirmed N. fowleri SURVIVOR "
             "globally (1971-2023). PNS Shifa Hospital Karachi. Pairs "
@@ -649,7 +649,7 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         ),
     },
     # ------------------------------------------------------------------------
-    # Added 2026-05-04 from 6th-pass triple-check verification
+    # Added 2026-05-04 from 6th-pass verification audit verification
     # (compass_artifact_wf-13eb5fad). All 6 PMIDs verified at 1.00 confidence
     # via user-side PubMed UI direct fetches. See
     # docs/PMID_DAY2_CANONIZATION_2026-05-04.md for full audit trail.
@@ -784,12 +784,12 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "pmc_id": "PMC9033202",
         "verification_confidence": 1.00,
         "last_verified_date": "2026-05-05",
-        "verification_method": "research_mode_4pass_triple_check_with_revalidation_2026-05-05",
+        "verification_method": "research_mode_4pass_revalidated_2026-05-05",
         "caveat": (
             "Pediatric case + literature review. Strong "
             "physician-adjudicator anchor for misdiagnosis-as-bacterial-"
             "meningitis differential. Geography corrected 2026-05-05 "
-            "via triple-check audit (compass_artifact_wf-c3f74c5c): "
+            "via verification audit (compass_artifact_wf-c3f74c5c): "
             "Changsha, Hunan Province, China (Third Xiangya Hospital, "
             "Central South University); NOT Hainan. Hainan is the "
             "tropical island province in South China Sea; Hunan is a "
@@ -865,7 +865,7 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
     },
     # ------------------------------------------------------------------------
     # Added 2026-05-05 from Commit 2 of 5 sequential safe path.
-    # Methodology mix: 11 research_mode_4pass_triple_check + 3
+    # Methodology mix: 11 research_mode_4pass + 3
     # user_pubmed_ui_direct_fetch (Cogo, Heggie, Kou - high-risk dual-form).
     # Source: compass_artifact_wf-313f302a-5956-4f61-b5c3-c116819753df
     # Audit trail: docs/PMID_DAY2_BONUS_CANONIZATION_2026-05-05.md
@@ -891,7 +891,7 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "pmc_id": "PMC11719733",
         "verification_confidence": 1.00,
         "last_verified_date": "2026-05-05",
-        "verification_method": "research_mode_4pass_triple_check_plus_user_mdpi_fulltext_2026-05-05",
+        "verification_method": "research_mode_4pass_plus_user_mdpi_fulltext_2026-05-05",
         "caveat": (
             "10mo F Mekong Delta Vietnam, FATAL: 14 days from disease "
             "onset, 11 days hospitalization (Section 2 Case "
@@ -932,7 +932,7 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "pmc_id": "PMC6064090",
         "verification_confidence": 1.00,
         "last_verified_date": "2026-05-05",
-        "verification_method": "research_mode_4pass_triple_check",
+        "verification_method": "research_mode_4pass",
         "caveat": (
             "42yo M Shenzhen Third People's Hospital (acquired Hangzhou); "
             "first reported mainland China PAM case; FATAL; NGS "
@@ -964,7 +964,7 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "pmc_id": "PMC11346987",
         "verification_confidence": 1.00,
         "last_verified_date": "2026-05-05",
-        "verification_method": "research_mode_4pass_triple_check",
+        "verification_method": "research_mode_4pass",
         "caveat": (
             "30yo F northern Taiwan, indoor surfing center July 2023, "
             "symptom onset 26 Jul 2023, died 1 Aug 2023; first Taiwan "
@@ -994,7 +994,7 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "pmc_id": "PMC10522881",
         "verification_confidence": 1.00,
         "last_verified_date": "2026-05-05",
-        "verification_method": "research_mode_4pass_triple_check",
+        "verification_method": "research_mode_4pass",
         "caveat": (
             "Korean man in 50s, 4-month Thailand stay, returned Korea "
             "10 Dec 2022, symptoms began evening of arrival, admitted "
@@ -1079,7 +1079,7 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "pmc_id": None,
         "verification_confidence": 1.00,
         "last_verified_date": "2026-05-05",
-        "verification_method": "research_mode_4pass_triple_check",
+        "verification_method": "research_mode_4pass",
         "caveat": (
             "15yo M Bangladesh; daily nasal rinsing with untreated "
             "groundwater + bathing in untreated groundwater/river water; "
@@ -1111,7 +1111,7 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "pmc_id": "PMC9375727",
         "verification_confidence": 1.00,
         "last_verified_date": "2026-05-05",
-        "verification_method": "research_mode_4pass_triple_check",
+        "verification_method": "research_mode_4pass",
         "caveat": (
             "28yo Karachi Pakistan May 2019 (Imam Zain-Ul-Abdin "
             "Hospital); ablution exposure; FIRST Pakistani N. fowleri "
@@ -1141,7 +1141,7 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "pmc_id": "PMC4585351",
         "verification_confidence": 1.00,
         "last_verified_date": "2026-05-05",
-        "verification_method": "research_mode_4pass_triple_check",
+        "verification_method": "research_mode_4pass",
         "caveat": (
             "47yo M U.S. Virgin Islands St. Thomas; only freshwater "
             "exposure was tap water for daily household activities + "
@@ -1177,7 +1177,7 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "pmc_id": "PMC5038392",
         "verification_confidence": 1.00,
         "last_verified_date": "2026-05-05",
-        "verification_method": "research_mode_4pass_triple_check",
+        "verification_method": "research_mode_4pass",
         "caveat": (
             "EID Letter (no abstract). 6 authors. DISTINCT from "
             "Ghanchi 2017 AJTMH case series (PMID 29016297) already in "
@@ -1209,7 +1209,7 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "pmc_id": "PMC4634363",
         "verification_confidence": 1.00,
         "last_verified_date": "2026-05-05",
-        "verification_method": "research_mode_4pass_triple_check",
+        "verification_method": "research_mode_4pass",
         "caveat": (
             "12yo F (Kali Hardig); Willow Springs Water Park Arkansas "
             "July 2013; SURVIVED with combination antimicrobials "
@@ -1290,7 +1290,7 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "pmc_id": None,
         "verification_confidence": 1.00,
         "last_verified_date": "2026-05-05",
-        "verification_method": "research_mode_4pass_triple_check",
+        "verification_method": "research_mode_4pass",
         "caveat": (
             "Closes the Linam 3-chain: (a) Linam 2015 PMID 25667249 "
             "-> (b) Heggie & Küpper 2017 PMID 28013053 -> (c) "
@@ -1319,7 +1319,7 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "pmc_id": None,
         "verification_confidence": 1.00,
         "last_verified_date": "2026-05-05",
-        "verification_method": "research_mode_4pass_triple_check",
+        "verification_method": "research_mode_4pass",
         "caveat": (
             "REVIEW article (NOT case report) analyzed 52 case-report "
             "articles covering 98 patients (17F/81M); geographic "
