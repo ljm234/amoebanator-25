@@ -406,14 +406,14 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "year": 2024,
         "volume": "30",
         "issue": "4",
-        "pages": "788-791",
+        "pages": "803-805",
         "title": "Successful Treatment of Confirmed Naegleria fowleri Primary Amebic Meningoencephalitis",
         "anchor_type": "case_report",
         "anchor_subtype": "case_report_adult_SURVIVOR_pakistan_first_pakistani_survivor",
         "pmc_id": "PMC10977850",
         "verification_confidence": 1.00,
-        "last_verified_date": "2026-05-04",
-        "verification_method": "user_pubmed_ui_direct_fetch",
+        "last_verified_date": "2026-05-05",
+        "verification_method": "research_mode_4pass_triple_check_with_revalidation_2026-05-05",
         "caveat": (
             "22yo M Pakistan 2023, 8th confirmed N. fowleri SURVIVOR "
             "globally (1971-2023). PNS Shifa Hospital Karachi. Pairs "
@@ -783,15 +783,22 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_subtype": "case_report_pediatric_fatal_misdiagnosis_as_bacterial_meningitis",
         "pmc_id": "PMC9033202",
         "verification_confidence": 1.00,
-        "last_verified_date": "2026-05-04",
-        "verification_method": "user_pubmed_ui_direct_fetch",
+        "last_verified_date": "2026-05-05",
+        "verification_method": "research_mode_4pass_triple_check_with_revalidation_2026-05-05",
         "caveat": (
-            "China pediatric case + literature review. Strong "
+            "Pediatric case + literature review. Strong "
             "physician-adjudicator anchor for misdiagnosis-as-bacterial-"
-            "meningitis differential. 7 authors confirmed (NOT 6 as "
-            "initially inferred from snippets). Authors: Wenjuan Zhou, "
-            "Yuzhen Ouyang, Di Zhang, Sheng Liao, Hui Liang, Lingling "
-            "Zhao, Chunyuan Chen."
+            "meningitis differential. Geography corrected 2026-05-05 "
+            "via triple-check audit (compass_artifact_wf-c3f74c5c): "
+            "Changsha, Hunan Province, China (Third Xiangya Hospital, "
+            "Central South University); NOT Hainan. Hainan is the "
+            "tropical island province in South China Sea; Hunan is a "
+            "landlocked central-China province; distinct geographies. "
+            "Sources confirming Hunan/Changsha: PubMed affiliations, "
+            "PMC9033202 body text, Frontiers article page. 7 authors "
+            "confirmed (NOT 6 as initially inferred from snippets). "
+            "Authors: Wenjuan Zhou, Yuzhen Ouyang, Di Zhang, Sheng "
+            "Liao, Hui Liang, Lingling Zhao, Chunyuan Chen."
         ),
     },
     "34906097": {
@@ -836,19 +843,22 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "journal_short_code": "J Trop Pediatr",
         "year": 2021,
         "volume": "67",
-        "issue": "2",
+        "issue": "1",
         "pages": "fmaa100",
+        "publication_date": "2021-01-29",
         "title": "A Newborn with Brain-Eating Ameba Infection",
         "anchor_type": "case_report",
         "anchor_subtype": "case_report_newborn_fatal_extreme_age_atypical",
         "pmc_id": None,
         "verification_confidence": 1.00,
-        "last_verified_date": "2026-05-04",
-        "verification_method": "user_pubmed_ui_direct_fetch",
+        "last_verified_date": "2026-05-05",
+        "verification_method": "user_pubmed_ui_direct_fetch_2026-05-05",
         "caveat": (
             "NEWBORN with brain-eating amoeba (extreme age "
             "presentation). Tests differential diagnosis at age "
-            "extremes. Authors: Yalcin Celik, Ali Ertuğ Arslankoylu. "
+            "extremes. Issue corrected 2026-05-05 via PubMed UI direct "
+            "fetch: J Trop Pediatr 2021 Jan 29;67(1):fmaa100 (NOT "
+            "issue 2). Authors: Yalcin Celik, Ali Ertuğ Arslankoylu. "
             "Diacritic preservation: 'Ertuğ' (UTF-8 c4 9f for ğ) - "
             "given name only, collapses to initial in Vancouver."
         ),
@@ -881,19 +891,23 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "pmc_id": "PMC11719733",
         "verification_confidence": 1.00,
         "last_verified_date": "2026-05-05",
-        "verification_method": "research_mode_4pass_triple_check",
+        "verification_method": "research_mode_4pass_triple_check_plus_user_mdpi_fulltext_2026-05-05",
         "caveat": (
-            "10mo F Mekong Delta Vietnam, FATAL with 14-day prolonged "
-            "survival on intensive treatment (longest pediatric PAM "
-            "survival durations); MPL-rPCR + microscopy + sequencing "
-            "diagnosis. Cryptic exposure (no documented direct freshwater "
-            "exposure). 13 authors. Vietnamese compound surnames "
-            "preserved un-hyphenated per PubMed XML (Tran NAN = Nuong Ai "
-            "Nguyen Tran; Ngo MQN = Minh Quang Ngoc Ngo). Authors: "
-            "Nguyen The Nguyen Phung, Huong Thien Pham, Thuc Thanh Tran, "
-            "Vu Hoang Dinh, Nhut Minh Tran, Nuong Ai Nguyen Tran, Minh "
-            "Quang Ngoc Ngo, Huong Thanh Thi Nguyen, Duy Khanh Tran, "
-            "Thao Kieu Thi Le, Camelia Quek, Van Hung Pham, Son Truong "
+            "10mo F Mekong Delta Vietnam, FATAL: 14 days from disease "
+            "onset, 11 days hospitalization (Section 2 Case "
+            "Presentation: 'passed away after 11 days of "
+            "hospitalization'; Section 3 Discussion: 'passed away 14 "
+            "days after disease onset'); intensive treatment yielded "
+            "longest pediatric PAM survival durations on record. "
+            "MPL-rPCR + microscopy + sequencing diagnosis. Cryptic "
+            "exposure (no documented direct freshwater exposure). 13 "
+            "authors. Vietnamese compound surnames preserved "
+            "un-hyphenated per PubMed XML (Tran NAN = Nuong Ai Nguyen "
+            "Tran; Ngo MQN = Minh Quang Ngoc Ngo). Authors: Nguyen The "
+            "Nguyen Phung, Huong Thien Pham, Thuc Thanh Tran, Vu Hoang "
+            "Dinh, Nhut Minh Tran, Nuong Ai Nguyen Tran, Minh Quang "
+            "Ngoc Ngo, Huong Thanh Thi Nguyen, Duy Khanh Tran, Thao "
+            "Kieu Thi Le, Camelia Quek, Van Hung Pham, Son Truong "
             "Pham."
         ),
     },
