@@ -1319,20 +1319,62 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "pmc_id": None,
         "verification_confidence": 1.00,
         "last_verified_date": "2026-05-05",
-        "verification_method": "research_mode_4pass",
+        "verification_method": "research_mode_4pass_plus_user_pubmed_ui_caveat_reattribution_2026-05-05",
         "caveat": (
-            "REVIEW article (NOT case report) analyzed 52 case-report "
-            "articles covering 98 patients (17F/81M); geographic "
-            "distribution 17 USA / 8 India / 7 China / 4 Pakistan / 2 "
-            "UK / 1 each Thailand Korea Japan Italy Iran Norway Turkey "
-            "Costa Rica Zambia Australia Taiwan Venezuela Mexico. 5 "
-            "authors all University of Cincinnati College of Medicine "
-            "(Internal Medicine ID / Emergency Medicine / Environmental "
-            "Public Health Sciences). No PMC (Springer paywall, "
-            "expected). Useful 2024 corpus anchor for survivor-rate "
-            "denominator and global epidemiology cross-reference. "
-            "Authors: Ashton D. Hall, Julia E. Kumar, Claire E. Golba, "
-            "Keith M. Luckett, Whitney K. Bryant."
+            "5-author review (Parasitol Res 123(1):84, 2024) analyzing successfully "
+            "treated PAM cases globally. Focuses on the small subset of confirmed "
+            "survivors and their treatment regimens (miltefosine + amphotericin B + "
+            "hypothermia combinations). NOT a 98-patient demographic cohort - that "
+            "figure originates from Ripa 2025 (PMID 39860533, J Clin Med 14(2):526). "
+            "Authors: Ashton D Hall, Julia E Kumar, Claire E Golba, Keith M Luckett, "
+            "Whitney K Bryant. Caveat re-attributed 2026-05-05 via verification audit."
+        ),
+    },
+    "39860533": {
+        "pmid": "39860533",
+        "lead_author": "Rîpă",
+        "lead_author_ascii": "Ripa",
+        "authors_short": "Rîpă C, Cobzaru RG, Rîpă MR, Maștaleru A, Oancea A, Cumpăt CM, Leon MM",
+        "authors_full": [
+            "Rîpă C",
+            "Cobzaru RG",
+            "Rîpă MR",
+            "Maștaleru A",
+            "Oancea A",
+            "Cumpăt CM",
+            "Leon MM",
+        ],
+        "author_count": 7,
+        "doi": "10.3390/jcm14020526",
+        "journal": "Journal of Clinical Medicine",
+        "journal_short_code": "J Clin Med",
+        "year": 2025,
+        "volume": "14",
+        "issue": "2",
+        "pages": "526",
+        "publication_date": "2025-01-15",
+        "title": "Naegleria fowleri Infections: Bridging Clinical Observations and Epidemiological Insights",
+        "anchor_type": "review",
+        "anchor_subtype": "review_systematic_global_98patient_cohort",
+        "pmc_id": "PMC11765897",
+        "verification_confidence": 1.00,
+        "last_verified_date": "2026-05-05",
+        "verification_method": "user_pubmed_ui_direct_fetch_plus_user_mdpi_fulltext_2026-05-05",
+        "caveat": (
+            "7-author Romanian systematic review (Iasi, Univ Med & Pharmacy "
+            "Grigore T. Popa) of 52 PAM case-report articles via Web of Science "
+            "search. Abstract reports 98 patients (17 women 17.4%, 81 men "
+            "82.6%) from 17 countries: 17 USA, 8 India, 7 China, 4 Pakistan, "
+            "2 UK, plus 1 each from Thailand/Korea/Japan/Italy/Iran/Norway/"
+            "Turkey/Costa Rica/Zambia/Australia/Taiwan/Venezuela/Mexico. "
+            "Mortality reported at 88-98% across discussion. Note: results "
+            "section internally reports 99 patients (17F/82M = 17.17%/82.82%) "
+            "diverging slightly from abstract's 98 (17F/81M); use abstract "
+            "figures as canonical for vignette anchoring. UTF-8 diacritics "
+            "preserved: Rîpă (î U+00EE, ă U+0103), Maștaleru (ș U+0219), "
+            "Cumpăt (ă U+0103). Anchor for global epidemiology + demographics "
+            "Tier-4 vignettes. Replaces mis-attributed 98-patient stat "
+            "previously in Hall 2024 caveat (corrected 2026-05-05)."
         ),
     },
     "40676680": {
