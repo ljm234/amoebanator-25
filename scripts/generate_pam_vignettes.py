@@ -464,7 +464,8 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
             "Primary amoebic meningoencephalitis after swimming in the Rio "
             "Grande"
         ),
-        "anchor_type": "case_report_pediatric_river",
+        "anchor_type": "case_report",
+        "anchor_subtype": "case_report_pediatric_river",
         "pmc_id": None,
         "verification_confidence": 99,
         "last_verified_date": "2026-05-04",
@@ -492,7 +493,8 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
             "Diagnosis, Clinical Course, and Treatment of Primary Amoebic "
             "Meningoencephalitis in the United States, 1937-2013"
         ),
-        "anchor_type": "review_us_surveillance",
+        "anchor_type": "review",
+        "anchor_subtype": "review_us_surveillance",
         "pmc_id": None,
         "verification_confidence": 99,
         "last_verified_date": "2026-05-04",
@@ -522,7 +524,8 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
             "Geographic Range of Recreational Water-Associated Primary "
             "Amebic Meningoencephalitis, United States, 1978-2018"
         ),
-        "anchor_type": "review_us_geographic_range",
+        "anchor_type": "review",
+        "anchor_subtype": "review_us_geographic_range",
         "pmc_id": "PMC7774533",
         "verification_confidence": 99,
         "last_verified_date": "2026-05-04",
@@ -553,7 +556,8 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
             "death with culturable Naegleria fowleri in tap water from a US "
             "treated public drinking water system"
         ),
-        "anchor_type": "case_report_treated_tap_water",
+        "anchor_type": "case_report",
+        "anchor_subtype": "case_report_treated_tap_water",
         "pmc_id": "PMC4627687",
         "verification_confidence": 99,
         "last_verified_date": "2026-05-04",
@@ -579,7 +583,8 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
             "Naegleria fowleri: emerging therapies and translational "
             "challenges"
         ),
-        "anchor_type": "review_therapeutic_recent",
+        "anchor_type": "review",
+        "anchor_subtype": "review_therapeutic_recent",
         "pmc_id": None,
         "verification_confidence": 99,
         "last_verified_date": "2026-05-04",
@@ -605,7 +610,8 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
             "The epidemiology of primary amoebic meningoencephalitis in "
             "the USA, 1962-2008"
         ),
-        "anchor_type": "review_us_surveillance_foundational",
+        "anchor_type": "review",
+        "anchor_subtype": "review_us_surveillance_foundational",
         "pmc_id": None,
         "verification_confidence": 99,
         "last_verified_date": "2026-05-04",
@@ -632,7 +638,8 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
             "Meningoencephalitis Caused by Naegleria fowleri: A Global "
             "Review"
         ),
-        "anchor_type": "review_global",
+        "anchor_type": "review",
+        "anchor_subtype": "review_global",
         "pmc_id": "PMC8739754",
         "verification_confidence": 99,
         "last_verified_date": "2026-05-04",
