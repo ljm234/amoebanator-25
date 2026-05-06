@@ -7263,42 +7263,70 @@ def _build_capewell_imputed_vignette(
 
 def _build_vignette_028() -> dict[str, Any]:
     """v28: 8yo F, US South, late, fatal - Capewell within-cohort imputation."""
-    return _build_capewell_imputed_vignette(
+    base = _build_capewell_imputed_vignette(
         age_years=8, sex="female", stage="late",
         chief_complaint="altered_mental_status",
         prodrome_phrase_en="lethargy progressing to stupor",
         prodrome_phrase_es="letargia con progresión a estupor",
     )
+    # Per-entry clinical jitter (within-cohort variation)
+    base["csf"]["csf_wbc_per_mm3"] = 4350
+    base["csf"]["csf_protein_mg_per_dL"] = 408
+    base["csf"]["csf_glucose_mg_per_dL"] = 17
+    base["labs"]["crp_mg_per_L"] = 96.0
+    base["labs"]["procalcitonin_ng_per_mL"] = 2.4
+    return base
 
 
 def _build_vignette_029() -> dict[str, Any]:
     """v29: 11yo M, US South, mid, fatal - Capewell within-cohort imputation."""
-    return _build_capewell_imputed_vignette(
+    base = _build_capewell_imputed_vignette(
         age_years=11, sex="male", stage="mid",
         chief_complaint="fever_with_headache",
         prodrome_phrase_en="somnolence with neck stiffness",
         prodrome_phrase_es="somnolencia con rigidez de nuca",
     )
+    # Per-entry clinical jitter (within-cohort variation)
+    base["csf"]["csf_wbc_per_mm3"] = 2850
+    base["csf"]["csf_protein_mg_per_dL"] = 332
+    base["csf"]["csf_glucose_mg_per_dL"] = 21
+    base["labs"]["crp_mg_per_L"] = 78.0
+    base["labs"]["procalcitonin_ng_per_mL"] = 1.6
+    return base
 
 
 def _build_vignette_030() -> dict[str, Any]:
     """v30: 15yo M, US South, late, fatal - Capewell within-cohort imputation."""
-    return _build_capewell_imputed_vignette(
+    base = _build_capewell_imputed_vignette(
         age_years=15, sex="male", stage="late",
         chief_complaint="altered_mental_status",
         prodrome_phrase_en="stupor with focal deficit",
         prodrome_phrase_es="estupor con déficit focal",
     )
+    # Per-entry clinical jitter (within-cohort variation)
+    base["csf"]["csf_wbc_per_mm3"] = 4500
+    base["csf"]["csf_protein_mg_per_dL"] = 442
+    base["csf"]["csf_glucose_mg_per_dL"] = 14
+    base["labs"]["crp_mg_per_L"] = 118.0
+    base["labs"]["procalcitonin_ng_per_mL"] = 3.1
+    return base
 
 
 def _build_vignette_031() -> dict[str, Any]:
     """v31: 9yo M, US South, mid, fatal - Capewell within-cohort imputation."""
-    return _build_capewell_imputed_vignette(
+    base = _build_capewell_imputed_vignette(
         age_years=9, sex="male", stage="mid",
         chief_complaint="fever_with_headache",
         prodrome_phrase_en="lethargy and vomiting",
         prodrome_phrase_es="letargia y vómitos",
     )
+    # Per-entry clinical jitter (within-cohort variation)
+    base["csf"]["csf_wbc_per_mm3"] = 3220
+    base["csf"]["csf_protein_mg_per_dL"] = 376
+    base["csf"]["csf_glucose_mg_per_dL"] = 23
+    base["labs"]["crp_mg_per_L"] = 92.0
+    base["labs"]["procalcitonin_ng_per_mL"] = 2.1
+    return base
 
 
 def _build_kemble_imputed_vignette(
@@ -7464,32 +7492,53 @@ def _build_kemble_imputed_vignette(
 
 def _build_vignette_032() -> dict[str, Any]:
     """v32: 11yo M, Minnesota, mid, fatal - Kemble within-cohort imputation."""
-    return _build_kemble_imputed_vignette(
+    base = _build_kemble_imputed_vignette(
         age_years=11, stage="mid",
         chief_complaint="fever_with_headache",
         prodrome_phrase_en="somnolence with vomiting",
         prodrome_phrase_es="somnolencia con vómitos",
     )
+    # Per-entry clinical jitter (within-cohort variation)
+    base["csf"]["csf_wbc_per_mm3"] = 2920
+    base["csf"]["csf_protein_mg_per_dL"] = 348
+    base["csf"]["csf_glucose_mg_per_dL"] = 20
+    base["labs"]["crp_mg_per_L"] = 82.0
+    base["labs"]["procalcitonin_ng_per_mL"] = 1.7
+    return base
 
 
 def _build_vignette_033() -> dict[str, Any]:
     """v33: 6yo M, Minnesota, late, fatal - Kemble within-cohort imputation."""
-    return _build_kemble_imputed_vignette(
+    base = _build_kemble_imputed_vignette(
         age_years=6, stage="late",
         chief_complaint="altered_mental_status",
         prodrome_phrase_en="rapid progression to stupor with focal deficit",
         prodrome_phrase_es="progresión rápida a estupor con déficit focal",
     )
+    # Per-entry clinical jitter (within-cohort variation)
+    base["csf"]["csf_wbc_per_mm3"] = 4480
+    base["csf"]["csf_protein_mg_per_dL"] = 432
+    base["csf"]["csf_glucose_mg_per_dL"] = 15
+    base["labs"]["crp_mg_per_L"] = 112.0
+    base["labs"]["procalcitonin_ng_per_mL"] = 2.9
+    return base
 
 
 def _build_vignette_034() -> dict[str, Any]:
     """v34: 14yo M, Minnesota, mid, fatal - Kemble within-cohort imputation."""
-    return _build_kemble_imputed_vignette(
+    base = _build_kemble_imputed_vignette(
         age_years=14, stage="mid",
         chief_complaint="fever_with_headache",
         prodrome_phrase_en="progressive lethargy with neck stiffness",
         prodrome_phrase_es="letargia progresiva con rigidez de nuca",
     )
+    # Per-entry clinical jitter (within-cohort variation)
+    base["csf"]["csf_wbc_per_mm3"] = 3140
+    base["csf"]["csf_protein_mg_per_dL"] = 368
+    base["csf"]["csf_glucose_mg_per_dL"] = 22
+    base["labs"]["crp_mg_per_L"] = 88.0
+    base["labs"]["procalcitonin_ng_per_mL"] = 1.9
+    return base
 
 
 def _build_anjum_imputed_vignette(
@@ -7656,32 +7705,53 @@ def _build_anjum_imputed_vignette(
 
 def _build_vignette_035() -> dict[str, Any]:
     """v35: 10yo M, Florida, late, fatal - Anjum within-cohort imputation."""
-    return _build_anjum_imputed_vignette(
+    base = _build_anjum_imputed_vignette(
         age_years=10, sex="male", stage="late",
         chief_complaint="altered_mental_status",
         prodrome_phrase_en="stupor with focal deficit and papilledema",
         prodrome_phrase_es="estupor con déficit focal y papiledema",
     )
+    # Per-entry clinical jitter (within-cohort variation)
+    base["csf"]["csf_wbc_per_mm3"] = 4260
+    base["csf"]["csf_protein_mg_per_dL"] = 418
+    base["csf"]["csf_glucose_mg_per_dL"] = 16
+    base["labs"]["crp_mg_per_L"] = 104.0
+    base["labs"]["procalcitonin_ng_per_mL"] = 2.7
+    return base
 
 
 def _build_vignette_036() -> dict[str, Any]:
     """v36: 12yo F, Florida, mid, fatal - Anjum within-cohort imputation."""
-    return _build_anjum_imputed_vignette(
+    base = _build_anjum_imputed_vignette(
         age_years=12, sex="female", stage="mid",
         chief_complaint="fever_with_headache",
         prodrome_phrase_en="somnolence with neck stiffness",
         prodrome_phrase_es="somnolencia con rigidez de nuca",
     )
+    # Per-entry clinical jitter (within-cohort variation)
+    base["csf"]["csf_wbc_per_mm3"] = 3080
+    base["csf"]["csf_protein_mg_per_dL"] = 356
+    base["csf"]["csf_glucose_mg_per_dL"] = 21
+    base["labs"]["crp_mg_per_L"] = 84.0
+    base["labs"]["procalcitonin_ng_per_mL"] = 1.8
+    return base
 
 
 def _build_vignette_037() -> dict[str, Any]:
     """v37: 15yo M, Florida, late, fatal - Anjum within-cohort imputation."""
-    return _build_anjum_imputed_vignette(
+    base = _build_anjum_imputed_vignette(
         age_years=15, sex="male", stage="late",
         chief_complaint="altered_mental_status",
         prodrome_phrase_en="rapid neurological deterioration to stupor",
         prodrome_phrase_es="deterioro neurológico rápido hasta estupor",
     )
+    # Per-entry clinical jitter (within-cohort variation)
+    base["csf"]["csf_wbc_per_mm3"] = 4640
+    base["csf"]["csf_protein_mg_per_dL"] = 458
+    base["csf"]["csf_glucose_mg_per_dL"] = 13
+    base["labs"]["crp_mg_per_L"] = 124.0
+    base["labs"]["procalcitonin_ng_per_mL"] = 3.2
+    return base
 
 
 def _build_vignette_038() -> dict[str, Any]:
