@@ -2365,6 +2365,10 @@ _GEOGRAPHY_TO_SCHEMA_REGION: dict[str, str] = {
     "Veneto, IT": "other_global",
     "Sichuan, CN": "other_global",
     "Korea (acquired Thailand)": "other_global",
+    # Day-2 wave 1 (v26-v40) geographies
+    "Shenzhen, CN": "other_global",
+    "China (province imputed)": "other_global",
+    "US South region": "us_south",
 }
 
 
@@ -6610,7 +6614,7 @@ def _build_vignette_025() -> dict[str, Any]:
             "csf_ada_U_per_L": None,
             "csf_crag_lfa_result": "negative",
             # Primary source verbatim: "Giemsa-Wright stain of the CSF
-            # revealed amebae consistent with N. fowleri" — schema-
+            # revealed amebae consistent with N. fowleri" - schema-
             # compliant as positive amebic detection on direct microscopy.
             "csf_wet_mount_motile_amoebae": "positive",
             "csf_xanthochromia_present": False,
@@ -6750,6 +6754,1360 @@ def _build_vignette_025() -> dict[str, Any]:
 
 
 # ============================================================================
+# Day 2 wave 1 builders (v26-v40)
+# ----------------------------------------------------------------------------
+# Each builder uses imputation_within_anchor_epidemiology per
+# docs/DAY2_DISTRIBUTION_RATIONALE.md section 9.1. Clinical specifics
+# (CSF, labs, vitals) are PAM-cohort defaults consistent with cluster +
+# stage; demographics (age, sex) are locked from DAY2_DISTRIBUTION;
+# geographic region is anchor-appropriate. Each narrative includes
+# explicit imputation disclosure.
+# ============================================================================
+
+
+def _build_vignette_026() -> dict[str, Any]:
+    """Vignette 26: 10-year-old male, Shenzhen China, late stage, fatal.
+
+    Anchored to Wang Q et al. 2018 BMC Infect Dis (PMID 30055569),
+    first mainland-China NGS-confirmed PAM case. Demographics locked
+    in DAY2_DISTRIBUTION; clinical specifics imputed within Wang's
+    documented mainland-China NGS-confirmed case-context. Lake/pond
+    freshwater exposure encoded; primary source documents recreational
+    freshwater route consistent with mainland-China outdoor exposure.
+    """
+    return {
+        "history": {
+            "symptom_onset_to_presentation_days": 4.0,
+            "chief_complaint": "altered_mental_status",
+            "prodrome_description": (
+                "Four-day history of fever, headache, vomiting, and "
+                "progressive lethargy in a 10-year-old male from "
+                "Shenzhen following recreational freshwater exposure "
+                "approximately one week before symptom onset. "
+                "Demographics imputed within Wang 2018 first mainland-"
+                "China NGS-confirmed case-context."
+            ),
+            "red_flags_present": ["fresh_water_exposure_14d"],
+        },
+        "exposure": {
+            "freshwater_exposure_within_14d": True,
+            "freshwater_exposure_type": "lake",
+            "altitude_exposure_within_7d_m": None,
+            "pork_consumption_or_taenia_contact": False,
+            # Shenzhen subtropical, Aedes/Anopheles range.
+            "mosquito_endemic_area_exposure": True,
+            "immunocompromise_status": "none",
+            "hiv_status": "negative",
+            "cd4_count_cells_per_uL": None,
+        },
+        "vitals": {
+            # Inferred from PAM-cohort epidemiology; anchor abstract did
+            # not enumerate per-vital values.
+            "temperature_celsius": 39.4,
+            "heart_rate_bpm": 138,
+            "systolic_bp_mmHg": 102,
+            "diastolic_bp_mmHg": 64,
+            # Late stage: stuporous on admission.
+            "glasgow_coma_scale": 7,
+            "oxygen_saturation_pct": 95,
+            "respiratory_rate_breaths_per_min": 28,
+        },
+        "exam": {
+            "mental_status_grade": "stuporous",
+            "neck_stiffness": True,
+            "kernig_or_brudzinski_positive": True,
+            "focal_neurological_deficit": True,
+            "cranial_nerve_palsy": "none",
+            "skin_lesion_centrofacial_chronic": False,
+            "petechial_or_purpuric_rash": False,
+            "papilledema_on_fundoscopy": True,
+        },
+        "labs": {
+            "wbc_blood_per_uL": 18200,
+            "platelets_per_uL": 245000,
+            "alt_ast_U_per_L": None,
+            "crp_mg_per_L": 92.0,
+            "procalcitonin_ng_per_mL": 2.4,
+            "serum_sodium_mEq_per_L": 137,
+        },
+        "csf": {
+            "opening_pressure_cmH2O": 36.0,
+            "csf_wbc_per_mm3": 3400,
+            "csf_neutrophil_pct": 90,
+            "csf_lymphocyte_pct": 9,
+            "csf_eosinophil_pct": 1,
+            "csf_glucose_mg_per_dL": 18,
+            "csf_protein_mg_per_dL": 380,
+            "csf_lactate_mmol_per_L": 7.6,
+            "csf_ada_U_per_L": None,
+            "csf_crag_lfa_result": "negative",
+            # Wang case used metagenomic next-generation sequencing
+            # (mNGS) as primary diagnostic; wet mount status not
+            # universally reported in mNGS-led cases.
+            "csf_wet_mount_motile_amoebae": "not_done",
+            "csf_xanthochromia_present": False,
+            "csf_rbc_per_mm3": 240,
+            "csf_rbc_decreasing_across_tubes": None,
+        },
+        "imaging": {
+            "imaging_modality": "ct_noncontrast",
+            "imaging_pattern": "diffuse_cerebral_edema_basilar_meningeal_enhancement",
+            "imaging_finding_count": None,
+            "imaging_text_summary": (
+                "CT showed diffuse cerebral edema with effacement of "
+                "the cortical sulci. mNGS of CSF identified Naegleria "
+                "fowleri as the etiologic agent. Imaging within "
+                "expected late-stage PAM pattern; specific imaging "
+                "findings imputed within Wang 2018 case-context."
+            ),
+        },
+        "diagnostic_tests": {
+            "results": [
+                {
+                    "test_name": "CSF metagenomic next-generation sequencing (mNGS)",
+                    "result": "Naegleria fowleri identified as the etiologic agent (first NGS-confirmed mainland-China PAM case per anchor publication).",
+                    "sensitivity_pct": None,
+                    "specificity_pct": None,
+                    "citation_pmid_or_doi": "PMID:30055569",
+                },
+                {
+                    "test_name": "CSF Naegleria fowleri PCR",
+                    "result": "Positive (post-mNGS confirmation).",
+                    "sensitivity_pct": 95.0,
+                    "specificity_pct": 99.0,
+                    "citation_pmid_or_doi": "PMID:30055569",
+                },
+            ],
+        },
+        "narrative_en": (
+            "A 10-year-old male from Shenzhen, China, presented with a "
+            "four-day history of fever, headache, vomiting, and "
+            "progressive lethargy following recreational freshwater "
+            "exposure approximately one week before symptom onset. On "
+            "admission temperature was 39.4 C, Glasgow Coma Scale 7, "
+            "with neck stiffness and papilledema. Peripheral white "
+            "cell count was 18,200 per microliter; CSF showed white "
+            "cell count 3,400 per cubic millimeter (90 percent "
+            "neutrophils), glucose 18 mg/dL, protein 380 mg/dL, and "
+            "lactate 7.6 mmol/L. CSF metagenomic next-generation "
+            "sequencing identified Naegleria fowleri as the etiologic "
+            "agent, confirmed by subsequent CSF PCR. CT showed diffuse "
+            "cerebral edema. Treatment per CDC PAM protocol was "
+            "initiated; the patient died of refractory cerebral "
+            "edema. This vignette uses imputation within the anchor's "
+            "documented case-context: demographics are locked from "
+            "the Day-2 distribution table, and clinical specifics "
+            "follow Wang 2018 mainland-China NGS-confirmed PAM "
+            "epidemiology (PMID 30055569)."
+        ),
+        "narrative_es": (
+            "Niño de 10 años originario de Shenzhen, China, que se "
+            "presentó con cuatro días de fiebre, cefalea, vómitos y "
+            "letargia progresiva tras exposición recreativa a agua "
+            "dulce aproximadamente una semana antes del inicio de los "
+            "síntomas. Al ingreso la temperatura fue de 39.4 C, "
+            "escala de Glasgow 7, con rigidez de nuca y papiledema. "
+            "Los leucocitos periféricos fueron 18,200 por microlitro; "
+            "el líquido cefalorraquídeo mostró leucocitos 3,400 por "
+            "mm3 (90 por ciento neutrófilos), glucosa 18 mg/dL, "
+            "proteína 380 mg/dL y lactato 7.6 mmol/L. La "
+            "secuenciación metagenómica de nueva generación del "
+            "líquido cefalorraquídeo identificó a Naegleria fowleri "
+            "como agente etiológico, confirmado por PCR posterior. "
+            "La tomografía mostró edema cerebral difuso. Se inició "
+            "el protocolo de PAM de los CDC; el paciente falleció "
+            "por edema cerebral refractario. Esta viñeta utiliza "
+            "imputación dentro del contexto del caso documentado por "
+            "el anclaje: las características demográficas están "
+            "fijadas en la tabla de distribución del Día 2, y los "
+            "datos clínicos siguen la epidemiología de Wang 2018 "
+            "(primer caso de PAM confirmado por NGS en China "
+            "continental, PMID 30055569)."
+        ),
+    }
+
+
+def _build_vignette_027() -> dict[str, Any]:
+    """Vignette 27: 8-year-old male, China province imputed, mid stage, fatal.
+
+    Anchored to Huang S et al. 2021 BMC Infect Dis (PMID 34906097),
+    pediatric mNGS dual-compartment (CSF + blood) detection. Per
+    docs/DAY2_DISTRIBUTION_RATIONALE.md section 9.1: province within
+    China not fully transcribed in registry; imputed within Huang's
+    documented mainland case-context.
+    """
+    return {
+        "history": {
+            "symptom_onset_to_presentation_days": 3.0,
+            "chief_complaint": "fever_with_headache",
+            "prodrome_description": (
+                "Three-day history of fever, headache, and vomiting in "
+                "an 8-year-old male after recreational freshwater "
+                "exposure. China province imputed; demographics "
+                "imputed within Huang 2021 mainland-China dual-"
+                "compartment mNGS PAM case-context."
+            ),
+            "red_flags_present": ["fresh_water_exposure_14d"],
+        },
+        "exposure": {
+            "freshwater_exposure_within_14d": True,
+            "freshwater_exposure_type": "lake",
+            "altitude_exposure_within_7d_m": None,
+            "pork_consumption_or_taenia_contact": False,
+            "mosquito_endemic_area_exposure": True,
+            "immunocompromise_status": "none",
+            "hiv_status": "negative",
+            "cd4_count_cells_per_uL": None,
+        },
+        "vitals": {
+            "temperature_celsius": 39.0,
+            "heart_rate_bpm": 132,
+            "systolic_bp_mmHg": 100,
+            "diastolic_bp_mmHg": 62,
+            # Mid stage: GCS 11.
+            "glasgow_coma_scale": 11,
+            "oxygen_saturation_pct": 96,
+            "respiratory_rate_breaths_per_min": 26,
+        },
+        "exam": {
+            "mental_status_grade": "somnolent",
+            "neck_stiffness": True,
+            "kernig_or_brudzinski_positive": True,
+            "focal_neurological_deficit": False,
+            "cranial_nerve_palsy": "none",
+            "skin_lesion_centrofacial_chronic": False,
+            "petechial_or_purpuric_rash": False,
+            "papilledema_on_fundoscopy": False,
+        },
+        "labs": {
+            "wbc_blood_per_uL": 16400,
+            "platelets_per_uL": 268000,
+            "alt_ast_U_per_L": None,
+            "crp_mg_per_L": 78.0,
+            "procalcitonin_ng_per_mL": 1.8,
+            "serum_sodium_mEq_per_L": 138,
+        },
+        "csf": {
+            "opening_pressure_cmH2O": 28.0,
+            "csf_wbc_per_mm3": 2400,
+            "csf_neutrophil_pct": 88,
+            "csf_lymphocyte_pct": 11,
+            "csf_eosinophil_pct": 1,
+            "csf_glucose_mg_per_dL": 22,
+            "csf_protein_mg_per_dL": 320,
+            "csf_lactate_mmol_per_L": 6.4,
+            "csf_ada_U_per_L": None,
+            "csf_crag_lfa_result": "negative",
+            "csf_wet_mount_motile_amoebae": "not_done",
+            "csf_xanthochromia_present": False,
+            "csf_rbc_per_mm3": 120,
+            "csf_rbc_decreasing_across_tubes": None,
+        },
+        "imaging": {
+            "imaging_modality": "mri_with_dwi_flair",
+            "imaging_pattern": "diffuse_cerebral_edema_basilar_meningeal_enhancement",
+            "imaging_finding_count": None,
+            "imaging_text_summary": (
+                "MRI with DWI/FLAIR showed diffuse cerebral edema with "
+                "basilar meningeal enhancement consistent with "
+                "fulminant amebic meningoencephalitis. Imaging "
+                "imputed within Huang 2021 dual-compartment mNGS PAM "
+                "case-context."
+            ),
+        },
+        "diagnostic_tests": {
+            "results": [
+                {
+                    "test_name": "CSF metagenomic next-generation sequencing (mNGS)",
+                    "result": "Naegleria fowleri detected (CSF compartment).",
+                    "sensitivity_pct": None,
+                    "specificity_pct": None,
+                    "citation_pmid_or_doi": "PMID:34906097",
+                },
+                {
+                    "test_name": "Blood metagenomic next-generation sequencing (mNGS)",
+                    "result": "Naegleria fowleri detected (blood compartment); dual-compartment confirmation per anchor publication.",
+                    "sensitivity_pct": None,
+                    "specificity_pct": None,
+                    "citation_pmid_or_doi": "PMID:34906097",
+                },
+            ],
+        },
+        "narrative_en": (
+            "An 8-year-old male in China presented with a three-day "
+            "history of fever, headache, and vomiting following "
+            "recreational freshwater exposure. On admission temperature "
+            "was 39.0 C, Glasgow Coma Scale 11, with neck stiffness "
+            "and somnolence. Peripheral white cell count was 16,400 "
+            "per microliter; CSF showed 2,400 white cells per cubic "
+            "millimeter (88 percent neutrophils), glucose 22 mg/dL, "
+            "protein 320 mg/dL, and lactate 6.4 mmol/L. Metagenomic "
+            "next-generation sequencing of both CSF and peripheral "
+            "blood identified Naegleria fowleri (dual-compartment "
+            "detection). Brain MRI with DWI/FLAIR showed diffuse "
+            "cerebral edema. Treatment per CDC PAM protocol was "
+            "initiated; the patient died despite multimodal care. "
+            "This vignette uses imputation within the anchor's "
+            "documented case-context: province within China is not "
+            "fully transcribed in the anchor publication so "
+            "geographic specificity is imputed at the country level, "
+            "and demographics are locked from the Day-2 distribution "
+            "table per Huang 2021 mainland-China dual-compartment "
+            "mNGS epidemiology (PMID 34906097)."
+        ),
+        "narrative_es": (
+            "Niño de 8 años en China que se presentó con tres días de "
+            "fiebre, cefalea y vómitos tras exposición recreativa a "
+            "agua dulce. Al ingreso la temperatura fue de 39.0 C, "
+            "escala de Glasgow 11, con rigidez de nuca y somnolencia. "
+            "Los leucocitos periféricos fueron 16,400 por microlitro; "
+            "el líquido cefalorraquídeo mostró 2,400 leucocitos por "
+            "mm3 (88 por ciento neutrófilos), glucosa 22 mg/dL, "
+            "proteína 320 mg/dL y lactato 6.4 mmol/L. La "
+            "secuenciación metagenómica de nueva generación tanto del "
+            "líquido cefalorraquídeo como de la sangre periférica "
+            "identificó a Naegleria fowleri (detección en doble "
+            "compartimento). La resonancia magnética cerebral con "
+            "DWI/FLAIR mostró edema cerebral difuso. Se inició el "
+            "protocolo de PAM de los CDC; el paciente falleció a "
+            "pesar de la atención multimodal. Esta viñeta utiliza "
+            "imputación dentro del contexto del caso anclaje: la "
+            "provincia china no está completamente transcrita en la "
+            "publicación anclaje, por lo que la especificidad "
+            "geográfica se imputa a nivel de país, y los datos "
+            "demográficos están fijados en la tabla de distribución "
+            "del Día 2 según la epidemiología de Huang 2021 "
+            "(PMID 34906097)."
+        ),
+    }
+
+
+def _build_capewell_imputed_vignette(
+    *,
+    age_years: int,
+    sex: str,
+    stage: str,
+    chief_complaint: str,
+    prodrome_phrase_en: str,
+    prodrome_phrase_es: str,
+) -> dict[str, Any]:
+    """Shared scaffolding for v28-v31 Capewell within-cohort imputations.
+
+    Per docs/DAY2_DISTRIBUTION_RATIONALE.md section 9.1: each Capewell
+    entry is imputed within Capewell 2015's US 1937-2013 review of
+    approximately 140-145 cases, ~79 percent recreational freshwater,
+    with the lake/pond sub-bucket dominant. No specific named-case is
+    being claimed; each represents within-cohort imputation.
+    """
+    # Stage-appropriate clinical state.
+    if stage == "early":
+        gcs = 14
+        ms_grade = "alert"
+        neck_stiff = True
+        focal = False
+        papilledema = False
+        opening_pressure = 22.0
+    elif stage == "mid":
+        gcs = 11
+        ms_grade = "somnolent"
+        neck_stiff = True
+        focal = False
+        papilledema = False
+        opening_pressure = 28.0
+    else:  # late
+        gcs = 7
+        ms_grade = "stuporous"
+        neck_stiff = True
+        focal = True
+        papilledema = True
+        opening_pressure = 38.0
+    # Age-appropriate vitals.
+    if age_years <= 9:
+        hr = 132
+        sbp = 102
+        dbp = 64
+        rr = 26
+    elif age_years <= 14:
+        hr = 118
+        sbp = 110
+        dbp = 68
+        rr = 22
+    else:
+        hr = 108
+        sbp = 116
+        dbp = 72
+        rr = 20
+    return {
+        "history": {
+            "symptom_onset_to_presentation_days": 4.0,
+            "chief_complaint": chief_complaint,
+            "prodrome_description": prodrome_phrase_en,
+            "red_flags_present": ["fresh_water_exposure_14d"],
+        },
+        "exposure": {
+            "freshwater_exposure_within_14d": True,
+            "freshwater_exposure_type": "lake",
+            "altitude_exposure_within_7d_m": None,
+            "pork_consumption_or_taenia_contact": False,
+            # US South region (Aedes range).
+            "mosquito_endemic_area_exposure": True,
+            "immunocompromise_status": "none",
+            "hiv_status": "negative",
+            "cd4_count_cells_per_uL": None,
+        },
+        "vitals": {
+            # Inferred from PAM-cohort epidemiology (Capewell US 1937-2013).
+            "temperature_celsius": 39.2,
+            "heart_rate_bpm": hr,
+            "systolic_bp_mmHg": sbp,
+            "diastolic_bp_mmHg": dbp,
+            "glasgow_coma_scale": gcs,
+            "oxygen_saturation_pct": 96,
+            "respiratory_rate_breaths_per_min": rr,
+        },
+        "exam": {
+            "mental_status_grade": ms_grade,
+            "neck_stiffness": neck_stiff,
+            "kernig_or_brudzinski_positive": neck_stiff,
+            "focal_neurological_deficit": focal,
+            "cranial_nerve_palsy": "none",
+            "skin_lesion_centrofacial_chronic": False,
+            "petechial_or_purpuric_rash": False,
+            "papilledema_on_fundoscopy": papilledema,
+        },
+        "labs": {
+            "wbc_blood_per_uL": 18000,
+            "platelets_per_uL": 254000,
+            "alt_ast_U_per_L": None,
+            "crp_mg_per_L": 88.0,
+            "procalcitonin_ng_per_mL": 2.0,
+            "serum_sodium_mEq_per_L": 137,
+        },
+        "csf": {
+            "opening_pressure_cmH2O": opening_pressure,
+            "csf_wbc_per_mm3": 3200,
+            "csf_neutrophil_pct": 90,
+            "csf_lymphocyte_pct": 9,
+            "csf_eosinophil_pct": 1,
+            "csf_glucose_mg_per_dL": 20,
+            "csf_protein_mg_per_dL": 360,
+            "csf_lactate_mmol_per_L": 7.0,
+            "csf_ada_U_per_L": None,
+            "csf_crag_lfa_result": "negative",
+            "csf_wet_mount_motile_amoebae": "positive" if stage == "late" else "not_done",
+            "csf_xanthochromia_present": False,
+            "csf_rbc_per_mm3": 180,
+            "csf_rbc_decreasing_across_tubes": None,
+        },
+        "imaging": {
+            "imaging_modality": "ct_noncontrast",
+            "imaging_pattern": "diffuse_cerebral_edema_basilar_meningeal_enhancement",
+            "imaging_finding_count": None,
+            "imaging_text_summary": (
+                "Imaging consistent with PAM stage; specific findings "
+                "imputed within Capewell 2015 US 1937-2013 review "
+                "cohort epidemiology (lake/pond sub-bucket dominant)."
+            ),
+        },
+        "diagnostic_tests": {
+            "results": [
+                {
+                    "test_name": "CSF Naegleria fowleri PCR (CDC reference laboratory)",
+                    "result": "Positive (consistent with within-cohort imputation per Capewell 2015 review).",
+                    "sensitivity_pct": 95.0,
+                    "specificity_pct": 99.0,
+                    "citation_pmid_or_doi": "PMID:26582886",
+                },
+            ],
+        },
+        "narrative_en": (
+            f"A {age_years}-year-old {sex} from the US South region "
+            f"presented with a four-day history of fever, headache, "
+            f"and progressive {prodrome_phrase_en} following "
+            f"recreational freshwater (lake/pond) exposure. On "
+            f"admission temperature was 39.2 C, Glasgow Coma Scale "
+            f"{gcs}, with PAM-typical CSF (white cell count 3,200 per "
+            f"cubic millimeter, 90 percent neutrophils, glucose 20 "
+            f"mg/dL, protein 360 mg/dL). Treatment per CDC PAM "
+            f"protocol was initiated; the patient died of refractory "
+            f"cerebral edema. This vignette is a within-cohort "
+            f"imputation: no specific named-case is claimed. Clinical "
+            f"specifics follow Capewell 2015's documented US 1937-"
+            f"2013 review of approximately 140-145 cases (lake/pond "
+            f"sub-bucket dominant); demographics are locked from the "
+            f"Day-2 distribution table (PMID 26582886)."
+        ),
+        "narrative_es": (
+            f"Paciente de {age_years} años de sexo "
+            f"{'masculino' if sex == 'male' else 'femenino'} "
+            f"originario de la región sur de Estados Unidos, que se "
+            f"presentó con cuatro días de fiebre, cefalea y "
+            f"{prodrome_phrase_es} progresiva tras exposición "
+            f"recreativa a agua dulce (lago o estanque). Al ingreso "
+            f"la temperatura fue de 39.2 C, escala de Glasgow {gcs}, "
+            f"con líquido cefalorraquídeo típico de PAM (leucocitos "
+            f"3,200 por mm3, 90 por ciento neutrófilos, glucosa 20 "
+            f"mg/dL, proteína 360 mg/dL). Se inició el protocolo de "
+            f"PAM de los CDC; el paciente falleció por edema "
+            f"cerebral refractario. Esta viñeta es una imputación "
+            f"dentro de la cohorte: no se reclama un caso nombrado "
+            f"específico. Los datos clínicos siguen la revisión "
+            f"documentada por Capewell 2015 sobre PAM en Estados "
+            f"Unidos 1937-2013 (aproximadamente 140-145 casos, "
+            f"subgrupo lago/estanque dominante); las características "
+            f"demográficas están fijadas en la tabla de distribución "
+            f"del Día 2 (PMID 26582886)."
+        ),
+    }
+
+
+def _build_vignette_028() -> dict[str, Any]:
+    """v28: 8yo F, US South, late, fatal - Capewell within-cohort imputation."""
+    return _build_capewell_imputed_vignette(
+        age_years=8, sex="female", stage="late",
+        chief_complaint="altered_mental_status",
+        prodrome_phrase_en="lethargy progressing to stupor",
+        prodrome_phrase_es="letargia con progresión a estupor",
+    )
+
+
+def _build_vignette_029() -> dict[str, Any]:
+    """v29: 11yo M, US South, mid, fatal - Capewell within-cohort imputation."""
+    return _build_capewell_imputed_vignette(
+        age_years=11, sex="male", stage="mid",
+        chief_complaint="fever_with_headache",
+        prodrome_phrase_en="somnolence with neck stiffness",
+        prodrome_phrase_es="somnolencia con rigidez de nuca",
+    )
+
+
+def _build_vignette_030() -> dict[str, Any]:
+    """v30: 15yo M, US South, late, fatal - Capewell within-cohort imputation."""
+    return _build_capewell_imputed_vignette(
+        age_years=15, sex="male", stage="late",
+        chief_complaint="altered_mental_status",
+        prodrome_phrase_en="stupor with focal deficit",
+        prodrome_phrase_es="estupor con déficit focal",
+    )
+
+
+def _build_vignette_031() -> dict[str, Any]:
+    """v31: 9yo M, US South, mid, fatal - Capewell within-cohort imputation."""
+    return _build_capewell_imputed_vignette(
+        age_years=9, sex="male", stage="mid",
+        chief_complaint="fever_with_headache",
+        prodrome_phrase_en="lethargy and vomiting",
+        prodrome_phrase_es="letargia y vómitos",
+    )
+
+
+def _build_kemble_imputed_vignette(
+    *,
+    age_years: int,
+    stage: str,
+    chief_complaint: str,
+    prodrome_phrase_en: str,
+    prodrome_phrase_es: str,
+) -> dict[str, Any]:
+    """Shared scaffolding for v32-v34 Kemble Minnesota within-cohort imputations.
+
+    Per docs/DAY2_DISTRIBUTION_RATIONALE.md section 9.1: each Kemble
+    entry is imputed within Kemble 2012 Minnesota northern-tier
+    expansion case-context. Day-1 used 2 Kemble entries; v32-v34 add
+    demographic variation within the documented Minnesota lake
+    exposure type.
+    """
+    if stage == "mid":
+        gcs = 11
+        ms_grade = "somnolent"
+        focal = False
+        papilledema = False
+        opening_pressure = 28.0
+    else:  # late
+        gcs = 7
+        ms_grade = "stuporous"
+        focal = True
+        papilledema = True
+        opening_pressure = 38.0
+    if age_years <= 9:
+        hr = 130
+        sbp = 100
+        dbp = 62
+        rr = 26
+    else:
+        hr = 116
+        sbp = 108
+        dbp = 66
+        rr = 22
+    return {
+        "history": {
+            "symptom_onset_to_presentation_days": 5.0,
+            "chief_complaint": chief_complaint,
+            "prodrome_description": prodrome_phrase_en,
+            "red_flags_present": ["fresh_water_exposure_14d"],
+        },
+        "exposure": {
+            "freshwater_exposure_within_14d": True,
+            "freshwater_exposure_type": "lake",
+            "altitude_exposure_within_7d_m": None,
+            "pork_consumption_or_taenia_contact": False,
+            # Minnesota: northern-tier, not in Aedes-dengue range.
+            "mosquito_endemic_area_exposure": False,
+            "immunocompromise_status": "none",
+            "hiv_status": "negative",
+            "cd4_count_cells_per_uL": None,
+        },
+        "vitals": {
+            "temperature_celsius": 39.4,
+            "heart_rate_bpm": hr,
+            "systolic_bp_mmHg": sbp,
+            "diastolic_bp_mmHg": dbp,
+            "glasgow_coma_scale": gcs,
+            "oxygen_saturation_pct": 96,
+            "respiratory_rate_breaths_per_min": rr,
+        },
+        "exam": {
+            "mental_status_grade": ms_grade,
+            "neck_stiffness": True,
+            "kernig_or_brudzinski_positive": True,
+            "focal_neurological_deficit": focal,
+            "cranial_nerve_palsy": "none",
+            "skin_lesion_centrofacial_chronic": False,
+            "petechial_or_purpuric_rash": False,
+            "papilledema_on_fundoscopy": papilledema,
+        },
+        "labs": {
+            "wbc_blood_per_uL": 17600,
+            "platelets_per_uL": 248000,
+            "alt_ast_U_per_L": None,
+            "crp_mg_per_L": 84.0,
+            "procalcitonin_ng_per_mL": 1.6,
+            "serum_sodium_mEq_per_L": 138,
+        },
+        "csf": {
+            "opening_pressure_cmH2O": opening_pressure,
+            "csf_wbc_per_mm3": 2800,
+            "csf_neutrophil_pct": 89,
+            "csf_lymphocyte_pct": 10,
+            "csf_eosinophil_pct": 1,
+            "csf_glucose_mg_per_dL": 22,
+            "csf_protein_mg_per_dL": 340,
+            "csf_lactate_mmol_per_L": 6.8,
+            "csf_ada_U_per_L": None,
+            "csf_crag_lfa_result": "negative",
+            "csf_wet_mount_motile_amoebae": "positive" if stage == "late" else "not_done",
+            "csf_xanthochromia_present": False,
+            "csf_rbc_per_mm3": 200,
+            "csf_rbc_decreasing_across_tubes": None,
+        },
+        "imaging": {
+            "imaging_modality": "ct_noncontrast",
+            "imaging_pattern": "diffuse_cerebral_edema_basilar_meningeal_enhancement",
+            "imaging_finding_count": None,
+            "imaging_text_summary": (
+                "CT showed diffuse cerebral edema with effacement of "
+                "cortical sulci. Imaging imputed within Kemble 2012 "
+                "Minnesota northern-tier PAM case-context."
+            ),
+        },
+        "diagnostic_tests": {
+            "results": [
+                {
+                    "test_name": "CSF Naegleria fowleri PCR (CDC reference laboratory)",
+                    "result": "Positive.",
+                    "sensitivity_pct": 95.0,
+                    "specificity_pct": 99.0,
+                    "citation_pmid_or_doi": "PMID:22238170",
+                },
+            ],
+        },
+        "narrative_en": (
+            f"A {age_years}-year-old male from Minnesota presented "
+            f"with fever, headache, and {prodrome_phrase_en} "
+            f"following lake exposure during the summer recreational "
+            f"season. On admission temperature was 39.4 C, Glasgow "
+            f"Coma Scale {gcs}, with neck stiffness. CSF showed white "
+            f"cell count 2,800 per cubic millimeter (89 percent "
+            f"neutrophils), glucose 22 mg/dL, protein 340 mg/dL. CSF "
+            f"PCR confirmed Naegleria fowleri at the CDC reference "
+            f"laboratory. CT showed diffuse cerebral edema. Treatment "
+            f"per CDC PAM protocol was initiated; the patient died. "
+            f"This vignette is a within-cohort imputation per Kemble "
+            f"2012 Minnesota northern-tier expansion case-context: "
+            f"demographics are locked from the Day-2 distribution "
+            f"table, and clinical specifics follow the documented "
+            f"Minnesota lake-exposure PAM epidemiology "
+            f"(PMID 22238170)."
+        ),
+        "narrative_es": (
+            f"Varón de {age_years} años originario de Minnesota que "
+            f"se presentó con fiebre, cefalea y {prodrome_phrase_es} "
+            f"tras exposición a un lago durante la temporada "
+            f"recreativa de verano. Al ingreso la temperatura fue de "
+            f"39.4 C, escala de Glasgow {gcs}, con rigidez de nuca. "
+            f"El líquido cefalorraquídeo mostró leucocitos 2,800 por "
+            f"mm3 (89 por ciento neutrófilos), glucosa 22 mg/dL, "
+            f"proteína 340 mg/dL. La PCR del líquido cefalorraquídeo "
+            f"para Naegleria fowleri fue positiva en el laboratorio "
+            f"de referencia de los CDC. La tomografía mostró edema "
+            f"cerebral difuso. Se inició el protocolo de PAM de los "
+            f"CDC; el paciente falleció. Esta viñeta es una "
+            f"imputación dentro de la cohorte según el contexto del "
+            f"caso documentado por Kemble 2012 (expansión septentrional "
+            f"de Minnesota): los datos demográficos están fijados en "
+            f"la tabla de distribución del Día 2, y las "
+            f"características clínicas siguen la epidemiología de PAM "
+            f"con exposición a lagos de Minnesota (PMID 22238170)."
+        ),
+    }
+
+
+def _build_vignette_032() -> dict[str, Any]:
+    """v32: 11yo M, Minnesota, mid, fatal - Kemble within-cohort imputation."""
+    return _build_kemble_imputed_vignette(
+        age_years=11, stage="mid",
+        chief_complaint="fever_with_headache",
+        prodrome_phrase_en="somnolence with vomiting",
+        prodrome_phrase_es="somnolencia con vómitos",
+    )
+
+
+def _build_vignette_033() -> dict[str, Any]:
+    """v33: 6yo M, Minnesota, late, fatal - Kemble within-cohort imputation."""
+    return _build_kemble_imputed_vignette(
+        age_years=6, stage="late",
+        chief_complaint="altered_mental_status",
+        prodrome_phrase_en="rapid progression to stupor with focal deficit",
+        prodrome_phrase_es="progresión rápida a estupor con déficit focal",
+    )
+
+
+def _build_vignette_034() -> dict[str, Any]:
+    """v34: 14yo M, Minnesota, mid, fatal - Kemble within-cohort imputation."""
+    return _build_kemble_imputed_vignette(
+        age_years=14, stage="mid",
+        chief_complaint="fever_with_headache",
+        prodrome_phrase_en="progressive lethargy with neck stiffness",
+        prodrome_phrase_es="letargia progresiva con rigidez de nuca",
+    )
+
+
+def _build_anjum_imputed_vignette(
+    *,
+    age_years: int,
+    sex: str,
+    stage: str,
+    chief_complaint: str,
+    prodrome_phrase_en: str,
+    prodrome_phrase_es: str,
+) -> dict[str, Any]:
+    """Shared scaffolding for v35-v37 Anjum Florida within-cohort imputations.
+
+    Per docs/DAY2_DISTRIBUTION_RATIONALE.md section 9.1: each Anjum
+    entry is imputed within Anjum 2021 Florida tap-water/lake-context
+    case-set. Day-1 used 2 Anjum entries; v35-v37 add demographic
+    variation.
+    """
+    if stage == "mid":
+        gcs = 11
+        ms_grade = "somnolent"
+        focal = False
+        papilledema = False
+        opening_pressure = 28.0
+    else:  # late
+        gcs = 7
+        ms_grade = "stuporous"
+        focal = True
+        papilledema = True
+        opening_pressure = 38.0
+    if age_years <= 11:
+        hr = 128
+        sbp = 104
+        dbp = 64
+        rr = 24
+    else:
+        hr = 116
+        sbp = 110
+        dbp = 68
+        rr = 22
+    return {
+        "history": {
+            "symptom_onset_to_presentation_days": 4.0,
+            "chief_complaint": chief_complaint,
+            "prodrome_description": prodrome_phrase_en,
+            "red_flags_present": ["fresh_water_exposure_14d"],
+        },
+        "exposure": {
+            "freshwater_exposure_within_14d": True,
+            "freshwater_exposure_type": "lake",
+            "altitude_exposure_within_7d_m": None,
+            "pork_consumption_or_taenia_contact": False,
+            # Florida US South: Aedes range.
+            "mosquito_endemic_area_exposure": True,
+            "immunocompromise_status": "none",
+            "hiv_status": "negative",
+            "cd4_count_cells_per_uL": None,
+        },
+        "vitals": {
+            "temperature_celsius": 39.6,
+            "heart_rate_bpm": hr,
+            "systolic_bp_mmHg": sbp,
+            "diastolic_bp_mmHg": dbp,
+            "glasgow_coma_scale": gcs,
+            "oxygen_saturation_pct": 95,
+            "respiratory_rate_breaths_per_min": rr,
+        },
+        "exam": {
+            "mental_status_grade": ms_grade,
+            "neck_stiffness": True,
+            "kernig_or_brudzinski_positive": True,
+            "focal_neurological_deficit": focal,
+            "cranial_nerve_palsy": "none",
+            "skin_lesion_centrofacial_chronic": False,
+            "petechial_or_purpuric_rash": False,
+            "papilledema_on_fundoscopy": papilledema,
+        },
+        "labs": {
+            "wbc_blood_per_uL": 19000,
+            "platelets_per_uL": 252000,
+            "alt_ast_U_per_L": None,
+            "crp_mg_per_L": 96.0,
+            "procalcitonin_ng_per_mL": 2.4,
+            "serum_sodium_mEq_per_L": 137,
+        },
+        "csf": {
+            "opening_pressure_cmH2O": opening_pressure,
+            "csf_wbc_per_mm3": 3400,
+            "csf_neutrophil_pct": 91,
+            "csf_lymphocyte_pct": 8,
+            "csf_eosinophil_pct": 1,
+            "csf_glucose_mg_per_dL": 18,
+            "csf_protein_mg_per_dL": 380,
+            "csf_lactate_mmol_per_L": 7.4,
+            "csf_ada_U_per_L": None,
+            "csf_crag_lfa_result": "negative",
+            "csf_wet_mount_motile_amoebae": "positive" if stage == "late" else "not_done",
+            "csf_xanthochromia_present": False,
+            "csf_rbc_per_mm3": 220,
+            "csf_rbc_decreasing_across_tubes": None,
+        },
+        "imaging": {
+            "imaging_modality": "ct_noncontrast",
+            "imaging_pattern": "diffuse_cerebral_edema_basilar_meningeal_enhancement",
+            "imaging_finding_count": None,
+            "imaging_text_summary": (
+                "CT showed diffuse cerebral edema. Imaging imputed "
+                "within Anjum 2021 Florida tap-water/lake-context "
+                "case-set."
+            ),
+        },
+        "diagnostic_tests": {
+            "results": [
+                {
+                    "test_name": "CSF Naegleria fowleri PCR (CDC reference laboratory)",
+                    "result": "Positive.",
+                    "sensitivity_pct": 95.0,
+                    "specificity_pct": 99.0,
+                    "citation_pmid_or_doi": "PMID:34307045",
+                },
+            ],
+        },
+        "narrative_en": (
+            f"A {age_years}-year-old "
+            f"{'female' if sex == 'female' else 'male'} from Florida "
+            f"presented with fever, headache, and {prodrome_phrase_en} "
+            f"following recreational freshwater (lake) exposure. On "
+            f"admission temperature was 39.6 C, Glasgow Coma Scale "
+            f"{gcs}. CSF showed white cell count 3,400 per cubic "
+            f"millimeter (91 percent neutrophils), glucose 18 mg/dL, "
+            f"protein 380 mg/dL. CSF PCR confirmed Naegleria fowleri "
+            f"at the CDC reference laboratory. CT showed diffuse "
+            f"cerebral edema. Treatment per CDC PAM protocol was "
+            f"initiated; the patient died. This vignette is a within-"
+            f"cohort imputation per Anjum 2021 Florida tap-water/lake-"
+            f"context case-set: demographics are locked from the "
+            f"Day-2 distribution table, and clinical specifics follow "
+            f"the documented Florida PAM epidemiology "
+            f"(PMID 34307045)."
+        ),
+        "narrative_es": (
+            f"Paciente de {age_years} años de sexo "
+            f"{'femenino' if sex == 'female' else 'masculino'} "
+            f"originario de Florida que se presentó con fiebre, "
+            f"cefalea y {prodrome_phrase_es} tras exposición "
+            f"recreativa a agua dulce (lago). Al ingreso la "
+            f"temperatura fue de 39.6 C, escala de Glasgow {gcs}. El "
+            f"líquido cefalorraquídeo mostró leucocitos 3,400 por mm3 "
+            f"(91 por ciento neutrófilos), glucosa 18 mg/dL, proteína "
+            f"380 mg/dL. La PCR del líquido cefalorraquídeo para "
+            f"Naegleria fowleri fue positiva en el laboratorio de "
+            f"referencia de los CDC. La tomografía mostró edema "
+            f"cerebral difuso. Se inició el protocolo de PAM de los "
+            f"CDC; el paciente falleció. Esta viñeta es una "
+            f"imputación dentro de la cohorte según el contexto del "
+            f"caso documentado por Anjum 2021 (Florida, exposición a "
+            f"agua de grifo/lago): los datos demográficos están "
+            f"fijados en la tabla de distribución del Día 2, y las "
+            f"características clínicas siguen la epidemiología de PAM "
+            f"de Florida (PMID 34307045)."
+        ),
+    }
+
+
+def _build_vignette_035() -> dict[str, Any]:
+    """v35: 10yo M, Florida, late, fatal - Anjum within-cohort imputation."""
+    return _build_anjum_imputed_vignette(
+        age_years=10, sex="male", stage="late",
+        chief_complaint="altered_mental_status",
+        prodrome_phrase_en="stupor with focal deficit and papilledema",
+        prodrome_phrase_es="estupor con déficit focal y papiledema",
+    )
+
+
+def _build_vignette_036() -> dict[str, Any]:
+    """v36: 12yo F, Florida, mid, fatal - Anjum within-cohort imputation."""
+    return _build_anjum_imputed_vignette(
+        age_years=12, sex="female", stage="mid",
+        chief_complaint="fever_with_headache",
+        prodrome_phrase_en="somnolence with neck stiffness",
+        prodrome_phrase_es="somnolencia con rigidez de nuca",
+    )
+
+
+def _build_vignette_037() -> dict[str, Any]:
+    """v37: 15yo M, Florida, late, fatal - Anjum within-cohort imputation."""
+    return _build_anjum_imputed_vignette(
+        age_years=15, sex="male", stage="late",
+        chief_complaint="altered_mental_status",
+        prodrome_phrase_en="rapid neurological deterioration to stupor",
+        prodrome_phrase_es="deterioro neurológico rápido hasta estupor",
+    )
+
+
+def _build_vignette_038() -> dict[str, Any]:
+    """Vignette 38: 28-year-old male, US South, mid stage, fatal.
+
+    Tier-4 review imputation. Anchored to Rîpă C et al. 2025 J Clin
+    Med (PMID 39860533), Romanian systematic review of 98 patients
+    with 17 USA cases. Per docs/DAY2_DISTRIBUTION_RATIONALE.md section
+    9.1: 28yo M imputed US South within Rîpă's 17 USA cases / 98-
+    patient global cohort.
+    """
+    return {
+        "history": {
+            "symptom_onset_to_presentation_days": 5.0,
+            "chief_complaint": "fever_with_headache",
+            "prodrome_description": (
+                "Five-day history of fever, headache, vomiting, and "
+                "progressive lethargy in a 28-year-old male from the "
+                "US South region after recreational freshwater (lake) "
+                "exposure. Demographics imputed within Ripa 2025 "
+                "Romanian systematic review of 98 patients (17 USA "
+                "cases sub-cohort)."
+            ),
+            "red_flags_present": ["fresh_water_exposure_14d"],
+        },
+        "exposure": {
+            "freshwater_exposure_within_14d": True,
+            "freshwater_exposure_type": "lake",
+            "altitude_exposure_within_7d_m": None,
+            "pork_consumption_or_taenia_contact": False,
+            "mosquito_endemic_area_exposure": True,
+            "immunocompromise_status": "none",
+            "hiv_status": "negative",
+            "cd4_count_cells_per_uL": None,
+        },
+        "vitals": {
+            "temperature_celsius": 39.0,
+            "heart_rate_bpm": 110,
+            "systolic_bp_mmHg": 122,
+            "diastolic_bp_mmHg": 76,
+            "glasgow_coma_scale": 11,
+            "oxygen_saturation_pct": 96,
+            "respiratory_rate_breaths_per_min": 20,
+        },
+        "exam": {
+            "mental_status_grade": "somnolent",
+            "neck_stiffness": True,
+            "kernig_or_brudzinski_positive": True,
+            "focal_neurological_deficit": False,
+            "cranial_nerve_palsy": "none",
+            "skin_lesion_centrofacial_chronic": False,
+            "petechial_or_purpuric_rash": False,
+            "papilledema_on_fundoscopy": False,
+        },
+        "labs": {
+            "wbc_blood_per_uL": 17400,
+            "platelets_per_uL": 248000,
+            "alt_ast_U_per_L": None,
+            "crp_mg_per_L": 86.0,
+            "procalcitonin_ng_per_mL": 1.8,
+            "serum_sodium_mEq_per_L": 137,
+        },
+        "csf": {
+            "opening_pressure_cmH2O": 30.0,
+            "csf_wbc_per_mm3": 3000,
+            "csf_neutrophil_pct": 90,
+            "csf_lymphocyte_pct": 9,
+            "csf_eosinophil_pct": 1,
+            "csf_glucose_mg_per_dL": 22,
+            "csf_protein_mg_per_dL": 360,
+            "csf_lactate_mmol_per_L": 6.8,
+            "csf_ada_U_per_L": None,
+            "csf_crag_lfa_result": "negative",
+            "csf_wet_mount_motile_amoebae": "not_done",
+            "csf_xanthochromia_present": False,
+            "csf_rbc_per_mm3": 160,
+            "csf_rbc_decreasing_across_tubes": None,
+        },
+        "imaging": {
+            "imaging_modality": "ct_noncontrast",
+            "imaging_pattern": "diffuse_cerebral_edema_basilar_meningeal_enhancement",
+            "imaging_finding_count": None,
+            "imaging_text_summary": (
+                "CT showed diffuse cerebral edema. Imaging imputed "
+                "within Ripa 2025 systematic review's 17 USA cases / "
+                "98-patient global cohort."
+            ),
+        },
+        "diagnostic_tests": {
+            "results": [
+                {
+                    "test_name": "CSF Naegleria fowleri PCR (CDC reference laboratory)",
+                    "result": "Positive (consistent with within-cohort imputation per Ripa 2025 systematic review).",
+                    "sensitivity_pct": 95.0,
+                    "specificity_pct": 99.0,
+                    "citation_pmid_or_doi": "PMID:39860533",
+                },
+            ],
+        },
+        "narrative_en": (
+            "A 28-year-old male from the US South region presented "
+            "with a five-day history of fever, headache, vomiting, "
+            "and progressive lethargy following recreational freshwater "
+            "(lake) exposure. On admission temperature was 39.0 C, "
+            "Glasgow Coma Scale 11, with neck stiffness and "
+            "somnolence. CSF showed white cell count 3,000 per cubic "
+            "millimeter (90 percent neutrophils), glucose 22 mg/dL, "
+            "protein 360 mg/dL, and lactate 6.8 mmol/L. CSF PCR "
+            "confirmed Naegleria fowleri at the CDC reference "
+            "laboratory. CT showed diffuse cerebral edema. Treatment "
+            "per CDC PAM protocol was initiated; the patient died of "
+            "refractory cerebral edema. This vignette is a Tier-4 "
+            "within-cohort imputation: no specific named-case is "
+            "claimed. Clinical specifics follow Rîpă 2025 Romanian "
+            "systematic review epidemiology (98 patients across 52 "
+            "case-report articles, 17 USA sub-cohort); demographics "
+            "are locked from the Day-2 distribution table "
+            "(PMID 39860533)."
+        ),
+        "narrative_es": (
+            "Varón de 28 años originario de la región sur de Estados "
+            "Unidos que se presentó con cinco días de fiebre, "
+            "cefalea, vómitos y letargia progresiva tras exposición "
+            "recreativa a agua dulce (lago). Al ingreso la temperatura "
+            "fue de 39.0 C, escala de Glasgow 11, con rigidez de nuca "
+            "y somnolencia. El líquido cefalorraquídeo mostró "
+            "leucocitos 3,000 por mm3 (90 por ciento neutrófilos), "
+            "glucosa 22 mg/dL, proteína 360 mg/dL y lactato 6.8 "
+            "mmol/L. La PCR del líquido cefalorraquídeo para "
+            "Naegleria fowleri fue positiva en el laboratorio de "
+            "referencia de los CDC. La tomografía mostró edema "
+            "cerebral difuso. Se inició el protocolo de PAM de los "
+            "CDC; el paciente falleció por edema cerebral refractario. "
+            "Esta viñeta es una imputación de Tier-4 dentro de la "
+            "cohorte: no se reclama un caso nombrado específico. Los "
+            "datos clínicos siguen la epidemiología de la revisión "
+            "sistemática rumana de Rîpă 2025 (98 pacientes en 52 "
+            "artículos, subcohorte de 17 casos en EE. UU.); las "
+            "características demográficas están fijadas en la tabla "
+            "de distribución del Día 2 (PMID 39860533)."
+        ),
+    }
+
+
+def _build_vignette_039() -> dict[str, Any]:
+    """Vignette 39: 13-year-old male, US South, late stage, fatal.
+
+    Tier-4 review imputation. Anchored to Gharpure et al. 2021 CID
+    (PMID 32369575), global review. Per docs/DAY2_DISTRIBUTION_
+    RATIONALE.md section 9.1: 13yo M imputed within global review.
+    """
+    return {
+        "history": {
+            "symptom_onset_to_presentation_days": 4.0,
+            "chief_complaint": "altered_mental_status",
+            "prodrome_description": (
+                "Four-day history of fever, headache, and progressive "
+                "lethargy with stupor on the day of admission in a "
+                "13-year-old male from the US South region after "
+                "recreational freshwater (lake) exposure. Demographics "
+                "imputed within Gharpure 2021 CID global review."
+            ),
+            "red_flags_present": ["fresh_water_exposure_14d"],
+        },
+        "exposure": {
+            "freshwater_exposure_within_14d": True,
+            "freshwater_exposure_type": "lake",
+            "altitude_exposure_within_7d_m": None,
+            "pork_consumption_or_taenia_contact": False,
+            "mosquito_endemic_area_exposure": True,
+            "immunocompromise_status": "none",
+            "hiv_status": "negative",
+            "cd4_count_cells_per_uL": None,
+        },
+        "vitals": {
+            "temperature_celsius": 39.5,
+            "heart_rate_bpm": 122,
+            "systolic_bp_mmHg": 110,
+            "diastolic_bp_mmHg": 68,
+            "glasgow_coma_scale": 7,
+            "oxygen_saturation_pct": 95,
+            "respiratory_rate_breaths_per_min": 24,
+        },
+        "exam": {
+            "mental_status_grade": "stuporous",
+            "neck_stiffness": True,
+            "kernig_or_brudzinski_positive": True,
+            "focal_neurological_deficit": True,
+            "cranial_nerve_palsy": "none",
+            "skin_lesion_centrofacial_chronic": False,
+            "petechial_or_purpuric_rash": False,
+            "papilledema_on_fundoscopy": True,
+        },
+        "labs": {
+            "wbc_blood_per_uL": 19200,
+            "platelets_per_uL": 240000,
+            "alt_ast_U_per_L": None,
+            "crp_mg_per_L": 102.0,
+            "procalcitonin_ng_per_mL": 2.6,
+            "serum_sodium_mEq_per_L": 136,
+        },
+        "csf": {
+            "opening_pressure_cmH2O": 38.0,
+            "csf_wbc_per_mm3": 4200,
+            "csf_neutrophil_pct": 92,
+            "csf_lymphocyte_pct": 7,
+            "csf_eosinophil_pct": 1,
+            "csf_glucose_mg_per_dL": 16,
+            "csf_protein_mg_per_dL": 420,
+            "csf_lactate_mmol_per_L": 8.4,
+            "csf_ada_U_per_L": None,
+            "csf_crag_lfa_result": "negative",
+            "csf_wet_mount_motile_amoebae": "positive",
+            "csf_xanthochromia_present": False,
+            "csf_rbc_per_mm3": 280,
+            "csf_rbc_decreasing_across_tubes": None,
+        },
+        "imaging": {
+            "imaging_modality": "ct_noncontrast",
+            "imaging_pattern": "diffuse_cerebral_edema_basilar_meningeal_enhancement",
+            "imaging_finding_count": None,
+            "imaging_text_summary": (
+                "CT showed diffuse cerebral edema with effacement of "
+                "the cortical sulci. Imaging imputed within Gharpure "
+                "2021 CID global review."
+            ),
+        },
+        "diagnostic_tests": {
+            "results": [
+                {
+                    "test_name": "CSF Naegleria fowleri PCR (CDC reference laboratory)",
+                    "result": "Positive (consistent with within-cohort imputation per Gharpure 2021 CID global review).",
+                    "sensitivity_pct": 95.0,
+                    "specificity_pct": 99.0,
+                    "citation_pmid_or_doi": "PMID:32369575",
+                },
+            ],
+        },
+        "narrative_en": (
+            "A 13-year-old male from the US South region presented "
+            "with a four-day history of fever and headache that "
+            "progressed to stupor on the day of admission, following "
+            "recreational freshwater (lake) exposure. On admission "
+            "temperature was 39.5 C, Glasgow Coma Scale 7, with neck "
+            "stiffness, papilledema, and a focal deficit. CSF showed "
+            "white cell count 4,200 per cubic millimeter (92 percent "
+            "neutrophils), glucose 16 mg/dL, protein 420 mg/dL, and "
+            "lactate 8.4 mmol/L. CSF wet mount identified motile "
+            "trophozoites; CDC reference laboratory CSF PCR confirmed "
+            "Naegleria fowleri. CT showed diffuse cerebral edema. "
+            "Treatment per CDC PAM protocol was initiated; the "
+            "patient died. This vignette is a Tier-4 within-cohort "
+            "imputation: no specific named-case is claimed. Clinical "
+            "specifics follow Gharpure 2021 CID global review "
+            "epidemiology; demographics are locked from the Day-2 "
+            "distribution table (PMID 32369575)."
+        ),
+        "narrative_es": (
+            "Varón de 13 años originario de la región sur de Estados "
+            "Unidos que se presentó con cuatro días de fiebre y "
+            "cefalea con progresión a estupor el día del ingreso, "
+            "tras exposición recreativa a agua dulce (lago). Al "
+            "ingreso la temperatura fue de 39.5 C, escala de Glasgow "
+            "7, con rigidez de nuca, papiledema y déficit focal. El "
+            "líquido cefalorraquídeo mostró leucocitos 4,200 por mm3 "
+            "(92 por ciento neutrófilos), glucosa 16 mg/dL, proteína "
+            "420 mg/dL y lactato 8.4 mmol/L. La microscopía directa "
+            "identificó trofozoítos móviles; la PCR del líquido "
+            "cefalorraquídeo para Naegleria fowleri fue positiva en "
+            "el laboratorio de referencia de los CDC. La tomografía "
+            "mostró edema cerebral difuso. Se inició el protocolo de "
+            "PAM de los CDC; el paciente falleció. Esta viñeta es una "
+            "imputación de Tier-4 dentro de la cohorte: no se reclama "
+            "un caso nombrado específico. Los datos clínicos siguen "
+            "la epidemiología de la revisión global de Gharpure 2021 "
+            "CID; las características demográficas están fijadas en "
+            "la tabla de distribución del Día 2 (PMID 32369575)."
+        ),
+    }
+
+
+def _build_vignette_040() -> dict[str, Any]:
+    """Vignette 40: 14-year-old male, US South, mid stage, fatal.
+
+    Tier-4 review imputation. Anchored to Yoder et al. 2010
+    Epidemiol Infect (PMID 19845995), foundational US 1962-2008 PAM
+    surveillance review. Per docs/DAY2_DISTRIBUTION_RATIONALE.md
+    section 9.1: 14yo M imputed US South within Yoder 2010 US 1962-
+    2008 review. Replaces previously planned Hall 2024 imputed
+    survivor entry that was dropped.
+    """
+    return {
+        "history": {
+            "symptom_onset_to_presentation_days": 5.0,
+            "chief_complaint": "fever_with_headache",
+            "prodrome_description": (
+                "Five-day history of fever, headache, and progressive "
+                "somnolence in a 14-year-old male from the US South "
+                "region after recreational freshwater (lake) exposure. "
+                "Demographics imputed within Yoder 2010 foundational "
+                "US 1962-2008 PAM surveillance review."
+            ),
+            "red_flags_present": ["fresh_water_exposure_14d"],
+        },
+        "exposure": {
+            "freshwater_exposure_within_14d": True,
+            "freshwater_exposure_type": "lake",
+            "altitude_exposure_within_7d_m": None,
+            "pork_consumption_or_taenia_contact": False,
+            "mosquito_endemic_area_exposure": True,
+            "immunocompromise_status": "none",
+            "hiv_status": "negative",
+            "cd4_count_cells_per_uL": None,
+        },
+        "vitals": {
+            "temperature_celsius": 39.2,
+            "heart_rate_bpm": 116,
+            "systolic_bp_mmHg": 110,
+            "diastolic_bp_mmHg": 68,
+            "glasgow_coma_scale": 11,
+            "oxygen_saturation_pct": 96,
+            "respiratory_rate_breaths_per_min": 22,
+        },
+        "exam": {
+            "mental_status_grade": "somnolent",
+            "neck_stiffness": True,
+            "kernig_or_brudzinski_positive": True,
+            "focal_neurological_deficit": False,
+            "cranial_nerve_palsy": "none",
+            "skin_lesion_centrofacial_chronic": False,
+            "petechial_or_purpuric_rash": False,
+            "papilledema_on_fundoscopy": False,
+        },
+        "labs": {
+            "wbc_blood_per_uL": 17800,
+            "platelets_per_uL": 250000,
+            "alt_ast_U_per_L": None,
+            "crp_mg_per_L": 84.0,
+            "procalcitonin_ng_per_mL": 1.8,
+            "serum_sodium_mEq_per_L": 138,
+        },
+        "csf": {
+            "opening_pressure_cmH2O": 30.0,
+            "csf_wbc_per_mm3": 2800,
+            "csf_neutrophil_pct": 89,
+            "csf_lymphocyte_pct": 10,
+            "csf_eosinophil_pct": 1,
+            "csf_glucose_mg_per_dL": 22,
+            "csf_protein_mg_per_dL": 340,
+            "csf_lactate_mmol_per_L": 6.6,
+            "csf_ada_U_per_L": None,
+            "csf_crag_lfa_result": "negative",
+            "csf_wet_mount_motile_amoebae": "not_done",
+            "csf_xanthochromia_present": False,
+            "csf_rbc_per_mm3": 160,
+            "csf_rbc_decreasing_across_tubes": None,
+        },
+        "imaging": {
+            "imaging_modality": "ct_noncontrast",
+            "imaging_pattern": "diffuse_cerebral_edema_basilar_meningeal_enhancement",
+            "imaging_finding_count": None,
+            "imaging_text_summary": (
+                "CT showed diffuse cerebral edema. Imaging imputed "
+                "within Yoder 2010 foundational US 1962-2008 PAM "
+                "surveillance review."
+            ),
+        },
+        "diagnostic_tests": {
+            "results": [
+                {
+                    "test_name": "CSF Naegleria fowleri PCR (CDC reference laboratory)",
+                    "result": "Positive (consistent with within-cohort imputation per Yoder 2010 review).",
+                    "sensitivity_pct": 95.0,
+                    "specificity_pct": 99.0,
+                    "citation_pmid_or_doi": "PMID:19845995",
+                },
+            ],
+        },
+        "narrative_en": (
+            "A 14-year-old male from the US South region presented "
+            "with a five-day history of fever, headache, and "
+            "progressive somnolence following recreational freshwater "
+            "(lake) exposure. On admission temperature was 39.2 C, "
+            "Glasgow Coma Scale 11, with neck stiffness and "
+            "somnolence. CSF showed white cell count 2,800 per cubic "
+            "millimeter (89 percent neutrophils), glucose 22 mg/dL, "
+            "protein 340 mg/dL, and lactate 6.6 mmol/L. CSF PCR "
+            "confirmed Naegleria fowleri at the CDC reference "
+            "laboratory. CT showed diffuse cerebral edema. Treatment "
+            "per CDC PAM protocol was initiated; the patient died. "
+            "This vignette is a Tier-4 within-cohort imputation: no "
+            "specific named-case is claimed. Clinical specifics follow "
+            "Yoder 2010 foundational US 1962-2008 surveillance review "
+            "epidemiology; demographics are locked from the Day-2 "
+            "distribution table (PMID 19845995). This entry replaces "
+            "a previously planned Hall 2024 imputed survivor "
+            "placement that was dropped per rationale doc Section 9.1."
+        ),
+        "narrative_es": (
+            "Varón de 14 años originario de la región sur de Estados "
+            "Unidos que se presentó con cinco días de fiebre, cefalea "
+            "y somnolencia progresiva tras exposición recreativa a "
+            "agua dulce (lago). Al ingreso la temperatura fue de 39.2 "
+            "C, escala de Glasgow 11, con rigidez de nuca y "
+            "somnolencia. El líquido cefalorraquídeo mostró "
+            "leucocitos 2,800 por mm3 (89 por ciento neutrófilos), "
+            "glucosa 22 mg/dL, proteína 340 mg/dL y lactato 6.6 "
+            "mmol/L. La PCR del líquido cefalorraquídeo para "
+            "Naegleria fowleri fue positiva en el laboratorio de "
+            "referencia de los CDC. La tomografía mostró edema "
+            "cerebral difuso. Se inició el protocolo de PAM de los "
+            "CDC; el paciente falleció. Esta viñeta es una imputación "
+            "de Tier-4 dentro de la cohorte: no se reclama un caso "
+            "nombrado específico. Los datos clínicos siguen la "
+            "epidemiología de la revisión fundacional de vigilancia "
+            "estadounidense 1962-2008 de Yoder 2010; las "
+            "características demográficas están fijadas en la tabla "
+            "de distribución del Día 2 (PMID 19845995). Esta entrada "
+            "reemplaza una colocación de Hall 2024 imputada como "
+            "sobreviviente previamente planificada que fue retirada "
+            "según la sección 9.1 del documento de fundamentación."
+        ),
+    }
+
+
+# ============================================================================
 # Public API
 # ============================================================================
 
@@ -6825,6 +8183,22 @@ def generate_vignette(
         23: _build_vignette_023,
         24: _build_vignette_024,
         25: _build_vignette_025,
+        # Day 2 wave 1 (v26-v40, imputation_within_anchor_epidemiology)
+        26: _build_vignette_026,
+        27: _build_vignette_027,
+        28: _build_vignette_028,
+        29: _build_vignette_029,
+        30: _build_vignette_030,
+        31: _build_vignette_031,
+        32: _build_vignette_032,
+        33: _build_vignette_033,
+        34: _build_vignette_034,
+        35: _build_vignette_035,
+        36: _build_vignette_036,
+        37: _build_vignette_037,
+        38: _build_vignette_038,
+        39: _build_vignette_039,
+        40: _build_vignette_040,
     }
     if vignette_id in builders:
         clinical = builders[vignette_id]()
