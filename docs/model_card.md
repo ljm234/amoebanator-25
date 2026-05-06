@@ -59,7 +59,7 @@ pipeline; every claim is defensible against a current run.
 ## 3. Factors
 
 * **Relevant factors.** Patient age (the bundled dataset has a median age
-  matching Yoder et al. 2010 PAM cohort: 12 years, range 8 months – 66
+  matching Yoder et al. 2010 PAM cohort: 12 years, range 8 months to 66
   years). Sex (the published US PAM cohort is 79.3 % male). Geographic
   exposure source (lakes/ponds/reservoirs dominate at 73.6 %). The
   classifier sees age and a symptom checklist, but no race/ethnicity,
