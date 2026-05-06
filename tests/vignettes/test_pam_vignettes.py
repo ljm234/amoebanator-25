@@ -320,3 +320,185 @@ def test_case_id_format(generated_vignettes):
             f"case_id {case_id} year {year} out of range"
         )
         assert tail, f"case_id {case_id} missing region/cluster tail"
+
+
+# ======================================================================
+# Day 2 distribution lock (v21-v60, 40 vignettes)
+# ----------------------------------------------------------------------
+# Tests below validate the Day-2 distribution data structure only.
+# Vignette JSON generation for v21-v60 is deferred to Commits 4-5.
+# Source of truth: DAY2_DISTRIBUTION in scripts/generate_pam_vignettes.py.
+# Rationale doc: docs/DAY2_DISTRIBUTION_RATIONALE.md.
+# ======================================================================
+
+
+_EXPECTED_CLUSTERS_DAY2: dict[str, set[int]] = {
+    "splash_pad": {23, 25, 50, 51, 52},
+    "lake_pond": {22, 24, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40},
+    "river": {21, 41, 42, 43, 44, 45, 46, 47, 48, 49},
+    "nasal_irrigation": {53, 54, 55, 56, 57, 58},
+    "hot_springs": {59},
+    "pakistan_ablution": {60},
+}
+
+_DAY2_FILENAME_RE = re.compile(
+    r"^pam_d2_(\d{3})_[a-z][a-z0-9_]*\.json$"
+)
+
+_REUSE_CAP = 6
+
+
+def test_day2_distribution_length(day2_distribution):
+    assert len(day2_distribution) == 40, (
+        f"DAY2_DISTRIBUTION has {len(day2_distribution)} entries, expected 40"
+    )
+
+
+def test_day2_vignette_ids_contiguous(day2_distribution):
+    ids = sorted(s["vignette_id"] for s in day2_distribution)
+    assert ids == list(range(21, 61)), (
+        f"Day-2 vignette_ids not contiguous 21-60: {ids}"
+    )
+
+
+def test_day2_cluster_distribution_matches_spec(day2_distribution):
+    actual: dict[str, set[int]] = {}
+    for spec in day2_distribution:
+        actual.setdefault(spec["cluster"], set()).add(spec["vignette_id"])
+    assert actual == _EXPECTED_CLUSTERS_DAY2, (
+        f"Day-2 cluster distribution does not match spec.\n"
+        f"  expected: {_EXPECTED_CLUSTERS_DAY2}\n"
+        f"  actual:   {actual}"
+    )
+
+
+def test_day2_pmids_in_registry(day2_distribution, pmid_registry):
+    for spec in day2_distribution:
+        assert spec["pmid"] in pmid_registry, (
+            f"Day-2 vignette {spec['vignette_id']} pmid {spec['pmid']!r} "
+            f"not in PMID_REGISTRY"
+        )
+
+
+def test_combined_corpus_size_60(distribution, day2_distribution):
+    assert len(distribution) + len(day2_distribution) == 60, (
+        f"Combined corpus size = {len(distribution) + len(day2_distribution)}, "
+        f"expected 60"
+    )
+
+
+def test_no_id_collisions(distribution, day2_distribution):
+    day1_ids = {s["vignette_id"] for s in distribution}
+    day2_ids = {s["vignette_id"] for s in day2_distribution}
+    assert day1_ids.isdisjoint(day2_ids), (
+        f"Day-1 and Day-2 vignette_ids overlap: "
+        f"{sorted(day1_ids & day2_ids)}"
+    )
+
+
+def test_no_filename_collisions(distribution, day2_distribution):
+    day1_files = {s["filename"] for s in distribution}
+    day2_files = {s["filename"] for s in day2_distribution}
+    assert day1_files.isdisjoint(day2_files), (
+        f"Day-1 and Day-2 filenames overlap: "
+        f"{sorted(day1_files & day2_files)}"
+    )
+
+
+def test_day2_filename_format(day2_distribution):
+    for spec in day2_distribution:
+        fname = spec["filename"]
+        m = _DAY2_FILENAME_RE.match(fname)
+        assert m, (
+            f"Day-2 vignette {spec['vignette_id']} filename {fname!r} "
+            f"does not match pam_d2_NNN_<tag>.json"
+        )
+        nnn = int(m.group(1))
+        assert nnn == spec["vignette_id"], (
+            f"filename {fname!r} NNN={nnn} != vignette_id {spec['vignette_id']}"
+        )
+
+
+def test_pmid_reuse_cap(distribution, day2_distribution):
+    counts: dict[str, int] = {}
+    for spec in distribution:
+        counts[spec["pmid"]] = counts.get(spec["pmid"], 0) + 1
+    for spec in day2_distribution:
+        counts[spec["pmid"]] = counts.get(spec["pmid"], 0) + 1
+    over_cap = {p: n for p, n in counts.items() if n > _REUSE_CAP}
+    assert not over_cap, (
+        f"PMIDs over reuse cap {_REUSE_CAP}x: {over_cap}"
+    )
+
+
+def test_day2_sex_enum(day2_distribution):
+    for spec in day2_distribution:
+        assert spec["sex"] in {"male", "female"}, (
+            f"Day-2 vignette {spec['vignette_id']} has invalid sex "
+            f"{spec['sex']!r}"
+        )
+
+
+def test_day2_outcome_enum(day2_distribution):
+    for spec in day2_distribution:
+        assert spec["outcome"] in {"fatal", "survived"}, (
+            f"Day-2 vignette {spec['vignette_id']} has invalid outcome "
+            f"{spec['outcome']!r}"
+        )
+
+
+def test_day2_stage_enum(day2_distribution):
+    for spec in day2_distribution:
+        assert spec["stage"] in {"early", "mid", "late"}, (
+            f"Day-2 vignette {spec['vignette_id']} has invalid stage "
+            f"{spec['stage']!r}"
+        )
+
+
+def test_combined_demographic_balance(distribution, day2_distribution):
+    combined = list(distribution) + list(day2_distribution)
+    n = len(combined)
+    female = sum(1 for s in combined if s["sex"] == "female")
+    adult = sum(1 for s in combined if s["age_years"] >= 18)
+    assert female / n >= 0.20, (
+        f"Combined female ratio {female}/{n} = {female/n:.2%} < 20% "
+        f"(target 22% per locked decisions; floor 20% allowed)"
+    )
+    assert adult / n >= 0.25, (
+        f"Combined adult ratio {adult}/{n} = {adult/n:.2%} < 25%"
+    )
+
+
+def test_combined_outcome_balance(distribution, day2_distribution):
+    combined = list(distribution) + list(day2_distribution)
+    n = len(combined)
+    fatal = sum(1 for s in combined if s["outcome"] == "fatal")
+    survived = sum(1 for s in combined if s["outcome"] == "survived")
+    assert fatal / n >= 0.90, (
+        f"Combined fatal ratio {fatal}/{n} = {fatal/n:.2%} < 90%"
+    )
+    assert survived / n >= 0.08, (
+        f"Combined survivor ratio {survived}/{n} = {survived/n:.2%} < 8%"
+    )
+
+
+def test_combined_geographic_balance(distribution, day2_distribution):
+    combined = list(distribution) + list(day2_distribution)
+    n = len(combined)
+    us_labels = {
+        "Arkansas, US", "Florida, US", "Louisiana, US", "Texas, US",
+        "Minnesota, US", "Nebraska, US", "California, US",
+        "US South region", "Texas (Rio Grande), US",
+    }
+    non_us = sum(1 for s in combined if s["geography_label"] not in us_labels)
+    assert non_us / n >= 0.30, (
+        f"Combined non-US ratio {non_us}/{n} = {non_us/n:.2%} < 30%"
+    )
+
+
+def test_day2_special_cases_present(day2_distribution):
+    by_pmid = {s["pmid"]: s for s in day2_distribution}
+    assert "39795618" in by_pmid, "Phung 2025 cryptic-exposure anchor missing"
+    assert "39606118" in by_pmid, "Lin 2024 atypical-myocarditis anchor missing"
+    assert "37727924" in by_pmid, "Hong 2023 travel-imported anchor missing"
+    assert "25667249" in by_pmid, "Linam 2015 Kali Hardig survivor anchor missing"
