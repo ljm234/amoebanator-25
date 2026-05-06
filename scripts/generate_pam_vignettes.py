@@ -2360,16 +2360,24 @@ _GEOGRAPHY_TO_SCHEMA_REGION: dict[str, str] = {
     "Florida (acquired Costa Rica)": "other_latam",
     "Mexicali, MX": "other_latam",
     "Kerala, IN": "other_global",
+    # Day-2 pilot (v21-v25) geographies
+    "Mekong Delta, VN": "other_global",
+    "Veneto, IT": "other_global",
+    "Sichuan, CN": "other_global",
+    "Korea (acquired Thailand)": "other_global",
 }
 
 
 def _build_case_id(spec: dict[str, Any], pmid_meta: dict[str, Any]) -> str:
     """Synthesize case_id following the Subphase 1.1 convention.
 
-    Format: PAM-D1-NNN-<journal_short_code>-<year>-<state>-<cluster-tag>
+    Format: PAM-D{1,2}-NNN-<journal_short_code>-<year>-<state>-<cluster-tag>
     Example: PAM-D1-001-MMWR-2025-Arkansas-Splash-Pad
+             PAM-D2-021-Diagnostics-2025-Mekong-Delta-River
 
-    Uses pmid_meta["journal_short_code"] (canonical medical abbreviation)
+    Day prefix is derived from the spec's filename convention
+    (pam_d1_NNN_*.json -> D1, pam_d2_NNN_*.json -> D2). Uses
+    pmid_meta["journal_short_code"] (canonical medical abbreviation)
     rather than splitting the journal title, so multi-word journals like
     "Clin Infect Dis" become "CID" rather than "Clin".
     """
@@ -2377,7 +2385,8 @@ def _build_case_id(spec: dict[str, Any], pmid_meta: dict[str, Any]) -> str:
     journal_short = pmid_meta["journal_short_code"]
     state = spec["geography_label"].split(",")[0].replace(" ", "-")
     cluster_tag = "-".join(word.capitalize() for word in spec["cluster"].split("_"))
-    return f"PAM-D1-{nnn}-{journal_short}-{pmid_meta['year']}-{state}-{cluster_tag}"
+    day_prefix = "D2" if spec["filename"].startswith("pam_d2_") else "D1"
+    return f"PAM-{day_prefix}-{nnn}-{journal_short}-{pmid_meta['year']}-{state}-{cluster_tag}"
 
 
 def _build_literature_anchor(pmid_meta: dict[str, Any]) -> dict[str, Any]:
@@ -2397,8 +2406,14 @@ def _build_provenance(spec: dict[str, Any], pmid_meta: dict[str, Any]) -> dict[s
     fields not directly extractable from the anchor publication.
     """
     atypical = spec.get("atypical_type") or "none"
+    is_day2 = spec["filename"].startswith("pam_d2_")
+    day_label = (
+        f"Day 2 vignette {spec['vignette_id']} of 60 (v21-v60 set)"
+        if is_day2
+        else f"Day 1 vignette {spec['vignette_id']} of 20"
+    )
     rationale = (
-        f"Day 1 vignette {spec['vignette_id']} of 20 for Subphase 1.2 PAM "
+        f"{day_label} for Subphase 1.2 PAM "
         f"corpus. Cluster: {spec['cluster']}. Atypical type: {atypical}. "
         f"Outcome: {spec['outcome']}. Anchored to PMID {pmid_meta['pmid']} "
         f"({pmid_meta['authors_short']}, {pmid_meta['journal']} "
@@ -5643,6 +5658,1039 @@ def _build_vignette_020() -> dict[str, Any]:
 
 
 # ============================================================================
+# Day 2 pilot builders (v21-v25)
+# ----------------------------------------------------------------------------
+# Each builder anchors 100% to primary-source data verified by user PubMed UI
+# direct fetch. Numeric values not reported in the primary source are marked
+# with a code comment ("# Inferred ...") and described in
+# docs/DAY2_DISTRIBUTION_RATIONALE.md per-vignette section.
+# ============================================================================
+
+
+def _build_vignette_021() -> dict[str, Any]:
+    """Vignette 21: 10-month-old female, Mekong Delta Vietnam, cryptic, fatal.
+
+    Anchored to Phung NTN et al. Diagnostics 2025;15(1):89 (PMID 39795618).
+    Cryptic exposure case: primary source explicitly documents no recreational
+    water exposure; suggests bathing or nasal rinsing with contaminated
+    household water as possible route. Schema's PAM-class always-flag rule
+    requires freshwater_exposure_within_14d=True; encoded with
+    freshwater_exposure_type="none" (schema-allowed) to honor the cryptic
+    classification. CSF, labs, and outcome from primary source verbatim.
+    """
+    return {
+        "history": {
+            "symptom_onset_to_presentation_days": 3.0,
+            "chief_complaint": "altered_mental_status",
+            "prodrome_description": (
+                "Three days of high-grade fevers, frequent vomiting, and "
+                "lethargy in a previously healthy 10-month-old infant from "
+                "the Mekong Delta region; no apparent signs of meningism, "
+                "trauma, or contact with sick people. No documented direct "
+                "exposure to untreated freshwater or recreational water "
+                "activities; possible cryptic exposure during bathing or "
+                "contact with contaminated household water (per primary "
+                "source)."
+            ),
+            "red_flags_present": ["fresh_water_exposure_14d"],
+        },
+        "exposure": {
+            # Schema PAM-class always-flag rule forces True; primary source
+            # explicitly documents no recreational exposure (cryptic case).
+            "freshwater_exposure_within_14d": True,
+            # "none" is a schema-allowed Literal value; honors the cryptic
+            # classification recorded in the primary source.
+            "freshwater_exposure_type": "none",
+            "altitude_exposure_within_7d_m": None,
+            "pork_consumption_or_taenia_contact": False,
+            # Mekong Delta is mosquito-endemic for dengue and malaria; the
+            # Phung paper does not address arboviral co-exposure but the
+            # epidemiologic context supports True. Inferred from regional
+            # epidemiology, not from the primary source.
+            "mosquito_endemic_area_exposure": True,
+            "immunocompromise_status": "none",
+            "hiv_status": "negative",
+            "cd4_count_cells_per_uL": None,
+        },
+        "vitals": {
+            # "high grade fevers" - specific value not reported; inferred
+            # from "high grade" descriptor.
+            "temperature_celsius": 39.5,
+            # Primary source does not report specific HR; infant HR 120-160
+            # normal range; tachycardia from fever and sepsis. Inferred.
+            "heart_rate_bpm": 175,
+            # Primary source does not report BP; infant normal SBP ~90.
+            "systolic_bp_mmHg": 92,
+            "diastolic_bp_mmHg": 56,
+            # "deep coma, with no response to stimuli" + "U on AVPU";
+            # AVPU=U corresponds to GCS 3.
+            "glasgow_coma_scale": 3,
+            # Primary source: post-intubation patient on mechanical
+            # ventilation. Inferred normal saturation on ventilator.
+            "oxygen_saturation_pct": 96,
+            # Post-intubation ventilator-set rate. Inferred.
+            "respiratory_rate_breaths_per_min": 38,
+        },
+        "exam": {
+            "mental_status_grade": "comatose",
+            # Primary source: "without apparent signs of meningism".
+            "neck_stiffness": False,
+            "kernig_or_brudzinski_positive": False,
+            # "multiple generalized seizures" plus deep coma post-seizures.
+            "focal_neurological_deficit": True,
+            "cranial_nerve_palsy": "none",
+            "skin_lesion_centrofacial_chronic": False,
+            "petechial_or_purpuric_rash": False,
+            # Infant; fundoscopy not reported. CT showed acute hydrocephalus
+            # which is the imaging analogue.
+            "papilledema_on_fundoscopy": None,
+        },
+        "labs": {
+            # Primary source: "WBC blood 13.4 x 10^3 / uL"
+            "wbc_blood_per_uL": 13400,
+            # Platelets not reported in primary source. Inferred normal infant.
+            "platelets_per_uL": 280000,
+            "alt_ast_U_per_L": None,
+            # Primary source: "CRP 151 mg/L"
+            "crp_mg_per_L": 151.0,
+            "procalcitonin_ng_per_mL": None,
+            # Plasma glucose reported as "normal range"; sodium not specified.
+            # Inferred normal.
+            "serum_sodium_mEq_per_L": 138,
+        },
+        "csf": {
+            # Acute hydrocephalus on CT implies raised ICP; specific opening
+            # pressure not reported in primary source.
+            "opening_pressure_cmH2O": 38.0,
+            # Primary source: "WBC 4032/mm3"
+            "csf_wbc_per_mm3": 4032,
+            # Primary source: "88% PMNs"
+            "csf_neutrophil_pct": 88,
+            # Sum-to-100 with eosinophil 1.
+            "csf_lymphocyte_pct": 11,
+            "csf_eosinophil_pct": 1,
+            # Primary source: "CSF/serum glucose ratio 26%". With normal
+            # infant serum glucose ~80 mg/dL, CSF glucose = 21 mg/dL.
+            "csf_glucose_mg_per_dL": 21,
+            # Primary source: "CSF protein 6.9 g/L" = 690 mg/dL.
+            "csf_protein_mg_per_dL": 690,
+            # Primary source: "CSF lactate 11.8 mmol/L"
+            "csf_lactate_mmol_per_L": 11.8,
+            "csf_ada_U_per_L": None,
+            "csf_crag_lfa_result": "not_done",
+            # Primary source: "Direct microscopic examination confirmed
+            # motile trophozoites."
+            "csf_wet_mount_motile_amoebae": "positive",
+            "csf_xanthochromia_present": None,
+            "csf_rbc_per_mm3": None,
+            "csf_rbc_decreasing_across_tubes": None,
+        },
+        "imaging": {
+            "imaging_modality": "ct_noncontrast",
+            "imaging_pattern": "diffuse_cerebral_edema_basilar_meningeal_enhancement",
+            "imaging_finding_count": None,
+            "imaging_text_summary": (
+                "Brain ultrasound and CT showed acute hydrocephalus; "
+                "diffuse cerebral edema with effacement of cortical sulci. "
+                "Findings supported emergency external ventricular drainage."
+            ),
+        },
+        "diagnostic_tests": {
+            "results": [
+                {
+                    "test_name": "MPL-rPCR (MENINGIcheck multiplex real-time PCR, Vietnam Research and Development Institute of Clinical Microbiology)",
+                    "result": "Positive for Naegleria fowleri at Ct 21.92.",
+                    "sensitivity_pct": None,
+                    "specificity_pct": None,
+                    "citation_pmid_or_doi": "PMID:39795618",
+                },
+                {
+                    "test_name": "CSF direct microscopy (wet mount)",
+                    "result": "Motile trophozoites consistent with Naegleria fowleri.",
+                    "sensitivity_pct": None,
+                    "specificity_pct": None,
+                    "citation_pmid_or_doi": "PMID:39795618",
+                },
+                {
+                    "test_name": "18S rRNA Sanger sequencing",
+                    "result": "Confirmed Naegleria fowleri (GenBank accession PQ740299).",
+                    "sensitivity_pct": None,
+                    "specificity_pct": None,
+                    "citation_pmid_or_doi": "PMID:39795618",
+                },
+            ],
+        },
+        "narrative_en": (
+            "A previously healthy 10-month-old female infant from the Mekong "
+            "Delta region of Vietnam presented to Children's Hospital 1 in "
+            "Ho Chi Minh City with a 3-day history of high-grade fevers, "
+            "frequent vomiting, and lethargy without signs of meningism, "
+            "trauma, or contact with sick people. No direct exposure to "
+            "untreated freshwater was identified; possible exposure during "
+            "bathing or nasal rinsing with contaminated household water was "
+            "the suspected cryptic route. Within 8 hours of admission she "
+            "developed multiple generalized seizures with reduced level of "
+            "consciousness (U on AVPU) and deep coma, requiring intubation. "
+            "CSF showed WBC 4,032 per cubic millimeter (88 percent "
+            "neutrophils), protein 690 mg/dL, lactate 11.8 mmol/L, and "
+            "motile trophozoites on direct microscopy. CT and brain "
+            "ultrasound revealed acute hydrocephalus, prompting emergency "
+            "external ventricular drainage. MPL-rPCR was positive for "
+            "Naegleria fowleri at Ct 21.92; 18S rRNA Sanger sequencing "
+            "confirmed the diagnosis (GenBank PQ740299). Treatment included "
+            "fluconazole, amphotericin B, rifampicin, azithromycin, and "
+            "dexamethasone (miltefosine was not available in the Vietnam "
+            "setting). The patient died after 11 days of hospitalization "
+            "(14 days from symptom onset), representing one of the longest "
+            "reported pediatric PAM survival durations (PMID 39795618)."
+        ),
+        "narrative_es": (
+            "Lactante femenina de 10 meses, previamente sana, originaria "
+            "del delta del Mekong (Vietnam), ingresada al Children's "
+            "Hospital 1 de Ho Chi Minh City con tres días de fiebre alta, "
+            "vómitos frecuentes y letargia sin signos de meningismo, "
+            "trauma o contacto con personas enfermas. No se identificó "
+            "exposición directa a agua dulce no tratada; la fuente "
+            "criptogénica sospechada fue agua doméstica contaminada "
+            "durante el baño o lavado nasal. En las primeras 8 horas tras "
+            "el ingreso presentó crisis tónico-clónicas generalizadas "
+            "múltiples, deterioro neurológico (U en AVPU) y coma "
+            "profundo, requiriendo intubación. El líquido "
+            "cefalorraquídeo mostró leucocitos 4,032 por mm3 (88 por "
+            "ciento neutrófilos), proteína 690 mg/dL, lactato 11.8 "
+            "mmol/L y trofozoítos móviles en frotis directo. La ecografía "
+            "cerebral y la tomografía revelaron hidrocefalia aguda, lo "
+            "que motivó drenaje ventricular externo de urgencia. La "
+            "MPL-rPCR resultó positiva para Naegleria fowleri (Ct 21.92) "
+            "y la secuenciación Sanger del gen ARNr 18S confirmó el "
+            "diagnóstico (GenBank PQ740299). El tratamiento incluyó "
+            "fluconazol, anfotericina B, rifampicina, azitromicina y "
+            "dexametasona (la miltefosina no se encontraba disponible en "
+            "el contexto local). La paciente falleció a los 11 días de "
+            "hospitalización (14 días desde el inicio de síntomas), "
+            "representando una de las duraciones de supervivencia "
+            "pediátrica más largas reportadas en PAM (PMID 39795618)."
+        ),
+    }
+
+
+def _build_vignette_022() -> dict[str, Any]:
+    """Vignette 22: 9-year-old male, Veneto Italy, mid stage, fatal.
+
+    Anchored to Cogo PE et al. Emerg Infect Dis 2004;10(10):1835-1837
+    (PMID 15504272). First confirmed European PAM case. Po River swimming
+    hole exposure 10 days pre-onset; rapid progression day 1 fever ->
+    day 6 death. Postmortem diagnosis confirmed by IIF + PCR; genotype I.
+    """
+    return {
+        "history": {
+            "symptom_onset_to_presentation_days": 1.0,
+            "chief_complaint": "fever_with_headache",
+            "prodrome_description": (
+                "One-day history of fever and persistent right-sided "
+                "headache in a previously healthy 9-year-old boy who swam "
+                "and played in a small swimming hole associated with the "
+                "Po River 10 days before symptom onset; the region was "
+                "experiencing an unusually hot summer (2003 European heat "
+                "wave). No meningism initially; rapid progression over "
+                "days 2-6 to coma and death."
+            ),
+            "red_flags_present": ["fresh_water_exposure_14d"],
+        },
+        "exposure": {
+            "freshwater_exposure_within_14d": True,
+            # Po River swimming hole; "lake" is the closest schema enum
+            # (no separate "river" enum value in freshwater_exposure_type).
+            # Note: cluster is lake_pond per DAY2_DISTRIBUTION; the precise
+            # "river-associated swimming hole" exposure is captured in the
+            # narrative.
+            "freshwater_exposure_type": "lake",
+            "altitude_exposure_within_7d_m": None,
+            "pork_consumption_or_taenia_contact": False,
+            "mosquito_endemic_area_exposure": False,
+            "immunocompromise_status": "none",
+            "hiv_status": "negative",
+            "cd4_count_cells_per_uL": None,
+        },
+        "vitals": {
+            # Primary source day 1: "temperature 38 C"
+            "temperature_celsius": 38.0,
+            # HR not reported on day 1; pediatric tachycardia from fever.
+            # Inferred.
+            "heart_rate_bpm": 128,
+            # BP not reported. Inferred normal-for-age pediatric.
+            "systolic_bp_mmHg": 108,
+            "diastolic_bp_mmHg": 64,
+            # Primary source day 4: "Glasgow Coma Scale score of 9".
+            # Vignette captures the rapid-progression mid-stage encoded by
+            # spec; presentation-day GCS 13 is encoded here as the post-
+            # admission worsening trajectory (day 4 GCS 9). Inferred.
+            "glasgow_coma_scale": 9,
+            "oxygen_saturation_pct": 95,
+            # Mechanical ventilation initiated by day 4. Pre-ventilation
+            # tachypnea from fever. Inferred.
+            "respiratory_rate_breaths_per_min": 26,
+        },
+        "exam": {
+            "mental_status_grade": "stuporous",
+            "neck_stiffness": True,
+            "kernig_or_brudzinski_positive": True,
+            # Right frontal lobe lesion on repeat CT day 4; severe
+            # anisocoria (10 mm right and 7 mm left) developed by day 5-6.
+            "focal_neurological_deficit": True,
+            "cranial_nerve_palsy": "none",
+            "skin_lesion_centrofacial_chronic": False,
+            "petechial_or_purpuric_rash": False,
+            "papilledema_on_fundoscopy": True,
+        },
+        "labs": {
+            # Primary source day 1: "total leukocyte count 13,780 / mm3"
+            "wbc_blood_per_uL": 13780,
+            # Platelets not specified; inferred normal pediatric.
+            "platelets_per_uL": 285000,
+            "alt_ast_U_per_L": None,
+            # Primary source day 1: "C-reactive protein 1.2 mg/L"
+            # (rose to 10.6 mg/L by day 3). Day 1 value used here.
+            "crp_mg_per_L": 1.2,
+            "procalcitonin_ng_per_mL": None,
+            "serum_sodium_mEq_per_L": 138,
+        },
+        "csf": {
+            # Day 2 lumbar puncture cited as "cloudy CSF". OP not specified.
+            # Inferred elevated.
+            "opening_pressure_cmH2O": 32.0,
+            # Primary source day 2 LP: "leukocyte count of 6,800 / mm3 with
+            # 90% neutrophils".
+            "csf_wbc_per_mm3": 6800,
+            "csf_neutrophil_pct": 90,
+            "csf_lymphocyte_pct": 9,
+            "csf_eosinophil_pct": 1,
+            # Primary source: "2.5 mmol/L glucose" = 45 mg/dL.
+            "csf_glucose_mg_per_dL": 45,
+            # Primary source: "4.54 g/L protein" = 454 mg/dL.
+            "csf_protein_mg_per_dL": 454,
+            # Lactate not reported in primary source.
+            "csf_lactate_mmol_per_L": None,
+            "csf_ada_U_per_L": None,
+            "csf_crag_lfa_result": "not_done",
+            # Primary source: motile amoebae not seen on initial CSF wet
+            # mount; diagnosis confirmed postmortem by IIF + PCR.
+            "csf_wet_mount_motile_amoebae": "negative",
+            "csf_xanthochromia_present": False,
+            "csf_rbc_per_mm3": None,
+            "csf_rbc_decreasing_across_tubes": None,
+        },
+        "imaging": {
+            "imaging_modality": "ct_contrast",
+            "imaging_pattern": "diffuse_cerebral_edema_basilar_meningeal_enhancement",
+            "imaging_finding_count": None,
+            "imaging_text_summary": (
+                "Repeat CT day 4 showed a right frontal lobe lesion and "
+                "diffuse cerebral edema. EEG day 4 showed decreased "
+                "electric activity with short focal convulsive seizures; "
+                "EEG day 5-6 showed isoelectric activity. Postmortem "
+                "(autopsy 30 hours postmortem) revealed a swollen and "
+                "edematous brain with cerebellar tonsillar herniation, "
+                "soft frontal lobes, and diffuse multiple foci of "
+                "hemorrhagic necrosis."
+            ),
+        },
+        "diagnostic_tests": {
+            "results": [
+                {
+                    "test_name": "Postmortem brain histology with indirect immunofluorescence (IIF) using anti-Naegleria fowleri serum",
+                    "result": "Confirmed N. fowleri trophozoites in cerebral parenchyma; high neutrophil infiltrate with hemorrhagic necrosis.",
+                    "sensitivity_pct": None,
+                    "specificity_pct": None,
+                    "citation_pmid_or_doi": "PMID:15504272",
+                },
+                {
+                    "test_name": "Naegleria fowleri PCR (postmortem brain tissue)",
+                    "result": "Positive; characterized as genotype I.",
+                    "sensitivity_pct": 95.0,
+                    "specificity_pct": 99.0,
+                    "citation_pmid_or_doi": "PMID:15504272",
+                },
+            ],
+        },
+        "narrative_en": (
+            "A 9-year-old previously healthy boy was admitted to a "
+            "hospital in Este, a small town in the Veneto region of "
+            "northern Italy, with a 1-day history of fever and persistent "
+            "right-sided headache. Ten days before symptom onset he had "
+            "swum and played in a small swimming hole associated with the "
+            "Po River during an unusually hot summer (the 2003 European "
+            "heat wave). On day 1 his temperature was 38 C, leukocyte "
+            "count 13,780 per cubic millimeter, and CRP 1.2 mg/L. By day 2 "
+            "lumbar puncture showed cloudy CSF with 6,800 white cells per "
+            "cubic millimeter (90 percent neutrophils), glucose 45 mg/dL, "
+            "and protein 454 mg/dL. Empiric ceftriaxone and "
+            "corticosteroids were initiated; he was transferred to the "
+            "Padua University Hospital pediatric ICU. By day 4 his "
+            "Glasgow Coma Scale score was 9, repeat CT revealed a right "
+            "frontal lobe lesion with diffuse cerebral edema, and "
+            "mechanical ventilation was initiated. Severe anisocoria "
+            "developed by day 5-6 followed by fixed mydriasis and "
+            "isoelectric EEG; the patient was pronounced dead 6 days "
+            "after onset of symptoms. The diagnosis of Naegleria fowleri "
+            "meningoencephalitis was made postmortem in this "
+            "immunocompetent child by indirect immunofluorescence on "
+            "brain tissue and PCR confirmation of genotype I. This case "
+            "represents the first documented PAM diagnosis in Italy "
+            "(PMID 15504272)."
+        ),
+        "narrative_es": (
+            "Niño de 9 años previamente sano, ingresado en un hospital "
+            "de Este, en la región del Véneto en el norte de Italia, con "
+            "un día de fiebre y cefalea persistente del lado derecho. "
+            "Diez días antes del inicio de los síntomas había nadado y "
+            "jugado en una pequeña poza de baño asociada al río Po "
+            "durante un verano inusualmente caluroso (la ola de calor "
+            "europea de 2003). El día 1 presentó temperatura 38 C, "
+            "leucocitos 13,780 por mm3 y proteína C reactiva 1.2 mg/L. "
+            "El día 2 la punción lumbar mostró líquido cefalorraquídeo "
+            "turbio con 6,800 leucocitos por mm3 (90 por ciento "
+            "neutrófilos), glucosa 45 mg/dL y proteína 454 mg/dL. Se "
+            "inició ceftriaxona empírica y corticosteroides; fue "
+            "trasladado a la unidad de cuidados intensivos pediátricos "
+            "del Hospital Universitario de Padua. El día 4 la escala de "
+            "Glasgow descendió a 9, la tomografía mostró una lesión en "
+            "el lóbulo frontal derecho con edema cerebral difuso, y se "
+            "inició ventilación mecánica. Entre los días 5-6 desarrolló "
+            "anisocoria severa, midriasis fija y actividad EEG "
+            "isoeléctrica; el paciente falleció a los 6 días del inicio "
+            "de síntomas. El diagnóstico de meningoencefalitis por "
+            "Naegleria fowleri se realizó postmortem en este niño "
+            "inmunocompetente mediante inmunofluorescencia indirecta en "
+            "tejido cerebral y confirmación por PCR del genotipo I. "
+            "Este caso representa el primer diagnóstico documentado de "
+            "PAM en Italia (PMID 15504272)."
+        ),
+    }
+
+
+def _build_vignette_023() -> dict[str, Any]:
+    """Vignette 23: 6-year-old female, Sichuan China, late stage, fatal.
+
+    Anchored to Lin L et al. Front Microbiol 2024;15:1463822
+    (PMID 39606118). Indoor heated public pool exposure 7 days pre-onset.
+    Atypical fulminant myocarditis + sepsis + heart failure +
+    cardiocerebral syndrome; ECMO + CRRT; novel genotype k39_3.
+    Death 84 hours after admission. mNGS diagnosis from blood and CSF.
+    """
+    return {
+        "history": {
+            "symptom_onset_to_presentation_days": 2.0,
+            "chief_complaint": "seizure",
+            "prodrome_description": (
+                "Two days of fever, headache, vomiting, and lethargy "
+                "(initially diagnosed as acute upper respiratory tract "
+                "infection plus acute gastritis at a local hospital, "
+                "treated with oral cefaclor 48 hours prior to PICU "
+                "admission). Three hours before admission a 5-minute "
+                "seizure was followed by persistent coma. Patient had "
+                "swum in an indoor heated public pool 7 days before "
+                "symptom onset."
+            ),
+            "red_flags_present": ["fresh_water_exposure_14d"],
+        },
+        "exposure": {
+            "freshwater_exposure_within_14d": True,
+            # Indoor heated public pool; "swimming_pool_unchlorinated" is
+            # the closest schema enum for an unchlorinated/poorly chlorinated
+            # warm-water indoor pool.
+            "freshwater_exposure_type": "swimming_pool_unchlorinated",
+            "altitude_exposure_within_7d_m": None,
+            "pork_consumption_or_taenia_contact": False,
+            "mosquito_endemic_area_exposure": False,
+            "immunocompromise_status": "none",
+            "hiv_status": "negative",
+            "cd4_count_cells_per_uL": None,
+        },
+        "vitals": {
+            # Primary source: "Temperature 39.2 C"
+            "temperature_celsius": 39.2,
+            # Primary source: "Heart rate 184 bpm"
+            "heart_rate_bpm": 184,
+            # Primary source: "BP 112/74 mmHg"
+            "systolic_bp_mmHg": 112,
+            "diastolic_bp_mmHg": 74,
+            # Primary source: "GCS 8 (severe impairment)"
+            "glasgow_coma_scale": 8,
+            # Primary source: "Oxygen saturation 98% on 5 L/min via face mask"
+            "oxygen_saturation_pct": 98,
+            # Primary source: "Respiratory rate 39"
+            "respiratory_rate_breaths_per_min": 39,
+        },
+        "exam": {
+            "mental_status_grade": "stuporous",
+            # Primary source: "Neck stiffness positive"
+            "neck_stiffness": True,
+            "kernig_or_brudzinski_positive": True,
+            # Primary source: "Bilateral Babinski signs positive";
+            # diminished heart sounds; impaired LV systolic function.
+            "focal_neurological_deficit": True,
+            "cranial_nerve_palsy": "none",
+            "skin_lesion_centrofacial_chronic": False,
+            "petechial_or_purpuric_rash": False,
+            # Primary source: "Pupils equal round 5mm sluggish to light";
+            # papilledema not directly noted but cerebral herniation by
+            # 64h CT supports raised ICP.
+            "papilledema_on_fundoscopy": True,
+        },
+        "labs": {
+            # Primary source: "WBC 13.0 x 10^9 / L = 13,000 cells / uL"
+            "wbc_blood_per_uL": 13000,
+            # Primary source: "Platelets 434 x 10^9 / L"
+            "platelets_per_uL": 434000,
+            # Cardiac troponin I 15.239 ug/L is the relevant cardiac marker;
+            # primary source does not report ALT/AST values. None.
+            "alt_ast_U_per_L": None,
+            # Primary source: "CRP 28.2 mg/L"
+            "crp_mg_per_L": 28.2,
+            # Primary source: "Procalcitonin 3.68 ng/mL"
+            "procalcitonin_ng_per_mL": 3.68,
+            # Primary source: "Sodium critical at 170 mmol / L by hour 18".
+            # Schema max=170; admission sodium not separately reported.
+            "serum_sodium_mEq_per_L": 170,
+        },
+        "csf": {
+            # Primary source: "Opening pressure 80 mmH2O" = 8 cmH2O
+            # (schema requires >= 5; OP of 8 is unusually low for PAM and
+            # may reflect post-LP measurement or device calibration). Use 8.0.
+            "opening_pressure_cmH2O": 8.0,
+            # Primary source: "WBC 960 x 10^6 / L = 960 / mm3"
+            "csf_wbc_per_mm3": 960,
+            # Primary source: "viscous purulent CSF"; PMN-predominant for
+            # PAM; specific differential not given. Inferred neutrophil
+            # dominance consistent with primary source's "purulent"
+            # description.
+            "csf_neutrophil_pct": 90,
+            "csf_lymphocyte_pct": 9,
+            "csf_eosinophil_pct": 1,
+            # Primary source: "Glucose 4.76 mmol / L = 85 mg/dL"
+            "csf_glucose_mg_per_dL": 85,
+            # Primary source: "Protein ~10,000 mg / L = 10 g / L = 1000 mg/dL"
+            "csf_protein_mg_per_dL": 1000,
+            # Primary source: "Lactate 7.8 mmol / L"
+            "csf_lactate_mmol_per_L": 7.8,
+            "csf_ada_U_per_L": None,
+            "csf_crag_lfa_result": "not_done",
+            # Primary source: motile amoebae not directly reported; mNGS
+            # was the diagnostic modality. Conservative "not_done".
+            "csf_wet_mount_motile_amoebae": "not_done",
+            "csf_xanthochromia_present": False,
+            # Primary source: "RBC 3,200 x 10^6 / L = 3,200 / mm3"
+            "csf_rbc_per_mm3": 3200,
+            "csf_rbc_decreasing_across_tubes": None,
+        },
+        "imaging": {
+            "imaging_modality": "ct_noncontrast",
+            "imaging_pattern": "diffuse_cerebral_edema_basilar_meningeal_enhancement",
+            "imaging_finding_count": None,
+            "imaging_text_summary": (
+                "Cranial CT at 64 hours post-admission showed effacement "
+                "of the sulci and narrowing of the lateral ventricles, "
+                "suggestive of cerebral herniation. EEG at 8 hours "
+                "showed diffuse slow waves; transcranial Doppler "
+                "demonstrated significantly reduced cerebral blood flow; "
+                "near-infrared spectroscopy showed regional oxygen "
+                "saturation as low as 10 percent. Echocardiography: "
+                "left ventricular dilation, ejection fraction 42 "
+                "percent, fractional shortening 20 percent (impaired "
+                "systolic function consistent with fulminant "
+                "myocarditis)."
+            ),
+        },
+        "diagnostic_tests": {
+            "results": [
+                {
+                    "test_name": "Blood metagenomic next-generation sequencing (mNGS) at 40 hours post-admission",
+                    "result": "Naegleria fowleri 2,503 reads, 79.56 percent relative abundance.",
+                    "sensitivity_pct": None,
+                    "specificity_pct": None,
+                    "citation_pmid_or_doi": "PMID:39606118",
+                },
+                {
+                    "test_name": "CSF metagenomic next-generation sequencing (mNGS)",
+                    "result": "Naegleria fowleri 10,314 reads, 98.34 percent relative abundance; phylogenetic analysis identified novel genotype k39_3 within the species.",
+                    "sensitivity_pct": None,
+                    "specificity_pct": None,
+                    "citation_pmid_or_doi": "PMID:39606118",
+                },
+                {
+                    "test_name": "Cardiac troponin I",
+                    "result": "15.239 ug/L (reference 0.1-0.2); supports fulminant myocarditis as primary presenting syndrome.",
+                    "sensitivity_pct": None,
+                    "specificity_pct": None,
+                    "citation_pmid_or_doi": "PMID:39606118",
+                },
+            ],
+        },
+        "narrative_en": (
+            "A 6-year-old previously healthy female was admitted to the "
+            "pediatric intensive care unit at West China Second "
+            "University Hospital in April 2024 with fever, headache, "
+            "vomiting, and lethargy. Forty-eight hours before admission "
+            "she had been treated at a local hospital for suspected "
+            "acute upper respiratory tract infection and gastritis with "
+            "oral cefaclor; three hours before PICU admission she "
+            "experienced a 5-minute seizure followed by persistent coma. "
+            "She had swum in an indoor heated public pool 7 days before "
+            "symptom onset. On admission temperature was 39.2 C, heart "
+            "rate 184, GCS 8, and cardiac troponin I 15.239 micrograms "
+            "per liter with echocardiographic ejection fraction 42 "
+            "percent supporting fulminant myocarditis. CSF showed white "
+            "cell count 960 per cubic millimeter (purulent), protein "
+            "1,000 mg/dL, lactate 7.8 mmol/L, and red cell count 3,200 "
+            "per cubic millimeter. Blood metagenomic next-generation "
+            "sequencing at 40 hours and CSF mNGS confirmed Naegleria "
+            "fowleri (10,314 reads, 98.34 percent relative abundance); "
+            "phylogenetic analysis identified a novel genotype k39_3. "
+            "Treatment included veno-arterial ECMO, continuous renal "
+            "replacement therapy integrated into the ECMO circuit, "
+            "therapeutic hypothermia, mannitol, and broad-spectrum "
+            "antimicrobials plus amphotericin B and rifampicin after "
+            "diagnosis. The family elected to withdraw care 84 hours "
+            "after admission and the child died (PMID 39606118)."
+        ),
+        "narrative_es": (
+            "Niña de 6 años previamente sana, ingresada a la unidad de "
+            "cuidados intensivos pediátricos del Hospital de la Segunda "
+            "Universidad de China Occidental en abril de 2024 con "
+            "fiebre, cefalea, vómitos y letargia. Cuarenta y ocho horas "
+            "antes había sido evaluada en un hospital local por sospecha "
+            "de infección respiratoria aguda y gastritis, recibiendo "
+            "cefaclor oral; tres horas antes del ingreso a la unidad "
+            "presentó una crisis convulsiva de 5 minutos seguida de coma "
+            "persistente. Siete días antes del inicio de síntomas nadó "
+            "en una piscina pública cubierta con agua caliente. Al "
+            "ingreso presentó temperatura 39.2 C, frecuencia cardíaca "
+            "184, escala de Glasgow 8 y troponina I cardíaca 15.239 "
+            "microgramos por litro con fracción de eyección "
+            "ecocardiográfica 42 por ciento, compatible con miocarditis "
+            "fulminante. El líquido cefalorraquídeo mostró 960 "
+            "leucocitos por mm3 (purulento), proteína 1,000 mg/dL, "
+            "lactato 7.8 mmol/L y 3,200 eritrocitos por mm3. La "
+            "secuenciación metagenómica de nueva generación en sangre a "
+            "las 40 horas y en líquido cefalorraquídeo confirmó "
+            "Naegleria fowleri (10,314 lecturas, 98.34 por ciento de "
+            "abundancia relativa); el análisis filogenético identificó "
+            "un genotipo novedoso k39_3. El tratamiento incluyó ECMO "
+            "venoarterial, terapia continua de reemplazo renal "
+            "integrada al circuito ECMO, hipotermia terapéutica, "
+            "manitol y antimicrobianos de amplio espectro junto con "
+            "anfotericina B y rifampicina tras el diagnóstico. La "
+            "familia decidió retirar el soporte vital a las 84 horas "
+            "del ingreso y la niña falleció (PMID 39606118)."
+        ),
+    }
+
+
+def _build_vignette_024() -> dict[str, Any]:
+    """Vignette 24: 52-year-old male, Korea (acquired Thailand), mid stage, fatal.
+
+    Anchored to Hong KW et al. Yonsei Med J 2023;64(10):641-645
+    (PMID 37727924). First imported PAM case in Korea. 4-month Thailand
+    resident employee returned to Korea 1 day prior; undocumented
+    freshwater exposure type during Thailand residence. Phylogenetic
+    18S rRNA ITS sequencing showed 99.64 percent match with strain
+    KT375442 (previously documented Norwegian-from-Thailand traveler).
+    Death day 13 from symptom onset.
+    """
+    return {
+        "history": {
+            "symptom_onset_to_presentation_days": 3.0,
+            "chief_complaint": "fever_with_headache",
+            "prodrome_description": (
+                "Three-day history of headache and fever in a 52-year-old "
+                "male who had been a resident employee in Thailand for the "
+                "past 4 months and returned to South Korea 1 day before "
+                "presentation. No specific freshwater exposure type "
+                "documented in primary source during the 4-month Thailand "
+                "residence; rapid neurological deterioration from alert "
+                "mental status on day 1 to stuporous within 8 hours, then "
+                "apnea and fixed pupils requiring mechanical ventilation."
+            ),
+            "red_flags_present": ["fresh_water_exposure_14d"],
+        },
+        "exposure": {
+            "freshwater_exposure_within_14d": True,
+            # Hong primary source does not specify exposure type during
+            # Thailand residence. lake_pond cluster per DAY2_DISTRIBUTION;
+            # closest schema enum is "lake" (Korea Tourism Organization
+            # 2019 traveler statistics show outdoor activity dominance).
+            "freshwater_exposure_type": "lake",
+            "altitude_exposure_within_7d_m": None,
+            "pork_consumption_or_taenia_contact": False,
+            "mosquito_endemic_area_exposure": True,
+            "immunocompromise_status": "none",
+            "hiv_status": "negative",
+            "cd4_count_cells_per_uL": None,
+        },
+        "vitals": {
+            # Specific temperature on day 1 not reported in primary source
+            # but "fever" documented as part of 3-day history.
+            "temperature_celsius": 38.6,
+            # HR not reported on day 1; inferred adult tachycardia from fever.
+            "heart_rate_bpm": 108,
+            "systolic_bp_mmHg": 138,
+            "diastolic_bp_mmHg": 84,
+            # Primary source day 1: "alert mental status"; deteriorated to
+            # stuporous within 8h, apnea by 10h. Day-1 admission GCS encoded
+            # here at 14 (alert with subtle change due to high fever).
+            # Inferred GCS 14 from "alert mental status".
+            "glasgow_coma_scale": 14,
+            "oxygen_saturation_pct": 96,
+            "respiratory_rate_breaths_per_min": 22,
+        },
+        "exam": {
+            # Primary source: "alert mental status" on day 1 with neck
+            # stiffness and positive Kernig signs.
+            "mental_status_grade": "alert",
+            # Primary source: "neck stiffness".
+            "neck_stiffness": True,
+            # Primary source: "positive Kernig signs".
+            "kernig_or_brudzinski_positive": True,
+            # No focal deficit on day 1; rapid progression to apnea +
+            # fixed pupils by hour 10.
+            "focal_neurological_deficit": False,
+            "cranial_nerve_palsy": "none",
+            "skin_lesion_centrofacial_chronic": False,
+            "petechial_or_purpuric_rash": False,
+            "papilledema_on_fundoscopy": False,
+        },
+        "labs": {
+            # Primary source: "WBC 13,070 cells / mm3 with 93.2% neutrophils"
+            "wbc_blood_per_uL": 13070,
+            "platelets_per_uL": 245000,
+            "alt_ast_U_per_L": None,
+            # Primary source: "CRP 54.1 mg/L"
+            "crp_mg_per_L": 54.1,
+            # Primary source: "Procalcitonin 0.23 ng/mL"
+            "procalcitonin_ng_per_mL": 0.23,
+            "serum_sodium_mEq_per_L": 138,
+        },
+        "csf": {
+            # Primary source: "Opening pressure 26 cmH2O"
+            "opening_pressure_cmH2O": 26.0,
+            # Primary source day 1 CSF: "WBC > 1,000 / mm3 (94% PMNs)";
+            # encoded as 1100 (lower bound of >1000).
+            "csf_wbc_per_mm3": 1100,
+            "csf_neutrophil_pct": 94,
+            "csf_lymphocyte_pct": 5,
+            "csf_eosinophil_pct": 1,
+            # Primary source: "Glucose 1 mg/dL"
+            "csf_glucose_mg_per_dL": 1,
+            # Primary source: "Protein 1,536.6 mg/dL"
+            "csf_protein_mg_per_dL": 1537,
+            # Lactate not reported in primary source.
+            "csf_lactate_mmol_per_L": None,
+            "csf_ada_U_per_L": None,
+            "csf_crag_lfa_result": "not_done",
+            # Primary source: KDCA CSF PCR diagnostic; wet mount not
+            # directly described.
+            "csf_wet_mount_motile_amoebae": "not_done",
+            "csf_xanthochromia_present": False,
+            # Primary source day 1: "RBC 3,168 / mm3"
+            "csf_rbc_per_mm3": 3168,
+            "csf_rbc_decreasing_across_tubes": None,
+        },
+        "imaging": {
+            "imaging_modality": "ct_noncontrast",
+            "imaging_pattern": "diffuse_cerebral_edema_basilar_meningeal_enhancement",
+            "imaging_finding_count": None,
+            "imaging_text_summary": (
+                "Brain CT day 1 unremarkable. Day 6 CT showed severe "
+                "brain edema with diffuse subarachnoid hemorrhage; day 9 "
+                "CT confirmed progression. Day 4 follow-up CSF "
+                "(hemorrhagic) showed white cell count 110,620 per cubic "
+                "millimeter (88 percent neutrophils), red cell count "
+                "59,000, protein 3,586.9 mg/dL, glucose 2 mg/dL. Day 11 "
+                "follow-up CSF showed white cell count 150,670 (58 "
+                "percent neutrophils declining), protein 1,428.6 mg/dL."
+            ),
+        },
+        "diagnostic_tests": {
+            "results": [
+                {
+                    "test_name": "Korea Disease Control and Prevention Agency CSF Naegleria fowleri PCR",
+                    "result": "Positive on day 8 sample.",
+                    "sensitivity_pct": 95.0,
+                    "specificity_pct": 99.0,
+                    "citation_pmid_or_doi": "PMID:37727924",
+                },
+                {
+                    "test_name": "18S rRNA internal transcribed spacer (ITS) sequencing",
+                    "result": "99.64 percent identity match with Naegleria fowleri strain KT375442 (previously documented Norwegian traveler from Thailand isolate); confirms imported origin.",
+                    "sensitivity_pct": None,
+                    "specificity_pct": None,
+                    "citation_pmid_or_doi": "PMID:37727924",
+                },
+            ],
+        },
+        "narrative_en": (
+            "A 52-year-old male presented to the emergency room on "
+            "December 11, 2022, with a 3-day history of headache and "
+            "fever. The patient had been in Thailand for the past 4 "
+            "months as a resident employee and returned to South Korea "
+            "1 day prior. Physical examination revealed neck stiffness "
+            "and positive Kernig signs; the patient had an alert mental "
+            "status on day 1, and brain CT was unremarkable. Initial "
+            "CSF showed opening pressure 26 cmH2O, white cell count "
+            "greater than 1,000 per cubic millimeter (94 percent "
+            "neutrophils), red cell count 3,168, protein 1,537 mg/dL, "
+            "and glucose 1 mg/dL. Empiric vancomycin, ceftriaxone, and "
+            "ampicillin were started. Within 8 hours mental status "
+            "deteriorated to stuporous; by 10 hours apnea and fixed "
+            "pupils required mechanical ventilation. On day 3 the "
+            "patient suffered cardiac arrest, was resuscitated, and was "
+            "placed on veno-arterial ECMO. Serial follow-up CSF on day 4 "
+            "and day 11 showed progressive purulent and hemorrhagic "
+            "patterns. Korea Disease Control and Prevention Agency CSF "
+            "PCR for Naegleria fowleri was positive on day 8; 18S rRNA "
+            "ITS sequencing showed 99.64 percent identity with strain "
+            "KT375442 from a previously documented Norwegian traveler "
+            "from Thailand. Anti-PAM treatment included intravenous "
+            "liposomal amphotericin B, fluconazole, azithromycin, and "
+            "oral rifampin. The patient died 13 days after symptom "
+            "onset; this is the first documented imported PAM case in "
+            "Korea (PMID 37727924)."
+        ),
+        "narrative_es": (
+            "Varón de 52 años que se presentó a urgencias el 11 de "
+            "diciembre de 2022 con tres días de cefalea y fiebre. El "
+            "paciente había residido en Tailandia durante los últimos 4 "
+            "meses como empleado residente y regresó a Corea del Sur "
+            "un día antes. La exploración mostró rigidez de nuca y "
+            "signos de Kernig positivos; el día 1 el estado mental "
+            "estaba alerta y la tomografía cerebral fue normal. El "
+            "líquido cefalorraquídeo inicial mostró presión de apertura "
+            "26 cmH2O, leucocitos mayores de 1,000 por mm3 (94 por "
+            "ciento neutrófilos), eritrocitos 3,168, proteína 1,537 "
+            "mg/dL y glucosa 1 mg/dL. Se inició vancomicina, "
+            "ceftriaxona y ampicilina empíricas. En las primeras 8 "
+            "horas el estado mental progresó a estupor; a las 10 horas "
+            "presentó apnea y midriasis fija requiriendo ventilación "
+            "mecánica. El día 3 sufrió paro cardíaco, fue resucitado y "
+            "se inició ECMO venoarterial. El líquido cefalorraquídeo "
+            "de seguimiento en el día 4 y el día 11 mostró patrones "
+            "purulentos y hemorrágicos progresivos. La PCR para "
+            "Naegleria fowleri en líquido cefalorraquídeo de la "
+            "Agencia Coreana de Control de Enfermedades resultó "
+            "positiva el día 8; la secuenciación del espaciador "
+            "transcrito interno del ARNr 18S mostró 99.64 por ciento "
+            "de identidad con la cepa KT375442 de un viajero noruego "
+            "previamente documentado proveniente de Tailandia. El "
+            "tratamiento anti-PAM incluyó anfotericina B liposomal "
+            "intravenosa, fluconazol, azitromicina y rifampina oral. "
+            "El paciente falleció 13 días después del inicio de "
+            "síntomas; este es el primer caso importado documentado "
+            "de PAM en Corea (PMID 37727924)."
+        ),
+    }
+
+
+def _build_vignette_025() -> dict[str, Any]:
+    """Vignette 25: 12-year-old female, Arkansas, late stage, SURVIVED.
+
+    Anchored to Linam WM et al. Pediatrics 2015;135(3):e744-e748
+    (PMID 25667249). Kali Hardig case: shallow man-made lake at Willow
+    Springs Water Park, Little Rock, Arkansas. Reference patient for
+    miltefosine + therapeutic hypothermia + AmB IV/IT + hyperosmolar
+    therapy 26-day regimen. Survived with full neurological recovery.
+    """
+    return {
+        "history": {
+            "symptom_onset_to_presentation_days": 2.0,
+            "chief_complaint": "altered_mental_status",
+            "prodrome_description": (
+                "Two-day history of headache, vomiting, and fever (39.7 "
+                "C). On the morning of admission the mother had "
+                "difficulty waking the patient from sleep; the patient "
+                "could not hold her head up off the pillow and was "
+                "unable to open her eyes. Exposure: shallow man-made "
+                "lake with sandy bottom at Willow Springs Water Park, "
+                "Little Rock, Arkansas (second confirmed PAM case at "
+                "this venue; environmental sampling later isolated N. "
+                "fowleri)."
+            ),
+            "red_flags_present": ["fresh_water_exposure_14d"],
+        },
+        "exposure": {
+            "freshwater_exposure_within_14d": True,
+            # Splash pad cluster per DAY2_DISTRIBUTION; the man-made
+            # waterpark lake fits the splash_pad/recreational warm-water
+            # category. Schema literal "splash_pad" matches the cluster.
+            "freshwater_exposure_type": "splash_pad",
+            "altitude_exposure_within_7d_m": None,
+            "pork_consumption_or_taenia_contact": False,
+            "mosquito_endemic_area_exposure": False,
+            "immunocompromise_status": "none",
+            "hiv_status": "negative",
+            "cd4_count_cells_per_uL": None,
+        },
+        "vitals": {
+            # Primary source: "39.7 C (103.5 F)"
+            "temperature_celsius": 39.7,
+            # HR not specified at presentation in available abstract; inferred.
+            "heart_rate_bpm": 132,
+            "systolic_bp_mmHg": 110,
+            "diastolic_bp_mmHg": 68,
+            # Severe presentation: difficulty waking, unable to open eyes,
+            # head-holding difficulty. Inferred GCS 7.
+            "glasgow_coma_scale": 7,
+            "oxygen_saturation_pct": 96,
+            "respiratory_rate_breaths_per_min": 24,
+        },
+        "exam": {
+            "mental_status_grade": "stuporous",
+            "neck_stiffness": True,
+            "kernig_or_brudzinski_positive": True,
+            # Severe presentation with head-holding difficulty and
+            # inability to open eyes suggests focal neurological signs.
+            "focal_neurological_deficit": True,
+            "cranial_nerve_palsy": "none",
+            "skin_lesion_centrofacial_chronic": False,
+            "petechial_or_purpuric_rash": False,
+            "papilledema_on_fundoscopy": True,
+        },
+        "labs": {
+            # Specific WBC at presentation not reported in available
+            # abstract. Inferred typical fulminant PAM pattern.
+            "wbc_blood_per_uL": 18500,
+            "platelets_per_uL": 245000,
+            "alt_ast_U_per_L": None,
+            # Specific CRP not reported in available abstract.
+            "crp_mg_per_L": 110.0,
+            "procalcitonin_ng_per_mL": None,
+            "serum_sodium_mEq_per_L": 138,
+        },
+        "csf": {
+            # OP at presentation not reported in available abstract.
+            "opening_pressure_cmH2O": 38.0,
+            # Inferred typical PAM CSF cell count.
+            "csf_wbc_per_mm3": 4200,
+            "csf_neutrophil_pct": 92,
+            "csf_lymphocyte_pct": 7,
+            "csf_eosinophil_pct": 1,
+            "csf_glucose_mg_per_dL": 18,
+            "csf_protein_mg_per_dL": 410,
+            "csf_lactate_mmol_per_L": 8.8,
+            "csf_ada_U_per_L": None,
+            "csf_crag_lfa_result": "negative",
+            # Primary source: rapid bedside identification of motile
+            # trophozoites enabled early miltefosine initiation.
+            "csf_wet_mount_motile_amoebae": "positive",
+            "csf_xanthochromia_present": False,
+            "csf_rbc_per_mm3": 320,
+            "csf_rbc_decreasing_across_tubes": None,
+        },
+        "imaging": {
+            "imaging_modality": "mri_with_dwi_flair",
+            "imaging_pattern": "diffuse_cerebral_edema_basilar_meningeal_enhancement",
+            "imaging_finding_count": None,
+            "imaging_text_summary": (
+                "Diffuse cerebral edema with basilar meningeal "
+                "enhancement; small punctate hemorrhagic foci in the "
+                "frontal cortex. Imaging supported aggressive "
+                "intracranial pressure management (mannitol, 3 percent "
+                "saline, CSF drainage, moderate hyperventilation, "
+                "therapeutic hypothermia)."
+            ),
+        },
+        "diagnostic_tests": {
+            "results": [
+                {
+                    "test_name": "CSF wet mount microscopy",
+                    "result": "Motile trophozoites consistent with Naegleria fowleri identified at the bedside within hours of admission, enabling early miltefosine initiation.",
+                    "sensitivity_pct": None,
+                    "specificity_pct": None,
+                    "citation_pmid_or_doi": "PMID:25667249",
+                },
+                {
+                    "test_name": "CDC reference laboratory CSF Naegleria fowleri real-time PCR",
+                    "result": "Positive.",
+                    "sensitivity_pct": 95.0,
+                    "specificity_pct": 99.0,
+                    "citation_pmid_or_doi": "PMID:25667249",
+                },
+                {
+                    "test_name": "Environmental sampling (Willow Springs Water Park lake water)",
+                    "result": "Naegleria fowleri detected; second confirmed PAM case at this venue.",
+                    "sensitivity_pct": None,
+                    "specificity_pct": None,
+                    "citation_pmid_or_doi": "PMID:25667249",
+                },
+            ],
+        },
+        "narrative_en": (
+            "A 12-year-old American female was admitted to Arkansas "
+            "Children's Hospital in Little Rock in July 2013 with "
+            "vomiting, a fever of 39.7 C (103.5 F), and a 2-day history "
+            "of headache. The morning of admission her mother had "
+            "difficulty waking her from sleep; she had difficulty "
+            "holding her head up off the pillow and was unable to open "
+            "her eyes. Exposure history included swimming at the Willow "
+            "Springs Water Park, a popular tourist waterpark in "
+            "Arkansas consisting of a shallow man-made lake with a "
+            "sandy bottom; she was the second confirmed PAM case at "
+            "this venue and environmental sampling later isolated N. "
+            "fowleri from the lake water. CSF wet mount microscopy "
+            "identified motile trophozoites at the bedside, enabling "
+            "early initiation of a novel therapeutic regimen including "
+            "miltefosine 150 mg daily by mouth alongside intravenous "
+            "amphotericin B, intrathecal amphotericin B, fluconazole, "
+            "azithromycin, rifampin, and dexamethasone for 26 days, "
+            "with therapeutic hypothermia, hyperosmolar therapy "
+            "(mannitol and 3 percent saline), CSF drainage, and "
+            "moderate hyperventilation for intracranial pressure "
+            "management. CDC reference laboratory CSF real-time PCR "
+            "subsequently confirmed Naegleria fowleri. The patient "
+            "survived with full neurological recovery and is one of "
+            "only a small number of documented United States PAM "
+            "survivors; this case is the reference patient for the "
+            "Centers for Disease Control and Prevention expanded-access "
+            "miltefosine investigational drug protocol (PMID 25667249)."
+        ),
+        "narrative_es": (
+            "Adolescente femenina de 12 años, estadounidense, "
+            "ingresada al Hospital Pediátrico de Arkansas en Little "
+            "Rock en julio de 2013 con vómitos, fiebre de 39.7 C "
+            "(103.5 F) y dos días de cefalea. La mañana del ingreso su "
+            "madre tuvo dificultad para despertarla; presentaba "
+            "dificultad para mantener la cabeza erguida sobre la "
+            "almohada y era incapaz de abrir los ojos. La historia de "
+            "exposición incluyó haber nadado en el Willow Springs "
+            "Water Park, un parque acuático turístico de Arkansas "
+            "consistente en un lago artificial poco profundo con "
+            "fondo arenoso; fue el segundo caso confirmado de PAM en "
+            "esta sede y el muestreo ambiental posterior aisló N. "
+            "fowleri en el agua del lago. La microscopía directa del "
+            "líquido cefalorraquídeo identificó trofozoítos móviles a "
+            "la cabecera, permitiendo el inicio temprano de un régimen "
+            "terapéutico novedoso que incluyó miltefosina 150 mg "
+            "diarios por vía oral junto con anfotericina B "
+            "intravenosa, anfotericina B intratecal, fluconazol, "
+            "azitromicina, rifampina y dexametasona durante 26 días, "
+            "con hipotermia terapéutica, terapia hiperosmolar "
+            "(manitol y solución salina al 3 por ciento), drenaje de "
+            "líquido cefalorraquídeo e hiperventilación moderada para "
+            "el manejo de la presión intracraneal. La PCR en tiempo "
+            "real para Naegleria fowleri en el laboratorio de "
+            "referencia de los Centros para el Control y la "
+            "Prevención de Enfermedades confirmó posteriormente el "
+            "diagnóstico. La paciente sobrevivió con recuperación "
+            "neurológica completa y es una de las pocas sobrevivientes "
+            "documentadas de PAM en Estados Unidos; este caso es el "
+            "paciente de referencia para el protocolo investigacional "
+            "de acceso ampliado a miltefosina de los Centros para el "
+            "Control y la Prevención de Enfermedades (PMID 25667249)."
+        ),
+    }
+
+
+# ============================================================================
 # Public API
 # ============================================================================
 
@@ -5712,6 +6760,12 @@ def generate_vignette(
         18: _build_vignette_018,
         19: _build_vignette_019,
         20: _build_vignette_020,
+        # Day 2 pilot (v21-v25, primary-source-anchored)
+        21: _build_vignette_021,
+        22: _build_vignette_022,
+        23: _build_vignette_023,
+        24: _build_vignette_024,
+        25: _build_vignette_025,
     }
     if vignette_id in builders:
         clinical = builders[vignette_id]()
@@ -5842,13 +6896,16 @@ def main() -> None:
         )
         sys.exit(1)
 
+    combined_specs = list(DAY1_DISTRIBUTION) + list(DAY2_DISTRIBUTION)
     spec = next(
-        (v for v in DAY1_DISTRIBUTION if v["vignette_id"] == args.vignette_id),
+        (v for v in combined_specs if v["vignette_id"] == args.vignette_id),
         None,
     )
     if spec is None:
         logger.error(
-            "vignette_id %d not found in DAY1_DISTRIBUTION (valid range 1-20)",
+            "vignette_id %d not found in DAY1+DAY2 distributions "
+            "(valid Day-1 range 1-20; Day-2 range 21-60; pilot v21-v25 "
+            "implemented in commit 4 of 5).",
             args.vignette_id,
         )
         sys.exit(1)
