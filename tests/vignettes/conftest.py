@@ -19,6 +19,7 @@ if str(_REPO_ROOT) not in sys.path:
 
 from scripts.generate_pam_vignettes import (  # noqa: E402
     DAY1_DISTRIBUTION,
+    DAY2_DISTRIBUTION,
     PMID_REGISTRY,
     generate_vignette,
     load_pmid_metadata,
@@ -35,6 +36,11 @@ def pytest_configure(config: pytest.Config) -> None:
 @pytest.fixture(scope="session")
 def distribution() -> list[dict[str, Any]]:
     return DAY1_DISTRIBUTION
+
+
+@pytest.fixture(scope="session")
+def day2_distribution() -> list[dict[str, Any]]:
+    return DAY2_DISTRIBUTION
 
 
 @pytest.fixture(scope="session")

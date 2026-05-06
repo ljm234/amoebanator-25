@@ -207,6 +207,16 @@ pipeline; every claim is defensible against a current run.
   per-case PAM CSF values, Capewell LG et al. 2015
   (PMID 26582886) is the better source; integrating it into
   `ml/case_series.py` is documented as optional user assignment 4.
+* **No neonatal PAM in the corpus.** The 60-vignette PAM corpus does
+  not include extreme-age (neonatal) PAM presentations. Çelik 2021
+  (PMID 33381798, J Trop Pediatr 67(1):fmaa100) anchor is canonized
+  in the registry but not anchored to any vignette in v1-v60 because
+  neonatal PAM is a distinct epidemiologic category that does not fit
+  the locked Day-2 cluster structure (lake_pond, river, splash_pad,
+  nasal_irrigation, hot_springs, pakistan_ablution). Reserved for
+  V1.5+ extension. **Model performance on neonatal PAM is undefined.**
+  See `docs/DAY2_DISTRIBUTION_RATIONALE.md` Section 9.2 for the full
+  list of registered-but-unanchored PMIDs.
 * **Recommendations.**
   - Do not quote AUC, recall, conformal coverage, or DCA net benefit
     in any document without the n = 6 caveat *in the same paragraph*.
