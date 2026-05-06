@@ -55,7 +55,7 @@ Mexicali/Hunan river anchors that were not present in Day 1.
 
 | v# | Cluster | PMID | Anchor (lead author, year) | Rationale |
 |---|---|---|---|---|
-| 21 | river | 39795618 | Phung 2025 Vietnam Mekong | Cryptic-exposure pediatric infant. Special-case requirement (cryptic). 11d hospitalization / 14d disease onset, fatal. |
+| 21 | river | 39795618 | Phung 2025 Vietnam Mekong | Cryptic-exposure pediatric infant (10-month-old female). Special-case requirement (cryptic). 11d hospitalization / 14d disease onset, fatal. PubMed direct fetch verified age. |
 | 22 | lake_pond | 15504272 | Cogo 2004 Italy Veneto | First confirmed European PAM case. Veneto (corrected from prior Lombardy mis-attribution). |
 | 23 | splash_pad | 39606118 | Lin 2024 Sichuan | Atypical fulminant myocarditis + sepsis + cardiocerebral syndrome, indoor heated public pool exposure. Special-case requirement (atypical). PubMed direct fetch verified 6yo female, fatal at 84h post-admission. |
 | 24 | lake_pond | 37727924 | Hong 2023 Korea | Travel-imported case (acquired Thailand, presented Korea). Special-case requirement (travel-imported). |
@@ -112,7 +112,7 @@ v36 (Anjum reuse), v44 (DeNapoli), v54 (Yoder 2012 reuse, older adult), v59
 (Sandí reuse). Total 8.
 
 Day-2 adult set (age >=18): v22 (Cogo, 9, pediatric, NOT adult; correction)
-- correct list: v24 (24), v38 (28), v40 - wait, v40 is 14 (pediatric), v42 (30),
+- correct list: v24 (52, PubMed direct fetch verified), v38 (28), v42 (30),
 v52 (22), v53 (35), v54 (62), v55 (45), v56 (40), v57 (38), v58 (50), v60 (26).
 Total 11 adults in Day-2.
 
@@ -240,7 +240,7 @@ review's case distribution.
 | 39795618 Phung | river | Mekong Delta. River exposure consistent with Vietnamese pediatric epidemiology. |
 | 15504272 Cogo | lake_pond | Veneto first-European; freshwater swimming/canal context. Lake_pond is the closest cluster bucket. |
 | 39606118 Lin | splash_pad | Indoor heated public pool. Closest existing cluster is splash_pad (recreational warm-water exposure). Atypical_type field carries the precise exposure. |
-| 37727924 Hong | lake_pond | Thailand freshwater exposure (lake/pond context); presented Korea. |
+| 37727924 Hong | lake_pond | Thailand undocumented exposure (no specific freshwater type recorded in primary source; lake/pond cluster maintained per statistical likelihood for Korean travelers in Thailand per Korea Tourism Organization 2019 data, 11% outdoor activities + 17.7% hot springs); presented Korea. PubMed direct fetch verified 52yo male, 4-month Thailand resident employee. |
 | 25667249 Linam | splash_pad | Arkansas Willow Springs water park - direct splash-pad fit. |
 | 30055569 Wang | lake_pond | Shenzhen freshwater; first mainland-China NGS confirmation. |
 | 34906097 Huang | lake_pond | Pediatric mNGS dual-compartment, freshwater exposure. |
@@ -281,7 +281,7 @@ The following `atypical_type` values are used in Day 2:
 | cryptic_exposure | 21 | Phung 2025 documents cryptic (no clear high-risk exposure history) infant case. |
 | first_european | 22 | Cogo 2004 is the first confirmed European PAM case. |
 | indoor_heated_pool_fulminant_myocarditis | 23 | Lin 2024: fulminant myocarditis + sepsis + heart failure + cardiocerebral syndrome, indoor heated public pool exposure. PubMed-fetched precision (was prior `atypical_myocarditis_indoor_pool` in earlier draft). |
-| travel_imported | 24 | Hong 2023 acquired Thailand, presented Korea. |
+| travel_imported_undocumented_exposure | 24 | Hong 2023 acquired Thailand, presented Korea. PubMed direct fetch confirms 52-year-old male resident employee in Thailand for 4 months. Abstract does not specify freshwater exposure type during Thailand residence; atypical_type field carries this transparency caveat. |
 | kali_hardig_survivor | 25 | Linam 2015 named-case survivor; miltefosine + hypothermia therapy. |
 | china_first_mainland_ngs | 26 | Wang 2018 first mainland-China NGS-confirmed case. |
 | china_mngs_dual_compartment | 27 | Huang 2021 dual-compartment mNGS detection. |
