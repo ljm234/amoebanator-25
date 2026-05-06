@@ -6495,33 +6495,34 @@ def _build_vignette_025() -> dict[str, Any]:
     """Vignette 25: 12-year-old female, Arkansas, late stage, SURVIVED.
 
     Anchored to Linam WM et al. Pediatrics 2015;135(3):e744-e748
-    (PMID 25667249). Kali Hardig case: shallow man-made lake at Willow
-    Springs Water Park, Little Rock, Arkansas. Reference patient for
-    miltefosine + therapeutic hypothermia + AmB IV/IT + hyperosmolar
-    therapy 26-day regimen. Survived with full neurological recovery.
+    (PMID 25667249, PMC4634363). Kali Hardig case: outdoor water park
+    exposure 7 days pre-onset. Reference patient for miltefosine +
+    therapeutic hypothermia + AmB IV/IT + 26-day antimicrobial regimen.
+    Survived with full neurological recovery at 6 months.
+
+    All clinical values verbatim from full-text PMC4634363 fetch except
+    where marked "# Inferred ..." (HR, BP, SpO2, RR, supportive labs).
     """
     return {
         "history": {
-            "symptom_onset_to_presentation_days": 2.0,
-            "chief_complaint": "altered_mental_status",
+            # Primary source: ~30 hours from symptom onset to presentation.
+            "symptom_onset_to_presentation_days": 1.25,
+            "chief_complaint": "fever_with_headache",
             "prodrome_description": (
-                "Two-day history of headache, vomiting, and fever (39.7 "
-                "C). On the morning of admission the mother had "
-                "difficulty waking the patient from sleep; the patient "
-                "could not hold her head up off the pillow and was "
-                "unable to open her eyes. Exposure: shallow man-made "
-                "lake with sandy bottom at Willow Springs Water Park, "
-                "Little Rock, Arkansas (second confirmed PAM case at "
-                "this venue; environmental sampling later isolated N. "
-                "fowleri)."
+                "Two-day history of headache and one-day history of "
+                "fever (39.4 C) with nausea, vomiting, and somnolence "
+                "in a previously healthy 12-year-old female. She "
+                "reported swimming at an outdoor water park seven days "
+                "prior to symptom onset. Time from symptom onset to "
+                "hospital presentation: approximately 30 hours."
             ),
             "red_flags_present": ["fresh_water_exposure_14d"],
         },
         "exposure": {
             "freshwater_exposure_within_14d": True,
-            # Splash pad cluster per DAY2_DISTRIBUTION; the man-made
-            # waterpark lake fits the splash_pad/recreational warm-water
-            # category. Schema literal "splash_pad" matches the cluster.
+            # Splash pad cluster per DAY2_DISTRIBUTION; the outdoor
+            # water park exposure fits the splash_pad/recreational
+            # warm-water category.
             "freshwater_exposure_type": "splash_pad",
             "altitude_exposure_within_7d_m": None,
             "pork_consumption_or_taenia_contact": False,
@@ -6531,93 +6532,132 @@ def _build_vignette_025() -> dict[str, Any]:
             "cd4_count_cells_per_uL": None,
         },
         "vitals": {
-            # Primary source: "39.7 C (103.5 F)"
-            "temperature_celsius": 39.7,
-            # HR not specified at presentation in available abstract; inferred.
-            "heart_rate_bpm": 132,
+            # Primary source verbatim: fever 39.4 C.
+            "temperature_celsius": 39.4,
+            # Inferred from "fever 39.4 C" + adolescent baseline; primary
+            # source did not report HR.
+            "heart_rate_bpm": 110,
+            # Inferred normal-for-age adolescent; primary source did not
+            # report BP.
             "systolic_bp_mmHg": 110,
             "diastolic_bp_mmHg": 68,
-            # Severe presentation: difficulty waking, unable to open eyes,
-            # head-holding difficulty. Inferred GCS 7.
-            "glasgow_coma_scale": 7,
-            "oxygen_saturation_pct": 96,
-            "respiratory_rate_breaths_per_min": 24,
+            # Primary source verbatim: "She had a normal neurologic exam"
+            # at admission. Mild somnolence noted but mental status alert.
+            "glasgow_coma_scale": 14,
+            # Inferred normal saturation; primary source did not report.
+            "oxygen_saturation_pct": 98,
+            # Inferred normal-mild tachypnea from fever; primary source
+            # did not report RR.
+            "respiratory_rate_breaths_per_min": 18,
         },
         "exam": {
-            "mental_status_grade": "stuporous",
-            "neck_stiffness": True,
-            "kernig_or_brudzinski_positive": True,
-            # Severe presentation with head-holding difficulty and
-            # inability to open eyes suggests focal neurological signs.
-            "focal_neurological_deficit": True,
+            # Primary source verbatim: "She had a normal neurologic exam".
+            "mental_status_grade": "alert",
+            # Verbatim: "normal neurologic exam" implies no meningismus.
+            "neck_stiffness": False,
+            "kernig_or_brudzinski_positive": False,
+            # Verbatim: normal neurologic exam at admission. Right-sided
+            # abducens (CN VI) palsy developed approximately 24 hours
+            # post-admission per primary source; documented in narrative,
+            # not encoded as admission-time deficit.
+            "focal_neurological_deficit": False,
+            # Verbatim: "none" at admission; CN VI palsy at 24h documented
+            # in narrative.
             "cranial_nerve_palsy": "none",
             "skin_lesion_centrofacial_chronic": False,
             "petechial_or_purpuric_rash": False,
-            "papilledema_on_fundoscopy": True,
+            # Primary source did not report fundoscopic findings.
+            "papilledema_on_fundoscopy": None,
         },
         "labs": {
-            # Specific WBC at presentation not reported in available
-            # abstract. Inferred typical fulminant PAM pattern.
-            "wbc_blood_per_uL": 18500,
+            # Primary source verbatim: peripheral WBC 18.4 x 10^3 / uL.
+            "wbc_blood_per_uL": 18400,
+            # Inferred normal adolescent platelets; primary source did
+            # not report platelet count.
             "platelets_per_uL": 245000,
             "alt_ast_U_per_L": None,
-            # Specific CRP not reported in available abstract.
-            "crp_mg_per_L": 110.0,
+            # Primary source did not report CRP.
+            "crp_mg_per_L": None,
             "procalcitonin_ng_per_mL": None,
+            # Primary source did not report admission serum sodium.
+            # Inferred normal range.
             "serum_sodium_mEq_per_L": 138,
         },
         "csf": {
-            # OP at presentation not reported in available abstract.
-            "opening_pressure_cmH2O": 38.0,
-            # Inferred typical PAM CSF cell count.
-            "csf_wbc_per_mm3": 4200,
-            "csf_neutrophil_pct": 92,
-            "csf_lymphocyte_pct": 7,
-            "csf_eosinophil_pct": 1,
-            "csf_glucose_mg_per_dL": 18,
-            "csf_protein_mg_per_dL": 410,
-            "csf_lactate_mmol_per_L": 8.8,
+            # Primary source: opening pressure at admission LP not reported;
+            # ICP approximately 50 mmHg recorded after EVD placement at
+            # ~24h post-admission, NOT at admission LP. Schema requires a
+            # value (not Optional); using 25.0 as a clinically defensible
+            # admission OP given the elevated CSF profile + later EVD-
+            # measured 50 mmHg trajectory. Marked as inference.
+            # # Inferred: admission OP not reported (50 mmHg via EVD at 24h).
+            "opening_pressure_cmH2O": 25.0,
+            # Primary source verbatim: CSF WBC 3,675 cells/uL.
+            "csf_wbc_per_mm3": 3675,
+            # Primary source verbatim: 86% segmented neutrophils.
+            "csf_neutrophil_pct": 86,
+            # Complement to 100; primary source did not specify lymphocyte
+            # pct. Eosinophil set to 0 (not reported); lymphocyte takes
+            # remainder.
+            "csf_lymphocyte_pct": 14,
+            "csf_eosinophil_pct": 0,
+            # Primary source verbatim: CSF glucose 22 mg/dL.
+            "csf_glucose_mg_per_dL": 22,
+            # Primary source verbatim: CSF protein 374 mg/dL.
+            "csf_protein_mg_per_dL": 374,
+            # Primary source did not report CSF lactate.
+            "csf_lactate_mmol_per_L": None,
             "csf_ada_U_per_L": None,
             "csf_crag_lfa_result": "negative",
-            # Primary source: rapid bedside identification of motile
-            # trophozoites enabled early miltefosine initiation.
+            # Primary source verbatim: "Giemsa-Wright stain of the CSF
+            # revealed amebae consistent with N. fowleri" — schema-
+            # compliant as positive amebic detection on direct microscopy.
             "csf_wet_mount_motile_amoebae": "positive",
             "csf_xanthochromia_present": False,
-            "csf_rbc_per_mm3": 320,
+            # Primary source verbatim: CSF RBC 53 cells/uL.
+            "csf_rbc_per_mm3": 53,
             "csf_rbc_decreasing_across_tubes": None,
         },
         "imaging": {
-            "imaging_modality": "mri_with_dwi_flair",
-            "imaging_pattern": "diffuse_cerebral_edema_basilar_meningeal_enhancement",
+            # Primary source verbatim: initial brain CT at admission was
+            # normal. Day-14 MRI showed restricted diffusion findings;
+            # admission imaging encoded here.
+            "imaging_modality": "ct_noncontrast",
+            # Primary source verbatim: "initial computed tomography scan
+            # of her brain was normal".
+            "imaging_pattern": "normal",
             "imaging_finding_count": None,
             "imaging_text_summary": (
-                "Diffuse cerebral edema with basilar meningeal "
-                "enhancement; small punctate hemorrhagic foci in the "
-                "frontal cortex. Imaging supported aggressive "
-                "intracranial pressure management (mannitol, 3 percent "
-                "saline, CSF drainage, moderate hyperventilation, "
-                "therapeutic hypothermia)."
+                "Initial brain CT scan was normal at admission. "
+                "Day-14 MRI revealed blood in the frontal lobes and "
+                "multiple areas of restricted diffusion primarily in "
+                "the cerebellum, right internal capsule, and corpus "
+                "callosum. Day-21 MRI showed improvement in the "
+                "previously documented restricted diffusion. Imaging "
+                "supported aggressive intracranial pressure management "
+                "(mannitol, 3 percent saline, CSF drainage, moderate "
+                "hyperventilation, induced hypothermia 32-34 C)."
             ),
         },
         "diagnostic_tests": {
             "results": [
                 {
-                    "test_name": "CSF wet mount microscopy",
-                    "result": "Motile trophozoites consistent with Naegleria fowleri identified at the bedside within hours of admission, enabling early miltefosine initiation.",
+                    "test_name": "CSF Giemsa-Wright stain microscopy",
+                    "result": "Amebae consistent with Naegleria fowleri identified on Giemsa-Wright stained CSF smear.",
                     "sensitivity_pct": None,
                     "specificity_pct": None,
                     "citation_pmid_or_doi": "PMID:25667249",
                 },
                 {
-                    "test_name": "CDC reference laboratory CSF Naegleria fowleri real-time PCR",
-                    "result": "Positive.",
+                    "test_name": "CSF Naegleria fowleri PCR and culture",
+                    "result": "CSF positive for N. fowleri by polymerase chain reaction at admission; CSF culture also positive at admission and turned negative by hospital day 3.",
                     "sensitivity_pct": 95.0,
                     "specificity_pct": 99.0,
                     "citation_pmid_or_doi": "PMID:25667249",
                 },
                 {
                     "test_name": "Environmental sampling (Willow Springs Water Park lake water)",
-                    "result": "Naegleria fowleri detected; second confirmed PAM case at this venue.",
+                    "result": "Naegleria fowleri detected in waterpark water on environmental sampling.",
                     "sensitivity_pct": None,
                     "specificity_pct": None,
                     "citation_pmid_or_doi": "PMID:25667249",
@@ -6625,67 +6665,86 @@ def _build_vignette_025() -> dict[str, Any]:
             ],
         },
         "narrative_en": (
-            "A 12-year-old American female was admitted to Arkansas "
-            "Children's Hospital in Little Rock in July 2013 with "
-            "vomiting, a fever of 39.7 C (103.5 F), and a 2-day history "
-            "of headache. The morning of admission her mother had "
-            "difficulty waking her from sleep; she had difficulty "
-            "holding her head up off the pillow and was unable to open "
-            "her eyes. Exposure history included swimming at the Willow "
-            "Springs Water Park, a popular tourist waterpark in "
-            "Arkansas consisting of a shallow man-made lake with a "
-            "sandy bottom; she was the second confirmed PAM case at "
-            "this venue and environmental sampling later isolated N. "
-            "fowleri from the lake water. CSF wet mount microscopy "
-            "identified motile trophozoites at the bedside, enabling "
-            "early initiation of a novel therapeutic regimen including "
-            "miltefosine 150 mg daily by mouth alongside intravenous "
-            "amphotericin B, intrathecal amphotericin B, fluconazole, "
-            "azithromycin, rifampin, and dexamethasone for 26 days, "
-            "with therapeutic hypothermia, hyperosmolar therapy "
-            "(mannitol and 3 percent saline), CSF drainage, and "
-            "moderate hyperventilation for intracranial pressure "
-            "management. CDC reference laboratory CSF real-time PCR "
-            "subsequently confirmed Naegleria fowleri. The patient "
-            "survived with full neurological recovery and is one of "
-            "only a small number of documented United States PAM "
-            "survivors; this case is the reference patient for the "
-            "Centers for Disease Control and Prevention expanded-access "
-            "miltefosine investigational drug protocol (PMID 25667249)."
+            "A previously healthy 12-year-old female presented to "
+            "Arkansas Children's Hospital and was admitted to the "
+            "pediatric intensive care unit on July 19, 2013 with a "
+            "two-day history of headache and a one-day history of "
+            "fever (39.4 C) accompanied by nausea, vomiting, and "
+            "somnolence. She reported swimming at an outdoor water "
+            "park seven days prior to symptom onset; time from symptom "
+            "onset to hospital presentation was approximately 30 hours. "
+            "On admission she had a normal neurologic exam. Initial "
+            "labs showed peripheral WBC 18,400 per microliter (90 "
+            "percent neutrophils on differential including 77 percent "
+            "segmented and 13 percent banded). Lumbar puncture showed "
+            "CSF WBC 3,675 per microliter with 86 percent segmented "
+            "neutrophils, RBC 53 per microliter, glucose 22 mg/dL, and "
+            "protein 374 mg/dL. Giemsa-Wright stain of the CSF "
+            "revealed amebae consistent with Naegleria fowleri; CSF "
+            "PCR and culture were positive at admission. The initial "
+            "brain CT scan was normal. Approximately 24 hours after "
+            "admission she developed a right-sided abducens nerve (CN "
+            "VI) palsy and an external ventricular drain was placed "
+            "with initial intracranial pressure of approximately 50 "
+            "mmHg. Treatment included intravenous amphotericin B "
+            "(1.5 mg/kg per day for 3 days then 1 mg/kg per day for 11 "
+            "days), intrathecal amphotericin B (1.5 mg per day for 2 "
+            "days then 1 mg every other day for 8 days), miltefosine "
+            "50 mg every 8 hours started 36 hours after admission and "
+            "continued for 26 of a planned 28 days, fluconazole, "
+            "rifampin, and azithromycin (each 10 mg/kg per day for 26 "
+            "days), and dexamethasone (0.6 mg/kg per day in 4 divided "
+            "doses for 4 days). Intracranial pressure management "
+            "included CSF drainage, hyperosmolar therapy (mannitol and "
+            "3 percent saline), moderate hyperventilation, and "
+            "induced hypothermia 32-34 C. The patient survived after "
+            "55 days of hospitalization and achieved full neurological "
+            "recovery at 6 months. This is the third documented PAM "
+            "survivor in North America (PMID 25667249)."
         ),
         "narrative_es": (
-            "Adolescente femenina de 12 años, estadounidense, "
-            "ingresada al Hospital Pediátrico de Arkansas en Little "
-            "Rock en julio de 2013 con vómitos, fiebre de 39.7 C "
-            "(103.5 F) y dos días de cefalea. La mañana del ingreso su "
-            "madre tuvo dificultad para despertarla; presentaba "
-            "dificultad para mantener la cabeza erguida sobre la "
-            "almohada y era incapaz de abrir los ojos. La historia de "
-            "exposición incluyó haber nadado en el Willow Springs "
-            "Water Park, un parque acuático turístico de Arkansas "
-            "consistente en un lago artificial poco profundo con "
-            "fondo arenoso; fue el segundo caso confirmado de PAM en "
-            "esta sede y el muestreo ambiental posterior aisló N. "
-            "fowleri en el agua del lago. La microscopía directa del "
-            "líquido cefalorraquídeo identificó trofozoítos móviles a "
-            "la cabecera, permitiendo el inicio temprano de un régimen "
-            "terapéutico novedoso que incluyó miltefosina 150 mg "
-            "diarios por vía oral junto con anfotericina B "
-            "intravenosa, anfotericina B intratecal, fluconazol, "
-            "azitromicina, rifampina y dexametasona durante 26 días, "
-            "con hipotermia terapéutica, terapia hiperosmolar "
-            "(manitol y solución salina al 3 por ciento), drenaje de "
-            "líquido cefalorraquídeo e hiperventilación moderada para "
-            "el manejo de la presión intracraneal. La PCR en tiempo "
-            "real para Naegleria fowleri en el laboratorio de "
-            "referencia de los Centros para el Control y la "
-            "Prevención de Enfermedades confirmó posteriormente el "
-            "diagnóstico. La paciente sobrevivió con recuperación "
-            "neurológica completa y es una de las pocas sobrevivientes "
-            "documentadas de PAM en Estados Unidos; este caso es el "
-            "paciente de referencia para el protocolo investigacional "
-            "de acceso ampliado a miltefosina de los Centros para el "
-            "Control y la Prevención de Enfermedades (PMID 25667249)."
+            "Adolescente femenina de 12 años, previamente sana, "
+            "ingresada al Hospital Pediátrico de Arkansas a la unidad "
+            "de cuidados intensivos pediátricos el 19 de julio de "
+            "2013, con dos días de cefalea y un día de fiebre (39.4 C) "
+            "acompañada de náuseas, vómitos y somnolencia. Refirió "
+            "haber nadado en un parque acuático al aire libre siete "
+            "días antes del inicio de síntomas; el tiempo desde el "
+            "inicio de los síntomas hasta la presentación hospitalaria "
+            "fue de aproximadamente 30 horas. Al ingreso presentó "
+            "examen neurológico normal. Los análisis iniciales "
+            "mostraron leucocitos periféricos 18,400 por microlitro "
+            "(90 por ciento neutrófilos en el diferencial, con 77 por "
+            "ciento segmentados y 13 por ciento en banda). La punción "
+            "lumbar mostró leucocitos en líquido cefalorraquídeo "
+            "3,675 por microlitro con 86 por ciento neutrófilos "
+            "segmentados, eritrocitos 53 por microlitro, glucosa 22 "
+            "mg/dL y proteína 374 mg/dL. La tinción de Giemsa-Wright "
+            "del líquido cefalorraquídeo reveló amebas compatibles con "
+            "Naegleria fowleri; la PCR y el cultivo del líquido "
+            "cefalorraquídeo resultaron positivos al ingreso. La "
+            "tomografía cerebral inicial fue normal. Aproximadamente "
+            "24 horas después del ingreso desarrolló una parálisis del "
+            "nervio motor ocular externo derecho (par craneal VI) y se "
+            "colocó un drenaje ventricular externo con una presión "
+            "intracraneal inicial de aproximadamente 50 mmHg. El "
+            "tratamiento incluyó anfotericina B intravenosa (1.5 mg/kg "
+            "por día durante 3 días, luego 1 mg/kg por día durante 11 "
+            "días), anfotericina B intratecal (1.5 mg por día durante "
+            "2 días, luego 1 mg cada 48 horas durante 8 días), "
+            "miltefosina 50 mg cada 8 horas iniciada 36 horas tras el "
+            "ingreso y continuada durante 26 de los 28 días "
+            "planificados, fluconazol, rifampina y azitromicina (cada "
+            "uno 10 mg/kg por día durante 26 días), y dexametasona "
+            "(0.6 mg/kg por día en 4 dosis divididas durante 4 días). "
+            "El manejo de la presión intracraneal incluyó drenaje de "
+            "líquido cefalorraquídeo, terapia hiperosmolar (manitol y "
+            "solución salina al 3 por ciento), hiperventilación "
+            "moderada e hipotermia inducida 32-34 C. La paciente "
+            "sobrevivió tras 55 días de hospitalización y logró "
+            "recuperación neurológica completa a los 6 meses. Esta es "
+            "la tercera sobreviviente documentada de PAM en "
+            "Norteamérica (PMID 25667249)."
         ),
     }
 
