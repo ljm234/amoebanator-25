@@ -7275,6 +7275,44 @@ def _build_vignette_028() -> dict[str, Any]:
     base["csf"]["csf_glucose_mg_per_dL"] = 17
     base["labs"]["crp_mg_per_L"] = 96.0
     base["labs"]["procalcitonin_ng_per_mL"] = 2.4
+    # Sync narratives to jittered values (preserve imputation disclosure)
+    base["narrative_en"] = (
+        "An 8-year-old female from the US South region presented "
+        "with a four-day history of fever, headache, and lethargy "
+        "progressing to stupor following recreational freshwater "
+        "(lake/pond) exposure. On admission temperature was 39.2 C, "
+        "Glasgow Coma Scale 7. CSF showed white cell count 4,350 "
+        "per cubic millimeter (90 percent neutrophils), glucose 17 "
+        "mg/dL, and protein 408 mg/dL. Acute-phase reactants were "
+        "CRP 96 mg/L and procalcitonin 2.4 ng/mL. Treatment per CDC "
+        "PAM protocol was initiated; the patient died of refractory "
+        "cerebral edema. This vignette is a Tier-4 within-cohort "
+        "imputation: no specific named-case is claimed. Clinical "
+        "specifics follow Capewell 2015's documented US 1937-2013 "
+        "review of approximately 140-145 cases (lake/pond sub-bucket "
+        "dominant); demographics are locked from the Day-2 "
+        "distribution table (PMID 26582886)."
+    )
+    base["narrative_es"] = (
+        "Paciente de 8 años de sexo femenino originaria de la "
+        "región sur de Estados Unidos, que se presentó con cuatro "
+        "días de fiebre, cefalea y letargia con progresión a "
+        "estupor tras exposición recreativa a agua dulce (lago o "
+        "estanque). Al ingreso la temperatura fue de 39.2 C, "
+        "escala de Glasgow 7. El líquido cefalorraquídeo mostró "
+        "leucocitos 4,350 por mm3 (90 por ciento neutrófilos), "
+        "glucosa 17 mg/dL y proteína 408 mg/dL. Los reactantes de "
+        "fase aguda fueron PCR 96 mg/L y procalcitonina 2.4 ng/mL. "
+        "Se inició el protocolo de PAM de los CDC; la paciente "
+        "falleció por edema cerebral refractario. Esta viñeta es "
+        "una imputación de Tier-4 dentro de la cohorte: no se "
+        "reclama un caso nombrado específico. Los datos clínicos "
+        "siguen la revisión documentada por Capewell 2015 sobre PAM "
+        "en Estados Unidos 1937-2013 (aproximadamente 140-145 "
+        "casos, subgrupo lago/estanque dominante); las "
+        "características demográficas están fijadas en la tabla de "
+        "distribución del Día 2 (PMID 26582886)."
+    )
     return base
 
 
@@ -7292,6 +7330,44 @@ def _build_vignette_029() -> dict[str, Any]:
     base["csf"]["csf_glucose_mg_per_dL"] = 21
     base["labs"]["crp_mg_per_L"] = 78.0
     base["labs"]["procalcitonin_ng_per_mL"] = 1.6
+    # Sync narratives to jittered values (preserve imputation disclosure)
+    base["narrative_en"] = (
+        "An 11-year-old male from the US South region presented "
+        "with a four-day history of fever, headache, and somnolence "
+        "with neck stiffness following recreational freshwater "
+        "(lake/pond) exposure. On admission temperature was 39.2 C, "
+        "Glasgow Coma Scale 11. CSF showed white cell count 2,850 "
+        "per cubic millimeter (90 percent neutrophils), glucose 21 "
+        "mg/dL, and protein 332 mg/dL. Acute-phase reactants were "
+        "CRP 78 mg/L and procalcitonin 1.6 ng/mL. Treatment per CDC "
+        "PAM protocol was initiated; the patient died of refractory "
+        "cerebral edema. This vignette is a Tier-4 within-cohort "
+        "imputation: no specific named-case is claimed. Clinical "
+        "specifics follow Capewell 2015's documented US 1937-2013 "
+        "review of approximately 140-145 cases (lake/pond sub-bucket "
+        "dominant); demographics are locked from the Day-2 "
+        "distribution table (PMID 26582886)."
+    )
+    base["narrative_es"] = (
+        "Paciente de 11 años de sexo masculino originario de la "
+        "región sur de Estados Unidos, que se presentó con cuatro "
+        "días de fiebre, cefalea y somnolencia con rigidez de nuca "
+        "tras exposición recreativa a agua dulce (lago o estanque). "
+        "Al ingreso la temperatura fue de 39.2 C, escala de Glasgow "
+        "11. El líquido cefalorraquídeo mostró leucocitos 2,850 por "
+        "mm3 (90 por ciento neutrófilos), glucosa 21 mg/dL y "
+        "proteína 332 mg/dL. Los reactantes de fase aguda fueron "
+        "PCR 78 mg/L y procalcitonina 1.6 ng/mL. Se inició el "
+        "protocolo de PAM de los CDC; el paciente falleció por "
+        "edema cerebral refractario. Esta viñeta es una imputación "
+        "de Tier-4 dentro de la cohorte: no se reclama un caso "
+        "nombrado específico. Los datos clínicos siguen la revisión "
+        "documentada por Capewell 2015 sobre PAM en Estados Unidos "
+        "1937-2013 (aproximadamente 140-145 casos, subgrupo "
+        "lago/estanque dominante); las características demográficas "
+        "están fijadas en la tabla de distribución del Día 2 "
+        "(PMID 26582886)."
+    )
     return base
 
 
@@ -7309,6 +7385,44 @@ def _build_vignette_030() -> dict[str, Any]:
     base["csf"]["csf_glucose_mg_per_dL"] = 14
     base["labs"]["crp_mg_per_L"] = 118.0
     base["labs"]["procalcitonin_ng_per_mL"] = 3.1
+    # Sync narratives to jittered values (preserve imputation disclosure)
+    base["narrative_en"] = (
+        "A 15-year-old male from the US South region presented "
+        "with a four-day history of fever, headache, and stupor "
+        "with focal deficit following recreational freshwater "
+        "(lake/pond) exposure. On admission temperature was 39.2 C, "
+        "Glasgow Coma Scale 7. CSF showed white cell count 4,500 "
+        "per cubic millimeter (90 percent neutrophils), glucose 14 "
+        "mg/dL, and protein 442 mg/dL. Acute-phase reactants were "
+        "CRP 118 mg/L and procalcitonin 3.1 ng/mL. Treatment per "
+        "CDC PAM protocol was initiated; the patient died of "
+        "refractory cerebral edema. This vignette is a Tier-4 "
+        "within-cohort imputation: no specific named-case is "
+        "claimed. Clinical specifics follow Capewell 2015's "
+        "documented US 1937-2013 review of approximately 140-145 "
+        "cases (lake/pond sub-bucket dominant); demographics are "
+        "locked from the Day-2 distribution table (PMID 26582886)."
+    )
+    base["narrative_es"] = (
+        "Paciente de 15 años de sexo masculino originario de la "
+        "región sur de Estados Unidos, que se presentó con cuatro "
+        "días de fiebre, cefalea y estupor con déficit focal tras "
+        "exposición recreativa a agua dulce (lago o estanque). Al "
+        "ingreso la temperatura fue de 39.2 C, escala de Glasgow "
+        "7. El líquido cefalorraquídeo mostró leucocitos 4,500 por "
+        "mm3 (90 por ciento neutrófilos), glucosa 14 mg/dL y "
+        "proteína 442 mg/dL. Los reactantes de fase aguda fueron "
+        "PCR 118 mg/L y procalcitonina 3.1 ng/mL. Se inició el "
+        "protocolo de PAM de los CDC; el paciente falleció por "
+        "edema cerebral refractario. Esta viñeta es una imputación "
+        "de Tier-4 dentro de la cohorte: no se reclama un caso "
+        "nombrado específico. Los datos clínicos siguen la revisión "
+        "documentada por Capewell 2015 sobre PAM en Estados Unidos "
+        "1937-2013 (aproximadamente 140-145 casos, subgrupo "
+        "lago/estanque dominante); las características demográficas "
+        "están fijadas en la tabla de distribución del Día 2 "
+        "(PMID 26582886)."
+    )
     return base
 
 
@@ -7326,6 +7440,44 @@ def _build_vignette_031() -> dict[str, Any]:
     base["csf"]["csf_glucose_mg_per_dL"] = 23
     base["labs"]["crp_mg_per_L"] = 92.0
     base["labs"]["procalcitonin_ng_per_mL"] = 2.1
+    # Sync narratives to jittered values (preserve imputation disclosure)
+    base["narrative_en"] = (
+        "A 9-year-old male from the US South region presented with "
+        "a four-day history of fever, headache, and lethargy and "
+        "vomiting following recreational freshwater (lake/pond) "
+        "exposure. On admission temperature was 39.2 C, Glasgow "
+        "Coma Scale 11. CSF showed white cell count 3,220 per "
+        "cubic millimeter (90 percent neutrophils), glucose 23 "
+        "mg/dL, and protein 376 mg/dL. Acute-phase reactants were "
+        "CRP 92 mg/L and procalcitonin 2.1 ng/mL. Treatment per "
+        "CDC PAM protocol was initiated; the patient died of "
+        "refractory cerebral edema. This vignette is a Tier-4 "
+        "within-cohort imputation: no specific named-case is "
+        "claimed. Clinical specifics follow Capewell 2015's "
+        "documented US 1937-2013 review of approximately 140-145 "
+        "cases (lake/pond sub-bucket dominant); demographics are "
+        "locked from the Day-2 distribution table (PMID 26582886)."
+    )
+    base["narrative_es"] = (
+        "Paciente de 9 años de sexo masculino originario de la "
+        "región sur de Estados Unidos, que se presentó con cuatro "
+        "días de fiebre, cefalea y letargia con vómitos tras "
+        "exposición recreativa a agua dulce (lago o estanque). Al "
+        "ingreso la temperatura fue de 39.2 C, escala de Glasgow "
+        "11. El líquido cefalorraquídeo mostró leucocitos 3,220 "
+        "por mm3 (90 por ciento neutrófilos), glucosa 23 mg/dL y "
+        "proteína 376 mg/dL. Los reactantes de fase aguda fueron "
+        "PCR 92 mg/L y procalcitonina 2.1 ng/mL. Se inició el "
+        "protocolo de PAM de los CDC; el paciente falleció por "
+        "edema cerebral refractario. Esta viñeta es una imputación "
+        "de Tier-4 dentro de la cohorte: no se reclama un caso "
+        "nombrado específico. Los datos clínicos siguen la revisión "
+        "documentada por Capewell 2015 sobre PAM en Estados Unidos "
+        "1937-2013 (aproximadamente 140-145 casos, subgrupo "
+        "lago/estanque dominante); las características demográficas "
+        "están fijadas en la tabla de distribución del Día 2 "
+        "(PMID 26582886)."
+    )
     return base
 
 
@@ -7504,6 +7656,46 @@ def _build_vignette_032() -> dict[str, Any]:
     base["csf"]["csf_glucose_mg_per_dL"] = 20
     base["labs"]["crp_mg_per_L"] = 82.0
     base["labs"]["procalcitonin_ng_per_mL"] = 1.7
+    # Sync narratives to jittered values (preserve imputation disclosure)
+    base["narrative_en"] = (
+        "An 11-year-old male from Minnesota presented with a "
+        "five-day history of fever, headache, and somnolence with "
+        "vomiting following lake exposure during the summer "
+        "recreational season. On admission temperature was 39.4 C, "
+        "Glasgow Coma Scale 11. CSF showed white cell count 2,920 "
+        "per cubic millimeter (89 percent neutrophils), glucose 20 "
+        "mg/dL, and protein 348 mg/dL. Acute-phase reactants were "
+        "CRP 82 mg/L and procalcitonin 1.7 ng/mL. CSF PCR confirmed "
+        "Naegleria fowleri at the CDC reference laboratory. CT "
+        "showed diffuse cerebral edema. Treatment per CDC PAM "
+        "protocol was initiated; the patient died. This vignette "
+        "is a within-cohort imputation per Kemble 2012 Minnesota "
+        "northern-tier expansion case-context: demographics are "
+        "locked from the Day-2 distribution table, and clinical "
+        "specifics follow the documented Minnesota lake-exposure "
+        "PAM epidemiology (PMID 22238170)."
+    )
+    base["narrative_es"] = (
+        "Varón de 11 años originario de Minnesota que se presentó "
+        "con cinco días de fiebre, cefalea y somnolencia con "
+        "vómitos tras exposición a un lago durante la temporada "
+        "recreativa de verano. Al ingreso la temperatura fue de "
+        "39.4 C, escala de Glasgow 11. El líquido cefalorraquídeo "
+        "mostró leucocitos 2,920 por mm3 (89 por ciento "
+        "neutrófilos), glucosa 20 mg/dL y proteína 348 mg/dL. Los "
+        "reactantes de fase aguda fueron PCR 82 mg/L y "
+        "procalcitonina 1.7 ng/mL. La PCR del líquido "
+        "cefalorraquídeo para Naegleria fowleri fue positiva en el "
+        "laboratorio de referencia de los CDC. La tomografía mostró "
+        "edema cerebral difuso. Se inició el protocolo de PAM de "
+        "los CDC; el paciente falleció. Esta viñeta es una "
+        "imputación dentro de la cohorte según el contexto del caso "
+        "documentado por Kemble 2012 (expansión septentrional de "
+        "Minnesota): los datos demográficos están fijados en la "
+        "tabla de distribución del Día 2, y las características "
+        "clínicas siguen la epidemiología de PAM con exposición a "
+        "lagos de Minnesota (PMID 22238170)."
+    )
     return base
 
 
@@ -7521,6 +7713,46 @@ def _build_vignette_033() -> dict[str, Any]:
     base["csf"]["csf_glucose_mg_per_dL"] = 15
     base["labs"]["crp_mg_per_L"] = 112.0
     base["labs"]["procalcitonin_ng_per_mL"] = 2.9
+    # Sync narratives to jittered values (preserve imputation disclosure)
+    base["narrative_en"] = (
+        "A 6-year-old male from Minnesota presented with a "
+        "five-day history of fever, headache, and rapid progression "
+        "to stupor with focal deficit following lake exposure "
+        "during the summer recreational season. On admission "
+        "temperature was 39.4 C, Glasgow Coma Scale 7. CSF showed "
+        "white cell count 4,480 per cubic millimeter (89 percent "
+        "neutrophils), glucose 15 mg/dL, and protein 432 mg/dL. "
+        "Acute-phase reactants were CRP 112 mg/L and procalcitonin "
+        "2.9 ng/mL. CSF PCR confirmed Naegleria fowleri at the CDC "
+        "reference laboratory. CT showed diffuse cerebral edema. "
+        "Treatment per CDC PAM protocol was initiated; the patient "
+        "died. This vignette is a within-cohort imputation per "
+        "Kemble 2012 Minnesota northern-tier expansion case-context: "
+        "demographics are locked from the Day-2 distribution table, "
+        "and clinical specifics follow the documented Minnesota "
+        "lake-exposure PAM epidemiology (PMID 22238170)."
+    )
+    base["narrative_es"] = (
+        "Varón de 6 años originario de Minnesota que se presentó "
+        "con cinco días de fiebre, cefalea y progresión rápida a "
+        "estupor con déficit focal tras exposición a un lago "
+        "durante la temporada recreativa de verano. Al ingreso la "
+        "temperatura fue de 39.4 C, escala de Glasgow 7. El líquido "
+        "cefalorraquídeo mostró leucocitos 4,480 por mm3 (89 por "
+        "ciento neutrófilos), glucosa 15 mg/dL y proteína 432 "
+        "mg/dL. Los reactantes de fase aguda fueron PCR 112 mg/L y "
+        "procalcitonina 2.9 ng/mL. La PCR del líquido "
+        "cefalorraquídeo para Naegleria fowleri fue positiva en el "
+        "laboratorio de referencia de los CDC. La tomografía mostró "
+        "edema cerebral difuso. Se inició el protocolo de PAM de "
+        "los CDC; el paciente falleció. Esta viñeta es una "
+        "imputación dentro de la cohorte según el contexto del caso "
+        "documentado por Kemble 2012 (expansión septentrional de "
+        "Minnesota): los datos demográficos están fijados en la "
+        "tabla de distribución del Día 2, y las características "
+        "clínicas siguen la epidemiología de PAM con exposición a "
+        "lagos de Minnesota (PMID 22238170)."
+    )
     return base
 
 
@@ -7538,6 +7770,46 @@ def _build_vignette_034() -> dict[str, Any]:
     base["csf"]["csf_glucose_mg_per_dL"] = 22
     base["labs"]["crp_mg_per_L"] = 88.0
     base["labs"]["procalcitonin_ng_per_mL"] = 1.9
+    # Sync narratives to jittered values (preserve imputation disclosure)
+    base["narrative_en"] = (
+        "A 14-year-old male from Minnesota presented with a "
+        "five-day history of fever, headache, and progressive "
+        "lethargy with neck stiffness following lake exposure "
+        "during the summer recreational season. On admission "
+        "temperature was 39.4 C, Glasgow Coma Scale 11. CSF showed "
+        "white cell count 3,140 per cubic millimeter (89 percent "
+        "neutrophils), glucose 22 mg/dL, and protein 368 mg/dL. "
+        "Acute-phase reactants were CRP 88 mg/L and procalcitonin "
+        "1.9 ng/mL. CSF PCR confirmed Naegleria fowleri at the CDC "
+        "reference laboratory. CT showed diffuse cerebral edema. "
+        "Treatment per CDC PAM protocol was initiated; the patient "
+        "died. This vignette is a within-cohort imputation per "
+        "Kemble 2012 Minnesota northern-tier expansion case-context: "
+        "demographics are locked from the Day-2 distribution table, "
+        "and clinical specifics follow the documented Minnesota "
+        "lake-exposure PAM epidemiology (PMID 22238170)."
+    )
+    base["narrative_es"] = (
+        "Varón de 14 años originario de Minnesota que se presentó "
+        "con cinco días de fiebre, cefalea y letargia progresiva "
+        "con rigidez de nuca tras exposición a un lago durante la "
+        "temporada recreativa de verano. Al ingreso la temperatura "
+        "fue de 39.4 C, escala de Glasgow 11. El líquido "
+        "cefalorraquídeo mostró leucocitos 3,140 por mm3 (89 por "
+        "ciento neutrófilos), glucosa 22 mg/dL y proteína 368 "
+        "mg/dL. Los reactantes de fase aguda fueron PCR 88 mg/L y "
+        "procalcitonina 1.9 ng/mL. La PCR del líquido "
+        "cefalorraquídeo para Naegleria fowleri fue positiva en el "
+        "laboratorio de referencia de los CDC. La tomografía mostró "
+        "edema cerebral difuso. Se inició el protocolo de PAM de "
+        "los CDC; el paciente falleció. Esta viñeta es una "
+        "imputación dentro de la cohorte según el contexto del caso "
+        "documentado por Kemble 2012 (expansión septentrional de "
+        "Minnesota): los datos demográficos están fijados en la "
+        "tabla de distribución del Día 2, y las características "
+        "clínicas siguen la epidemiología de PAM con exposición a "
+        "lagos de Minnesota (PMID 22238170)."
+    )
     return base
 
 
@@ -7717,6 +7989,45 @@ def _build_vignette_035() -> dict[str, Any]:
     base["csf"]["csf_glucose_mg_per_dL"] = 16
     base["labs"]["crp_mg_per_L"] = 104.0
     base["labs"]["procalcitonin_ng_per_mL"] = 2.7
+    # Sync narratives to jittered values (preserve imputation disclosure)
+    base["narrative_en"] = (
+        "A 10-year-old male from Florida presented with a four-day "
+        "history of fever, headache, and stupor with focal deficit "
+        "and papilledema following recreational freshwater (lake) "
+        "exposure. On admission temperature was 39.6 C, Glasgow "
+        "Coma Scale 7. CSF showed white cell count 4,260 per cubic "
+        "millimeter (91 percent neutrophils), glucose 16 mg/dL, "
+        "and protein 418 mg/dL. Acute-phase reactants were CRP 104 "
+        "mg/L and procalcitonin 2.7 ng/mL. CSF PCR confirmed "
+        "Naegleria fowleri at the CDC reference laboratory. CT "
+        "showed diffuse cerebral edema. Treatment per CDC PAM "
+        "protocol was initiated; the patient died. This vignette "
+        "is a within-cohort imputation per Anjum 2021 Florida "
+        "tap-water/lake-context case-set: demographics are locked "
+        "from the Day-2 distribution table, and clinical specifics "
+        "follow the documented Florida PAM epidemiology "
+        "(PMID 34307045)."
+    )
+    base["narrative_es"] = (
+        "Varón de 10 años originario de Florida que se presentó "
+        "con cuatro días de fiebre, cefalea y estupor con déficit "
+        "focal y papiledema tras exposición recreativa a agua "
+        "dulce (lago). Al ingreso la temperatura fue de 39.6 C, "
+        "escala de Glasgow 7. El líquido cefalorraquídeo mostró "
+        "leucocitos 4,260 por mm3 (91 por ciento neutrófilos), "
+        "glucosa 16 mg/dL y proteína 418 mg/dL. Los reactantes de "
+        "fase aguda fueron PCR 104 mg/L y procalcitonina 2.7 "
+        "ng/mL. La PCR del líquido cefalorraquídeo para Naegleria "
+        "fowleri fue positiva en el laboratorio de referencia de "
+        "los CDC. La tomografía mostró edema cerebral difuso. Se "
+        "inició el protocolo de PAM de los CDC; el paciente "
+        "falleció. Esta viñeta es una imputación dentro de la "
+        "cohorte según el contexto del caso documentado por Anjum "
+        "2021 (Florida, exposición a agua de grifo/lago): los "
+        "datos demográficos están fijados en la tabla de "
+        "distribución del Día 2, y las características clínicas "
+        "siguen la epidemiología de PAM de Florida (PMID 34307045)."
+    )
     return base
 
 
@@ -7734,6 +8045,46 @@ def _build_vignette_036() -> dict[str, Any]:
     base["csf"]["csf_glucose_mg_per_dL"] = 21
     base["labs"]["crp_mg_per_L"] = 84.0
     base["labs"]["procalcitonin_ng_per_mL"] = 1.8
+    # Sync narratives to jittered values (preserve imputation disclosure)
+    base["narrative_en"] = (
+        "A 12-year-old female from Florida presented with a "
+        "four-day history of fever, headache, and somnolence with "
+        "neck stiffness following recreational freshwater (lake) "
+        "exposure. On admission temperature was 39.6 C, Glasgow "
+        "Coma Scale 11. CSF showed white cell count 3,080 per "
+        "cubic millimeter (91 percent neutrophils), glucose 21 "
+        "mg/dL, and protein 356 mg/dL. Acute-phase reactants were "
+        "CRP 84 mg/L and procalcitonin 1.8 ng/mL. CSF PCR "
+        "confirmed Naegleria fowleri at the CDC reference "
+        "laboratory. CT showed diffuse cerebral edema. Treatment "
+        "per CDC PAM protocol was initiated; the patient died. "
+        "This vignette is a within-cohort imputation per Anjum "
+        "2021 Florida tap-water/lake-context case-set: demographics "
+        "are locked from the Day-2 distribution table, and clinical "
+        "specifics follow the documented Florida PAM epidemiology "
+        "(PMID 34307045)."
+    )
+    base["narrative_es"] = (
+        "Adolescente femenina de 12 años originaria de Florida que "
+        "se presentó con cuatro días de fiebre, cefalea y "
+        "somnolencia con rigidez de nuca tras exposición recreativa "
+        "a agua dulce (lago). Al ingreso la temperatura fue de "
+        "39.6 C, escala de Glasgow 11. El líquido cefalorraquídeo "
+        "mostró leucocitos 3,080 por mm3 (91 por ciento "
+        "neutrófilos), glucosa 21 mg/dL y proteína 356 mg/dL. Los "
+        "reactantes de fase aguda fueron PCR 84 mg/L y "
+        "procalcitonina 1.8 ng/mL. La PCR del líquido "
+        "cefalorraquídeo para Naegleria fowleri fue positiva en el "
+        "laboratorio de referencia de los CDC. La tomografía mostró "
+        "edema cerebral difuso. Se inició el protocolo de PAM de "
+        "los CDC; la paciente falleció. Esta viñeta es una "
+        "imputación dentro de la cohorte según el contexto del caso "
+        "documentado por Anjum 2021 (Florida, exposición a agua de "
+        "grifo/lago): los datos demográficos están fijados en la "
+        "tabla de distribución del Día 2, y las características "
+        "clínicas siguen la epidemiología de PAM de Florida "
+        "(PMID 34307045)."
+    )
     return base
 
 
@@ -7751,6 +8102,45 @@ def _build_vignette_037() -> dict[str, Any]:
     base["csf"]["csf_glucose_mg_per_dL"] = 13
     base["labs"]["crp_mg_per_L"] = 124.0
     base["labs"]["procalcitonin_ng_per_mL"] = 3.2
+    # Sync narratives to jittered values (preserve imputation disclosure)
+    base["narrative_en"] = (
+        "A 15-year-old male from Florida presented with a four-day "
+        "history of fever, headache, and rapid neurological "
+        "deterioration to stupor following recreational freshwater "
+        "(lake) exposure. On admission temperature was 39.6 C, "
+        "Glasgow Coma Scale 7. CSF showed white cell count 4,640 "
+        "per cubic millimeter (91 percent neutrophils), glucose 13 "
+        "mg/dL, and protein 458 mg/dL. Acute-phase reactants were "
+        "CRP 124 mg/L and procalcitonin 3.2 ng/mL. CSF PCR "
+        "confirmed Naegleria fowleri at the CDC reference "
+        "laboratory. CT showed diffuse cerebral edema. Treatment "
+        "per CDC PAM protocol was initiated; the patient died. "
+        "This vignette is a within-cohort imputation per Anjum "
+        "2021 Florida tap-water/lake-context case-set: demographics "
+        "are locked from the Day-2 distribution table, and clinical "
+        "specifics follow the documented Florida PAM epidemiology "
+        "(PMID 34307045)."
+    )
+    base["narrative_es"] = (
+        "Varón de 15 años originario de Florida que se presentó "
+        "con cuatro días de fiebre, cefalea y deterioro neurológico "
+        "rápido hasta estupor tras exposición recreativa a agua "
+        "dulce (lago). Al ingreso la temperatura fue de 39.6 C, "
+        "escala de Glasgow 7. El líquido cefalorraquídeo mostró "
+        "leucocitos 4,640 por mm3 (91 por ciento neutrófilos), "
+        "glucosa 13 mg/dL y proteína 458 mg/dL. Los reactantes de "
+        "fase aguda fueron PCR 124 mg/L y procalcitonina 3.2 "
+        "ng/mL. La PCR del líquido cefalorraquídeo para Naegleria "
+        "fowleri fue positiva en el laboratorio de referencia de "
+        "los CDC. La tomografía mostró edema cerebral difuso. Se "
+        "inició el protocolo de PAM de los CDC; el paciente "
+        "falleció. Esta viñeta es una imputación dentro de la "
+        "cohorte según el contexto del caso documentado por Anjum "
+        "2021 (Florida, exposición a agua de grifo/lago): los "
+        "datos demográficos están fijados en la tabla de "
+        "distribución del Día 2, y las características clínicas "
+        "siguen la epidemiología de PAM de Florida (PMID 34307045)."
+    )
     return base
 
 
