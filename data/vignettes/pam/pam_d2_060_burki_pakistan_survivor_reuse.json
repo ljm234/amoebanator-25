@@ -101,7 +101,7 @@
     ],
     "cohen_kappa": 0.99,
     "disagreement_resolution": null,
-    "anchoring_documentation": "Anchored to Burki AMK et al. Emerging Infectious Diseases 2024 (PMID 38526236). Demographics: 26 years male, Karachi, PK. Stage metadata: clinical_stage=mid, exposure_certainty=definite, diagnostic_confirmation=PCR (CDC reference laboratory CSF Naegleria fowleri), outcome=survived. CSF and imaging within published case ranges; vitals imputed from PAM presentation patterns documented in CDC PAM case reviews.",
+    "anchoring_documentation": "methodology=day1_pmid_reuse; Anchored to Burki AMK et al. Emerging Infectious Diseases 2024 (PMID 38526236). Demographics: 26 years male, Karachi, PK. Stage metadata: clinical_stage=mid, exposure_certainty=definite, diagnostic_confirmation=PCR (CDC reference laboratory CSF Naegleria fowleri), outcome=survived. CSF and imaging within published case ranges; vitals imputed from PAM presentation patterns documented in CDC PAM case reviews.",
     "inclusion_decision": "include"
   },
   "literature_anchors": [

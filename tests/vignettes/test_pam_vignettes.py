@@ -1042,3 +1042,89 @@ def test_wave2_case_id_format(vid, wave2_vignettes):
         f"v{vid} case_id {case_id!r} missing journal_short_code "
         f"{journal_short!r}"
     )
+
+
+# ======================================================================
+# Day 2 wave 2 commit 5.2.2 lock-in tests (tag v2.2.2)
+# ----------------------------------------------------------------------
+# Three tests added by Commit 5.2.2 in response to the forensic audit
+# verdict (methodology tag NOT APPLIED, GCS variance NOT APPLIED, CSF
+# WBC PARTIAL). These lock the three spec items into CI so any future
+# regression in methodology classification, stage-GCS spread, or CSF
+# WBC tail coverage fails before merge.
+# ======================================================================
+
+_WAVE2_VALID_METHODOLOGY_CLASSES = {
+    "primary_source_direct",
+    "day1_pmid_reuse",
+    "tier_3_imputation",
+    "tier_4_imputation",
+}
+
+
+@pytest.mark.parametrize("vid", _WAVE2_IDS)
+def test_wave2_methodology_tag_present(vid, wave2_vignettes):
+    """Each wave-2 entry must carry a methodology=<class>; prefix at the
+    start of adjudication.anchoring_documentation, with class drawn from
+    the four canonical methodology categories."""
+    anchoring = wave2_vignettes[vid]["data"]["adjudication"][
+        "anchoring_documentation"
+    ]
+    m = re.match(r"^methodology=([a-z_0-9]+);\s+", anchoring)
+    assert m, (
+        f"v{vid} adjudication missing leading 'methodology=<class>; ' prefix; "
+        f"first 80 chars: {anchoring[:80]!r}"
+    )
+    cls = m.group(1)
+    assert cls in _WAVE2_VALID_METHODOLOGY_CLASSES, (
+        f"v{vid} methodology={cls!r} not in valid classes "
+        f"{sorted(_WAVE2_VALID_METHODOLOGY_CLASSES)}"
+    )
+
+
+def test_wave2_gcs_distribution_spread(wave2_vignettes, day2_distribution):
+    """Mid-stage wave-2 GCS values must span >= 5 distinct levels across
+    {9, 10, 11, 12, 13}, and late-stage must span >= 5 distinct levels
+    across {4, 5, 6, 7, 8}, per Commit 5.2.2 spec maximizing variance."""
+    by_id = {s["vignette_id"]: s for s in day2_distribution}
+    mid: list[int] = []
+    late: list[int] = []
+    for vid in _WAVE2_IDS:
+        spec = by_id[vid]
+        gcs = wave2_vignettes[vid]["data"]["vitals"]["glasgow_coma_scale"]
+        if spec["stage"] == "mid":
+            mid.append(gcs)
+        elif spec["stage"] == "late":
+            late.append(gcs)
+    assert len(set(mid)) >= 5, (
+        f"Mid-stage wave-2 GCS distribution has only {len(set(mid))} "
+        f"distinct values: {sorted(set(mid))}; spec requires >= 5 across "
+        f"{{9,10,11,12,13}}"
+    )
+    assert len(set(late)) >= 5, (
+        f"Late-stage wave-2 GCS distribution has only {len(set(late))} "
+        f"distinct values: {sorted(set(late))}; spec requires >= 5 across "
+        f"{{4,5,6,7,8}}"
+    )
+
+
+def test_wave2_csf_wbc_range_extremes(wave2_vignettes):
+    """Wave-2 CSF WBC must include >= 3 entries below 2,000 AND >= 3
+    entries at or above 4,500, per Commit 5.2.2 spec maximizing the
+    low- and high-tail extremes documented in PAM cohort epidemiology."""
+    wbcs = [
+        wave2_vignettes[vid]["data"]["csf"]["csf_wbc_per_mm3"]
+        for vid in _WAVE2_IDS
+    ]
+    below_2000 = sum(1 for w in wbcs if w < 2000)
+    at_or_above_4500 = sum(1 for w in wbcs if w >= 4500)
+    assert below_2000 >= 3, (
+        f"Wave-2 CSF WBC has only {below_2000} entries below 2,000; "
+        f"spec requires >= 3 (extreme low tail). All values: "
+        f"{sorted(wbcs)}"
+    )
+    assert at_or_above_4500 >= 3, (
+        f"Wave-2 CSF WBC has only {at_or_above_4500} entries at or above "
+        f"4,500; spec requires >= 3 (extreme high tail). All values: "
+        f"{sorted(wbcs)}"
+    )
