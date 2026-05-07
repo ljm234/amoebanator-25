@@ -18,14 +18,14 @@
     "gram_negative": 1
   },
   "age_distribution": {
-    "adult_18_50": 13,
-    "elderly_50_plus": 11,
+    "adult_18_50": 12,
+    "elderly_50_plus": 12,
     "pediatric_under_5": 5,
     "pediatric_5_18": 1
   },
   "sex_distribution": {
-    "male": 14,
-    "female": 16
+    "male": 16,
+    "female": 14
   },
   "geography_distribution": {
     "other_global": 15,
@@ -65,11 +65,11 @@
     "PMID_15494903_Tunkel_2004_IDSA_bacterial_meningitis_guidelines",
     "PMID_26652862_Bijlsma_2016_Lancet_Infect_Dis_Netherlands_pneumococcal",
     "PMID_11873028_Mylonakis_2002_Medicine_Listeria_pregnancy",
-    "PMID_18626302_Heckenberg_2008_Medicine_NM_adult_258_cases",
-    "PMID_32935747_Soeters_2020_MMWR_CDC_ABCs_Hib_NM_surveillance"
+    "PMID_18626301_Heckenberg_2008_Medicine_NM_adult_258_cases",
+    "PMID_32935747_Soeters_2020_MMWR_CDC_ABCs_Hib_NM_surveillance",
+    "PMID_27831604_Davalos_2016_RPMESP_Lima_pediatric_pneumococcal_5_3_2_pilot"
   ],
   "diagnostic_ambiguity_count": 5,
-  "diagnostic_ambiguity_type": "partial_antibiotic_pretreatment_sterile_cultures",
   "peru_anchor_count": 5,
   "peru_anchor_distribution": {
     "peru_lima_coast": 2,
@@ -78,5 +78,7 @@
     "peru_tumbes": 1
   },
   "freshwater_exposure_within_14d_for_all": false,
-  "adjudication_state": "pre_adjudication_hold_for_revision"
+  "adjudication_state": "pre_adjudication_hold_for_revision",
+  "pilots_validated_5_3_2": 3,
+  "diagnostic_ambiguity_type": "partial_antibiotic_pretreatment_sterile_cultures"
 }

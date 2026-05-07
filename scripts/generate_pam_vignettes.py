@@ -1561,12 +1561,16 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
             "verification_confidence=0.85 pre-direct-fetch."
         ),
     },
-    "18626302": {
-        "pmid": "18626302",
-        "doi": "10.1097/MD.0b013e3181775fcc",
-        "authors_short": "Heckenberg SG et al.",
+    # 18626302 ENTRY REMOVED in commit 5.3.2: was a typo for the
+    # Heckenberg 2008 Medicine 87(4):185-192 paper. Correct PubMed ID is
+    # 18626301 (verified PubMed UI 2026-05-07 via Claude web research v4).
+    # Replacement entry below with primary-source verification.
+    "18626301": {
+        "pmid": "18626301",
+        "doi": "10.1097/MD.0b013e318180a6b4",
+        "authors_short": "Heckenberg SGB et al.",
         "authors_full": [
-            "Heckenberg SG", "de Gans J", "Brouwer MC", "Weisfelt M",
+            "Heckenberg SGB", "de Gans J", "Brouwer MC", "Weisfelt M",
             "Piet JR", "Spanjaard L", "van der Ende A", "van de Beek D",
         ],
         "journal": "Medicine (Baltimore)",
@@ -1575,17 +1579,22 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "volume": "87",
         "issue": "4",
         "pages": "185-192",
-        "title": "Clinical features, outcome, and meningococcal genotype in 258 adults with meningococcal meningitis",
+        "title": "Clinical features, outcome, and meningococcal genotype in 258 adults with meningococcal meningitis: a prospective cohort study",
         "anchor_type": "cohort",
         "anchor_subtype": "neisseria_meningitidis_adult_258_cases",
-        "verification_confidence": 0.85,
-        "verification_method": "consensus_anchor_subphase_1_3_initial",
-        "last_verified_date": "2026-05-06",
+        "verification_confidence": 0.95,
+        "verification_method": "claude_web_pubmed_ui_v4_2026_05_07",
+        "last_verified_date": "2026-05-07",
         "caveat": (
-            "Adult meningococcal meningitis cohort of 258 cases. Anchor "
-            "for Class 2 NM-adult vignettes; documents petechial rash "
-            "62-81%, Waterhouse-Friderichsen syndrome, asplenia risk. "
-            "verification_confidence=0.85 pre-direct-fetch."
+            "Adult meningococcal meningitis prospective Netherlands "
+            "cohort of 258 cases (1998-2002). Headache 92 percent, neck "
+            "stiffness 76 percent, fever on admission 53 percent, rash "
+            "46 percent (petechial in 81 percent of those = 37 percent "
+            "overall), classic triad in 21 percent, focal cerebral "
+            "deficits 11 percent. Median CSF leukocyte count 5,730/mm3 "
+            "(IQR 1,820-12,225). Mortality 7 percent. ERRATA: "
+            "previously stored as PMID 18626302 in 5.3.1 PMID_REGISTRY; "
+            "corrected to canonical 18626301 in 5.3.2."
         ),
     },
     "32935747": {
@@ -1723,6 +1732,163 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
             "for Class 3 enterovirus + arboviral + HSV-2/VZV vignettes; "
             "documents pathogen-specific imaging and CSF profiles. "
             "verification_confidence=0.85 pre-direct-fetch."
+        ),
+    },
+    # ========================================================================
+    # Subphase 1.3 commit 5.3.2 pilot anchors (added 2026-05-07)
+    # ------------------------------------------------------------------------
+    # Five new primary-source-direct anchors verified by Claude web research
+    # v4 against PubMed UI on 2026-05-07. Used as direct primary sources for
+    # the 6 pilot vignettes (bact_062, bact_064, bact_082, vir_092, vir_105,
+    # vir_118) per Section 5 slot mapping protocol of the 5.3.2 prompt.
+    # verification_confidence=0.95 (web v4 PubMed UI verified).
+    # ========================================================================
+    "27831604": {
+        "pmid": "27831604",
+        "doi": "10.17843/rpmesp.2016.333.2317",
+        "authors_short": "Davalos L et al.",
+        "authors_full": [
+            "Davalos L", "Terrazas Y", "Quintana A", "Egoavil M",
+            "Sedano K", "Castillo ME", "Reyes I", "Chaparro E",
+            "Silva W", "Campos F", "Saenz A", "Hernandez R",
+            "del Aguila O", "Guillen Pinto D", "Ochoa TJ",
+        ],
+        "journal": "Rev Peru Med Exp Salud Publica",
+        "journal_short_code": "RPMESP",
+        "year": 2016,
+        "volume": "33",
+        "issue": "3",
+        "pages": "425-431",
+        "title": "Caracteristicas epidemiologicas, clinicas y bacteriologicas de meningitis neumococica en pacientes pediatricos de Lima, Peru",
+        "anchor_type": "cohort",
+        "anchor_subtype": "peru_lima_pediatric_pneumococcal_meningitis_2006_2011",
+        "verification_confidence": 0.95,
+        "verification_method": "claude_web_pubmed_ui_v4_2026_05_07",
+        "last_verified_date": "2026-05-07",
+        "caveat": (
+            "44-episode pediatric pneumococcal meningitis multicenter "
+            "Lima cohort 2006-2011 (UPCH + HNCH + INSN + HEP + HNERM + "
+            "HNDM). 68.2 percent of cases were under 2 years of age. "
+            "Case fatality rate 32.6 percent. 92.9 percent of fatal "
+            "cases were under 2 years. Malnutrition associated with "
+            "fatal outcome. 64.3 percent of fatal cases died within "
+            "first 48 hours. Anchor for Class 2 SP-pediatric Lima Peru "
+            "primary-source vignettes (Subphase 1.3 commit 5.3.2)."
+        ),
+    },
+    "16675036": {
+        "pmid": "16675036",
+        "doi": "10.1016/j.antiviral.2006.04.002",
+        "authors_short": "Whitley RJ",
+        "authors_full": ["Whitley RJ"],
+        "journal": "Antiviral Res",
+        "journal_short_code": "Antiviral Res",
+        "year": 2006,
+        "volume": "71",
+        "issue": "2-3",
+        "pages": "141-148",
+        "title": "Herpes simplex encephalitis: adolescents and adults",
+        "anchor_type": "review",
+        "anchor_subtype": "hsv_encephalitis_adolescents_adults_review_acyclovir_protocol",
+        "verification_confidence": 0.95,
+        "verification_method": "claude_web_pubmed_ui_v4_2026_05_07",
+        "last_verified_date": "2026-05-07",
+        "caveat": (
+            "Comprehensive HSE review for adolescents and adults. "
+            "Acyclovir 10 mg/kg every 8 hours for 21 days protocol. "
+            "Even with early acyclovir, approximately two-thirds of "
+            "survivors have significant residual neurologic deficits. "
+            "Untreated mortality 70 percent. PCR is gold standard for "
+            "diagnosis; false negatives can occur early after disease "
+            "onset. MRI demonstrates temporal lobe edema and hemorrhage. "
+            "EEG shows spike-and-slow-wave activity over temporal "
+            "lobes. Anchor for Class 3 HSV-1 adult primary-source "
+            "vignettes (Subphase 1.3 commit 5.3.2). Coexists with "
+            "PMID 16517432 (Whitley 2006 Lancet Infect Dis general "
+            "HSV review)."
+        ),
+    },
+    "17668054": {
+        "pmid": "17668054",
+        "doi": "10.1371/journal.pone.0000674",
+        "authors_short": "Michos AG et al.",
+        "authors_full": [
+            "Michos AG", "Syriopoulou VP", "Hadjichristodoulou C",
+            "Daikos GL", "Lagona E", "Douridas P", "Mostrou G",
+            "Theodoridou M",
+        ],
+        "journal": "PLoS One",
+        "journal_short_code": "PLoSOne",
+        "year": 2007,
+        "volume": "2",
+        "issue": "7",
+        "pages": "e674",
+        "title": "Aseptic meningitis in children: analysis of 506 cases",
+        "anchor_type": "cohort",
+        "anchor_subtype": "pediatric_aseptic_meningitis_pmn_predominant_enterovirus_cohort",
+        "verification_confidence": 0.95,
+        "verification_method": "claude_web_pubmed_ui_v4_2026_05_07",
+        "last_verified_date": "2026-05-07",
+        "caveat": (
+            "506-child aseptic meningitis cohort Athens Greece (Aghia "
+            "Sophia Children's Hospital tertiary center serving "
+            "approximately 70 percent of Athens metropolitan area "
+            "pediatric meningitis), Jan 1994 to Dec 2002. Median age 5 "
+            "years. Annual incidence 17 per 100,000 in under 14y. "
+            "Summer 38 percent (Jun-Aug), autumn 24 percent, peak "
+            "month June. Symptoms: fever 98 percent, headache 94 "
+            "percent, vomiting 67 percent, neck stiffness 60 percent, "
+            "lethargy or irritation 46 percent, seizures 2.3 percent. "
+            "Median CSF cell count 201 per mm3. CRITICAL ANCHOR: "
+            "polymorphonuclear predominance greater than 50 percent in "
+            "58.3 percent of EV PCR-positive cases (47/96 tested EV "
+            "PCR-positive = 48.9 percent). Contradicts textbook "
+            "viral-CSF-lymphocytic simplification. Anchor for Class 3 "
+            "enterovirus pediatric PMN-predominant ambiguity case "
+            "(Subphase 1.3 commit 5.3.2). PubMed canonical 2(7); PLOS "
+            "website cites 2(8)."
+        ),
+    },
+    "38300858": {
+        "pmid": "38300858",
+        "doi": "10.15585/mmwr.mm7304a4",
+        "authors_short": "Munayco CV et al.",
+        "authors_full": [
+            "Munayco CV", "Valderrama Rosales BY",
+            "Mateo Lizarbe SY", "Yon Fabian CR",
+            "Pena Sanchez R", "Vasquez Sanchez CH",
+            "Garcia MP", "Padilla-Rojas C", "Suarez V",
+            "Sanchez-Gonzalez L", "Jones FK", "Kohatsu L",
+            "Adams LE", "Morgan J", "Paz-Bailey G",
+        ],
+        "journal": "MMWR Morb Mortal Wkly Rep",
+        "journal_short_code": "MMWR",
+        "year": 2024,
+        "volume": "73",
+        "issue": "4",
+        "pages": "86-88",
+        "title": "Notes from the Field: Dengue Outbreak - Peru, 2023",
+        "anchor_type": "surveillance",
+        "anchor_subtype": "peru_2023_dengue_outbreak_post_cyclone_yaku_denv2_circulating",
+        "verification_confidence": 0.95,
+        "verification_method": "claude_web_pubmed_ui_v4_2026_05_07",
+        "last_verified_date": "2026-05-07",
+        "caveat": (
+            "Peru 2023 dengue outbreak surveillance. 222,620 dengue "
+            "cases reported in first 30 weeks of 2023 (exceeding "
+            "previous 5-year average by approximately 10x). 381 "
+            "dengue-associated deaths. Lima metropolitan area showed "
+            "substantially higher incidence vs historical baseline "
+            "(where few locally-acquired cases observed). Outbreak "
+            "linked to Cyclone Yaku (March 2023) and coastal El Nino. "
+            "DENV-2 serotype documented as established circulating "
+            "serotype in Peru since 2019. Annual case range 2017-2022 "
+            "was 4,698 to 68,290; 2023 exceeded all prior years "
+            "dramatically. Anchor for Class 3 dengue Peru "
+            "primary-source vignettes (Subphase 1.3 commit 5.3.2). "
+            "Note: exact serotype split (DENV-1 vs DENV-2 vs DENV-3) "
+            "not in MMWR Notes-from-the-Field abstract; full-text "
+            "verification deferred per USER ASSIGNMENT 5."
         ),
     },
 }
@@ -2672,8 +2838,8 @@ BACTERIAL_DISTRIBUTION: list[dict[str, Any]] = [
         "pathogen": "S_pneumoniae",
         "cluster": "bacterial_meningitis_community",
         "pmid": "15509818",
-        "age_years": 47,
-        "age_label": "47 years",
+        "age_years": 55,
+        "age_label": "55 years",
         "sex": "female",
         "geography_label": "Netherlands",
         "geography_region": "other_global",
@@ -2682,7 +2848,8 @@ BACTERIAL_DISTRIBUTION: list[dict[str, Any]] = [
         "risk_factors": ["none"],
         "diagnostic_ambiguity": False,
         "freshwater_exposure_within_14d": False,
-        "methodology": "tier_3_imputation_within_cohort_review",
+        "methodology": "primary_source_direct",
+        "pilot_status": "5_3_2_pilot_validated_2026_05_07",
     },
     {
         "vignette_id": 63,
@@ -2707,10 +2874,10 @@ BACTERIAL_DISTRIBUTION: list[dict[str, Any]] = [
         "filename": "bact_064_sp_lima_pediatric.json",
         "pathogen": "S_pneumoniae",
         "cluster": "bacterial_meningitis_pediatric",
-        "pmid": "15494903",
-        "age_years": 4,
-        "age_label": "4 years",
-        "sex": "female",
+        "pmid": "27831604",
+        "age_years": 1,
+        "age_label": "18 months",
+        "sex": "male",
         "geography_label": "Lima, PE",
         "geography_region": "peru_lima_coast",
         "stage": "mid",
@@ -2718,7 +2885,8 @@ BACTERIAL_DISTRIBUTION: list[dict[str, Any]] = [
         "risk_factors": ["age_extreme"],
         "diagnostic_ambiguity": False,
         "freshwater_exposure_within_14d": False,
-        "methodology": "tier_4_imputation_idsa_guideline_anchored",
+        "methodology": "primary_source_direct",
+        "pilot_status": "5_3_2_pilot_validated_2026_05_07",
     },
     {
         "vignette_id": 65,
@@ -3036,10 +3204,10 @@ BACTERIAL_DISTRIBUTION: list[dict[str, Any]] = [
         "filename": "bact_082_nm_college_outbreak.json",
         "pathogen": "N_meningitidis",
         "cluster": "bacterial_meningitis_community",
-        "pmid": "18626302",
-        "age_years": 19,
-        "age_label": "19 years",
-        "sex": "female",
+        "pmid": "18626301",
+        "age_years": 24,
+        "age_label": "24 years",
+        "sex": "male",
         "geography_label": "Netherlands",
         "geography_region": "other_global",
         "stage": "mid",
@@ -3047,7 +3215,9 @@ BACTERIAL_DISTRIBUTION: list[dict[str, Any]] = [
         "risk_factors": ["none"],
         "diagnostic_ambiguity": False,
         "freshwater_exposure_within_14d": False,
-        "methodology": "tier_3_imputation_within_cohort_review",
+        "methodology": "primary_source_direct",
+        "pilot_status": "5_3_2_pilot_validated_2026_05_07",
+        "errata_note": "PMID 18626302 in 5.3.1 lock was a typo; corrected to 18626301 in 5.3.2",
     },
     {
         "vignette_id": 83,
@@ -3245,18 +3415,19 @@ VIRAL_DISTRIBUTION: list[dict[str, Any]] = [
         "filename": "vir_092_hsv1_adult.json",
         "pathogen": "HSV1",
         "cluster": "viral_encephalitis_HSV1",
-        "pmid": "29490180",
-        "age_years": 56,
-        "age_label": "56 years",
+        "pmid": "16675036",
+        "age_years": 42,
+        "age_label": "42 years",
         "sex": "male",
-        "geography_label": "US South region",
-        "geography_region": "us_south",
+        "geography_label": "United States",
+        "geography_region": "other_global",
         "stage": "mid",
         "outcome": "survived",
         "diagnostic_ambiguity": False,
         "freshwater_exposure_within_14d": False,
         "imaging_mandate": "mesial_temporal_t2_flair_hyperintensity",
-        "methodology": "tier_3_imputation_within_review",
+        "methodology": "primary_source_direct",
+        "pilot_status": "5_3_2_pilot_validated_2026_05_07",
     },
     {
         "vignette_id": 93,
@@ -3481,17 +3652,19 @@ VIRAL_DISTRIBUTION: list[dict[str, Any]] = [
         "filename": "vir_105_enterovirus_pediatric.json",
         "pathogen": "enterovirus",
         "cluster": "viral_meningitis_enteroviral",
-        "pmid": "29490180",
-        "age_years": 4,
-        "age_label": "4 years",
+        "pmid": "17668054",
+        "age_years": 5,
+        "age_label": "5 years",
         "sex": "male",
-        "geography_label": "US South region",
-        "geography_region": "us_south",
+        "geography_label": "Greece",
+        "geography_region": "other_global",
         "stage": "mid",
         "outcome": "survived",
-        "diagnostic_ambiguity": False,
+        "diagnostic_ambiguity": True,
+        "ambiguity_type": "csf_neutrophil_predominant_in_confirmed_viral",
         "freshwater_exposure_within_14d": False,
-        "methodology": "tier_3_imputation_within_review",
+        "methodology": "primary_source_direct",
+        "pilot_status": "5_3_2_pilot_validated_2026_05_07",
     },
     {
         "vignette_id": 106,
@@ -3512,7 +3685,7 @@ VIRAL_DISTRIBUTION: list[dict[str, Any]] = [
     },
     {
         "vignette_id": 107,
-        "filename": "vir_107_enterovirus_young_adult_ambiguity.json",
+        "filename": "vir_107_enterovirus_young_adult.json",
         "pathogen": "enterovirus",
         "cluster": "viral_meningitis_enteroviral",
         "pmid": "29490180",
@@ -3523,10 +3696,10 @@ VIRAL_DISTRIBUTION: list[dict[str, Any]] = [
         "geography_region": "other_global",
         "stage": "mid",
         "outcome": "survived",
-        "diagnostic_ambiguity": True,
-        "ambiguity_type": "enterovirus_with_initial_neutrophilic_csf_bacterial_mimic",
+        "diagnostic_ambiguity": False,
         "freshwater_exposure_within_14d": False,
         "methodology": "tier_3_imputation_within_review",
+        "ambiguity_swap_note": "5.3.2: PMN-predominant ambiguity moved to v105 (Michos 2007 primary anchor); v107 now standard EV imputation",
     },
     {
         "vignette_id": 108,
@@ -3709,9 +3882,9 @@ VIRAL_DISTRIBUTION: list[dict[str, Any]] = [
         "filename": "vir_118_dengue_loreto.json",
         "pathogen": "dengue",
         "cluster": "viral_arboviral_dengue",
-        "pmid": "29490180",
-        "age_years": 28,
-        "age_label": "28 years",
+        "pmid": "38300858",
+        "age_years": 32,
+        "age_label": "32 years",
         "sex": "female",
         "geography_label": "Loreto, PE",
         "geography_region": "peru_loreto_amazon",
@@ -3720,7 +3893,8 @@ VIRAL_DISTRIBUTION: list[dict[str, Any]] = [
         "diagnostic_ambiguity": False,
         "freshwater_exposure_within_14d": False,
         "platelet_mandate_below_per_uL": 150000,
-        "methodology": "tier_4_imputation_peru_dengue_2024_anchored",
+        "methodology": "primary_source_direct",
+        "pilot_status": "5_3_2_pilot_validated_2026_05_07",
     },
     {
         "vignette_id": 119,
