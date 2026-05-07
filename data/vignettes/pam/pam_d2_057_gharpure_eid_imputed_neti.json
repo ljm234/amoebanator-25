@@ -32,7 +32,7 @@
     "heart_rate_bpm": 110,
     "systolic_bp_mmHg": 124,
     "diastolic_bp_mmHg": 76,
-    "glasgow_coma_scale": 11,
+    "glasgow_coma_scale": 12,
     "oxygen_saturation_pct": 96,
     "respiratory_rate_breaths_per_min": 20
   },
@@ -50,19 +50,19 @@
     "wbc_blood_per_uL": 17000,
     "platelets_per_uL": 252000,
     "alt_ast_U_per_L": null,
-    "crp_mg_per_L": 80.0,
-    "procalcitonin_ng_per_mL": 1.7,
+    "crp_mg_per_L": 58.0,
+    "procalcitonin_ng_per_mL": 1.4,
     "serum_sodium_mEq_per_L": 137
   },
   "csf": {
-    "opening_pressure_cmH2O": 28.0,
-    "csf_wbc_per_mm3": 2880,
+    "opening_pressure_cmH2O": 26.0,
+    "csf_wbc_per_mm3": 2180,
     "csf_neutrophil_pct": 89,
     "csf_lymphocyte_pct": 10,
     "csf_eosinophil_pct": 1,
-    "csf_glucose_mg_per_dL": 23,
-    "csf_protein_mg_per_dL": 338,
-    "csf_lactate_mmol_per_L": 6.4,
+    "csf_glucose_mg_per_dL": 28,
+    "csf_protein_mg_per_dL": 242,
+    "csf_lactate_mmol_per_L": 5.2,
     "csf_ada_U_per_L": null,
     "csf_crag_lfa_result": "negative",
     "csf_wet_mount_motile_amoebae": "not_done",
@@ -94,7 +94,7 @@
     ],
     "cohen_kappa": 0.99,
     "disagreement_resolution": null,
-    "anchoring_documentation": "Anchored to Gharpure et al. Emerg Infect Dis 2021 (PMID 33350926). Demographics: 38 years male, US South region. Stage metadata: clinical_stage=mid, exposure_certainty=definite, diagnostic_confirmation=PCR (CDC reference laboratory CSF Naegleria fowleri), outcome=fatal. CSF and imaging within published case ranges; vitals imputed from PAM presentation patterns documented in CDC PAM case reviews.",
+    "anchoring_documentation": "methodology=tier_4_imputation; Anchored to Gharpure et al. Emerg Infect Dis 2021 (PMID 33350926). Demographics: 38 years male, US South region. Stage metadata: clinical_stage=mid, exposure_certainty=definite, diagnostic_confirmation=PCR (CDC reference laboratory CSF Naegleria fowleri), outcome=fatal. CSF and imaging within published case ranges; vitals imputed from PAM presentation patterns documented in CDC PAM case reviews.",
     "inclusion_decision": "include"
   },
   "literature_anchors": [
@@ -111,6 +111,6 @@
     "schema_version": "2.0",
     "inclusion_decision_rationale": "Day 2 vignette 57 of 60 (v21-v60 set) for Subphase 1.2 PAM corpus. Cluster: nasal_irrigation. Atypical type: none. Outcome: fatal. Anchored to PMID 33350926 (Gharpure et al., Emerg Infect Dis 2021). Sub-fields populated from published case where available; vitals and partial labs IMPUTED_FROM_LITERATURE consistent with mid-stage PAM clinical patterns documented in CDC PAM case reviews. Treatment per CDC six-drug protocol (amphotericin B, miltefosine, dexamethasone, fluconazole, azithromycin, rifampin); fatal outcome despite full regimen. Citation caveat: First author corrected from Cope to Gharpure. Documents northward range expansion 1978-2018."
   },
-  "narrative_es": "Varón de 38 años originario de la región sur de Estados Unidos que se presentó con cinco días de fiebre, cefalea frontal, congestión nasal y somnolencia progresiva tras lavados nasales diarios con neti pot y agua de grifo por síntomas sinusales crónicos. Al ingreso la temperatura fue de 39.1 C, escala de Glasgow 11. El líquido cefalorraquídeo mostró presión de apertura 28 cmH2O, leucocitos 2,880 por mm3 (89 por ciento neutrófilos), glucosa 23 mg/dL y proteína 338 mg/dL. Los reactantes de fase aguda fueron PCR 80 mg/L y procalcitonina 1.7 ng/mL. La PCR del líquido cefalorraquídeo para Naegleria fowleri fue positiva en el laboratorio de referencia de los CDC. Se inició el protocolo de PAM de los CDC; el paciente falleció. Esta viñeta es una imputación de Tier-4 dentro de la cohorte: no se reclama un caso nombrado específico. Los datos clínicos siguen la revisión de vigilancia estadounidense 2010-2019 de Gharpure 2021 EID (subgrupo de irrigación nasal); las características demográficas están fijadas en la tabla de distribución del Día 2 (PMID 33350926).",
-  "narrative_en": "A 38-year-old male from the US South region presented with five days of fever, frontal headache, nasal congestion, and progressive somnolence after daily neti-pot tap-water rinses for chronic sinus symptoms. On admission temperature was 39.1 C, Glasgow Coma Scale 11. CSF showed opening pressure 28 cmH2O, white cell count 2,880 per cubic millimeter (89 percent neutrophils), glucose 23 mg/dL, and protein 338 mg/dL. Acute-phase reactants were CRP 80 mg/L and procalcitonin 1.7 ng/mL. CSF PCR confirmed Naegleria fowleri at the CDC reference laboratory. Treatment per CDC PAM protocol was initiated; the patient died. This vignette is a Tier-4 within-cohort imputation: no specific named-case is claimed. Clinical specifics follow Gharpure 2021 EID US 2010-2019 surveillance review (nasal-irrigation sub-bucket); demographics are locked from the Day-2 distribution table (PMID 33350926)."
+  "narrative_es": "Varón de 38 años originario de la región sur de Estados Unidos que se presentó con cinco días de fiebre, cefalea frontal, congestión nasal y somnolencia progresiva tras lavados nasales diarios con neti pot y agua de grifo por síntomas sinusales crónicos. Al ingreso la temperatura fue de 39.1 C, escala de Glasgow 12. El líquido cefalorraquídeo mostró presión de apertura 26 cmH2O, leucocitos 2,180 por mm3 (89 por ciento neutrófilos), glucosa 28 mg/dL y proteína 242 mg/dL. Los reactantes de fase aguda fueron PCR 58 mg/L y procalcitonina 1.4 ng/mL. La PCR del líquido cefalorraquídeo para Naegleria fowleri fue positiva en el laboratorio de referencia de los CDC. Se inició el protocolo de PAM de los CDC; el paciente falleció. Esta viñeta es una imputación de Tier-4 dentro de la cohorte: no se reclama un caso nombrado específico. Los datos clínicos siguen la revisión de vigilancia estadounidense 2010-2019 de Gharpure 2021 EID (subgrupo de irrigación nasal); las características demográficas están fijadas en la tabla de distribución del Día 2 (PMID 33350926).",
+  "narrative_en": "A 38-year-old male from the US South region presented with five days of fever, frontal headache, nasal congestion, and progressive somnolence after daily neti-pot tap-water rinses for chronic sinus symptoms. On admission temperature was 39.1 C, Glasgow Coma Scale 12. CSF showed opening pressure 26 cmH2O, white cell count 2,180 per cubic millimeter (89 percent neutrophils), glucose 28 mg/dL, and protein 242 mg/dL. Acute-phase reactants were CRP 58 mg/L and procalcitonin 1.4 ng/mL. CSF PCR confirmed Naegleria fowleri at the CDC reference laboratory. Treatment per CDC PAM protocol was initiated; the patient died. This vignette is a Tier-4 within-cohort imputation: no specific named-case is claimed. Clinical specifics follow Gharpure 2021 EID US 2010-2019 surveillance review (nasal-irrigation sub-bucket); demographics are locked from the Day-2 distribution table (PMID 33350926)."
 }

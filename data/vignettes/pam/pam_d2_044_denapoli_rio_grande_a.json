@@ -94,7 +94,7 @@
     ],
     "cohen_kappa": 0.99,
     "disagreement_resolution": null,
-    "anchoring_documentation": "Anchored to DeNapoli et al. Tex Med 1996 (PMID 8923775). Demographics: 8 years female, Texas (Rio Grande), US. Stage metadata: clinical_stage=mid, exposure_certainty=definite, diagnostic_confirmation=PCR (CDC reference laboratory CSF Naegleria fowleri), outcome=fatal. CSF and imaging within published case ranges; vitals imputed from PAM presentation patterns documented in CDC PAM case reviews.",
+    "anchoring_documentation": "methodology=primary_source_direct; Anchored to DeNapoli et al. Tex Med 1996 (PMID 8923775). Demographics: 8 years female, Texas (Rio Grande), US. Stage metadata: clinical_stage=mid, exposure_certainty=definite, diagnostic_confirmation=PCR (CDC reference laboratory CSF Naegleria fowleri), outcome=fatal. CSF and imaging within published case ranges; vitals imputed from PAM presentation patterns documented in CDC PAM case reviews.",
     "inclusion_decision": "include"
   },
   "literature_anchors": [

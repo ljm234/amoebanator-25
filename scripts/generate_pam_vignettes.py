@@ -2378,6 +2378,41 @@ _GEOGRAPHY_TO_SCHEMA_REGION: dict[str, str] = {
 }
 
 
+# Methodology classification per wave-2 vignette (v41-v60). Threaded into
+# adjudication.anchoring_documentation by _build_adjudication() as the
+# explicit "methodology=<class>; " prefix per Commit 5.2.2 spec.
+# Classes:
+#   primary_source_direct  - newcomer anchored to its own primary source
+#   day1_pmid_reuse        - same PMID as a Day-1 vignette, different demographic
+#   tier_3_imputation      - within-cohort imputation, named-author review
+#                            with explicit cluster match
+#   tier_4_imputation      - sub-bucket within review (e.g., neti-irrigation
+#                            sub-bucket within a cohort that also covers other
+#                            exposure categories)
+_DAY2_WAVE2_METHODOLOGY: dict[int, str] = {
+    41: "primary_source_direct",
+    42: "primary_source_direct",
+    43: "primary_source_direct",
+    44: "primary_source_direct",
+    45: "primary_source_direct",
+    46: "day1_pmid_reuse",
+    47: "tier_3_imputation",
+    48: "tier_3_imputation",
+    49: "day1_pmid_reuse",
+    50: "day1_pmid_reuse",
+    51: "day1_pmid_reuse",
+    52: "primary_source_direct",
+    53: "day1_pmid_reuse",
+    54: "day1_pmid_reuse",
+    55: "day1_pmid_reuse",
+    56: "primary_source_direct",
+    57: "tier_4_imputation",
+    58: "tier_4_imputation",
+    59: "day1_pmid_reuse",
+    60: "day1_pmid_reuse",
+}
+
+
 def _build_case_id(spec: dict[str, Any], pmid_meta: dict[str, Any]) -> str:
     """Synthesize case_id following the Subphase 1.1 convention.
 
@@ -2477,7 +2512,10 @@ def _build_adjudication(spec: dict[str, Any], pmid_meta: dict[str, Any]) -> dict
             "PCR (CSF Naegleria fowleri) plus CSF wet mount with motile "
             "trophozoites"
         )
+    methodology = _DAY2_WAVE2_METHODOLOGY.get(spec["vignette_id"])
+    methodology_prefix = f"methodology={methodology}; " if methodology else ""
     anchoring = (
+        f"{methodology_prefix}"
         f"Anchored to {pmid_meta['authors_short']} {pmid_meta['journal']} "
         f"{pmid_meta['year']} (PMID {pmid_meta['pmid']}). Demographics: "
         f"{spec['age_label']} {spec['sex']}, {spec['geography_label']}. "
@@ -8631,7 +8669,7 @@ def _build_vignette_041() -> dict[str, Any]:
             "heart_rate_bpm": 124,
             "systolic_bp_mmHg": 108,
             "diastolic_bp_mmHg": 66,
-            "glasgow_coma_scale": 7,
+            "glasgow_coma_scale": 8,
             "oxygen_saturation_pct": 95,
             "respiratory_rate_breaths_per_min": 24,
         },
@@ -8708,7 +8746,7 @@ def _build_vignette_041() -> dict[str, Any]:
             "meningitis. Within 24 hours mental status declined to "
             "stupor; the patient was transferred to a tertiary "
             "center where examination showed temperature 39.6 C, "
-            "Glasgow Coma Scale 7, neck stiffness, papilledema, and "
+            "Glasgow Coma Scale 8, neck stiffness, papilledema, and "
             "a focal motor deficit. CSF showed opening pressure 36 "
             "cmH2O, white cell count 4,400 per cubic millimeter (92 "
             "percent neutrophils), glucose 14 mg/dL, and protein 438 "
@@ -8731,7 +8769,7 @@ def _build_vignette_041() -> dict[str, Any]:
             "empíricas por sospecha de meningitis bacteriana. En 24 "
             "horas presentó deterioro neurológico hasta el estupor "
             "y fue trasladado a un centro terciario; la exploración "
-            "mostró temperatura 39.6 C, escala de Glasgow 7, rigidez "
+            "mostró temperatura 39.6 C, escala de Glasgow 8, rigidez "
             "de nuca, papiledema y déficit motor focal. El líquido "
             "cefalorraquídeo mostró presión de apertura 36 cmH2O, "
             "leucocitos 4,400 por mm3 (92 por ciento neutrófilos), "
@@ -8790,12 +8828,12 @@ def _build_vignette_042() -> dict[str, Any]:
             "heart_rate_bpm": 112,
             "systolic_bp_mmHg": 122,
             "diastolic_bp_mmHg": 76,
-            "glasgow_coma_scale": 11,
+            "glasgow_coma_scale": 10,
             "oxygen_saturation_pct": 96,
             "respiratory_rate_breaths_per_min": 22,
         },
         "exam": {
-            "mental_status_grade": "somnolent",
+            "mental_status_grade": "confused",
             "neck_stiffness": True,
             "kernig_or_brudzinski_positive": True,
             "focal_neurological_deficit": False,
@@ -8862,7 +8900,7 @@ def _build_vignette_042() -> dict[str, Any]:
             "occipital headache, vomiting, and progressive "
             "somnolence after two weeks of daily bathing and "
             "submerging in a slow-moving river. Examination showed "
-            "temperature 39.2 C, Glasgow Coma Scale 11, neck "
+            "temperature 39.2 C, Glasgow Coma Scale 10, neck "
             "stiffness, and a positive Kernig sign without focal "
             "deficit. CSF showed opening pressure 28 cmH2O, white "
             "cell count 3,100 per cubic millimeter (90 percent "
@@ -8883,7 +8921,7 @@ def _build_vignette_042() -> dict[str, Any]:
             "de fiebre, cefalea occipital intensa, vómitos y "
             "somnolencia progresiva tras dos semanas de baño diario "
             "y sumersión en un río de curso lento. La exploración "
-            "mostró temperatura 39.2 C, escala de Glasgow 11, "
+            "mostró temperatura 39.2 C, escala de Glasgow 10, "
             "rigidez de nuca y signo de Kernig positivo sin déficit "
             "focal. El líquido cefalorraquídeo mostró presión de "
             "apertura 28 cmH2O, leucocitos 3,100 por mm3 (90 por "
@@ -9239,7 +9277,7 @@ def _build_vignette_045() -> dict[str, Any]:
             "heart_rate_bpm": 124,
             "systolic_bp_mmHg": 108,
             "diastolic_bp_mmHg": 66,
-            "glasgow_coma_scale": 7,
+            "glasgow_coma_scale": 6,
             "oxygen_saturation_pct": 95,
             "respiratory_rate_breaths_per_min": 24,
         },
@@ -9312,7 +9350,7 @@ def _build_vignette_045() -> dict[str, Any]:
             "progression to stupor with focal motor weakness, five "
             "days after swimming and underwater diving in the Rio "
             "Grande river. Examination showed temperature 39.6 C, "
-            "Glasgow Coma Scale 7, neck stiffness, papilledema, "
+            "Glasgow Coma Scale 6, neck stiffness, papilledema, "
             "and a focal deficit. CSF showed opening pressure 38 "
             "cmH2O, white cell count 4,620 per cubic millimeter "
             "(92 percent neutrophils), glucose 14 mg/dL, protein "
@@ -9333,7 +9371,7 @@ def _build_vignette_045() -> dict[str, Any]:
             "progresión rápida hasta el estupor con debilidad motora "
             "focal, cinco días después de nadar y bucear en el río "
             "Bravo (Rio Grande). La exploración mostró temperatura "
-            "39.6 C, escala de Glasgow 7, rigidez de nuca, "
+            "39.6 C, escala de Glasgow 6, rigidez de nuca, "
             "papiledema y déficit focal. El líquido "
             "cefalorraquídeo mostró presión de apertura 38 cmH2O, "
             "leucocitos 4,620 por mm3 (92 por ciento neutrófilos), "
@@ -9394,7 +9432,7 @@ def _build_vignette_046() -> dict[str, Any]:
             "heart_rate_bpm": 118,
             "systolic_bp_mmHg": 108,
             "diastolic_bp_mmHg": 68,
-            "glasgow_coma_scale": 11,
+            "glasgow_coma_scale": 12,
             "oxygen_saturation_pct": 96,
             "respiratory_rate_breaths_per_min": 22,
         },
@@ -9458,7 +9496,7 @@ def _build_vignette_046() -> dict[str, Any]:
             "fever, headache, vomiting, and progressive somnolence "
             "one week after recreational swimming in an irrigation "
             "canal. Examination showed temperature 39.3 C, Glasgow "
-            "Coma Scale 11, neck stiffness, and a positive Kernig "
+            "Coma Scale 12, neck stiffness, and a positive Kernig "
             "sign without focal deficit. CSF showed opening "
             "pressure 28 cmH2O, white cell count 3,060 per cubic "
             "millimeter (89 percent neutrophils), glucose 21 mg/dL, "
@@ -9478,7 +9516,7 @@ def _build_vignette_046() -> dict[str, Any]:
             "días de fiebre, cefalea, vómitos y somnolencia "
             "progresiva una semana después de nadar recreativamente "
             "en un canal de riego. La exploración mostró "
-            "temperatura 39.3 C, escala de Glasgow 11, rigidez de "
+            "temperatura 39.3 C, escala de Glasgow 12, rigidez de "
             "nuca y signo de Kernig positivo sin déficit focal. El "
             "líquido cefalorraquídeo mostró presión de apertura 28 "
             "cmH2O, leucocitos 3,060 por mm3 (89 por ciento "
@@ -9553,19 +9591,19 @@ def _build_vignette_047() -> dict[str, Any]:
             "wbc_blood_per_uL": 17600,
             "platelets_per_uL": 250000,
             "alt_ast_U_per_L": None,
-            "crp_mg_per_L": 88.0,
-            "procalcitonin_ng_per_mL": 2.0,
+            "crp_mg_per_L": 62.0,
+            "procalcitonin_ng_per_mL": 1.5,
             "serum_sodium_mEq_per_L": 137,
         },
         "csf": {
-            "opening_pressure_cmH2O": 28.0,
-            "csf_wbc_per_mm3": 3260,
+            "opening_pressure_cmH2O": 26.0,
+            "csf_wbc_per_mm3": 1920,
             "csf_neutrophil_pct": 90,
             "csf_lymphocyte_pct": 9,
             "csf_eosinophil_pct": 1,
-            "csf_glucose_mg_per_dL": 22,
-            "csf_protein_mg_per_dL": 372,
-            "csf_lactate_mmol_per_L": 7.0,
+            "csf_glucose_mg_per_dL": 27,
+            "csf_protein_mg_per_dL": 258,
+            "csf_lactate_mmol_per_L": 5.6,
             "csf_ada_U_per_L": None,
             "csf_crag_lfa_result": "negative",
             "csf_wet_mount_motile_amoebae": "not_done",
@@ -9600,10 +9638,10 @@ def _build_vignette_047() -> dict[str, Any]:
             "and progressive somnolence with neck stiffness "
             "following recreational river swimming. On admission "
             "temperature was 39.2 C, Glasgow Coma Scale 11. CSF "
-            "showed opening pressure 28 cmH2O, white cell count "
-            "3,260 per cubic millimeter (90 percent neutrophils), "
-            "glucose 22 mg/dL, and protein 372 mg/dL. Acute-phase "
-            "reactants were CRP 88 mg/L and procalcitonin 2.0 "
+            "showed opening pressure 26 cmH2O, white cell count "
+            "1,920 per cubic millimeter (90 percent neutrophils), "
+            "glucose 27 mg/dL, and protein 258 mg/dL. Acute-phase "
+            "reactants were CRP 62 mg/L and procalcitonin 1.5 "
             "ng/mL. CSF PCR confirmed Naegleria fowleri at the CDC "
             "reference laboratory. Treatment per CDC PAM protocol "
             "was initiated; the patient died of refractory "
@@ -9622,10 +9660,10 @@ def _build_vignette_047() -> dict[str, Any]:
             "rigidez de nuca tras nadar recreativamente en un río. "
             "Al ingreso la temperatura fue de 39.2 C, escala de "
             "Glasgow 11. El líquido cefalorraquídeo mostró "
-            "presión de apertura 28 cmH2O, leucocitos 3,260 por "
-            "mm3 (90 por ciento neutrófilos), glucosa 22 mg/dL y "
-            "proteína 372 mg/dL. Los reactantes de fase aguda "
-            "fueron PCR 88 mg/L y procalcitonina 2.0 ng/mL. La "
+            "presión de apertura 26 cmH2O, leucocitos 1,920 por "
+            "mm3 (90 por ciento neutrófilos), glucosa 27 mg/dL y "
+            "proteína 258 mg/dL. Los reactantes de fase aguda "
+            "fueron PCR 62 mg/L y procalcitonina 1.5 ng/mL. La "
             "PCR del líquido cefalorraquídeo para Naegleria "
             "fowleri fue positiva en el laboratorio de referencia "
             "de los CDC. Se inició el protocolo de PAM de los "
@@ -9682,12 +9720,12 @@ def _build_vignette_048() -> dict[str, Any]:
             "heart_rate_bpm": 122,
             "systolic_bp_mmHg": 110,
             "diastolic_bp_mmHg": 68,
-            "glasgow_coma_scale": 7,
+            "glasgow_coma_scale": 5,
             "oxygen_saturation_pct": 95,
             "respiratory_rate_breaths_per_min": 24,
         },
         "exam": {
-            "mental_status_grade": "stuporous",
+            "mental_status_grade": "comatose",
             "neck_stiffness": True,
             "kernig_or_brudzinski_positive": True,
             "focal_neurological_deficit": True,
@@ -9700,19 +9738,19 @@ def _build_vignette_048() -> dict[str, Any]:
             "wbc_blood_per_uL": 19000,
             "platelets_per_uL": 240000,
             "alt_ast_U_per_L": None,
-            "crp_mg_per_L": 110.0,
-            "procalcitonin_ng_per_mL": 2.7,
+            "crp_mg_per_L": 128.0,
+            "procalcitonin_ng_per_mL": 3.4,
             "serum_sodium_mEq_per_L": 136,
         },
         "csf": {
-            "opening_pressure_cmH2O": 38.0,
-            "csf_wbc_per_mm3": 4380,
+            "opening_pressure_cmH2O": 40.0,
+            "csf_wbc_per_mm3": 4720,
             "csf_neutrophil_pct": 92,
             "csf_lymphocyte_pct": 7,
             "csf_eosinophil_pct": 1,
-            "csf_glucose_mg_per_dL": 15,
-            "csf_protein_mg_per_dL": 432,
-            "csf_lactate_mmol_per_L": 8.2,
+            "csf_glucose_mg_per_dL": 11,
+            "csf_protein_mg_per_dL": 476,
+            "csf_lactate_mmol_per_L": 9.0,
             "csf_ada_U_per_L": None,
             "csf_crag_lfa_result": "negative",
             "csf_wet_mount_motile_amoebae": "positive",
@@ -9752,13 +9790,13 @@ def _build_vignette_048() -> dict[str, Any]:
         "narrative_en": (
             "A 14-year-old male from the US South region presented "
             "with a four-day history of fever, headache, vomiting, "
-            "and rapid progression to stupor with focal motor "
+            "and rapid progression to coma with focal motor "
             "weakness, following recreational river swimming and "
             "underwater diving. On admission temperature was 39.5 "
-            "C, Glasgow Coma Scale 7. CSF showed opening pressure "
-            "38 cmH2O, white cell count 4,380 per cubic millimeter "
-            "(92 percent neutrophils), glucose 15 mg/dL, protein "
-            "432 mg/dL, and lactate 8.2 mmol/L. Wet mount showed "
+            "C, Glasgow Coma Scale 5. CSF showed opening pressure "
+            "40 cmH2O, white cell count 4,720 per cubic millimeter "
+            "(92 percent neutrophils), glucose 11 mg/dL, protein "
+            "476 mg/dL, and lactate 9.0 mmol/L. Wet mount showed "
             "motile trophozoites; the CDC reference laboratory CSF "
             "PCR confirmed Naegleria fowleri. Treatment per CDC "
             "PAM protocol was initiated; the patient died. This "
@@ -9772,13 +9810,13 @@ def _build_vignette_048() -> dict[str, Any]:
             "Adolescente varón de 14 años originario de la región "
             "sur de Estados Unidos que se presentó con cuatro días "
             "de fiebre, cefalea, vómitos y progresión rápida hasta "
-            "estupor con debilidad motora focal, tras nadar y "
+            "el coma con debilidad motora focal, tras nadar y "
             "bucear recreativamente en un río. Al ingreso la "
-            "temperatura fue de 39.5 C, escala de Glasgow 7. El "
+            "temperatura fue de 39.5 C, escala de Glasgow 5. El "
             "líquido cefalorraquídeo mostró presión de apertura "
-            "38 cmH2O, leucocitos 4,380 por mm3 (92 por ciento "
-            "neutrófilos), glucosa 15 mg/dL, proteína 432 mg/dL y "
-            "lactato 8.2 mmol/L. El frotis directo identificó "
+            "40 cmH2O, leucocitos 4,720 por mm3 (92 por ciento "
+            "neutrófilos), glucosa 11 mg/dL, proteína 476 mg/dL y "
+            "lactato 9.0 mmol/L. El frotis directo identificó "
             "trofozoítos móviles; la PCR del líquido "
             "cefalorraquídeo para Naegleria fowleri fue positiva "
             "en el laboratorio de referencia de los CDC. Se inició "
@@ -10127,7 +10165,7 @@ def _build_vignette_051() -> dict[str, Any]:
             "chief_complaint": "altered_mental_status",
             "prodrome_description": (
                 "Three days of fever, headache, vomiting, and rapid "
-                "progression to stupor with focal motor weakness in "
+                "progression to coma with focal motor weakness in "
                 "a 6-year-old boy from Texas after splash-pad play "
                 "five days before symptom onset."
             ),
@@ -10148,12 +10186,12 @@ def _build_vignette_051() -> dict[str, Any]:
             "heart_rate_bpm": 132,
             "systolic_bp_mmHg": 102,
             "diastolic_bp_mmHg": 62,
-            "glasgow_coma_scale": 7,
+            "glasgow_coma_scale": 4,
             "oxygen_saturation_pct": 95,
             "respiratory_rate_breaths_per_min": 26,
         },
         "exam": {
-            "mental_status_grade": "stuporous",
+            "mental_status_grade": "comatose",
             "neck_stiffness": True,
             "kernig_or_brudzinski_positive": True,
             "focal_neurological_deficit": True,
@@ -10216,10 +10254,10 @@ def _build_vignette_051() -> dict[str, Any]:
         "narrative_en": (
             "A 6-year-old previously healthy boy from Texas "
             "presented with three days of fever, headache, "
-            "vomiting, and rapid progression to stupor with focal "
+            "vomiting, and rapid progression to coma with focal "
             "motor weakness, five days after splash-pad play. "
             "Examination showed temperature 39.7 C, Glasgow Coma "
-            "Scale 7, neck stiffness, papilledema, and a focal "
+            "Scale 4, neck stiffness, papilledema, and a focal "
             "deficit. CSF showed opening pressure 38 cmH2O, white "
             "cell count 4,540 per cubic millimeter (92 percent "
             "neutrophils), glucose 13 mg/dL, protein 454 mg/dL, "
@@ -10235,10 +10273,10 @@ def _build_vignette_051() -> dict[str, Any]:
         "narrative_es": (
             "Niño de 6 años previamente sano, originario de Texas, "
             "que se presentó con tres días de fiebre, cefalea, "
-            "vómitos y progresión rápida hasta el estupor con "
+            "vómitos y progresión rápida hasta el coma con "
             "debilidad motora focal, cinco días después de jugar "
             "en una zona de chorros (splash pad). La exploración "
-            "mostró temperatura 39.7 C, escala de Glasgow 7, "
+            "mostró temperatura 39.7 C, escala de Glasgow 4, "
             "rigidez de nuca, papiledema y déficit focal. El "
             "líquido cefalorraquídeo mostró presión de apertura 38 "
             "cmH2O, leucocitos 4,540 por mm3 (92 por ciento "
@@ -10444,12 +10482,12 @@ def _build_vignette_053() -> dict[str, Any]:
             "heart_rate_bpm": 110,
             "systolic_bp_mmHg": 124,
             "diastolic_bp_mmHg": 78,
-            "glasgow_coma_scale": 11,
+            "glasgow_coma_scale": 10,
             "oxygen_saturation_pct": 96,
             "respiratory_rate_breaths_per_min": 20,
         },
         "exam": {
-            "mental_status_grade": "somnolent",
+            "mental_status_grade": "confused",
             "neck_stiffness": True,
             "kernig_or_brudzinski_positive": True,
             "focal_neurological_deficit": False,
@@ -10508,7 +10546,7 @@ def _build_vignette_053() -> dict[str, Any]:
             "and progressive somnolence after a month of daily "
             "neti-pot rinses with municipal tap water for chronic "
             "sinus symptoms. Examination showed temperature 39.0 "
-            "C, Glasgow Coma Scale 11, neck stiffness, and a "
+            "C, Glasgow Coma Scale 10, neck stiffness, and a "
             "positive Kernig sign without focal deficit. CSF "
             "showed opening pressure 28 cmH2O, white cell count "
             "2,940 per cubic millimeter (89 percent neutrophils), "
@@ -10529,7 +10567,7 @@ def _build_vignette_053() -> dict[str, Any]:
             "de lavados nasales diarios con neti pot usando agua "
             "de la red municipal por síntomas sinusales crónicos. "
             "La exploración mostró temperatura 39.0 C, escala de "
-            "Glasgow 11, rigidez de nuca y signo de Kernig "
+            "Glasgow 10, rigidez de nuca y signo de Kernig "
             "positivo sin déficit focal. El líquido "
             "cefalorraquídeo mostró presión de apertura 28 cmH2O, "
             "leucocitos 2,940 por mm3 (89 por ciento neutrófilos), "
@@ -10583,7 +10621,7 @@ def _build_vignette_054() -> dict[str, Any]:
             "heart_rate_bpm": 104,
             "systolic_bp_mmHg": 130,
             "diastolic_bp_mmHg": 80,
-            "glasgow_coma_scale": 7,
+            "glasgow_coma_scale": 6,
             "oxygen_saturation_pct": 95,
             "respiratory_rate_breaths_per_min": 22,
         },
@@ -10654,7 +10692,7 @@ def _build_vignette_054() -> dict[str, Any]:
             "congestion, and rapid progression to stupor after "
             "several weeks of daily neti-pot tap-water rinses for "
             "post-COVID sinus symptoms. Examination showed "
-            "temperature 39.3 C, Glasgow Coma Scale 7, neck "
+            "temperature 39.3 C, Glasgow Coma Scale 6, neck "
             "stiffness, papilledema, and a focal deficit. CSF "
             "showed opening pressure 38 cmH2O, white cell count "
             "4,480 per cubic millimeter (92 percent neutrophils), "
@@ -10675,7 +10713,7 @@ def _build_vignette_054() -> dict[str, Any]:
             "tras varias semanas de lavados nasales diarios con "
             "neti pot y agua de grifo por síntomas sinusales "
             "post-COVID. La exploración mostró temperatura 39.3 C, "
-            "escala de Glasgow 7, rigidez de nuca, papiledema y "
+            "escala de Glasgow 6, rigidez de nuca, papiledema y "
             "déficit focal. El líquido cefalorraquídeo mostró "
             "presión de apertura 38 cmH2O, leucocitos 4,480 por "
             "mm3 (92 por ciento neutrófilos), glucosa 14 mg/dL, "
@@ -10874,12 +10912,12 @@ def _build_vignette_056() -> dict[str, Any]:
             "heart_rate_bpm": 110,
             "systolic_bp_mmHg": 122,
             "diastolic_bp_mmHg": 76,
-            "glasgow_coma_scale": 11,
+            "glasgow_coma_scale": 9,
             "oxygen_saturation_pct": 96,
             "respiratory_rate_breaths_per_min": 20,
         },
         "exam": {
-            "mental_status_grade": "somnolent",
+            "mental_status_grade": "confused",
             "neck_stiffness": True,
             "kernig_or_brudzinski_positive": True,
             "focal_neurological_deficit": False,
@@ -10945,7 +10983,7 @@ def _build_vignette_056() -> dict[str, Any]:
             "congestion, and progressive somnolence after daily "
             "nasal-rinse use of treated municipal tap water for "
             "chronic sinusitis. Examination showed temperature "
-            "39.0 C, Glasgow Coma Scale 11, neck stiffness, and a "
+            "39.0 C, Glasgow Coma Scale 9, neck stiffness, and a "
             "positive Kernig sign without focal deficit. CSF "
             "showed opening pressure 28 cmH2O, white cell count "
             "3,120 per cubic millimeter (91 percent neutrophils), "
@@ -10968,7 +11006,7 @@ def _build_vignette_056() -> dict[str, Any]:
             "tras realizar lavados nasales diarios con agua de "
             "grifo municipal tratada por sinusitis crónica. La "
             "exploración mostró temperatura 39.0 C, escala de "
-            "Glasgow 11, rigidez de nuca y signo de Kernig "
+            "Glasgow 9, rigidez de nuca y signo de Kernig "
             "positivo sin déficit focal. El líquido "
             "cefalorraquídeo mostró presión de apertura 28 cmH2O, "
             "leucocitos 3,120 por mm3 (91 por ciento neutrófilos), "
@@ -11028,7 +11066,7 @@ def _build_vignette_057() -> dict[str, Any]:
             "heart_rate_bpm": 110,
             "systolic_bp_mmHg": 124,
             "diastolic_bp_mmHg": 76,
-            "glasgow_coma_scale": 11,
+            "glasgow_coma_scale": 12,
             "oxygen_saturation_pct": 96,
             "respiratory_rate_breaths_per_min": 20,
         },
@@ -11046,19 +11084,19 @@ def _build_vignette_057() -> dict[str, Any]:
             "wbc_blood_per_uL": 17000,
             "platelets_per_uL": 252000,
             "alt_ast_U_per_L": None,
-            "crp_mg_per_L": 80.0,
-            "procalcitonin_ng_per_mL": 1.7,
+            "crp_mg_per_L": 58.0,
+            "procalcitonin_ng_per_mL": 1.4,
             "serum_sodium_mEq_per_L": 137,
         },
         "csf": {
-            "opening_pressure_cmH2O": 28.0,
-            "csf_wbc_per_mm3": 2880,
+            "opening_pressure_cmH2O": 26.0,
+            "csf_wbc_per_mm3": 2180,
             "csf_neutrophil_pct": 89,
             "csf_lymphocyte_pct": 10,
             "csf_eosinophil_pct": 1,
-            "csf_glucose_mg_per_dL": 23,
-            "csf_protein_mg_per_dL": 338,
-            "csf_lactate_mmol_per_L": 6.4,
+            "csf_glucose_mg_per_dL": 28,
+            "csf_protein_mg_per_dL": 242,
+            "csf_lactate_mmol_per_L": 5.2,
             "csf_ada_U_per_L": None,
             "csf_crag_lfa_result": "negative",
             "csf_wet_mount_motile_amoebae": "not_done",
@@ -11093,11 +11131,11 @@ def _build_vignette_057() -> dict[str, Any]:
             "congestion, and progressive somnolence after daily "
             "neti-pot tap-water rinses for chronic sinus symptoms. "
             "On admission temperature was 39.1 C, Glasgow Coma "
-            "Scale 11. CSF showed opening pressure 28 cmH2O, "
-            "white cell count 2,880 per cubic millimeter (89 "
-            "percent neutrophils), glucose 23 mg/dL, and protein "
-            "338 mg/dL. Acute-phase reactants were CRP 80 mg/L "
-            "and procalcitonin 1.7 ng/mL. CSF PCR confirmed "
+            "Scale 12. CSF showed opening pressure 26 cmH2O, "
+            "white cell count 2,180 per cubic millimeter (89 "
+            "percent neutrophils), glucose 28 mg/dL, and protein "
+            "242 mg/dL. Acute-phase reactants were CRP 58 mg/L "
+            "and procalcitonin 1.4 ng/mL. CSF PCR confirmed "
             "Naegleria fowleri at the CDC reference laboratory. "
             "Treatment per CDC PAM protocol was initiated; the "
             "patient died. This vignette is a Tier-4 within-cohort "
@@ -11114,11 +11152,11 @@ def _build_vignette_057() -> dict[str, Any]:
             "somnolencia progresiva tras lavados nasales diarios "
             "con neti pot y agua de grifo por síntomas sinusales "
             "crónicos. Al ingreso la temperatura fue de 39.1 C, "
-            "escala de Glasgow 11. El líquido cefalorraquídeo "
-            "mostró presión de apertura 28 cmH2O, leucocitos "
-            "2,880 por mm3 (89 por ciento neutrófilos), glucosa "
-            "23 mg/dL y proteína 338 mg/dL. Los reactantes de "
-            "fase aguda fueron PCR 80 mg/L y procalcitonina 1.7 "
+            "escala de Glasgow 12. El líquido cefalorraquídeo "
+            "mostró presión de apertura 26 cmH2O, leucocitos "
+            "2,180 por mm3 (89 por ciento neutrófilos), glucosa "
+            "28 mg/dL y proteína 242 mg/dL. Los reactantes de "
+            "fase aguda fueron PCR 58 mg/L y procalcitonina 1.4 "
             "ng/mL. La PCR del líquido cefalorraquídeo para "
             "Naegleria fowleri fue positiva en el laboratorio de "
             "referencia de los CDC. Se inició el protocolo de PAM "
@@ -11191,19 +11229,19 @@ def _build_vignette_058() -> dict[str, Any]:
             "wbc_blood_per_uL": 19000,
             "platelets_per_uL": 240000,
             "alt_ast_U_per_L": None,
-            "crp_mg_per_L": 122.0,
-            "procalcitonin_ng_per_mL": 3.1,
+            "crp_mg_per_L": 126.0,
+            "procalcitonin_ng_per_mL": 3.2,
             "serum_sodium_mEq_per_L": 134,
         },
         "csf": {
             "opening_pressure_cmH2O": 38.0,
-            "csf_wbc_per_mm3": 4660,
+            "csf_wbc_per_mm3": 4580,
             "csf_neutrophil_pct": 92,
             "csf_lymphocyte_pct": 7,
             "csf_eosinophil_pct": 1,
-            "csf_glucose_mg_per_dL": 13,
-            "csf_protein_mg_per_dL": 458,
-            "csf_lactate_mmol_per_L": 8.6,
+            "csf_glucose_mg_per_dL": 12,
+            "csf_protein_mg_per_dL": 468,
+            "csf_lactate_mmol_per_L": 8.8,
             "csf_ada_U_per_L": None,
             "csf_crag_lfa_result": "negative",
             "csf_wet_mount_motile_amoebae": "positive",
@@ -11246,9 +11284,9 @@ def _build_vignette_058() -> dict[str, Any]:
             "daily neti-pot tap-water rinses for chronic sinus "
             "symptoms. On admission temperature was 39.4 C, "
             "Glasgow Coma Scale 7. CSF showed opening pressure 38 "
-            "cmH2O, white cell count 4,660 per cubic millimeter "
-            "(92 percent neutrophils), glucose 13 mg/dL, protein "
-            "458 mg/dL, and lactate 8.6 mmol/L; wet mount showed "
+            "cmH2O, white cell count 4,580 per cubic millimeter "
+            "(92 percent neutrophils), glucose 12 mg/dL, protein "
+            "468 mg/dL, and lactate 8.8 mmol/L; wet mount showed "
             "motile trophozoites and the CDC reference laboratory "
             "CSF PCR confirmed Naegleria fowleri. Treatment per "
             "CDC PAM protocol was initiated; the patient died. "
@@ -11267,9 +11305,9 @@ def _build_vignette_058() -> dict[str, Any]:
             "síntomas sinusales crónicos. Al ingreso la "
             "temperatura fue de 39.4 C, escala de Glasgow 7. El "
             "líquido cefalorraquídeo mostró presión de apertura "
-            "38 cmH2O, leucocitos 4,660 por mm3 (92 por ciento "
-            "neutrófilos), glucosa 13 mg/dL, proteína 458 mg/dL "
-            "y lactato 8.6 mmol/L; el frotis directo identificó "
+            "38 cmH2O, leucocitos 4,580 por mm3 (92 por ciento "
+            "neutrófilos), glucosa 12 mg/dL, proteína 468 mg/dL "
+            "y lactato 8.8 mmol/L; el frotis directo identificó "
             "trofozoítos móviles y la PCR del líquido "
             "cefalorraquídeo en el laboratorio de referencia de "
             "los CDC fue positiva. Se inició el protocolo de PAM "

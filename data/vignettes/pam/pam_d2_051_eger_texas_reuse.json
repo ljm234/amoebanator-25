@@ -12,7 +12,7 @@
   "history": {
     "symptom_onset_to_presentation_days": 3.0,
     "chief_complaint": "altered_mental_status",
-    "prodrome_description": "Three days of fever, headache, vomiting, and rapid progression to stupor with focal motor weakness in a 6-year-old boy from Texas after splash-pad play five days before symptom onset.",
+    "prodrome_description": "Three days of fever, headache, vomiting, and rapid progression to coma with focal motor weakness in a 6-year-old boy from Texas after splash-pad play five days before symptom onset.",
     "red_flags_present": [
       "fresh_water_exposure_14d"
     ]
@@ -32,12 +32,12 @@
     "heart_rate_bpm": 132,
     "systolic_bp_mmHg": 102,
     "diastolic_bp_mmHg": 62,
-    "glasgow_coma_scale": 7,
+    "glasgow_coma_scale": 4,
     "oxygen_saturation_pct": 95,
     "respiratory_rate_breaths_per_min": 26
   },
   "exam": {
-    "mental_status_grade": "stuporous",
+    "mental_status_grade": "comatose",
     "neck_stiffness": true,
     "kernig_or_brudzinski_positive": true,
     "focal_neurological_deficit": true,
@@ -101,7 +101,7 @@
     ],
     "cohen_kappa": 0.99,
     "disagreement_resolution": null,
-    "anchoring_documentation": "Anchored to Eger L, Pence MA J Clin Microbiol 2023 (PMID 37470480). Demographics: 6 years male, Texas, US. Stage metadata: clinical_stage=late, exposure_certainty=definite, diagnostic_confirmation=PCR (CDC reference laboratory CSF Naegleria fowleri), outcome=fatal. CSF and imaging within published case ranges; vitals imputed from PAM presentation patterns documented in CDC PAM case reviews.",
+    "anchoring_documentation": "methodology=day1_pmid_reuse; Anchored to Eger L, Pence MA J Clin Microbiol 2023 (PMID 37470480). Demographics: 6 years male, Texas, US. Stage metadata: clinical_stage=late, exposure_certainty=definite, diagnostic_confirmation=PCR (CDC reference laboratory CSF Naegleria fowleri), outcome=fatal. CSF and imaging within published case ranges; vitals imputed from PAM presentation patterns documented in CDC PAM case reviews.",
     "inclusion_decision": "include"
   },
   "literature_anchors": [
@@ -118,6 +118,6 @@
     "schema_version": "2.0",
     "inclusion_decision_rationale": "Day 2 vignette 51 of 60 (v21-v60 set) for Subphase 1.2 PAM corpus. Cluster: splash_pad. Atypical type: none. Outcome: fatal. Anchored to PMID 37470480 (Eger L, Pence MA, J Clin Microbiol 2023). Sub-fields populated from published case where available; vitals and partial labs IMPUTED_FROM_LITERATURE consistent with late-stage PAM clinical patterns documented in CDC PAM case reviews. Treatment per CDC six-drug protocol (amphotericin B, miltefosine, dexamethasone, fluconazole, azithromycin, rifampin); fatal outcome despite full regimen. Citation caveat: Full text required for full demographics; abstract is brief."
   },
-  "narrative_es": "Niño de 6 años previamente sano, originario de Texas, que se presentó con tres días de fiebre, cefalea, vómitos y progresión rápida hasta el estupor con debilidad motora focal, cinco días después de jugar en una zona de chorros (splash pad). La exploración mostró temperatura 39.7 C, escala de Glasgow 7, rigidez de nuca, papiledema y déficit focal. El líquido cefalorraquídeo mostró presión de apertura 38 cmH2O, leucocitos 4,540 por mm3 (92 por ciento neutrófilos), glucosa 13 mg/dL, proteína 454 mg/dL, lactato 8.5 mmol/L y trofozoítos móviles en frotis directo; la PCR de Naegleria fowleri en el laboratorio de referencia de los CDC fue positiva. Se inició el protocolo de PAM de los CDC, pero el paciente falleció. El Día 1 utilizó a Eger 2023 para v3 (niño de 3 años) y v4 (niño de 4 años); v51 es una imputación dentro de la cohorte para un perfil masculino de 6 años en estadio tardío dentro del mismo contexto del splash pad de Texas (PMID 37470480).",
-  "narrative_en": "A 6-year-old previously healthy boy from Texas presented with three days of fever, headache, vomiting, and rapid progression to stupor with focal motor weakness, five days after splash-pad play. Examination showed temperature 39.7 C, Glasgow Coma Scale 7, neck stiffness, papilledema, and a focal deficit. CSF showed opening pressure 38 cmH2O, white cell count 4,540 per cubic millimeter (92 percent neutrophils), glucose 13 mg/dL, protein 454 mg/dL, lactate 8.5 mmol/L, and motile trophozoites on wet mount; the CDC reference laboratory CSF PCR confirmed Naegleria fowleri. The CDC PAM regimen was started but the patient died. Day-1 used Eger 2023 for v3 (3-year-old boy) and v4 (4-year-old boy); v51 is a within-cohort imputation for a 6-year-old male, late-stage demographic within the same Texas splash-pad case context (PMID 37470480)."
+  "narrative_es": "Niño de 6 años previamente sano, originario de Texas, que se presentó con tres días de fiebre, cefalea, vómitos y progresión rápida hasta el coma con debilidad motora focal, cinco días después de jugar en una zona de chorros (splash pad). La exploración mostró temperatura 39.7 C, escala de Glasgow 4, rigidez de nuca, papiledema y déficit focal. El líquido cefalorraquídeo mostró presión de apertura 38 cmH2O, leucocitos 4,540 por mm3 (92 por ciento neutrófilos), glucosa 13 mg/dL, proteína 454 mg/dL, lactato 8.5 mmol/L y trofozoítos móviles en frotis directo; la PCR de Naegleria fowleri en el laboratorio de referencia de los CDC fue positiva. Se inició el protocolo de PAM de los CDC, pero el paciente falleció. El Día 1 utilizó a Eger 2023 para v3 (niño de 3 años) y v4 (niño de 4 años); v51 es una imputación dentro de la cohorte para un perfil masculino de 6 años en estadio tardío dentro del mismo contexto del splash pad de Texas (PMID 37470480).",
+  "narrative_en": "A 6-year-old previously healthy boy from Texas presented with three days of fever, headache, vomiting, and rapid progression to coma with focal motor weakness, five days after splash-pad play. Examination showed temperature 39.7 C, Glasgow Coma Scale 4, neck stiffness, papilledema, and a focal deficit. CSF showed opening pressure 38 cmH2O, white cell count 4,540 per cubic millimeter (92 percent neutrophils), glucose 13 mg/dL, protein 454 mg/dL, lactate 8.5 mmol/L, and motile trophozoites on wet mount; the CDC reference laboratory CSF PCR confirmed Naegleria fowleri. The CDC PAM regimen was started but the patient died. Day-1 used Eger 2023 for v3 (3-year-old boy) and v4 (4-year-old boy); v51 is a within-cohort imputation for a 6-year-old male, late-stage demographic within the same Texas splash-pad case context (PMID 37470480)."
 }
