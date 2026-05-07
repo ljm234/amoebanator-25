@@ -75,6 +75,12 @@ _VALID_VERIFICATION_DATES = {
     # Tunkel-encephalitis, Granerod, Tyler) at verification_confidence=0.85
     # pending PubMed UI direct fetch in 5.3.2-5.3.4.
     "2026-05-06",
+    # Subphase 1.3 commit 5.3.2 added 5 new pilot anchors via Claude web
+    # research v4 PubMed UI verification (Davalos 2016 Lima cohort,
+    # Heckenberg 2008 18626301 errata fix from 18626302, Whitley 2006
+    # Antiviral Res HSE adult review, Michos 2007 PLoS One enterovirus
+    # PMN-predominant cohort, Munayco 2024 MMWR Peru dengue outbreak).
+    "2026-05-07",
 }
 
 
