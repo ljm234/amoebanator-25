@@ -903,3 +903,142 @@ def test_v60_outcome_survived(wave2_vignettes):
     assert "survivor" in en or "discharged" in en
     es = v60["data"]["narrative_es"].lower()
     assert "miltefosina" in es, "v60 narrative_es missing miltefosina"
+
+
+# ======================================================================
+# Day 2 wave 2 polish lock-in tests (commit 5.2.1, tag v2.2.1)
+# ----------------------------------------------------------------------
+# These six tests lock in the wave-2 quality dimensions that earlier
+# rated Excellent (jitter heterogeneity, stage-state consistency,
+# cluster-exposure mapping, bilingual narrative coverage, survivor
+# treatment completeness, case_id format) so any future regression
+# fails CI before merge. Combined with the schema/disclosure/em-dash/
+# AI-tell tests, every wave-2 quality dimension is now test-locked.
+# ======================================================================
+
+
+def test_wave2_jitter_uniqueness(wave2_vignettes):
+    """No two wave-2 entries share the same (CSF WBC, protein, glucose, CRP, PCT)."""
+    seen: dict[tuple, int] = {}
+    for vid in _WAVE2_IDS:
+        d = wave2_vignettes[vid]["data"]
+        tup = (
+            d["csf"]["csf_wbc_per_mm3"],
+            d["csf"]["csf_protein_mg_per_dL"],
+            d["csf"]["csf_glucose_mg_per_dL"],
+            d["labs"]["crp_mg_per_L"],
+            d["labs"]["procalcitonin_ng_per_mL"],
+        )
+        if tup in seen:
+            raise AssertionError(
+                f"Wave-2 jitter collision: v{vid} and v{seen[tup]} share "
+                f"identical (CSF_WBC, protein, glucose, CRP, PCT) tuple {tup}"
+            )
+        seen[tup] = vid
+
+
+@pytest.mark.parametrize("vid", _WAVE2_IDS)
+def test_wave2_stage_state_consistency(vid, wave2_vignettes, day2_distribution):
+    """GCS and mental_status_grade must match the spec's stage classification."""
+    spec = next(s for s in day2_distribution if s["vignette_id"] == vid)
+    stage = spec["stage"]
+    d = wave2_vignettes[vid]["data"]
+    gcs = d["vitals"]["glasgow_coma_scale"]
+    ms = d["exam"]["mental_status_grade"]
+    if stage == "early":
+        assert gcs >= 14, f"v{vid} early stage requires GCS>=14, got {gcs}"
+        assert ms == "alert", f"v{vid} early stage requires ms=alert, got {ms!r}"
+    elif stage == "mid":
+        # Survivors may sit at GCS 12-14 (e.g., v49=13, v60=12) and still
+        # be classified mid-stage by the rapid-recognition convention.
+        assert 9 <= gcs <= 14, f"v{vid} mid stage requires GCS 9-14, got {gcs}"
+        assert ms in {"somnolent", "confused"}, (
+            f"v{vid} mid stage requires somnolent/confused, got {ms!r}"
+        )
+    elif stage == "late":
+        assert gcs <= 8, f"v{vid} late stage requires GCS<=8, got {gcs}"
+        assert ms in {"stuporous", "comatose"}, (
+            f"v{vid} late stage requires stuporous/comatose, got {ms!r}"
+        )
+
+
+_WAVE2_CLUSTER_EXPOSURE_MAP: dict[str, set[str]] = {
+    "splash_pad": {"splash_pad"},
+    "lake_pond": {"lake", "river", "swimming_pool_unchlorinated", "none"},
+    "river": {"river"},
+    "nasal_irrigation": {"neti_pot_tap_water"},
+    "hot_springs": {"hot_spring"},
+    "pakistan_ablution": {"ritual_ablution_wudu"},
+}
+
+
+@pytest.mark.parametrize("vid", _WAVE2_IDS)
+def test_wave2_cluster_exposure_mapping(vid, wave2_vignettes, day2_distribution):
+    """Each cluster value must enforce a specific freshwater_exposure_type subset."""
+    spec = next(s for s in day2_distribution if s["vignette_id"] == vid)
+    cluster = spec["cluster"]
+    expo = wave2_vignettes[vid]["data"]["exposure"]["freshwater_exposure_type"]
+    allowed = _WAVE2_CLUSTER_EXPOSURE_MAP.get(cluster)
+    assert allowed is not None, (
+        f"v{vid} cluster {cluster!r} not in _WAVE2_CLUSTER_EXPOSURE_MAP; "
+        f"update the map if new clusters were added"
+    )
+    assert expo in allowed, (
+        f"v{vid} cluster={cluster} has freshwater_exposure_type={expo!r}, "
+        f"expected one of {sorted(allowed)}"
+    )
+
+
+@pytest.mark.parametrize("vid", _WAVE2_IDS)
+def test_wave2_spanish_required_tokens(vid, wave2_vignettes):
+    """Each wave-2 ES narrative carries the universal Spanish-accent token set."""
+    es = wave2_vignettes[vid]["data"].get("narrative_es") or ""
+    accent_chars = _SPANISH_ACCENT_CHARS & set(es)
+    assert accent_chars, f"v{vid} narrative_es contains no UTF-8 Spanish accents"
+    for token in _REQUIRED_SPANISH_TOKENS:
+        assert token in es, (
+            f"v{vid} narrative_es missing accented token {token!r}"
+        )
+
+
+def test_wave2_survivor_completeness(wave2_vignettes):
+    """v49 and v60 survivor narratives must include miltefosine + ICP control +
+    cooling protocol + ICU + discharge in both languages."""
+    for vid in (49, 60):
+        d = wave2_vignettes[vid]["data"]
+        en = d["narrative_en"].lower()
+        es = d["narrative_es"].lower()
+        assert "miltefosine" in en, f"v{vid} EN missing miltefosine"
+        assert "miltefosina" in es, f"v{vid} ES missing miltefosina"
+        assert "intracranial pressure" in en, f"v{vid} EN missing ICP control"
+        assert "presión intracraneal" in es, f"v{vid} ES missing ICP control"
+        # Cooling protocol: explicit hypothermia OR targeted temperature management.
+        assert ("hypothermia" in en or "temperature management" in en), (
+            f"v{vid} EN missing hypothermia/targeted temperature management"
+        )
+        assert ("hipotermia" in es or "manejo dirigido de temperatura" in es), (
+            f"v{vid} ES missing hipotermia/manejo dirigido de temperatura"
+        )
+        assert ("intensive care" in en or "icu" in en), (
+            f"v{vid} EN missing intensive-care/ICU language"
+        )
+        assert "discharged" in en, f"v{vid} EN missing 'discharged'"
+        assert "egresado" in es, f"v{vid} ES missing 'egresado'"
+        assert "outcome=survived" in (
+            d["adjudication"]["anchoring_documentation"].lower()
+        ), f"v{vid} adjudication missing outcome=survived"
+
+
+@pytest.mark.parametrize("vid", _WAVE2_IDS)
+def test_wave2_case_id_format(vid, wave2_vignettes):
+    """Wave-2 case_id must follow PAM-D2-NNN-<journal_short_code>-<year>-..."""
+    case_id = wave2_vignettes[vid]["data"]["case_id"]
+    assert case_id.startswith(f"PAM-D2-{vid:03d}-"), (
+        f"v{vid} case_id {case_id!r} does not follow PAM-D2-NNN- pattern"
+    )
+    pmid = wave2_vignettes[vid]["data"]["literature_anchors"][0]["pmid"]
+    journal_short = PMID_REGISTRY[pmid]["journal_short_code"]
+    assert journal_short in case_id, (
+        f"v{vid} case_id {case_id!r} missing journal_short_code "
+        f"{journal_short!r}"
+    )
