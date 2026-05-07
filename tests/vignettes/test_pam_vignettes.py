@@ -68,7 +68,14 @@ _DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 # Acceptable verification dates: Day 1 sweep + Day 2 corrections sweep + Day 2
 # bonus canonization. See docs/PMID_CORRECTIONS_2026-05-04.md and
 # docs/PMID_DAY2_BONUS_CANONIZATION_2026-05-05.md for the audit trails.
-_VALID_VERIFICATION_DATES = {"2026-05-03", "2026-05-04", "2026-05-05"}
+_VALID_VERIFICATION_DATES = {
+    "2026-05-03", "2026-05-04", "2026-05-05",
+    # Subphase 1.3 commit 5.3.1 added 10 Bacterial + Viral consensus anchors
+    # (van de Beek, Tunkel, Bijlsma, Mylonakis, Heckenberg, Soeters, Whitley,
+    # Tunkel-encephalitis, Granerod, Tyler) at verification_confidence=0.85
+    # pending PubMed UI direct fetch in 5.3.2-5.3.4.
+    "2026-05-06",
+}
 
 
 @pytest.mark.parametrize("pmid", sorted(PMID_REGISTRY.keys()))
@@ -1128,3 +1135,181 @@ def test_wave2_csf_wbc_range_extremes(wave2_vignettes):
         f"4,500; spec requires >= 3 (extreme high tail). All values: "
         f"{sorted(wbcs)}"
     )
+
+
+# ======================================================================
+# Subphase 1.3 commit 5.3.1 distribution-lock tests
+# ----------------------------------------------------------------------
+# These twelve tests assert structural correctness of the BACTERIAL_
+# DISTRIBUTION (n=30) and VIRAL_DISTRIBUTION (n=30) lists locked in
+# scripts/generate_pam_vignettes.py against master prompt L1413-1414
+# mandates and the marginals.json design artifacts at
+# data/vignettes/v2/class_02_bacterial/marginals.json and
+# data/vignettes/v2/class_03_viral/marginals.json.
+#
+# No vignette JSONs are generated in commit 5.3.1; runtime-encoding
+# tests for the per-vignette JSONs will fire in commits 5.3.2-5.3.4.
+# ======================================================================
+
+import collections as _collections
+import json as _json
+from pathlib import Path as _Path
+from scripts.generate_pam_vignettes import (  # noqa: E402
+    BACTERIAL_DISTRIBUTION,
+    VIRAL_DISTRIBUTION,
+)
+
+
+_PERU_GEOGRAPHY_REGIONS = {
+    "peru_lima_coast", "peru_loreto_amazon", "peru_cusco_altitude",
+    "peru_puno_altitude", "peru_tumbes", "peru_madre_de_dios",
+}
+
+
+def test_bacterial_distribution_count():
+    assert len(BACTERIAL_DISTRIBUTION) == 30
+
+
+def test_viral_distribution_count():
+    assert len(VIRAL_DISTRIBUTION) == 30
+
+
+def test_bacterial_pathogen_counts():
+    """Master prompt L1413: 21 SP / 4 NM / 2 Hib / 2 Listeria / 1 GN."""
+    counts = _collections.Counter(
+        s["pathogen"] for s in BACTERIAL_DISTRIBUTION
+    )
+    assert counts["S_pneumoniae"] == 21, counts
+    assert counts["N_meningitidis"] == 4, counts
+    assert counts["H_influenzae"] == 2, counts
+    assert counts["Listeria_monocytogenes"] == 2, counts
+    assert counts["gram_negative"] == 1, counts
+
+
+def test_viral_pathogen_counts():
+    """Master prompt L1414: 12 HSV-1 / 8 enterovirus / 4 HSV-2-VZV /
+    4 arboviral (3 dengue + 1 EEE) / 2 HSV-PCR-negative-at-72h."""
+    counts = _collections.Counter(
+        s["pathogen"] for s in VIRAL_DISTRIBUTION
+    )
+    assert counts["HSV1"] == 12, counts
+    assert counts["enterovirus"] == 8, counts
+    assert (counts["HSV2"] + counts["VZV"]) == 4, counts
+    assert counts["HSV2"] == 2, counts
+    assert counts["VZV"] == 2, counts
+    assert counts["dengue"] == 3, counts
+    assert counts["EEE"] == 1, counts
+    assert counts["HSV_PCR_negative_72h"] == 2, counts
+
+
+def test_bacterial_peru_anchor_share():
+    """5/30 Peru-anchored: 2 Lima SP + 1 Loreto NM + 1 Cusco Hib +
+    1 Tumbes Listeria (Q8 lock decision)."""
+    peru = sum(
+        1 for s in BACTERIAL_DISTRIBUTION
+        if s["geography_region"] in _PERU_GEOGRAPHY_REGIONS
+    )
+    assert peru == 5
+
+
+def test_viral_dengue_peru_anchor():
+    """All 3 dengue cases must be Peru-anchored per master prompt L1408."""
+    dengue_peru = sum(
+        1 for s in VIRAL_DISTRIBUTION
+        if s["pathogen"] == "dengue"
+        and s["geography_region"] in _PERU_GEOGRAPHY_REGIONS
+    )
+    assert dengue_peru == 3
+
+
+def test_subphase_1_3_freshwater_false():
+    """Master prompt 1.3.10 sanity: ALL 60 Class-2/3 specs must have
+    freshwater_exposure_within_14d=False."""
+    for spec in BACTERIAL_DISTRIBUTION + VIRAL_DISTRIBUTION:
+        assert spec["freshwater_exposure_within_14d"] is False, spec[
+            "vignette_id"
+        ]
+
+
+def test_diagnostic_ambiguity_count():
+    """Master prompt 1.3.5: 5 ambiguity cases per class."""
+    bact_amb = sum(
+        1 for s in BACTERIAL_DISTRIBUTION if s.get("diagnostic_ambiguity")
+    )
+    viral_amb = sum(
+        1 for s in VIRAL_DISTRIBUTION if s.get("diagnostic_ambiguity")
+    )
+    assert bact_amb == 5, bact_amb
+    assert viral_amb == 5, viral_amb
+
+
+def test_hsv1_imaging_mandate_present_in_specs():
+    """Each of the 12 HSV1 specs carries imaging_mandate field per master
+    prompt test L1469."""
+    hsv1 = [s for s in VIRAL_DISTRIBUTION if s["pathogen"] == "HSV1"]
+    assert len(hsv1) == 12
+    for s in hsv1:
+        assert s.get("imaging_mandate") == (
+            "mesial_temporal_t2_flair_hyperintensity"
+        ), s["vignette_id"]
+
+
+def test_dengue_platelet_mandate_present_in_specs():
+    """Each of the 3 dengue specs carries platelet_mandate field per master
+    prompt test L1470."""
+    dengue = [s for s in VIRAL_DISTRIBUTION if s["pathogen"] == "dengue"]
+    assert len(dengue) == 3
+    for s in dengue:
+        assert s.get("platelet_mandate_below_per_uL") == 150000, s[
+            "vignette_id"
+        ]
+
+
+def test_subphase_1_3_vignette_ids_contiguous():
+    """Class 2 occupies 61-90; Class 3 occupies 91-120; combined 60 specs
+    are contiguous and disjoint from Day-1 (1-20) and Day-2 (21-60)."""
+    bact_ids = sorted(s["vignette_id"] for s in BACTERIAL_DISTRIBUTION)
+    viral_ids = sorted(s["vignette_id"] for s in VIRAL_DISTRIBUTION)
+    assert bact_ids == list(range(61, 91))
+    assert viral_ids == list(range(91, 121))
+
+
+def test_marginals_files_exist_and_valid():
+    """marginals.json artifacts present per master prompt 1.3.1 / 1.3.2."""
+    cases = [
+        ("data/vignettes/v2/class_02_bacterial/marginals.json", 2, 30),
+        ("data/vignettes/v2/class_03_viral/marginals.json", 3, 30),
+    ]
+    for path, class_id, total_n in cases:
+        p = _Path(path)
+        assert p.exists(), f"{path} missing"
+        data = _json.loads(p.read_text(encoding="utf-8"))
+        assert data["class_id"] == class_id, path
+        assert data["total_n"] == total_n, path
+        assert "pathogen_distribution" in data, path
+        assert "csf_profile_ranges" in data, path
+        assert "cited_anchors" in data, path
+        assert isinstance(data["cited_anchors"], list) and len(
+            data["cited_anchors"]
+        ) >= 3, path
+        # Pathogen distribution must match master prompt targets exactly.
+        assert (
+            data["pathogen_distribution"]
+            == data["pathogen_distribution_target_per_master_prompt"]
+        ), f"{path} pathogen distribution drifted from master prompt"
+
+
+def test_marginals_freshwater_sanity_and_adjudication_state():
+    """marginals.json artifacts disclose pre-adjudication state and
+    freshwater=False sanity for downstream auditors."""
+    for path in (
+        "data/vignettes/v2/class_02_bacterial/marginals.json",
+        "data/vignettes/v2/class_03_viral/marginals.json",
+    ):
+        data = _json.loads(_Path(path).read_text(encoding="utf-8"))
+        assert (
+            data.get("freshwater_exposure_within_14d_for_all") is False
+        ), path
+        assert data.get("adjudication_state") == (
+            "pre_adjudication_hold_for_revision"
+        ), path
