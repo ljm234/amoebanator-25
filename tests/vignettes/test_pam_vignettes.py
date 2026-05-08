@@ -1350,3 +1350,40 @@ def test_pmid_29462145_excluded_from_registry():
         "PMID 29462145 (Jiang YH urology paper) must not be present. "
         "See docs/PMID_CORRECTIONS_2026-05-04.md Day 2 Corrections."
     )
+
+
+# =========================================================================
+# Subphase 1.3.x errata: registry-coverage guard for BACT/VIRAL distributions
+# -------------------------------------------------------------------------
+# Subphase 1.2.x metadata lock + Commit 5.3.2 errata fix removed PMID
+# 18626302 (typo) from PMID_REGISTRY but slot v83 in BACTERIAL_DISTRIBUTION
+# still referenced it. test_day2_pmids_in_registry parametrizes over PAM
+# corpus only (DAY2_DISTRIBUTION, IDs 21-60) and missed the leak. This
+# lock-in extends coverage to all 60 BACT + VIRAL slots (IDs 61-120) and
+# any future ADD slots in those distributions.
+# =========================================================================
+
+
+def test_bacterial_viral_distribution_pmids_in_registry():
+    """All BACT + VIRAL slot anchor PMIDs must resolve in PMID_REGISTRY.
+
+    Prevents the v83 18626302 typo regression and guards Subphase 1.3
+    Commits 5.3.3 + 5.3.4 against introducing slots whose anchor PMID was
+    typo'd or removed.
+    """
+    from scripts.generate_pam_vignettes import (
+        BACTERIAL_DISTRIBUTION,
+        VIRAL_DISTRIBUTION,
+    )
+    all_slots = list(BACTERIAL_DISTRIBUTION) + list(VIRAL_DISTRIBUTION)
+    broken: list[tuple[object, object]] = []
+    for slot in all_slots:
+        vid = slot.get("vignette_id", "?")
+        pmid = slot.get("anchor_pmid") or slot.get("pmid")
+        if pmid not in PMID_REGISTRY:
+            broken.append((vid, pmid))
+    assert not broken, (
+        f"BACT/VIRAL distribution slots reference PMIDs not in registry: "
+        f"{broken}. See docs/PMID_CORRECTIONS_2026-05-04.md Subphase 1.3.x "
+        f"errata section."
+    )
