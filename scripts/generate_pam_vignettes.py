@@ -16910,6 +16910,1962 @@ def write_bact_wave2_corpus(
 
 
 # ============================================================================
+# Subphase 1.3 commit 5.3.5 - Wave 1 VIRAL vignette builders (n=13)
+# ----------------------------------------------------------------------------
+# Slot IDs: 96, 99, 102, 106, 107, 108, 109, 111, 113, 114, 117, 119, 120.
+# All 13 anchored to PMID 29490180 (Tyler KL 2018 NEJM viral encephalitis
+# review, anchor_type=review).
+# Pathogens: 3 HSV1 (v96, v99, v102) + 5 enterovirus (v106, v107, v108,
+# v109, v111) + 2 HSV2 (v113, v114) + 2 dengue (v117, v119) + 1 EEE (v120).
+# Diagnostic ambiguity: 2 of 13 (v113 HSV2 first-episode meningismus
+# bacterial DDx; v117 dengue with prominent CNS arbo overlap).
+# Peru-anchored: 3 of 13 (v99 Lima HSV1, v117 Lima dengue, v119 Tumbes dengue).
+# Master prompt 1.3.4 Class 3 mandate: csf_lymphocyte_pct >= 50,
+# csf_neutrophil_pct < 50, csf_glucose_mg_per_dL >= 40, ground_truth_class=3.
+# Architecture: extends Wave 2 BACT by reusing _bact_wave1_altitude,
+# _bact_wave1_ethnicity, _build_literature_anchor; adds VIRAL-specific
+# imaging (HSV1 mesial-temporal MRI, EEE diffuse cerebral edema), CSF
+# (lymphocytic), exposure (dengue mosquito_endemic_area_exposure), case_id
+# (VIR-D3 prefix), adjudication (VIRAL-WAVE1-PRE-ADJ sentinels), provenance
+# (commit 5.3.5).
+# ============================================================================
+
+VIRAL_WAVE1_OUTPUT_DIR = Path("data/vignettes/v2/class_03_viral")
+VIRAL_WAVE1_IDS: list[int] = [96, 99, 102, 106, 107, 108, 109, 111, 113, 114, 117, 119, 120]
+VIRAL_WAVE1_AMBIGUITY_IDS: set[int] = {113, 117}
+VIRAL_WAVE1_PERU_IDS: set[int] = {99, 117, 119}
+
+
+def _viral_wave1_case_id(spec: dict[str, Any], pmid_meta: dict[str, Any]) -> str:
+    """VIR-D3-NNN-<journal>-<year>-<region-tag>-<descriptor> pattern."""
+    nnn = f"{spec['vignette_id']:03d}"
+    journal = pmid_meta["journal_short_code"].replace(" ", "-")
+    year = pmid_meta["year"]
+    region_tag = spec["geography_label"].split(",")[0].strip().replace(" ", "-")
+    pathogen_descriptor = {
+        "HSV1": "HSV1",
+        "HSV2": "HSV2",
+        "enterovirus": "EV",
+        "dengue": "Dengue",
+        "EEE": "EEE",
+    }[spec["pathogen"]]
+    if spec.get("diagnostic_ambiguity"):
+        descriptor_tail = f"{pathogen_descriptor}-Ambiguity"
+    elif spec["outcome"] == "fatal":
+        descriptor_tail = f"{pathogen_descriptor}-{spec['stage'].capitalize()}-Fatal"
+    else:
+        descriptor_tail = f"{pathogen_descriptor}-{spec['stage'].capitalize()}"
+    return f"VIR-D3-{nnn}-{journal}-{year}-{region_tag}-{descriptor_tail}"
+
+
+def _viral_wave1_imaging_for(spec: dict[str, Any]) -> dict[str, Any]:
+    """Pathogen-specific imaging.
+
+    HSV1: mesial_temporal_t2_flair_hyperintensity on MRI (master prompt 1.3.4 mandate).
+    EV: typically no imaging needed for benign aseptic meningitis (modality=none).
+    HSV2: mri_with_dwi_flair normal (Mollaret typically benign imaging).
+    Dengue: mri_with_dwi_flair normal (metabolic/cytokine encephalopathy, not direct).
+    EEE fatal: diffuse_cerebral_edema_basilar_meningeal_enhancement.
+    """
+    pathogen = spec["pathogen"]
+    if pathogen == "HSV1":
+        return {
+            "imaging_modality": "mri_with_dwi_flair",
+            "imaging_pattern": "mesial_temporal_t2_flair_hyperintensity",
+            "imaging_finding_count": 1,
+            "imaging_text_summary": (
+                "MRI brain with DWI/FLAIR: mesial temporal T2/FLAIR "
+                "hyperintensity asymmetric with basal ganglia sparing. "
+                "Canonical HSE imaging signature per Tyler 2018 NEJM viral "
+                "encephalitis review."
+            ),
+        }
+    if pathogen == "EV":
+        # Defensive; not used for actual enterovirus pathogen value.
+        return {
+            "imaging_modality": "none",
+            "imaging_pattern": None,
+            "imaging_finding_count": None,
+            "imaging_text_summary": (
+                "No imaging performed (uncomplicated viral meningitis "
+                "presentation; Tyler review supports deferring imaging in "
+                "benign aseptic pattern)."
+            ),
+        }
+    if pathogen == "enterovirus":
+        return {
+            "imaging_modality": "none",
+            "imaging_pattern": None,
+            "imaging_finding_count": None,
+            "imaging_text_summary": (
+                "No imaging performed (uncomplicated enteroviral meningitis "
+                "presentation with normal mental status; Tyler 2018 NEJM "
+                "review supports deferring imaging in benign aseptic pattern)."
+            ),
+        }
+    if pathogen == "HSV2":
+        return {
+            "imaging_modality": "mri_with_dwi_flair",
+            "imaging_pattern": "normal",
+            "imaging_finding_count": 0,
+            "imaging_text_summary": (
+                "MRI brain with DWI/FLAIR: normal. No focal lesion. Mollaret "
+                "and HSV2 first-episode lymphocytic meningitis typically "
+                "demonstrate normal imaging per Tyler review."
+            ),
+        }
+    if pathogen == "dengue":
+        return {
+            "imaging_modality": "mri_with_dwi_flair",
+            "imaging_pattern": "normal",
+            "imaging_finding_count": 0,
+            "imaging_text_summary": (
+                "MRI brain with DWI/FLAIR: normal. No focal lesion, no edema. "
+                "Dengue encephalopathy is typically metabolic or cytokine-"
+                "mediated rather than direct viral invasion per Tyler review."
+            ),
+        }
+    if pathogen == "EEE":
+        return {
+            "imaging_modality": "mri_with_dwi_flair",
+            "imaging_pattern": "diffuse_cerebral_edema_basilar_meningeal_enhancement",
+            "imaging_finding_count": 1,
+            "imaging_text_summary": (
+                "MRI brain with DWI/FLAIR: diffuse cerebral edema with basal "
+                "ganglia and thalamic involvement, sulcal effacement. EEE "
+                "predilection for basal ganglia and thalamus per Tyler 2018 "
+                "NEJM review (case fatality approximately 30 percent; "
+                "permanent neurologic sequelae in 50 percent of survivors)."
+            ),
+        }
+    raise KeyError(f"Unhandled VIRAL pathogen for imaging: {pathogen!r}")
+
+
+def _viral_wave1_exposure(spec: dict[str, Any]) -> dict[str, Any]:
+    """VIRAL exposure block. Dengue cases set mosquito_endemic_area_exposure=True."""
+    mosquito = spec.get("pathogen") == "dengue"
+    return {
+        "freshwater_exposure_within_14d": False,
+        "freshwater_exposure_type": None,
+        "altitude_exposure_within_7d_m": None,
+        "pork_consumption_or_taenia_contact": False,
+        "mosquito_endemic_area_exposure": mosquito,
+        "immunocompromise_status": "none",
+        "hiv_status": "negative",
+        "cd4_count_cells_per_uL": None,
+    }
+
+
+def _viral_wave1_red_flags() -> list[str]:
+    """No Tyler-set slots have schema-encodable red flags; v117/v119 dengue
+    mosquito-endemic-area is captured in exposure rather than red_flags."""
+    return []
+
+
+def _viral_wave1_adjudication(
+    spec: dict[str, Any], anchoring_extras: str
+) -> dict[str, Any]:
+    """Wave 1 VIRAL pre-adjudication adjudication block (Q7 5.3.1 lock).
+
+    Sentinel adjudicators VIRAL-WAVE1-PRE-ADJ-1 / VIRAL-WAVE1-PRE-ADJ-2
+    distinguish viral wave from BACT adjudicators. Embeds verbatim
+    self_review_disposition=hold_for_revision.
+    """
+    pmid = spec["pmid"]
+    base = (
+        f"stage=pre_adjudication; status=pending_external_review; "
+        f"self_review_disposition=hold_for_revision; "
+        f"self_review_notes=wave 5.3.5 VIRAL vignette anchored to PMID {pmid} "
+        f"(Tyler 2018 NEJM viral encephalitis review); external clinical "
+        f"adjudication pending; classification provisional. "
+        f"adjudicator_ids=VIRAL-WAVE1-PRE-ADJ-1, VIRAL-WAVE1-PRE-ADJ-2 (sentinel); "
+        f"cohen_kappa=0.0 placeholder; adjudicator_name=null; "
+        f"adjudication_date=null; post_adjudication_disposition=null. "
+        f"Subphase 1.3 commit 5.3.5 (2026-05-08)."
+    )
+    if anchoring_extras:
+        base = base + " " + anchoring_extras
+    return {
+        "adjudicator_ids": ["VIRAL-WAVE1-PRE-ADJ-1", "VIRAL-WAVE1-PRE-ADJ-2"],
+        "cohen_kappa": 0.0,
+        "disagreement_resolution": None,
+        "anchoring_documentation": base,
+        "inclusion_decision": "hold_for_revision",
+    }
+
+
+def _viral_wave1_provenance(rationale: str) -> dict[str, Any]:
+    if len(rationale) > 1000:
+        rationale = rationale[:997] + "..."
+    return {
+        "generation_timestamp_utc": "2026-05-08T18:00:00Z",
+        "generator_model_identifier": (
+            "scripts.generate_pam_vignettes/v1.subphase_1_3_commit_5_3_5"
+        ),
+        "prompt_hash_sha256": "0" * 64,
+        "schema_version": "2.0",
+        "inclusion_decision_rationale": rationale,
+    }
+
+
+def _viral_wave1_dx_tests_hsv1_pcr(pmid: str) -> list[dict[str, Any]]:
+    """HSV1 PCR positive + canonical Gram/culture negatives (Tyler review)."""
+    cit = f"PMID:{pmid}"
+    return [
+        {
+            "test_name": "csf_hsv1_pcr",
+            "result": "positive",
+            "sensitivity_pct": 95.0,
+            "specificity_pct": 99.0,
+            "citation_pmid_or_doi": cit,
+        },
+        {
+            "test_name": "csf_gram_stain",
+            "result": "no_organisms",
+            "sensitivity_pct": None,
+            "specificity_pct": None,
+            "citation_pmid_or_doi": cit,
+        },
+        {
+            "test_name": "csf_culture",
+            "result": "no_growth",
+            "sensitivity_pct": None,
+            "specificity_pct": None,
+            "citation_pmid_or_doi": cit,
+        },
+    ]
+
+
+def _viral_wave1_dx_tests_ev_pcr(pmid: str) -> list[dict[str, Any]]:
+    cit = f"PMID:{pmid}"
+    return [
+        {
+            "test_name": "csf_enterovirus_pcr",
+            "result": "positive",
+            "sensitivity_pct": 96.0,
+            "specificity_pct": 99.0,
+            "citation_pmid_or_doi": cit,
+        },
+        {
+            "test_name": "csf_gram_stain",
+            "result": "no_organisms",
+            "sensitivity_pct": None,
+            "specificity_pct": None,
+            "citation_pmid_or_doi": cit,
+        },
+        {
+            "test_name": "csf_culture",
+            "result": "no_growth",
+            "sensitivity_pct": None,
+            "specificity_pct": None,
+            "citation_pmid_or_doi": cit,
+        },
+    ]
+
+
+def _viral_wave1_dx_tests_hsv2_pcr(pmid: str) -> list[dict[str, Any]]:
+    cit = f"PMID:{pmid}"
+    return [
+        {
+            "test_name": "csf_hsv2_pcr",
+            "result": "positive",
+            "sensitivity_pct": 92.0,
+            "specificity_pct": 99.0,
+            "citation_pmid_or_doi": cit,
+        },
+        {
+            "test_name": "csf_gram_stain",
+            "result": "no_organisms",
+            "sensitivity_pct": None,
+            "specificity_pct": None,
+            "citation_pmid_or_doi": cit,
+        },
+        {
+            "test_name": "csf_culture",
+            "result": "no_growth",
+            "sensitivity_pct": None,
+            "specificity_pct": None,
+            "citation_pmid_or_doi": cit,
+        },
+    ]
+
+
+def _viral_wave1_dx_tests_dengue(pmid: str, serotype: str) -> list[dict[str, Any]]:
+    cit = f"PMID:{pmid}"
+    return [
+        {
+            "test_name": "denv_ns1_antigen",
+            "result": "positive",
+            "sensitivity_pct": 90.0,
+            "specificity_pct": 99.0,
+            "citation_pmid_or_doi": cit,
+        },
+        {
+            "test_name": "denv_pcr",
+            "result": f"{serotype}_serotype_positive",
+            "sensitivity_pct": 95.0,
+            "specificity_pct": 99.0,
+            "citation_pmid_or_doi": cit,
+        },
+        {
+            "test_name": "csf_gram_stain",
+            "result": "no_organisms",
+            "sensitivity_pct": None,
+            "specificity_pct": None,
+            "citation_pmid_or_doi": cit,
+        },
+        {
+            "test_name": "csf_culture",
+            "result": "no_growth",
+            "sensitivity_pct": None,
+            "specificity_pct": None,
+            "citation_pmid_or_doi": cit,
+        },
+    ]
+
+
+def _viral_wave1_dx_tests_eee(pmid: str) -> list[dict[str, Any]]:
+    cit = f"PMID:{pmid}"
+    return [
+        {
+            "test_name": "csf_eee_igm_serology",
+            "result": "positive",
+            "sensitivity_pct": 88.0,
+            "specificity_pct": 95.0,
+            "citation_pmid_or_doi": cit,
+        },
+        {
+            "test_name": "csf_eee_pcr",
+            "result": "positive",
+            "sensitivity_pct": 70.0,
+            "specificity_pct": 99.0,
+            "citation_pmid_or_doi": cit,
+        },
+        {
+            "test_name": "csf_gram_stain",
+            "result": "no_organisms",
+            "sensitivity_pct": None,
+            "specificity_pct": None,
+            "citation_pmid_or_doi": cit,
+        },
+        {
+            "test_name": "csf_culture",
+            "result": "no_growth",
+            "sensitivity_pct": None,
+            "specificity_pct": None,
+            "citation_pmid_or_doi": cit,
+        },
+    ]
+
+
+# ----------------------------------------------------------------------------
+# Wave 1 VIRAL per-slot clinical builders. Each returns a dict with keys:
+# history, vitals, exam, labs, csf, narrative_es, narrative_en, rationale,
+# anchoring_extras, diagnostic_tests.
+# ----------------------------------------------------------------------------
+
+
+def _build_viral_vignette_096() -> dict[str, Any]:
+    """v96 HSV1 45F Netherlands mid survived (Tyler NEJM review)."""
+    return {
+        "history": {
+            "symptom_onset_to_presentation_days": 4.0,
+            "chief_complaint": "altered_mental_status",
+            "prodrome_description": (
+                "45-year-old female, Netherlands. 4-day progressive course: "
+                "fever 38.7 C, severe headache, behavioral change with "
+                "personality alteration day 2, expressive aphasia day 3, "
+                "right-sided focal seizure day 4 prompting tertiary ED "
+                "Amsterdam. No neck stiffness. No freshwater. Acyclovir "
+                "hour 5. Outcome: survived with mild memory deficit per "
+                "Tyler review HSE residual-deficit rate."
+            ),
+            "red_flags_present": [],
+        },
+        "vitals": {
+            "temperature_celsius": 38.7,
+            "heart_rate_bpm": 96,
+            "systolic_bp_mmHg": 128,
+            "diastolic_bp_mmHg": 78,
+            "glasgow_coma_scale": 12,
+            "oxygen_saturation_pct": 97,
+            "respiratory_rate_breaths_per_min": 18,
+        },
+        "exam": {
+            "mental_status_grade": "confused",
+            "neck_stiffness": False,
+            "kernig_or_brudzinski_positive": False,
+            "focal_neurological_deficit": True,
+            "cranial_nerve_palsy": "none",
+            "skin_lesion_centrofacial_chronic": False,
+            "petechial_or_purpuric_rash": False,
+            "papilledema_on_fundoscopy": False,
+        },
+        "labs": {
+            "wbc_blood_per_uL": 8200,
+            "platelets_per_uL": 245000,
+            "alt_ast_U_per_L": 26,
+            "crp_mg_per_L": 18.0,
+            "procalcitonin_ng_per_mL": 0.3,
+            "serum_sodium_mEq_per_L": 138,
+        },
+        "csf": {
+            "opening_pressure_cmH2O": 22.0,
+            "csf_wbc_per_mm3": 220,
+            "csf_neutrophil_pct": 25,
+            "csf_lymphocyte_pct": 75,
+            "csf_eosinophil_pct": 0,
+            "csf_glucose_mg_per_dL": 55,
+            "csf_protein_mg_per_dL": 120,
+            "csf_lactate_mmol_per_L": 2.6,
+            "csf_ada_U_per_L": None,
+            "csf_crag_lfa_result": "negative",
+            "csf_wet_mount_motile_amoebae": "negative",
+            "csf_xanthochromia_present": True,
+            "csf_rbc_per_mm3": 35,
+            "csf_rbc_decreasing_across_tubes": False,
+        },
+        "narrative_en": (
+            "A 45-year-old woman in the Netherlands presented to a tertiary "
+            "emergency department in Amsterdam with a 4-day progressive "
+            "course: fever to 38.7 C, severe headache, behavioral change "
+            "with personality alteration on day 2, expressive aphasia on "
+            "day 3, and a right-sided focal seizure on day 4 prompting ED "
+            "presentation. She had no neck stiffness on examination and no "
+            "antecedent freshwater exposure. Examination on admission: "
+            "Glasgow Coma Scale 12, focal neurological deficit (expressive "
+            "aphasia). CSF showed opening pressure 22 cmH2O, white cell "
+            "count 220 per cubic millimeter (75 percent lymphocytes), "
+            "glucose 55 mg/dL, protein 120 mg/dL, RBC 35 with mild "
+            "xanthochromia (canonical hemorrhagic component). CSF HSV-1 "
+            "PCR positive. Brain MRI with DWI/FLAIR showed mesial temporal "
+            "T2/FLAIR hyperintensity asymmetric with basal ganglia sparing. "
+            "Acyclovir initiated within five hours. Anchored to Tyler 2018 "
+            "NEJM viral encephalitis review (PMID 29490180). Outcome: "
+            "survived with mild memory deficit. Subphase 1.3 commit 5.3.5 "
+            "wave 1, pre-adjudication hold_for_revision."
+        ),
+        "narrative_es": (
+            "Mujer de 45 anos en Paises Bajos (Amsterdam), ingresada a "
+            "urgencias terciarias con curso progresivo de cuatro dias: "
+            "fiebre 38.7 C, cefalea intensa, cambio conductual con "
+            "alteracion de personalidad al segundo dia, afasia expresiva al "
+            "tercer dia, crisis focal derecha al cuarto dia que motivo "
+            "consulta. Sin rigidez de nuca al examen. Sin exposicion a "
+            "agua dulce. Examen: escala de Glasgow 12, deficit focal "
+            "(afasia expresiva). Liquido cefalorraquideo mostro presion de "
+            "apertura 22 cmH2O, leucocitos 220 por mm3 (75 por ciento "
+            "linfocitos), glucosa 55 mg/dL, proteina 120 mg/dL, eritrocitos "
+            "35 con xantocromia leve. PCR de HSV-1 positiva. RM cerebral "
+            "mostro hiperintensidad temporal mesial T2/FLAIR asimetrica con "
+            "preservacion de ganglios basales. Anclaje en revision Tyler "
+            "2018 NEJM encefalitis viral aguda (PMID 29490180). Subphase "
+            "1.3 commit 5.3.5 wave 1."
+        ),
+        "rationale": (
+            "Anchored to PMID 29490180 (Tyler KL 2018 NEJM clinical review "
+            "of acute viral encephalitis), HSV1 mesial-temporal-encephalitis "
+            "phenotype. Demographic anchor (45yo F adult HSE) sits in adult-"
+            "HSE stratum (HSE bimodal age, peaks at adulthood). CSF "
+            "lymphocytic (220 WBC, 75 percent lymphocytes), normal glucose "
+            "55, mildly elevated protein 120, RBC 35 with xanthochromia "
+            "(hemorrhagic temporal necrosis component). MRI mesial temporal "
+            "T2/FLAIR hyperintensity per master prompt 1.3.4 mandate. "
+            "Imputation tiers: tier_1_primary={age, sex, hsv1_pcr, "
+            "imaging_pattern, focal_aphasia}; tier_3_within_review={csf_wbc, "
+            "neutrophil_pct, glucose, protein, rbc, xanthochromia, gcs}; "
+            "tier_4_priors={temp, symptom_days}. Indeterminate=none. "
+            "Diagnostic_ambiguity=false. Outcome=survived_mild_memory_deficit. "
+            "Acyclovir_hours=5. Tier: tier_3_imputation_within_review. "
+            "5.3.5 wave1 HSV1-NL-adult-female."
+        ),
+        "anchoring_extras": "anchor=Tyler-NEJM-2018 stratum=HSV1-adult-HSE.",
+        "diagnostic_tests": _viral_wave1_dx_tests_hsv1_pcr("29490180"),
+    }
+
+
+def _build_viral_vignette_099() -> dict[str, Any]:
+    """v99 HSV1 38M Lima Peru mid survived (Tyler NEJM review)."""
+    return {
+        "history": {
+            "symptom_onset_to_presentation_days": 5.0,
+            "chief_complaint": "seizure",
+            "prodrome_description": (
+                "38-year-old male in Lima, Peru. 5-day course: low-grade "
+                "fever 38.5 C, severe headache, then new-onset olfactory "
+                "hallucinations day 3, expressive aphasia day 4, complex "
+                "partial seizure day 5 prompting tertiary urban ED. No "
+                "neck stiffness. No freshwater. Acyclovir hour 8. Outcome: "
+                "survived with mild memory deficit."
+            ),
+            "red_flags_present": [],
+        },
+        "vitals": {
+            "temperature_celsius": 38.5,
+            "heart_rate_bpm": 92,
+            "systolic_bp_mmHg": 124,
+            "diastolic_bp_mmHg": 76,
+            "glasgow_coma_scale": 13,
+            "oxygen_saturation_pct": 97,
+            "respiratory_rate_breaths_per_min": 18,
+        },
+        "exam": {
+            "mental_status_grade": "confused",
+            "neck_stiffness": False,
+            "kernig_or_brudzinski_positive": False,
+            "focal_neurological_deficit": True,
+            "cranial_nerve_palsy": "none",
+            "skin_lesion_centrofacial_chronic": False,
+            "petechial_or_purpuric_rash": False,
+            "papilledema_on_fundoscopy": False,
+        },
+        "labs": {
+            "wbc_blood_per_uL": 9100,
+            "platelets_per_uL": 250000,
+            "alt_ast_U_per_L": 30,
+            "crp_mg_per_L": 22.0,
+            "procalcitonin_ng_per_mL": 0.4,
+            "serum_sodium_mEq_per_L": 138,
+        },
+        "csf": {
+            "opening_pressure_cmH2O": 21.0,
+            "csf_wbc_per_mm3": 180,
+            "csf_neutrophil_pct": 22,
+            "csf_lymphocyte_pct": 78,
+            "csf_eosinophil_pct": 0,
+            "csf_glucose_mg_per_dL": 58,
+            "csf_protein_mg_per_dL": 105,
+            "csf_lactate_mmol_per_L": 2.4,
+            "csf_ada_U_per_L": None,
+            "csf_crag_lfa_result": "negative",
+            "csf_wet_mount_motile_amoebae": "negative",
+            "csf_xanthochromia_present": True,
+            "csf_rbc_per_mm3": 28,
+            "csf_rbc_decreasing_across_tubes": False,
+        },
+        "narrative_en": (
+            "A 38-year-old man in Lima, Peru presented to a tertiary urban "
+            "emergency department with a 5-day course: low-grade fever to "
+            "38.5 C, severe headache, then new-onset olfactory "
+            "hallucinations on day 3, expressive aphasia on day 4, and a "
+            "complex partial seizure on day 5 prompting ED presentation. He "
+            "had no neck stiffness on examination and no antecedent "
+            "freshwater exposure. Examination on admission: Glasgow Coma "
+            "Scale 13, focal neurological deficit (expressive aphasia and "
+            "olfactory hallucinations). CSF showed opening pressure 21 "
+            "cmH2O, white cell count 180 per cubic millimeter (78 percent "
+            "lymphocytes), glucose 58 mg/dL, protein 105 mg/dL, RBC 28 with "
+            "mild xanthochromia. CSF HSV-1 PCR positive. Brain MRI with "
+            "DWI/FLAIR showed mesial temporal T2/FLAIR hyperintensity "
+            "asymmetric with basal ganglia sparing. Acyclovir initiated "
+            "within eight hours. Anchored to Tyler 2018 NEJM viral "
+            "encephalitis review (PMID 29490180), Peru-Lima coastal "
+            "stratum. Outcome: survived with mild memory deficit. Subphase "
+            "1.3 commit 5.3.5 wave 1, pre-adjudication hold_for_revision."
+        ),
+        "narrative_es": (
+            "Varon de 38 anos en Lima, Peru, ingresado a urgencias urbanas "
+            "terciarias con curso de cinco dias: febricula 38.5 C, cefalea "
+            "intensa, alucinaciones olfativas de novo al tercer dia, afasia "
+            "expresiva al cuarto dia y crisis parcial compleja al quinto "
+            "dia que motivo consulta. Sin rigidez de nuca al examen. Sin "
+            "exposicion a agua dulce. Examen: escala de Glasgow 13, deficit "
+            "focal (afasia expresiva, alucinaciones olfativas). Liquido "
+            "cefalorraquideo mostro presion de apertura 21 cmH2O, "
+            "leucocitos 180 por mm3 (78 por ciento linfocitos), glucosa 58 "
+            "mg/dL, proteina 105 mg/dL, eritrocitos 28 con xantocromia "
+            "leve. PCR de HSV-1 positiva. RM cerebral mostro hiperintensidad "
+            "temporal mesial T2/FLAIR asimetrica. Anclaje en revision Tyler "
+            "2018 NEJM (PMID 29490180), estrato Lima coastal. Subphase 1.3 "
+            "commit 5.3.5 wave 1."
+        ),
+        "rationale": (
+            "Anchored to PMID 29490180 (Tyler 2018 NEJM viral encephalitis "
+            "review). HSV1 mesial-temporal-encephalitis phenotype with "
+            "olfactory hallucinations + aphasia + partial seizure (classic "
+            "limbic-dominant signature). Demographic anchor (38yo M Lima) "
+            "sits in adult-HSE stratum + Peru-coastal-tertiary-care "
+            "stratum. CSF lymphocytic with hemorrhagic component. MRI "
+            "mesial temporal pattern. Imputation tiers: tier_1_primary="
+            "{age, sex, region, hsv1_pcr, imaging_pattern, olfactory_"
+            "hallucinations, aphasia}; tier_3_within_review={csf_wbc, "
+            "neutrophil_pct, glucose, protein, rbc, xanthochromia, gcs}; "
+            "tier_4_priors={temp, symptom_days}. Indeterminate=none. "
+            "Diagnostic_ambiguity=false. Outcome=survived_mild_memory_"
+            "deficit. Acyclovir_hours=8. Tier: tier_3_imputation_within_"
+            "review. 5.3.5 wave1 HSV1-Lima-adult-male."
+        ),
+        "anchoring_extras": "anchor=Tyler-NEJM-2018 region=Lima-Peru.",
+        "diagnostic_tests": _viral_wave1_dx_tests_hsv1_pcr("29490180"),
+    }
+
+
+def _build_viral_vignette_102() -> dict[str, Any]:
+    """v102 HSV1 50M Netherlands mid survived (Tyler NEJM review)."""
+    return {
+        "history": {
+            "symptom_onset_to_presentation_days": 6.0,
+            "chief_complaint": "behavioral_change",
+            "prodrome_description": (
+                "50-year-old male, Netherlands. 6-day course: low-grade "
+                "fever 38.4 C, headache, then progressive behavioral "
+                "change with disinhibition day 3, anomic aphasia day 4, "
+                "left-sided focal seizure day 6 prompting tertiary ED "
+                "Amsterdam. No neck stiffness. No freshwater. Acyclovir "
+                "hour 4. Outcome: survived with moderate memory deficit."
+            ),
+            "red_flags_present": [],
+        },
+        "vitals": {
+            "temperature_celsius": 38.4,
+            "heart_rate_bpm": 88,
+            "systolic_bp_mmHg": 132,
+            "diastolic_bp_mmHg": 80,
+            "glasgow_coma_scale": 11,
+            "oxygen_saturation_pct": 96,
+            "respiratory_rate_breaths_per_min": 18,
+        },
+        "exam": {
+            "mental_status_grade": "somnolent",
+            "neck_stiffness": False,
+            "kernig_or_brudzinski_positive": False,
+            "focal_neurological_deficit": True,
+            "cranial_nerve_palsy": "none",
+            "skin_lesion_centrofacial_chronic": False,
+            "petechial_or_purpuric_rash": False,
+            "papilledema_on_fundoscopy": False,
+        },
+        "labs": {
+            "wbc_blood_per_uL": 9600,
+            "platelets_per_uL": 235000,
+            "alt_ast_U_per_L": 28,
+            "crp_mg_per_L": 24.0,
+            "procalcitonin_ng_per_mL": 0.4,
+            "serum_sodium_mEq_per_L": 137,
+        },
+        "csf": {
+            "opening_pressure_cmH2O": 24.0,
+            "csf_wbc_per_mm3": 250,
+            "csf_neutrophil_pct": 28,
+            "csf_lymphocyte_pct": 72,
+            "csf_eosinophil_pct": 0,
+            "csf_glucose_mg_per_dL": 52,
+            "csf_protein_mg_per_dL": 135,
+            "csf_lactate_mmol_per_L": 2.8,
+            "csf_ada_U_per_L": None,
+            "csf_crag_lfa_result": "negative",
+            "csf_wet_mount_motile_amoebae": "negative",
+            "csf_xanthochromia_present": True,
+            "csf_rbc_per_mm3": 40,
+            "csf_rbc_decreasing_across_tubes": False,
+        },
+        "narrative_en": (
+            "A 50-year-old man in the Netherlands presented to a tertiary "
+            "emergency department in Amsterdam with a 6-day course: "
+            "low-grade fever to 38.4 C, headache, then progressive "
+            "behavioral change with disinhibition on day 3, anomic aphasia "
+            "on day 4, and a left-sided focal seizure on day 6 prompting "
+            "ED presentation. He had no neck stiffness on examination and "
+            "no antecedent freshwater exposure. Examination on admission: "
+            "Glasgow Coma Scale 11, focal neurological deficit (anomic "
+            "aphasia and disinhibition). CSF showed opening pressure 24 "
+            "cmH2O, white cell count 250 per cubic millimeter (72 percent "
+            "lymphocytes), glucose 52 mg/dL, protein 135 mg/dL, RBC 40 "
+            "with xanthochromia. CSF HSV-1 PCR positive. Brain MRI with "
+            "DWI/FLAIR showed mesial temporal T2/FLAIR hyperintensity "
+            "asymmetric with bilateral but left-dominant involvement and "
+            "basal ganglia sparing. Acyclovir initiated within four hours. "
+            "Anchored to Tyler 2018 NEJM viral encephalitis review (PMID "
+            "29490180). Outcome: survived with moderate memory deficit. "
+            "Subphase 1.3 commit 5.3.5 wave 1, pre-adjudication "
+            "hold_for_revision."
+        ),
+        "narrative_es": (
+            "Varon de 50 anos en Paises Bajos (Amsterdam), ingresado a "
+            "urgencias terciarias con curso de seis dias: febricula 38.4 C, "
+            "cefalea, luego cambio conductual progresivo con desinhibicion "
+            "al tercer dia, afasia anomica al cuarto dia y crisis focal "
+            "izquierda al sexto dia que motivo consulta. Sin rigidez de "
+            "nuca al examen. Sin exposicion a agua dulce. Examen: escala "
+            "de Glasgow 11, deficit focal (afasia anomica, desinhibicion). "
+            "Liquido cefalorraquideo mostro presion de apertura 24 cmH2O, "
+            "leucocitos 250 por mm3 (72 por ciento linfocitos), glucosa 52 "
+            "mg/dL, proteina 135 mg/dL, eritrocitos 40 con xantocromia. "
+            "PCR de HSV-1 positiva. RM cerebral mostro hiperintensidad "
+            "temporal mesial T2/FLAIR bilateral con dominancia izquierda. "
+            "Anclaje en revision Tyler 2018 NEJM (PMID 29490180). Subphase "
+            "1.3 commit 5.3.5 wave 1, pre-adjudicacion hold_for_revision."
+        ),
+        "rationale": (
+            "Anchored to PMID 29490180 (Tyler 2018 NEJM viral encephalitis "
+            "review). HSV1 mesial-temporal-encephalitis phenotype with "
+            "frontal-disinhibition + anomic aphasia (limbic + frontal "
+            "extension). Demographic anchor (50yo M adult HSE) sits in "
+            "adult-HSE stratum. CSF lymphocytic with hemorrhagic "
+            "component. MRI mesial temporal pattern with bilateral but "
+            "asymmetric involvement. Imputation tiers: tier_1_primary={age, "
+            "sex, hsv1_pcr, imaging_pattern, focal_aphasia, behavioral_"
+            "change}; tier_3_within_review={csf_wbc, neutrophil_pct, "
+            "glucose, protein, rbc, xanthochromia, gcs}; tier_4_priors="
+            "{temp, symptom_days}. Indeterminate=none. Diagnostic_ambiguity"
+            "=false. Outcome=survived_moderate_memory_deficit. Acyclovir_"
+            "hours=4. Tier: tier_3_imputation_within_review. 5.3.5 wave1 "
+            "HSV1-NL-adult-male-bilateral."
+        ),
+        "anchoring_extras": "anchor=Tyler-NEJM-2018 stratum=HSV1-adult-bilateral.",
+        "diagnostic_tests": _viral_wave1_dx_tests_hsv1_pcr("29490180"),
+    }
+
+
+def _build_viral_vignette_106() -> dict[str, Any]:
+    """v106 EV 7F US South early survived (Tyler NEJM review)."""
+    return {
+        "history": {
+            "symptom_onset_to_presentation_days": 1.0,
+            "chief_complaint": "fever_with_headache",
+            "prodrome_description": (
+                "7-year-old female, US South region. 24-hour course: "
+                "fever 38.4 C, headache, neck stiffness, photophobia, "
+                "nausea, summer late-July presentation. Pediatric tertiary "
+                "ED. No freshwater. No focal deficit. Outcome: survived "
+                "with full recovery in 5 days. Supportive care; no "
+                "antibiotics after enterovirus PCR positive."
+            ),
+            "red_flags_present": [],
+        },
+        "vitals": {
+            "temperature_celsius": 38.4,
+            "heart_rate_bpm": 108,
+            "systolic_bp_mmHg": 100,
+            "diastolic_bp_mmHg": 64,
+            "glasgow_coma_scale": 15,
+            "oxygen_saturation_pct": 98,
+            "respiratory_rate_breaths_per_min": 22,
+        },
+        "exam": {
+            "mental_status_grade": "alert",
+            "neck_stiffness": True,
+            "kernig_or_brudzinski_positive": True,
+            "focal_neurological_deficit": False,
+            "cranial_nerve_palsy": "none",
+            "skin_lesion_centrofacial_chronic": False,
+            "petechial_or_purpuric_rash": False,
+            "papilledema_on_fundoscopy": False,
+        },
+        "labs": {
+            "wbc_blood_per_uL": 10800,
+            "platelets_per_uL": 295000,
+            "alt_ast_U_per_L": 22,
+            "crp_mg_per_L": 16.0,
+            "procalcitonin_ng_per_mL": 0.3,
+            "serum_sodium_mEq_per_L": 138,
+        },
+        "csf": {
+            "opening_pressure_cmH2O": 18.0,
+            "csf_wbc_per_mm3": 95,
+            "csf_neutrophil_pct": 20,
+            "csf_lymphocyte_pct": 80,
+            "csf_eosinophil_pct": 0,
+            "csf_glucose_mg_per_dL": 60,
+            "csf_protein_mg_per_dL": 50,
+            "csf_lactate_mmol_per_L": 2.0,
+            "csf_ada_U_per_L": None,
+            "csf_crag_lfa_result": "negative",
+            "csf_wet_mount_motile_amoebae": "negative",
+            "csf_xanthochromia_present": False,
+            "csf_rbc_per_mm3": 3,
+            "csf_rbc_decreasing_across_tubes": None,
+        },
+        "narrative_en": (
+            "A 7-year-old girl in the US South region presented to a "
+            "tertiary pediatric emergency department in late July with a "
+            "24-hour course of fever to 38.4 C, headache, neck stiffness, "
+            "photophobia, and nausea. Examination on admission: temperature "
+            "38.4 C, Glasgow Coma Scale 15, alert, neck stiffness, positive "
+            "Kernig sign, no focal deficit, no rash. CSF showed opening "
+            "pressure 18 cmH2O, white cell count 95 per cubic millimeter "
+            "(80 percent lymphocytes), glucose 60 mg/dL, protein 50 mg/dL. "
+            "CSF enterovirus PCR positive. Gram stain and culture negative. "
+            "No imaging performed (uncomplicated viral meningitis "
+            "presentation in a child with normal mental status). Anchored "
+            "to Tyler 2018 NEJM viral encephalitis review (PMID 29490180), "
+            "summer enteroviral peak stratum. Outcome: survived with full "
+            "recovery in five days. Subphase 1.3 commit 5.3.5 wave 1, "
+            "pre-adjudication hold_for_revision."
+        ),
+        "narrative_es": (
+            "Nina de 7 anos en region sur de Estados Unidos, ingresada a "
+            "urgencias pediatricas terciarias en julio con 24 horas de "
+            "fiebre 38.4 C, cefalea, rigidez de nuca, fotofobia y nauseas. "
+            "Examen: temperatura 38.4 C, escala de Glasgow 15, alerta, "
+            "rigidez de nuca, signo de Kernig positivo, sin deficit focal, "
+            "sin exantema. Liquido cefalorraquideo mostro presion de "
+            "apertura 18 cmH2O, leucocitos 95 por mm3 (80 por ciento "
+            "linfocitos), glucosa 60 mg/dL, proteina 50 mg/dL. PCR de "
+            "enterovirus en liquido cefalorraquideo positiva. Tincion de "
+            "Gram y cultivo negativos. Sin imagenes (presentacion no "
+            "complicada). Anclaje en revision Tyler 2018 NEJM (PMID "
+            "29490180), estrato pico estival enteroviral. Subphase 1.3 "
+            "commit 5.3.5 wave 1, pre-adjudicacion hold_for_revision."
+        ),
+        "rationale": (
+            "Anchored to PMID 29490180 (Tyler 2018 NEJM viral encephalitis "
+            "review). Enteroviral aseptic meningitis with classic summer "
+            "pediatric presentation. Demographic anchor (7yo F US South "
+            "summer) sits in pediatric-aseptic-meningitis-summer-peak "
+            "stratum. CSF lymphocytic (95 WBC, 80 percent lymphocytes), "
+            "normal glucose 60, modestly elevated protein 50 - textbook "
+            "viral pattern per Tyler review. EV PCR positive. Imputation "
+            "tiers: tier_1_primary={age, sex, ev_pcr, season}; tier_3_"
+            "within_review={csf_wbc, neutrophil_pct, glucose, protein}; "
+            "tier_4_priors={temp, gcs, symptom_days}. Indeterminate=none. "
+            "Diagnostic_ambiguity=false. Outcome=survived_full_recovery. "
+            "Tier: tier_3_imputation_within_review. 5.3.5 wave1 EV-US-"
+            "pediatric-summer."
+        ),
+        "anchoring_extras": "anchor=Tyler-NEJM-2018 stratum=EV-pediatric-summer.",
+        "diagnostic_tests": _viral_wave1_dx_tests_ev_pcr("29490180"),
+    }
+
+
+def _build_viral_vignette_107() -> dict[str, Any]:
+    """v107 EV 22F Netherlands mid survived (Tyler NEJM review)."""
+    return {
+        "history": {
+            "symptom_onset_to_presentation_days": 2.0,
+            "chief_complaint": "fever_with_headache",
+            "prodrome_description": (
+                "22-year-old female, Netherlands. 2-day course: fever "
+                "38.6 C, severe headache, neck stiffness, photophobia, "
+                "myalgia, summer August presentation. University setting. "
+                "Tertiary ED Amsterdam. No freshwater. No focal deficit. "
+                "Outcome: survived with full recovery in 7 days. Supportive "
+                "care; no antiviral or antibiotics after EV PCR positive."
+            ),
+            "red_flags_present": [],
+        },
+        "vitals": {
+            "temperature_celsius": 38.6,
+            "heart_rate_bpm": 102,
+            "systolic_bp_mmHg": 116,
+            "diastolic_bp_mmHg": 70,
+            "glasgow_coma_scale": 15,
+            "oxygen_saturation_pct": 98,
+            "respiratory_rate_breaths_per_min": 18,
+        },
+        "exam": {
+            "mental_status_grade": "alert",
+            "neck_stiffness": True,
+            "kernig_or_brudzinski_positive": True,
+            "focal_neurological_deficit": False,
+            "cranial_nerve_palsy": "none",
+            "skin_lesion_centrofacial_chronic": False,
+            "petechial_or_purpuric_rash": False,
+            "papilledema_on_fundoscopy": False,
+        },
+        "labs": {
+            "wbc_blood_per_uL": 11500,
+            "platelets_per_uL": 275000,
+            "alt_ast_U_per_L": 24,
+            "crp_mg_per_L": 18.0,
+            "procalcitonin_ng_per_mL": 0.3,
+            "serum_sodium_mEq_per_L": 138,
+        },
+        "csf": {
+            "opening_pressure_cmH2O": 19.0,
+            "csf_wbc_per_mm3": 220,
+            "csf_neutrophil_pct": 22,
+            "csf_lymphocyte_pct": 78,
+            "csf_eosinophil_pct": 0,
+            "csf_glucose_mg_per_dL": 55,
+            "csf_protein_mg_per_dL": 65,
+            "csf_lactate_mmol_per_L": 2.2,
+            "csf_ada_U_per_L": None,
+            "csf_crag_lfa_result": "negative",
+            "csf_wet_mount_motile_amoebae": "negative",
+            "csf_xanthochromia_present": False,
+            "csf_rbc_per_mm3": 3,
+            "csf_rbc_decreasing_across_tubes": None,
+        },
+        "narrative_en": (
+            "A 22-year-old woman in the Netherlands presented to a "
+            "tertiary emergency department in Amsterdam in late August "
+            "with a 2-day course of fever to 38.6 C, severe headache, "
+            "neck stiffness, photophobia, and myalgia. She lived in a "
+            "university setting. Examination on admission: temperature "
+            "38.6 C, Glasgow Coma Scale 15, alert, neck stiffness, "
+            "positive Kernig sign, no focal deficit, no rash. CSF showed "
+            "opening pressure 19 cmH2O, white cell count 220 per cubic "
+            "millimeter (78 percent lymphocytes), glucose 55 mg/dL, "
+            "protein 65 mg/dL. CSF enterovirus PCR positive. Gram stain "
+            "and culture negative. No imaging performed (uncomplicated "
+            "presentation). Anchored to Tyler 2018 NEJM viral "
+            "encephalitis review (PMID 29490180), young-adult enteroviral "
+            "summer-peak stratum. Outcome: survived with full recovery in "
+            "seven days. Subphase 1.3 commit 5.3.5 wave 1, pre-adjudication "
+            "hold_for_revision."
+        ),
+        "narrative_es": (
+            "Mujer de 22 anos en Paises Bajos (Amsterdam), ingresada a "
+            "urgencias terciarias en agosto con dos dias de fiebre 38.6 C, "
+            "cefalea intensa, rigidez de nuca, fotofobia y mialgia. "
+            "Entorno universitario. Examen: temperatura 38.6 C, escala de "
+            "Glasgow 15, alerta, rigidez de nuca, signo de Kernig "
+            "positivo, sin deficit focal, sin exantema. Liquido "
+            "cefalorraquideo mostro presion de apertura 19 cmH2O, "
+            "leucocitos 220 por mm3 (78 por ciento linfocitos), glucosa "
+            "55 mg/dL, proteina 65 mg/dL. PCR de enterovirus en LCR "
+            "positiva. Tincion de Gram y cultivo negativos. Sin imagenes. "
+            "Anclaje en revision Tyler 2018 NEJM (PMID 29490180), estrato "
+            "adulto joven pico estival enteroviral. Subphase 1.3 commit "
+            "5.3.5 wave 1, pre-adjudicacion hold_for_revision."
+        ),
+        "rationale": (
+            "Anchored to PMID 29490180 (Tyler 2018 NEJM viral encephalitis "
+            "review). Enteroviral aseptic meningitis young-adult pattern. "
+            "Demographic anchor (22yo F NL university summer) sits in "
+            "young-adult-aseptic-meningitis-summer stratum. CSF "
+            "lymphocytic (220 WBC, 78 percent lymphocytes), normal "
+            "glucose 55, mildly elevated protein 65 - textbook viral "
+            "pattern. EV PCR positive. Imputation tiers: tier_1_primary="
+            "{age, sex, ev_pcr, season}; tier_3_within_review={csf_wbc, "
+            "neutrophil_pct, glucose, protein}; tier_4_priors={temp, gcs, "
+            "symptom_days}. Indeterminate=none. Diagnostic_ambiguity=false. "
+            "Outcome=survived_full_recovery. Tier: tier_3_imputation_"
+            "within_review. 5.3.5 wave1 EV-NL-young-adult."
+        ),
+        "anchoring_extras": "anchor=Tyler-NEJM-2018 stratum=EV-young-adult-summer.",
+        "diagnostic_tests": _viral_wave1_dx_tests_ev_pcr("29490180"),
+    }
+
+
+def _build_viral_vignette_108() -> dict[str, Any]:
+    """v108 EV 11M US South school outbreak mid survived (Tyler NEJM review)."""
+    return {
+        "history": {
+            "symptom_onset_to_presentation_days": 2.0,
+            "chief_complaint": "fever_with_headache",
+            "prodrome_description": (
+                "11-year-old male, US South region. School outbreak with "
+                "multiple peers symptomatic. 2-day course: fever 38.7 C, "
+                "headache, neck stiffness, photophobia, vomiting, summer "
+                "early-September presentation. Pediatric tertiary ED. No "
+                "freshwater. No focal. Outcome: survived with full "
+                "recovery in 6 days."
+            ),
+            "red_flags_present": [],
+        },
+        "vitals": {
+            "temperature_celsius": 38.7,
+            "heart_rate_bpm": 100,
+            "systolic_bp_mmHg": 110,
+            "diastolic_bp_mmHg": 68,
+            "glasgow_coma_scale": 15,
+            "oxygen_saturation_pct": 98,
+            "respiratory_rate_breaths_per_min": 20,
+        },
+        "exam": {
+            "mental_status_grade": "alert",
+            "neck_stiffness": True,
+            "kernig_or_brudzinski_positive": True,
+            "focal_neurological_deficit": False,
+            "cranial_nerve_palsy": "none",
+            "skin_lesion_centrofacial_chronic": False,
+            "petechial_or_purpuric_rash": False,
+            "papilledema_on_fundoscopy": False,
+        },
+        "labs": {
+            "wbc_blood_per_uL": 10200,
+            "platelets_per_uL": 285000,
+            "alt_ast_U_per_L": 23,
+            "crp_mg_per_L": 14.0,
+            "procalcitonin_ng_per_mL": 0.3,
+            "serum_sodium_mEq_per_L": 138,
+        },
+        "csf": {
+            "opening_pressure_cmH2O": 18.0,
+            "csf_wbc_per_mm3": 180,
+            "csf_neutrophil_pct": 18,
+            "csf_lymphocyte_pct": 82,
+            "csf_eosinophil_pct": 0,
+            "csf_glucose_mg_per_dL": 58,
+            "csf_protein_mg_per_dL": 60,
+            "csf_lactate_mmol_per_L": 2.0,
+            "csf_ada_U_per_L": None,
+            "csf_crag_lfa_result": "negative",
+            "csf_wet_mount_motile_amoebae": "negative",
+            "csf_xanthochromia_present": False,
+            "csf_rbc_per_mm3": 2,
+            "csf_rbc_decreasing_across_tubes": None,
+        },
+        "narrative_en": (
+            "An 11-year-old boy in the US South region presented to a "
+            "tertiary pediatric emergency department in early September "
+            "with a 2-day course of fever to 38.7 C, headache, neck "
+            "stiffness, photophobia, and vomiting. He attended a school "
+            "with several peers reporting similar symptoms in the same "
+            "week (suspected school enteroviral outbreak). Examination on "
+            "admission: temperature 38.7 C, Glasgow Coma Scale 15, alert, "
+            "neck stiffness, positive Kernig sign, no focal deficit, no "
+            "rash. CSF showed opening pressure 18 cmH2O, white cell count "
+            "180 per cubic millimeter (82 percent lymphocytes), glucose 58 "
+            "mg/dL, protein 60 mg/dL. CSF enterovirus PCR positive. Gram "
+            "stain and culture negative. No imaging performed. Anchored to "
+            "Tyler 2018 NEJM viral encephalitis review (PMID 29490180), "
+            "school-outbreak enteroviral stratum. Outcome: survived with "
+            "full recovery in six days. Subphase 1.3 commit 5.3.5 wave 1, "
+            "pre-adjudication hold_for_revision."
+        ),
+        "narrative_es": (
+            "Varon de 11 anos en region sur de Estados Unidos, ingresado "
+            "a urgencias pediatricas terciarias a principios de septiembre "
+            "con dos dias de fiebre 38.7 C, cefalea, rigidez de nuca, "
+            "fotofobia y vomitos. Asistio a colegio con varios companeros "
+            "con sintomas similares la misma semana (brote escolar de "
+            "enterovirus sospechado). Examen: temperatura 38.7 C, escala "
+            "de Glasgow 15, alerta, rigidez de nuca, signo de Kernig "
+            "positivo, sin deficit focal, sin exantema. Liquido "
+            "cefalorraquideo mostro presion de apertura 18 cmH2O, "
+            "leucocitos 180 por mm3 (82 por ciento linfocitos), glucosa "
+            "58 mg/dL, proteina 60 mg/dL. PCR de enterovirus en LCR "
+            "positiva. Anclaje en revision Tyler 2018 NEJM (PMID "
+            "29490180), estrato brote escolar. Subphase 1.3 commit 5.3.5 "
+            "wave 1."
+        ),
+        "rationale": (
+            "Anchored to PMID 29490180 (Tyler 2018 NEJM viral encephalitis "
+            "review). Enteroviral aseptic meningitis with school-outbreak "
+            "epidemiology. Demographic anchor (11yo M US school outbreak "
+            "September) sits in school-outbreak-pediatric stratum. CSF "
+            "lymphocytic (180 WBC, 82 percent lymphocytes), normal "
+            "glucose 58, mildly elevated protein 60 - textbook viral "
+            "pattern. EV PCR positive. Imputation tiers: tier_1_primary="
+            "{age, sex, ev_pcr, school_outbreak_context, season}; "
+            "tier_3_within_review={csf_wbc, neutrophil_pct, glucose, "
+            "protein}; tier_4_priors={temp, gcs, symptom_days}. "
+            "Indeterminate=none. Diagnostic_ambiguity=false. Outcome="
+            "survived_full_recovery. Tier: tier_3_imputation_within_"
+            "review. 5.3.5 wave1 EV-school-outbreak-pediatric."
+        ),
+        "anchoring_extras": "anchor=Tyler-NEJM-2018 stratum=EV-school-outbreak.",
+        "diagnostic_tests": _viral_wave1_dx_tests_ev_pcr("29490180"),
+    }
+
+
+def _build_viral_vignette_109() -> dict[str, Any]:
+    """v109 EV 3F Netherlands infant mid survived (Tyler NEJM review)."""
+    return {
+        "history": {
+            "symptom_onset_to_presentation_days": 2.0,
+            "chief_complaint": "fever_with_headache",
+            "prodrome_description": (
+                "3-year-old female, Netherlands. 2-day course: fever 38.5 C, "
+                "irritability, decreased oral intake, vomiting, bulging "
+                "fontanelle remnant, neck stiffness on exam, summer July "
+                "presentation. Pediatric tertiary ED Amsterdam. No "
+                "freshwater. No focal deficit. Outcome: survived with full "
+                "recovery in 5 days."
+            ),
+            "red_flags_present": [],
+        },
+        "vitals": {
+            "temperature_celsius": 38.5,
+            "heart_rate_bpm": 130,
+            "systolic_bp_mmHg": 96,
+            "diastolic_bp_mmHg": 60,
+            "glasgow_coma_scale": 15,
+            "oxygen_saturation_pct": 98,
+            "respiratory_rate_breaths_per_min": 26,
+        },
+        "exam": {
+            "mental_status_grade": "alert",
+            "neck_stiffness": True,
+            "kernig_or_brudzinski_positive": True,
+            "focal_neurological_deficit": False,
+            "cranial_nerve_palsy": "none",
+            "skin_lesion_centrofacial_chronic": False,
+            "petechial_or_purpuric_rash": False,
+            "papilledema_on_fundoscopy": False,
+        },
+        "labs": {
+            "wbc_blood_per_uL": 9800,
+            "platelets_per_uL": 305000,
+            "alt_ast_U_per_L": 22,
+            "crp_mg_per_L": 12.0,
+            "procalcitonin_ng_per_mL": 0.3,
+            "serum_sodium_mEq_per_L": 138,
+        },
+        "csf": {
+            "opening_pressure_cmH2O": 17.0,
+            "csf_wbc_per_mm3": 145,
+            "csf_neutrophil_pct": 15,
+            "csf_lymphocyte_pct": 85,
+            "csf_eosinophil_pct": 0,
+            "csf_glucose_mg_per_dL": 56,
+            "csf_protein_mg_per_dL": 55,
+            "csf_lactate_mmol_per_L": 2.0,
+            "csf_ada_U_per_L": None,
+            "csf_crag_lfa_result": "negative",
+            "csf_wet_mount_motile_amoebae": "negative",
+            "csf_xanthochromia_present": False,
+            "csf_rbc_per_mm3": 2,
+            "csf_rbc_decreasing_across_tubes": None,
+        },
+        "narrative_en": (
+            "A 3-year-old girl in the Netherlands presented to a tertiary "
+            "pediatric emergency department in Amsterdam in July with a "
+            "2-day course of fever to 38.5 C, irritability, decreased "
+            "oral intake, vomiting, and neck stiffness on examination. "
+            "Examination on admission: temperature 38.5 C, Glasgow Coma "
+            "Scale 15, alert, neck stiffness, positive Kernig sign, no "
+            "focal deficit, no rash. CSF showed opening pressure 17 "
+            "cmH2O, white cell count 145 per cubic millimeter (85 percent "
+            "lymphocytes), glucose 56 mg/dL, protein 55 mg/dL. CSF "
+            "enterovirus PCR positive. Gram stain and culture negative. "
+            "No imaging performed. Anchored to Tyler 2018 NEJM viral "
+            "encephalitis review (PMID 29490180), early-childhood "
+            "enteroviral summer stratum. Outcome: survived with full "
+            "recovery in five days. Subphase 1.3 commit 5.3.5 wave 1, "
+            "pre-adjudication hold_for_revision."
+        ),
+        "narrative_es": (
+            "Nina de 3 anos en Paises Bajos (Amsterdam), ingresada a "
+            "urgencias pediatricas terciarias en julio con dos dias de "
+            "fiebre 38.5 C, irritabilidad, disminucion de ingesta oral, "
+            "vomitos y rigidez de nuca al examen. Examen: temperatura "
+            "38.5 C, escala de Glasgow 15, alerta, rigidez de nuca, "
+            "signo de Kernig positivo, sin deficit focal, sin exantema. "
+            "Liquido cefalorraquideo mostro presion de apertura 17 cmH2O, "
+            "leucocitos 145 por mm3 (85 por ciento linfocitos), glucosa "
+            "56 mg/dL, proteina 55 mg/dL. PCR de enterovirus en LCR "
+            "positiva. Tincion de Gram y cultivo negativos. Sin imagenes. "
+            "Anclaje en revision Tyler 2018 NEJM (PMID 29490180), estrato "
+            "infancia temprana pico estival enteroviral. Subphase 1.3 "
+            "commit 5.3.5 wave 1, pre-adjudicacion hold_for_revision."
+        ),
+        "rationale": (
+            "Anchored to PMID 29490180 (Tyler 2018 NEJM viral encephalitis "
+            "review). Enteroviral aseptic meningitis early-childhood "
+            "summer pattern. Demographic anchor (3yo F NL summer) sits in "
+            "early-childhood-EV-summer stratum. CSF lymphocytic (145 WBC, "
+            "85 percent lymphocytes), normal glucose 56, mildly elevated "
+            "protein 55. EV PCR positive. Imputation tiers: tier_1_primary"
+            "={age, sex, ev_pcr, season, irritability}; tier_3_within_"
+            "review={csf_wbc, neutrophil_pct, glucose, protein}; tier_4_"
+            "priors={temp, gcs, hr, symptom_days}. Indeterminate=none. "
+            "Diagnostic_ambiguity=false. Outcome=survived_full_recovery. "
+            "Tier: tier_3_imputation_within_review. 5.3.5 wave1 EV-NL-"
+            "infant-summer."
+        ),
+        "anchoring_extras": "anchor=Tyler-NEJM-2018 stratum=EV-early-childhood-summer.",
+        "diagnostic_tests": _viral_wave1_dx_tests_ev_pcr("29490180"),
+    }
+
+
+def _build_viral_vignette_111() -> dict[str, Any]:
+    """v111 EV 5M US South pediatric mid survived (Tyler NEJM review)."""
+    return {
+        "history": {
+            "symptom_onset_to_presentation_days": 2.0,
+            "chief_complaint": "fever_with_headache",
+            "prodrome_description": (
+                "5-year-old male, US South region. 2-day course: fever "
+                "38.6 C, headache, neck stiffness, photophobia, summer "
+                "August presentation. Pediatric tertiary ED. No "
+                "freshwater. No focal. Outcome: survived with full "
+                "recovery in 6 days. Supportive care; antibiotics "
+                "discontinued after EV PCR positive."
+            ),
+            "red_flags_present": [],
+        },
+        "vitals": {
+            "temperature_celsius": 38.6,
+            "heart_rate_bpm": 110,
+            "systolic_bp_mmHg": 100,
+            "diastolic_bp_mmHg": 64,
+            "glasgow_coma_scale": 15,
+            "oxygen_saturation_pct": 98,
+            "respiratory_rate_breaths_per_min": 22,
+        },
+        "exam": {
+            "mental_status_grade": "alert",
+            "neck_stiffness": True,
+            "kernig_or_brudzinski_positive": True,
+            "focal_neurological_deficit": False,
+            "cranial_nerve_palsy": "none",
+            "skin_lesion_centrofacial_chronic": False,
+            "petechial_or_purpuric_rash": False,
+            "papilledema_on_fundoscopy": False,
+        },
+        "labs": {
+            "wbc_blood_per_uL": 10500,
+            "platelets_per_uL": 290000,
+            "alt_ast_U_per_L": 22,
+            "crp_mg_per_L": 15.0,
+            "procalcitonin_ng_per_mL": 0.3,
+            "serum_sodium_mEq_per_L": 138,
+        },
+        "csf": {
+            "opening_pressure_cmH2O": 18.0,
+            "csf_wbc_per_mm3": 165,
+            "csf_neutrophil_pct": 20,
+            "csf_lymphocyte_pct": 80,
+            "csf_eosinophil_pct": 0,
+            "csf_glucose_mg_per_dL": 55,
+            "csf_protein_mg_per_dL": 58,
+            "csf_lactate_mmol_per_L": 2.1,
+            "csf_ada_U_per_L": None,
+            "csf_crag_lfa_result": "negative",
+            "csf_wet_mount_motile_amoebae": "negative",
+            "csf_xanthochromia_present": False,
+            "csf_rbc_per_mm3": 3,
+            "csf_rbc_decreasing_across_tubes": None,
+        },
+        "narrative_en": (
+            "A 5-year-old boy in the US South region presented to a "
+            "tertiary pediatric emergency department in August with a "
+            "2-day course of fever to 38.6 C, headache, neck stiffness, "
+            "and photophobia. Examination on admission: temperature 38.6 "
+            "C, Glasgow Coma Scale 15, alert, neck stiffness, positive "
+            "Kernig sign, no focal deficit, no rash. CSF showed opening "
+            "pressure 18 cmH2O, white cell count 165 per cubic millimeter "
+            "(80 percent lymphocytes), glucose 55 mg/dL, protein 58 mg/dL. "
+            "CSF enterovirus PCR positive. Gram stain and culture "
+            "negative. No imaging performed (uncomplicated viral "
+            "meningitis presentation in a child with normal mental "
+            "status). Anchored to Tyler 2018 NEJM viral encephalitis "
+            "review (PMID 29490180), pediatric enteroviral summer-peak "
+            "stratum. Outcome: survived with full recovery in six days. "
+            "Subphase 1.3 commit 5.3.5 wave 1, pre-adjudication "
+            "hold_for_revision."
+        ),
+        "narrative_es": (
+            "Varon de 5 anos en region sur de Estados Unidos, ingresado a "
+            "urgencias pediatricas terciarias en agosto con dos dias de "
+            "fiebre 38.6 C, cefalea, rigidez de nuca y fotofobia. Examen: "
+            "temperatura 38.6 C, escala de Glasgow 15, alerta, rigidez de "
+            "nuca, signo de Kernig positivo, sin deficit focal, sin "
+            "exantema. Liquido cefalorraquideo mostro presion de apertura "
+            "18 cmH2O, leucocitos 165 por mm3 (80 por ciento linfocitos), "
+            "glucosa 55 mg/dL, proteina 58 mg/dL. PCR de enterovirus en "
+            "LCR positiva. Tincion de Gram y cultivo negativos. Sin "
+            "imagenes. Anclaje en revision Tyler 2018 NEJM (PMID "
+            "29490180), estrato pediatrico pico estival enteroviral. "
+            "Subphase 1.3 commit 5.3.5 wave 1, pre-adjudicacion "
+            "hold_for_revision."
+        ),
+        "rationale": (
+            "Anchored to PMID 29490180 (Tyler 2018 NEJM viral encephalitis "
+            "review). Enteroviral aseptic meningitis pediatric summer "
+            "pattern. Demographic anchor (5yo M US South August) sits in "
+            "pediatric-EV-summer stratum. CSF lymphocytic (165 WBC, 80 "
+            "percent lymphocytes), normal glucose 55, mildly elevated "
+            "protein 58. EV PCR positive. Imputation tiers: tier_1_primary"
+            "={age, sex, ev_pcr, season}; tier_3_within_review={csf_wbc, "
+            "neutrophil_pct, glucose, protein}; tier_4_priors={temp, gcs, "
+            "symptom_days}. Indeterminate=none. Diagnostic_ambiguity=false. "
+            "Outcome=survived_full_recovery. Tier: tier_3_imputation_"
+            "within_review. 5.3.5 wave1 EV-US-pediatric-summer-2."
+        ),
+        "anchoring_extras": "anchor=Tyler-NEJM-2018 stratum=EV-pediatric-summer-2.",
+        "diagnostic_tests": _viral_wave1_dx_tests_ev_pcr("29490180"),
+    }
+
+
+def _build_viral_vignette_113() -> dict[str, Any]:
+    """v113 HSV2 28F Netherlands mid survived AMBIGUITY (Tyler NEJM review).
+
+    HSV2 first-episode with prominent meningismus that mimics bacterial
+    meningitis on initial presentation. CSF lymphocytic but with prominent
+    pleocytosis raising bacterial DDx; HSV2 PCR confirms organism.
+    """
+    return {
+        "history": {
+            "symptom_onset_to_presentation_days": 2.0,
+            "chief_complaint": "fever_with_headache",
+            "prodrome_description": (
+                "28-year-old female, Netherlands. First-episode HSV2 "
+                "lymphocytic meningitis with prominent meningismus 2 weeks "
+                "after primary genital herpes outbreak. 2-day course: "
+                "fever 38.6 C, severe headache, prominent neck stiffness, "
+                "photophobia. Tertiary ED Amsterdam. No freshwater. "
+                "Diagnostic_ambiguity=true; type=hsv2_first_episode_with_"
+                "prominent_meningismus_bacterial_ddx. Outcome: survived "
+                "with full recovery."
+            ),
+            "red_flags_present": [],
+        },
+        "vitals": {
+            "temperature_celsius": 38.6,
+            "heart_rate_bpm": 102,
+            "systolic_bp_mmHg": 116,
+            "diastolic_bp_mmHg": 70,
+            "glasgow_coma_scale": 14,
+            "oxygen_saturation_pct": 97,
+            "respiratory_rate_breaths_per_min": 18,
+        },
+        "exam": {
+            "mental_status_grade": "alert",
+            "neck_stiffness": True,
+            "kernig_or_brudzinski_positive": True,
+            "focal_neurological_deficit": False,
+            "cranial_nerve_palsy": "none",
+            "skin_lesion_centrofacial_chronic": False,
+            "petechial_or_purpuric_rash": False,
+            "papilledema_on_fundoscopy": False,
+        },
+        "labs": {
+            "wbc_blood_per_uL": 12500,
+            "platelets_per_uL": 245000,
+            "alt_ast_U_per_L": 24,
+            "crp_mg_per_L": 32.0,
+            "procalcitonin_ng_per_mL": 0.5,
+            "serum_sodium_mEq_per_L": 138,
+        },
+        "csf": {
+            "opening_pressure_cmH2O": 24.0,
+            "csf_wbc_per_mm3": 350,
+            "csf_neutrophil_pct": 35,
+            "csf_lymphocyte_pct": 65,
+            "csf_eosinophil_pct": 0,
+            "csf_glucose_mg_per_dL": 48,
+            "csf_protein_mg_per_dL": 105,
+            "csf_lactate_mmol_per_L": 2.8,
+            "csf_ada_U_per_L": None,
+            "csf_crag_lfa_result": "negative",
+            "csf_wet_mount_motile_amoebae": "negative",
+            "csf_xanthochromia_present": False,
+            "csf_rbc_per_mm3": 4,
+            "csf_rbc_decreasing_across_tubes": None,
+        },
+        "narrative_en": (
+            "A 28-year-old woman in the Netherlands presented to a "
+            "tertiary emergency department in Amsterdam with a 2-day "
+            "course of fever to 38.6 C, severe headache, prominent neck "
+            "stiffness, and photophobia, two weeks after a primary "
+            "genital herpes outbreak. Examination on admission: "
+            "temperature 38.6 C, Glasgow Coma Scale 14, alert, prominent "
+            "neck stiffness, positive Kernig sign, no focal deficit, no "
+            "rash. CSF showed opening pressure 24 cmH2O, white cell count "
+            "350 per cubic millimeter (65 percent lymphocytes, 35 percent "
+            "neutrophils), glucose 48 mg/dL, protein 105 mg/dL. CSF HSV-2 "
+            "PCR positive. Gram stain and culture negative. MRI brain "
+            "with DWI/FLAIR normal. Diagnostic_ambiguity=true; "
+            "type=hsv2_first_episode_with_prominent_meningismus_bacterial_"
+            "ddx. The prominent meningismus and CSF pleocytosis at 350 "
+            "WBC with 35 percent neutrophils raised initial bacterial-"
+            "meningitis differential; HSV2 PCR confirmed organism. "
+            "Anchored to Tyler 2018 NEJM viral encephalitis review (PMID "
+            "29490180). Outcome: survived with full recovery. Subphase "
+            "1.3 commit 5.3.5 wave 1, pre-adjudication hold_for_revision."
+        ),
+        "narrative_es": (
+            "Mujer de 28 anos en Paises Bajos (Amsterdam), ingresada a "
+            "urgencias terciarias con dos dias de fiebre 38.6 C, cefalea "
+            "intensa, rigidez de nuca prominente y fotofobia, dos semanas "
+            "tras brote primario de herpes genital. Examen: temperatura "
+            "38.6 C, escala de Glasgow 14, alerta, rigidez de nuca "
+            "prominente, signo de Kernig positivo, sin deficit focal, sin "
+            "exantema. Liquido cefalorraquideo mostro presion de apertura "
+            "24 cmH2O, leucocitos 350 por mm3 (65 por ciento linfocitos, "
+            "35 por ciento neutrofilos), glucosa 48 mg/dL, proteina 105 "
+            "mg/dL. PCR de HSV-2 en LCR positiva. RM cerebral normal. "
+            "Ambiguedad diagnostica por meningismo prominente con DDx "
+            "bacteriana inicial. Anclaje en revision Tyler 2018 NEJM "
+            "(PMID 29490180). Subphase 1.3 commit 5.3.5 wave 1, "
+            "pre-adjudicacion hold_for_revision."
+        ),
+        "rationale": (
+            "Anchored to PMID 29490180 (Tyler 2018 NEJM viral encephalitis "
+            "review). HSV2 first-episode lymphocytic meningitis with "
+            "prominent meningismus that mimics bacterial DDx. Diagnostic_"
+            "ambiguity=true; type=hsv2_first_episode_with_prominent_"
+            "meningismus_bacterial_ddx (verbatim from spec). Demographic "
+            "anchor (28yo F NL post-genital-herpes) sits in HSV2-first-"
+            "episode stratum. CSF prominent (WBC 350) with 35 percent "
+            "neutrophils approaching bacterial threshold but lymphocyte-"
+            "dominant; protein elevated 105; glucose mildly low 48 - "
+            "borderline-bacterial-DDx pattern raising initial empiric-"
+            "ceftriaxone consideration. HSV2 PCR confirms organism. "
+            "Imputation tiers: tier_1_primary={age, sex, hsv2_pcr, "
+            "primary_genital_herpes_history, prominent_meningismus}; "
+            "tier_3_within_review={csf_wbc, neutrophil_pct, glucose, "
+            "protein}; tier_4_priors={temp, gcs, symptom_days}. "
+            "Indeterminate=initial-bacterial-DDx-resolved-by-PCR. Outcome="
+            "survived_full_recovery. Tier: tier_3_imputation_within_"
+            "review. 5.3.5 wave1 HSV2-first-episode-ambiguity."
+        ),
+        "anchoring_extras": "anchor=Tyler-NEJM-2018 type=hsv2_first_episode_with_prominent_meningismus_bacterial_ddx.",
+        "diagnostic_tests": _viral_wave1_dx_tests_hsv2_pcr("29490180"),
+    }
+
+
+def _build_viral_vignette_114() -> dict[str, Any]:
+    """v114 HSV2 35M US South mid survived (Tyler NEJM review)."""
+    return {
+        "history": {
+            "symptom_onset_to_presentation_days": 2.0,
+            "chief_complaint": "fever_with_headache",
+            "prodrome_description": (
+                "35-year-old male, US South region. 2-day course: fever "
+                "38.4 C, severe headache, neck stiffness, photophobia, 10 "
+                "days after primary genital herpes outbreak. Tertiary ED. "
+                "No freshwater. No focal deficit. Outcome: survived with "
+                "full recovery in 6 days. Acyclovir IV initiated empirically."
+            ),
+            "red_flags_present": [],
+        },
+        "vitals": {
+            "temperature_celsius": 38.4,
+            "heart_rate_bpm": 92,
+            "systolic_bp_mmHg": 124,
+            "diastolic_bp_mmHg": 76,
+            "glasgow_coma_scale": 15,
+            "oxygen_saturation_pct": 98,
+            "respiratory_rate_breaths_per_min": 18,
+        },
+        "exam": {
+            "mental_status_grade": "alert",
+            "neck_stiffness": True,
+            "kernig_or_brudzinski_positive": True,
+            "focal_neurological_deficit": False,
+            "cranial_nerve_palsy": "none",
+            "skin_lesion_centrofacial_chronic": False,
+            "petechial_or_purpuric_rash": False,
+            "papilledema_on_fundoscopy": False,
+        },
+        "labs": {
+            "wbc_blood_per_uL": 10800,
+            "platelets_per_uL": 250000,
+            "alt_ast_U_per_L": 24,
+            "crp_mg_per_L": 22.0,
+            "procalcitonin_ng_per_mL": 0.4,
+            "serum_sodium_mEq_per_L": 138,
+        },
+        "csf": {
+            "opening_pressure_cmH2O": 22.0,
+            "csf_wbc_per_mm3": 280,
+            "csf_neutrophil_pct": 22,
+            "csf_lymphocyte_pct": 78,
+            "csf_eosinophil_pct": 0,
+            "csf_glucose_mg_per_dL": 55,
+            "csf_protein_mg_per_dL": 80,
+            "csf_lactate_mmol_per_L": 2.4,
+            "csf_ada_U_per_L": None,
+            "csf_crag_lfa_result": "negative",
+            "csf_wet_mount_motile_amoebae": "negative",
+            "csf_xanthochromia_present": False,
+            "csf_rbc_per_mm3": 3,
+            "csf_rbc_decreasing_across_tubes": None,
+        },
+        "narrative_en": (
+            "A 35-year-old man in the US South region presented to a "
+            "tertiary emergency department with a 2-day course of fever "
+            "to 38.4 C, severe headache, neck stiffness, and photophobia, "
+            "ten days after a primary genital herpes outbreak. Examination "
+            "on admission: temperature 38.4 C, Glasgow Coma Scale 15, "
+            "alert, neck stiffness, positive Kernig sign, no focal "
+            "deficit, no rash. CSF showed opening pressure 22 cmH2O, "
+            "white cell count 280 per cubic millimeter (78 percent "
+            "lymphocytes), glucose 55 mg/dL, protein 80 mg/dL. CSF HSV-2 "
+            "PCR positive. Gram stain and culture negative. MRI brain "
+            "with DWI/FLAIR normal. Empiric IV acyclovir initiated. "
+            "Anchored to Tyler 2018 NEJM viral encephalitis review (PMID "
+            "29490180), HSV2 first-episode lymphocytic meningitis stratum. "
+            "Outcome: survived with full recovery in six days. Subphase "
+            "1.3 commit 5.3.5 wave 1, pre-adjudication hold_for_revision."
+        ),
+        "narrative_es": (
+            "Varon de 35 anos en region sur de Estados Unidos, ingresado "
+            "a urgencias terciarias con dos dias de fiebre 38.4 C, "
+            "cefalea intensa, rigidez de nuca y fotofobia, diez dias tras "
+            "brote primario de herpes genital. Examen: temperatura 38.4 "
+            "C, escala de Glasgow 15, alerta, rigidez de nuca, signo de "
+            "Kernig positivo, sin deficit focal, sin exantema. Liquido "
+            "cefalorraquideo mostro presion de apertura 22 cmH2O, "
+            "leucocitos 280 por mm3 (78 por ciento linfocitos), glucosa "
+            "55 mg/dL, proteina 80 mg/dL. PCR de HSV-2 en LCR positiva. "
+            "Tincion de Gram y cultivo negativos. RM cerebral normal. "
+            "Aciclovir IV empirico iniciado. Anclaje en revision Tyler "
+            "2018 NEJM (PMID 29490180), estrato HSV2 primer episodio. "
+            "Subphase 1.3 commit 5.3.5 wave 1, pre-adjudicacion "
+            "hold_for_revision."
+        ),
+        "rationale": (
+            "Anchored to PMID 29490180 (Tyler 2018 NEJM viral encephalitis "
+            "review). HSV2 first-episode lymphocytic meningitis. "
+            "Demographic anchor (35yo M US post-genital-herpes) sits in "
+            "HSV2-first-episode-male stratum. CSF lymphocytic (280 WBC, "
+            "78 percent lymphocytes), normal glucose 55, mildly elevated "
+            "protein 80. HSV2 PCR positive. Imputation tiers: tier_1_"
+            "primary={age, sex, hsv2_pcr, primary_genital_herpes_history}; "
+            "tier_3_within_review={csf_wbc, neutrophil_pct, glucose, "
+            "protein}; tier_4_priors={temp, gcs, symptom_days}. "
+            "Indeterminate=none. Diagnostic_ambiguity=false. Outcome="
+            "survived_full_recovery. Tier: tier_3_imputation_within_"
+            "review. 5.3.5 wave1 HSV2-first-episode-male."
+        ),
+        "anchoring_extras": "anchor=Tyler-NEJM-2018 stratum=HSV2-first-episode-male.",
+        "diagnostic_tests": _viral_wave1_dx_tests_hsv2_pcr("29490180"),
+    }
+
+
+def _build_viral_vignette_117() -> dict[str, Any]:
+    """v117 dengue 32F Lima Peru mid survived AMBIGUITY (Tyler NEJM review).
+
+    Dengue with prominent CNS arbo-encephalitis overlap raises differential
+    with other arboviral encephalitides (EEE, JE, WNV); NS1 + DENV-2 PCR
+    confirm dengue.
+    """
+    return {
+        "history": {
+            "symptom_onset_to_presentation_days": 4.0,
+            "chief_complaint": "fever_with_headache",
+            "prodrome_description": (
+                "32-year-old female in Lima, Peru. 4-day febrile illness "
+                "during Peru 2024 dengue outbreak: fever 39.4 C, retro-"
+                "orbital pain, severe myalgia, severe headache, "
+                "encephalopathic mental status by day 3 with prominent "
+                "CNS features raising arboviral DDx. No neck stiffness. "
+                "Tertiary urban ED. Diagnostic_ambiguity=true; type="
+                "dengue_with_prominent_cns_arbo_encephalitis_overlap. "
+                "Outcome: survived with full recovery."
+            ),
+            "red_flags_present": [],
+        },
+        "vitals": {
+            "temperature_celsius": 39.4,
+            "heart_rate_bpm": 112,
+            "systolic_bp_mmHg": 112,
+            "diastolic_bp_mmHg": 72,
+            "glasgow_coma_scale": 12,
+            "oxygen_saturation_pct": 96,
+            "respiratory_rate_breaths_per_min": 22,
+        },
+        "exam": {
+            "mental_status_grade": "confused",
+            "neck_stiffness": False,
+            "kernig_or_brudzinski_positive": False,
+            "focal_neurological_deficit": False,
+            "cranial_nerve_palsy": "none",
+            "skin_lesion_centrofacial_chronic": False,
+            "petechial_or_purpuric_rash": False,
+            "papilledema_on_fundoscopy": False,
+        },
+        "labs": {
+            "wbc_blood_per_uL": 4500,
+            "platelets_per_uL": 75000,
+            "alt_ast_U_per_L": 138,
+            "crp_mg_per_L": 28.0,
+            "procalcitonin_ng_per_mL": 0.5,
+            "serum_sodium_mEq_per_L": 134,
+        },
+        "csf": {
+            "opening_pressure_cmH2O": 19.0,
+            "csf_wbc_per_mm3": 110,
+            "csf_neutrophil_pct": 30,
+            "csf_lymphocyte_pct": 70,
+            "csf_eosinophil_pct": 0,
+            "csf_glucose_mg_per_dL": 58,
+            "csf_protein_mg_per_dL": 80,
+            "csf_lactate_mmol_per_L": 2.4,
+            "csf_ada_U_per_L": None,
+            "csf_crag_lfa_result": "negative",
+            "csf_wet_mount_motile_amoebae": "negative",
+            "csf_xanthochromia_present": False,
+            "csf_rbc_per_mm3": 4,
+            "csf_rbc_decreasing_across_tubes": None,
+        },
+        "narrative_en": (
+            "A 32-year-old woman in Lima, Peru presented to a tertiary "
+            "urban emergency department during the Peru 2024 dengue "
+            "outbreak with a 4-day febrile illness: fever to 39.4 C, "
+            "retro-orbital pain, severe myalgia, severe headache, and "
+            "encephalopathic mental status by day 3. The prominent CNS "
+            "features raised initial differential for other arboviral "
+            "encephalitides (EEE, JE, WNV). No neck stiffness on "
+            "examination. Examination on admission: temperature 39.4 C, "
+            "Glasgow Coma Scale 12, confused, no neck stiffness, no focal "
+            "deficit, no rash. Platelets 75,000 per cubic millimeter "
+            "(WHO 2009 dengue with warning signs threshold below 150,000 "
+            "satisfied). CSF showed opening pressure 19 cmH2O, white cell "
+            "count 110 per cubic millimeter (70 percent lymphocytes), "
+            "glucose 58 mg/dL, protein 80 mg/dL. DENV NS1 antigen positive "
+            "and DENV-2 PCR positive. Brain MRI normal. Diagnostic_"
+            "ambiguity=true; type=dengue_with_prominent_cns_arbo_"
+            "encephalitis_overlap. Anchored to Tyler 2018 NEJM viral "
+            "encephalitis review (PMID 29490180). Outcome: survived. "
+            "Subphase 1.3 commit 5.3.5 wave 1, pre-adjudication "
+            "hold_for_revision."
+        ),
+        "narrative_es": (
+            "Mujer de 32 anos en Lima, Peru, ingresada a urgencias "
+            "urbanas terciarias durante el brote de dengue de Peru 2024: "
+            "cuatro dias de fiebre 39.4 C, dolor retro-orbitario, mialgia "
+            "severa, cefalea intensa y estado mental encefalopatico al "
+            "tercer dia. Las manifestaciones CNS prominentes elevaron el "
+            "diagnostico diferencial inicial con otras encefalitides "
+            "arbovirales. Sin rigidez de nuca al examen. Examen: "
+            "temperatura 39.4 C, escala de Glasgow 12, confusa. Plaquetas "
+            "75,000 por mm3 (umbral signos de alarma OMS 2009 menor de "
+            "150,000). Liquido cefalorraquideo mostro presion de apertura "
+            "19 cmH2O, leucocitos 110 por mm3 (70 por ciento linfocitos), "
+            "glucosa 58 mg/dL, proteina 80 mg/dL. NS1 antigeno DENV "
+            "positivo y PCR DENV-2 positiva. RM cerebral normal. "
+            "Ambiguedad diagnostica por superposicion CNS arbo-"
+            "encefalitis. Anclaje en revision Tyler 2018 NEJM (PMID "
+            "29490180). Subphase 1.3 commit 5.3.5 wave 1."
+        ),
+        "rationale": (
+            "Anchored to PMID 29490180 (Tyler 2018 NEJM viral encephalitis "
+            "review) with prominent CNS-arbo-encephalitis-overlap "
+            "phenotype. Diagnostic_ambiguity=true; type=dengue_with_"
+            "prominent_cns_arbo_encephalitis_overlap (verbatim from spec). "
+            "Demographic anchor (32yo F Lima during 2024 outbreak) sits "
+            "in dengue-with-CNS stratum that overlaps with EEE/JE/WNV DDx. "
+            "Platelets 75k satisfies thrombocytopenia-warning-signs "
+            "threshold. CSF lymphocytic (110 WBC, 70 percent lymphocytes), "
+            "normal glucose 58, mildly elevated protein 80. NS1 + DENV-2 "
+            "PCR confirm organism. Imputation tiers: tier_1_primary={age, "
+            "sex, region, denv_pcr, ns1, platelets, outbreak_context}; "
+            "tier_3_within_review={csf_wbc, neutrophil_pct, glucose, "
+            "protein}; tier_4_priors={temp, gcs, symptom_days}. "
+            "Indeterminate=initial-arbo-DDx-resolved-by-DENV-PCR. Outcome="
+            "survived. Tier: tier_4_imputation_peru_dengue_2024_anchored. "
+            "5.3.5 wave1 dengue-Lima-arbo-overlap."
+        ),
+        "anchoring_extras": "anchor=Tyler-NEJM-2018 type=dengue_with_prominent_cns_arbo_encephalitis_overlap region=Lima-Peru.",
+        "diagnostic_tests": _viral_wave1_dx_tests_dengue("29490180", "DENV_2"),
+    }
+
+
+def _build_viral_vignette_119() -> dict[str, Any]:
+    """v119 dengue 41M Tumbes Peru mid survived (Tyler NEJM review)."""
+    return {
+        "history": {
+            "symptom_onset_to_presentation_days": 4.0,
+            "chief_complaint": "fever_with_headache",
+            "prodrome_description": (
+                "41-year-old male in Tumbes, Peru coastal community. 4-day "
+                "febrile illness during regional dengue activity: fever "
+                "39.2 C, retro-orbital pain, severe myalgia, severe "
+                "headache, transient encephalopathy day 3. No neck "
+                "stiffness. Regional hospital. Outcome: survived with "
+                "full recovery."
+            ),
+            "red_flags_present": [],
+        },
+        "vitals": {
+            "temperature_celsius": 39.2,
+            "heart_rate_bpm": 108,
+            "systolic_bp_mmHg": 116,
+            "diastolic_bp_mmHg": 72,
+            "glasgow_coma_scale": 13,
+            "oxygen_saturation_pct": 96,
+            "respiratory_rate_breaths_per_min": 22,
+        },
+        "exam": {
+            "mental_status_grade": "confused",
+            "neck_stiffness": False,
+            "kernig_or_brudzinski_positive": False,
+            "focal_neurological_deficit": False,
+            "cranial_nerve_palsy": "none",
+            "skin_lesion_centrofacial_chronic": False,
+            "petechial_or_purpuric_rash": False,
+            "papilledema_on_fundoscopy": False,
+        },
+        "labs": {
+            "wbc_blood_per_uL": 4800,
+            "platelets_per_uL": 85000,
+            "alt_ast_U_per_L": 124,
+            "crp_mg_per_L": 26.0,
+            "procalcitonin_ng_per_mL": 0.5,
+            "serum_sodium_mEq_per_L": 135,
+        },
+        "csf": {
+            "opening_pressure_cmH2O": 18.0,
+            "csf_wbc_per_mm3": 95,
+            "csf_neutrophil_pct": 28,
+            "csf_lymphocyte_pct": 72,
+            "csf_eosinophil_pct": 0,
+            "csf_glucose_mg_per_dL": 60,
+            "csf_protein_mg_per_dL": 75,
+            "csf_lactate_mmol_per_L": 2.4,
+            "csf_ada_U_per_L": None,
+            "csf_crag_lfa_result": "negative",
+            "csf_wet_mount_motile_amoebae": "negative",
+            "csf_xanthochromia_present": False,
+            "csf_rbc_per_mm3": 4,
+            "csf_rbc_decreasing_across_tubes": None,
+        },
+        "narrative_en": (
+            "A 41-year-old man in Tumbes, Peru coastal community presented "
+            "to a regional hospital during regional dengue activity with "
+            "a 4-day febrile illness: fever to 39.2 C, retro-orbital "
+            "pain, severe myalgia, severe headache, and transient "
+            "encephalopathy on day 3. He had no neck stiffness on "
+            "examination. Examination on admission: temperature 39.2 C, "
+            "Glasgow Coma Scale 13, confused, no neck stiffness, no focal "
+            "deficit, no rash. Platelets 85,000 per cubic millimeter "
+            "(WHO 2009 dengue with warning signs threshold below 150,000). "
+            "CSF showed opening pressure 18 cmH2O, white cell count 95 "
+            "per cubic millimeter (72 percent lymphocytes), glucose 60 "
+            "mg/dL, protein 75 mg/dL. DENV NS1 antigen positive and "
+            "DENV-2 PCR positive. Brain MRI normal (metabolic / cytokine-"
+            "mediated encephalopathy). Anchored to Tyler 2018 NEJM viral "
+            "encephalitis review (PMID 29490180), Peru-coastal-Tumbes "
+            "dengue stratum. Outcome: survived with full recovery. "
+            "Subphase 1.3 commit 5.3.5 wave 1, pre-adjudication "
+            "hold_for_revision."
+        ),
+        "narrative_es": (
+            "Varon de 41 anos en comunidad costera de Tumbes, Peru, "
+            "ingresado a hospital regional durante actividad regional de "
+            "dengue: cuatro dias de fiebre 39.2 C, dolor retro-orbitario, "
+            "mialgia severa, cefalea intensa y encefalopatia transitoria "
+            "al tercer dia. Sin rigidez de nuca al examen. Examen: "
+            "temperatura 39.2 C, escala de Glasgow 13, confuso. Plaquetas "
+            "85,000 por mm3 (umbral OMS 2009 menor de 150,000). Liquido "
+            "cefalorraquideo mostro presion de apertura 18 cmH2O, "
+            "leucocitos 95 por mm3 (72 por ciento linfocitos), glucosa 60 "
+            "mg/dL, proteina 75 mg/dL. NS1 antigeno DENV positivo y PCR "
+            "DENV-2 positiva. RM cerebral normal. Anclaje en revision "
+            "Tyler 2018 NEJM (PMID 29490180), estrato Tumbes-coastal "
+            "dengue. Subphase 1.3 commit 5.3.5 wave 1, pre-adjudicacion "
+            "hold_for_revision."
+        ),
+        "rationale": (
+            "Anchored to PMID 29490180 (Tyler 2018 NEJM viral encephalitis "
+            "review). Dengue with transient encephalopathy in Peru-"
+            "coastal-Tumbes stratum. Demographic anchor (41yo M Tumbes) "
+            "sits in Peru-coastal-dengue stratum. Platelets 85k satisfies "
+            "thrombocytopenia-warning-signs threshold. CSF lymphocytic "
+            "(95 WBC, 72 percent lymphocytes), normal glucose 60, mildly "
+            "elevated protein 75. NS1 + DENV-2 PCR confirm organism. MRI "
+            "normal (metabolic / cytokine encephalopathy not direct "
+            "viral invasion). Imputation tiers: tier_1_primary={age, sex, "
+            "region, denv_pcr, ns1, platelets}; tier_3_within_review="
+            "{csf_wbc, neutrophil_pct, glucose, protein}; tier_4_priors="
+            "{temp, gcs, symptom_days}. Indeterminate=none. Diagnostic_"
+            "ambiguity=false. Outcome=survived_full_recovery. Tier: "
+            "tier_4_imputation_peru_dengue_2024_anchored. 5.3.5 wave1 "
+            "dengue-Tumbes-coastal."
+        ),
+        "anchoring_extras": "anchor=Tyler-NEJM-2018 region=Tumbes-Peru.",
+        "diagnostic_tests": _viral_wave1_dx_tests_dengue("29490180", "DENV_2"),
+    }
+
+
+def _build_viral_vignette_120() -> dict[str, Any]:
+    """v120 EEE 58M US South late fatal (Tyler NEJM review)."""
+    return {
+        "history": {
+            "symptom_onset_to_presentation_days": 5.0,
+            "chief_complaint": "altered_mental_status",
+            "prodrome_description": (
+                "58-year-old male, US South region. 5-day course: fever "
+                "39.0 C, severe headache, neck stiffness, then progressive "
+                "encephalopathy with stupor day 4 and coma day 5. Recent "
+                "outdoor activity in mosquito-endemic wooded area. "
+                "Tertiary ED. Outcome: fatal hospital day 4. EEE per "
+                "Tyler review case fatality approximately 30 percent."
+            ),
+            "red_flags_present": [],
+        },
+        "vitals": {
+            "temperature_celsius": 39.0,
+            "heart_rate_bpm": 124,
+            "systolic_bp_mmHg": 102,
+            "diastolic_bp_mmHg": 64,
+            "glasgow_coma_scale": 6,
+            "oxygen_saturation_pct": 90,
+            "respiratory_rate_breaths_per_min": 28,
+        },
+        "exam": {
+            "mental_status_grade": "comatose",
+            "neck_stiffness": True,
+            "kernig_or_brudzinski_positive": True,
+            "focal_neurological_deficit": True,
+            "cranial_nerve_palsy": "none",
+            "skin_lesion_centrofacial_chronic": False,
+            "petechial_or_purpuric_rash": False,
+            "papilledema_on_fundoscopy": False,
+        },
+        "labs": {
+            "wbc_blood_per_uL": 13500,
+            "platelets_per_uL": 175000,
+            "alt_ast_U_per_L": 38,
+            "crp_mg_per_L": 65.0,
+            "procalcitonin_ng_per_mL": 1.2,
+            "serum_sodium_mEq_per_L": 132,
+        },
+        "csf": {
+            "opening_pressure_cmH2O": 28.0,
+            "csf_wbc_per_mm3": 350,
+            "csf_neutrophil_pct": 35,
+            "csf_lymphocyte_pct": 60,
+            "csf_eosinophil_pct": 5,
+            "csf_glucose_mg_per_dL": 48,
+            "csf_protein_mg_per_dL": 145,
+            "csf_lactate_mmol_per_L": 3.4,
+            "csf_ada_U_per_L": None,
+            "csf_crag_lfa_result": "negative",
+            "csf_wet_mount_motile_amoebae": "negative",
+            "csf_xanthochromia_present": False,
+            "csf_rbc_per_mm3": 5,
+            "csf_rbc_decreasing_across_tubes": None,
+        },
+        "narrative_en": (
+            "A 58-year-old man in the US South region presented to a "
+            "tertiary emergency department with a 5-day course of fever "
+            "to 39.0 C, severe headache, neck stiffness, then progressive "
+            "encephalopathy with stupor on day 4 and coma on day 5. He "
+            "reported recent outdoor activity in a mosquito-endemic "
+            "wooded area. Examination on admission: temperature 39.0 C, "
+            "Glasgow Coma Scale 6, comatose, neck stiffness, positive "
+            "Kernig sign, focal deficit (left-sided weakness), no rash. "
+            "CSF showed opening pressure 28 cmH2O, white cell count 350 "
+            "per cubic millimeter (60 percent lymphocytes, 35 percent "
+            "neutrophils, 5 percent eosinophils), glucose 48 mg/dL, "
+            "protein 145 mg/dL. CSF EEE IgM serology positive and CSF "
+            "EEE PCR positive. Brain MRI with DWI/FLAIR showed diffuse "
+            "cerebral edema with basal ganglia and thalamic involvement "
+            "(EEE predilection per Tyler review). Anchored to Tyler 2018 "
+            "NEJM viral encephalitis review (PMID 29490180), EEE high-"
+            "mortality older-adult stratum (case fatality approximately "
+            "30 percent, permanent sequelae in 50 percent of survivors). "
+            "Outcome: fatal hospital day 4. Subphase 1.3 commit 5.3.5 "
+            "wave 1, pre-adjudication hold_for_revision."
+        ),
+        "narrative_es": (
+            "Varon de 58 anos en region sur de Estados Unidos, ingresado "
+            "a urgencias terciarias con curso de cinco dias: fiebre 39.0 "
+            "C, cefalea intensa, rigidez de nuca, luego encefalopatia "
+            "progresiva con estupor al cuarto dia y coma al quinto. "
+            "Actividad reciente al aire libre en area boscosa endemica "
+            "de mosquitos. Examen: temperatura 39.0 C, escala de Glasgow "
+            "6, comatoso, rigidez de nuca, signo de Kernig positivo, "
+            "deficit focal (debilidad izquierda), sin exantema. Liquido "
+            "cefalorraquideo mostro presion de apertura 28 cmH2O, "
+            "leucocitos 350 por mm3 (60 por ciento linfocitos, 35 por "
+            "ciento neutrofilos), glucosa 48 mg/dL, proteina 145 mg/dL. "
+            "IgM y PCR de EEE en LCR positivas. RM cerebral con edema "
+            "cerebral difuso con compromiso de ganglios basales y talamo. "
+            "Anclaje en revision Tyler 2018 NEJM (PMID 29490180), estrato "
+            "EEE alta mortalidad. Subphase 1.3 commit 5.3.5 wave 1."
+        ),
+        "rationale": (
+            "Anchored to PMID 29490180 (Tyler 2018 NEJM viral encephalitis "
+            "review). EEE high-mortality older-adult phenotype (case "
+            "fatality approximately 30 percent, permanent neurologic "
+            "sequelae in 50 percent of survivors per Tyler review). "
+            "Demographic anchor (58yo M US South mosquito-endemic woods) "
+            "sits in EEE-older-adult stratum. CSF mixed-cellularity "
+            "leaning lymphocytic (350 WBC, 60 percent lymphocytes, 35 "
+            "percent neutrophils, 5 percent eosinophils), glucose 48 "
+            "(near master prompt 1.3.4 floor), elevated protein 145. EEE "
+            "IgM + PCR positive. MRI diffuse cerebral edema with basal "
+            "ganglia and thalamic involvement. Imputation tiers: tier_1_"
+            "primary={age, sex, eee_igm, eee_pcr, mosquito_endemic_area, "
+            "imaging_pattern}; tier_3_within_review={csf_wbc, neutrophil_"
+            "pct, glucose, protein, gcs}; tier_4_priors={temp, symptom_"
+            "days, hr}. Indeterminate=none. Diagnostic_ambiguity=false. "
+            "Outcome=fatal_hospital_day_4. Tier: tier_3_imputation_within_"
+            "review. 5.3.5 wave1 EEE-older-adult-fatal."
+        ),
+        "anchoring_extras": "anchor=Tyler-NEJM-2018 stratum=EEE-older-adult-fatal mosquito_endemic=true.",
+        "diagnostic_tests": _viral_wave1_dx_tests_eee("29490180"),
+    }
+
+
+_VIRAL_WAVE1_BUILDERS: dict[int, Any] = {
+    96: _build_viral_vignette_096,
+    99: _build_viral_vignette_099,
+    102: _build_viral_vignette_102,
+    106: _build_viral_vignette_106,
+    107: _build_viral_vignette_107,
+    108: _build_viral_vignette_108,
+    109: _build_viral_vignette_109,
+    111: _build_viral_vignette_111,
+    113: _build_viral_vignette_113,
+    114: _build_viral_vignette_114,
+    117: _build_viral_vignette_117,
+    119: _build_viral_vignette_119,
+    120: _build_viral_vignette_120,
+}
+
+
+def generate_viral_wave1_vignette(vignette_id: int) -> dict[str, Any]:
+    """Build one VIRAL Wave-1 (Tyler-anchored) vignette dict."""
+    if vignette_id not in VIRAL_WAVE1_IDS:
+        raise KeyError(
+            f"vignette_id {vignette_id!r} not in VIRAL_WAVE1_IDS {VIRAL_WAVE1_IDS}"
+        )
+    spec = next(s for s in VIRAL_DISTRIBUTION if s["vignette_id"] == vignette_id)
+    pmid_meta = load_pmid_metadata(spec["pmid"])
+    clinical = _VIRAL_WAVE1_BUILDERS[vignette_id]()
+
+    region = spec["geography_region"]
+    history = clinical["history"]
+    if not history.get("red_flags_present"):
+        history = {**history, "red_flags_present": _viral_wave1_red_flags()}
+
+    return {
+        "schema_version": "2.0",
+        "case_id": _viral_wave1_case_id(spec, pmid_meta),
+        "ground_truth_class": 3,
+        "demographics": {
+            "age_years": spec["age_years"],
+            "sex": spec["sex"],
+            "ethnicity": _bact_wave1_ethnicity(region),
+            "geography_region": region,
+            "altitude_residence_m": _bact_wave1_altitude(region),
+        },
+        "history": history,
+        "exposure": _viral_wave1_exposure(spec),
+        "vitals": clinical["vitals"],
+        "exam": clinical["exam"],
+        "labs": clinical["labs"],
+        "csf": clinical["csf"],
+        "imaging": _viral_wave1_imaging_for(spec),
+        "diagnostic_tests": {"results": clinical["diagnostic_tests"]},
+        "adjudication": _viral_wave1_adjudication(spec, clinical["anchoring_extras"]),
+        "literature_anchors": [_build_literature_anchor(pmid_meta)],
+        "provenance": _viral_wave1_provenance(clinical["rationale"]),
+        "narrative_es": clinical["narrative_es"],
+        "narrative_en": clinical["narrative_en"],
+    }
+
+
+def write_viral_wave1_vignette(
+    vignette_id: int,
+    output_dir: Path = VIRAL_WAVE1_OUTPUT_DIR,
+) -> Path:
+    """Build, validate, and write one VIRAL Wave-1 vignette to disk."""
+    spec = next(s for s in VIRAL_DISTRIBUTION if s["vignette_id"] == vignette_id)
+    vignette = generate_viral_wave1_vignette(vignette_id)
+    VignetteSchema.model_validate(vignette)
+    output_dir.mkdir(parents=True, exist_ok=True)
+    filepath = output_dir / spec["filename"]
+    filepath.write_text(
+        json.dumps(vignette, indent=2, sort_keys=False, ensure_ascii=False),
+        encoding="utf-8",
+    )
+    logger.info("Wrote %s", filepath)
+    return filepath
+
+
+def write_viral_wave1_corpus(
+    output_dir: Path = VIRAL_WAVE1_OUTPUT_DIR,
+) -> list[Path]:
+    """Build, validate, and write all 13 VIRAL Wave-1 vignettes."""
+    paths: list[Path] = []
+    for vid in VIRAL_WAVE1_IDS:
+        paths.append(write_viral_wave1_vignette(vid, output_dir=output_dir))
+    return paths
+
+
+# ============================================================================
 # Public API
 # ============================================================================
 
