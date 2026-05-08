@@ -13279,6 +13279,1880 @@ def _build_vignette_060() -> dict[str, Any]:
 
 
 # ============================================================================
+# Subphase 1.3 commit 5.3.3 - Wave 1 BACTERIAL vignette builders (n=14)
+# ----------------------------------------------------------------------------
+# Slot IDs: 65, 66, 67, 69, 71, 73, 75, 76, 77, 78, 79, 80, 81, 90.
+# Anchors: 10 Tunkel IDSA 2004 (PMID 15494903, anchor_type=guideline) +
+#          4 van de Beek 2004 NEJM (PMID 15509818, anchor_type=cohort).
+# Pathogens: 13 S. pneumoniae + 1 gram-negative (v90 post-neurosurgical).
+# Diagnostic ambiguity: 4 of 14 (v75, v76, v79, v80) - partial antibiotic
+# pretreatment, sterile cultures, attenuated CSF profile.
+# All adjudication.inclusion_decision = "hold_for_revision" (Q7 5.3.1 lock).
+# All freshwater_exposure_within_14d = False (master prompt 1.3.10).
+# CSF profile per master prompt 1.3.3: WBC 1k-10k neutrophilic, glucose <40,
+# protein >100. Ambiguity cases attenuated WBC + neutrophil pct per the
+# pretreatment-recrudescence pattern in the IDSA guideline narrative.
+# ============================================================================
+
+BACT_WAVE1_OUTPUT_DIR = Path("data/vignettes/v2/class_02_bacterial")
+BACT_WAVE1_IDS: list[int] = [65, 66, 67, 69, 71, 73, 75, 76, 77, 78, 79, 80, 81, 90]
+BACT_WAVE1_AMBIGUITY_IDS: set[int] = {75, 76, 79, 80}
+
+
+def _bact_wave1_altitude(region: str) -> int:
+    """Altitude proxy by schema region (matches the pilot conventions)."""
+    return {
+        "us_south": 100,
+        "other_global": 5,
+        "peru_lima_coast": 154,
+        "peru_loreto_amazon": 100,
+        "peru_cusco_altitude": 3399,
+        "peru_tumbes": 6,
+    }.get(region, 100)
+
+
+def _bact_wave1_ethnicity(region: str) -> str:
+    """Ethnicity proxy by schema region (matches the pilot conventions)."""
+    if region == "us_south":
+        return "white_non_hispanic"
+    if region.startswith("peru_"):
+        return "mestizo"
+    return "white_non_hispanic"
+
+
+def _bact_wave1_case_id(spec: dict[str, Any], pmid_meta: dict[str, Any]) -> str:
+    """Mirror BACT-D3-NNN-<journal>-<year>-<region-tag>-<descriptor> pattern."""
+    nnn = f"{spec['vignette_id']:03d}"
+    journal = pmid_meta["journal_short_code"]
+    year = pmid_meta["year"]
+    region_tag = spec["geography_label"].split(",")[0].strip().replace(" ", "-")
+    pathogen_descriptor = {
+        "S_pneumoniae": "SP",
+        "N_meningitidis": "NM",
+        "H_influenzae": "Hib",
+        "Listeria_monocytogenes": "Listeria",
+        "gram_negative": "GN",
+    }[spec["pathogen"]]
+    if spec.get("diagnostic_ambiguity"):
+        descriptor_tail = f"{pathogen_descriptor}-Pretreated-Ambiguity"
+    elif spec["outcome"] == "fatal":
+        descriptor_tail = f"{pathogen_descriptor}-{spec['stage'].capitalize()}-Fatal"
+    else:
+        descriptor_tail = f"{pathogen_descriptor}-{spec['stage'].capitalize()}"
+    return f"BACT-D3-{nnn}-{journal}-{year}-{region_tag}-{descriptor_tail}"
+
+
+def _bact_wave1_anchor_short(pmid: str) -> str:
+    if pmid == "15494903":
+        return "Tunkel IDSA 2004"
+    if pmid == "15509818":
+        return "van de Beek 2004 NEJM"
+    raise KeyError(pmid)
+
+
+def _bact_wave1_dx_tests_sp_culture_positive(pmid: str) -> list[dict[str, Any]]:
+    """Standard SP gram-positive culture-confirmed diagnostic battery."""
+    cit = f"PMID:{pmid}"
+    return [
+        {
+            "test_name": "csf_gram_stain",
+            "result": "gram_positive_diplococci",
+            "sensitivity_pct": 75.0,
+            "specificity_pct": 99.0,
+            "citation_pmid_or_doi": cit,
+        },
+        {
+            "test_name": "csf_culture",
+            "result": "streptococcus_pneumoniae",
+            "sensitivity_pct": 85.0,
+            "specificity_pct": 100.0,
+            "citation_pmid_or_doi": cit,
+        },
+        {
+            "test_name": "blood_culture",
+            "result": "streptococcus_pneumoniae_positive",
+            "sensitivity_pct": 60.0,
+            "specificity_pct": 99.0,
+            "citation_pmid_or_doi": cit,
+        },
+    ]
+
+
+def _bact_wave1_dx_tests_sp_pretreated(pmid: str) -> list[dict[str, Any]]:
+    """SP-suspected after partial antibiotic pretreatment: cultures sterile,
+    Gram stain unrevealing, antigen or PCR confirms organism."""
+    cit = f"PMID:{pmid}"
+    return [
+        {
+            "test_name": "csf_gram_stain",
+            "result": "no_organisms_seen_after_partial_antibiotic_pretreatment",
+            "sensitivity_pct": 30.0,
+            "specificity_pct": 99.0,
+            "citation_pmid_or_doi": cit,
+        },
+        {
+            "test_name": "csf_culture",
+            "result": "no_growth_after_partial_antibiotic_pretreatment",
+            "sensitivity_pct": 25.0,
+            "specificity_pct": 100.0,
+            "citation_pmid_or_doi": cit,
+        },
+        {
+            "test_name": "blood_culture",
+            "result": "no_growth_after_partial_antibiotic_pretreatment",
+            "sensitivity_pct": 20.0,
+            "specificity_pct": 99.0,
+            "citation_pmid_or_doi": cit,
+        },
+        {
+            "test_name": "csf_pneumococcal_antigen_BinaxNOW",
+            "result": "streptococcus_pneumoniae_positive",
+            "sensitivity_pct": 88.0,
+            "specificity_pct": 95.0,
+            "citation_pmid_or_doi": cit,
+        },
+    ]
+
+
+def _bact_wave1_dx_tests_gn_pseudomonas(pmid: str) -> list[dict[str, Any]]:
+    """Gram-negative healthcare-associated meningitis confirming Pseudomonas."""
+    cit = f"PMID:{pmid}"
+    return [
+        {
+            "test_name": "csf_gram_stain",
+            "result": "gram_negative_rods",
+            "sensitivity_pct": 70.0,
+            "specificity_pct": 99.0,
+            "citation_pmid_or_doi": cit,
+        },
+        {
+            "test_name": "csf_culture",
+            "result": "pseudomonas_aeruginosa",
+            "sensitivity_pct": 80.0,
+            "specificity_pct": 100.0,
+            "citation_pmid_or_doi": cit,
+        },
+        {
+            "test_name": "blood_culture",
+            "result": "pseudomonas_aeruginosa_positive",
+            "sensitivity_pct": 50.0,
+            "specificity_pct": 99.0,
+            "citation_pmid_or_doi": cit,
+        },
+    ]
+
+
+def _bact_wave1_imaging_for(spec: dict[str, Any]) -> dict[str, Any]:
+    """CT non-contrast pattern by stage/outcome.
+
+    Mid stage SP: typically normal at admission (per Tunkel 2004).
+    Late stage fatal SP/GN: cerebral edema with basilar meningeal enhancement.
+    Post-neurosurgical GN (v90): post-op imaging shows surgical-site changes
+    plus diffuse cerebral edema.
+    """
+    if spec["outcome"] == "fatal":
+        return {
+            "imaging_modality": "ct_noncontrast",
+            "imaging_pattern": "diffuse_cerebral_edema_basilar_meningeal_enhancement",
+            "imaging_finding_count": 1,
+            "imaging_text_summary": (
+                "CT head non-contrast: diffuse cerebral edema with effacement of "
+                "sulci, basilar meningeal enhancement on contrast-equivalent regions, "
+                "no focal lesion, no midline shift. Pattern consistent with severe "
+                "late-stage bacterial meningitis."
+            ),
+        }
+    return {
+        "imaging_modality": "ct_noncontrast",
+        "imaging_pattern": "normal",
+        "imaging_finding_count": 0,
+        "imaging_text_summary": (
+            "CT head non-contrast: normal at admission. No focal lesion, no "
+            "hydrocephalus, no midline shift, no mass effect. Pattern consistent "
+            "with early-stage adult community-acquired bacterial meningitis."
+        ),
+    }
+
+
+def _bact_wave1_exposure(spec: dict[str, Any]) -> dict[str, Any]:
+    """Exposure block with risk-factor specific overrides."""
+    risk = set(spec.get("risk_factors", []))
+    immune = "none"
+    hiv_status = "negative"
+    cd4 = None
+    if "immunocompromise" in risk and spec["vignette_id"] == 78:
+        immune = "hiv_cd4_over200"
+        hiv_status = "positive_on_art"
+        cd4 = 285
+    elif "immunocompromise" in risk and spec["vignette_id"] == 90:
+        immune = "none"
+        hiv_status = "negative"
+    return {
+        "freshwater_exposure_within_14d": False,
+        "freshwater_exposure_type": None,
+        "altitude_exposure_within_7d_m": None,
+        "pork_consumption_or_taenia_contact": False,
+        "mosquito_endemic_area_exposure": False,
+        "immunocompromise_status": immune,
+        "hiv_status": hiv_status,
+        "cd4_count_cells_per_uL": cd4,
+    }
+
+
+def _bact_wave1_red_flags(spec: dict[str, Any]) -> list[str]:
+    flags: list[str] = []
+    if spec["vignette_id"] == 78:
+        flags.append("immunocompromise")
+    if spec["vignette_id"] == 90:
+        flags.append("recent_neurosurgery")
+    return flags
+
+
+def _bact_wave1_adjudication(spec: dict[str, Any], anchoring_extras: str) -> dict[str, Any]:
+    """Pre-adjudication hold_for_revision adjudication block (Q7 5.3.1 lock).
+
+    The 5-field schema (adjudicator_ids, cohen_kappa, disagreement_resolution,
+    anchoring_documentation, inclusion_decision) is fully populated. The
+    structured pre-adjudication disclosure embeds verbatim
+    'self_review_disposition=hold_for_revision' inside anchoring_documentation,
+    matching the pilot pattern.
+    """
+    pmid = spec["pmid"]
+    anchor_short = _bact_wave1_anchor_short(pmid)
+    base = (
+        f"stage=pre_adjudication; status=pending_external_review; "
+        f"self_review_disposition=hold_for_revision; "
+        f"self_review_notes=wave 1 vignette anchored to PMID {pmid} ({anchor_short}); "
+        f"external clinical adjudication pending; classification provisional. "
+        f"adjudicator_ids=WAVE1-PRE-ADJ-1, WAVE1-PRE-ADJ-2 (sentinel); "
+        f"cohen_kappa=0.0 placeholder; adjudicator_name=null; "
+        f"adjudication_date=null; post_adjudication_disposition=null. "
+        f"Subphase 1.3 commit 5.3.3 (2026-05-08)."
+    )
+    if anchoring_extras:
+        base = base + " " + anchoring_extras
+    return {
+        "adjudicator_ids": ["WAVE1-PRE-ADJ-1", "WAVE1-PRE-ADJ-2"],
+        "cohen_kappa": 0.0,
+        "disagreement_resolution": None,
+        "anchoring_documentation": base,
+        "inclusion_decision": "hold_for_revision",
+    }
+
+
+def _bact_wave1_provenance(rationale: str) -> dict[str, Any]:
+    if len(rationale) > 1000:
+        rationale = rationale[:997] + "..."
+    return {
+        "generation_timestamp_utc": "2026-05-08T12:00:00Z",
+        "generator_model_identifier": (
+            "scripts.generate_pam_vignettes/v1.subphase_1_3_commit_5_3_3"
+        ),
+        "prompt_hash_sha256": "0" * 64,
+        "schema_version": "2.0",
+        "inclusion_decision_rationale": rationale,
+    }
+
+
+# ----------------------------------------------------------------------------
+# Per-slot clinical builders (return the slot-specific clinical block).
+# Each returns a dict with keys: history, exposure_overrides, vitals, exam,
+# labs, csf, imaging, diagnostic_tests, narrative_es, narrative_en, rationale,
+# anchoring_extras.
+# ----------------------------------------------------------------------------
+
+
+def _build_bact_vignette_065() -> dict[str, Any]:
+    """v65 SP asplenia 28M US South mid survived (Tunkel IDSA anchor)."""
+    return {
+        "history": {
+            "symptom_onset_to_presentation_days": 1.5,
+            "chief_complaint": "fever_with_headache",
+            "prodrome_description": (
+                "28-year-old male, US South region, post-traumatic splenectomy "
+                "6 years prior. 36-hour rapid progression: fever 39.4 C, severe "
+                "headache, neck stiffness, vomiting. Tertiary ED. No freshwater. "
+                "Asplenia raises encapsulated-organism risk per IDSA. Outcome: "
+                "survived no sequelae. Antibiotic at hour 1 plus dexamethasone."
+            ),
+            "red_flags_present": [],
+        },
+        "vitals": {
+            "temperature_celsius": 39.4,
+            "heart_rate_bpm": 118,
+            "systolic_bp_mmHg": 122,
+            "diastolic_bp_mmHg": 76,
+            "glasgow_coma_scale": 12,
+            "oxygen_saturation_pct": 96,
+            "respiratory_rate_breaths_per_min": 22,
+        },
+        "exam": {
+            "mental_status_grade": "somnolent",
+            "neck_stiffness": True,
+            "kernig_or_brudzinski_positive": True,
+            "focal_neurological_deficit": False,
+            "cranial_nerve_palsy": "none",
+            "skin_lesion_centrofacial_chronic": False,
+            "petechial_or_purpuric_rash": False,
+            "papilledema_on_fundoscopy": False,
+        },
+        "labs": {
+            "wbc_blood_per_uL": 22000,
+            "platelets_per_uL": 280000,
+            "alt_ast_U_per_L": 30,
+            "crp_mg_per_L": 195.0,
+            "procalcitonin_ng_per_mL": 9.2,
+            "serum_sodium_mEq_per_L": 137,
+        },
+        "csf": {
+            "opening_pressure_cmH2O": 32.0,
+            "csf_wbc_per_mm3": 6800,
+            "csf_neutrophil_pct": 92,
+            "csf_lymphocyte_pct": 8,
+            "csf_eosinophil_pct": 0,
+            "csf_glucose_mg_per_dL": 18,
+            "csf_protein_mg_per_dL": 250,
+            "csf_lactate_mmol_per_L": 7.4,
+            "csf_ada_U_per_L": None,
+            "csf_crag_lfa_result": "negative",
+            "csf_wet_mount_motile_amoebae": "negative",
+            "csf_xanthochromia_present": False,
+            "csf_rbc_per_mm3": 6,
+            "csf_rbc_decreasing_across_tubes": None,
+        },
+        "narrative_en": (
+            "A 28-year-old man in the US South region presented to a tertiary "
+            "emergency department with a 36-hour rapid progression of fever to "
+            "39.4 C, severe headache, neck stiffness, and vomiting. He was "
+            "post-splenectomy six years prior following a motor vehicle accident. "
+            "Examination on admission: temperature 39.4 C, Glasgow Coma Scale 12, "
+            "neck stiffness, positive Kernig sign, no focal deficit, no rash. "
+            "CSF showed opening pressure 32 cmH2O, white cell count 6,800 per "
+            "cubic millimeter (92 percent neutrophils), glucose 18 mg/dL, protein "
+            "250 mg/dL. Gram stain revealed gram-positive diplococci; culture "
+            "identified Streptococcus pneumoniae. Anchored to Tunkel IDSA 2004 "
+            "(PMID 15494903) recommendations for suspected pneumococcal "
+            "meningitis with asplenia risk factor. Outcome: survived no sequelae. "
+            "Subphase 1.3 commit 5.3.3 wave 1, pre-adjudication hold_for_revision."
+        ),
+        "narrative_es": (
+            "Varon de 28 anos en region sur de Estados Unidos, ingresado a "
+            "urgencias terciarias con 36 horas de progresion rapida: fiebre 39.4 C, "
+            "cefalea intensa, rigidez de nuca, vomitos. Esplenectomia traumatica "
+            "seis anos antes (accidente vial). Examen: temperatura 39.4 C, escala "
+            "de Glasgow 12, rigidez de nuca, signo de Kernig positivo, sin deficit "
+            "focal, sin exantema. Liquido cefalorraquideo mostro presion de "
+            "apertura 32 cmH2O, leucocitos 6,800 por mm3 (92 por ciento "
+            "neutrofilos), glucosa 18 mg/dL, proteina 250 mg/dL. Tincion de Gram "
+            "con diplococos grampositivos y cultivo Streptococcus pneumoniae. "
+            "Anclaje en guia IDSA Tunkel 2004 (PMID 15494903) para meningitis "
+            "neumococica con asplenia. Subphase 1.3 commit 5.3.3 wave 1."
+        ),
+        "rationale": (
+            "Anchored to PMID 15494903 (Tunkel IDSA 2004 CID guideline). "
+            "Demographic anchor (28yo M asplenic) reflects the encapsulated-"
+            "organism risk stratum referenced by Tunkel as a covered indication "
+            "for empiric vancomycin plus ceftriaxone. CSF profile bacterial "
+            "range per guideline cutoffs. Imputation tiers: tier_1_primary={"
+            "csf_culture, csf_gram_stain, age, sex, asplenia risk factor}; "
+            "tier_3_within_cohort={csf_wbc, neutrophil_pct, glucose, protein}; "
+            "tier_4_priors={temp, gcs, symptom_days}. Indeterminate=none. "
+            "Diagnostic_ambiguity=false. Outcome=survived_no_sequelae. "
+            "Antibiotic_started_hours=1. Tier: tier_4_imputation_idsa_guideline_"
+            "anchored. 5.3.3 wave1 SP-asplenia."
+        ),
+        "anchoring_extras": "anchor=Tunkel-IDSA-2004 risk_factor=asplenia.",
+        "diagnostic_tests": _bact_wave1_dx_tests_sp_culture_positive("15494903"),
+    }
+
+
+def _build_bact_vignette_066() -> dict[str, Any]:
+    """v66 SP alcoholic 68M Netherlands late fatal (van de Beek anchor)."""
+    return {
+        "history": {
+            "symptom_onset_to_presentation_days": 3.0,
+            "chief_complaint": "altered_mental_status",
+            "prodrome_description": (
+                "68-year-old male, Netherlands. 3-day course: progressive fever, "
+                "headache, confusion. Chronic alcohol use 30 years. Tertiary ED "
+                "Amsterdam. Late presentation; admitted obtunded. No freshwater. "
+                "Triad present (van de Beek alcoholic stratum). Outcome: fatal "
+                "hospital day 4. Antibiotic at hour 3 plus dexamethasone."
+            ),
+            "red_flags_present": [],
+        },
+        "vitals": {
+            "temperature_celsius": 39.5,
+            "heart_rate_bpm": 124,
+            "systolic_bp_mmHg": 102,
+            "diastolic_bp_mmHg": 62,
+            "glasgow_coma_scale": 8,
+            "oxygen_saturation_pct": 92,
+            "respiratory_rate_breaths_per_min": 28,
+        },
+        "exam": {
+            "mental_status_grade": "stuporous",
+            "neck_stiffness": True,
+            "kernig_or_brudzinski_positive": True,
+            "focal_neurological_deficit": False,
+            "cranial_nerve_palsy": "none",
+            "skin_lesion_centrofacial_chronic": False,
+            "petechial_or_purpuric_rash": False,
+            "papilledema_on_fundoscopy": False,
+        },
+        "labs": {
+            "wbc_blood_per_uL": 19500,
+            "platelets_per_uL": 165000,
+            "alt_ast_U_per_L": 88,
+            "crp_mg_per_L": 245.0,
+            "procalcitonin_ng_per_mL": 14.5,
+            "serum_sodium_mEq_per_L": 132,
+        },
+        "csf": {
+            "opening_pressure_cmH2O": 28.0,
+            "csf_wbc_per_mm3": 5400,
+            "csf_neutrophil_pct": 88,
+            "csf_lymphocyte_pct": 12,
+            "csf_eosinophil_pct": 0,
+            "csf_glucose_mg_per_dL": 22,
+            "csf_protein_mg_per_dL": 220,
+            "csf_lactate_mmol_per_L": 6.8,
+            "csf_ada_U_per_L": None,
+            "csf_crag_lfa_result": "negative",
+            "csf_wet_mount_motile_amoebae": "negative",
+            "csf_xanthochromia_present": False,
+            "csf_rbc_per_mm3": 4,
+            "csf_rbc_decreasing_across_tubes": None,
+        },
+        "narrative_en": (
+            "A 68-year-old man in the Netherlands presented to a tertiary "
+            "emergency department in Amsterdam after a 3-day course of "
+            "progressive fever, headache, and confusion. He had a 30-year "
+            "history of chronic alcohol use. He was obtunded on arrival. "
+            "Examination on admission: temperature 39.5 C, Glasgow Coma Scale 8, "
+            "neck stiffness, positive Kernig sign, no focal deficit, no rash. "
+            "CSF showed opening pressure 28 cmH2O, white cell count 5,400 per "
+            "cubic millimeter (88 percent neutrophils), glucose 22 mg/dL, protein "
+            "220 mg/dL. Gram stain revealed gram-positive diplococci; culture "
+            "identified Streptococcus pneumoniae. Primary anchor: PMID 15509818 "
+            "(van de Beek 2004 NEJM), 696-episode prospective Netherlands cohort "
+            "1998-2002 (alcoholic stratum mortality elevated). Outcome: fatal "
+            "hospital day 4. Subphase 1.3 commit 5.3.3 wave 1, pre-adjudication "
+            "hold_for_revision."
+        ),
+        "narrative_es": (
+            "Varon de 68 anos en Paises Bajos (Amsterdam), ingresado a urgencias "
+            "terciarias tras tres dias de fiebre progresiva, cefalea y confusion. "
+            "Antecedente de consumo cronico de alcohol durante 30 anos. Ingreso "
+            "obnubilado. Examen: temperatura 39.5 C, escala de Glasgow 8, rigidez "
+            "de nuca, signo de Kernig positivo, sin deficit focal, sin exantema. "
+            "Liquido cefalorraquideo mostro presion de apertura 28 cmH2O, "
+            "leucocitos 5,400 por mm3 (88 por ciento neutrofilos), glucosa 22 mg/dL, "
+            "proteina 220 mg/dL. Tincion de Gram con diplococos grampositivos y "
+            "cultivo Streptococcus pneumoniae. Anclaje primario en cohorte "
+            "prospectiva van de Beek 2004 NEJM (PMID 15509818, 696 episodios "
+            "1998-2002, estrato alcoholico con mortalidad elevada). Resultado: "
+            "fatal en hospital dia 4. Subphase 1.3 commit 5.3.3 wave 1, "
+            "pre-adjudicacion hold_for_revision."
+        ),
+        "rationale": (
+            "Anchored to PMID 15509818 (van de Beek 2004 NEJM), 696-episode "
+            "prospective Netherlands cohort 1998-2002 (SP 51 percent, SP "
+            "mortality 30 percent, alcoholic stratum mortality elevated). "
+            "Demographic anchor (68yo M chronic alcohol) sits in elderly "
+            "alcoholic stratum. CSF profile bacterial range. Imputation tiers: "
+            "tier_1_primary={age, sex, csf_culture, csf_gram_stain, alcohol "
+            "risk}; tier_3_within_cohort={csf_wbc, neutrophil_pct, glucose, "
+            "protein, gcs}; tier_4_priors={temp, symptom_days}. Indeterminate="
+            "none. Diagnostic_ambiguity=false. Outcome=fatal_hospital_day_4. "
+            "Antibiotic_started_hours=3. Tier: tier_3_imputation_within_cohort_"
+            "review. 5.3.3 wave1 SP-alcoholic-fatal."
+        ),
+        "anchoring_extras": "anchor=van-de-Beek-NEJM-2004 stratum=alcoholic-elderly.",
+        "diagnostic_tests": _bact_wave1_dx_tests_sp_culture_positive("15509818"),
+    }
+
+
+def _build_bact_vignette_067() -> dict[str, Any]:
+    """v67 SP pediatric 3M US South mid survived (Tunkel IDSA anchor)."""
+    return {
+        "history": {
+            "symptom_onset_to_presentation_days": 1.5,
+            "chief_complaint": "altered_mental_status",
+            "prodrome_description": (
+                "Three-year-old male, US South region. 36-hour fever 39.6 C, "
+                "vomiting, irritability progressing to lethargy. Recent otitis "
+                "media. Tertiary pediatric ED. No freshwater. Outcome: survived "
+                "with mild hearing loss. Antibiotic at hour 1.5 plus dexamethasone "
+                "per IDSA pediatric protocol."
+            ),
+            "red_flags_present": [],
+        },
+        "vitals": {
+            "temperature_celsius": 39.6,
+            "heart_rate_bpm": 148,
+            "systolic_bp_mmHg": 100,
+            "diastolic_bp_mmHg": 60,
+            "glasgow_coma_scale": 12,
+            "oxygen_saturation_pct": 95,
+            "respiratory_rate_breaths_per_min": 30,
+        },
+        "exam": {
+            "mental_status_grade": "confused",
+            "neck_stiffness": True,
+            "kernig_or_brudzinski_positive": True,
+            "focal_neurological_deficit": False,
+            "cranial_nerve_palsy": "none",
+            "skin_lesion_centrofacial_chronic": False,
+            "petechial_or_purpuric_rash": False,
+            "papilledema_on_fundoscopy": None,
+        },
+        "labs": {
+            "wbc_blood_per_uL": 23500,
+            "platelets_per_uL": 295000,
+            "alt_ast_U_per_L": 26,
+            "crp_mg_per_L": 185.0,
+            "procalcitonin_ng_per_mL": 8.8,
+            "serum_sodium_mEq_per_L": 136,
+        },
+        "csf": {
+            "opening_pressure_cmH2O": 30.0,
+            "csf_wbc_per_mm3": 7200,
+            "csf_neutrophil_pct": 90,
+            "csf_lymphocyte_pct": 10,
+            "csf_eosinophil_pct": 0,
+            "csf_glucose_mg_per_dL": 20,
+            "csf_protein_mg_per_dL": 240,
+            "csf_lactate_mmol_per_L": 7.2,
+            "csf_ada_U_per_L": None,
+            "csf_crag_lfa_result": "negative",
+            "csf_wet_mount_motile_amoebae": "negative",
+            "csf_xanthochromia_present": False,
+            "csf_rbc_per_mm3": 4,
+            "csf_rbc_decreasing_across_tubes": None,
+        },
+        "narrative_en": (
+            "A three-year-old boy in the US South region presented to a tertiary "
+            "pediatric emergency department with a 36-hour history of fever to "
+            "39.6 C, vomiting, irritability, and decreasing responsiveness. He "
+            "had been treated for otitis media in the preceding week. "
+            "Examination on admission: temperature 39.6 C, Glasgow Coma Scale 12, "
+            "neck stiffness, positive Kernig sign, no focal deficit, no rash. "
+            "CSF showed opening pressure 30 cmH2O, white cell count 7,200 per "
+            "cubic millimeter (90 percent neutrophils), glucose 20 mg/dL, protein "
+            "240 mg/dL. Gram stain revealed gram-positive diplococci; culture "
+            "identified Streptococcus pneumoniae. Anchored to Tunkel IDSA 2004 "
+            "(PMID 15494903) pediatric pneumococcal meningitis recommendations. "
+            "Outcome: survived with mild hearing loss. Subphase 1.3 commit 5.3.3 "
+            "wave 1, pre-adjudication hold_for_revision."
+        ),
+        "narrative_es": (
+            "Varon de tres anos en region sur de Estados Unidos, ingresado a "
+            "urgencias pediatricas terciarias con 36 horas de fiebre 39.6 C, "
+            "vomitos, irritabilidad y respuesta disminuida. Tratamiento previo "
+            "para otitis media en la semana anterior. Examen: temperatura 39.6 C, "
+            "escala de Glasgow 12, rigidez de nuca, signo de Kernig positivo, sin "
+            "deficit focal, sin exantema. Liquido cefalorraquideo mostro presion "
+            "de apertura 30 cmH2O, leucocitos 7,200 por mm3 (90 por ciento "
+            "neutrofilos), glucosa 20 mg/dL, proteina 240 mg/dL. Tincion de Gram "
+            "con diplococos grampositivos y cultivo Streptococcus pneumoniae. "
+            "Anclaje en guia IDSA Tunkel 2004 (PMID 15494903), recomendaciones "
+            "pediatricas. Subphase 1.3 commit 5.3.3 wave 1."
+        ),
+        "rationale": (
+            "Anchored to PMID 15494903 (Tunkel IDSA 2004 CID guideline) for "
+            "pediatric pneumococcal meningitis empiric coverage. Demographic "
+            "anchor (3yo M post-otitis-media) sits in the high-risk pediatric "
+            "stratum referenced by Tunkel. CSF profile bacterial range per "
+            "guideline cutoffs. Imputation tiers: tier_1_primary={age, sex, "
+            "csf_culture, csf_gram_stain}; tier_3_within_cohort={csf_wbc, "
+            "neutrophil_pct, glucose, protein}; tier_4_priors={temp, gcs, "
+            "symptom_days, hr}. Indeterminate=papilledema. Diagnostic_ambiguity="
+            "false. Outcome=survived_mild_hearing_loss. Antibiotic_started_"
+            "hours=1.5. Tier: tier_4_imputation_idsa_guideline_anchored. 5.3.3 "
+            "wave1 SP-pediatric."
+        ),
+        "anchoring_extras": "anchor=Tunkel-IDSA-2004 stratum=pediatric.",
+        "diagnostic_tests": _bact_wave1_dx_tests_sp_culture_positive("15494903"),
+    }
+
+
+def _build_bact_vignette_069() -> dict[str, Any]:
+    """v69 SP recurrent CSF leak 19M US South mid survived (Tunkel IDSA)."""
+    return {
+        "history": {
+            "symptom_onset_to_presentation_days": 2.0,
+            "chief_complaint": "fever_with_headache",
+            "prodrome_description": (
+                "19-year-old male, US South region. Skull-base fracture with "
+                "CSF rhinorrhea 3 years prior (motor vehicle accident); not "
+                "surgically corrected. Second meningitis episode: 2-day fever "
+                "39.2 C, headache, neck stiffness. Tertiary ED. No freshwater. "
+                "Outcome: survived. Antibiotic at hour 2 plus dexamethasone."
+            ),
+            "red_flags_present": [],
+        },
+        "vitals": {
+            "temperature_celsius": 39.2,
+            "heart_rate_bpm": 110,
+            "systolic_bp_mmHg": 124,
+            "diastolic_bp_mmHg": 74,
+            "glasgow_coma_scale": 13,
+            "oxygen_saturation_pct": 96,
+            "respiratory_rate_breaths_per_min": 22,
+        },
+        "exam": {
+            "mental_status_grade": "confused",
+            "neck_stiffness": True,
+            "kernig_or_brudzinski_positive": True,
+            "focal_neurological_deficit": False,
+            "cranial_nerve_palsy": "none",
+            "skin_lesion_centrofacial_chronic": False,
+            "petechial_or_purpuric_rash": False,
+            "papilledema_on_fundoscopy": False,
+        },
+        "labs": {
+            "wbc_blood_per_uL": 17500,
+            "platelets_per_uL": 250000,
+            "alt_ast_U_per_L": 28,
+            "crp_mg_per_L": 145.0,
+            "procalcitonin_ng_per_mL": 5.5,
+            "serum_sodium_mEq_per_L": 137,
+        },
+        "csf": {
+            "opening_pressure_cmH2O": 26.0,
+            "csf_wbc_per_mm3": 4200,
+            "csf_neutrophil_pct": 85,
+            "csf_lymphocyte_pct": 15,
+            "csf_eosinophil_pct": 0,
+            "csf_glucose_mg_per_dL": 25,
+            "csf_protein_mg_per_dL": 180,
+            "csf_lactate_mmol_per_L": 5.5,
+            "csf_ada_U_per_L": None,
+            "csf_crag_lfa_result": "negative",
+            "csf_wet_mount_motile_amoebae": "negative",
+            "csf_xanthochromia_present": False,
+            "csf_rbc_per_mm3": 6,
+            "csf_rbc_decreasing_across_tubes": None,
+        },
+        "narrative_en": (
+            "A 19-year-old man in the US South region presented to a tertiary "
+            "emergency department with a 2-day history of fever to 39.2 C, "
+            "headache, and neck stiffness. He had a skull-base fracture with "
+            "CSF rhinorrhea three years prior following a motor vehicle accident "
+            "that had not been surgically corrected; this was his second episode "
+            "of bacterial meningitis. Examination on admission: temperature "
+            "39.2 C, Glasgow Coma Scale 13, neck stiffness, positive Kernig sign, "
+            "no focal deficit, no rash. CSF showed opening pressure 26 cmH2O, "
+            "white cell count 4,200 per cubic millimeter (85 percent neutrophils), "
+            "glucose 25 mg/dL, protein 180 mg/dL. Gram stain revealed gram-positive "
+            "diplococci; culture identified Streptococcus pneumoniae. Anchored to "
+            "Tunkel IDSA 2004 (PMID 15494903) recurrent SP meningitis recommendations. "
+            "Outcome: survived. Subphase 1.3 commit 5.3.3 wave 1, pre-adjudication "
+            "hold_for_revision."
+        ),
+        "narrative_es": (
+            "Varon de 19 anos en region sur de Estados Unidos, ingresado a "
+            "urgencias terciarias con dos dias de fiebre 39.2 C, cefalea y "
+            "rigidez de nuca. Antecedente de fractura de base de craneo con "
+            "rinorrea de liquido cefalorraquideo tres anos antes (no corregida "
+            "quirurgicamente); segundo episodio de meningitis bacteriana. Examen: "
+            "temperatura 39.2 C, escala de Glasgow 13, rigidez de nuca, signo de "
+            "Kernig positivo, sin deficit focal, sin exantema. Liquido "
+            "cefalorraquideo mostro presion de apertura 26 cmH2O, leucocitos 4,200 "
+            "por mm3 (85 por ciento neutrofilos), glucosa 25 mg/dL, proteina 180 mg/dL. "
+            "Tincion de Gram con diplococos grampositivos y cultivo Streptococcus "
+            "pneumoniae. Anclaje en guia IDSA Tunkel 2004 (PMID 15494903). "
+            "Subphase 1.3 commit 5.3.3 wave 1."
+        ),
+        "rationale": (
+            "Anchored to PMID 15494903 (Tunkel IDSA 2004 CID guideline) recurrent "
+            "SP meningitis recommendations. Anatomic CSF rhinorrhea raises "
+            "recurrent-SP risk per guideline. Demographic anchor (19yo M with "
+            "anatomic CSF leak) reflects the recurrent-meningitis stratum. CSF "
+            "profile bacterial range. Imputation tiers: tier_1_primary={age, "
+            "sex, csf_culture, csf_gram_stain, anatomic_leak history}; "
+            "tier_3_within_cohort={csf_wbc, neutrophil_pct, glucose, protein}; "
+            "tier_4_priors={temp, gcs, symptom_days}. Indeterminate=none. "
+            "Diagnostic_ambiguity=false. Outcome=survived. Antibiotic_started_"
+            "hours=2. Tier: tier_4_imputation_idsa_guideline_anchored. 5.3.3 "
+            "wave1 SP-recurrent-CSF-leak."
+        ),
+        "anchoring_extras": "anchor=Tunkel-IDSA-2004 risk_factor=anatomic-CSF-leak.",
+        "diagnostic_tests": _bact_wave1_dx_tests_sp_culture_positive("15494903"),
+    }
+
+
+def _build_bact_vignette_071() -> dict[str, Any]:
+    """v71 SP Lima 38F mid survived (Tunkel IDSA anchor)."""
+    return {
+        "history": {
+            "symptom_onset_to_presentation_days": 2.0,
+            "chief_complaint": "fever_with_headache",
+            "prodrome_description": (
+                "38-year-old female, Lima Peru, presented to tertiary urban ED "
+                "with 2-day fever 39.0 C, severe headache, neck stiffness, "
+                "photophobia. No freshwater exposure. No rash. Empiric "
+                "ceftriaxone-vancomycin started hour 1 plus dexamethasone per "
+                "IDSA SP protocol. Outcome: survived no sequelae."
+            ),
+            "red_flags_present": [],
+        },
+        "vitals": {
+            "temperature_celsius": 39.0,
+            "heart_rate_bpm": 108,
+            "systolic_bp_mmHg": 120,
+            "diastolic_bp_mmHg": 72,
+            "glasgow_coma_scale": 13,
+            "oxygen_saturation_pct": 97,
+            "respiratory_rate_breaths_per_min": 20,
+        },
+        "exam": {
+            "mental_status_grade": "confused",
+            "neck_stiffness": True,
+            "kernig_or_brudzinski_positive": True,
+            "focal_neurological_deficit": False,
+            "cranial_nerve_palsy": "none",
+            "skin_lesion_centrofacial_chronic": False,
+            "petechial_or_purpuric_rash": False,
+            "papilledema_on_fundoscopy": False,
+        },
+        "labs": {
+            "wbc_blood_per_uL": 19200,
+            "platelets_per_uL": 245000,
+            "alt_ast_U_per_L": 32,
+            "crp_mg_per_L": 165.0,
+            "procalcitonin_ng_per_mL": 6.3,
+            "serum_sodium_mEq_per_L": 136,
+        },
+        "csf": {
+            "opening_pressure_cmH2O": 28.0,
+            "csf_wbc_per_mm3": 5800,
+            "csf_neutrophil_pct": 88,
+            "csf_lymphocyte_pct": 12,
+            "csf_eosinophil_pct": 0,
+            "csf_glucose_mg_per_dL": 22,
+            "csf_protein_mg_per_dL": 200,
+            "csf_lactate_mmol_per_L": 6.4,
+            "csf_ada_U_per_L": None,
+            "csf_crag_lfa_result": "negative",
+            "csf_wet_mount_motile_amoebae": "negative",
+            "csf_xanthochromia_present": False,
+            "csf_rbc_per_mm3": 5,
+            "csf_rbc_decreasing_across_tubes": None,
+        },
+        "narrative_en": (
+            "A 38-year-old woman in Lima, Peru presented to a tertiary urban "
+            "emergency department with a 2-day history of fever to 39.0 C, "
+            "severe headache, neck stiffness, and photophobia. Examination on "
+            "admission: temperature 39.0 C, Glasgow Coma Scale 13, neck "
+            "stiffness, positive Kernig sign, no focal deficit, no rash. CSF "
+            "showed opening pressure 28 cmH2O, white cell count 5,800 per cubic "
+            "millimeter (88 percent neutrophils), glucose 22 mg/dL, protein "
+            "200 mg/dL. Gram stain revealed gram-positive diplococci; culture "
+            "identified Streptococcus pneumoniae. Anchored to Tunkel IDSA 2004 "
+            "(PMID 15494903) for empiric ceftriaxone-vancomycin coverage of "
+            "adult community-acquired pneumococcal meningitis. Outcome: "
+            "survived no sequelae. Subphase 1.3 commit 5.3.3 wave 1, "
+            "pre-adjudication hold_for_revision."
+        ),
+        "narrative_es": (
+            "Mujer de 38 anos en Lima, Peru, ingresada a urgencias terciarias "
+            "con dos dias de fiebre 39.0 C, cefalea intensa, rigidez de nuca y "
+            "fotofobia. Examen: temperatura 39.0 C, escala de Glasgow 13, "
+            "rigidez de nuca, signo de Kernig positivo, sin deficit focal, sin "
+            "exantema. Liquido cefalorraquideo mostro presion de apertura 28 "
+            "cmH2O, leucocitos 5,800 por mm3 (88 por ciento neutrofilos), "
+            "glucosa 22 mg/dL, proteina 200 mg/dL. Tincion de Gram con "
+            "diplococos grampositivos y cultivo Streptococcus pneumoniae. "
+            "Anclaje en guia IDSA Tunkel 2004 (PMID 15494903) para cobertura "
+            "empirica con ceftriaxona-vancomicina mas dexametasona en "
+            "meningitis neumococica del adulto adquirida en la comunidad. "
+            "Geografia anclada a Peru (5/30 escenarios bacterianos de la "
+            "distribucion 5.3.1 asignados a Peru). Resultado: sobrevivio sin "
+            "secuelas. Subphase 1.3 commit 5.3.3 wave 1, pre-adjudicacion "
+            "hold_for_revision."
+        ),
+        "rationale": (
+            "Anchored to PMID 15494903 (Tunkel IDSA 2004 CID guideline) for "
+            "adult community-acquired pneumococcal meningitis empiric coverage. "
+            "Peru-anchored geography (5/30 BACT slots assigned to Peru per "
+            "5.3.1 distribution lock). Demographic anchor (38yo F adult) sits "
+            "in standard adult community stratum. CSF profile bacterial range. "
+            "Imputation tiers: tier_1_primary={age, sex, region, csf_culture, "
+            "csf_gram_stain}; tier_3_within_cohort={csf_wbc, neutrophil_pct, "
+            "glucose, protein}; tier_4_priors={temp, gcs, symptom_days}. "
+            "Indeterminate=none. Diagnostic_ambiguity=false. Outcome=survived. "
+            "Antibiotic_started_hours=1. Tier: tier_4_imputation_idsa_"
+            "guideline_anchored. 5.3.3 wave1 SP-Lima-adult."
+        ),
+        "anchoring_extras": "anchor=Tunkel-IDSA-2004 region=Lima-Peru.",
+        "diagnostic_tests": _bact_wave1_dx_tests_sp_culture_positive("15494903"),
+    }
+
+
+def _build_bact_vignette_073() -> dict[str, Any]:
+    """v73 SP elderly 70F Netherlands late fatal (van de Beek anchor)."""
+    return {
+        "history": {
+            "symptom_onset_to_presentation_days": 4.0,
+            "chief_complaint": "altered_mental_status",
+            "prodrome_description": (
+                "70-year-old female, Netherlands. 4-day progressive fever, "
+                "headache, confusion progressing to obtundation. Tertiary ED "
+                "Amsterdam. Late presentation. No freshwater. Triad present "
+                "(van de Beek elderly stratum). Outcome: fatal hospital day 3. "
+                "Antibiotic at hour 2 plus dexamethasone EU guideline 2002."
+            ),
+            "red_flags_present": [],
+        },
+        "vitals": {
+            "temperature_celsius": 38.9,
+            "heart_rate_bpm": 116,
+            "systolic_bp_mmHg": 105,
+            "diastolic_bp_mmHg": 65,
+            "glasgow_coma_scale": 7,
+            "oxygen_saturation_pct": 91,
+            "respiratory_rate_breaths_per_min": 26,
+        },
+        "exam": {
+            "mental_status_grade": "comatose",
+            "neck_stiffness": True,
+            "kernig_or_brudzinski_positive": True,
+            "focal_neurological_deficit": False,
+            "cranial_nerve_palsy": "none",
+            "skin_lesion_centrofacial_chronic": False,
+            "petechial_or_purpuric_rash": False,
+            "papilledema_on_fundoscopy": False,
+        },
+        "labs": {
+            "wbc_blood_per_uL": 18800,
+            "platelets_per_uL": 175000,
+            "alt_ast_U_per_L": 36,
+            "crp_mg_per_L": 230.0,
+            "procalcitonin_ng_per_mL": 12.5,
+            "serum_sodium_mEq_per_L": 130,
+        },
+        "csf": {
+            "opening_pressure_cmH2O": 26.0,
+            "csf_wbc_per_mm3": 4100,
+            "csf_neutrophil_pct": 80,
+            "csf_lymphocyte_pct": 20,
+            "csf_eosinophil_pct": 0,
+            "csf_glucose_mg_per_dL": 25,
+            "csf_protein_mg_per_dL": 195,
+            "csf_lactate_mmol_per_L": 6.0,
+            "csf_ada_U_per_L": None,
+            "csf_crag_lfa_result": "negative",
+            "csf_wet_mount_motile_amoebae": "negative",
+            "csf_xanthochromia_present": False,
+            "csf_rbc_per_mm3": 5,
+            "csf_rbc_decreasing_across_tubes": None,
+        },
+        "narrative_en": (
+            "A 70-year-old woman in the Netherlands presented to a tertiary "
+            "emergency department in Amsterdam after a 4-day course of "
+            "progressive fever, headache, and confusion progressing to "
+            "obtundation. Examination on admission: temperature 38.9 C, "
+            "Glasgow Coma Scale 7, neck stiffness, positive Kernig sign, no "
+            "focal deficit, no rash. CSF showed opening pressure 26 cmH2O, "
+            "white cell count 4,100 per cubic millimeter (80 percent "
+            "neutrophils), glucose 25 mg/dL, protein 195 mg/dL. Gram stain "
+            "revealed gram-positive diplococci; culture identified Streptococcus "
+            "pneumoniae. Primary anchor: PMID 15509818 (van de Beek 2004 NEJM), "
+            "elderly stratum mortality 41 percent. Outcome: fatal hospital day 3. "
+            "Subphase 1.3 commit 5.3.3 wave 1, pre-adjudication hold_for_revision."
+        ),
+        "narrative_es": (
+            "Mujer de 70 anos en Paises Bajos (Amsterdam), ingresada a "
+            "urgencias terciarias tras cuatro dias de fiebre progresiva, "
+            "cefalea y confusion con obnubilacion. Examen: temperatura 38.9 C, "
+            "escala de Glasgow 7, rigidez de nuca, signo de Kernig positivo, "
+            "sin deficit focal, sin exantema. Liquido cefalorraquideo mostro "
+            "presion de apertura 26 cmH2O, leucocitos 4,100 por mm3 (80 por "
+            "ciento neutrofilos), glucosa 25 mg/dL, proteina 195 mg/dL. "
+            "Tincion de Gram con diplococos grampositivos y cultivo "
+            "Streptococcus pneumoniae. Anclaje primario en cohorte prospectiva "
+            "van de Beek 2004 NEJM (PMID 15509818, 696 episodios 1998-2002, "
+            "estrato de adultos mayores con mortalidad 41 por ciento a edad "
+            ">=65). Resultado: fatal en hospital dia 3. Subphase 1.3 commit "
+            "5.3.3 wave 1, pre-adjudicacion hold_for_revision."
+        ),
+        "rationale": (
+            "Anchored to PMID 15509818 (van de Beek 2004 NEJM), 696-episode "
+            "prospective Netherlands cohort 1998-2002 (elderly stratum mortality "
+            "41 percent at age >=65). Demographic anchor (70yo F) sits in "
+            "elderly stratum. CSF profile bacterial range. Imputation tiers: "
+            "tier_1_primary={age, sex, csf_culture, csf_gram_stain}; "
+            "tier_3_within_cohort={csf_wbc, neutrophil_pct, glucose, protein, "
+            "gcs}; tier_4_priors={temp, symptom_days}. Indeterminate=none. "
+            "Diagnostic_ambiguity=false. Outcome=fatal_hospital_day_3. "
+            "Antibiotic_started_hours=2. Tier: tier_3_imputation_within_cohort_"
+            "review. 5.3.3 wave1 SP-elderly-fatal."
+        ),
+        "anchoring_extras": "anchor=van-de-Beek-NEJM-2004 stratum=elderly-fatal.",
+        "diagnostic_tests": _bact_wave1_dx_tests_sp_culture_positive("15509818"),
+    }
+
+
+def _build_bact_vignette_075() -> dict[str, Any]:
+    """v75 SP partial-treatment ambiguity 25F US South mid survived (Tunkel)."""
+    return {
+        "history": {
+            "symptom_onset_to_presentation_days": 1.5,
+            "chief_complaint": "fever_with_headache",
+            "prodrome_description": (
+                "25-year-old female, US South region. Outpatient amoxicillin "
+                "started 24 hours prior for sinusitis. Subsequent fever 39.0 C, "
+                "headache, neck stiffness within 12 hours of pretreatment. "
+                "Tertiary ED. No freshwater. Diagnostic_ambiguity=true; type="
+                "partial_antibiotic_pretreatment. Outcome: survived. IDSA "
+                "pretreated-suspected protocol."
+            ),
+            "red_flags_present": [],
+        },
+        "vitals": {
+            "temperature_celsius": 39.0,
+            "heart_rate_bpm": 105,
+            "systolic_bp_mmHg": 116,
+            "diastolic_bp_mmHg": 72,
+            "glasgow_coma_scale": 14,
+            "oxygen_saturation_pct": 98,
+            "respiratory_rate_breaths_per_min": 20,
+        },
+        "exam": {
+            "mental_status_grade": "somnolent",
+            "neck_stiffness": True,
+            "kernig_or_brudzinski_positive": True,
+            "focal_neurological_deficit": False,
+            "cranial_nerve_palsy": "none",
+            "skin_lesion_centrofacial_chronic": False,
+            "petechial_or_purpuric_rash": False,
+            "papilledema_on_fundoscopy": False,
+        },
+        "labs": {
+            "wbc_blood_per_uL": 14200,
+            "platelets_per_uL": 260000,
+            "alt_ast_U_per_L": 26,
+            "crp_mg_per_L": 95.0,
+            "procalcitonin_ng_per_mL": 2.8,
+            "serum_sodium_mEq_per_L": 138,
+        },
+        "csf": {
+            "opening_pressure_cmH2O": 22.0,
+            "csf_wbc_per_mm3": 1850,
+            "csf_neutrophil_pct": 65,
+            "csf_lymphocyte_pct": 35,
+            "csf_eosinophil_pct": 0,
+            "csf_glucose_mg_per_dL": 30,
+            "csf_protein_mg_per_dL": 165,
+            "csf_lactate_mmol_per_L": 4.2,
+            "csf_ada_U_per_L": None,
+            "csf_crag_lfa_result": "negative",
+            "csf_wet_mount_motile_amoebae": "negative",
+            "csf_xanthochromia_present": False,
+            "csf_rbc_per_mm3": 4,
+            "csf_rbc_decreasing_across_tubes": None,
+        },
+        "narrative_en": (
+            "A 25-year-old woman in the US South region presented to a tertiary "
+            "emergency department with fever to 39.0 C, headache, and neck "
+            "stiffness developing 12 hours after starting outpatient amoxicillin "
+            "for presumed sinusitis (24 hours of pretreatment). Examination on "
+            "admission: temperature 39.0 C, Glasgow Coma Scale 14, neck stiffness, "
+            "positive Kernig sign, no focal deficit, no rash. CSF showed opening "
+            "pressure 22 cmH2O, white cell count 1,850 per cubic millimeter "
+            "(65 percent neutrophils), glucose 30 mg/dL, protein 165 mg/dL. Gram "
+            "stain unrevealing; CSF and blood cultures sterile after partial "
+            "antibiotic pretreatment; CSF pneumococcal antigen positive. "
+            "Diagnostic_ambiguity=true; type=partial_antibiotic_pretreatment_"
+            "sterile_cultures. Anchored to Tunkel IDSA 2004 (PMID 15494903) "
+            "pretreated-meningitis recommendations. Outcome: survived no "
+            "sequelae. Subphase 1.3 commit 5.3.3 wave 1, pre-adjudication "
+            "hold_for_revision."
+        ),
+        "narrative_es": (
+            "Mujer de 25 anos en region sur de Estados Unidos, ingresada a "
+            "urgencias terciarias con fiebre 39.0 C, cefalea y rigidez de nuca "
+            "12 horas despues de iniciar amoxicilina ambulatoria por sinusitis "
+            "presunta (24 horas de pretratamiento). Examen: temperatura 39.0 C, "
+            "escala de Glasgow 14, rigidez de nuca, signo de Kernig positivo, "
+            "sin deficit focal, sin exantema. Liquido cefalorraquideo mostro "
+            "presion de apertura 22 cmH2O, leucocitos 1,850 por mm3 (65 por "
+            "ciento neutrofilos), glucosa 30 mg/dL, proteina 165 mg/dL. Tincion "
+            "de Gram sin organismos; cultivos de liquido y sangre esteriles tras "
+            "pretratamiento antibiotico parcial; antigeno neumococico en liquido "
+            "positivo. Ambiguedad diagnostica por pretratamiento parcial. "
+            "Anclaje en guia IDSA Tunkel 2004 (PMID 15494903). Subphase 1.3 "
+            "commit 5.3.3 wave 1."
+        ),
+        "rationale": (
+            "Anchored to PMID 15494903 (Tunkel IDSA 2004 CID guideline) "
+            "pretreated-suspected meningitis recommendations. Diagnostic_"
+            "ambiguity=true; type=partial_antibiotic_pretreatment_sterile_"
+            "cultures. Demographic anchor (25yo F outpatient pretreated) "
+            "reflects ambiguity stratum. CSF profile attenuated (WBC 1850, "
+            "neutrophil 65 percent) consistent with partial treatment. Antigen "
+            "confirms organism. Imputation tiers: tier_1_primary={age, sex, "
+            "csf_pneumococcal_antigen, pretreatment_history}; tier_3_within_"
+            "cohort={csf_wbc, neutrophil_pct, glucose, protein attenuation}; "
+            "tier_4_priors={temp, gcs, symptom_days}. Indeterminate=culture-"
+            "based-organism-confirmation. Outcome=survived. Antibiotic_started_"
+            "hours=1. Tier: tier_4_imputation_idsa_guideline_anchored. 5.3.3 "
+            "wave1 SP-pretreated-ambiguity."
+        ),
+        "anchoring_extras": "anchor=Tunkel-IDSA-2004 type=partial_antibiotic_pretreatment.",
+        "diagnostic_tests": _bact_wave1_dx_tests_sp_pretreated("15494903"),
+    }
+
+
+def _build_bact_vignette_076() -> dict[str, Any]:
+    """v76 SP partial-treatment ambiguity 60M Netherlands mid survived (Tunkel)."""
+    return {
+        "history": {
+            "symptom_onset_to_presentation_days": 2.0,
+            "chief_complaint": "fever_with_headache",
+            "prodrome_description": (
+                "60-year-old male, Netherlands. Outpatient amoxicillin 48 hours "
+                "for productive cough; symptom recrudescence with fever 38.7 C, "
+                "headache, neck stiffness. Tertiary ED. No freshwater. "
+                "Diagnostic_ambiguity=true; type=partial_antibiotic_pretreatment. "
+                "Outcome: survived. Ceftriaxone-vancomycin-dexamethasone IDSA."
+            ),
+            "red_flags_present": [],
+        },
+        "vitals": {
+            "temperature_celsius": 38.7,
+            "heart_rate_bpm": 102,
+            "systolic_bp_mmHg": 130,
+            "diastolic_bp_mmHg": 78,
+            "glasgow_coma_scale": 14,
+            "oxygen_saturation_pct": 96,
+            "respiratory_rate_breaths_per_min": 20,
+        },
+        "exam": {
+            "mental_status_grade": "somnolent",
+            "neck_stiffness": True,
+            "kernig_or_brudzinski_positive": True,
+            "focal_neurological_deficit": False,
+            "cranial_nerve_palsy": "none",
+            "skin_lesion_centrofacial_chronic": False,
+            "petechial_or_purpuric_rash": False,
+            "papilledema_on_fundoscopy": False,
+        },
+        "labs": {
+            "wbc_blood_per_uL": 13500,
+            "platelets_per_uL": 240000,
+            "alt_ast_U_per_L": 32,
+            "crp_mg_per_L": 78.0,
+            "procalcitonin_ng_per_mL": 1.9,
+            "serum_sodium_mEq_per_L": 137,
+        },
+        "csf": {
+            "opening_pressure_cmH2O": 24.0,
+            "csf_wbc_per_mm3": 2400,
+            "csf_neutrophil_pct": 70,
+            "csf_lymphocyte_pct": 30,
+            "csf_eosinophil_pct": 0,
+            "csf_glucose_mg_per_dL": 26,
+            "csf_protein_mg_per_dL": 180,
+            "csf_lactate_mmol_per_L": 4.6,
+            "csf_ada_U_per_L": None,
+            "csf_crag_lfa_result": "negative",
+            "csf_wet_mount_motile_amoebae": "negative",
+            "csf_xanthochromia_present": False,
+            "csf_rbc_per_mm3": 3,
+            "csf_rbc_decreasing_across_tubes": None,
+        },
+        "narrative_en": (
+            "A 60-year-old man in the Netherlands presented to a tertiary "
+            "emergency department after 48 hours of outpatient amoxicillin for "
+            "a productive cough, with recrudescence of symptoms (fever 38.7 C, "
+            "headache, neck stiffness). Examination on admission: temperature "
+            "38.7 C, Glasgow Coma Scale 14, neck stiffness, positive Kernig "
+            "sign, no focal deficit, no rash. CSF showed opening pressure 24 "
+            "cmH2O, white cell count 2,400 per cubic millimeter (70 percent "
+            "neutrophils), glucose 26 mg/dL, protein 180 mg/dL. Gram stain "
+            "unrevealing; cultures sterile after partial antibiotic pretreatment; "
+            "CSF pneumococcal antigen positive. Diagnostic_ambiguity=true; "
+            "type=partial_antibiotic_pretreatment_sterile_cultures. Anchored to "
+            "Tunkel IDSA 2004 (PMID 15494903). Outcome: survived. Subphase 1.3 "
+            "commit 5.3.3 wave 1, pre-adjudication hold_for_revision."
+        ),
+        "narrative_es": (
+            "Varon de 60 anos en Paises Bajos, ingresado a urgencias terciarias "
+            "tras 48 horas de amoxicilina ambulatoria por tos productiva, con "
+            "recrudescencia de sintomas (fiebre 38.7 C, cefalea, rigidez de "
+            "nuca). Examen: temperatura 38.7 C, escala de Glasgow 14, rigidez "
+            "de nuca, signo de Kernig positivo, sin deficit focal, sin exantema. "
+            "Liquido cefalorraquideo mostro presion de apertura 24 cmH2O, "
+            "leucocitos 2,400 por mm3 (70 por ciento neutrofilos), glucosa 26 "
+            "mg/dL, proteina 180 mg/dL. Cultivos esteriles tras pretratamiento "
+            "antibiotico parcial; antigeno neumococico en liquido positivo. "
+            "Ambiguedad diagnostica por pretratamiento parcial. Anclaje en guia "
+            "IDSA Tunkel 2004 (PMID 15494903). Subphase 1.3 commit 5.3.3 wave 1."
+        ),
+        "rationale": (
+            "Anchored to PMID 15494903 (Tunkel IDSA 2004 CID guideline) "
+            "pretreated-suspected meningitis recommendations. Diagnostic_"
+            "ambiguity=true; type=partial_antibiotic_pretreatment_sterile_"
+            "cultures. Demographic anchor (60yo M outpatient pretreated). CSF "
+            "profile attenuated (WBC 2400, neutrophil 70 percent). Antigen "
+            "confirms organism. Imputation tiers: tier_1_primary={age, sex, "
+            "csf_pneumococcal_antigen, pretreatment_history}; tier_3_within_"
+            "cohort={csf_wbc, neutrophil_pct, glucose, protein attenuation}; "
+            "tier_4_priors={temp, gcs, symptom_days}. Indeterminate=culture-"
+            "based-organism-confirmation. Outcome=survived. Tier: tier_4_"
+            "imputation_idsa_guideline_anchored. 5.3.3 wave1 SP-pretreated-"
+            "ambiguity NL."
+        ),
+        "anchoring_extras": "anchor=Tunkel-IDSA-2004 type=partial_antibiotic_pretreatment.",
+        "diagnostic_tests": _bact_wave1_dx_tests_sp_pretreated("15494903"),
+    }
+
+
+def _build_bact_vignette_077() -> dict[str, Any]:
+    """v77 SP young adult 18F Netherlands mid survived (van de Beek anchor)."""
+    return {
+        "history": {
+            "symptom_onset_to_presentation_days": 0.5,
+            "chief_complaint": "fever_with_headache",
+            "prodrome_description": (
+                "18-year-old female, Netherlands. Sudden onset fever 39.5 C, "
+                "severe headache, neck stiffness, photophobia within 12 hours. "
+                "Tertiary ED Amsterdam. No freshwater. Triad present "
+                "(van de Beek young-adult subgroup). Outcome: survived no "
+                "sequelae. Antibiotic at hour 1 plus dexamethasone EU guideline."
+            ),
+            "red_flags_present": [],
+        },
+        "vitals": {
+            "temperature_celsius": 39.5,
+            "heart_rate_bpm": 122,
+            "systolic_bp_mmHg": 115,
+            "diastolic_bp_mmHg": 70,
+            "glasgow_coma_scale": 13,
+            "oxygen_saturation_pct": 97,
+            "respiratory_rate_breaths_per_min": 22,
+        },
+        "exam": {
+            "mental_status_grade": "confused",
+            "neck_stiffness": True,
+            "kernig_or_brudzinski_positive": True,
+            "focal_neurological_deficit": False,
+            "cranial_nerve_palsy": "none",
+            "skin_lesion_centrofacial_chronic": False,
+            "petechial_or_purpuric_rash": False,
+            "papilledema_on_fundoscopy": False,
+        },
+        "labs": {
+            "wbc_blood_per_uL": 21500,
+            "platelets_per_uL": 285000,
+            "alt_ast_U_per_L": 28,
+            "crp_mg_per_L": 195.0,
+            "procalcitonin_ng_per_mL": 8.0,
+            "serum_sodium_mEq_per_L": 138,
+        },
+        "csf": {
+            "opening_pressure_cmH2O": 28.0,
+            "csf_wbc_per_mm3": 6400,
+            "csf_neutrophil_pct": 88,
+            "csf_lymphocyte_pct": 12,
+            "csf_eosinophil_pct": 0,
+            "csf_glucose_mg_per_dL": 24,
+            "csf_protein_mg_per_dL": 210,
+            "csf_lactate_mmol_per_L": 6.6,
+            "csf_ada_U_per_L": None,
+            "csf_crag_lfa_result": "negative",
+            "csf_wet_mount_motile_amoebae": "negative",
+            "csf_xanthochromia_present": False,
+            "csf_rbc_per_mm3": 4,
+            "csf_rbc_decreasing_across_tubes": None,
+        },
+        "narrative_en": (
+            "An 18-year-old woman in the Netherlands presented to a tertiary "
+            "emergency department in Amsterdam with sudden onset of fever to "
+            "39.5 C, severe headache, neck stiffness, and photophobia within "
+            "12 hours. Examination on admission: temperature 39.5 C, Glasgow "
+            "Coma Scale 13, neck stiffness, positive Kernig sign, no focal "
+            "deficit, no rash. Classic triad present (this case sits in the "
+            "young-adult subgroup of the van de Beek 2004 cohort). CSF showed "
+            "opening pressure 28 cmH2O, white cell count 6,400 per cubic "
+            "millimeter (88 percent neutrophils), glucose 24 mg/dL, protein "
+            "210 mg/dL. Gram stain revealed gram-positive diplococci; culture "
+            "identified Streptococcus pneumoniae. Primary anchor: PMID 15509818 "
+            "(van de Beek 2004 NEJM), 696-episode prospective Netherlands "
+            "cohort 1998-2002 (SP 51 percent, classic triad 44 percent). "
+            "Outcome: survived no sequelae. Subphase 1.3 commit 5.3.3 wave 1, "
+            "pre-adjudication hold_for_revision."
+        ),
+        "narrative_es": (
+            "Mujer de 18 anos en Paises Bajos (Amsterdam), ingresada a "
+            "urgencias terciarias con inicio subito de fiebre 39.5 C, cefalea "
+            "intensa, rigidez de nuca y fotofobia en 12 horas. Examen: "
+            "temperatura 39.5 C, escala de Glasgow 13, rigidez de nuca, signo "
+            "de Kernig positivo, sin deficit focal, sin exantema. Triada "
+            "clasica presente (subgrupo de adultos jovenes de la cohorte van "
+            "de Beek 2004). Liquido cefalorraquideo mostro presion de apertura "
+            "28 cmH2O, leucocitos 6,400 por mm3 (88 por ciento neutrofilos), "
+            "glucosa 24 mg/dL, proteina 210 mg/dL. Tincion de Gram con "
+            "diplococos grampositivos y cultivo Streptococcus pneumoniae. "
+            "Anclaje primario en cohorte van de Beek 2004 NEJM (PMID 15509818). "
+            "Subphase 1.3 commit 5.3.3 wave 1."
+        ),
+        "rationale": (
+            "Anchored to PMID 15509818 (van de Beek 2004 NEJM), 696-episode "
+            "prospective Netherlands cohort 1998-2002 (SP 51 percent, classic "
+            "triad 44 percent). Demographic anchor (18yo F young adult) sits "
+            "in young-adult subgroup. CSF profile bacterial range. Imputation "
+            "tiers: tier_1_primary={age, sex, csf_culture, csf_gram_stain, "
+            "triad}; tier_3_within_cohort={csf_wbc, neutrophil_pct, glucose, "
+            "protein, gcs}; tier_4_priors={temp, symptom_days}. Indeterminate="
+            "none. Diagnostic_ambiguity=false. Outcome=survived. Antibiotic_"
+            "started_hours=1. Tier: tier_3_imputation_within_cohort_review. "
+            "5.3.3 wave1 SP-young-adult."
+        ),
+        "anchoring_extras": "anchor=van-de-Beek-NEJM-2004 stratum=young-adult.",
+        "diagnostic_tests": _bact_wave1_dx_tests_sp_culture_positive("15509818"),
+    }
+
+
+def _build_bact_vignette_078() -> dict[str, Any]:
+    """v78 SP HIV+ on ART 50M US South mid survived (Tunkel IDSA anchor)."""
+    return {
+        "history": {
+            "symptom_onset_to_presentation_days": 2.0,
+            "chief_complaint": "fever_with_headache",
+            "prodrome_description": (
+                "50-year-old male, US South region. HIV-positive 8 years on "
+                "antiretroviral therapy (CD4 285). 2-day fever 39.2 C, severe "
+                "headache, neck stiffness. Tertiary ED. No freshwater. "
+                "Encapsulated-organism risk per HIV. Outcome: survived. "
+                "Ceftriaxone-vancomycin-dexamethasone IDSA HIV-specific."
+            ),
+            "red_flags_present": ["immunocompromise"],
+        },
+        "vitals": {
+            "temperature_celsius": 39.2,
+            "heart_rate_bpm": 112,
+            "systolic_bp_mmHg": 118,
+            "diastolic_bp_mmHg": 72,
+            "glasgow_coma_scale": 13,
+            "oxygen_saturation_pct": 97,
+            "respiratory_rate_breaths_per_min": 22,
+        },
+        "exam": {
+            "mental_status_grade": "confused",
+            "neck_stiffness": True,
+            "kernig_or_brudzinski_positive": True,
+            "focal_neurological_deficit": False,
+            "cranial_nerve_palsy": "none",
+            "skin_lesion_centrofacial_chronic": False,
+            "petechial_or_purpuric_rash": False,
+            "papilledema_on_fundoscopy": False,
+        },
+        "labs": {
+            "wbc_blood_per_uL": 18200,
+            "platelets_per_uL": 235000,
+            "alt_ast_U_per_L": 30,
+            "crp_mg_per_L": 175.0,
+            "procalcitonin_ng_per_mL": 7.0,
+            "serum_sodium_mEq_per_L": 137,
+        },
+        "csf": {
+            "opening_pressure_cmH2O": 27.0,
+            "csf_wbc_per_mm3": 5200,
+            "csf_neutrophil_pct": 85,
+            "csf_lymphocyte_pct": 15,
+            "csf_eosinophil_pct": 0,
+            "csf_glucose_mg_per_dL": 22,
+            "csf_protein_mg_per_dL": 195,
+            "csf_lactate_mmol_per_L": 6.0,
+            "csf_ada_U_per_L": None,
+            "csf_crag_lfa_result": "negative",
+            "csf_wet_mount_motile_amoebae": "negative",
+            "csf_xanthochromia_present": False,
+            "csf_rbc_per_mm3": 5,
+            "csf_rbc_decreasing_across_tubes": None,
+        },
+        "narrative_en": (
+            "A 50-year-old man in the US South region with HIV (eight years "
+            "on antiretroviral therapy, CD4 count 285 cells per microliter) "
+            "presented to a tertiary emergency department with a 2-day history "
+            "of fever to 39.2 C, severe headache, and neck stiffness. "
+            "Examination on admission: temperature 39.2 C, Glasgow Coma Scale "
+            "13, neck stiffness, positive Kernig sign, no focal deficit, no "
+            "rash. CSF showed opening pressure 27 cmH2O, white cell count "
+            "5,200 per cubic millimeter (85 percent neutrophils), glucose 22 "
+            "mg/dL, protein 195 mg/dL; CSF cryptococcal antigen negative. "
+            "Gram stain revealed gram-positive diplococci; culture identified "
+            "Streptococcus pneumoniae. Anchored to Tunkel IDSA 2004 (PMID "
+            "15494903) HIV-specific empiric coverage recommendations. Outcome: "
+            "survived. Subphase 1.3 commit 5.3.3 wave 1, pre-adjudication "
+            "hold_for_revision."
+        ),
+        "narrative_es": (
+            "Varon de 50 anos en region sur de Estados Unidos con infeccion "
+            "por VIH (ocho anos de terapia antirretroviral, CD4 285 celulas "
+            "por microlitro), ingresado a urgencias terciarias con dos dias "
+            "de fiebre 39.2 C, cefalea intensa y rigidez de nuca. Examen: "
+            "temperatura 39.2 C, escala de Glasgow 13, rigidez de nuca, signo "
+            "de Kernig positivo, sin deficit focal, sin exantema. Liquido "
+            "cefalorraquideo mostro presion de apertura 27 cmH2O, leucocitos "
+            "5,200 por mm3 (85 por ciento neutrofilos), glucosa 22 mg/dL, "
+            "proteina 195 mg/dL; antigeno criptococico en liquido negativo. "
+            "Tincion de Gram con diplococos grampositivos y cultivo "
+            "Streptococcus pneumoniae. Anclaje en guia IDSA Tunkel 2004 "
+            "(PMID 15494903) recomendaciones VIH-especificas. Subphase 1.3 "
+            "commit 5.3.3 wave 1."
+        ),
+        "rationale": (
+            "Anchored to PMID 15494903 (Tunkel IDSA 2004 CID guideline) "
+            "HIV-specific empiric coverage recommendations. Demographic "
+            "anchor (50yo M HIV+ ART CD4 285) reflects HIV-on-ART stratum "
+            "covered by Tunkel for SP empiric vancomycin plus ceftriaxone. "
+            "CrAg negative excludes co-incident cryptococcal infection. CSF "
+            "profile bacterial range. Imputation tiers: tier_1_primary={age, "
+            "sex, csf_culture, csf_gram_stain, hiv_status, cd4}; tier_3_"
+            "within_cohort={csf_wbc, neutrophil_pct, glucose, protein}; "
+            "tier_4_priors={temp, gcs, symptom_days}. Indeterminate=none. "
+            "Diagnostic_ambiguity=false. Outcome=survived. Antibiotic_"
+            "started_hours=1. Tier: tier_4_imputation_idsa_guideline_anchored. "
+            "5.3.3 wave1 SP-HIV-on-ART."
+        ),
+        "anchoring_extras": "anchor=Tunkel-IDSA-2004 stratum=HIV-on-ART.",
+        "diagnostic_tests": _bact_wave1_dx_tests_sp_culture_positive("15494903"),
+    }
+
+
+def _build_bact_vignette_079() -> dict[str, Any]:
+    """v79 SP partial-treatment ambiguity 45F US South mid survived (Tunkel)."""
+    return {
+        "history": {
+            "symptom_onset_to_presentation_days": 1.5,
+            "chief_complaint": "fever_with_headache",
+            "prodrome_description": (
+                "45-year-old female, US South region. Outpatient cefuroxime "
+                "36 hours for bronchitis. Recrudescence: fever 38.8 C, "
+                "headache, neck stiffness. Tertiary ED. No freshwater. "
+                "Diagnostic_ambiguity=true; type=partial_antibiotic_pretreatment. "
+                "Outcome: survived. IDSA pretreated-suspected protocol followed."
+            ),
+            "red_flags_present": [],
+        },
+        "vitals": {
+            "temperature_celsius": 38.8,
+            "heart_rate_bpm": 100,
+            "systolic_bp_mmHg": 120,
+            "diastolic_bp_mmHg": 74,
+            "glasgow_coma_scale": 14,
+            "oxygen_saturation_pct": 98,
+            "respiratory_rate_breaths_per_min": 18,
+        },
+        "exam": {
+            "mental_status_grade": "somnolent",
+            "neck_stiffness": True,
+            "kernig_or_brudzinski_positive": True,
+            "focal_neurological_deficit": False,
+            "cranial_nerve_palsy": "none",
+            "skin_lesion_centrofacial_chronic": False,
+            "petechial_or_purpuric_rash": False,
+            "papilledema_on_fundoscopy": False,
+        },
+        "labs": {
+            "wbc_blood_per_uL": 12800,
+            "platelets_per_uL": 245000,
+            "alt_ast_U_per_L": 28,
+            "crp_mg_per_L": 70.0,
+            "procalcitonin_ng_per_mL": 1.5,
+            "serum_sodium_mEq_per_L": 138,
+        },
+        "csf": {
+            "opening_pressure_cmH2O": 20.0,
+            "csf_wbc_per_mm3": 1600,
+            "csf_neutrophil_pct": 60,
+            "csf_lymphocyte_pct": 40,
+            "csf_eosinophil_pct": 0,
+            "csf_glucose_mg_per_dL": 32,
+            "csf_protein_mg_per_dL": 155,
+            "csf_lactate_mmol_per_L": 3.8,
+            "csf_ada_U_per_L": None,
+            "csf_crag_lfa_result": "negative",
+            "csf_wet_mount_motile_amoebae": "negative",
+            "csf_xanthochromia_present": False,
+            "csf_rbc_per_mm3": 3,
+            "csf_rbc_decreasing_across_tubes": None,
+        },
+        "narrative_en": (
+            "A 45-year-old woman in the US South region presented to a tertiary "
+            "emergency department after 36 hours of outpatient cefuroxime for "
+            "presumed bronchitis, with recrudescence of fever to 38.8 C, "
+            "headache, and neck stiffness. Examination on admission: temperature "
+            "38.8 C, Glasgow Coma Scale 14, neck stiffness, positive Kernig "
+            "sign, no focal deficit, no rash. CSF showed opening pressure 20 "
+            "cmH2O, white cell count 1,600 per cubic millimeter (60 percent "
+            "neutrophils), glucose 32 mg/dL, protein 155 mg/dL. Gram stain "
+            "unrevealing; CSF and blood cultures sterile after partial antibiotic "
+            "pretreatment; CSF pneumococcal antigen positive. Diagnostic_"
+            "ambiguity=true; type=partial_antibiotic_pretreatment_sterile_"
+            "cultures. Anchored to Tunkel IDSA 2004 (PMID 15494903) "
+            "pretreated-meningitis recommendations. Outcome: survived. Subphase "
+            "1.3 commit 5.3.3 wave 1, pre-adjudication hold_for_revision."
+        ),
+        "narrative_es": (
+            "Mujer de 45 anos en region sur de Estados Unidos, ingresada a "
+            "urgencias terciarias tras 36 horas de cefuroxima ambulatoria por "
+            "bronquitis presunta, con recrudescencia de fiebre 38.8 C, cefalea "
+            "y rigidez de nuca. Examen: temperatura 38.8 C, escala de Glasgow "
+            "14, rigidez de nuca, signo de Kernig positivo, sin deficit focal, "
+            "sin exantema. Liquido cefalorraquideo mostro presion de apertura "
+            "20 cmH2O, leucocitos 1,600 por mm3 (60 por ciento neutrofilos), "
+            "glucosa 32 mg/dL, proteina 155 mg/dL. Cultivos esteriles tras "
+            "pretratamiento antibiotico parcial; antigeno neumococico en "
+            "liquido positivo. Ambiguedad diagnostica por pretratamiento "
+            "parcial. Anclaje en guia IDSA Tunkel 2004 (PMID 15494903). "
+            "Subphase 1.3 commit 5.3.3 wave 1."
+        ),
+        "rationale": (
+            "Anchored to PMID 15494903 (Tunkel IDSA 2004 CID guideline) "
+            "pretreated-suspected meningitis recommendations. Diagnostic_"
+            "ambiguity=true; type=partial_antibiotic_pretreatment_sterile_"
+            "cultures. Demographic anchor (45yo F outpatient pretreated). CSF "
+            "profile attenuated (WBC 1600, neutrophil 60 percent, glucose 32). "
+            "Antigen confirms organism. Imputation tiers: tier_1_primary={age, "
+            "sex, csf_pneumococcal_antigen, pretreatment_history}; tier_3_"
+            "within_cohort={csf_wbc, neutrophil_pct, glucose, protein "
+            "attenuation}; tier_4_priors={temp, gcs, symptom_days}. "
+            "Indeterminate=culture-based-organism-confirmation. Outcome="
+            "survived. Tier: tier_4_imputation_idsa_guideline_anchored. 5.3.3 "
+            "wave1 SP-pretreated-ambiguity-2."
+        ),
+        "anchoring_extras": "anchor=Tunkel-IDSA-2004 type=partial_antibiotic_pretreatment.",
+        "diagnostic_tests": _bact_wave1_dx_tests_sp_pretreated("15494903"),
+    }
+
+
+def _build_bact_vignette_080() -> dict[str, Any]:
+    """v80 SP partial-treatment ambiguity 33M Netherlands mid survived (Tunkel)."""
+    return {
+        "history": {
+            "symptom_onset_to_presentation_days": 1.5,
+            "chief_complaint": "fever_with_headache",
+            "prodrome_description": (
+                "33-year-old male, Netherlands. Outpatient amoxicillin 30 hours "
+                "for sinus pain. Recrudescence fever 38.9 C, headache, neck "
+                "stiffness, vomiting. Tertiary ED. No freshwater. Diagnostic_"
+                "ambiguity=true; type=partial_antibiotic_pretreatment. Outcome: "
+                "survived. IDSA pretreated-suspected protocol."
+            ),
+            "red_flags_present": [],
+        },
+        "vitals": {
+            "temperature_celsius": 38.9,
+            "heart_rate_bpm": 108,
+            "systolic_bp_mmHg": 122,
+            "diastolic_bp_mmHg": 76,
+            "glasgow_coma_scale": 14,
+            "oxygen_saturation_pct": 97,
+            "respiratory_rate_breaths_per_min": 20,
+        },
+        "exam": {
+            "mental_status_grade": "somnolent",
+            "neck_stiffness": True,
+            "kernig_or_brudzinski_positive": True,
+            "focal_neurological_deficit": False,
+            "cranial_nerve_palsy": "none",
+            "skin_lesion_centrofacial_chronic": False,
+            "petechial_or_purpuric_rash": False,
+            "papilledema_on_fundoscopy": False,
+        },
+        "labs": {
+            "wbc_blood_per_uL": 14500,
+            "platelets_per_uL": 255000,
+            "alt_ast_U_per_L": 30,
+            "crp_mg_per_L": 85.0,
+            "procalcitonin_ng_per_mL": 2.3,
+            "serum_sodium_mEq_per_L": 137,
+        },
+        "csf": {
+            "opening_pressure_cmH2O": 23.0,
+            "csf_wbc_per_mm3": 2900,
+            "csf_neutrophil_pct": 68,
+            "csf_lymphocyte_pct": 32,
+            "csf_eosinophil_pct": 0,
+            "csf_glucose_mg_per_dL": 28,
+            "csf_protein_mg_per_dL": 175,
+            "csf_lactate_mmol_per_L": 4.4,
+            "csf_ada_U_per_L": None,
+            "csf_crag_lfa_result": "negative",
+            "csf_wet_mount_motile_amoebae": "negative",
+            "csf_xanthochromia_present": False,
+            "csf_rbc_per_mm3": 4,
+            "csf_rbc_decreasing_across_tubes": None,
+        },
+        "narrative_en": (
+            "A 33-year-old man in the Netherlands presented to a tertiary "
+            "emergency department after 30 hours of outpatient amoxicillin for "
+            "sinus pain, with recrudescence of fever to 38.9 C, headache, neck "
+            "stiffness, and vomiting. Examination on admission: temperature "
+            "38.9 C, Glasgow Coma Scale 14, neck stiffness, positive Kernig "
+            "sign, no focal deficit, no rash. CSF showed opening pressure 23 "
+            "cmH2O, white cell count 2,900 per cubic millimeter (68 percent "
+            "neutrophils), glucose 28 mg/dL, protein 175 mg/dL. Gram stain "
+            "unrevealing; cultures sterile after partial antibiotic pretreatment; "
+            "CSF pneumococcal antigen positive. Diagnostic_ambiguity=true; "
+            "type=partial_antibiotic_pretreatment_sterile_cultures. Anchored to "
+            "Tunkel IDSA 2004 (PMID 15494903) pretreated-meningitis "
+            "recommendations. Outcome: survived. Subphase 1.3 commit 5.3.3 "
+            "wave 1, pre-adjudication hold_for_revision."
+        ),
+        "narrative_es": (
+            "Varon de 33 anos en Paises Bajos, ingresado a urgencias terciarias "
+            "tras 30 horas de amoxicilina ambulatoria por dolor sinusal, con "
+            "recrudescencia de fiebre 38.9 C, cefalea, rigidez de nuca y "
+            "vomitos. Examen: temperatura 38.9 C, escala de Glasgow 14, rigidez "
+            "de nuca, signo de Kernig positivo, sin deficit focal, sin exantema. "
+            "Liquido cefalorraquideo mostro presion de apertura 23 cmH2O, "
+            "leucocitos 2,900 por mm3 (68 por ciento neutrofilos), glucosa 28 "
+            "mg/dL, proteina 175 mg/dL. Cultivos esteriles tras pretratamiento "
+            "antibiotico parcial; antigeno neumococico en liquido positivo. "
+            "Ambiguedad diagnostica por pretratamiento parcial. Anclaje en "
+            "guia IDSA Tunkel 2004 (PMID 15494903). Subphase 1.3 commit 5.3.3 "
+            "wave 1."
+        ),
+        "rationale": (
+            "Anchored to PMID 15494903 (Tunkel IDSA 2004 CID guideline) "
+            "pretreated-suspected meningitis recommendations. Diagnostic_"
+            "ambiguity=true; type=partial_antibiotic_pretreatment_sterile_"
+            "cultures. Demographic anchor (33yo M outpatient pretreated NL). "
+            "CSF profile attenuated (WBC 2900, neutrophil 68 percent, glucose "
+            "28). Antigen confirms organism. Imputation tiers: tier_1_primary"
+            "={age, sex, csf_pneumococcal_antigen, pretreatment_history}; "
+            "tier_3_within_cohort={csf_wbc, neutrophil_pct, glucose, protein "
+            "attenuation}; tier_4_priors={temp, gcs, symptom_days}. "
+            "Indeterminate=culture-based-organism-confirmation. Outcome="
+            "survived. Tier: tier_4_imputation_idsa_guideline_anchored. 5.3.3 "
+            "wave1 SP-pretreated-ambiguity NL-2."
+        ),
+        "anchoring_extras": "anchor=Tunkel-IDSA-2004 type=partial_antibiotic_pretreatment.",
+        "diagnostic_tests": _bact_wave1_dx_tests_sp_pretreated("15494903"),
+    }
+
+
+def _build_bact_vignette_081() -> dict[str, Any]:
+    """v81 SP elderly 79F Netherlands late fatal (van de Beek anchor)."""
+    return {
+        "history": {
+            "symptom_onset_to_presentation_days": 5.0,
+            "chief_complaint": "altered_mental_status",
+            "prodrome_description": (
+                "79-year-old female, Netherlands. 5-day progressive fever, "
+                "headache, confusion progressing to coma. Tertiary ED Amsterdam. "
+                "Late presentation, GCS 6 on admission. No freshwater. Triad "
+                "present (van de Beek elderly subgroup mortality 51 percent at "
+                "age >=70). Outcome: fatal hospital day 2."
+            ),
+            "red_flags_present": [],
+        },
+        "vitals": {
+            "temperature_celsius": 38.7,
+            "heart_rate_bpm": 124,
+            "systolic_bp_mmHg": 96,
+            "diastolic_bp_mmHg": 56,
+            "glasgow_coma_scale": 6,
+            "oxygen_saturation_pct": 89,
+            "respiratory_rate_breaths_per_min": 30,
+        },
+        "exam": {
+            "mental_status_grade": "comatose",
+            "neck_stiffness": True,
+            "kernig_or_brudzinski_positive": True,
+            "focal_neurological_deficit": False,
+            "cranial_nerve_palsy": "none",
+            "skin_lesion_centrofacial_chronic": False,
+            "petechial_or_purpuric_rash": False,
+            "papilledema_on_fundoscopy": False,
+        },
+        "labs": {
+            "wbc_blood_per_uL": 20100,
+            "platelets_per_uL": 145000,
+            "alt_ast_U_per_L": 42,
+            "crp_mg_per_L": 245.0,
+            "procalcitonin_ng_per_mL": 16.0,
+            "serum_sodium_mEq_per_L": 128,
+        },
+        "csf": {
+            "opening_pressure_cmH2O": 24.0,
+            "csf_wbc_per_mm3": 3800,
+            "csf_neutrophil_pct": 78,
+            "csf_lymphocyte_pct": 22,
+            "csf_eosinophil_pct": 0,
+            "csf_glucose_mg_per_dL": 28,
+            "csf_protein_mg_per_dL": 170,
+            "csf_lactate_mmol_per_L": 5.6,
+            "csf_ada_U_per_L": None,
+            "csf_crag_lfa_result": "negative",
+            "csf_wet_mount_motile_amoebae": "negative",
+            "csf_xanthochromia_present": False,
+            "csf_rbc_per_mm3": 6,
+            "csf_rbc_decreasing_across_tubes": None,
+        },
+        "narrative_en": (
+            "A 79-year-old woman in the Netherlands presented to a tertiary "
+            "emergency department in Amsterdam after a 5-day course of "
+            "progressive fever, headache, and confusion progressing to coma. "
+            "She arrived with Glasgow Coma Scale 6. Examination on admission: "
+            "temperature 38.7 C, neck stiffness, positive Kernig sign, no focal "
+            "deficit, no rash. CSF showed opening pressure 24 cmH2O, white cell "
+            "count 3,800 per cubic millimeter (78 percent neutrophils), glucose "
+            "28 mg/dL, protein 170 mg/dL. Gram stain revealed gram-positive "
+            "diplococci; culture identified Streptococcus pneumoniae. Primary "
+            "anchor: PMID 15509818 (van de Beek 2004 NEJM), elderly subgroup "
+            "mortality 51 percent at age 70 years and older. Outcome: fatal "
+            "hospital day 2. Subphase 1.3 commit 5.3.3 wave 1, pre-adjudication "
+            "hold_for_revision."
+        ),
+        "narrative_es": (
+            "Mujer de 79 anos en Paises Bajos (Amsterdam), ingresada a "
+            "urgencias terciarias tras cinco dias de fiebre progresiva, cefalea "
+            "y confusion con progresion a coma. Ingreso con escala de Glasgow "
+            "6. Examen: temperatura 38.7 C, rigidez de nuca, signo de Kernig "
+            "positivo, sin deficit focal, sin exantema. Liquido cefalorraquideo "
+            "mostro presion de apertura 24 cmH2O, leucocitos 3,800 por mm3 (78 "
+            "por ciento neutrofilos), glucosa 28 mg/dL, proteina 170 mg/dL. "
+            "Tincion de Gram con diplococos grampositivos y cultivo "
+            "Streptococcus pneumoniae. Anclaje primario en cohorte prospectiva "
+            "van de Beek 2004 NEJM (PMID 15509818, 696 episodios 1998-2002, "
+            "mortalidad estrato adultos mayores 51 por ciento a edad >=70). "
+            "Resultado: fatal en hospital dia 2. Subphase 1.3 commit 5.3.3 "
+            "wave 1, pre-adjudicacion hold_for_revision."
+        ),
+        "rationale": (
+            "Anchored to PMID 15509818 (van de Beek 2004 NEJM), 696-episode "
+            "prospective Netherlands cohort 1998-2002 (elderly subgroup "
+            "mortality 51 percent at age 70 years and older). Demographic "
+            "anchor (79yo F) sits in eldest stratum. CSF profile bacterial "
+            "range. Imputation tiers: tier_1_primary={age, sex, csf_culture, "
+            "csf_gram_stain}; tier_3_within_cohort={csf_wbc, neutrophil_pct, "
+            "glucose, protein, gcs, hyponatremia}; tier_4_priors={temp, "
+            "symptom_days, hr}. Indeterminate=none. Diagnostic_ambiguity=false. "
+            "Outcome=fatal_hospital_day_2. Antibiotic_started_hours=2. Tier: "
+            "tier_3_imputation_within_cohort_review. 5.3.3 wave1 SP-eldest-"
+            "fatal."
+        ),
+        "anchoring_extras": "anchor=van-de-Beek-NEJM-2004 stratum=eldest-fatal.",
+        "diagnostic_tests": _bact_wave1_dx_tests_sp_culture_positive("15509818"),
+    }
+
+
+def _build_bact_vignette_090() -> dict[str, Any]:
+    """v90 GN post-neurosurgical 55M US South late fatal (Tunkel IDSA HCA)."""
+    return {
+        "history": {
+            "symptom_onset_to_presentation_days": 1.5,
+            "chief_complaint": "altered_mental_status",
+            "prodrome_description": (
+                "55-year-old male, US South region. Glioma resection 9 days "
+                "prior; postoperative course complicated by CSF leak from "
+                "surgical site, then fever 39.0 C, headache, declining mental "
+                "status over 36 hours, progressive obtundation. Tertiary ED. "
+                "No freshwater. Healthcare-associated gram-negative bacterial "
+                "meningitis. Outcome: fatal hospital day 4."
+            ),
+            "red_flags_present": ["recent_neurosurgery"],
+        },
+        "vitals": {
+            "temperature_celsius": 39.0,
+            "heart_rate_bpm": 118,
+            "systolic_bp_mmHg": 100,
+            "diastolic_bp_mmHg": 60,
+            "glasgow_coma_scale": 8,
+            "oxygen_saturation_pct": 92,
+            "respiratory_rate_breaths_per_min": 24,
+        },
+        "exam": {
+            "mental_status_grade": "stuporous",
+            "neck_stiffness": True,
+            "kernig_or_brudzinski_positive": True,
+            "focal_neurological_deficit": True,
+            "cranial_nerve_palsy": "none",
+            "skin_lesion_centrofacial_chronic": False,
+            "petechial_or_purpuric_rash": False,
+            "papilledema_on_fundoscopy": False,
+        },
+        "labs": {
+            "wbc_blood_per_uL": 19500,
+            "platelets_per_uL": 165000,
+            "alt_ast_U_per_L": 42,
+            "crp_mg_per_L": 215.0,
+            "procalcitonin_ng_per_mL": 11.5,
+            "serum_sodium_mEq_per_L": 135,
+        },
+        "csf": {
+            "opening_pressure_cmH2O": 30.0,
+            "csf_wbc_per_mm3": 4500,
+            "csf_neutrophil_pct": 86,
+            "csf_lymphocyte_pct": 14,
+            "csf_eosinophil_pct": 0,
+            "csf_glucose_mg_per_dL": 16,
+            "csf_protein_mg_per_dL": 290,
+            "csf_lactate_mmol_per_L": 8.2,
+            "csf_ada_U_per_L": None,
+            "csf_crag_lfa_result": "negative",
+            "csf_wet_mount_motile_amoebae": "negative",
+            "csf_xanthochromia_present": False,
+            "csf_rbc_per_mm3": 8,
+            "csf_rbc_decreasing_across_tubes": None,
+        },
+        "narrative_en": (
+            "A 55-year-old man in the US South region presented to a tertiary "
+            "emergency department 9 days after glioma resection. The "
+            "postoperative course had been complicated by a CSF leak at the "
+            "surgical site. Over 36 hours he developed fever to 39.0 C, "
+            "headache, and declining mental status with progressive obtundation. "
+            "Examination on admission: temperature 39.0 C, Glasgow Coma Scale 8, "
+            "neck stiffness, positive Kernig sign, focal deficit (right hemiparesis), "
+            "no rash. CSF showed opening pressure 30 cmH2O, white cell count "
+            "4,500 per cubic millimeter (86 percent neutrophils), glucose 16 "
+            "mg/dL, protein 290 mg/dL. Gram stain revealed gram-negative rods; "
+            "culture identified Pseudomonas aeruginosa. Anchored to Tunkel IDSA "
+            "2004 (PMID 15494903) healthcare-associated meningitis "
+            "recommendations (empiric meropenem coverage of gram-negative "
+            "rods including Pseudomonas in post-neurosurgical context). Outcome: "
+            "fatal hospital day 4. Subphase 1.3 commit 5.3.3 wave 1, "
+            "pre-adjudication hold_for_revision."
+        ),
+        "narrative_es": (
+            "Varon de 55 anos en region sur de Estados Unidos, ingresado a "
+            "urgencias terciarias nueve dias despues de reseccion de glioma. "
+            "El curso postoperatorio se complico con fuga de liquido "
+            "cefalorraquideo en el sitio quirurgico. En 36 horas desarrollo "
+            "fiebre 39.0 C, cefalea y deterioro del estado mental con "
+            "obnubilacion progresiva. Examen: temperatura 39.0 C, escala de "
+            "Glasgow 8, rigidez de nuca, signo de Kernig positivo, deficit "
+            "focal (hemiparesia derecha), sin exantema. Liquido cefalorraquideo "
+            "mostro presion de apertura 30 cmH2O, leucocitos 4,500 por mm3 (86 "
+            "por ciento neutrofilos), glucosa 16 mg/dL, proteina 290 mg/dL. "
+            "Tincion de Gram con bacilos gramnegativos y cultivo Pseudomonas "
+            "aeruginosa. Anclaje en guia IDSA Tunkel 2004 (PMID 15494903), "
+            "recomendaciones para meningitis asociada a atencion sanitaria. "
+            "Subphase 1.3 commit 5.3.3 wave 1."
+        ),
+        "rationale": (
+            "Anchored to PMID 15494903 (Tunkel IDSA 2004 CID guideline) "
+            "healthcare-associated meningitis recommendations. Demographic "
+            "anchor (55yo M post-neurosurgical glioma resection day 9 with "
+            "CSF leak) reflects post-neurosurgical gram-negative stratum "
+            "covered by Tunkel for empiric meropenem-vancomycin coverage. "
+            "CSF profile bacterial range; gram-negative rods on Gram stain "
+            "with Pseudomonas culture. Imputation tiers: tier_1_primary={age, "
+            "sex, csf_culture, csf_gram_stain, neurosurgery_history, csf_leak}; "
+            "tier_3_within_cohort={csf_wbc, neutrophil_pct, glucose, protein, "
+            "lactate, gcs}; tier_4_priors={temp, symptom_days, hr}. "
+            "Indeterminate=none. Diagnostic_ambiguity=false. Outcome=fatal_"
+            "hospital_day_4. Antibiotic_started_hours=2. Tier: tier_4_"
+            "imputation_idsa_guideline_anchored. 5.3.3 wave1 GN-post-"
+            "neurosurgical-fatal."
+        ),
+        "anchoring_extras": "anchor=Tunkel-IDSA-2004 stratum=post-neurosurgical-GN.",
+        "diagnostic_tests": _bact_wave1_dx_tests_gn_pseudomonas("15494903"),
+    }
+
+
+_BACT_WAVE1_BUILDERS: dict[int, Any] = {
+    65: _build_bact_vignette_065,
+    66: _build_bact_vignette_066,
+    67: _build_bact_vignette_067,
+    69: _build_bact_vignette_069,
+    71: _build_bact_vignette_071,
+    73: _build_bact_vignette_073,
+    75: _build_bact_vignette_075,
+    76: _build_bact_vignette_076,
+    77: _build_bact_vignette_077,
+    78: _build_bact_vignette_078,
+    79: _build_bact_vignette_079,
+    80: _build_bact_vignette_080,
+    81: _build_bact_vignette_081,
+    90: _build_bact_vignette_090,
+}
+
+
+def generate_bact_wave1_vignette(vignette_id: int) -> dict[str, Any]:
+    """Build one BACT Wave-1 vignette dict from a vignette_id.
+
+    Looks up the BACTERIAL_DISTRIBUTION spec, the PMID_REGISTRY metadata,
+    and the per-slot clinical builder, then composes the full
+    VignetteSchema-compliant dict.
+    """
+    if vignette_id not in BACT_WAVE1_IDS:
+        raise KeyError(
+            f"vignette_id {vignette_id!r} not in BACT_WAVE1_IDS {BACT_WAVE1_IDS}"
+        )
+    spec = next(s for s in BACTERIAL_DISTRIBUTION if s["vignette_id"] == vignette_id)
+    pmid_meta = load_pmid_metadata(spec["pmid"])
+    clinical = _BACT_WAVE1_BUILDERS[vignette_id]()
+
+    region = spec["geography_region"]
+    history = clinical["history"]
+    if not history.get("red_flags_present"):
+        history = {**history, "red_flags_present": _bact_wave1_red_flags(spec)}
+
+    return {
+        "schema_version": "2.0",
+        "case_id": _bact_wave1_case_id(spec, pmid_meta),
+        "ground_truth_class": 2,
+        "demographics": {
+            "age_years": spec["age_years"],
+            "sex": spec["sex"],
+            "ethnicity": _bact_wave1_ethnicity(region),
+            "geography_region": region,
+            "altitude_residence_m": _bact_wave1_altitude(region),
+        },
+        "history": history,
+        "exposure": _bact_wave1_exposure(spec),
+        "vitals": clinical["vitals"],
+        "exam": clinical["exam"],
+        "labs": clinical["labs"],
+        "csf": clinical["csf"],
+        "imaging": _bact_wave1_imaging_for(spec),
+        "diagnostic_tests": {"results": clinical["diagnostic_tests"]},
+        "adjudication": _bact_wave1_adjudication(spec, clinical["anchoring_extras"]),
+        "literature_anchors": [_build_literature_anchor(pmid_meta)],
+        "provenance": _bact_wave1_provenance(clinical["rationale"]),
+        "narrative_es": clinical["narrative_es"],
+        "narrative_en": clinical["narrative_en"],
+    }
+
+
+def write_bact_wave1_vignette(
+    vignette_id: int,
+    output_dir: Path = BACT_WAVE1_OUTPUT_DIR,
+) -> Path:
+    """Build, validate, and write one BACT Wave-1 vignette to disk."""
+    spec = next(s for s in BACTERIAL_DISTRIBUTION if s["vignette_id"] == vignette_id)
+    vignette = generate_bact_wave1_vignette(vignette_id)
+    VignetteSchema.model_validate(vignette)
+    output_dir.mkdir(parents=True, exist_ok=True)
+    filepath = output_dir / spec["filename"]
+    filepath.write_text(
+        json.dumps(vignette, indent=2, sort_keys=False, ensure_ascii=False),
+        encoding="utf-8",
+    )
+    logger.info("Wrote %s", filepath)
+    return filepath
+
+
+def write_bact_wave1_corpus(
+    output_dir: Path = BACT_WAVE1_OUTPUT_DIR,
+) -> list[Path]:
+    """Build, validate, and write all 14 BACT Wave-1 vignettes."""
+    paths: list[Path] = []
+    for vid in BACT_WAVE1_IDS:
+        paths.append(write_bact_wave1_vignette(vid, output_dir=output_dir))
+    return paths
+
+
+# ============================================================================
 # Public API
 # ============================================================================
 
