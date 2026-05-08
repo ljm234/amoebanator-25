@@ -3241,7 +3241,13 @@ BACTERIAL_DISTRIBUTION: list[dict[str, Any]] = [
         "filename": "bact_083_nm_adolescent_fatal.json",
         "pathogen": "N_meningitidis",
         "cluster": "bacterial_meningitis_community",
-        "pmid": "18626302",
+        # 5.3.2 errata fix removed typo PMID 18626302 from PMID_REGISTRY
+        # (corrected to canonical Heckenberg 18626301 for v82). v83
+        # adolescent NM fatal slot is more demographically appropriate
+        # against CDC ABCs surveillance (Soeters 2020 MMWR PMID 32935747)
+        # than the Heckenberg adult cohort, so v83 re-anchors to 32935747.
+        # Subphase 1.3.x errata 2026-05-08.
+        "pmid": "32935747",
         "age_years": 17,
         "age_label": "17 years",
         "sex": "female",
@@ -3252,7 +3258,7 @@ BACTERIAL_DISTRIBUTION: list[dict[str, Any]] = [
         "risk_factors": ["none"],
         "diagnostic_ambiguity": False,
         "freshwater_exposure_within_14d": False,
-        "methodology": "tier_3_imputation_within_cohort_review",
+        "methodology": "tier_4_imputation_cdc_abcs_anchored",
     },
     {
         "vignette_id": 84,

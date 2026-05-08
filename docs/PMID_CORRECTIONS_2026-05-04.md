@@ -283,20 +283,47 @@ Manual PMC document triangulation. 6 PMC full-text documents were independently 
 - **Lock-in test** `test_pmid_29462145_excluded_from_registry` added to `tests/vignettes/test_pam_vignettes.py`. Asserts PMID 29462145 is not present in PMID_REGISTRY; assertion holds permanently regardless of future ADDs.
 - **Schema unmodified.** PMID_REGISTRY entry count unchanged at 57 (29462145 was never present; the exclusion is a documentation + test guard, not a removal).
 
-### Deferred Items (per Jordan Decision 1)
+### Closed Items: 8 PMIDs Not Needed (resolved 2026-05-08)
 
 The 8 author corrections originally proposed for this commit cycle target PMIDs that are NOT currently in PMID_REGISTRY (verified 2026-05-08 via empirical key lookup):
 
 | Slot | PMID | Target First Author | Status |
 |------|------|---------------------|--------|
-| BACT_W1_06 | 21067624 | Amaya-Villar R | NOT IN REGISTRY (deferred) |
-| BACT_W1_08 | 30815433 | Xu M | NOT IN REGISTRY (deferred) |
-| BACT_W1_11 | 23823579 | Azevedo LCP | NOT IN REGISTRY (deferred) |
-| VIRAL_W1_01 | 34840888 | Montalvo M | NOT IN REGISTRY (deferred) |
-| VIRAL_W1_06 | 37797296 | Petersen PT | NOT IN REGISTRY (deferred) |
-| VIRAL_W1_07 | 29140242 | Brito Ferreira ML | NOT IN REGISTRY (deferred) |
-| VIRAL_W1_11 | 25324865 | Ryu JU | NOT IN REGISTRY (deferred) |
-| VIRAL_W1_12 | 38744070 | Pham TS | NOT IN REGISTRY (deferred) |
+| BACT_W1_06 | 21067624 | Amaya-Villar R | CLOSED - NOT NEEDED |
+| BACT_W1_08 | 30815433 | Xu M | CLOSED - NOT NEEDED |
+| BACT_W1_11 | 23823579 | Azevedo LCP | CLOSED - NOT NEEDED |
+| VIRAL_W1_01 | 34840888 | Montalvo M | CLOSED - NOT NEEDED |
+| VIRAL_W1_06 | 37797296 | Petersen PT | CLOSED - NOT NEEDED |
+| VIRAL_W1_07 | 29140242 | Brito Ferreira ML | CLOSED - NOT NEEDED |
+| VIRAL_W1_11 | 25324865 | Ryu JU | CLOSED - NOT NEEDED |
+| VIRAL_W1_12 | 38744070 | Pham TS | CLOSED - NOT NEEDED |
+
+#### Resolution (read-only audit 2026-05-08)
+
+A read-only audit on 2026-05-08 cross-referenced the 8 deferred PMIDs against current `BACTERIAL_DISTRIBUTION` (vignette_id 61-90) and `VIRAL_DISTRIBUTION` (vignette_id 91-120) anchors after Commit 5.3.2 pilot ship.
+
+Verdict: 8/8 NOT NEEDED for current corpus structure.
+
+- All 60 BACT + VIRAL slots in the locked distributions already have PMIDs assigned
+- Zero overlap between the 8 deferred PMIDs and the 14 distinct slot-anchor PMIDs in current lock
+- The 8 deferred PMIDs were artifacts of a superseded "Wave 1" planning attempt (slot IDs `BACT_W1_xx` / `VIRAL_W1_xx`) that does not match the current `vignette_id` 61-120 architecture from Commit 5.3.1
+
+Action: All 8 PMIDs DISCARDED from active backlog. Forensic trail preserved above for audit completeness. No PMID_REGISTRY ADDs performed.
+
+If Subphase 1.4 (TBM + Cryptococcal + GAE) or Subphase 1.5 (NCC + Tropical + Non-infectious) introduces additional Class 2 or Class 3 slots beyond the locked 30+30, a fresh anchor selection process will run; retrofitting these specific 8 PMIDs is not authorized.
+
+#### Subphase 1.3.x Errata (resolved 2026-05-08)
+
+Audit also surfaced a broken anchor reference unrelated to the 8 deferred PMIDs: slot v83 in `BACTERIAL_DISTRIBUTION` referenced PMID 18626302 (typo PMID removed from `PMID_REGISTRY` in Commit 5.3.2). Existing parametrized test `test_day2_pmids_in_registry` covers PAM corpus IDs 21-60 only and missed the leak.
+
+Resolution applied in this commit (Subphase 1.3.x):
+
+- Slot v83 anchor changed: PMID 18626302 to PMID 32935747 (Soeters HM CDC ABCs surveillance, demographically appropriate for adolescent NM case)
+- Slot v83 methodology field updated from `tier_3_imputation_within_cohort_review` to `tier_4_imputation_cdc_abcs_anchored` to match the new anchor
+- New lock-in test `test_bacterial_viral_distribution_pmids_in_registry` parametrizes over all 60 BACT + VIRAL slots; permanent guard against future regression
+- Test was written FIRST (TDD), confirmed FAILING on v83 18626302 with assertion message `[(83, '18626302')]`, then v83 fixed and confirmed PASSING
+
+This commit is the formal closure of Subphase 1.2.x metadata lock work plus the v83 errata caught by the read-only audit.
 
 A subsequent commit (planned: scoped ADD with full Vancouver metadata) will introduce these 8 PMIDs as new PMID_REGISTRY entries and apply the canonical first authors verbatim. The ADD requires:
 
