@@ -1319,3 +1319,34 @@ def test_marginals_freshwater_sanity_and_adjudication_state():
         assert data.get("adjudication_state") == (
             "pre_adjudication_hold_for_revision"
         ), path
+
+
+# ======================================================================
+# Subphase 1.2.x metadata lock (commit v2.2.4-metadata-locked, 2026-05-08)
+# ----------------------------------------------------------------------
+# Single scoped lock-in: PMID 29462145 (Jiang YH 2018 PLoS One urology
+# paper, ZERO meningitis/encephalitis/Zika content) must NOT be in
+# PMID_REGISTRY. Permanent guard against the committee-hint catastrophic
+# miss caught via manual PMC verification 2026-05-07. The eight author
+# corrections targeting PMIDs not currently in registry are deferred
+# pending ADD scope authorization. See Day 2 Corrections section in
+# docs/PMID_CORRECTIONS_2026-05-04.md.
+# ======================================================================
+
+
+def test_pmid_29462145_excluded_from_registry():
+    """Lock-in: PMID 29462145 (Jiang YH urology paper) MUST NOT be in registry.
+
+    Verified PMID = "Videourodynamic findings of lower urinary tract
+    dysfunctions in men with persistent storage lower urinary tract
+    symptoms after medical treatment" (Jiang YH, Wang CC, Kuo HC. PLoS
+    One 2018;13(2):e0190704). Topic is benign prostatic hyperplasia /
+    bladder outlet obstruction, which has no Zika / meningitis /
+    encephalitis content. Originally hinted as VIRAL_W1_07 companion
+    (Mehta R Zika systematic review); manual PMC verification on
+    2026-05-07 confirmed it is unrelated.
+    """
+    assert "29462145" not in PMID_REGISTRY, (
+        "PMID 29462145 (Jiang YH urology paper) must not be present. "
+        "See docs/PMID_CORRECTIONS_2026-05-04.md Day 2 Corrections."
+    )
