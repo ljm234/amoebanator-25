@@ -259,3 +259,58 @@ Both fixes preserve the U+00ED diacritic byte-pattern (UTF-8 c3 ad). The registr
 
 ### Reversibility
 The original tag annotation was backed up to /tmp/original_tag_v2.1.1_message_BACKUP.txt before deletion; the backup was retained until verification of the new tag completed, then cleaned up alongside the new tag message file in Phase 4.
+
+---
+
+## Day 2 Corrections (2026-05-07)
+
+**Document appended:** 2026-05-08 (scoped exclusion-only commit; 8 author corrections deferred per Decision 1, see "Deferred items" below).
+
+### Source
+Manual PMC document triangulation. 6 PMC full-text documents were independently verified by Jordan against committee 2060 corrections on 2026-05-07. 9 of 9 author attributions confirmed as committee-suggested. The verification surfaced one critical exclusion (PMID 29462145, off-topic urology paper) and 8 author corrections for downstream PMIDs.
+
+### Critical Finding: PMID 29462145 EXCLUDED
+
+- **Original committee hint:** VIRAL_W1_07 companion = Mehta R Zika systematic review.
+- **Actual PMID 29462145 content:** "Videourodynamic findings of lower urinary tract dysfunctions in men with persistent storage lower urinary tract symptoms after medical treatment" (Jiang YH, Wang CC, Kuo HC. PLoS One 2018;13(2):e0190704).
+- **Topic:** Urology - benign prostatic hyperplasia / bladder outlet obstruction in men. ZERO meningitis / encephalitis / Zika content.
+- **Resolution:** EXCLUDED from corpus. Future Class 3 Zika neurological vignette slots (if added in subsequent commits) will be anchored solely to Brito Ferreira ML 2017 (PMID 29140242) without a companion. Note: PMID 29140242 is also NOT currently in PMID_REGISTRY; that addition is deferred along with the 8 author corrections per Decision 1.
+- **Lesson:** Camino largo extremo manual verification justified retroactively. Bulk acceptance of committee corrections (Option B at decision point) would have contaminated VIRAL_W1_07 with off-topic urology paper.
+
+### Artifact Applied in this Commit (scoped)
+
+- **PMID_REGISTRY EXCLUDED comment block** added at the end of `scripts/generate_pam_vignettes.py` PMID_REGISTRY, documenting PMID 29462145 exclusion + cross-reference to this section.
+- **Lock-in test** `test_pmid_29462145_excluded_from_registry` added to `tests/vignettes/test_pam_vignettes.py`. Asserts PMID 29462145 is not present in PMID_REGISTRY; assertion holds permanently regardless of future ADDs.
+- **Schema unmodified.** PMID_REGISTRY entry count unchanged at 57 (29462145 was never present; the exclusion is a documentation + test guard, not a removal).
+
+### Deferred Items (per Jordan Decision 1)
+
+The 8 author corrections originally proposed for this commit cycle target PMIDs that are NOT currently in PMID_REGISTRY (verified 2026-05-08 via empirical key lookup):
+
+| Slot | PMID | Target First Author | Status |
+|------|------|---------------------|--------|
+| BACT_W1_06 | 21067624 | Amaya-Villar R | NOT IN REGISTRY (deferred) |
+| BACT_W1_08 | 30815433 | Xu M | NOT IN REGISTRY (deferred) |
+| BACT_W1_11 | 23823579 | Azevedo LCP | NOT IN REGISTRY (deferred) |
+| VIRAL_W1_01 | 34840888 | Montalvo M | NOT IN REGISTRY (deferred) |
+| VIRAL_W1_06 | 37797296 | Petersen PT | NOT IN REGISTRY (deferred) |
+| VIRAL_W1_07 | 29140242 | Brito Ferreira ML | NOT IN REGISTRY (deferred) |
+| VIRAL_W1_11 | 25324865 | Ryu JU | NOT IN REGISTRY (deferred) |
+| VIRAL_W1_12 | 38744070 | Pham TS | NOT IN REGISTRY (deferred) |
+
+A subsequent commit (planned: scoped ADD with full Vancouver metadata) will introduce these 8 PMIDs as new PMID_REGISTRY entries and apply the canonical first authors verbatim. The ADD requires:
+
+1. Full Vancouver `authors_full` lists per PMID (not provided in current Day 2 audit).
+2. `journal`, `journal_short_code`, `year`, `volume`, `issue`, `pages`, `title`, `doi`, `pmc_id` per PMID.
+3. Decision on `first_author` schema field (currently registry uses `authors_short`; new field requires schema-extension decision).
+4. Slot-ID mapping (`BACT_W1_xx` / `VIRAL_W1_xx` to current `vignette_id` integers in BACTERIAL_DISTRIBUTION / VIRAL_DISTRIBUTION).
+5. PMID 34840888 metadata refinements: `pages = "e714-e721"` (not e640-e647); `anchor_type = "case_series_with_review"` (PMID_REGISTRY developer-facing field only; LiteratureAnchor schema enum is locked and does not include this value, so vignette JSON `literature_anchors[].anchor_type` must remain within the locked enum).
+6. PMID 37797296 `article_number = "e16081"` (not e16125). New field; addition decision deferred.
+
+### Verification Method
+
+Manual PMC full-text document review for each PMID. Author bylines compared character-by-character against committee corrections. Publication type and pagination cross-checked against journal landing page metadata. PMID 29462145's off-topic urology content was confirmed in PMC document on 2026-05-07.
+
+### Confidence Level
+
+PMID 29462145 exclusion: 100% (off-topic content empirically confirmed in PMC document). 8 author corrections: 100% pending entry creation (will be applied verbatim once ADD scope is authorized).

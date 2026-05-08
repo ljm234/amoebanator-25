@@ -1895,6 +1895,23 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
 
 
 # ============================================================================
+# EXCLUDED PMIDs (committee error catches via manual verification)
+# ============================================================================
+# PMID 29462145: Urology paper (Jiang YH 2018, PLoS One 13:e0190704)
+#   Originally hint as VIRAL_W1_07 companion (Mehta Zika systematic review).
+#   Manual PMC verification 2026-05-07 confirmed PMID 29462145 = LUTS/BPH
+#   videourodynamic study, ZERO Zika/meningitis/encephalitis content.
+#   Decision: VIRAL_W1_07 has NO companion anchor; primary Brito Ferreira ML
+#   2017 (PMID 29140242) is sole anchor for Class 3 Zika neurological
+#   vignettes if and when those slots are added in subsequent commits.
+#   Note: PMID 29140242 is NOT currently in PMID_REGISTRY; that addition is
+#   deferred to a future commit that will also handle the 8 Day-2 author
+#   corrections (PMIDs not yet in registry as of 2026-05-08).
+#   See docs/PMID_CORRECTIONS_2026-05-04.md Day 2 Corrections section.
+# ============================================================================
+
+
+# ============================================================================
 # DAY1_DISTRIBUTION
 # ----------------------------------------------------------------------------
 # 20 vignette specifications from the per-vignette table in the Day 1 spec.
