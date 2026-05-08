@@ -1,0 +1,130 @@
+{
+  "schema_version": "2.0",
+  "case_id": "BACT-D3-088-Medicine-2002-Tumbes-Listeria-Mid",
+  "ground_truth_class": 2,
+  "demographics": {
+    "age_years": 28,
+    "sex": "female",
+    "ethnicity": "mestizo",
+    "geography_region": "peru_tumbes",
+    "altitude_residence_m": 6
+  },
+  "history": {
+    "symptom_onset_to_presentation_days": 4.0,
+    "chief_complaint": "fever_with_headache",
+    "prodrome_description": "28-year-old female, Tumbes Peru coastal community, 30 weeks gestation. 4-day course: fever 38.6 C, headache, neck stiffness, mild back pain. Recent unpasteurized soft-cheese consumption. Tertiary obstetric ED. No freshwater. Outcome: maternal survived no sequelae; fetal preterm but viable. Antibiotic at hour 2 (ampicillin) plus gentamicin per IDSA Listeria pregnancy protocol.",
+    "red_flags_present": [
+      "pregnancy_postpartum"
+    ]
+  },
+  "exposure": {
+    "freshwater_exposure_within_14d": false,
+    "freshwater_exposure_type": null,
+    "altitude_exposure_within_7d_m": null,
+    "pork_consumption_or_taenia_contact": false,
+    "mosquito_endemic_area_exposure": false,
+    "immunocompromise_status": "none",
+    "hiv_status": "negative",
+    "cd4_count_cells_per_uL": null
+  },
+  "vitals": {
+    "temperature_celsius": 38.6,
+    "heart_rate_bpm": 102,
+    "systolic_bp_mmHg": 110,
+    "diastolic_bp_mmHg": 68,
+    "glasgow_coma_scale": 14,
+    "oxygen_saturation_pct": 97,
+    "respiratory_rate_breaths_per_min": 20
+  },
+  "exam": {
+    "mental_status_grade": "alert",
+    "neck_stiffness": true,
+    "kernig_or_brudzinski_positive": true,
+    "focal_neurological_deficit": false,
+    "cranial_nerve_palsy": "none",
+    "skin_lesion_centrofacial_chronic": false,
+    "petechial_or_purpuric_rash": false,
+    "papilledema_on_fundoscopy": false
+  },
+  "labs": {
+    "wbc_blood_per_uL": 14500,
+    "platelets_per_uL": 220000,
+    "alt_ast_U_per_L": 24,
+    "crp_mg_per_L": 88.0,
+    "procalcitonin_ng_per_mL": 2.4,
+    "serum_sodium_mEq_per_L": 137
+  },
+  "csf": {
+    "opening_pressure_cmH2O": 22.0,
+    "csf_wbc_per_mm3": 1500,
+    "csf_neutrophil_pct": 55,
+    "csf_lymphocyte_pct": 45,
+    "csf_eosinophil_pct": 0,
+    "csf_glucose_mg_per_dL": 28,
+    "csf_protein_mg_per_dL": 130,
+    "csf_lactate_mmol_per_L": 4.0,
+    "csf_ada_U_per_L": null,
+    "csf_crag_lfa_result": "negative",
+    "csf_wet_mount_motile_amoebae": "negative",
+    "csf_xanthochromia_present": false,
+    "csf_rbc_per_mm3": 3,
+    "csf_rbc_decreasing_across_tubes": null
+  },
+  "imaging": {
+    "imaging_modality": "ct_noncontrast",
+    "imaging_pattern": "normal",
+    "imaging_finding_count": 0,
+    "imaging_text_summary": "CT head non-contrast: normal at admission. No focal lesion, no hydrocephalus, no midline shift, no mass effect. Pattern consistent with early-stage adult community-acquired bacterial meningitis."
+  },
+  "diagnostic_tests": {
+    "results": [
+      {
+        "test_name": "csf_gram_stain",
+        "result": "gram_positive_bacilli_short",
+        "sensitivity_pct": 30.0,
+        "specificity_pct": 99.0,
+        "citation_pmid_or_doi": "PMID:11873028"
+      },
+      {
+        "test_name": "csf_culture",
+        "result": "listeria_monocytogenes",
+        "sensitivity_pct": 90.0,
+        "specificity_pct": 100.0,
+        "citation_pmid_or_doi": "PMID:11873028"
+      },
+      {
+        "test_name": "blood_culture",
+        "result": "listeria_monocytogenes_positive",
+        "sensitivity_pct": 75.0,
+        "specificity_pct": 99.0,
+        "citation_pmid_or_doi": "PMID:11873028"
+      }
+    ]
+  },
+  "adjudication": {
+    "adjudicator_ids": [
+      "WAVE2-PRE-ADJ-1",
+      "WAVE2-PRE-ADJ-2"
+    ],
+    "cohen_kappa": 0.0,
+    "disagreement_resolution": null,
+    "anchoring_documentation": "stage=pre_adjudication; status=pending_external_review; self_review_disposition=hold_for_revision; self_review_notes=wave 2 vignette anchored to PMID 11873028 (Mylonakis 2002 Medicine); external clinical adjudication pending; classification provisional. adjudicator_ids=WAVE2-PRE-ADJ-1, WAVE2-PRE-ADJ-2 (sentinel); cohen_kappa=0.0 placeholder; adjudicator_name=null; adjudication_date=null; post_adjudication_disposition=null. Subphase 1.3 commit 5.3.4 (2026-05-08). anchor=Mylonakis-Medicine-2002 stratum=pregnancy-foodborne.",
+    "inclusion_decision": "hold_for_revision"
+  },
+  "literature_anchors": [
+    {
+      "anchor_type": "cohort",
+      "pmid": "11873028",
+      "doi": "10.1097/00005792-200203000-00004"
+    }
+  ],
+  "provenance": {
+    "generation_timestamp_utc": "2026-05-08T15:00:00Z",
+    "generator_model_identifier": "scripts.generate_pam_vignettes/v1.subphase_1_3_commit_5_3_4",
+    "prompt_hash_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "schema_version": "2.0",
+    "inclusion_decision_rationale": "Anchored to PMID 11873028 (Mylonakis 2002 Medicine listerial-meningitis review). Demographic anchor (28yo F Tumbes 30-week gestation with unpasteurized-cheese exposure) sits in pregnancy stratum (approximately 27 percent of adult Listeria CNS infection in maternal-fetal cohort). CSF profile within bacterial range with master prompt 1.3.3 floor on neutrophil predominance (55 percent); Listeria classically can present with lower neutrophil dominance but built at floor here. Imputation tiers: tier_1_primary={age, sex, region, csf_culture, pregnancy_status, soft_cheese_exposure}; tier_3_within_cohort={csf_wbc, neutrophil_pct, glucose, protein}; tier_4_priors={temp, gcs, symptom_days}. Indeterminate=none. Diagnostic_ambiguity=false. Outcome=survived_no_sequelae. Tier: tier_3_imputation_within_cohort_review. 5.3.4 wave2 Listeria-Tumbes-pregnancy."
+  },
+  "narrative_es": "Mujer de 28 anos de comunidad costera en Tumbes Peru a las 30 semanas de gestacion, ingresada a urgencias obstetricas terciarias tras cuatro dias de fiebre 38.6 C, cefalea, rigidez de nuca y dolor lumbar leve. Antecedente de consumo reciente de queso fresco no pasteurizado. Examen: temperatura 38.6 C, escala de Glasgow 14, rigidez de nuca, signo de Kernig positivo, sin deficit focal, sin exantema. Liquido cefalorraquideo mostro presion de apertura 22 cmH2O, leucocitos 1,500 por mm3 (55 por ciento neutrofilos), glucosa 28 mg/dL, proteina 130 mg/dL. Tincion de Gram con bacilos grampositivos cortos; cultivos de liquido y sangre crecieron Listeria monocytogenes. Anclaje en revision Mylonakis 2002 Medicine (PMID 11873028, estrato gestante alrededor del 27 por ciento de Listeria SNC en adultos). Subphase 1.3 commit 5.3.4 wave 2.",
+  "narrative_en": "A 28-year-old woman from a Tumbes Peru coastal community at 30 weeks gestation presented to a tertiary obstetric emergency department after a 4-day course of fever to 38.6 C, headache, neck stiffness, and mild back pain. She had recent consumption of unpasteurized soft cheese. Examination on admission: temperature 38.6 C, Glasgow Coma Scale 14, neck stiffness, positive Kernig sign, no focal deficit, no rash. CSF showed opening pressure 22 cmH2O, white cell count 1,500 per cubic millimeter (55 percent neutrophils), glucose 28 mg/dL, protein 130 mg/dL. Gram stain revealed short gram-positive bacilli; CSF and blood cultures grew Listeria monocytogenes. Anchored to Mylonakis 2002 Medicine (PMID 11873028) listerial-meningitis review (pregnancy stratum approximately 27 percent of adult Listeria CNS infection in maternal-fetal cohort). Outcome: maternal survived no sequelae; preterm-but-viable fetus delivered. Subphase 1.3 commit 5.3.4 wave 2, pre-adjudication hold_for_revision."
+}
