@@ -16948,6 +16948,8 @@ def _viral_wave1_case_id(spec: dict[str, Any], pmid_meta: dict[str, Any]) -> str
         "enterovirus": "EV",
         "dengue": "Dengue",
         "EEE": "EEE",
+        "HSV_PCR_negative_72h": "HSV-PCR-neg",
+        "VZV": "VZV",
     }[spec["pathogen"]]
     if spec.get("diagnostic_ambiguity"):
         descriptor_tail = f"{pathogen_descriptor}-Ambiguity"
@@ -17036,6 +17038,33 @@ def _viral_wave1_imaging_for(spec: dict[str, Any]) -> dict[str, Any]:
                 "predilection for basal ganglia and thalamus per Tyler 2018 "
                 "NEJM review (case fatality approximately 30 percent; "
                 "permanent neurologic sequelae in 50 percent of survivors)."
+            ),
+        }
+    if pathogen == "HSV_PCR_negative_72h":
+        return {
+            "imaging_modality": "mri_with_dwi_flair",
+            "imaging_pattern": "mesial_temporal_t2_flair_hyperintensity",
+            "imaging_finding_count": 1,
+            "imaging_text_summary": (
+                "MRI brain with DWI/FLAIR: mesial temporal T2/FLAIR "
+                "hyperintensity asymmetric supporting clinical HSE "
+                "phenotype despite negative initial CSF HSV-1 PCR. "
+                "Granerod 2010 Lancet ID UK encephalitis cohort documented "
+                "PCR-negative HSE cases where MRI and clinical phenotype "
+                "supported continued empiric acyclovir."
+            ),
+        }
+    if pathogen == "VZV":
+        return {
+            "imaging_modality": "mri_with_dwi_flair",
+            "imaging_pattern": "normal",
+            "imaging_finding_count": 0,
+            "imaging_text_summary": (
+                "MRI brain with DWI/FLAIR: normal. VZV reactivation with "
+                "dermatomal rash and CSF lymphocytic pleocytosis can show "
+                "normal parenchymal imaging in the absence of overt "
+                "vasculopathy or cerebellitis; Granerod 2010 Lancet ID "
+                "cohort documented this benign-imaging VZV phenotype."
             ),
         }
     raise KeyError(f"Unhandled VIRAL pathogen for imaging: {pathogen!r}")
@@ -18862,6 +18891,1947 @@ def write_viral_wave1_corpus(
     paths: list[Path] = []
     for vid in VIRAL_WAVE1_IDS:
         paths.append(write_viral_wave1_vignette(vid, output_dir=output_dir))
+    return paths
+
+
+# ============================================================================
+# Subphase 1.3 commit 5.3.6 - Wave 2 VIRAL vignette builders (n=14, FINAL)
+# ----------------------------------------------------------------------------
+# Slot IDs: 91, 93, 94, 95, 97, 98, 100, 101, 103, 104, 110, 112, 115, 116.
+# 9 anchored to Granerod 2010 Lancet Infect Dis (PMID 21088000, anchor_type=
+# cohort, prospective UK encephalitis cohort N=203) + 5 anchored to Whitley
+# 2006 Lancet Infect Dis (PMID 16517432, anchor_type=review, HSE pathogenesis).
+# Pathogens: 8 HSV1 + 2 HSV_PCR_negative_72h (ambiguity) + 2 enterovirus + 2
+# VZV (zoster ophthalmicus immunocompromised + post-zoster encephalitis).
+# Diagnostic ambiguity: 2 of 14 (v103, v104 HSV-PCR-negative-72h with empiric
+# acyclovir continuation despite negative early PCR).
+# Peru-anchored: 0 of 14 (all NL or US South).
+# Architecture: extends Wave 5.3.5 viral helpers via reuse of altitude,
+# ethnicity, case_id (extended for HSV-PCR-neg + VZV pathogens), imaging_for
+# (extended), shared dx_test helpers; adds Wave 5.3.6 specific exposure
+# (v115 immunocompromise via malignancy_active), red_flags (v115
+# immunocompromise), adjudication (VIRAL-WAVE2-PRE-ADJ sentinels, commit
+# 5.3.6), provenance (commit 5.3.6), and pathogen-specific dx_tests for
+# HSV_PCR_negative_72h (PCR neg + EEG temporal lateralization) and VZV (PCR
+# + IgG/IgM serology). This commit closes BACT 30/30 + VIRAL 30/30 = 60/60.
+# ============================================================================
+
+VIRAL_WAVE2_OUTPUT_DIR = Path("data/vignettes/v2/class_03_viral")
+VIRAL_WAVE2_IDS: list[int] = [91, 93, 94, 95, 97, 98, 100, 101, 103, 104, 110, 112, 115, 116]
+VIRAL_WAVE2_AMBIGUITY_IDS: set[int] = {103, 104}
+VIRAL_WAVE2_GRANEROD_IDS: set[int] = {94, 97, 100, 103, 104, 110, 112, 115, 116}
+VIRAL_WAVE2_WHITLEY_IDS: set[int] = {91, 93, 95, 98, 101}
+
+
+def _viral_wave2_exposure(spec: dict[str, Any]) -> dict[str, Any]:
+    """Wave 2 VIRAL exposure block. v115 zoster ophthalmicus immunocompromised
+    sets immunocompromise_status=malignancy_active; others use 'none'."""
+    immune = "none"
+    if spec["vignette_id"] == 115:
+        immune = "malignancy_active"
+    return {
+        "freshwater_exposure_within_14d": False,
+        "freshwater_exposure_type": None,
+        "altitude_exposure_within_7d_m": None,
+        "pork_consumption_or_taenia_contact": False,
+        "mosquito_endemic_area_exposure": False,
+        "immunocompromise_status": immune,
+        "hiv_status": "negative",
+        "cd4_count_cells_per_uL": None,
+    }
+
+
+def _viral_wave2_red_flags(spec: dict[str, Any]) -> list[str]:
+    """Wave 2 VIRAL red flags. v115 immunocompromised gets immunocompromise."""
+    if spec["vignette_id"] == 115:
+        return ["immunocompromise"]
+    return []
+
+
+def _viral_wave2_adjudication(
+    spec: dict[str, Any], anchoring_extras: str
+) -> dict[str, Any]:
+    """Wave 2 VIRAL pre-adjudication block. Sentinel adjudicators
+    VIRAL-WAVE2-PRE-ADJ-1/2 distinguish wave 5.3.6 from wave 5.3.5 + pilot.
+    Embeds verbatim self_review_disposition=hold_for_revision.
+    """
+    pmid = spec["pmid"]
+    if pmid == "21088000":
+        anchor_short = "Granerod 2010 Lancet ID UK encephalitis cohort"
+    elif pmid == "16517432":
+        anchor_short = "Whitley 2006 Lancet ID HSE pathogenesis review"
+    else:
+        raise KeyError(f"Wave 5.3.6 unexpected anchor PMID {pmid!r}")
+    base = (
+        f"stage=pre_adjudication; status=pending_external_review; "
+        f"self_review_disposition=hold_for_revision; "
+        f"self_review_notes=wave 5.3.6 VIRAL vignette anchored to PMID {pmid} "
+        f"({anchor_short}); external clinical adjudication pending; "
+        f"classification provisional. "
+        f"adjudicator_ids=VIRAL-WAVE2-PRE-ADJ-1, VIRAL-WAVE2-PRE-ADJ-2 (sentinel); "
+        f"cohen_kappa=0.0 placeholder; adjudicator_name=null; "
+        f"adjudication_date=null; post_adjudication_disposition=null. "
+        f"Subphase 1.3 commit 5.3.6 (2026-05-08, FINAL Subphase 1.3 wave)."
+    )
+    if anchoring_extras:
+        base = base + " " + anchoring_extras
+    return {
+        "adjudicator_ids": ["VIRAL-WAVE2-PRE-ADJ-1", "VIRAL-WAVE2-PRE-ADJ-2"],
+        "cohen_kappa": 0.0,
+        "disagreement_resolution": None,
+        "anchoring_documentation": base,
+        "inclusion_decision": "hold_for_revision",
+    }
+
+
+def _viral_wave2_provenance(rationale: str) -> dict[str, Any]:
+    if len(rationale) > 1000:
+        rationale = rationale[:997] + "..."
+    return {
+        "generation_timestamp_utc": "2026-05-08T21:00:00Z",
+        "generator_model_identifier": (
+            "scripts.generate_pam_vignettes/v1.subphase_1_3_commit_5_3_6"
+        ),
+        "prompt_hash_sha256": "0" * 64,
+        "schema_version": "2.0",
+        "inclusion_decision_rationale": rationale,
+    }
+
+
+def _viral_wave2_dx_tests_hsv_pcr_negative_72h(pmid: str) -> list[dict[str, Any]]:
+    """HSV1 PCR negative at 72h with empiric acyclovir continuation + EEG
+    temporal lateralization supporting clinical HSE phenotype."""
+    cit = f"PMID:{pmid}"
+    return [
+        {
+            "test_name": "csf_hsv1_pcr",
+            "result": "negative_at_72h",
+            "sensitivity_pct": 95.0,
+            "specificity_pct": 99.0,
+            "citation_pmid_or_doi": cit,
+        },
+        {
+            "test_name": "csf_hsv1_pcr_repeat_at_72h",
+            "result": "negative",
+            "sensitivity_pct": 95.0,
+            "specificity_pct": 99.0,
+            "citation_pmid_or_doi": cit,
+        },
+        {
+            "test_name": "eeg_temporal_lateralization",
+            "result": "left_temporal_periodic_lateralized_epileptiform_discharges",
+            "sensitivity_pct": 70.0,
+            "specificity_pct": 80.0,
+            "citation_pmid_or_doi": cit,
+        },
+        {
+            "test_name": "csf_gram_stain",
+            "result": "no_organisms",
+            "sensitivity_pct": None,
+            "specificity_pct": None,
+            "citation_pmid_or_doi": cit,
+        },
+        {
+            "test_name": "csf_culture",
+            "result": "no_growth",
+            "sensitivity_pct": None,
+            "specificity_pct": None,
+            "citation_pmid_or_doi": cit,
+        },
+    ]
+
+
+def _viral_wave2_dx_tests_vzv(pmid: str) -> list[dict[str, Any]]:
+    """VZV PCR + serology + Tzanck smear of dermatomal vesicle."""
+    cit = f"PMID:{pmid}"
+    return [
+        {
+            "test_name": "csf_vzv_pcr",
+            "result": "positive",
+            "sensitivity_pct": 90.0,
+            "specificity_pct": 99.0,
+            "citation_pmid_or_doi": cit,
+        },
+        {
+            "test_name": "vzv_igm_serology",
+            "result": "positive",
+            "sensitivity_pct": 85.0,
+            "specificity_pct": 95.0,
+            "citation_pmid_or_doi": cit,
+        },
+        {
+            "test_name": "vesicle_swab_tzanck_smear",
+            "result": "multinucleated_giant_cells_seen",
+            "sensitivity_pct": 60.0,
+            "specificity_pct": 90.0,
+            "citation_pmid_or_doi": cit,
+        },
+        {
+            "test_name": "csf_gram_stain",
+            "result": "no_organisms",
+            "sensitivity_pct": None,
+            "specificity_pct": None,
+            "citation_pmid_or_doi": cit,
+        },
+        {
+            "test_name": "csf_culture",
+            "result": "no_growth",
+            "sensitivity_pct": None,
+            "specificity_pct": None,
+            "citation_pmid_or_doi": cit,
+        },
+    ]
+
+
+# ----------------------------------------------------------------------------
+# Wave 2 VIRAL per-slot clinical builders.
+# ----------------------------------------------------------------------------
+
+
+def _build_viral_vignette_091() -> dict[str, Any]:
+    """v91 HSV1 8F US South late survived_with_sequelae (Whitley HSE review)."""
+    return {
+        "history": {
+            "symptom_onset_to_presentation_days": 6.0,
+            "chief_complaint": "altered_mental_status",
+            "prodrome_description": (
+                "8-year-old female, US South region. 6-day course: low-grade "
+                "fever 38.4 C, headache, then progressive behavioral change "
+                "day 3, expressive aphasia day 4, complex partial seizures "
+                "day 5, obtundation day 6 prompting tertiary pediatric ED. "
+                "No neck stiffness. No freshwater. Acyclovir hour 4. Outcome: "
+                "survived with moderate cognitive sequelae per Whitley HSE "
+                "pediatric-residual-deficit pattern."
+            ),
+            "red_flags_present": [],
+        },
+        "vitals": {
+            "temperature_celsius": 38.4,
+            "heart_rate_bpm": 122,
+            "systolic_bp_mmHg": 100,
+            "diastolic_bp_mmHg": 60,
+            "glasgow_coma_scale": 9,
+            "oxygen_saturation_pct": 96,
+            "respiratory_rate_breaths_per_min": 22,
+        },
+        "exam": {
+            "mental_status_grade": "stuporous",
+            "neck_stiffness": False,
+            "kernig_or_brudzinski_positive": False,
+            "focal_neurological_deficit": True,
+            "cranial_nerve_palsy": "none",
+            "skin_lesion_centrofacial_chronic": False,
+            "petechial_or_purpuric_rash": False,
+            "papilledema_on_fundoscopy": False,
+        },
+        "labs": {
+            "wbc_blood_per_uL": 9200,
+            "platelets_per_uL": 285000,
+            "alt_ast_U_per_L": 24,
+            "crp_mg_per_L": 22.0,
+            "procalcitonin_ng_per_mL": 0.4,
+            "serum_sodium_mEq_per_L": 137,
+        },
+        "csf": {
+            "opening_pressure_cmH2O": 24.0,
+            "csf_wbc_per_mm3": 240,
+            "csf_neutrophil_pct": 25,
+            "csf_lymphocyte_pct": 75,
+            "csf_eosinophil_pct": 0,
+            "csf_glucose_mg_per_dL": 52,
+            "csf_protein_mg_per_dL": 130,
+            "csf_lactate_mmol_per_L": 2.6,
+            "csf_ada_U_per_L": None,
+            "csf_crag_lfa_result": "negative",
+            "csf_wet_mount_motile_amoebae": "negative",
+            "csf_xanthochromia_present": True,
+            "csf_rbc_per_mm3": 38,
+            "csf_rbc_decreasing_across_tubes": False,
+        },
+        "narrative_en": (
+            "An 8-year-old girl in the US South region presented to a "
+            "tertiary pediatric emergency department with a 6-day course: "
+            "low-grade fever to 38.4 C, headache, progressive behavioral "
+            "change on day 3, expressive aphasia on day 4, complex "
+            "partial seizures on day 5, and obtundation on day 6. She "
+            "had no neck stiffness on examination and no antecedent "
+            "freshwater exposure. Examination on admission: temperature "
+            "38.4 C, Glasgow Coma Scale 9, focal deficit (expressive "
+            "aphasia), no rash. CSF showed opening pressure 24 cmH2O, "
+            "white cell count 240 per cubic millimeter (75 percent "
+            "lymphocytes), glucose 52 mg/dL, protein 130 mg/dL, RBC 38 "
+            "with xanthochromia (canonical hemorrhagic component). CSF "
+            "HSV-1 PCR positive. Brain MRI with DWI/FLAIR showed mesial "
+            "temporal T2/FLAIR hyperintensity asymmetric. Acyclovir "
+            "initiated within four hours. Anchored to Whitley 2006 "
+            "Lancet Infect Dis HSE pathogenesis review (PMID 16517432). "
+            "Outcome: survived with moderate cognitive sequelae. Subphase "
+            "1.3 commit 5.3.6 wave 2, pre-adjudication hold_for_revision."
+        ),
+        "narrative_es": (
+            "Nina de 8 anos en region sur de Estados Unidos, ingresada a "
+            "urgencias pediatricas terciarias con curso de seis dias: "
+            "febricula 38.4 C, cefalea, cambio conductual progresivo al "
+            "tercer dia, afasia expresiva al cuarto dia, crisis parciales "
+            "complejas al quinto y obnubilacion al sexto. Sin rigidez de "
+            "nuca al examen. Sin exposicion a agua dulce. Examen: "
+            "temperatura 38.4 C, escala de Glasgow 9, deficit focal "
+            "(afasia expresiva), sin exantema. Liquido cefalorraquideo "
+            "mostro presion de apertura 24 cmH2O, leucocitos 240 por mm3 "
+            "(75 por ciento linfocitos), glucosa 52 mg/dL, proteina 130 "
+            "mg/dL, eritrocitos 38 con xantocromia. PCR de HSV-1 positiva. "
+            "RM cerebral con hiperintensidad temporal mesial T2/FLAIR. "
+            "Aciclovir en cuatro horas. Anclaje en revision Whitley 2006 "
+            "Lancet ID HSE (PMID 16517432). Subphase 1.3 commit 5.3.6 "
+            "wave 2, pre-adjudicacion hold_for_revision."
+        ),
+        "rationale": (
+            "Anchored to PMID 16517432 (Whitley 2006 Lancet ID HSE "
+            "pathogenesis review). Pediatric HSE phenotype with classic "
+            "limbic-frontal extension and late-presentation obtundation. "
+            "Demographic anchor (8yo F US South pediatric HSE) sits in "
+            "Whitley's pediatric-HSE-residual-deficit stratum. CSF "
+            "lymphocytic with hemorrhagic component (RBC 38, "
+            "xanthochromia). MRI mesial temporal pattern. Imputation "
+            "tiers: tier_1_primary={age, sex, hsv1_pcr, imaging_pattern, "
+            "focal_aphasia, behavioral_change}; tier_3_within_review="
+            "{csf_wbc, neutrophil_pct, glucose, protein, rbc, "
+            "xanthochromia, gcs}; tier_4_priors={temp, symptom_days}. "
+            "Indeterminate=none. Diagnostic_ambiguity=false. Outcome="
+            "survived_moderate_cognitive_sequelae. Acyclovir_hours=4. "
+            "Tier: tier_3_imputation_within_review. 5.3.6 wave2 HSV1-"
+            "Whitley-pediatric-sequelae."
+        ),
+        "anchoring_extras": "anchor=Whitley-Lancet-ID-2006 stratum=pediatric-HSE-sequelae.",
+        "diagnostic_tests": _viral_wave1_dx_tests_hsv1_pcr("16517432"),
+    }
+
+
+def _build_viral_vignette_093() -> dict[str, Any]:
+    """v93 HSV1 67F NL late fatal (Whitley HSE review)."""
+    return {
+        "history": {
+            "symptom_onset_to_presentation_days": 7.0,
+            "chief_complaint": "altered_mental_status",
+            "prodrome_description": (
+                "67-year-old female, Netherlands. 7-day course: low-grade "
+                "fever 38.3 C, headache, behavioral change with confusion "
+                "day 2, anomic aphasia day 4, focal seizures day 5, "
+                "progressive obtundation day 6, coma day 7. Tertiary ED "
+                "Amsterdam. No freshwater. Acyclovir hour 12 (delayed by "
+                "atypical presentation). Outcome: fatal hospital day 5 per "
+                "Whitley HSE elderly-mortality data."
+            ),
+            "red_flags_present": [],
+        },
+        "vitals": {
+            "temperature_celsius": 38.3,
+            "heart_rate_bpm": 110,
+            "systolic_bp_mmHg": 102,
+            "diastolic_bp_mmHg": 64,
+            "glasgow_coma_scale": 5,
+            "oxygen_saturation_pct": 88,
+            "respiratory_rate_breaths_per_min": 26,
+        },
+        "exam": {
+            "mental_status_grade": "comatose",
+            "neck_stiffness": False,
+            "kernig_or_brudzinski_positive": False,
+            "focal_neurological_deficit": True,
+            "cranial_nerve_palsy": "none",
+            "skin_lesion_centrofacial_chronic": False,
+            "petechial_or_purpuric_rash": False,
+            "papilledema_on_fundoscopy": False,
+        },
+        "labs": {
+            "wbc_blood_per_uL": 8800,
+            "platelets_per_uL": 215000,
+            "alt_ast_U_per_L": 32,
+            "crp_mg_per_L": 28.0,
+            "procalcitonin_ng_per_mL": 0.5,
+            "serum_sodium_mEq_per_L": 132,
+        },
+        "csf": {
+            "opening_pressure_cmH2O": 26.0,
+            "csf_wbc_per_mm3": 280,
+            "csf_neutrophil_pct": 28,
+            "csf_lymphocyte_pct": 72,
+            "csf_eosinophil_pct": 0,
+            "csf_glucose_mg_per_dL": 50,
+            "csf_protein_mg_per_dL": 145,
+            "csf_lactate_mmol_per_L": 2.8,
+            "csf_ada_U_per_L": None,
+            "csf_crag_lfa_result": "negative",
+            "csf_wet_mount_motile_amoebae": "negative",
+            "csf_xanthochromia_present": True,
+            "csf_rbc_per_mm3": 50,
+            "csf_rbc_decreasing_across_tubes": False,
+        },
+        "narrative_en": (
+            "A 67-year-old woman in the Netherlands presented to a "
+            "tertiary emergency department in Amsterdam after a 7-day "
+            "course: low-grade fever to 38.3 C, headache, behavioral "
+            "change on day 2, anomic aphasia on day 4, focal seizures "
+            "on day 5, and progressive obtundation to coma by day 7. "
+            "Examination on admission: temperature 38.3 C, Glasgow Coma "
+            "Scale 5, comatose, focal deficit (anomic aphasia, residual "
+            "right-sided posturing), no rash. CSF showed opening "
+            "pressure 26 cmH2O, white cell count 280 per cubic "
+            "millimeter (72 percent lymphocytes), glucose 50 mg/dL, "
+            "protein 145 mg/dL, RBC 50 with xanthochromia (canonical "
+            "hemorrhagic component). CSF HSV-1 PCR positive. Brain MRI "
+            "with DWI/FLAIR showed mesial temporal T2/FLAIR "
+            "hyperintensity bilateral. Acyclovir initiated at hour 12 "
+            "(delayed by atypical presentation). Anchored to Whitley "
+            "2006 Lancet Infect Dis HSE pathogenesis review (PMID "
+            "16517432). Outcome: fatal hospital day 5 per Whitley HSE "
+            "elderly-mortality data. Subphase 1.3 commit 5.3.6 wave 2, "
+            "pre-adjudication hold_for_revision."
+        ),
+        "narrative_es": (
+            "Mujer de 67 anos en Paises Bajos (Amsterdam), ingresada a "
+            "urgencias terciarias tras curso de siete dias: febricula "
+            "38.3 C, cefalea, cambio conductual al segundo dia, afasia "
+            "anomica al cuarto, crisis focales al quinto, obnubilacion "
+            "progresiva con coma al septimo. Examen: temperatura 38.3 "
+            "C, escala de Glasgow 5, comatosa, deficit focal (afasia "
+            "anomica, postura derecha residual), sin exantema. Liquido "
+            "cefalorraquideo mostro presion de apertura 26 cmH2O, "
+            "leucocitos 280 por mm3 (72 por ciento linfocitos), glucosa "
+            "50 mg/dL, proteina 145 mg/dL, eritrocitos 50 con "
+            "xantocromia. PCR de HSV-1 positiva. RM cerebral con "
+            "hiperintensidad temporal mesial T2/FLAIR bilateral. "
+            "Aciclovir en hora 12 (retraso por presentacion atipica). "
+            "Anclaje en revision Whitley 2006 Lancet ID HSE (PMID "
+            "16517432). Subphase 1.3 commit 5.3.6 wave 2."
+        ),
+        "rationale": (
+            "Anchored to PMID 16517432 (Whitley 2006 Lancet ID HSE "
+            "pathogenesis review). Elderly HSE with delayed-acyclovir "
+            "fatal outcome per Whitley elderly-mortality stratum. "
+            "Demographic anchor (67yo F NL elderly HSE delayed-treatment) "
+            "sits in elderly-fatal-HSE stratum. CSF lymphocytic with "
+            "prominent hemorrhagic component (RBC 50, xanthochromia). "
+            "MRI bilateral mesial temporal. Imputation tiers: tier_1_"
+            "primary={age, sex, hsv1_pcr, imaging_pattern, focal_aphasia, "
+            "delayed_acyclovir}; tier_3_within_review={csf_wbc, "
+            "neutrophil_pct, glucose, protein, rbc, xanthochromia, gcs}; "
+            "tier_4_priors={temp, symptom_days, hyponatremia}. "
+            "Indeterminate=none. Diagnostic_ambiguity=false. Outcome="
+            "fatal_hospital_day_5. Acyclovir_hours=12. Tier: tier_3_"
+            "imputation_within_review. 5.3.6 wave2 HSV1-Whitley-elderly-"
+            "fatal."
+        ),
+        "anchoring_extras": "anchor=Whitley-Lancet-ID-2006 stratum=elderly-fatal-delayed-treatment.",
+        "diagnostic_tests": _viral_wave1_dx_tests_hsv1_pcr("16517432"),
+    }
+
+
+def _build_viral_vignette_094() -> dict[str, Any]:
+    """v94 HSV1 23F NL mid survived (Granerod cohort)."""
+    return {
+        "history": {
+            "symptom_onset_to_presentation_days": 4.0,
+            "chief_complaint": "altered_mental_status",
+            "prodrome_description": (
+                "23-year-old female, Netherlands. 4-day course: fever 38.6 "
+                "C, severe headache, behavioral change day 2, expressive "
+                "aphasia day 3, focal seizure day 4 prompting tertiary ED "
+                "Amsterdam. No neck stiffness. No freshwater. Acyclovir "
+                "hour 4. Outcome: survived with mild memory deficit per "
+                "Granerod cohort residual-deficit rate."
+            ),
+            "red_flags_present": [],
+        },
+        "vitals": {
+            "temperature_celsius": 38.6,
+            "heart_rate_bpm": 100,
+            "systolic_bp_mmHg": 116,
+            "diastolic_bp_mmHg": 70,
+            "glasgow_coma_scale": 12,
+            "oxygen_saturation_pct": 97,
+            "respiratory_rate_breaths_per_min": 18,
+        },
+        "exam": {
+            "mental_status_grade": "confused",
+            "neck_stiffness": False,
+            "kernig_or_brudzinski_positive": False,
+            "focal_neurological_deficit": True,
+            "cranial_nerve_palsy": "none",
+            "skin_lesion_centrofacial_chronic": False,
+            "petechial_or_purpuric_rash": False,
+            "papilledema_on_fundoscopy": False,
+        },
+        "labs": {
+            "wbc_blood_per_uL": 8400,
+            "platelets_per_uL": 250000,
+            "alt_ast_U_per_L": 26,
+            "crp_mg_per_L": 18.0,
+            "procalcitonin_ng_per_mL": 0.3,
+            "serum_sodium_mEq_per_L": 138,
+        },
+        "csf": {
+            "opening_pressure_cmH2O": 22.0,
+            "csf_wbc_per_mm3": 200,
+            "csf_neutrophil_pct": 22,
+            "csf_lymphocyte_pct": 78,
+            "csf_eosinophil_pct": 0,
+            "csf_glucose_mg_per_dL": 56,
+            "csf_protein_mg_per_dL": 110,
+            "csf_lactate_mmol_per_L": 2.4,
+            "csf_ada_U_per_L": None,
+            "csf_crag_lfa_result": "negative",
+            "csf_wet_mount_motile_amoebae": "negative",
+            "csf_xanthochromia_present": True,
+            "csf_rbc_per_mm3": 30,
+            "csf_rbc_decreasing_across_tubes": False,
+        },
+        "narrative_en": (
+            "A 23-year-old woman in the Netherlands presented to a "
+            "tertiary emergency department in Amsterdam with a 4-day "
+            "course: fever to 38.6 C, severe headache, behavioral "
+            "change on day 2, expressive aphasia on day 3, and a focal "
+            "seizure on day 4 prompting ED presentation. She had no "
+            "neck stiffness and no antecedent freshwater exposure. "
+            "Examination on admission: temperature 38.6 C, Glasgow Coma "
+            "Scale 12, focal deficit (expressive aphasia), no rash. "
+            "CSF showed opening pressure 22 cmH2O, white cell count "
+            "200 per cubic millimeter (78 percent lymphocytes), glucose "
+            "56 mg/dL, protein 110 mg/dL, RBC 30 with xanthochromia. "
+            "CSF HSV-1 PCR positive. Brain MRI with DWI/FLAIR showed "
+            "mesial temporal T2/FLAIR hyperintensity asymmetric. "
+            "Acyclovir initiated within four hours. Anchored to "
+            "Granerod 2010 Lancet Infect Dis prospective UK encephalitis "
+            "cohort (PMID 21088000, N=203 with 42 percent infectious "
+            "encephalitis cause-attribution). Outcome: survived with "
+            "mild memory deficit. Subphase 1.3 commit 5.3.6 wave 2, "
+            "pre-adjudication hold_for_revision."
+        ),
+        "narrative_es": (
+            "Mujer de 23 anos en Paises Bajos (Amsterdam), ingresada a "
+            "urgencias terciarias con curso de cuatro dias: fiebre 38.6 "
+            "C, cefalea intensa, cambio conductual al segundo dia, "
+            "afasia expresiva al tercer dia y crisis focal al cuarto. "
+            "Sin rigidez de nuca. Sin exposicion a agua dulce. Examen: "
+            "temperatura 38.6 C, escala de Glasgow 12, deficit focal "
+            "(afasia expresiva), sin exantema. Liquido cefalorraquideo "
+            "mostro presion de apertura 22 cmH2O, leucocitos 200 por mm3 "
+            "(78 por ciento linfocitos), glucosa 56 mg/dL, proteina 110 "
+            "mg/dL, eritrocitos 30 con xantocromia. PCR de HSV-1 "
+            "positiva. RM cerebral con hiperintensidad temporal mesial "
+            "T2/FLAIR. Aciclovir en cuatro horas. Anclaje en cohorte "
+            "prospectiva Granerod 2010 Lancet ID encefalitis Reino Unido "
+            "(PMID 21088000). Subphase 1.3 commit 5.3.6 wave 2."
+        ),
+        "rationale": (
+            "Anchored to PMID 21088000 (Granerod 2010 Lancet Infect Dis), "
+            "203-patient prospective UK encephalitis cohort with HSV1 "
+            "as the most common identified cause (19 percent of cohort). "
+            "Demographic anchor (23yo F NL young-adult HSE) sits in "
+            "Granerod young-adult-HSE stratum. CSF lymphocytic with "
+            "hemorrhagic component. MRI mesial temporal pattern. "
+            "Imputation tiers: tier_1_primary={age, sex, hsv1_pcr, "
+            "imaging_pattern, focal_aphasia}; tier_3_within_review="
+            "{csf_wbc, neutrophil_pct, glucose, protein, rbc, "
+            "xanthochromia, gcs}; tier_4_priors={temp, symptom_days}. "
+            "Indeterminate=none. Diagnostic_ambiguity=false. Outcome="
+            "survived_mild_memory_deficit. Acyclovir_hours=4. Tier: "
+            "tier_3_imputation_within_review. 5.3.6 wave2 HSV1-Granerod-"
+            "young-adult."
+        ),
+        "anchoring_extras": "anchor=Granerod-Lancet-ID-2010 stratum=young-adult-HSE.",
+        "diagnostic_tests": _viral_wave1_dx_tests_hsv1_pcr("21088000"),
+    }
+
+
+def _build_viral_vignette_095() -> dict[str, Any]:
+    """v95 HSV1 14M US South mid survived (Whitley HSE review)."""
+    return {
+        "history": {
+            "symptom_onset_to_presentation_days": 4.0,
+            "chief_complaint": "behavioral_change",
+            "prodrome_description": (
+                "14-year-old male, US South region. 4-day course: fever "
+                "38.5 C, headache, then progressive behavioral change "
+                "with personality alteration day 2, anomic aphasia day "
+                "3, complex partial seizure day 4 prompting tertiary "
+                "pediatric ED. No neck stiffness. No freshwater. "
+                "Acyclovir hour 5. Outcome: survived with mild memory "
+                "deficit."
+            ),
+            "red_flags_present": [],
+        },
+        "vitals": {
+            "temperature_celsius": 38.5,
+            "heart_rate_bpm": 96,
+            "systolic_bp_mmHg": 118,
+            "diastolic_bp_mmHg": 72,
+            "glasgow_coma_scale": 12,
+            "oxygen_saturation_pct": 97,
+            "respiratory_rate_breaths_per_min": 18,
+        },
+        "exam": {
+            "mental_status_grade": "confused",
+            "neck_stiffness": False,
+            "kernig_or_brudzinski_positive": False,
+            "focal_neurological_deficit": True,
+            "cranial_nerve_palsy": "none",
+            "skin_lesion_centrofacial_chronic": False,
+            "petechial_or_purpuric_rash": False,
+            "papilledema_on_fundoscopy": False,
+        },
+        "labs": {
+            "wbc_blood_per_uL": 8800,
+            "platelets_per_uL": 270000,
+            "alt_ast_U_per_L": 24,
+            "crp_mg_per_L": 18.0,
+            "procalcitonin_ng_per_mL": 0.4,
+            "serum_sodium_mEq_per_L": 138,
+        },
+        "csf": {
+            "opening_pressure_cmH2O": 22.0,
+            "csf_wbc_per_mm3": 195,
+            "csf_neutrophil_pct": 22,
+            "csf_lymphocyte_pct": 78,
+            "csf_eosinophil_pct": 0,
+            "csf_glucose_mg_per_dL": 55,
+            "csf_protein_mg_per_dL": 105,
+            "csf_lactate_mmol_per_L": 2.4,
+            "csf_ada_U_per_L": None,
+            "csf_crag_lfa_result": "negative",
+            "csf_wet_mount_motile_amoebae": "negative",
+            "csf_xanthochromia_present": True,
+            "csf_rbc_per_mm3": 28,
+            "csf_rbc_decreasing_across_tubes": False,
+        },
+        "narrative_en": (
+            "A 14-year-old boy in the US South region presented to a "
+            "tertiary pediatric emergency department with a 4-day "
+            "course: fever to 38.5 C, headache, then progressive "
+            "behavioral change with personality alteration on day 2, "
+            "anomic aphasia on day 3, and a complex partial seizure on "
+            "day 4. He had no neck stiffness and no antecedent "
+            "freshwater exposure. Examination on admission: temperature "
+            "38.5 C, Glasgow Coma Scale 12, focal deficit (anomic "
+            "aphasia), no rash. CSF showed opening pressure 22 cmH2O, "
+            "white cell count 195 per cubic millimeter (78 percent "
+            "lymphocytes), glucose 55 mg/dL, protein 105 mg/dL, RBC "
+            "28 with xanthochromia. CSF HSV-1 PCR positive. Brain MRI "
+            "with DWI/FLAIR showed mesial temporal T2/FLAIR "
+            "hyperintensity asymmetric. Acyclovir initiated within "
+            "five hours. Anchored to Whitley 2006 Lancet Infect Dis "
+            "HSE pathogenesis review (PMID 16517432), adolescent-HSE "
+            "stratum. Outcome: survived with mild memory deficit. "
+            "Subphase 1.3 commit 5.3.6 wave 2, pre-adjudication "
+            "hold_for_revision."
+        ),
+        "narrative_es": (
+            "Varon de 14 anos en region sur de Estados Unidos, ingresado "
+            "a urgencias pediatricas terciarias con curso de cuatro "
+            "dias: fiebre 38.5 C, cefalea, cambio conductual con "
+            "alteracion de personalidad al segundo dia, afasia anomica "
+            "al tercer dia y crisis parcial compleja al cuarto. Sin "
+            "rigidez de nuca. Sin exposicion a agua dulce. Examen: "
+            "temperatura 38.5 C, escala de Glasgow 12, deficit focal "
+            "(afasia anomica), sin exantema. Liquido cefalorraquideo "
+            "mostro presion de apertura 22 cmH2O, leucocitos 195 por "
+            "mm3 (78 por ciento linfocitos), glucosa 55 mg/dL, proteina "
+            "105 mg/dL, eritrocitos 28 con xantocromia. PCR de HSV-1 "
+            "positiva. RM cerebral con hiperintensidad temporal mesial "
+            "T2/FLAIR. Aciclovir en cinco horas. Anclaje en revision "
+            "Whitley 2006 Lancet ID HSE (PMID 16517432). Subphase 1.3 "
+            "commit 5.3.6 wave 2."
+        ),
+        "rationale": (
+            "Anchored to PMID 16517432 (Whitley 2006 Lancet ID HSE "
+            "pathogenesis review). Adolescent HSE phenotype with classic "
+            "limbic-frontal pattern. Demographic anchor (14yo M US "
+            "South adolescent HSE) sits in Whitley adolescent-HSE "
+            "stratum. CSF lymphocytic with hemorrhagic component. MRI "
+            "mesial temporal. Imputation tiers: tier_1_primary={age, "
+            "sex, hsv1_pcr, imaging_pattern, focal_aphasia, behavioral_"
+            "change}; tier_3_within_review={csf_wbc, neutrophil_pct, "
+            "glucose, protein, rbc, xanthochromia, gcs}; tier_4_priors="
+            "{temp, symptom_days}. Indeterminate=none. Diagnostic_"
+            "ambiguity=false. Outcome=survived_mild_memory_deficit. "
+            "Acyclovir_hours=5. Tier: tier_3_imputation_within_review. "
+            "5.3.6 wave2 HSV1-Whitley-adolescent."
+        ),
+        "anchoring_extras": "anchor=Whitley-Lancet-ID-2006 stratum=adolescent-HSE.",
+        "diagnostic_tests": _viral_wave1_dx_tests_hsv1_pcr("16517432"),
+    }
+
+
+def _build_viral_vignette_097() -> dict[str, Any]:
+    """v97 HSV1 78M NL late fatal (Granerod cohort)."""
+    return {
+        "history": {
+            "symptom_onset_to_presentation_days": 6.0,
+            "chief_complaint": "altered_mental_status",
+            "prodrome_description": (
+                "78-year-old male, Netherlands. 6-day course: low-grade "
+                "fever 38.2 C, headache, then progressive behavioral "
+                "change day 2, anomic aphasia day 3, focal seizures day "
+                "4, obtundation day 5, coma day 6. Tertiary ED Amsterdam. "
+                "No freshwater. Acyclovir hour 8 (delayed by atypical "
+                "elderly presentation). Outcome: fatal hospital day 4 per "
+                "Granerod cohort elderly-mortality data."
+            ),
+            "red_flags_present": [],
+        },
+        "vitals": {
+            "temperature_celsius": 38.2,
+            "heart_rate_bpm": 116,
+            "systolic_bp_mmHg": 100,
+            "diastolic_bp_mmHg": 60,
+            "glasgow_coma_scale": 6,
+            "oxygen_saturation_pct": 89,
+            "respiratory_rate_breaths_per_min": 26,
+        },
+        "exam": {
+            "mental_status_grade": "comatose",
+            "neck_stiffness": False,
+            "kernig_or_brudzinski_positive": False,
+            "focal_neurological_deficit": True,
+            "cranial_nerve_palsy": "none",
+            "skin_lesion_centrofacial_chronic": False,
+            "petechial_or_purpuric_rash": False,
+            "papilledema_on_fundoscopy": False,
+        },
+        "labs": {
+            "wbc_blood_per_uL": 9100,
+            "platelets_per_uL": 195000,
+            "alt_ast_U_per_L": 32,
+            "crp_mg_per_L": 26.0,
+            "procalcitonin_ng_per_mL": 0.5,
+            "serum_sodium_mEq_per_L": 130,
+        },
+        "csf": {
+            "opening_pressure_cmH2O": 28.0,
+            "csf_wbc_per_mm3": 320,
+            "csf_neutrophil_pct": 30,
+            "csf_lymphocyte_pct": 70,
+            "csf_eosinophil_pct": 0,
+            "csf_glucose_mg_per_dL": 48,
+            "csf_protein_mg_per_dL": 160,
+            "csf_lactate_mmol_per_L": 3.0,
+            "csf_ada_U_per_L": None,
+            "csf_crag_lfa_result": "negative",
+            "csf_wet_mount_motile_amoebae": "negative",
+            "csf_xanthochromia_present": True,
+            "csf_rbc_per_mm3": 60,
+            "csf_rbc_decreasing_across_tubes": False,
+        },
+        "narrative_en": (
+            "A 78-year-old man in the Netherlands presented to a "
+            "tertiary emergency department in Amsterdam after a 6-day "
+            "course: low-grade fever to 38.2 C, headache, behavioral "
+            "change on day 2, anomic aphasia on day 3, focal seizures "
+            "on day 4, obtundation on day 5, and coma on day 6. He "
+            "had no neck stiffness and no antecedent freshwater "
+            "exposure. Examination on admission: temperature 38.2 C, "
+            "Glasgow Coma Scale 6, comatose, focal deficit (anomic "
+            "aphasia residual + right-sided posturing), no rash. CSF "
+            "showed opening pressure 28 cmH2O, white cell count 320 "
+            "per cubic millimeter (70 percent lymphocytes), glucose 48 "
+            "mg/dL, protein 160 mg/dL, RBC 60 with xanthochromia "
+            "(prominent hemorrhagic component). CSF HSV-1 PCR positive. "
+            "Brain MRI with DWI/FLAIR showed mesial temporal T2/FLAIR "
+            "hyperintensity bilateral. Acyclovir initiated at hour 8 "
+            "(delayed). Anchored to Granerod 2010 Lancet Infect Dis UK "
+            "encephalitis cohort (PMID 21088000), elderly-HSE-mortality "
+            "stratum. Outcome: fatal hospital day 4. Subphase 1.3 commit "
+            "5.3.6 wave 2, pre-adjudication hold_for_revision."
+        ),
+        "narrative_es": (
+            "Varon de 78 anos en Paises Bajos (Amsterdam), ingresado a "
+            "urgencias terciarias tras curso de seis dias: febricula "
+            "38.2 C, cefalea, cambio conductual al segundo dia, afasia "
+            "anomica al tercer, crisis focales al cuarto, obnubilacion "
+            "al quinto y coma al sexto. Sin rigidez de nuca. Examen: "
+            "temperatura 38.2 C, escala de Glasgow 6, comatoso, deficit "
+            "focal (afasia anomica residual, postura derecha), sin "
+            "exantema. Liquido cefalorraquideo mostro presion de "
+            "apertura 28 cmH2O, leucocitos 320 por mm3 (70 por ciento "
+            "linfocitos), glucosa 48 mg/dL, proteina 160 mg/dL, "
+            "eritrocitos 60 con xantocromia. PCR de HSV-1 positiva. "
+            "RM cerebral con hiperintensidad temporal mesial T2/FLAIR "
+            "bilateral. Aciclovir en hora 8 (retraso). Anclaje en "
+            "cohorte Granerod 2010 Lancet ID (PMID 21088000), estrato "
+            "HSE adulto mayor. Resultado: fatal en hospital dia 4. "
+            "Subphase 1.3 commit 5.3.6 wave 2."
+        ),
+        "rationale": (
+            "Anchored to PMID 21088000 (Granerod 2010 Lancet ID UK "
+            "encephalitis cohort). Elderly HSE with delayed-acyclovir "
+            "fatal outcome. Demographic anchor (78yo M NL elderly HSE "
+            "delayed-treatment) sits in elderly-fatal-HSE stratum. CSF "
+            "lymphocytic with prominent hemorrhagic component. MRI "
+            "bilateral mesial temporal. Imputation tiers: tier_1_"
+            "primary={age, sex, hsv1_pcr, imaging_pattern, focal_aphasia, "
+            "delayed_acyclovir}; tier_3_within_review={csf_wbc, "
+            "neutrophil_pct, glucose, protein, rbc, xanthochromia, gcs, "
+            "hyponatremia}; tier_4_priors={temp, symptom_days}. "
+            "Indeterminate=none. Diagnostic_ambiguity=false. Outcome="
+            "fatal_hospital_day_4. Acyclovir_hours=8. Tier: tier_3_"
+            "imputation_within_review. 5.3.6 wave2 HSV1-Granerod-elderly-"
+            "fatal."
+        ),
+        "anchoring_extras": "anchor=Granerod-Lancet-ID-2010 stratum=elderly-fatal-HSE.",
+        "diagnostic_tests": _viral_wave1_dx_tests_hsv1_pcr("21088000"),
+    }
+
+
+def _build_viral_vignette_098() -> dict[str, Any]:
+    """v98 HSV1 9F US South mid survived (Whitley HSE review)."""
+    return {
+        "history": {
+            "symptom_onset_to_presentation_days": 4.0,
+            "chief_complaint": "altered_mental_status",
+            "prodrome_description": (
+                "9-year-old female, US South region. 4-day course: fever "
+                "38.6 C, headache, then irritability and behavioral change "
+                "day 2, expressive aphasia day 3, complex partial seizure "
+                "day 4 prompting tertiary pediatric ED. No neck stiffness. "
+                "No freshwater. Acyclovir hour 4. Outcome: survived with "
+                "mild cognitive sequelae per Whitley pediatric-HSE pattern."
+            ),
+            "red_flags_present": [],
+        },
+        "vitals": {
+            "temperature_celsius": 38.6,
+            "heart_rate_bpm": 110,
+            "systolic_bp_mmHg": 102,
+            "diastolic_bp_mmHg": 64,
+            "glasgow_coma_scale": 12,
+            "oxygen_saturation_pct": 97,
+            "respiratory_rate_breaths_per_min": 22,
+        },
+        "exam": {
+            "mental_status_grade": "confused",
+            "neck_stiffness": False,
+            "kernig_or_brudzinski_positive": False,
+            "focal_neurological_deficit": True,
+            "cranial_nerve_palsy": "none",
+            "skin_lesion_centrofacial_chronic": False,
+            "petechial_or_purpuric_rash": False,
+            "papilledema_on_fundoscopy": False,
+        },
+        "labs": {
+            "wbc_blood_per_uL": 8600,
+            "platelets_per_uL": 295000,
+            "alt_ast_U_per_L": 24,
+            "crp_mg_per_L": 16.0,
+            "procalcitonin_ng_per_mL": 0.3,
+            "serum_sodium_mEq_per_L": 138,
+        },
+        "csf": {
+            "opening_pressure_cmH2O": 22.0,
+            "csf_wbc_per_mm3": 210,
+            "csf_neutrophil_pct": 22,
+            "csf_lymphocyte_pct": 78,
+            "csf_eosinophil_pct": 0,
+            "csf_glucose_mg_per_dL": 56,
+            "csf_protein_mg_per_dL": 105,
+            "csf_lactate_mmol_per_L": 2.4,
+            "csf_ada_U_per_L": None,
+            "csf_crag_lfa_result": "negative",
+            "csf_wet_mount_motile_amoebae": "negative",
+            "csf_xanthochromia_present": True,
+            "csf_rbc_per_mm3": 30,
+            "csf_rbc_decreasing_across_tubes": False,
+        },
+        "narrative_en": (
+            "A 9-year-old girl in the US South region presented to a "
+            "tertiary pediatric emergency department with a 4-day "
+            "course: fever to 38.6 C, headache, then irritability and "
+            "behavioral change on day 2, expressive aphasia on day 3, "
+            "and a complex partial seizure on day 4. She had no neck "
+            "stiffness and no antecedent freshwater exposure. "
+            "Examination on admission: temperature 38.6 C, Glasgow Coma "
+            "Scale 12, focal deficit (expressive aphasia), no rash. "
+            "CSF showed opening pressure 22 cmH2O, white cell count "
+            "210 per cubic millimeter (78 percent lymphocytes), glucose "
+            "56 mg/dL, protein 105 mg/dL, RBC 30 with xanthochromia. "
+            "CSF HSV-1 PCR positive. Brain MRI with DWI/FLAIR showed "
+            "mesial temporal T2/FLAIR hyperintensity asymmetric. "
+            "Acyclovir initiated within four hours. Anchored to Whitley "
+            "2006 Lancet Infect Dis HSE pathogenesis review (PMID "
+            "16517432), pediatric-HSE stratum. Outcome: survived with "
+            "mild cognitive sequelae. Subphase 1.3 commit 5.3.6 wave 2, "
+            "pre-adjudication hold_for_revision."
+        ),
+        "narrative_es": (
+            "Nina de 9 anos en region sur de Estados Unidos, ingresada "
+            "a urgencias pediatricas terciarias con curso de cuatro "
+            "dias: fiebre 38.6 C, cefalea, irritabilidad y cambio "
+            "conductual al segundo dia, afasia expresiva al tercer dia "
+            "y crisis parcial compleja al cuarto. Sin rigidez de nuca. "
+            "Sin exposicion a agua dulce. Examen: temperatura 38.6 C, "
+            "escala de Glasgow 12, deficit focal (afasia expresiva), "
+            "sin exantema. Liquido cefalorraquideo mostro presion de "
+            "apertura 22 cmH2O, leucocitos 210 por mm3 (78 por ciento "
+            "linfocitos), glucosa 56 mg/dL, proteina 105 mg/dL, "
+            "eritrocitos 30 con xantocromia. PCR de HSV-1 positiva. RM "
+            "cerebral con hiperintensidad temporal mesial T2/FLAIR. "
+            "Aciclovir en cuatro horas. Anclaje en revision Whitley "
+            "2006 Lancet ID HSE (PMID 16517432). Subphase 1.3 commit "
+            "5.3.6 wave 2, pre-adjudicacion hold_for_revision."
+        ),
+        "rationale": (
+            "Anchored to PMID 16517432 (Whitley 2006 Lancet ID HSE "
+            "pathogenesis review). Pediatric HSE with classic limbic "
+            "phenotype. Demographic anchor (9yo F US South pediatric "
+            "HSE) sits in Whitley pediatric-HSE stratum. CSF "
+            "lymphocytic with hemorrhagic component. MRI mesial "
+            "temporal. Imputation tiers: tier_1_primary={age, sex, "
+            "hsv1_pcr, imaging_pattern, focal_aphasia, behavioral_"
+            "change}; tier_3_within_review={csf_wbc, neutrophil_pct, "
+            "glucose, protein, rbc, xanthochromia, gcs}; tier_4_priors"
+            "={temp, symptom_days, hr}. Indeterminate=none. Diagnostic_"
+            "ambiguity=false. Outcome=survived_mild_cognitive_sequelae. "
+            "Acyclovir_hours=4. Tier: tier_3_imputation_within_review. "
+            "5.3.6 wave2 HSV1-Whitley-pediatric."
+        ),
+        "anchoring_extras": "anchor=Whitley-Lancet-ID-2006 stratum=pediatric-HSE.",
+        "diagnostic_tests": _viral_wave1_dx_tests_hsv1_pcr("16517432"),
+    }
+
+
+def _build_viral_vignette_100() -> dict[str, Any]:
+    """v100 HSV1 60F NL mid survived (Granerod cohort)."""
+    return {
+        "history": {
+            "symptom_onset_to_presentation_days": 5.0,
+            "chief_complaint": "altered_mental_status",
+            "prodrome_description": (
+                "60-year-old female, Netherlands. 5-day course: low-grade "
+                "fever 38.4 C, headache, behavioral change day 2, "
+                "expressive aphasia day 3, focal seizure day 4, "
+                "progressive confusion day 5 prompting tertiary ED "
+                "Amsterdam. No neck stiffness. No freshwater. Acyclovir "
+                "hour 6. Outcome: survived with mild memory deficit per "
+                "Granerod cohort residual-deficit pattern."
+            ),
+            "red_flags_present": [],
+        },
+        "vitals": {
+            "temperature_celsius": 38.4,
+            "heart_rate_bpm": 92,
+            "systolic_bp_mmHg": 124,
+            "diastolic_bp_mmHg": 76,
+            "glasgow_coma_scale": 11,
+            "oxygen_saturation_pct": 96,
+            "respiratory_rate_breaths_per_min": 18,
+        },
+        "exam": {
+            "mental_status_grade": "somnolent",
+            "neck_stiffness": False,
+            "kernig_or_brudzinski_positive": False,
+            "focal_neurological_deficit": True,
+            "cranial_nerve_palsy": "none",
+            "skin_lesion_centrofacial_chronic": False,
+            "petechial_or_purpuric_rash": False,
+            "papilledema_on_fundoscopy": False,
+        },
+        "labs": {
+            "wbc_blood_per_uL": 9000,
+            "platelets_per_uL": 240000,
+            "alt_ast_U_per_L": 28,
+            "crp_mg_per_L": 22.0,
+            "procalcitonin_ng_per_mL": 0.4,
+            "serum_sodium_mEq_per_L": 137,
+        },
+        "csf": {
+            "opening_pressure_cmH2O": 24.0,
+            "csf_wbc_per_mm3": 230,
+            "csf_neutrophil_pct": 26,
+            "csf_lymphocyte_pct": 74,
+            "csf_eosinophil_pct": 0,
+            "csf_glucose_mg_per_dL": 54,
+            "csf_protein_mg_per_dL": 125,
+            "csf_lactate_mmol_per_L": 2.6,
+            "csf_ada_U_per_L": None,
+            "csf_crag_lfa_result": "negative",
+            "csf_wet_mount_motile_amoebae": "negative",
+            "csf_xanthochromia_present": True,
+            "csf_rbc_per_mm3": 35,
+            "csf_rbc_decreasing_across_tubes": False,
+        },
+        "narrative_en": (
+            "A 60-year-old woman in the Netherlands presented to a "
+            "tertiary emergency department in Amsterdam after a 5-day "
+            "course: low-grade fever to 38.4 C, headache, behavioral "
+            "change on day 2, expressive aphasia on day 3, a focal "
+            "seizure on day 4, and progressive confusion on day 5. She "
+            "had no neck stiffness and no antecedent freshwater "
+            "exposure. Examination on admission: temperature 38.4 C, "
+            "Glasgow Coma Scale 11, focal deficit (expressive aphasia), "
+            "no rash. CSF showed opening pressure 24 cmH2O, white cell "
+            "count 230 per cubic millimeter (74 percent lymphocytes), "
+            "glucose 54 mg/dL, protein 125 mg/dL, RBC 35 with "
+            "xanthochromia. CSF HSV-1 PCR positive. Brain MRI with "
+            "DWI/FLAIR showed mesial temporal T2/FLAIR hyperintensity "
+            "asymmetric. Acyclovir initiated within six hours. Anchored "
+            "to Granerod 2010 Lancet Infect Dis UK encephalitis cohort "
+            "(PMID 21088000). Outcome: survived with mild memory "
+            "deficit. Subphase 1.3 commit 5.3.6 wave 2, pre-adjudication "
+            "hold_for_revision."
+        ),
+        "narrative_es": (
+            "Mujer de 60 anos en Paises Bajos (Amsterdam), ingresada a "
+            "urgencias terciarias tras curso de cinco dias: febricula "
+            "38.4 C, cefalea, cambio conductual al segundo dia, afasia "
+            "expresiva al tercer dia, crisis focal al cuarto y "
+            "confusion progresiva al quinto. Sin rigidez de nuca. "
+            "Examen: temperatura 38.4 C, escala de Glasgow 11, deficit "
+            "focal (afasia expresiva), sin exantema. Liquido "
+            "cefalorraquideo mostro presion de apertura 24 cmH2O, "
+            "leucocitos 230 por mm3 (74 por ciento linfocitos), glucosa "
+            "54 mg/dL, proteina 125 mg/dL, eritrocitos 35 con "
+            "xantocromia. PCR de HSV-1 positiva. RM cerebral con "
+            "hiperintensidad temporal mesial T2/FLAIR. Aciclovir en "
+            "seis horas. Anclaje en cohorte Granerod 2010 Lancet ID "
+            "(PMID 21088000). Subphase 1.3 commit 5.3.6 wave 2."
+        ),
+        "rationale": (
+            "Anchored to PMID 21088000 (Granerod 2010 Lancet ID UK "
+            "encephalitis cohort). Older-adult HSE phenotype. "
+            "Demographic anchor (60yo F NL older-adult HSE) sits in "
+            "Granerod older-adult-HSE stratum. CSF lymphocytic with "
+            "hemorrhagic component. MRI mesial temporal. Imputation "
+            "tiers: tier_1_primary={age, sex, hsv1_pcr, imaging_pattern, "
+            "focal_aphasia, behavioral_change}; tier_3_within_review="
+            "{csf_wbc, neutrophil_pct, glucose, protein, rbc, "
+            "xanthochromia, gcs}; tier_4_priors={temp, symptom_days}. "
+            "Indeterminate=none. Diagnostic_ambiguity=false. Outcome="
+            "survived_mild_memory_deficit. Acyclovir_hours=6. Tier: "
+            "tier_3_imputation_within_review. 5.3.6 wave2 HSV1-Granerod-"
+            "older-adult-female."
+        ),
+        "anchoring_extras": "anchor=Granerod-Lancet-ID-2010 stratum=older-adult-HSE.",
+        "diagnostic_tests": _viral_wave1_dx_tests_hsv1_pcr("21088000"),
+    }
+
+
+def _build_viral_vignette_101() -> dict[str, Any]:
+    """v101 HSV1 17M US South mid survived (Whitley HSE review)."""
+    return {
+        "history": {
+            "symptom_onset_to_presentation_days": 4.0,
+            "chief_complaint": "behavioral_change",
+            "prodrome_description": (
+                "17-year-old male, US South region. 4-day course: fever "
+                "38.5 C, headache, behavioral change with personality "
+                "alteration day 2, anomic aphasia day 3, complex partial "
+                "seizure day 4 prompting tertiary ED. No neck stiffness. "
+                "No freshwater. Acyclovir hour 4. Outcome: survived with "
+                "mild memory deficit per Whitley adolescent-HSE pattern."
+            ),
+            "red_flags_present": [],
+        },
+        "vitals": {
+            "temperature_celsius": 38.5,
+            "heart_rate_bpm": 92,
+            "systolic_bp_mmHg": 124,
+            "diastolic_bp_mmHg": 74,
+            "glasgow_coma_scale": 13,
+            "oxygen_saturation_pct": 98,
+            "respiratory_rate_breaths_per_min": 18,
+        },
+        "exam": {
+            "mental_status_grade": "confused",
+            "neck_stiffness": False,
+            "kernig_or_brudzinski_positive": False,
+            "focal_neurological_deficit": True,
+            "cranial_nerve_palsy": "none",
+            "skin_lesion_centrofacial_chronic": False,
+            "petechial_or_purpuric_rash": False,
+            "papilledema_on_fundoscopy": False,
+        },
+        "labs": {
+            "wbc_blood_per_uL": 9200,
+            "platelets_per_uL": 265000,
+            "alt_ast_U_per_L": 26,
+            "crp_mg_per_L": 18.0,
+            "procalcitonin_ng_per_mL": 0.3,
+            "serum_sodium_mEq_per_L": 138,
+        },
+        "csf": {
+            "opening_pressure_cmH2O": 22.0,
+            "csf_wbc_per_mm3": 200,
+            "csf_neutrophil_pct": 22,
+            "csf_lymphocyte_pct": 78,
+            "csf_eosinophil_pct": 0,
+            "csf_glucose_mg_per_dL": 56,
+            "csf_protein_mg_per_dL": 110,
+            "csf_lactate_mmol_per_L": 2.4,
+            "csf_ada_U_per_L": None,
+            "csf_crag_lfa_result": "negative",
+            "csf_wet_mount_motile_amoebae": "negative",
+            "csf_xanthochromia_present": True,
+            "csf_rbc_per_mm3": 30,
+            "csf_rbc_decreasing_across_tubes": False,
+        },
+        "narrative_en": (
+            "A 17-year-old man in the US South region presented to a "
+            "tertiary emergency department with a 4-day course: fever "
+            "to 38.5 C, headache, behavioral change with personality "
+            "alteration on day 2, anomic aphasia on day 3, and a "
+            "complex partial seizure on day 4. He had no neck stiffness "
+            "and no antecedent freshwater exposure. Examination on "
+            "admission: temperature 38.5 C, Glasgow Coma Scale 13, "
+            "focal deficit (anomic aphasia), no rash. CSF showed "
+            "opening pressure 22 cmH2O, white cell count 200 per cubic "
+            "millimeter (78 percent lymphocytes), glucose 56 mg/dL, "
+            "protein 110 mg/dL, RBC 30 with xanthochromia. CSF HSV-1 "
+            "PCR positive. Brain MRI with DWI/FLAIR showed mesial "
+            "temporal T2/FLAIR hyperintensity asymmetric. Acyclovir "
+            "initiated within four hours. Anchored to Whitley 2006 "
+            "Lancet Infect Dis HSE pathogenesis review (PMID 16517432), "
+            "older-adolescent-HSE stratum. Outcome: survived with mild "
+            "memory deficit. Subphase 1.3 commit 5.3.6 wave 2, "
+            "pre-adjudication hold_for_revision."
+        ),
+        "narrative_es": (
+            "Varon de 17 anos en region sur de Estados Unidos, "
+            "ingresado a urgencias terciarias con curso de cuatro dias: "
+            "fiebre 38.5 C, cefalea, cambio conductual con alteracion "
+            "de personalidad al segundo dia, afasia anomica al tercer "
+            "dia y crisis parcial compleja al cuarto. Sin rigidez de "
+            "nuca. Sin exposicion a agua dulce. Examen: temperatura "
+            "38.5 C, escala de Glasgow 13, deficit focal (afasia "
+            "anomica), sin exantema. Liquido cefalorraquideo mostro "
+            "presion de apertura 22 cmH2O, leucocitos 200 por mm3 (78 "
+            "por ciento linfocitos), glucosa 56 mg/dL, proteina 110 "
+            "mg/dL, eritrocitos 30 con xantocromia. PCR de HSV-1 "
+            "positiva. RM cerebral con hiperintensidad temporal mesial "
+            "T2/FLAIR. Aciclovir en cuatro horas. Anclaje en revision "
+            "Whitley 2006 Lancet ID HSE (PMID 16517432). Subphase 1.3 "
+            "commit 5.3.6 wave 2, pre-adjudicacion hold_for_revision."
+        ),
+        "rationale": (
+            "Anchored to PMID 16517432 (Whitley 2006 Lancet ID HSE "
+            "pathogenesis review). Older-adolescent HSE phenotype. "
+            "Demographic anchor (17yo M US South older-adolescent HSE) "
+            "sits in Whitley adolescent-HSE stratum. CSF lymphocytic "
+            "with hemorrhagic component. MRI mesial temporal. Imputation "
+            "tiers: tier_1_primary={age, sex, hsv1_pcr, imaging_pattern, "
+            "focal_aphasia, behavioral_change}; tier_3_within_review="
+            "{csf_wbc, neutrophil_pct, glucose, protein, rbc, "
+            "xanthochromia, gcs}; tier_4_priors={temp, symptom_days}. "
+            "Indeterminate=none. Diagnostic_ambiguity=false. Outcome="
+            "survived_mild_memory_deficit. Acyclovir_hours=4. Tier: "
+            "tier_3_imputation_within_review. 5.3.6 wave2 HSV1-Whitley-"
+            "older-adolescent."
+        ),
+        "anchoring_extras": "anchor=Whitley-Lancet-ID-2006 stratum=older-adolescent-HSE.",
+        "diagnostic_tests": _viral_wave1_dx_tests_hsv1_pcr("16517432"),
+    }
+
+
+def _build_viral_vignette_103() -> dict[str, Any]:
+    """v103 HSV_PCR_negative_72h 42M NL mid survived AMBIGUITY (Granerod)."""
+    return {
+        "history": {
+            "symptom_onset_to_presentation_days": 5.0,
+            "chief_complaint": "altered_mental_status",
+            "prodrome_description": (
+                "42-year-old male, Netherlands. 5-day course: low-grade "
+                "fever 38.4 C, headache, behavioral change day 2, "
+                "anomic aphasia day 3, focal seizure day 4 prompting "
+                "tertiary ED. No neck stiffness. No freshwater. "
+                "Diagnostic_ambiguity=true; type=hsv_clinical_phenotype_"
+                "pcr_negative_at_72h. Empiric acyclovir continued "
+                "despite negative HSV-1 PCR at 24h and 72h. Outcome: "
+                "survived with full recovery on completion of 21-day "
+                "empiric course."
+            ),
+            "red_flags_present": [],
+        },
+        "vitals": {
+            "temperature_celsius": 38.4,
+            "heart_rate_bpm": 96,
+            "systolic_bp_mmHg": 122,
+            "diastolic_bp_mmHg": 76,
+            "glasgow_coma_scale": 12,
+            "oxygen_saturation_pct": 96,
+            "respiratory_rate_breaths_per_min": 18,
+        },
+        "exam": {
+            "mental_status_grade": "confused",
+            "neck_stiffness": False,
+            "kernig_or_brudzinski_positive": False,
+            "focal_neurological_deficit": True,
+            "cranial_nerve_palsy": "none",
+            "skin_lesion_centrofacial_chronic": False,
+            "petechial_or_purpuric_rash": False,
+            "papilledema_on_fundoscopy": False,
+        },
+        "labs": {
+            "wbc_blood_per_uL": 8800,
+            "platelets_per_uL": 245000,
+            "alt_ast_U_per_L": 26,
+            "crp_mg_per_L": 22.0,
+            "procalcitonin_ng_per_mL": 0.4,
+            "serum_sodium_mEq_per_L": 138,
+        },
+        "csf": {
+            "opening_pressure_cmH2O": 22.0,
+            "csf_wbc_per_mm3": 180,
+            "csf_neutrophil_pct": 25,
+            "csf_lymphocyte_pct": 75,
+            "csf_eosinophil_pct": 0,
+            "csf_glucose_mg_per_dL": 54,
+            "csf_protein_mg_per_dL": 100,
+            "csf_lactate_mmol_per_L": 2.4,
+            "csf_ada_U_per_L": None,
+            "csf_crag_lfa_result": "negative",
+            "csf_wet_mount_motile_amoebae": "negative",
+            "csf_xanthochromia_present": False,
+            "csf_rbc_per_mm3": 8,
+            "csf_rbc_decreasing_across_tubes": None,
+        },
+        "narrative_en": (
+            "A 42-year-old man in the Netherlands presented to a "
+            "tertiary emergency department in Amsterdam after a 5-day "
+            "course: low-grade fever to 38.4 C, headache, behavioral "
+            "change on day 2, anomic aphasia on day 3, and a focal "
+            "seizure on day 4. He had no neck stiffness and no "
+            "antecedent freshwater exposure. Examination: temperature "
+            "38.4 C, Glasgow Coma Scale 12, focal deficit (anomic "
+            "aphasia), no rash. CSF showed opening pressure 22 cmH2O, "
+            "WBC 180 per mm3 (75 percent lymphocytes), glucose 54 "
+            "mg/dL, protein 100 mg/dL. CSF HSV-1 PCR negative at "
+            "initial sample (24h) and negative on repeat at 72h. EEG "
+            "showed left temporal periodic lateralized epileptiform "
+            "discharges. Brain MRI DWI/FLAIR showed asymmetric mesial "
+            "temporal hyperintensity supporting clinical HSE phenotype "
+            "despite negative PCR. Empiric acyclovir continued for the "
+            "full 21-day course. Diagnostic_ambiguity=true; type=hsv_"
+            "clinical_phenotype_pcr_negative_at_72h. Anchored to "
+            "Granerod 2010 Lancet ID UK encephalitis cohort (PMID "
+            "21088000). Outcome: survived with full recovery. Subphase "
+            "1.3 commit 5.3.6 wave 2, pre-adjudication hold."
+        ),
+        "narrative_es": (
+            "Varon de 42 anos en Paises Bajos (Amsterdam), ingresado a "
+            "urgencias terciarias tras curso de cinco dias: febricula "
+            "38.4 C, cefalea, cambio conductual al segundo dia, afasia "
+            "anomica al tercero y crisis focal al cuarto. Sin rigidez "
+            "de nuca. Examen: 38.4 C, Glasgow 12, deficit focal "
+            "(afasia anomica), sin exantema. LCR: presion 22 cmH2O, "
+            "leucocitos 180/mm3 (75 por ciento linfocitos), glucosa 54 "
+            "mg/dL, proteina 100 mg/dL. PCR de HSV-1 negativa inicial "
+            "y a las 72 horas. EEG con descargas lateralizadas "
+            "temporales izquierdas. RM con hiperintensidad temporal "
+            "mesial T2/FLAIR asimetrica. Aciclovir empirico continuado "
+            "por 21 dias completos. Ambiguedad diagnostica: fenotipo "
+            "clinico de HSE con PCR negativa. Anclaje en cohorte "
+            "Granerod 2010 Lancet ID (PMID 21088000). Subphase 1.3 "
+            "commit 5.3.6 wave 2."
+        ),
+        "rationale": (
+            "Anchored to PMID 21088000 (Granerod 2010 Lancet ID UK "
+            "encephalitis cohort) documenting PCR-negative-but-clinical-"
+            "HSE phenotype. Diagnostic_ambiguity=true; type=hsv_clinical_"
+            "phenotype_pcr_negative_at_72h (verbatim from spec). "
+            "Demographic anchor (42yo M NL adult HSE PCR-neg) sits in "
+            "PCR-negative-HSE-window stratum. CSF lymphocytic, no "
+            "hemorrhagic component (atypical for HSE; supports "
+            "diagnostic uncertainty), MRI consistent with HSE despite "
+            "negative PCR. EEG temporal lateralization supports clinical "
+            "HSE. Imputation tiers: tier_1_primary={age, sex, hsv1_pcr_"
+            "neg, eeg_lateralization, imaging_pattern, empiric_acyclovir_"
+            "continuation}; tier_3_within_review={csf_wbc, neutrophil_"
+            "pct, glucose, protein, gcs}; tier_4_priors={temp, symptom_"
+            "days}. Indeterminate=organism-level-confirmation. Outcome="
+            "survived_full_recovery. Tier: tier_4_imputation_within_"
+            "review_ambiguity. 5.3.6 wave2 HSV-PCR-neg-male."
+        ),
+        "anchoring_extras": "anchor=Granerod-Lancet-ID-2010 type=hsv_clinical_phenotype_pcr_negative_at_72h.",
+        "diagnostic_tests": _viral_wave2_dx_tests_hsv_pcr_negative_72h("21088000"),
+    }
+
+
+def _build_viral_vignette_104() -> dict[str, Any]:
+    """v104 HSV_PCR_negative_72h 35F NL mid survived AMBIGUITY (Granerod)."""
+    return {
+        "history": {
+            "symptom_onset_to_presentation_days": 4.0,
+            "chief_complaint": "altered_mental_status",
+            "prodrome_description": (
+                "35-year-old female, Netherlands. 4-day course: "
+                "low-grade fever 38.5 C, headache, behavioral change "
+                "with personality alteration day 2, expressive aphasia "
+                "day 3, complex partial seizure day 4 prompting "
+                "tertiary ED. No neck stiffness. No freshwater. "
+                "Diagnostic_ambiguity=true; type=hsv_clinical_phenotype_"
+                "pcr_negative_at_72h. Empiric acyclovir continued "
+                "despite negative HSV-1 PCR at 24h and 72h. Outcome: "
+                "survived with mild memory deficit on 21-day course."
+            ),
+            "red_flags_present": [],
+        },
+        "vitals": {
+            "temperature_celsius": 38.5,
+            "heart_rate_bpm": 100,
+            "systolic_bp_mmHg": 118,
+            "diastolic_bp_mmHg": 72,
+            "glasgow_coma_scale": 12,
+            "oxygen_saturation_pct": 97,
+            "respiratory_rate_breaths_per_min": 18,
+        },
+        "exam": {
+            "mental_status_grade": "confused",
+            "neck_stiffness": False,
+            "kernig_or_brudzinski_positive": False,
+            "focal_neurological_deficit": True,
+            "cranial_nerve_palsy": "none",
+            "skin_lesion_centrofacial_chronic": False,
+            "petechial_or_purpuric_rash": False,
+            "papilledema_on_fundoscopy": False,
+        },
+        "labs": {
+            "wbc_blood_per_uL": 9000,
+            "platelets_per_uL": 250000,
+            "alt_ast_U_per_L": 26,
+            "crp_mg_per_L": 24.0,
+            "procalcitonin_ng_per_mL": 0.4,
+            "serum_sodium_mEq_per_L": 138,
+        },
+        "csf": {
+            "opening_pressure_cmH2O": 22.0,
+            "csf_wbc_per_mm3": 165,
+            "csf_neutrophil_pct": 28,
+            "csf_lymphocyte_pct": 72,
+            "csf_eosinophil_pct": 0,
+            "csf_glucose_mg_per_dL": 55,
+            "csf_protein_mg_per_dL": 95,
+            "csf_lactate_mmol_per_L": 2.4,
+            "csf_ada_U_per_L": None,
+            "csf_crag_lfa_result": "negative",
+            "csf_wet_mount_motile_amoebae": "negative",
+            "csf_xanthochromia_present": False,
+            "csf_rbc_per_mm3": 6,
+            "csf_rbc_decreasing_across_tubes": None,
+        },
+        "narrative_en": (
+            "A 35-year-old woman in the Netherlands presented to a "
+            "tertiary emergency department in Amsterdam after a 4-day "
+            "course: low-grade fever to 38.5 C, headache, behavioral "
+            "change with personality alteration on day 2, expressive "
+            "aphasia on day 3, and a complex partial seizure on day 4. "
+            "She had no neck stiffness and no freshwater exposure. "
+            "Examination: temperature 38.5 C, Glasgow Coma Scale 12, "
+            "focal deficit (expressive aphasia), no rash. CSF showed "
+            "opening pressure 22 cmH2O, WBC 165 per mm3 (72 percent "
+            "lymphocytes), glucose 55 mg/dL, protein 95 mg/dL. CSF "
+            "HSV-1 PCR negative at initial sample (24h) and negative "
+            "on repeat at 72h. EEG showed right temporal periodic "
+            "lateralized epileptiform discharges. Brain MRI DWI/FLAIR "
+            "showed asymmetric mesial temporal hyperintensity "
+            "supporting clinical HSE despite negative PCR. Empiric "
+            "acyclovir continued for the full 21-day course. "
+            "Diagnostic_ambiguity=true; type=hsv_clinical_phenotype_"
+            "pcr_negative_at_72h. Anchored to Granerod 2010 Lancet ID "
+            "(PMID 21088000). Outcome: survived with mild memory "
+            "deficit. Subphase 1.3 commit 5.3.6 wave 2, pre-adj hold."
+        ),
+        "narrative_es": (
+            "Mujer de 35 anos en Paises Bajos (Amsterdam), ingresada a "
+            "urgencias terciarias tras curso de cuatro dias: febricula "
+            "38.5 C, cefalea, cambio conductual con alteracion de "
+            "personalidad al segundo dia, afasia expresiva al tercero "
+            "y crisis parcial compleja al cuarto. Sin rigidez de nuca. "
+            "Examen: 38.5 C, Glasgow 12, deficit focal (afasia "
+            "expresiva), sin exantema. LCR: presion 22 cmH2O, "
+            "leucocitos 165/mm3 (72 por ciento linfocitos), glucosa "
+            "55 mg/dL, proteina 95 mg/dL. PCR de HSV-1 negativa "
+            "inicial y a las 72 horas tambien negativa. EEG con "
+            "descargas lateralizadas temporales derechas. RM con "
+            "hiperintensidad temporal mesial T2/FLAIR. Aciclovir "
+            "empirico continuado por 21 dias. Ambiguedad diagnostica "
+            "HSE con PCR negativa. Anclaje en cohorte Granerod 2010 "
+            "Lancet ID (PMID 21088000). Subphase 1.3 commit 5.3.6 "
+            "wave 2."
+        ),
+        "rationale": (
+            "Anchored to PMID 21088000 (Granerod 2010 Lancet ID UK "
+            "encephalitis cohort) PCR-negative-HSE phenotype. "
+            "Diagnostic_ambiguity=true; type=hsv_clinical_phenotype_pcr_"
+            "negative_at_72h (verbatim from spec). Demographic anchor "
+            "(35yo F NL adult HSE PCR-neg) sits in PCR-negative-HSE-"
+            "window stratum. CSF lymphocytic, no hemorrhagic component, "
+            "MRI consistent with HSE. EEG right-temporal lateralization. "
+            "Imputation tiers: tier_1_primary={age, sex, hsv1_pcr_neg, "
+            "eeg_lateralization, imaging_pattern, empiric_acyclovir}; "
+            "tier_3_within_review={csf_wbc, neutrophil_pct, glucose, "
+            "protein, gcs}; tier_4_priors={temp, symptom_days}. "
+            "Indeterminate=organism-confirmation. Outcome=survived_mild_"
+            "memory_deficit. Tier: tier_4_imputation_within_review_"
+            "ambiguity. 5.3.6 wave2 HSV-PCR-neg-female."
+        ),
+        "anchoring_extras": "anchor=Granerod-Lancet-ID-2010 type=hsv_clinical_phenotype_pcr_negative_at_72h.",
+        "diagnostic_tests": _viral_wave2_dx_tests_hsv_pcr_negative_72h("21088000"),
+    }
+
+
+def _build_viral_vignette_110() -> dict[str, Any]:
+    """v110 enterovirus 19F NL mid survived (Granerod cohort)."""
+    return {
+        "history": {
+            "symptom_onset_to_presentation_days": 2.0,
+            "chief_complaint": "fever_with_headache",
+            "prodrome_description": (
+                "19-year-old female, Netherlands. 2-day course: fever "
+                "38.7 C, severe headache, neck stiffness, photophobia, "
+                "myalgia, summer August presentation. University setting. "
+                "Tertiary ED Amsterdam. No freshwater. No focal deficit. "
+                "Outcome: survived with full recovery in 6 days. "
+                "Supportive care."
+            ),
+            "red_flags_present": [],
+        },
+        "vitals": {
+            "temperature_celsius": 38.7,
+            "heart_rate_bpm": 102,
+            "systolic_bp_mmHg": 116,
+            "diastolic_bp_mmHg": 70,
+            "glasgow_coma_scale": 15,
+            "oxygen_saturation_pct": 98,
+            "respiratory_rate_breaths_per_min": 18,
+        },
+        "exam": {
+            "mental_status_grade": "alert",
+            "neck_stiffness": True,
+            "kernig_or_brudzinski_positive": True,
+            "focal_neurological_deficit": False,
+            "cranial_nerve_palsy": "none",
+            "skin_lesion_centrofacial_chronic": False,
+            "petechial_or_purpuric_rash": False,
+            "papilledema_on_fundoscopy": False,
+        },
+        "labs": {
+            "wbc_blood_per_uL": 11200,
+            "platelets_per_uL": 270000,
+            "alt_ast_U_per_L": 24,
+            "crp_mg_per_L": 16.0,
+            "procalcitonin_ng_per_mL": 0.3,
+            "serum_sodium_mEq_per_L": 138,
+        },
+        "csf": {
+            "opening_pressure_cmH2O": 19.0,
+            "csf_wbc_per_mm3": 200,
+            "csf_neutrophil_pct": 22,
+            "csf_lymphocyte_pct": 78,
+            "csf_eosinophil_pct": 0,
+            "csf_glucose_mg_per_dL": 56,
+            "csf_protein_mg_per_dL": 60,
+            "csf_lactate_mmol_per_L": 2.2,
+            "csf_ada_U_per_L": None,
+            "csf_crag_lfa_result": "negative",
+            "csf_wet_mount_motile_amoebae": "negative",
+            "csf_xanthochromia_present": False,
+            "csf_rbc_per_mm3": 3,
+            "csf_rbc_decreasing_across_tubes": None,
+        },
+        "narrative_en": (
+            "A 19-year-old woman in the Netherlands presented to a "
+            "tertiary emergency department in Amsterdam in late August "
+            "with a 2-day course: fever to 38.7 C, severe headache, "
+            "neck stiffness, photophobia, and myalgia. She lived in a "
+            "university setting. Examination on admission: temperature "
+            "38.7 C, Glasgow Coma Scale 15, alert, neck stiffness, "
+            "positive Kernig sign, no focal deficit, no rash. CSF "
+            "showed opening pressure 19 cmH2O, white cell count 200 "
+            "per cubic millimeter (78 percent lymphocytes), glucose 56 "
+            "mg/dL, protein 60 mg/dL. CSF enterovirus PCR positive. "
+            "Gram stain and culture negative. No imaging performed. "
+            "Anchored to Granerod 2010 Lancet Infect Dis UK encephalitis "
+            "cohort (PMID 21088000), college-age-enteroviral-meningitis "
+            "stratum. Outcome: survived with full recovery in six days. "
+            "Subphase 1.3 commit 5.3.6 wave 2, pre-adjudication "
+            "hold_for_revision."
+        ),
+        "narrative_es": (
+            "Mujer de 19 anos en Paises Bajos (Amsterdam), ingresada a "
+            "urgencias terciarias en agosto con curso de dos dias: "
+            "fiebre 38.7 C, cefalea intensa, rigidez de nuca, fotofobia "
+            "y mialgia. Entorno universitario. Examen: temperatura 38.7 "
+            "C, escala de Glasgow 15, alerta, rigidez de nuca, signo "
+            "de Kernig positivo, sin deficit focal, sin exantema. "
+            "Liquido cefalorraquideo mostro presion de apertura 19 "
+            "cmH2O, leucocitos 200 por mm3 (78 por ciento linfocitos), "
+            "glucosa 56 mg/dL, proteina 60 mg/dL. PCR de enterovirus "
+            "en LCR positiva. Tincion de Gram y cultivo negativos. Sin "
+            "imagenes. Anclaje en cohorte Granerod 2010 Lancet ID "
+            "(PMID 21088000), estrato adulto joven enteroviral. "
+            "Subphase 1.3 commit 5.3.6 wave 2, pre-adjudicacion "
+            "hold_for_revision."
+        ),
+        "rationale": (
+            "Anchored to PMID 21088000 (Granerod 2010 Lancet ID UK "
+            "encephalitis cohort). Enteroviral aseptic meningitis "
+            "college-age summer phenotype. Demographic anchor (19yo F "
+            "NL university summer) sits in college-age-enteroviral "
+            "stratum. CSF lymphocytic (200 WBC, 78 percent lymphocytes), "
+            "normal glucose 56, mildly elevated protein 60. EV PCR "
+            "positive. Imputation tiers: tier_1_primary={age, sex, ev_"
+            "pcr, season}; tier_3_within_review={csf_wbc, neutrophil_"
+            "pct, glucose, protein}; tier_4_priors={temp, gcs, symptom_"
+            "days}. Indeterminate=none. Diagnostic_ambiguity=false. "
+            "Outcome=survived_full_recovery. Tier: tier_3_imputation_"
+            "within_review. 5.3.6 wave2 EV-Granerod-college-age."
+        ),
+        "anchoring_extras": "anchor=Granerod-Lancet-ID-2010 stratum=college-age-EV.",
+        "diagnostic_tests": _viral_wave1_dx_tests_ev_pcr("21088000"),
+    }
+
+
+def _build_viral_vignette_112() -> dict[str, Any]:
+    """v112 enterovirus 14F NL mid survived (Granerod cohort)."""
+    return {
+        "history": {
+            "symptom_onset_to_presentation_days": 2.0,
+            "chief_complaint": "fever_with_headache",
+            "prodrome_description": (
+                "14-year-old female, Netherlands. 2-day course: fever "
+                "38.5 C, headache, neck stiffness, photophobia, vomiting, "
+                "summer late-July presentation. Pediatric tertiary ED. "
+                "No freshwater. No focal. Outcome: survived with full "
+                "recovery in 5 days. Supportive care; antibiotics "
+                "discontinued after EV PCR positive."
+            ),
+            "red_flags_present": [],
+        },
+        "vitals": {
+            "temperature_celsius": 38.5,
+            "heart_rate_bpm": 96,
+            "systolic_bp_mmHg": 110,
+            "diastolic_bp_mmHg": 68,
+            "glasgow_coma_scale": 15,
+            "oxygen_saturation_pct": 98,
+            "respiratory_rate_breaths_per_min": 18,
+        },
+        "exam": {
+            "mental_status_grade": "alert",
+            "neck_stiffness": True,
+            "kernig_or_brudzinski_positive": True,
+            "focal_neurological_deficit": False,
+            "cranial_nerve_palsy": "none",
+            "skin_lesion_centrofacial_chronic": False,
+            "petechial_or_purpuric_rash": False,
+            "papilledema_on_fundoscopy": False,
+        },
+        "labs": {
+            "wbc_blood_per_uL": 10500,
+            "platelets_per_uL": 290000,
+            "alt_ast_U_per_L": 22,
+            "crp_mg_per_L": 14.0,
+            "procalcitonin_ng_per_mL": 0.3,
+            "serum_sodium_mEq_per_L": 138,
+        },
+        "csf": {
+            "opening_pressure_cmH2O": 18.0,
+            "csf_wbc_per_mm3": 175,
+            "csf_neutrophil_pct": 18,
+            "csf_lymphocyte_pct": 82,
+            "csf_eosinophil_pct": 0,
+            "csf_glucose_mg_per_dL": 58,
+            "csf_protein_mg_per_dL": 58,
+            "csf_lactate_mmol_per_L": 2.0,
+            "csf_ada_U_per_L": None,
+            "csf_crag_lfa_result": "negative",
+            "csf_wet_mount_motile_amoebae": "negative",
+            "csf_xanthochromia_present": False,
+            "csf_rbc_per_mm3": 3,
+            "csf_rbc_decreasing_across_tubes": None,
+        },
+        "narrative_en": (
+            "A 14-year-old girl in the Netherlands presented to a "
+            "tertiary pediatric emergency department in Amsterdam in "
+            "late July with a 2-day course: fever to 38.5 C, headache, "
+            "neck stiffness, photophobia, and vomiting. Examination on "
+            "admission: temperature 38.5 C, Glasgow Coma Scale 15, "
+            "alert, neck stiffness, positive Kernig sign, no focal "
+            "deficit, no rash. CSF showed opening pressure 18 cmH2O, "
+            "white cell count 175 per cubic millimeter (82 percent "
+            "lymphocytes), glucose 58 mg/dL, protein 58 mg/dL. CSF "
+            "enterovirus PCR positive. Gram stain and culture negative. "
+            "No imaging performed. Anchored to Granerod 2010 Lancet "
+            "Infect Dis UK encephalitis cohort (PMID 21088000), "
+            "adolescent-enteroviral-summer-meningitis stratum. Outcome: "
+            "survived with full recovery in five days. Subphase 1.3 "
+            "commit 5.3.6 wave 2, pre-adjudication hold_for_revision."
+        ),
+        "narrative_es": (
+            "Nina de 14 anos en Paises Bajos (Amsterdam), ingresada a "
+            "urgencias pediatricas terciarias en julio con curso de dos "
+            "dias: fiebre 38.5 C, cefalea, rigidez de nuca, fotofobia "
+            "y vomitos sin antecedente de exposicion a agua dulce. "
+            "Examen al ingreso: temperatura 38.5 C, escala de Glasgow "
+            "15, alerta, rigidez de nuca, signo de Kernig positivo, "
+            "sin deficit focal, sin exantema. Liquido cefalorraquideo "
+            "mostro presion de apertura 18 cmH2O, leucocitos 175 por "
+            "mm3 (82 por ciento linfocitos), glucosa 58 mg/dL, proteina "
+            "58 mg/dL. PCR de enterovirus en LCR positiva. Tincion de "
+            "Gram y cultivo negativos. Sin estudios de neuroimagen. "
+            "Anclaje en cohorte Granerod 2010 Lancet ID (PMID "
+            "21088000), estrato adolescente enteroviral de verano. "
+            "Resultado: recuperacion completa en cinco dias. Subphase "
+            "1.3 commit 5.3.6 wave 2, pre-adjudicacion en hold."
+        ),
+        "rationale": (
+            "Anchored to PMID 21088000 (Granerod 2010 Lancet ID UK "
+            "encephalitis cohort). Enteroviral aseptic meningitis "
+            "adolescent summer phenotype. Demographic anchor (14yo F "
+            "NL adolescent summer) sits in adolescent-enteroviral "
+            "stratum. CSF lymphocytic (175 WBC, 82 percent lymphocytes), "
+            "normal glucose 58, mildly elevated protein 58. EV PCR "
+            "positive. Imputation tiers: tier_1_primary={age, sex, ev_"
+            "pcr, season}; tier_3_within_review={csf_wbc, neutrophil_"
+            "pct, glucose, protein}; tier_4_priors={temp, gcs, symptom_"
+            "days}. Indeterminate=none. Diagnostic_ambiguity=false. "
+            "Outcome=survived_full_recovery. Tier: tier_3_imputation_"
+            "within_review. 5.3.6 wave2 EV-Granerod-adolescent."
+        ),
+        "anchoring_extras": "anchor=Granerod-Lancet-ID-2010 stratum=adolescent-EV.",
+        "diagnostic_tests": _viral_wave1_dx_tests_ev_pcr("21088000"),
+    }
+
+
+def _build_viral_vignette_115() -> dict[str, Any]:
+    """v115 VZV 65M NL zoster ophthalmicus immunocompromised mid
+    survived_with_sequelae (Granerod)."""
+    return {
+        "history": {
+            "symptom_onset_to_presentation_days": 5.0,
+            "chief_complaint": "headache",
+            "prodrome_description": (
+                "65-year-old male, Netherlands, on chemotherapy for "
+                "multiple myeloma. 5-day course: vesicular dermatomal "
+                "rash in V1 trigeminal distribution (zoster ophthalmicus) "
+                "day 1, then headache day 3, low-grade fever 38.0 C and "
+                "confusion day 4, neck stiffness day 5 prompting "
+                "tertiary ED Amsterdam. No freshwater. Outcome: "
+                "survived with mild residual visual field deficit per "
+                "Granerod cohort VZV-immunocompromised pattern."
+            ),
+            "red_flags_present": ["immunocompromise"],
+        },
+        "vitals": {
+            "temperature_celsius": 38.0,
+            "heart_rate_bpm": 92,
+            "systolic_bp_mmHg": 128,
+            "diastolic_bp_mmHg": 78,
+            "glasgow_coma_scale": 14,
+            "oxygen_saturation_pct": 96,
+            "respiratory_rate_breaths_per_min": 18,
+        },
+        "exam": {
+            "mental_status_grade": "confused",
+            "neck_stiffness": True,
+            "kernig_or_brudzinski_positive": True,
+            "focal_neurological_deficit": True,
+            "cranial_nerve_palsy": "other",
+            "skin_lesion_centrofacial_chronic": False,
+            "petechial_or_purpuric_rash": False,
+            "papilledema_on_fundoscopy": False,
+        },
+        "labs": {
+            "wbc_blood_per_uL": 4200,
+            "platelets_per_uL": 145000,
+            "alt_ast_U_per_L": 32,
+            "crp_mg_per_L": 28.0,
+            "procalcitonin_ng_per_mL": 0.4,
+            "serum_sodium_mEq_per_L": 137,
+        },
+        "csf": {
+            "opening_pressure_cmH2O": 22.0,
+            "csf_wbc_per_mm3": 220,
+            "csf_neutrophil_pct": 25,
+            "csf_lymphocyte_pct": 75,
+            "csf_eosinophil_pct": 0,
+            "csf_glucose_mg_per_dL": 52,
+            "csf_protein_mg_per_dL": 110,
+            "csf_lactate_mmol_per_L": 2.4,
+            "csf_ada_U_per_L": None,
+            "csf_crag_lfa_result": "negative",
+            "csf_wet_mount_motile_amoebae": "negative",
+            "csf_xanthochromia_present": False,
+            "csf_rbc_per_mm3": 4,
+            "csf_rbc_decreasing_across_tubes": None,
+        },
+        "narrative_en": (
+            "A 65-year-old man in the Netherlands on chemotherapy for "
+            "multiple myeloma presented to a tertiary emergency "
+            "department in Amsterdam after a 5-day course beginning "
+            "with a vesicular dermatomal rash in the V1 trigeminal "
+            "distribution (zoster ophthalmicus) on day 1, followed by "
+            "headache on day 3, low-grade fever to 38.0 C and confusion "
+            "on day 4, and neck stiffness on day 5. Examination on "
+            "admission: temperature 38.0 C, Glasgow Coma Scale 14, "
+            "neck stiffness, positive Kernig sign, focal deficit (left "
+            "V1 dermatomal vesicular rash with eyelid involvement), no "
+            "petechial rash. CSF showed opening pressure 22 cmH2O, "
+            "white cell count 220 per cubic millimeter (75 percent "
+            "lymphocytes), glucose 52 mg/dL, protein 110 mg/dL. CSF "
+            "VZV PCR positive. VZV IgM serology positive. Vesicle swab "
+            "Tzanck smear showed multinucleated giant cells. Brain MRI "
+            "with DWI/FLAIR was normal. Anchored to Granerod 2010 "
+            "Lancet Infect Dis UK encephalitis cohort (PMID 21088000), "
+            "VZV-immunocompromised-zoster-ophthalmicus stratum. Outcome: "
+            "survived with mild residual visual field deficit. Subphase "
+            "1.3 commit 5.3.6 wave 2, pre-adjudication hold_for_revision."
+        ),
+        "narrative_es": (
+            "Varon de 65 anos en Paises Bajos en quimioterapia por "
+            "mieloma multiple, ingresado a urgencias terciarias en "
+            "Amsterdam tras curso de cinco dias: exantema vesicular "
+            "dermatomal en distribucion V1 trigeminal (herpes zoster "
+            "oftalmico) al primer dia, luego cefalea al tercer dia, "
+            "febricula 38.0 C y confusion al cuarto y rigidez de nuca "
+            "al quinto. Examen: temperatura 38.0 C, escala de Glasgow "
+            "14, rigidez de nuca, signo de Kernig positivo, deficit "
+            "focal (exantema vesicular dermatomal V1 con compromiso "
+            "palpebral), sin exantema petequial. Liquido cefalorraquideo "
+            "mostro leucocitos 220 por mm3 (75 por ciento linfocitos), "
+            "glucosa 52 mg/dL, proteina 110 mg/dL. PCR de VZV en LCR "
+            "positiva. IgM VZV positiva. Tzanck con celulas gigantes "
+            "multinucleadas. RM cerebral normal. Anclaje en cohorte "
+            "Granerod 2010 Lancet ID (PMID 21088000). Subphase 1.3 "
+            "commit 5.3.6 wave 2."
+        ),
+        "rationale": (
+            "Anchored to PMID 21088000 (Granerod 2010 Lancet ID UK "
+            "encephalitis cohort). VZV-immunocompromised-zoster-"
+            "ophthalmicus phenotype with V1 dermatomal vesicular rash "
+            "+ CSF lymphocytic pleocytosis + VZV PCR positive. "
+            "Demographic anchor (65yo M NL multiple myeloma chemotherapy "
+            "with V1 dermatomal vesicular rash) sits in VZV-immuno-"
+            "compromised stratum. CSF lymphocytic. MRI parenchyma "
+            "normal in absence of overt VZV vasculopathy. Imputation "
+            "tiers: tier_1_primary={age, sex, vzv_pcr, dermatomal_v1_"
+            "rash, immunocompromise_chemotherapy}; tier_3_within_review="
+            "{csf_wbc, neutrophil_pct, glucose, protein, gcs}; tier_4_"
+            "priors={temp, symptom_days}. Indeterminate=none. "
+            "Diagnostic_ambiguity=false. Outcome=survived_with_mild_"
+            "visual_field_deficit. Tier: tier_3_imputation_within_"
+            "review. 5.3.6 wave2 VZV-Granerod-immunocompromised-zoster-"
+            "ophthalmicus."
+        ),
+        "anchoring_extras": "anchor=Granerod-Lancet-ID-2010 stratum=VZV-immunocompromised-zoster-ophthalmicus.",
+        "diagnostic_tests": _viral_wave2_dx_tests_vzv("21088000"),
+    }
+
+
+def _build_viral_vignette_116() -> dict[str, Any]:
+    """v116 VZV 71F NL post-zoster encephalitis mid survived (Granerod)."""
+    return {
+        "history": {
+            "symptom_onset_to_presentation_days": 14.0,
+            "chief_complaint": "altered_mental_status",
+            "prodrome_description": (
+                "71-year-old female, Netherlands. Resolving thoracic "
+                "dermatomal zoster rash 2 weeks prior, then 4-day course "
+                "of fever 38.2 C, headache, neck stiffness day 2, gait "
+                "ataxia day 3, confusion day 4 prompting tertiary ED "
+                "Amsterdam. No freshwater. Outcome: survived with full "
+                "recovery on 14-day acyclovir course; post-zoster CNS "
+                "reactivation phenotype per Granerod cohort."
+            ),
+            "red_flags_present": [],
+        },
+        "vitals": {
+            "temperature_celsius": 38.2,
+            "heart_rate_bpm": 88,
+            "systolic_bp_mmHg": 134,
+            "diastolic_bp_mmHg": 80,
+            "glasgow_coma_scale": 14,
+            "oxygen_saturation_pct": 96,
+            "respiratory_rate_breaths_per_min": 18,
+        },
+        "exam": {
+            "mental_status_grade": "confused",
+            "neck_stiffness": True,
+            "kernig_or_brudzinski_positive": True,
+            "focal_neurological_deficit": True,
+            "cranial_nerve_palsy": "none",
+            "skin_lesion_centrofacial_chronic": False,
+            "petechial_or_purpuric_rash": False,
+            "papilledema_on_fundoscopy": False,
+        },
+        "labs": {
+            "wbc_blood_per_uL": 7200,
+            "platelets_per_uL": 220000,
+            "alt_ast_U_per_L": 28,
+            "crp_mg_per_L": 22.0,
+            "procalcitonin_ng_per_mL": 0.3,
+            "serum_sodium_mEq_per_L": 137,
+        },
+        "csf": {
+            "opening_pressure_cmH2O": 20.0,
+            "csf_wbc_per_mm3": 145,
+            "csf_neutrophil_pct": 22,
+            "csf_lymphocyte_pct": 78,
+            "csf_eosinophil_pct": 0,
+            "csf_glucose_mg_per_dL": 54,
+            "csf_protein_mg_per_dL": 105,
+            "csf_lactate_mmol_per_L": 2.2,
+            "csf_ada_U_per_L": None,
+            "csf_crag_lfa_result": "negative",
+            "csf_wet_mount_motile_amoebae": "negative",
+            "csf_xanthochromia_present": False,
+            "csf_rbc_per_mm3": 4,
+            "csf_rbc_decreasing_across_tubes": None,
+        },
+        "narrative_en": (
+            "A 71-year-old woman in the Netherlands presented to a "
+            "tertiary emergency department in Amsterdam after a "
+            "resolving thoracic dermatomal zoster rash two weeks "
+            "prior, then a 4-day course of fever to 38.2 C, headache, "
+            "neck stiffness on day 2, gait ataxia (cerebellitis "
+            "phenotype) on day 3, and confusion on day 4. She had no "
+            "antecedent freshwater exposure. Examination on admission: "
+            "temperature 38.2 C, Glasgow Coma Scale 14, neck stiffness, "
+            "positive Kernig sign, focal deficit (gait ataxia consistent "
+            "with VZV cerebellitis pattern), no rash currently active. "
+            "CSF showed opening pressure 20 cmH2O, white cell count "
+            "145 per cubic millimeter (78 percent lymphocytes), glucose "
+            "54 mg/dL, protein 105 mg/dL. CSF VZV PCR positive. VZV "
+            "IgM serology positive. Brain MRI with DWI/FLAIR was "
+            "normal. Anchored to Granerod 2010 Lancet Infect Dis UK "
+            "encephalitis cohort (PMID 21088000), post-zoster-CNS-"
+            "reactivation-cerebellitis stratum. Outcome: survived with "
+            "full recovery on 14-day acyclovir course. Subphase 1.3 "
+            "commit 5.3.6 wave 2, pre-adjudication hold_for_revision."
+        ),
+        "narrative_es": (
+            "Mujer de 71 anos en Paises Bajos (Amsterdam), ingresada a "
+            "urgencias terciarias dos semanas tras exantema dermatomal "
+            "toracico de zoster en resolucion, con curso de cuatro "
+            "dias: fiebre 38.2 C, cefalea, rigidez de nuca al segundo "
+            "dia, ataxia de marcha (fenotipo de cerebelitis) al tercer "
+            "dia y confusion al cuarto. Examen: temperatura 38.2 C, "
+            "escala de Glasgow 14, rigidez de nuca, signo de Kernig "
+            "positivo, deficit focal (ataxia de marcha consistente con "
+            "cerebelitis por VZV), sin exantema activo actual. Liquido "
+            "cefalorraquideo mostro leucocitos 145 por mm3 (78 por "
+            "ciento linfocitos), glucosa 54 mg/dL, proteina 105 mg/dL. "
+            "PCR de VZV en LCR positiva. IgM VZV positiva. RM cerebral "
+            "normal. Anclaje en cohorte Granerod 2010 Lancet ID (PMID "
+            "21088000). Subphase 1.3 commit 5.3.6 wave 2, pre-"
+            "adjudicacion hold_for_revision."
+        ),
+        "rationale": (
+            "Anchored to PMID 21088000 (Granerod 2010 Lancet ID UK "
+            "encephalitis cohort). Post-zoster CNS-reactivation-"
+            "cerebellitis phenotype: thoracic dermatomal zoster rash 2 "
+            "weeks prior, then CSF VZV-PCR-positive lymphocytic "
+            "meningitis with cerebellitis (gait ataxia) phenotype. "
+            "Demographic anchor (71yo F NL post-zoster cerebellitis) "
+            "sits in elderly-post-zoster-CNS stratum. CSF lymphocytic "
+            "(145 WBC, 78 percent lymphocytes), normal glucose 54, "
+            "mildly elevated protein 105. VZV PCR + IgM positive. "
+            "Imputation tiers: tier_1_primary={age, sex, vzv_pcr, vzv_"
+            "igm, post_zoster_window, gait_ataxia_cerebellitis}; "
+            "tier_3_within_review={csf_wbc, neutrophil_pct, glucose, "
+            "protein, gcs}; tier_4_priors={temp, symptom_days}. "
+            "Indeterminate=none. Diagnostic_ambiguity=false. Outcome="
+            "survived_full_recovery. Tier: tier_3_imputation_within_"
+            "review. 5.3.6 wave2 VZV-Granerod-post-zoster-cerebellitis."
+        ),
+        "anchoring_extras": "anchor=Granerod-Lancet-ID-2010 stratum=post-zoster-cerebellitis.",
+        "diagnostic_tests": _viral_wave2_dx_tests_vzv("21088000"),
+    }
+
+
+_VIRAL_WAVE2_BUILDERS: dict[int, Any] = {
+    91: _build_viral_vignette_091,
+    93: _build_viral_vignette_093,
+    94: _build_viral_vignette_094,
+    95: _build_viral_vignette_095,
+    97: _build_viral_vignette_097,
+    98: _build_viral_vignette_098,
+    100: _build_viral_vignette_100,
+    101: _build_viral_vignette_101,
+    103: _build_viral_vignette_103,
+    104: _build_viral_vignette_104,
+    110: _build_viral_vignette_110,
+    112: _build_viral_vignette_112,
+    115: _build_viral_vignette_115,
+    116: _build_viral_vignette_116,
+}
+
+
+def generate_viral_wave2_vignette(vignette_id: int) -> dict[str, Any]:
+    """Build one VIRAL Wave-2 (Granerod or Whitley anchored) vignette dict."""
+    if vignette_id not in VIRAL_WAVE2_IDS:
+        raise KeyError(
+            f"vignette_id {vignette_id!r} not in VIRAL_WAVE2_IDS {VIRAL_WAVE2_IDS}"
+        )
+    spec = next(s for s in VIRAL_DISTRIBUTION if s["vignette_id"] == vignette_id)
+    pmid_meta = load_pmid_metadata(spec["pmid"])
+    clinical = _VIRAL_WAVE2_BUILDERS[vignette_id]()
+
+    region = spec["geography_region"]
+    history = clinical["history"]
+    if not history.get("red_flags_present"):
+        history = {**history, "red_flags_present": _viral_wave2_red_flags(spec)}
+
+    return {
+        "schema_version": "2.0",
+        "case_id": _viral_wave1_case_id(spec, pmid_meta),
+        "ground_truth_class": 3,
+        "demographics": {
+            "age_years": spec["age_years"],
+            "sex": spec["sex"],
+            "ethnicity": _bact_wave1_ethnicity(region),
+            "geography_region": region,
+            "altitude_residence_m": _bact_wave1_altitude(region),
+        },
+        "history": history,
+        "exposure": _viral_wave2_exposure(spec),
+        "vitals": clinical["vitals"],
+        "exam": clinical["exam"],
+        "labs": clinical["labs"],
+        "csf": clinical["csf"],
+        "imaging": _viral_wave1_imaging_for(spec),
+        "diagnostic_tests": {"results": clinical["diagnostic_tests"]},
+        "adjudication": _viral_wave2_adjudication(spec, clinical["anchoring_extras"]),
+        "literature_anchors": [_build_literature_anchor(pmid_meta)],
+        "provenance": _viral_wave2_provenance(clinical["rationale"]),
+        "narrative_es": clinical["narrative_es"],
+        "narrative_en": clinical["narrative_en"],
+    }
+
+
+def write_viral_wave2_vignette(
+    vignette_id: int,
+    output_dir: Path = VIRAL_WAVE2_OUTPUT_DIR,
+) -> Path:
+    """Build, validate, and write one VIRAL Wave-2 vignette to disk."""
+    spec = next(s for s in VIRAL_DISTRIBUTION if s["vignette_id"] == vignette_id)
+    vignette = generate_viral_wave2_vignette(vignette_id)
+    VignetteSchema.model_validate(vignette)
+    output_dir.mkdir(parents=True, exist_ok=True)
+    filepath = output_dir / spec["filename"]
+    filepath.write_text(
+        json.dumps(vignette, indent=2, sort_keys=False, ensure_ascii=False),
+        encoding="utf-8",
+    )
+    logger.info("Wrote %s", filepath)
+    return filepath
+
+
+def write_viral_wave2_corpus(
+    output_dir: Path = VIRAL_WAVE2_OUTPUT_DIR,
+) -> list[Path]:
+    """Build, validate, and write all 14 VIRAL Wave-2 vignettes (FINAL Subphase 1.3)."""
+    paths: list[Path] = []
+    for vid in VIRAL_WAVE2_IDS:
+        paths.append(write_viral_wave2_vignette(vid, output_dir=output_dir))
     return paths
 
 
