@@ -23025,9 +23025,17 @@ SUBPHASE_1_4_PILOT_IDS: list[int] = [121, 122, 151, 152, 181, 182]
 SUBPHASE_1_4_PILOT_CLASSES: dict[int, int] = {
     121: 4, 122: 4, 151: 5, 152: 5, 181: 6, 182: 6,
 }
-SUBPHASE_1_4_PILOT_CLASS_TOKEN: dict[int, str] = {
+# Class token map extended in commit 5.4.3 to cover wave_1 TBM ids 123-136
+# (all TBM Class 4). Will continue to extend for wave_2 (137-150) and CRYPTO/
+# GAE waves at their respective build commits.
+SUBPHASE_1_4_CLASS_TOKEN: dict[int, str] = {
+    # 5.4.2 pilots
     121: "TBM", 122: "TBM", 151: "CRYPTO", 152: "CRYPTO",
     181: "GAE", 182: "GAE",
+    # 5.4.3 TBM wave_1 (Thwaites 123-127, Marais 128-130, Heemskerk 131-136)
+    123: "TBM", 124: "TBM", 125: "TBM", 126: "TBM", 127: "TBM",
+    128: "TBM", 129: "TBM", 130: "TBM",
+    131: "TBM", 132: "TBM", 133: "TBM", 134: "TBM", 135: "TBM", 136: "TBM",
 }
 SUBPHASE_1_4_PILOT_OUTPUT_DIR: dict[int, Path] = {
     121: Path("data/vignettes/v2/class_04_tb"),
@@ -23047,7 +23055,8 @@ SUBPHASE_1_4_PILOT_FILENAME: dict[int, str] = {
 }
 
 # Geography label to altitude in meters. Resolution #3: Cape Town 50m.
-_SUBPHASE_1_4_PILOT_ALTITUDE_M: dict[str, int] = {
+# Wave_1 (5.4.3) reuses HCMC + Cape Town entries from the 5.4.2 pilot map.
+_SUBPHASE_1_4_ALTITUDE_M: dict[str, int] = {
     "Ho Chi Minh City, Vietnam": 19,
     "Cape Town, South Africa": 50,
     "Kampala, Uganda": 1190,
@@ -23062,30 +23071,44 @@ _SUBPHASE_1_4_PILOT_ALTITUDE_M: dict[str, int] = {
 # ----------------------------------------------------------------------------
 
 
-def _subphase_1_4_pilot_case_id(spec: dict[str, Any], pmid_meta: dict[str, Any]) -> str:
-    """Build pilot case_id of form PILOT-<CLASS>-<NNN>-<AnchorShort>-<Loc>.
+# Loc token by vid: extended in 5.4.3 to cover wave_1 ids 123-136.
+_SUBPHASE_1_4_LOC_TOKEN: dict[int, str] = {
+    # 5.4.2 pilots
+    121: "HCMC", 122: "CapeTown",
+    151: "Kampala", 152: "Pittsburgh",
+    181: "Peru-Balamuthia", 182: "Acanthamoeba-AIDS",
+    # 5.4.3 TBM wave_1: Thwaites 123-127 + Heemskerk 131-136 all HCMC,
+    # Marais 128-130 all CapeTown.
+    123: "HCMC", 124: "HCMC", 125: "HCMC", 126: "HCMC", 127: "HCMC",
+    128: "CapeTown", 129: "CapeTown", 130: "CapeTown",
+    131: "HCMC", 132: "HCMC", 133: "HCMC", 134: "HCMC", 135: "HCMC", 136: "HCMC",
+}
 
-    Class token mapping: TBM (Class 4), CRYPTO (Class 5), GAE (Class 6).
-    Anchor short: first author surname per PMID_REGISTRY authors_short.
-    Loc: short token (HCMC, CapeTown, Kampala, Pittsburgh, Peru, US).
+
+def _subphase_1_4_case_id(
+    spec: dict[str, Any], pmid_meta: dict[str, Any],
+    case_prefix: str = "PILOT",
+) -> str:
+    """Build case_id of form <PREFIX>-<CLASS>-<NNN>-<AnchorShort>-<Loc>.
+
+    Generalized in 5.4.3 from the original 5.4.2 pilot helper via the
+    case_prefix parameter (default "PILOT" preserves 5.4.2 behavior;
+    "WAVE1" used by TBM Wave 1 builders).
     """
     vid = spec["vignette_id"]
-    class_token = SUBPHASE_1_4_PILOT_CLASS_TOKEN[vid]
+    class_token = SUBPHASE_1_4_CLASS_TOKEN[vid]
     anchor_short = pmid_meta["authors_short"].split()[0].rstrip(",")
-    loc_token = {
-        121: "HCMC", 122: "CapeTown",
-        151: "Kampala", 152: "Pittsburgh",
-        181: "Peru-Balamuthia", 182: "Acanthamoeba-AIDS",
-    }[vid]
-    return f"PILOT-{class_token}-{vid}-{anchor_short}-{loc_token}"
+    loc_token = _SUBPHASE_1_4_LOC_TOKEN[vid]
+    return f"{case_prefix}-{class_token}-{vid}-{anchor_short}-{loc_token}"
 
 
-def _subphase_1_4_pilot_exposure(spec: dict[str, Any]) -> dict[str, Any]:
-    """Build ExposureHistory dict. All 6 pilots: freshwater=False (PAM guard).
+def _subphase_1_4_exposure(spec: dict[str, Any]) -> dict[str, Any]:
+    """Build ExposureHistory dict. All Subphase 1.4 slots: freshwater=False.
 
     Picks up immunocompromise_status, hiv_status, and cd4_count_cells_per_uL
     from the distribution slot. For HIV+ CRYPTO 151 the cd4_count is required
     by VignetteSchema validator _cryptococcal_cd4_required_when_hiv.
+    Wave-agnostic; reused as-is by 5.4.3 wave_1 builders.
     """
     return {
         "freshwater_exposure_within_14d": False,
@@ -23099,21 +23122,23 @@ def _subphase_1_4_pilot_exposure(spec: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def _subphase_1_4_pilot_adjudication(
+def _subphase_1_4_adjudication(
     spec: dict[str, Any], anchoring_text: str,
+    case_prefix: str = "PILOT",
 ) -> dict[str, Any]:
     """Build AdjudicationMetadata. Sentinel adjudicator IDs + kappa placeholder.
 
-    inclusion_decision is hold_for_revision for all pilots pending physician
+    Generalized in 5.4.3 via case_prefix parameter. inclusion_decision is
+    hold_for_revision for all Subphase 1.4 vignettes pending physician
     review (Subphase 1.3 precedent). cohen_kappa placeholder 0.70 to satisfy
     >=0.61 Landis-Koch substantial-agreement threshold.
     """
     vid = spec["vignette_id"]
-    class_token = SUBPHASE_1_4_PILOT_CLASS_TOKEN[vid]
+    class_token = SUBPHASE_1_4_CLASS_TOKEN[vid]
     return {
         "adjudicator_ids": [
-            f"PILOT-{class_token}-{vid}-ADJ-1",
-            f"PILOT-{class_token}-{vid}-ADJ-2",
+            f"{case_prefix}-{class_token}-{vid}-ADJ-1",
+            f"{case_prefix}-{class_token}-{vid}-ADJ-2",
         ],
         "cohen_kappa": 0.70,
         "disagreement_resolution": None,
@@ -23122,25 +23147,32 @@ def _subphase_1_4_pilot_adjudication(
     }
 
 
-def _subphase_1_4_pilot_provenance(rationale: str) -> dict[str, Any]:
-    """Build Provenance dict. ISO timestamp, manual-fixture identifier, schema 2.0."""
+def _subphase_1_4_provenance(
+    rationale: str, commit_marker: str = "v1.4.2-pilot",
+) -> dict[str, Any]:
+    """Build Provenance dict. ISO timestamp, manual-fixture identifier, schema 2.0.
+
+    commit_marker default "v1.4.2-pilot" preserves 5.4.2 behavior; 5.4.3 wave_1
+    builders pass "v1.4.3-wave1" for traceability in the
+    generator_model_identifier field.
+    """
     return {
         "generation_timestamp_utc": "2026-05-11T18:00:00Z",
-        "generator_model_identifier": "scripts.generate_pam_vignettes/v1.4.2-pilot",
+        "generator_model_identifier": f"scripts.generate_pam_vignettes/{commit_marker}",
         "prompt_hash_sha256": "0" * 64,
         "schema_version": "2.0",
         "inclusion_decision_rationale": rationale,
     }
 
 
-_SUBPHASE_1_4_PILOT_ANCHOR_TYPE_MAP: dict[str, str] = {
+_SUBPHASE_1_4_ANCHOR_TYPE_MAP: dict[str, str] = {
     # Registry uses case_series (collection of case reports); schema enum
     # LiteratureAnchor.anchor_type accepts case_report as the closest fit.
     "case_series": "case_report",
 }
 
 
-def _subphase_1_4_pilot_literature_anchor(pmid_meta: dict[str, Any]) -> dict[str, Any]:
+def _subphase_1_4_literature_anchor(pmid_meta: dict[str, Any]) -> dict[str, Any]:
     """Variant of _build_literature_anchor with two adaptations.
 
     1. Converts empty-string pmid to None. GAE 181 anchor (Gotuzzo OFID 2026
@@ -23150,11 +23182,12 @@ def _subphase_1_4_pilot_literature_anchor(pmid_meta: dict[str, Any]) -> dict[str
     2. Maps registry anchor_type='case_series' to schema anchor_type=
        'case_report' (schema enum lacks case_series; case_report is the
        semantically closest published-evidence label).
+    Wave-agnostic; reused as-is by 5.4.3 wave_1 builders.
     """
     pmid = pmid_meta["pmid"] or None
     doi = pmid_meta["doi"] or None
     raw_anchor_type = pmid_meta["anchor_type"]
-    anchor_type = _SUBPHASE_1_4_PILOT_ANCHOR_TYPE_MAP.get(raw_anchor_type, raw_anchor_type)
+    anchor_type = _SUBPHASE_1_4_ANCHOR_TYPE_MAP.get(raw_anchor_type, raw_anchor_type)
     return {
         "anchor_type": anchor_type,
         "pmid": pmid,
@@ -23189,17 +23222,40 @@ def _tbm_csf_profile_classical(
 
 def _tbm_dx_tests_xpert_mtb_rif(
     pmid: str, ultra: bool = True, smear_positive: bool = False,
-    pediatric: bool = False,
+    pediatric: bool = False, xpert_positive: bool = True,
 ) -> list[dict[str, Any]]:
-    """CSF Xpert MTB/RIF (Ultra) + optional smear + culture + chest film.
+    """CSF Xpert MTB/RIF (Ultra) +/- + optional smear + culture + chest film.
 
-    Adult: Xpert Ultra positive, AFB smear positive, CSF culture pending.
+    Adult Xpert-positive: Xpert Ultra positive, AFB smear optionally positive,
+    CSF culture pending then positive at 4 weeks.
     Pediatric: adds gastric aspirate culture per van Toorn pediatric review.
+
+    xpert_positive=False (5.4.3 extension, backward-compatible default True):
+    Xpert reports negative on initial CSF specimen (sensitivity 70-85 percent
+    per Hernandez TM&IH 2021); culture becomes the confirmation modality
+    (positive at 4 weeks) for RCT inclusion (Heemskerk 2016) or empirical-
+    therapy-initiation (Marais 2010 possible category).
     """
     label = "Ultra" if ultra else ""
+    if xpert_positive:
+        xpert_result = (
+            "Positive, rifampicin susceptible. Cycle threshold consistent with TBM."
+        )
+        culture_result = (
+            "Pending at LP; reported positive at 4 weeks (M. tuberculosis drug-sensitive)."
+        )
+    else:
+        xpert_result = (
+            "Negative on initial CSF specimen. Sensitivity 70-85 percent in "
+            "TBM per Hernandez TM&IH 2021; culture remains the confirmation modality."
+        )
+        culture_result = (
+            "Positive at 4 weeks (M. tuberculosis drug-sensitive); "
+            "Xpert-negative-culture-confirmed case per RCT inclusion."
+        )
     results: list[dict[str, Any]] = [
         {"test_name": f"CSF Xpert MTB/RIF {label}".strip(),
-         "result": "Positive, rifampicin susceptible. Cycle threshold consistent with TBM.",
+         "result": xpert_result,
          "sensitivity_pct": 85.0, "specificity_pct": 98.0,
          "citation_pmid_or_doi": f"PMID:{pmid}"},
     ]
@@ -23212,7 +23268,7 @@ def _tbm_dx_tests_xpert_mtb_rif(
         })
     results.append({
         "test_name": "CSF mycobacterial culture",
-        "result": "Pending at LP; reported positive at 4 weeks (M. tuberculosis drug-sensitive).",
+        "result": culture_result,
         "sensitivity_pct": 60.0, "specificity_pct": 100.0,
         "citation_pmid_or_doi": f"PMID:{pmid}",
     })
@@ -24141,11 +24197,11 @@ def generate_subphase_1_4_pilot_vignette(vignette_id: int) -> dict[str, Any]:
 
     region = spec["geography_region"]
     ethnicity = spec.get("ethnicity") or "other"
-    altitude = _SUBPHASE_1_4_PILOT_ALTITUDE_M.get(spec["geography_label"], 100)
+    altitude = _SUBPHASE_1_4_ALTITUDE_M.get(spec["geography_label"], 100)
 
     return {
         "schema_version": "2.0",
-        "case_id": _subphase_1_4_pilot_case_id(spec, pmid_meta),
+        "case_id": _subphase_1_4_case_id(spec, pmid_meta, case_prefix="PILOT"),
         "ground_truth_class": SUBPHASE_1_4_PILOT_CLASSES[vignette_id],
         "demographics": {
             "age_years": spec["age_years"],
@@ -24155,17 +24211,18 @@ def generate_subphase_1_4_pilot_vignette(vignette_id: int) -> dict[str, Any]:
             "altitude_residence_m": altitude,
         },
         "history": clinical["history"],
-        "exposure": _subphase_1_4_pilot_exposure(spec),
+        "exposure": _subphase_1_4_exposure(spec),
         "vitals": clinical["vitals"],
         "exam": clinical["exam"],
         "labs": clinical["labs"],
         "csf": clinical["csf"],
         "imaging": clinical["imaging"],
         "diagnostic_tests": clinical["diagnostic_tests"],
-        "adjudication": _subphase_1_4_pilot_adjudication(
-            spec, clinical["anchoring_extras"]),
-        "literature_anchors": [_subphase_1_4_pilot_literature_anchor(pmid_meta)],
-        "provenance": _subphase_1_4_pilot_provenance(clinical["rationale"]),
+        "adjudication": _subphase_1_4_adjudication(
+            spec, clinical["anchoring_extras"], case_prefix="PILOT"),
+        "literature_anchors": [_subphase_1_4_literature_anchor(pmid_meta)],
+        "provenance": _subphase_1_4_provenance(
+            clinical["rationale"], commit_marker="v1.4.2-pilot"),
         "narrative_es": clinical["narrative_es"],
         "narrative_en": clinical["narrative_en"],
     }
@@ -24191,6 +24248,1271 @@ def write_subphase_1_4_pilot_corpus() -> list[Path]:
     paths: list[Path] = []
     for vid in SUBPHASE_1_4_PILOT_IDS:
         paths.append(write_subphase_1_4_pilot_vignette(vid))
+    return paths
+
+
+# ============================================================================
+# Subphase 1.4 Commit 5.4.3 - TBM WAVE 1 BUILDERS (n=14, ids 123-136)
+# ----------------------------------------------------------------------------
+# Thwaites 5 (123-127) + Marais 3 (128-130) + Heemskerk 6 (131-136).
+# All Class 4 TBM adult HIV-negative (HIV-coinfected atypical land in wave_2).
+# CN VI palsy True in 5/14 (123, 126, 129, 131, 133) per Huynh 2022 Lancet
+# Neurol ~30 percent. Xpert MTB/RIF Ultra positive in 12/14; slots 130 (Marais
+# possible, dx_ambig) and 134 (Heemskerk young early-stage) are Xpert NEG with
+# culture-positive confirmation.
+#
+# Resolution #4 applied: slot 125 history.red_flags_present=
+# ["pregnancy_postpartum"] (41yo F second-trimester pregnancy disclosed in
+# prodrome).
+#
+# Architecture: reuses 5.4.2 TBM clinical helpers (_tbm_csf_profile_classical,
+# _tbm_dx_tests_xpert_mtb_rif with xpert_positive extension, _tbm_imaging_
+# basal_meningeal, _tbm_exam_cn_vi_palsy) and 5.4.2 shared helpers generalized
+# via case_prefix="WAVE1" / commit_marker="v1.4.3-wave1".
+# ============================================================================
+
+SUBPHASE_1_4_WAVE1_IDS: list[int] = list(range(123, 137))
+_W1_TBM_OUT = Path("data/vignettes/v2/class_04_tb")
+SUBPHASE_1_4_WAVE1_OUTPUT_DIR: dict[int, Path] = {
+    vid: _W1_TBM_OUT for vid in SUBPHASE_1_4_WAVE1_IDS
+}
+SUBPHASE_1_4_WAVE1_FILENAME: dict[int, str] = {
+    123: "tbm_123_thwaites_hcmc_adult_male_cnpalsy_wave1.json",
+    124: "tbm_124_thwaites_hcmc_adult_male_fatal_wave1.json",
+    125: "tbm_125_thwaites_hcmc_pregnancy_female_wave1.json",
+    126: "tbm_126_thwaites_hcmc_young_male_cnpalsy_wave1.json",
+    127: "tbm_127_thwaites_hcmc_adult_male_smearpos_wave1.json",
+    128: "tbm_128_marais_cape_town_adult_female_definite_wave1.json",
+    129: "tbm_129_marais_cape_town_adult_male_probable_wave1.json",
+    130: "tbm_130_marais_cape_town_adult_female_possible_wave1.json",
+    131: "tbm_131_heemskerk_hcmc_adult_male_standard_wave1.json",
+    132: "tbm_132_heemskerk_hcmc_adult_female_intensified_wave1.json",
+    133: "tbm_133_heemskerk_hcmc_adult_male_severe_fatal_wave1.json",
+    134: "tbm_134_heemskerk_hcmc_young_male_xpertneg_wave1.json",
+    135: "tbm_135_heemskerk_hcmc_elderly_female_sequelae_wave1.json",
+    136: "tbm_136_heemskerk_hcmc_adult_male_early_intensified_wave1.json",
+}
+
+
+def _tbm_exam_no_cn_palsy(mental: str = "somnolent",
+                          focal: bool = False,
+                          papilledema: bool = True) -> dict[str, Any]:
+    """PhysicalExam dict for TBM slots without CN VI palsy. Mirrors
+    _tbm_exam_cn_vi_palsy default fields with cranial_nerve_palsy='none'."""
+    return {
+        "mental_status_grade": mental,
+        "neck_stiffness": True,
+        "kernig_or_brudzinski_positive": True,
+        "focal_neurological_deficit": focal,
+        "cranial_nerve_palsy": "none",
+        "skin_lesion_centrofacial_chronic": False,
+        "petechial_or_purpuric_rash": False,
+        "papilledema_on_fundoscopy": papilledema,
+    }
+
+
+def _build_tbm_vignette_123() -> dict[str, Any]:
+    """TBM 123 Thwaites HCMC, 28yo M, CN VI palsy, mid-stage, survived."""
+    return {
+        "history": {
+            "symptom_onset_to_presentation_days": 21.0,
+            "chief_complaint": "fever_with_headache",
+            "prodrome_description": (
+                "Three-week subacute illness in a 28-year-old man from Ho Chi "
+                "Minh City. Low-grade evening fevers, weight loss of 5 kg, "
+                "progressive frontal headache, and intermittent vomiting in "
+                "the final week. His older brother had been treated for "
+                "pulmonary tuberculosis the prior year. No freshwater exposure."
+            ),
+            "red_flags_present": [],
+        },
+        "vitals": {"temperature_celsius": 38.6, "heart_rate_bpm": 102,
+                   "systolic_bp_mmHg": 124, "diastolic_bp_mmHg": 78,
+                   "glasgow_coma_scale": 12, "oxygen_saturation_pct": 96,
+                   "respiratory_rate_breaths_per_min": 18},
+        "exam": _tbm_exam_cn_vi_palsy(has_palsy=True, mental="somnolent", focal=True),
+        "labs": {"wbc_blood_per_uL": 8800, "platelets_per_uL": 296000,
+                 "alt_ast_U_per_L": 26, "crp_mg_per_L": 42.0,
+                 "procalcitonin_ng_per_mL": 0.4, "serum_sodium_mEq_per_L": 130},
+        "csf": _tbm_csf_profile_classical(op_cmH2O=22.0, wbc=320, lymph_pct=78,
+                                          glucose=26, protein=280, ada_U=15.0),
+        "imaging": _tbm_imaging_basal_meningeal(pediatric=False),
+        "diagnostic_tests": {"results": _tbm_dx_tests_xpert_mtb_rif(
+            pmid="15496623", ultra=True, smear_positive=True, pediatric=False,
+            xpert_positive=True)},
+        "narrative_en": (
+            "A 28-year-old man from Ho Chi Minh City presented to a tertiary "
+            "referral hospital with a three-week subacute illness of low-grade "
+            "evening fevers, weight loss of 5 kg, progressive frontal headache, "
+            "and intermittent vomiting in the final week. His older brother had "
+            "been treated for pulmonary tuberculosis the prior year. Examination "
+            "on admission: temperature 38.6 C, Glasgow Coma Scale 12, somnolent "
+            "but rousable, neck stiffness, positive Kernig sign, left lateral "
+            "gaze palsy consistent with sixth cranial nerve involvement, and "
+            "bilateral papilledema. CSF showed an opening pressure of 22 cmH2O, "
+            "white cell count 320 per cubic millimeter with 78 percent "
+            "lymphocytes, glucose 26 mg/dL, protein 280 mg/dL, and adenosine "
+            "deaminase 15 U/L. MRI with contrast demonstrated thick basal "
+            "meningeal enhancement and moderate communicating hydrocephalus. "
+            "CSF Xpert MTB/RIF Ultra was positive and rifampicin susceptible, "
+            "and AFB smear was positive on concentrated specimen. Anchored to "
+            "Thwaites NEJM 2004 (PMID 15496623). Wave 1, hold_for_revision."
+        ),
+        "narrative_es": (
+            "Varon de 28 anos de Ho Chi Minh, Vietnam, ingresado a un hospital "
+            "terciario tras tres semanas de cuadro subagudo: fiebre vespertina "
+            "baja, perdida de 5 kg, cefalea frontal progresiva y vomitos "
+            "intermitentes en la ultima semana. Hermano mayor con tuberculosis "
+            "pulmonar tratada el ano previo. Examen al ingreso: temperatura "
+            "38.6 C, Glasgow 12, somnoliento, rigidez de nuca, Kernig positivo, "
+            "paresia del sexto par craneal izquierdo y papiledema bilateral. "
+            "LCR con presion de apertura 22 cmH2O, leucocitos 320 por mm3 (78 "
+            "por ciento linfocitos), glucosa 26 mg/dL, proteina 280 mg/dL, "
+            "adenosina desaminasa 15 U/L. RM con engrosamiento meningeo basal "
+            "e hidrocefalia comunicante moderada. Xpert MTB/RIF Ultra positivo "
+            "en LCR, susceptible a rifampicina; baciloscopia positiva. Anclaje "
+            "Thwaites NEJM 2004. Wave 1, pre-adjudicacion."
+        ),
+        "rationale": (
+            "Subphase 1.4 commit 5.4.3 wave 1 vignette 123 of 14 for Class 4 "
+            "TBM. Anchored to Thwaites 2004 NEJM HCMC dexamethasone RCT. CN VI "
+            "palsy positive (Huynh 30 percent subset). Pre-adjudication "
+            "hold_for_revision."
+        ),
+        "anchoring_extras": (
+            "Anchored to Thwaites GE et al. NEJM 2004 (PMID 15496623), HCMC "
+            "dexamethasone TBM RCT. 28-year-old Vietnamese adult HIV-negative, "
+            "drug-sensitive TBM, lymphocytic CSF (lymph 78 percent, protein "
+            "280, glucose 26), ADA 15 U/L, Xpert MTB/RIF Ultra positive, AFB "
+            "smear positive, CN VI palsy positive. Pre-adjudication kappa 0.70."
+        ),
+    }
+
+
+def _build_tbm_vignette_124() -> dict[str, Any]:
+    """TBM 124 Thwaites HCMC, 52yo M, late-stage, fatal."""
+    return {
+        "history": {
+            "symptom_onset_to_presentation_days": 35.0,
+            "chief_complaint": "altered_mental_status",
+            "prodrome_description": (
+                "Five-week illness in a 52-year-old man from Ho Chi Minh City "
+                "managed at home with worsening headache, weight loss of 8 kg, "
+                "and progressive lethargy. Family brought him in obtunded after "
+                "a witnessed generalized seizure. Type 2 diabetes on metformin."
+            ),
+            "red_flags_present": [],
+        },
+        "vitals": {"temperature_celsius": 39.2, "heart_rate_bpm": 124,
+                   "systolic_bp_mmHg": 108, "diastolic_bp_mmHg": 64,
+                   "glasgow_coma_scale": 8, "oxygen_saturation_pct": 92,
+                   "respiratory_rate_breaths_per_min": 28},
+        "exam": _tbm_exam_no_cn_palsy(mental="stuporous", focal=True, papilledema=True),
+        "labs": {"wbc_blood_per_uL": 11600, "platelets_per_uL": 188000,
+                 "alt_ast_U_per_L": 48, "crp_mg_per_L": 78.0,
+                 "procalcitonin_ng_per_mL": 0.9, "serum_sodium_mEq_per_L": 126},
+        "csf": _tbm_csf_profile_classical(op_cmH2O=30.0, wbc=400, lymph_pct=72,
+                                          glucose=18, protein=380, ada_U=17.0),
+        "imaging": _tbm_imaging_basal_meningeal(pediatric=False),
+        "diagnostic_tests": {"results": _tbm_dx_tests_xpert_mtb_rif(
+            pmid="15496623", ultra=True, smear_positive=True, pediatric=False,
+            xpert_positive=True)},
+        "narrative_en": (
+            "A 52-year-old man from Ho Chi Minh City was brought to a tertiary "
+            "referral hospital obtunded after a witnessed generalized seizure. "
+            "His family reported a five-week illness with worsening headache, "
+            "an eight-kilogram weight loss, intermittent low-grade fevers, and "
+            "progressive lethargy that had been managed at home. He had type 2 "
+            "diabetes on metformin. Examination on admission: temperature 39.2 "
+            "C, Glasgow Coma Scale 8, stuporous, neck stiffness, positive "
+            "Kernig sign, right-sided motor weakness, and bilateral "
+            "papilledema. CSF showed an opening pressure of 30 cmH2O, white "
+            "cell count 400 per cubic millimeter with 72 percent lymphocytes, "
+            "glucose 18 mg/dL, protein 380 mg/dL, and adenosine deaminase 17 "
+            "U/L. MRI with contrast showed thick basal meningeal enhancement, "
+            "moderate communicating hydrocephalus, and bilateral basal ganglia "
+            "infarcts. CSF Xpert MTB/RIF Ultra was positive and rifampicin "
+            "susceptible; AFB smear was positive. Despite anti-tuberculous "
+            "therapy and adjunctive dexamethasone, the patient died on "
+            "hospital day five. Anchored to Thwaites NEJM 2004 (PMID 15496623). "
+            "Wave 1, hold_for_revision."
+        ),
+        "narrative_es": (
+            "Varon de 52 anos de Ho Chi Minh, Vietnam, llevado a urgencias "
+            "terciarias obnubilado tras una crisis generalizada presenciada. "
+            "La familia refiere cuadro de cinco semanas con cefalea creciente, "
+            "perdida de 8 kg, fiebre baja intermitente y letargia progresiva "
+            "manejada en casa. Diabetes tipo 2 en metformina. Examen: "
+            "temperatura 39.2 C, Glasgow 8, estuporoso, rigidez de nuca, "
+            "Kernig positivo, hemiparesia derecha, papiledema bilateral. LCR "
+            "con presion 30 cmH2O, leucocitos 400 por mm3 (72 por ciento "
+            "linfocitos), glucosa 18 mg/dL, proteina 380 mg/dL, adenosina "
+            "desaminasa 17 U/L. RM con engrosamiento meningeo basal, "
+            "hidrocefalia comunicante moderada e infartos bilaterales de "
+            "ganglios basales. Xpert MTB/RIF Ultra positivo; baciloscopia "
+            "positiva. Pese al tratamiento antifimico y dexametasona, "
+            "fallecio el dia hospitalario cinco. Anclaje Thwaites NEJM 2004."
+        ),
+        "rationale": (
+            "Subphase 1.4 commit 5.4.3 wave 1 vignette 124 of 14 for Class 4 "
+            "TBM. Anchored to Thwaites 2004 NEJM HCMC dexamethasone RCT. "
+            "Late-stage TBM mortality stratum (~31 percent cohort mortality). "
+            "Pre-adjudication hold_for_revision."
+        ),
+        "anchoring_extras": (
+            "Anchored to Thwaites GE et al. NEJM 2004 (PMID 15496623). "
+            "52-year-old Vietnamese male diabetic HIV-negative, late-stage "
+            "TBM (Glasgow 8 on admission), bilateral basal ganglia infarcts, "
+            "Xpert MTB/RIF Ultra positive, AFB smear positive; died hospital "
+            "day five despite full regimen. Pre-adjudication kappa 0.70."
+        ),
+    }
+
+
+def _build_tbm_vignette_125() -> dict[str, Any]:
+    """TBM 125 Thwaites HCMC, 41yo F second-trimester pregnant, mid, survived.
+    Resolution #4: red_flags_present=['pregnancy_postpartum']."""
+    return {
+        "history": {
+            "symptom_onset_to_presentation_days": 25.0,
+            "chief_complaint": "fever_with_headache",
+            "prodrome_description": (
+                "Three-and-a-half-week illness in a 41-year-old woman in her "
+                "second trimester of pregnancy from Ho Chi Minh City. Daily "
+                "afternoon fevers, bifrontal headache, and increasing "
+                "irritability. No prior documented tuberculosis exposure and "
+                "generally well before this illness."
+            ),
+            "red_flags_present": ["pregnancy_postpartum"],
+        },
+        "vitals": {"temperature_celsius": 38.4, "heart_rate_bpm": 96,
+                   "systolic_bp_mmHg": 118, "diastolic_bp_mmHg": 72,
+                   "glasgow_coma_scale": 13, "oxygen_saturation_pct": 97,
+                   "respiratory_rate_breaths_per_min": 18},
+        "exam": _tbm_exam_no_cn_palsy(mental="somnolent", focal=False, papilledema=True),
+        "labs": {"wbc_blood_per_uL": 7600, "platelets_per_uL": 248000,
+                 "alt_ast_U_per_L": 28, "crp_mg_per_L": 36.0,
+                 "procalcitonin_ng_per_mL": 0.3, "serum_sodium_mEq_per_L": 132},
+        "csf": _tbm_csf_profile_classical(op_cmH2O=20.0, wbc=240, lymph_pct=80,
+                                          glucose=30, protein=220, ada_U=13.0),
+        "imaging": _tbm_imaging_basal_meningeal(pediatric=False),
+        "diagnostic_tests": {"results": _tbm_dx_tests_xpert_mtb_rif(
+            pmid="15496623", ultra=True, smear_positive=False, pediatric=False,
+            xpert_positive=True)},
+        "narrative_en": (
+            "A 41-year-old woman in her second trimester of pregnancy from Ho "
+            "Chi Minh City presented to a tertiary referral hospital after a "
+            "three-and-a-half-week illness of daily afternoon fevers, "
+            "bifrontal headache, and increasing irritability. She had no "
+            "documented prior tuberculosis exposure and had been generally "
+            "well before this illness. Examination on admission: temperature "
+            "38.4 C, Glasgow Coma Scale 13, somnolent but rousable, neck "
+            "stiffness, positive Kernig sign, no focal motor deficit, and "
+            "papilledema on fundoscopy. CSF showed an opening pressure of 20 "
+            "cmH2O, white cell count 240 per cubic millimeter with 80 percent "
+            "lymphocytes, glucose 30 mg/dL, protein 220 mg/dL, and adenosine "
+            "deaminase 13 U/L. MRI with contrast demonstrated basal meningeal "
+            "enhancement with mild communicating hydrocephalus; obstetric "
+            "evaluation confirmed a viable intrauterine pregnancy. CSF Xpert "
+            "MTB/RIF Ultra was positive and rifampicin susceptible. Anchored "
+            "to Thwaites NEJM 2004 (PMID 15496623). Wave 1, hold_for_revision."
+        ),
+        "narrative_es": (
+            "Mujer de 41 anos de Ho Chi Minh, Vietnam, en el segundo "
+            "trimestre de embarazo, ingresada a un hospital terciario tras "
+            "tres semanas y media de fiebre vespertina diaria, cefalea "
+            "bifrontal e irritabilidad creciente. Sin antecedente documentado "
+            "de exposicion a tuberculosis. Examen: temperatura 38.4 C, "
+            "Glasgow 13, somnolienta, rigidez de nuca, Kernig positivo, sin "
+            "deficit motor focal, papiledema en fondo de ojo. LCR con presion "
+            "20 cmH2O, leucocitos 240 por mm3 (80 por ciento linfocitos), "
+            "glucosa 30 mg/dL, proteina 220 mg/dL, adenosina desaminasa 13 "
+            "U/L. RM con engrosamiento meningeo basal e hidrocefalia "
+            "comunicante leve; evaluacion obstetrica confirmo gestacion "
+            "viable intrauterina. Xpert MTB/RIF Ultra positivo en LCR. "
+            "Anclaje Thwaites NEJM 2004. Wave 1, pre-adjudicacion."
+        ),
+        "rationale": (
+            "Subphase 1.4 commit 5.4.3 wave 1 vignette 125 of 14 for Class 4 "
+            "TBM. Anchored to Thwaites 2004 NEJM HCMC dexamethasone RCT. "
+            "Pregnancy red flag (Resolution #4) per schema History."
+            "red_flags_present enum availability. Pre-adjudication "
+            "hold_for_revision."
+        ),
+        "anchoring_extras": (
+            "Anchored to Thwaites GE et al. NEJM 2004 (PMID 15496623). "
+            "41-year-old Vietnamese adult female, second-trimester pregnancy, "
+            "lymphocytic CSF (lymph 80 percent, protein 220, glucose 30), "
+            "ADA 13 U/L, Xpert MTB/RIF Ultra positive. Resolution #4 applied: "
+            "red_flags_present=['pregnancy_postpartum']. Pre-adjudication "
+            "kappa 0.70."
+        ),
+    }
+
+
+def _build_tbm_vignette_126() -> dict[str, Any]:
+    """TBM 126 Thwaites HCMC, 24yo M construction worker, early stage, CN VI palsy."""
+    return {
+        "history": {
+            "symptom_onset_to_presentation_days": 14.0,
+            "chief_complaint": "fever_with_headache",
+            "prodrome_description": (
+                "Two-week illness in a 24-year-old male construction worker "
+                "from Ho Chi Minh City. Daily fevers, frontal headache, and "
+                "three days of binocular horizontal diplopia in the final "
+                "week. A co-worker had been treated for smear-positive "
+                "pulmonary tuberculosis the prior month."
+            ),
+            "red_flags_present": [],
+        },
+        "vitals": {"temperature_celsius": 38.0, "heart_rate_bpm": 92,
+                   "systolic_bp_mmHg": 122, "diastolic_bp_mmHg": 76,
+                   "glasgow_coma_scale": 14, "oxygen_saturation_pct": 97,
+                   "respiratory_rate_breaths_per_min": 18},
+        "exam": _tbm_exam_cn_vi_palsy(has_palsy=True, mental="confused", focal=True),
+        "labs": {"wbc_blood_per_uL": 7200, "platelets_per_uL": 318000,
+                 "alt_ast_U_per_L": 24, "crp_mg_per_L": 28.0,
+                 "procalcitonin_ng_per_mL": 0.3, "serum_sodium_mEq_per_L": 134},
+        "csf": _tbm_csf_profile_classical(op_cmH2O=18.0, wbc=180, lymph_pct=82,
+                                          glucose=32, protein=180, ada_U=11.0),
+        "imaging": _tbm_imaging_basal_meningeal(pediatric=False),
+        "diagnostic_tests": {"results": _tbm_dx_tests_xpert_mtb_rif(
+            pmid="15496623", ultra=True, smear_positive=False, pediatric=False,
+            xpert_positive=True)},
+        "narrative_en": (
+            "A 24-year-old male construction worker from Ho Chi Minh City "
+            "presented to a tertiary referral hospital after a two-week "
+            "illness of daily low-grade fevers, frontal headache, and three "
+            "days of binocular horizontal diplopia in the final week. A "
+            "co-worker had been treated for smear-positive pulmonary "
+            "tuberculosis the prior month. Examination on admission: "
+            "temperature 38.0 C, Glasgow Coma Scale 14, mild confusion, neck "
+            "stiffness, positive Kernig sign, right lateral gaze palsy "
+            "consistent with sixth cranial nerve involvement, and "
+            "papilledema. CSF showed an opening pressure of 18 cmH2O, white "
+            "cell count 180 per cubic millimeter with 82 percent lymphocytes, "
+            "glucose 32 mg/dL, protein 180 mg/dL, and adenosine deaminase 11 "
+            "U/L. MRI with contrast demonstrated early basal meningeal "
+            "enhancement without significant hydrocephalus. CSF Xpert MTB/RIF "
+            "Ultra was positive and rifampicin susceptible. Anchored to "
+            "Thwaites NEJM 2004 (PMID 15496623). Wave 1, hold_for_revision."
+        ),
+        "narrative_es": (
+            "Varon de 24 anos, obrero de construccion, de Ho Chi Minh, "
+            "Vietnam, ingresado a un hospital terciario tras dos semanas de "
+            "fiebre baja diaria, cefalea frontal y tres dias de diplopia "
+            "horizontal binocular en la ultima semana. Companero de trabajo "
+            "tratado por tuberculosis pulmonar baciloscopia positiva el mes "
+            "previo. Examen: temperatura 38.0 C, Glasgow 14, confusion leve, "
+            "rigidez de nuca, Kernig positivo, paresia del sexto par craneal "
+            "derecho, papiledema. LCR con presion 18 cmH2O, leucocitos 180 "
+            "por mm3 (82 por ciento linfocitos), glucosa 32 mg/dL, proteina "
+            "180 mg/dL, adenosina desaminasa 11 U/L. RM con engrosamiento "
+            "meningeo basal incipiente sin hidrocefalia significativa. Xpert "
+            "MTB/RIF Ultra positivo en LCR. Anclaje Thwaites NEJM 2004. "
+            "Wave 1, pre-adjudicacion."
+        ),
+        "rationale": (
+            "Subphase 1.4 commit 5.4.3 wave 1 vignette 126 of 14 for Class 4 "
+            "TBM. Anchored to Thwaites 2004 NEJM. Early-stage TBM with CN VI "
+            "palsy positive (Huynh 30 percent subset). Pre-adjudication "
+            "hold_for_revision."
+        ),
+        "anchoring_extras": (
+            "Anchored to Thwaites GE et al. NEJM 2004 (PMID 15496623). "
+            "24-year-old Vietnamese male construction worker HIV-negative, "
+            "early-stage TBM with binocular diplopia, lymphocytic CSF "
+            "(lymph 82 percent, protein 180, glucose 32), ADA 11 U/L, "
+            "Xpert MTB/RIF Ultra positive, CN VI palsy positive. "
+            "Pre-adjudication kappa 0.70."
+        ),
+    }
+
+
+def _build_tbm_vignette_127() -> dict[str, Any]:
+    """TBM 127 Thwaites HCMC, 38yo M, mid stage, AFB smear positive, survived."""
+    return {
+        "history": {
+            "symptom_onset_to_presentation_days": 28.0,
+            "chief_complaint": "fever_with_headache",
+            "prodrome_description": (
+                "Four-week illness in a 38-year-old man from Ho Chi Minh City. "
+                "Persistent low-grade fevers, occipital headache, weight loss "
+                "of 6 kg. Heavy cigarette smoker, no documented tuberculosis "
+                "contact."
+            ),
+            "red_flags_present": [],
+        },
+        "vitals": {"temperature_celsius": 38.5, "heart_rate_bpm": 100,
+                   "systolic_bp_mmHg": 128, "diastolic_bp_mmHg": 80,
+                   "glasgow_coma_scale": 13, "oxygen_saturation_pct": 96,
+                   "respiratory_rate_breaths_per_min": 18},
+        "exam": _tbm_exam_no_cn_palsy(mental="somnolent", focal=False, papilledema=True),
+        "labs": {"wbc_blood_per_uL": 9200, "platelets_per_uL": 286000,
+                 "alt_ast_U_per_L": 32, "crp_mg_per_L": 48.0,
+                 "procalcitonin_ng_per_mL": 0.5, "serum_sodium_mEq_per_L": 128},
+        "csf": _tbm_csf_profile_classical(op_cmH2O=26.0, wbc=360, lymph_pct=75,
+                                          glucose=24, protein=320, ada_U=16.0),
+        "imaging": _tbm_imaging_basal_meningeal(pediatric=False),
+        "diagnostic_tests": {"results": _tbm_dx_tests_xpert_mtb_rif(
+            pmid="15496623", ultra=True, smear_positive=True, pediatric=False,
+            xpert_positive=True)},
+        "narrative_en": (
+            "A 38-year-old man from Ho Chi Minh City presented to a tertiary "
+            "referral hospital with a four-week illness of persistent "
+            "low-grade fevers, occipital headache, and a six-kilogram weight "
+            "loss. He was a heavy cigarette smoker and reported no documented "
+            "tuberculosis contact. Examination on admission: temperature 38.5 "
+            "C, Glasgow Coma Scale 13, somnolent but rousable, neck stiffness, "
+            "positive Kernig sign, no focal motor deficit, and papilledema on "
+            "fundoscopy. CSF showed an opening pressure of 26 cmH2O, white "
+            "cell count 360 per cubic millimeter with 75 percent lymphocytes, "
+            "glucose 24 mg/dL, protein 320 mg/dL, and adenosine deaminase 16 "
+            "U/L. MRI with contrast demonstrated thick basal meningeal "
+            "enhancement and mild communicating hydrocephalus. CSF Xpert "
+            "MTB/RIF Ultra was positive and rifampicin susceptible, and AFB "
+            "smear was positive on concentrated specimen. Anchored to "
+            "Thwaites NEJM 2004 (PMID 15496623). Wave 1, hold_for_revision."
+        ),
+        "narrative_es": (
+            "Varon de 38 anos de Ho Chi Minh, Vietnam, ingresado a un "
+            "hospital terciario tras cuatro semanas de fiebre baja "
+            "persistente, cefalea occipital y perdida de 6 kg. Fumador "
+            "empedernido, sin contacto documentado con tuberculosis. Examen: "
+            "temperatura 38.5 C, Glasgow 13, somnoliento, rigidez de nuca, "
+            "Kernig positivo, sin deficit motor focal, papiledema en fondo de "
+            "ojo. LCR con presion 26 cmH2O, leucocitos 360 por mm3 (75 por "
+            "ciento linfocitos), glucosa 24 mg/dL, proteina 320 mg/dL, "
+            "adenosina desaminasa 16 U/L. RM con engrosamiento meningeo basal "
+            "e hidrocefalia comunicante leve. Xpert MTB/RIF Ultra positivo en "
+            "LCR, susceptible a rifampicina; baciloscopia positiva en muestra "
+            "concentrada. Anclaje Thwaites NEJM 2004. Wave 1, pre-adjudicacion."
+        ),
+        "rationale": (
+            "Subphase 1.4 commit 5.4.3 wave 1 vignette 127 of 14 for Class 4 "
+            "TBM. Anchored to Thwaites 2004 NEJM. Heavy-smoker risk factor; "
+            "AFB-smear-positive concentrated CSF. Pre-adjudication "
+            "hold_for_revision."
+        ),
+        "anchoring_extras": (
+            "Anchored to Thwaites GE et al. NEJM 2004 (PMID 15496623). "
+            "38-year-old Vietnamese adult male HIV-negative heavy smoker, "
+            "drug-sensitive TBM, lymphocytic CSF (lymph 75 percent, protein "
+            "320, glucose 24), ADA 16 U/L, Xpert MTB/RIF Ultra positive, AFB "
+            "smear positive. Pre-adjudication kappa 0.70."
+        ),
+    }
+
+
+def _build_tbm_vignette_128() -> dict[str, Any]:
+    """TBM 128 Marais Cape Town, 32yo F, definite TBM, household contact."""
+    return {
+        "history": {
+            "symptom_onset_to_presentation_days": 21.0,
+            "chief_complaint": "fever_with_headache",
+            "prodrome_description": (
+                "Three-week illness in a 32-year-old woman from Cape Town. "
+                "Subacute headache, intermittent fevers, weight loss of 4 kg. "
+                "Her husband had recently started treatment for sputum-"
+                "positive pulmonary tuberculosis."
+            ),
+            "red_flags_present": [],
+        },
+        "vitals": {"temperature_celsius": 38.4, "heart_rate_bpm": 98,
+                   "systolic_bp_mmHg": 116, "diastolic_bp_mmHg": 72,
+                   "glasgow_coma_scale": 13, "oxygen_saturation_pct": 97,
+                   "respiratory_rate_breaths_per_min": 18},
+        "exam": _tbm_exam_no_cn_palsy(mental="somnolent", focal=False, papilledema=True),
+        "labs": {"wbc_blood_per_uL": 8200, "platelets_per_uL": 274000,
+                 "alt_ast_U_per_L": 26, "crp_mg_per_L": 42.0,
+                 "procalcitonin_ng_per_mL": 0.4, "serum_sodium_mEq_per_L": 130},
+        "csf": _tbm_csf_profile_classical(op_cmH2O=22.0, wbc=280, lymph_pct=78,
+                                          glucose=28, protein=240, ada_U=14.0),
+        "imaging": _tbm_imaging_basal_meningeal(pediatric=False),
+        "diagnostic_tests": {"results": _tbm_dx_tests_xpert_mtb_rif(
+            pmid="20822958", ultra=True, smear_positive=False, pediatric=False,
+            xpert_positive=True)},
+        "narrative_en": (
+            "A 32-year-old woman from Cape Town presented to a tertiary "
+            "referral hospital with a three-week illness of subacute "
+            "headache, intermittent fevers, and a four-kilogram weight loss. "
+            "Her husband had recently started treatment for sputum-positive "
+            "pulmonary tuberculosis. Examination on admission: temperature "
+            "38.4 C, Glasgow Coma Scale 13, somnolent but rousable, neck "
+            "stiffness, positive Kernig sign, no focal motor deficit, and "
+            "papilledema on fundoscopy. CSF showed an opening pressure of 22 "
+            "cmH2O, white cell count 280 per cubic millimeter with 78 percent "
+            "lymphocytes, glucose 28 mg/dL, protein 240 mg/dL, and adenosine "
+            "deaminase 14 U/L. MRI with contrast demonstrated basal meningeal "
+            "enhancement with mild communicating hydrocephalus. CSF Xpert "
+            "MTB/RIF Ultra was positive and rifampicin susceptible, "
+            "satisfying the Marais 2010 uniform case definition for definite "
+            "tuberculous meningitis. Anchored to Marais Lancet ID 2010 (PMID "
+            "20822958). Wave 1, hold_for_revision."
+        ),
+        "narrative_es": (
+            "Mujer de 32 anos de Ciudad del Cabo, Sudafrica, ingresada a un "
+            "hospital terciario tras tres semanas de cefalea subaguda, fiebre "
+            "intermitente y perdida de 4 kg. Esposo recientemente en "
+            "tratamiento por tuberculosis pulmonar baciloscopia positiva. "
+            "Examen: temperatura 38.4 C, Glasgow 13, somnolienta, rigidez de "
+            "nuca, Kernig positivo, sin deficit motor focal, papiledema en "
+            "fondo de ojo. LCR con presion 22 cmH2O, leucocitos 280 por mm3 "
+            "(78 por ciento linfocitos), glucosa 28 mg/dL, proteina 240 "
+            "mg/dL, adenosina desaminasa 14 U/L. RM con engrosamiento "
+            "meningeo basal e hidrocefalia comunicante leve. Xpert MTB/RIF "
+            "Ultra positivo en LCR, susceptible a rifampicina, cumpliendo la "
+            "definicion de caso uniforme de Marais 2010 para meningitis "
+            "tuberculosa definitiva. Anclaje Marais Lancet ID 2010."
+        ),
+        "rationale": (
+            "Subphase 1.4 commit 5.4.3 wave 1 vignette 128 of 14 for Class 4 "
+            "TBM. Anchored to Marais 2010 uniform case definition; classical "
+            "definite TBM (microbiologically confirmed). Pre-adjudication "
+            "hold_for_revision."
+        ),
+        "anchoring_extras": (
+            "Anchored to Marais S et al. Lancet ID 2010 (PMID 20822958), "
+            "TBM uniform case definition. 32-year-old South African adult "
+            "female HIV-negative, household TB contact, drug-sensitive TBM, "
+            "lymphocytic CSF, ADA 14 U/L, Xpert MTB/RIF Ultra positive "
+            "(definite TBM per uniform case definition). Pre-adjudication "
+            "kappa 0.70."
+        ),
+    }
+
+
+def _build_tbm_vignette_129() -> dict[str, Any]:
+    """TBM 129 Marais Cape Town, 46yo M, probable TBM, CN VI palsy, heavy alcohol."""
+    return {
+        "history": {
+            "symptom_onset_to_presentation_days": 28.0,
+            "chief_complaint": "fever_with_headache",
+            "prodrome_description": (
+                "Four-week illness in a 46-year-old man from Cape Town. "
+                "Worsening headache, low-grade fevers, and three days of "
+                "binocular horizontal diplopia in the final week. His brother "
+                "had died of tuberculosis ten years earlier; heavy alcohol use."
+            ),
+            "red_flags_present": [],
+        },
+        "vitals": {"temperature_celsius": 38.2, "heart_rate_bpm": 102,
+                   "systolic_bp_mmHg": 122, "diastolic_bp_mmHg": 76,
+                   "glasgow_coma_scale": 12, "oxygen_saturation_pct": 96,
+                   "respiratory_rate_breaths_per_min": 18},
+        "exam": _tbm_exam_cn_vi_palsy(has_palsy=True, mental="somnolent", focal=True),
+        "labs": {"wbc_blood_per_uL": 9400, "platelets_per_uL": 232000,
+                 "alt_ast_U_per_L": 64, "crp_mg_per_L": 52.0,
+                 "procalcitonin_ng_per_mL": 0.6, "serum_sodium_mEq_per_L": 128},
+        "csf": _tbm_csf_profile_classical(op_cmH2O=24.0, wbc=340, lymph_pct=76,
+                                          glucose=22, protein=300, ada_U=16.0),
+        "imaging": _tbm_imaging_basal_meningeal(pediatric=False),
+        "diagnostic_tests": {"results": _tbm_dx_tests_xpert_mtb_rif(
+            pmid="20822958", ultra=True, smear_positive=False, pediatric=False,
+            xpert_positive=True)},
+        "narrative_en": (
+            "A 46-year-old man from Cape Town presented to a tertiary "
+            "referral hospital with a four-week illness of worsening "
+            "headache, persistent low-grade fevers, and three days of "
+            "binocular horizontal diplopia in the final week. His brother had "
+            "died of tuberculosis ten years earlier, and he reported heavy "
+            "alcohol use. Examination on admission: temperature 38.2 C, "
+            "Glasgow Coma Scale 12, somnolent but rousable, neck stiffness, "
+            "positive Kernig sign, left lateral gaze palsy consistent with "
+            "sixth cranial nerve involvement, and bilateral papilledema. CSF "
+            "showed an opening pressure of 24 cmH2O, white cell count 340 "
+            "per cubic millimeter with 76 percent lymphocytes, glucose 22 "
+            "mg/dL, protein 300 mg/dL, and adenosine deaminase 16 U/L. MRI "
+            "with contrast demonstrated thick basal meningeal enhancement "
+            "with moderate communicating hydrocephalus. CSF Xpert MTB/RIF "
+            "Ultra was positive and rifampicin susceptible; the case meets "
+            "Marais 2010 probable tuberculous meningitis criteria with score "
+            "14. Anchored to Marais Lancet ID 2010. Wave 1, hold_for_revision."
+        ),
+        "narrative_es": (
+            "Varon de 46 anos de Ciudad del Cabo, Sudafrica, ingresado a un "
+            "hospital terciario tras cuatro semanas de cefalea creciente, "
+            "fiebre baja persistente y tres dias de diplopia horizontal "
+            "binocular en la ultima semana. Hermano fallecido de tuberculosis "
+            "hace diez anos; consumo intenso de alcohol. Examen: temperatura "
+            "38.2 C, Glasgow 12, somnoliento, rigidez de nuca, Kernig "
+            "positivo, paresia del sexto par craneal izquierdo, papiledema "
+            "bilateral. LCR con presion 24 cmH2O, leucocitos 340 por mm3 (76 "
+            "por ciento linfocitos), glucosa 22 mg/dL, proteina 300 mg/dL, "
+            "adenosina desaminasa 16 U/L. RM con engrosamiento meningeo basal "
+            "e hidrocefalia comunicante moderada. Xpert MTB/RIF Ultra "
+            "positivo en LCR; el caso cumple criterios probables de Marais "
+            "2010 con puntaje 14. Anclaje Marais Lancet ID 2010."
+        ),
+        "rationale": (
+            "Subphase 1.4 commit 5.4.3 wave 1 vignette 129 of 14 for Class 4 "
+            "TBM. Anchored to Marais 2010 probable category (score 14). CN VI "
+            "palsy positive (Huynh 30 percent subset). Pre-adjudication "
+            "hold_for_revision."
+        ),
+        "anchoring_extras": (
+            "Anchored to Marais S et al. Lancet ID 2010 (PMID 20822958), "
+            "TBM uniform case definition probable category. 46-year-old "
+            "South African adult male HIV-negative heavy alcohol, lymphocytic "
+            "CSF (lymph 76 percent, protein 300, glucose 22), ADA 16 U/L, "
+            "Xpert MTB/RIF Ultra positive, CN VI palsy positive, Marais "
+            "score 14. Pre-adjudication kappa 0.70."
+        ),
+    }
+
+
+def _build_tbm_vignette_130() -> dict[str, Any]:
+    """TBM 130 Marais Cape Town, 29yo F, possible TBM, Xpert NEG, dx_ambiguity."""
+    return {
+        "history": {
+            "symptom_onset_to_presentation_days": 14.0,
+            "chief_complaint": "fever_with_headache",
+            "prodrome_description": (
+                "Two-week illness in a 29-year-old woman from Cape Town with "
+                "subacute headache and intermittent low-grade fevers. She "
+                "lived in an informal settlement, was HIV negative on rapid "
+                "testing, and reported no documented tuberculosis contact."
+            ),
+            "red_flags_present": [],
+        },
+        "vitals": {"temperature_celsius": 38.0, "heart_rate_bpm": 92,
+                   "systolic_bp_mmHg": 118, "diastolic_bp_mmHg": 74,
+                   "glasgow_coma_scale": 14, "oxygen_saturation_pct": 97,
+                   "respiratory_rate_breaths_per_min": 18},
+        "exam": _tbm_exam_no_cn_palsy(mental="confused", focal=False, papilledema=False),
+        "labs": {"wbc_blood_per_uL": 7400, "platelets_per_uL": 264000,
+                 "alt_ast_U_per_L": 22, "crp_mg_per_L": 28.0,
+                 "procalcitonin_ng_per_mL": 0.3, "serum_sodium_mEq_per_L": 134},
+        "csf": _tbm_csf_profile_classical(op_cmH2O=18.0, wbc=200, lymph_pct=76,
+                                          glucose=36, protein=180, ada_U=11.0),
+        "imaging": _tbm_imaging_basal_meningeal(pediatric=False),
+        "diagnostic_tests": {"results": _tbm_dx_tests_xpert_mtb_rif(
+            pmid="20822958", ultra=True, smear_positive=False, pediatric=False,
+            xpert_positive=False)},
+        "narrative_en": (
+            "A 29-year-old woman from Cape Town presented to a tertiary "
+            "referral hospital with a two-week illness of subacute headache "
+            "and intermittent low-grade fevers. She lived in an informal "
+            "settlement, was HIV negative on rapid testing, and reported no "
+            "documented tuberculosis contact. Examination on admission: "
+            "temperature 38.0 C, Glasgow Coma Scale 14, mild confusion, neck "
+            "stiffness, positive Kernig sign, no focal motor deficit, and no "
+            "papilledema on fundoscopy. CSF showed an opening pressure of 18 "
+            "cmH2O, white cell count 200 per cubic millimeter with 76 percent "
+            "lymphocytes, glucose 36 mg/dL, protein 180 mg/dL, and adenosine "
+            "deaminase 11 U/L. MRI with contrast demonstrated subtle basal "
+            "meningeal enhancement without hydrocephalus. CSF Xpert MTB/RIF "
+            "Ultra was negative on the initial specimen and mycobacterial "
+            "culture remained pending. The case meets Marais 2010 possible "
+            "tuberculous meningitis criteria with score 9; empirical "
+            "anti-tuberculous therapy was initiated. Anchored to Marais "
+            "Lancet ID 2010 (PMID 20822958). Wave 1, hold_for_revision."
+        ),
+        "narrative_es": (
+            "Mujer de 29 anos de Ciudad del Cabo, Sudafrica, ingresada a un "
+            "hospital terciario tras dos semanas de cefalea subaguda y fiebre "
+            "baja intermitente. Vive en asentamiento informal, VIH negativo "
+            "en prueba rapida, sin contacto documentado con tuberculosis. "
+            "Examen: temperatura 38.0 C, Glasgow 14, confusion leve, rigidez "
+            "de nuca, Kernig positivo, sin deficit motor focal, sin "
+            "papiledema. LCR con presion 18 cmH2O, leucocitos 200 por mm3 "
+            "(76 por ciento linfocitos), glucosa 36 mg/dL, proteina 180 "
+            "mg/dL, adenosina desaminasa 11 U/L. RM con engrosamiento "
+            "meningeo basal sutil sin hidrocefalia. Xpert MTB/RIF Ultra "
+            "negativo en muestra inicial; cultivo micobacteriano pendiente. "
+            "El caso cumple criterios posibles de Marais 2010 con puntaje 9; "
+            "tratamiento antifimico empirico iniciado. Anclaje Marais Lancet "
+            "ID 2010. Wave 1, pre-adjudicacion."
+        ),
+        "rationale": (
+            "Subphase 1.4 commit 5.4.3 wave 1 vignette 130 of 14 for Class 4 "
+            "TBM. Anchored to Marais 2010 possible category (score 9). "
+            "Diagnostic ambiguity slot: Xpert NEG with culture pending; "
+            "empirical anti-TB therapy. Pre-adjudication hold_for_revision."
+        ),
+        "anchoring_extras": (
+            "Anchored to Marais S et al. Lancet ID 2010 (PMID 20822958), "
+            "TBM uniform case definition possible category. 29-year-old "
+            "South African adult female HIV-negative informal-settlement "
+            "resident, lymphocytic CSF, ADA 11 U/L, Xpert MTB/RIF Ultra "
+            "NEGATIVE on initial specimen, culture pending, Marais score 9. "
+            "Diagnostic ambiguity flag True. Pre-adjudication kappa 0.70."
+        ),
+    }
+
+
+def _build_tbm_vignette_131() -> dict[str, Any]:
+    """TBM 131 Heemskerk HCMC, 36yo M, standard arm, CN VI palsy, mid, survived."""
+    return {
+        "history": {
+            "symptom_onset_to_presentation_days": 24.0,
+            "chief_complaint": "fever_with_headache",
+            "prodrome_description": (
+                "Three-and-a-half-week illness in a 36-year-old male "
+                "construction worker from Ho Chi Minh City. Persistent fevers, "
+                "progressive frontal headache, intermittent vomiting, and "
+                "three days of binocular diplopia in the final week. HIV "
+                "negative, no prior tuberculosis contact."
+            ),
+            "red_flags_present": [],
+        },
+        "vitals": {"temperature_celsius": 38.6, "heart_rate_bpm": 104,
+                   "systolic_bp_mmHg": 124, "diastolic_bp_mmHg": 78,
+                   "glasgow_coma_scale": 12, "oxygen_saturation_pct": 96,
+                   "respiratory_rate_breaths_per_min": 18},
+        "exam": _tbm_exam_cn_vi_palsy(has_palsy=True, mental="somnolent", focal=True),
+        "labs": {"wbc_blood_per_uL": 9000, "platelets_per_uL": 282000,
+                 "alt_ast_U_per_L": 28, "crp_mg_per_L": 46.0,
+                 "procalcitonin_ng_per_mL": 0.5, "serum_sodium_mEq_per_L": 130},
+        "csf": _tbm_csf_profile_classical(op_cmH2O=24.0, wbc=320, lymph_pct=78,
+                                          glucose=26, protein=280, ada_U=15.0),
+        "imaging": _tbm_imaging_basal_meningeal(pediatric=False),
+        "diagnostic_tests": {"results": _tbm_dx_tests_xpert_mtb_rif(
+            pmid="26760084", ultra=True, smear_positive=False, pediatric=False,
+            xpert_positive=True)},
+        "narrative_en": (
+            "A 36-year-old male construction worker from Ho Chi Minh City "
+            "presented to a tertiary referral hospital with a three-and-a-"
+            "half-week illness of persistent fevers, progressive frontal "
+            "headache, intermittent vomiting, and three days of binocular "
+            "diplopia in the final week. He was HIV negative and reported no "
+            "prior tuberculosis contact. Examination on admission: temperature "
+            "38.6 C, Glasgow Coma Scale 12, somnolent but rousable, neck "
+            "stiffness, positive Kernig sign, right lateral gaze palsy "
+            "consistent with sixth cranial nerve involvement, and "
+            "papilledema. CSF showed an opening pressure of 24 cmH2O, white "
+            "cell count 320 per cubic millimeter with 78 percent lymphocytes, "
+            "glucose 26 mg/dL, protein 280 mg/dL, and adenosine deaminase 15 "
+            "U/L. MRI with contrast demonstrated basal meningeal enhancement "
+            "with mild communicating hydrocephalus. CSF Xpert MTB/RIF Ultra "
+            "was positive and rifampicin susceptible. He was randomized to "
+            "the standard anti-tuberculous arm. Anchored to Heemskerk NEJM "
+            "2016 (PMID 26760084). Wave 1, hold_for_revision."
+        ),
+        "narrative_es": (
+            "Varon de 36 anos, obrero de construccion, de Ho Chi Minh, "
+            "Vietnam, ingresado a un hospital terciario tras tres semanas y "
+            "media de fiebre persistente, cefalea frontal progresiva, vomitos "
+            "intermitentes y tres dias de diplopia binocular en la ultima "
+            "semana. VIH negativo, sin contacto previo con tuberculosis. "
+            "Examen: temperatura 38.6 C, Glasgow 12, somnoliento, rigidez de "
+            "nuca, Kernig positivo, paresia del sexto par craneal derecho, "
+            "papiledema. LCR con presion 24 cmH2O, leucocitos 320 por mm3 "
+            "(78 por ciento linfocitos), glucosa 26 mg/dL, proteina 280 "
+            "mg/dL, adenosina desaminasa 15 U/L. RM con engrosamiento "
+            "meningeo basal e hidrocefalia comunicante leve. Xpert MTB/RIF "
+            "Ultra positivo en LCR, susceptible a rifampicina. Aleatorizado "
+            "al brazo estandar. Anclaje Heemskerk NEJM 2016."
+        ),
+        "rationale": (
+            "Subphase 1.4 commit 5.4.3 wave 1 vignette 131 of 14 for Class 4 "
+            "TBM. Anchored to Heemskerk 2016 NEJM intensified-anti-TB RCT, "
+            "standard arm. CN VI palsy positive. Pre-adjudication "
+            "hold_for_revision."
+        ),
+        "anchoring_extras": (
+            "Anchored to Heemskerk AD et al. NEJM 2016 (PMID 26760084), "
+            "HCMC intensified-anti-TB RCT standard arm. 36-year-old "
+            "Vietnamese adult male HIV-negative, lymphocytic CSF, ADA 15 "
+            "U/L, Xpert MTB/RIF Ultra positive, CN VI palsy positive. "
+            "Pre-adjudication kappa 0.70."
+        ),
+    }
+
+
+def _build_tbm_vignette_132() -> dict[str, Any]:
+    """TBM 132 Heemskerk HCMC, 27yo F schoolteacher, intensified arm, mid, survived."""
+    return {
+        "history": {
+            "symptom_onset_to_presentation_days": 21.0,
+            "chief_complaint": "fever_with_headache",
+            "prodrome_description": (
+                "Three-week illness in a 27-year-old female schoolteacher "
+                "from Ho Chi Minh City. Daily fevers, persistent bifrontal "
+                "headache, and increasing fatigue. HIV negative; mother "
+                "treated for sputum-positive pulmonary tuberculosis the prior "
+                "year."
+            ),
+            "red_flags_present": [],
+        },
+        "vitals": {"temperature_celsius": 38.3, "heart_rate_bpm": 96,
+                   "systolic_bp_mmHg": 116, "diastolic_bp_mmHg": 72,
+                   "glasgow_coma_scale": 13, "oxygen_saturation_pct": 97,
+                   "respiratory_rate_breaths_per_min": 18},
+        "exam": _tbm_exam_no_cn_palsy(mental="somnolent", focal=False, papilledema=True),
+        "labs": {"wbc_blood_per_uL": 7800, "platelets_per_uL": 304000,
+                 "alt_ast_U_per_L": 26, "crp_mg_per_L": 38.0,
+                 "procalcitonin_ng_per_mL": 0.4, "serum_sodium_mEq_per_L": 132},
+        "csf": _tbm_csf_profile_classical(op_cmH2O=20.0, wbc=240, lymph_pct=80,
+                                          glucose=30, protein=220, ada_U=13.0),
+        "imaging": _tbm_imaging_basal_meningeal(pediatric=False),
+        "diagnostic_tests": {"results": _tbm_dx_tests_xpert_mtb_rif(
+            pmid="26760084", ultra=True, smear_positive=False, pediatric=False,
+            xpert_positive=True)},
+        "narrative_en": (
+            "A 27-year-old female schoolteacher from Ho Chi Minh City "
+            "presented to a tertiary referral hospital with a three-week "
+            "illness of daily fevers, persistent bifrontal headache, and "
+            "increasing fatigue. She was HIV negative; her mother had been "
+            "treated for sputum-positive pulmonary tuberculosis the prior "
+            "year. Examination on admission: temperature 38.3 C, Glasgow Coma "
+            "Scale 13, somnolent but rousable, neck stiffness, positive "
+            "Kernig sign, no focal motor deficit, and papilledema on "
+            "fundoscopy. CSF showed an opening pressure of 20 cmH2O, white "
+            "cell count 240 per cubic millimeter with 80 percent lymphocytes, "
+            "glucose 30 mg/dL, protein 220 mg/dL, and adenosine deaminase 13 "
+            "U/L. MRI with contrast demonstrated basal meningeal enhancement "
+            "with mild communicating hydrocephalus. CSF Xpert MTB/RIF Ultra "
+            "was positive and rifampicin susceptible. She was randomized to "
+            "the intensified anti-tuberculous arm with rifampicin 15 mg/kg "
+            "and levofloxacin. Anchored to Heemskerk NEJM 2016 (PMID "
+            "26760084). Wave 1, hold_for_revision."
+        ),
+        "narrative_es": (
+            "Mujer de 27 anos, profesora de escuela, de Ho Chi Minh, "
+            "Vietnam, ingresada a un hospital terciario tras tres semanas de "
+            "fiebre diaria, cefalea bifrontal persistente y fatiga creciente. "
+            "VIH negativo; madre tratada por tuberculosis pulmonar "
+            "baciloscopia positiva el ano previo. Examen: temperatura 38.3 "
+            "C, Glasgow 13, somnolienta, rigidez de nuca, Kernig positivo, "
+            "sin deficit motor focal, papiledema en fondo de ojo. LCR con "
+            "presion 20 cmH2O, leucocitos 240 por mm3 (80 por ciento "
+            "linfocitos), glucosa 30 mg/dL, proteina 220 mg/dL, adenosina "
+            "desaminasa 13 U/L. RM con engrosamiento meningeo basal e "
+            "hidrocefalia comunicante leve. Xpert MTB/RIF Ultra positivo en "
+            "LCR. Aleatorizada al brazo intensificado con rifampicina 15 "
+            "mg/kg y levofloxacina. Anclaje Heemskerk NEJM 2016."
+        ),
+        "rationale": (
+            "Subphase 1.4 commit 5.4.3 wave 1 vignette 132 of 14 for Class 4 "
+            "TBM. Anchored to Heemskerk 2016 intensified arm (rifampicin 15 "
+            "mg/kg + levofloxacin). Pre-adjudication hold_for_revision."
+        ),
+        "anchoring_extras": (
+            "Anchored to Heemskerk AD et al. NEJM 2016 (PMID 26760084) "
+            "intensified arm. 27-year-old Vietnamese adult female HIV-"
+            "negative schoolteacher, mother prior pulmonary TB, lymphocytic "
+            "CSF, ADA 13 U/L, Xpert MTB/RIF Ultra positive. Pre-adjudication "
+            "kappa 0.70."
+        ),
+    }
+
+
+def _build_tbm_vignette_133() -> dict[str, Any]:
+    """TBM 133 Heemskerk HCMC, 44yo M bricklayer, late stage, fatal, CN VI palsy."""
+    return {
+        "history": {
+            "symptom_onset_to_presentation_days": 32.0,
+            "chief_complaint": "altered_mental_status",
+            "prodrome_description": (
+                "Four-and-a-half-week illness in a 44-year-old male "
+                "bricklayer from Ho Chi Minh City. Worsening headache, "
+                "weight loss of 7 kg, intermittent fevers, three days of "
+                "binocular diplopia in the final week, and rapid obtundation "
+                "over the prior 48 hours. HIV negative."
+            ),
+            "red_flags_present": [],
+        },
+        "vitals": {"temperature_celsius": 39.0, "heart_rate_bpm": 118,
+                   "systolic_bp_mmHg": 110, "diastolic_bp_mmHg": 68,
+                   "glasgow_coma_scale": 8, "oxygen_saturation_pct": 91,
+                   "respiratory_rate_breaths_per_min": 26},
+        "exam": _tbm_exam_cn_vi_palsy(has_palsy=True, mental="comatose", focal=True),
+        "labs": {"wbc_blood_per_uL": 12200, "platelets_per_uL": 198000,
+                 "alt_ast_U_per_L": 38, "crp_mg_per_L": 72.0,
+                 "procalcitonin_ng_per_mL": 0.8, "serum_sodium_mEq_per_L": 124},
+        "csf": _tbm_csf_profile_classical(op_cmH2O=30.0, wbc=380, lymph_pct=70,
+                                          glucose=18, protein=360, ada_U=18.0),
+        "imaging": _tbm_imaging_basal_meningeal(pediatric=False),
+        "diagnostic_tests": {"results": _tbm_dx_tests_xpert_mtb_rif(
+            pmid="26760084", ultra=True, smear_positive=True, pediatric=False,
+            xpert_positive=True)},
+        "narrative_en": (
+            "A 44-year-old male bricklayer from Ho Chi Minh City was brought "
+            "to a tertiary referral hospital comatose by his family. They "
+            "reported a four-and-a-half-week illness with progressive "
+            "headache, a seven-kilogram weight loss, intermittent fevers, "
+            "three days of binocular diplopia in the final week, and rapid "
+            "obtundation over the prior 48 hours. He was HIV negative. "
+            "Examination on admission: temperature 39.0 C, Glasgow Coma "
+            "Scale 8, comatose, neck stiffness, positive Kernig sign, right "
+            "lateral gaze palsy consistent with sixth cranial nerve "
+            "involvement, right hemiparesis, and bilateral papilledema. CSF "
+            "showed an opening pressure of 30 cmH2O, white cell count 380 "
+            "per cubic millimeter with 70 percent lymphocytes, glucose 18 "
+            "mg/dL, protein 360 mg/dL, and adenosine deaminase 18 U/L. MRI "
+            "with contrast demonstrated thick basal meningeal enhancement, "
+            "communicating hydrocephalus, and bilateral basal ganglia "
+            "infarcts. CSF Xpert MTB/RIF Ultra was positive; AFB smear was "
+            "positive. He was randomized to the standard arm and died on "
+            "hospital day four. Anchored to Heemskerk NEJM 2016 (PMID "
+            "26760084). Wave 1, hold_for_revision."
+        ),
+        "narrative_es": (
+            "Varon de 44 anos, albanil, de Ho Chi Minh, Vietnam, llevado por "
+            "la familia a urgencias terciarias en coma. Refieren cuadro de "
+            "cuatro semanas y media con cefalea progresiva, perdida de 7 kg, "
+            "fiebre intermitente, tres dias de diplopia binocular en la "
+            "ultima semana y obnubilacion rapida en las ultimas 48 horas. "
+            "VIH negativo. Examen: temperatura 39.0 C, Glasgow 8, comatoso, "
+            "rigidez de nuca, Kernig positivo, paresia del sexto par craneal "
+            "derecho, hemiparesia derecha, papiledema bilateral. LCR con "
+            "presion 30 cmH2O, leucocitos 380 por mm3 (70 por ciento "
+            "linfocitos), glucosa 18 mg/dL, proteina 360 mg/dL, adenosina "
+            "desaminasa 18 U/L. RM con engrosamiento meningeo basal, "
+            "hidrocefalia comunicante e infartos bilaterales de ganglios "
+            "basales. Xpert MTB/RIF Ultra positivo; baciloscopia positiva. "
+            "Aleatorizado al brazo estandar; fallecio el dia hospitalario "
+            "cuatro. Anclaje Heemskerk NEJM 2016."
+        ),
+        "rationale": (
+            "Subphase 1.4 commit 5.4.3 wave 1 vignette 133 of 14 for Class 4 "
+            "TBM. Anchored to Heemskerk 2016 standard arm late-stage fatal "
+            "outcome. CN VI palsy positive. Pre-adjudication hold_for_revision."
+        ),
+        "anchoring_extras": (
+            "Anchored to Heemskerk AD et al. NEJM 2016 (PMID 26760084) "
+            "standard arm. 44-year-old Vietnamese adult male HIV-negative "
+            "bricklayer, BMRC grade 3 severe TBM, basal ganglia infarcts, "
+            "Xpert MTB/RIF Ultra positive, AFB smear positive, CN VI palsy "
+            "positive; died hospital day four. Pre-adjudication kappa 0.70."
+        ),
+    }
+
+
+def _build_tbm_vignette_134() -> dict[str, Any]:
+    """TBM 134 Heemskerk HCMC, 19yo M student, standard arm, Xpert NEG culture+."""
+    return {
+        "history": {
+            "symptom_onset_to_presentation_days": 18.0,
+            "chief_complaint": "fever_with_headache",
+            "prodrome_description": (
+                "Two-and-a-half-week illness in a 19-year-old male "
+                "university student from Ho Chi Minh City. Daily low-grade "
+                "fevers, frontal headache, and progressive fatigue. He lived "
+                "in a university dormitory where several peers had been "
+                "treated for pulmonary tuberculosis in the prior year. HIV "
+                "negative."
+            ),
+            "red_flags_present": [],
+        },
+        "vitals": {"temperature_celsius": 38.2, "heart_rate_bpm": 96,
+                   "systolic_bp_mmHg": 118, "diastolic_bp_mmHg": 72,
+                   "glasgow_coma_scale": 13, "oxygen_saturation_pct": 97,
+                   "respiratory_rate_breaths_per_min": 18},
+        "exam": _tbm_exam_no_cn_palsy(mental="somnolent", focal=False, papilledema=False),
+        "labs": {"wbc_blood_per_uL": 7600, "platelets_per_uL": 312000,
+                 "alt_ast_U_per_L": 24, "crp_mg_per_L": 32.0,
+                 "procalcitonin_ng_per_mL": 0.3, "serum_sodium_mEq_per_L": 134},
+        "csf": _tbm_csf_profile_classical(op_cmH2O=18.0, wbc=220, lymph_pct=80,
+                                          glucose=30, protein=200, ada_U=12.0),
+        "imaging": _tbm_imaging_basal_meningeal(pediatric=False),
+        "diagnostic_tests": {"results": _tbm_dx_tests_xpert_mtb_rif(
+            pmid="26760084", ultra=True, smear_positive=False, pediatric=False,
+            xpert_positive=False)},
+        "narrative_en": (
+            "A 19-year-old male university student from Ho Chi Minh City "
+            "presented to a tertiary referral hospital after a two-and-a-"
+            "half-week illness of daily low-grade fevers, frontal headache, "
+            "and progressive fatigue. He lived in a university dormitory "
+            "where several peers had been treated for pulmonary tuberculosis "
+            "in the prior year. He was HIV negative. Examination on "
+            "admission: temperature 38.2 C, Glasgow Coma Scale 13, somnolent "
+            "but rousable, neck stiffness, positive Kernig sign, no focal "
+            "motor deficit, and no papilledema. CSF showed an opening "
+            "pressure of 18 cmH2O, white cell count 220 per cubic millimeter "
+            "with 80 percent lymphocytes, glucose 30 mg/dL, protein 200 "
+            "mg/dL, and adenosine deaminase 12 U/L. MRI with contrast "
+            "demonstrated basal meningeal enhancement without hydrocephalus. "
+            "CSF Xpert MTB/RIF Ultra was negative on the initial specimen, "
+            "but mycobacterial culture was positive at four weeks. He was "
+            "randomized to the standard arm. Anchored to Heemskerk NEJM 2016 "
+            "(PMID 26760084). Wave 1, hold_for_revision."
+        ),
+        "narrative_es": (
+            "Varon de 19 anos, estudiante universitario, de Ho Chi Minh, "
+            "Vietnam, ingresado a un hospital terciario tras dos semanas y "
+            "media de fiebre baja diaria, cefalea frontal y fatiga "
+            "progresiva. Vive en residencia universitaria donde varios "
+            "companeros fueron tratados por tuberculosis pulmonar el ano "
+            "previo. VIH negativo. Examen: temperatura 38.2 C, Glasgow 13, "
+            "somnoliento, rigidez de nuca, Kernig positivo, sin deficit "
+            "motor focal, sin papiledema. LCR con presion 18 cmH2O, "
+            "leucocitos 220 por mm3 (80 por ciento linfocitos), glucosa 30 "
+            "mg/dL, proteina 200 mg/dL, adenosina desaminasa 12 U/L. RM con "
+            "engrosamiento meningeo basal sin hidrocefalia. Xpert MTB/RIF "
+            "Ultra negativo en muestra inicial; cultivo micobacteriano "
+            "positivo a las cuatro semanas. Aleatorizado al brazo estandar. "
+            "Anclaje Heemskerk NEJM 2016."
+        ),
+        "rationale": (
+            "Subphase 1.4 commit 5.4.3 wave 1 vignette 134 of 14 for Class 4 "
+            "TBM. Anchored to Heemskerk 2016 standard arm, Xpert-negative-"
+            "culture-confirmed case per RCT inclusion. Pre-adjudication "
+            "hold_for_revision."
+        ),
+        "anchoring_extras": (
+            "Anchored to Heemskerk AD et al. NEJM 2016 (PMID 26760084) "
+            "standard arm. 19-year-old Vietnamese male university student "
+            "HIV-negative dormitory TB exposure cluster, lymphocytic CSF, "
+            "ADA 12 U/L, Xpert MTB/RIF Ultra NEGATIVE on initial specimen, "
+            "culture POSITIVE at 4 weeks (RCT inclusion via culture "
+            "confirmation). Pre-adjudication kappa 0.70."
+        ),
+    }
+
+
+def _build_tbm_vignette_135() -> dict[str, Any]:
+    """TBM 135 Heemskerk HCMC, 61yo F diabetic, intensified arm, mid, sequelae."""
+    return {
+        "history": {
+            "symptom_onset_to_presentation_days": 28.0,
+            "chief_complaint": "altered_mental_status",
+            "prodrome_description": (
+                "Four-week illness in a 61-year-old woman from Ho Chi Minh "
+                "City. Progressive headache, weight loss of 5 kg, persistent "
+                "low-grade fevers, and increasing forgetfulness with word-"
+                "finding difficulty noted by her daughter. HIV negative; "
+                "type 2 diabetes on metformin."
+            ),
+            "red_flags_present": [],
+        },
+        "vitals": {"temperature_celsius": 38.4, "heart_rate_bpm": 102,
+                   "systolic_bp_mmHg": 134, "diastolic_bp_mmHg": 82,
+                   "glasgow_coma_scale": 11, "oxygen_saturation_pct": 96,
+                   "respiratory_rate_breaths_per_min": 20},
+        "exam": _tbm_exam_no_cn_palsy(mental="stuporous", focal=True, papilledema=True),
+        "labs": {"wbc_blood_per_uL": 9800, "platelets_per_uL": 248000,
+                 "alt_ast_U_per_L": 32, "crp_mg_per_L": 54.0,
+                 "procalcitonin_ng_per_mL": 0.6, "serum_sodium_mEq_per_L": 130},
+        "csf": _tbm_csf_profile_classical(op_cmH2O=26.0, wbc=360, lymph_pct=75,
+                                          glucose=22, protein=320, ada_U=16.0),
+        "imaging": _tbm_imaging_basal_meningeal(pediatric=False),
+        "diagnostic_tests": {"results": _tbm_dx_tests_xpert_mtb_rif(
+            pmid="26760084", ultra=True, smear_positive=True, pediatric=False,
+            xpert_positive=True)},
+        "narrative_en": (
+            "A 61-year-old woman from Ho Chi Minh City presented to a "
+            "tertiary referral hospital with a four-week illness of "
+            "progressive headache, a five-kilogram weight loss, persistent "
+            "low-grade fevers, and increasing forgetfulness with word-"
+            "finding difficulty noted by her daughter. She was HIV negative "
+            "and had type 2 diabetes on metformin. Examination on admission: "
+            "temperature 38.4 C, Glasgow Coma Scale 11, stuporous, neck "
+            "stiffness, positive Kernig sign, mild left-sided motor weakness, "
+            "and bilateral papilledema. CSF showed an opening pressure of 26 "
+            "cmH2O, white cell count 360 per cubic millimeter with 75 percent "
+            "lymphocytes, glucose 22 mg/dL, protein 320 mg/dL, and adenosine "
+            "deaminase 16 U/L. MRI with contrast demonstrated thick basal "
+            "meningeal enhancement, communicating hydrocephalus, and a small "
+            "left thalamic infarct. CSF Xpert MTB/RIF Ultra was positive; "
+            "AFB smear was positive. She was randomized to the intensified "
+            "arm and survived with persistent cognitive impairment and mild "
+            "left hemiparesis. Anchored to Heemskerk NEJM 2016 (PMID "
+            "26760084). Wave 1, hold_for_revision."
+        ),
+        "narrative_es": (
+            "Mujer de 61 anos de Ho Chi Minh, Vietnam, ingresada a un "
+            "hospital terciario tras cuatro semanas de cefalea progresiva, "
+            "perdida de 5 kg, fiebre baja persistente y olvidos crecientes "
+            "con dificultad para encontrar palabras referidos por su hija. "
+            "VIH negativo, diabetes tipo 2 en metformina. Examen: temperatura "
+            "38.4 C, Glasgow 11, estuporosa, rigidez de nuca, Kernig "
+            "positivo, debilidad motora leve izquierda, papiledema "
+            "bilateral. LCR con presion 26 cmH2O, leucocitos 360 por mm3 "
+            "(75 por ciento linfocitos), glucosa 22 mg/dL, proteina 320 "
+            "mg/dL, adenosina desaminasa 16 U/L. RM con engrosamiento "
+            "meningeo basal, hidrocefalia comunicante e infarto talamico "
+            "izquierdo pequeno. Xpert MTB/RIF Ultra positivo; baciloscopia "
+            "positiva. Aleatorizada al brazo intensificado; sobrevivio con "
+            "deterioro cognitivo persistente y hemiparesia izquierda leve."
+        ),
+        "rationale": (
+            "Subphase 1.4 commit 5.4.3 wave 1 vignette 135 of 14 for Class 4 "
+            "TBM. Anchored to Heemskerk 2016 intensified arm; mid-stage "
+            "survived with cognitive + motor sequelae. Pre-adjudication "
+            "hold_for_revision."
+        ),
+        "anchoring_extras": (
+            "Anchored to Heemskerk AD et al. NEJM 2016 (PMID 26760084) "
+            "intensified arm. 61-year-old Vietnamese adult female HIV-"
+            "negative diabetic, left thalamic infarct, Xpert MTB/RIF Ultra "
+            "positive, AFB smear positive; survived with cognitive sequelae. "
+            "Pre-adjudication kappa 0.70."
+        ),
+    }
+
+
+def _build_tbm_vignette_136() -> dict[str, Any]:
+    """TBM 136 Heemskerk HCMC, 33yo M office worker, intensified arm, early stage."""
+    return {
+        "history": {
+            "symptom_onset_to_presentation_days": 14.0,
+            "chief_complaint": "fever_with_headache",
+            "prodrome_description": (
+                "Two-week illness in a 33-year-old male office worker from "
+                "Ho Chi Minh City. Daily low-grade fevers and frontal "
+                "headache. HIV negative; cousin treated for sputum-positive "
+                "pulmonary tuberculosis the prior year."
+            ),
+            "red_flags_present": [],
+        },
+        "vitals": {"temperature_celsius": 38.2, "heart_rate_bpm": 92,
+                   "systolic_bp_mmHg": 122, "diastolic_bp_mmHg": 76,
+                   "glasgow_coma_scale": 14, "oxygen_saturation_pct": 97,
+                   "respiratory_rate_breaths_per_min": 18},
+        "exam": _tbm_exam_no_cn_palsy(mental="confused", focal=False, papilledema=False),
+        "labs": {"wbc_blood_per_uL": 7400, "platelets_per_uL": 308000,
+                 "alt_ast_U_per_L": 22, "crp_mg_per_L": 30.0,
+                 "procalcitonin_ng_per_mL": 0.3, "serum_sodium_mEq_per_L": 134},
+        "csf": _tbm_csf_profile_classical(op_cmH2O=18.0, wbc=200, lymph_pct=82,
+                                          glucose=32, protein=180, ada_U=11.0),
+        "imaging": _tbm_imaging_basal_meningeal(pediatric=False),
+        "diagnostic_tests": {"results": _tbm_dx_tests_xpert_mtb_rif(
+            pmid="26760084", ultra=True, smear_positive=False, pediatric=False,
+            xpert_positive=True)},
+        "narrative_en": (
+            "A 33-year-old male office worker from Ho Chi Minh City "
+            "presented to a tertiary referral hospital after a two-week "
+            "illness of daily low-grade fevers and frontal headache. He was "
+            "HIV negative; his cousin had been treated for sputum-positive "
+            "pulmonary tuberculosis the prior year. He was alert and "
+            "articulate but described difficulty concentrating at work. "
+            "Examination on admission: temperature 38.2 C, Glasgow Coma "
+            "Scale 14, mild confusion, neck stiffness, positive Kernig sign, "
+            "no focal motor deficit, and no papilledema. CSF showed an "
+            "opening pressure of 18 cmH2O, white cell count 200 per cubic "
+            "millimeter with 82 percent lymphocytes, glucose 32 mg/dL, "
+            "protein 180 mg/dL, and adenosine deaminase 11 U/L. MRI with "
+            "contrast demonstrated subtle basal meningeal enhancement "
+            "without hydrocephalus. CSF Xpert MTB/RIF Ultra was positive "
+            "and rifampicin susceptible. He was randomized to the "
+            "intensified arm. Anchored to Heemskerk NEJM 2016 (PMID "
+            "26760084). Wave 1, hold_for_revision."
+        ),
+        "narrative_es": (
+            "Varon de 33 anos, oficinista, de Ho Chi Minh, Vietnam, "
+            "ingresado a un hospital terciario tras dos semanas de fiebre "
+            "baja diaria y cefalea frontal. VIH negativo; primo tratado por "
+            "tuberculosis pulmonar baciloscopia positiva el ano previo. "
+            "Alerta y articulado pero refiere dificultad para concentrarse "
+            "en el trabajo. Examen: temperatura 38.2 C, Glasgow 14, "
+            "confusion leve, rigidez de nuca, Kernig positivo, sin deficit "
+            "motor focal, sin papiledema. LCR con presion 18 cmH2O, "
+            "leucocitos 200 por mm3 (82 por ciento linfocitos), glucosa 32 "
+            "mg/dL, proteina 180 mg/dL, adenosina desaminasa 11 U/L. RM con "
+            "engrosamiento meningeo basal sutil sin hidrocefalia. Xpert "
+            "MTB/RIF Ultra positivo en LCR, susceptible a rifampicina. "
+            "Aleatorizado al brazo intensificado. Anclaje Heemskerk NEJM 2016."
+        ),
+        "rationale": (
+            "Subphase 1.4 commit 5.4.3 wave 1 vignette 136 of 14 for Class 4 "
+            "TBM. Anchored to Heemskerk 2016 intensified arm, early-stage "
+            "presentation. Pre-adjudication hold_for_revision."
+        ),
+        "anchoring_extras": (
+            "Anchored to Heemskerk AD et al. NEJM 2016 (PMID 26760084) "
+            "intensified arm. 33-year-old Vietnamese adult male HIV-negative "
+            "office worker, cousin prior pulmonary TB, lymphocytic CSF, ADA "
+            "11 U/L, Xpert MTB/RIF Ultra positive, early-stage GCS 14. "
+            "Pre-adjudication kappa 0.70."
+        ),
+    }
+
+
+# ----------------------------------------------------------------------------
+# Wave 1 composer + writer + orchestrator
+# ----------------------------------------------------------------------------
+
+
+_SUBPHASE_1_4_WAVE1_BUILDERS: dict[int, Any] = {
+    123: _build_tbm_vignette_123,
+    124: _build_tbm_vignette_124,
+    125: _build_tbm_vignette_125,
+    126: _build_tbm_vignette_126,
+    127: _build_tbm_vignette_127,
+    128: _build_tbm_vignette_128,
+    129: _build_tbm_vignette_129,
+    130: _build_tbm_vignette_130,
+    131: _build_tbm_vignette_131,
+    132: _build_tbm_vignette_132,
+    133: _build_tbm_vignette_133,
+    134: _build_tbm_vignette_134,
+    135: _build_tbm_vignette_135,
+    136: _build_tbm_vignette_136,
+}
+
+
+def generate_subphase_1_4_wave1_vignette(vignette_id: int) -> dict[str, Any]:
+    """Build one Subphase 1.4 TBM Wave 1 vignette dict from a vignette_id.
+
+    Looks up the TBM_DISTRIBUTION spec, PMID_REGISTRY metadata, and the
+    wave_1 clinical builder, then composes the full VignetteSchema-compliant
+    dict. Passes case_prefix="WAVE1" and commit_marker="v1.4.3-wave1" through
+    the generalized shared helpers.
+    """
+    if vignette_id not in SUBPHASE_1_4_WAVE1_IDS:
+        raise KeyError(
+            f"vignette_id {vignette_id!r} not in SUBPHASE_1_4_WAVE1_IDS "
+            f"{SUBPHASE_1_4_WAVE1_IDS}"
+        )
+    spec = next(s for s in TBM_DISTRIBUTION if s["vignette_id"] == vignette_id)
+    pmid_meta = load_pmid_metadata(spec["anchor_pmid"])
+    clinical = _SUBPHASE_1_4_WAVE1_BUILDERS[vignette_id]()
+
+    region = spec["geography_region"]
+    ethnicity = spec.get("ethnicity") or "other"
+    altitude = _SUBPHASE_1_4_ALTITUDE_M.get(spec["geography_label"], 100)
+
+    return {
+        "schema_version": "2.0",
+        "case_id": _subphase_1_4_case_id(spec, pmid_meta, case_prefix="WAVE1"),
+        "ground_truth_class": 4,  # TBM (all wave_1 slots Class 4)
+        "demographics": {
+            "age_years": spec["age_years"],
+            "sex": spec["sex"],
+            "ethnicity": ethnicity,
+            "geography_region": region,
+            "altitude_residence_m": altitude,
+        },
+        "history": clinical["history"],
+        "exposure": _subphase_1_4_exposure(spec),
+        "vitals": clinical["vitals"],
+        "exam": clinical["exam"],
+        "labs": clinical["labs"],
+        "csf": clinical["csf"],
+        "imaging": clinical["imaging"],
+        "diagnostic_tests": clinical["diagnostic_tests"],
+        "adjudication": _subphase_1_4_adjudication(
+            spec, clinical["anchoring_extras"], case_prefix="WAVE1"),
+        "literature_anchors": [_subphase_1_4_literature_anchor(pmid_meta)],
+        "provenance": _subphase_1_4_provenance(
+            clinical["rationale"], commit_marker="v1.4.3-wave1"),
+        "narrative_es": clinical["narrative_es"],
+        "narrative_en": clinical["narrative_en"],
+    }
+
+
+def write_subphase_1_4_wave1_vignette(vignette_id: int) -> Path:
+    """Build, validate, and write one Subphase 1.4 TBM Wave 1 vignette to disk."""
+    vignette = generate_subphase_1_4_wave1_vignette(vignette_id)
+    VignetteSchema.model_validate(vignette)
+    output_dir = SUBPHASE_1_4_WAVE1_OUTPUT_DIR[vignette_id]
+    output_dir.mkdir(parents=True, exist_ok=True)
+    filepath = output_dir / SUBPHASE_1_4_WAVE1_FILENAME[vignette_id]
+    filepath.write_text(
+        json.dumps(vignette, indent=2, sort_keys=False, ensure_ascii=False),
+        encoding="utf-8",
+    )
+    logger.info("Wrote %s", filepath)
+    return filepath
+
+
+def write_subphase_1_4_wave1_corpus() -> list[Path]:
+    """Build, validate, and write all 14 Subphase 1.4 TBM Wave 1 vignettes."""
+    paths: list[Path] = []
+    for vid in SUBPHASE_1_4_WAVE1_IDS:
+        paths.append(write_subphase_1_4_wave1_vignette(vid))
     return paths
 
 
