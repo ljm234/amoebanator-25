@@ -81,10 +81,28 @@ _VALID_VERIFICATION_DATES = {
     # Antiviral Res HSE adult review, Michos 2007 PLoS One enterovirus
     # PMN-predominant cohort, Munayco 2024 MMWR Peru dengue outbreak).
     "2026-05-07",
+    # Subphase 1.4 commit 5.4.0 added 18 Class 4 (TBM) + Class 5
+    # (Cryptococcal) + Class 6 (GAE) anchor PMIDs via Claude web PubMed UI
+    # verification v5 (Thwaites NEJM 2004, Marais Lancet ID 2010, van Toorn
+    # Semin Pediatr Neurol 2014, Heemskerk NEJM 2016, Huynh Lancet Neurol
+    # 2022, Navarro-Flores J Neurol 2022; Perfect CID 2010, Park AIDS 2009,
+    # Singh JID 2007, Boulware NEJM 2014, Jarvis NEJM 2022 AMBITION-cm,
+    # Datta EID 2009; Gotuzzo OFID 2026 DOI-only, Alvarez/Bravo JAAD Int
+    # 2022, Cabello-Vilchez Neuropathology 2020, Visvesvara FEMS 2007,
+    # Cope CID 2019, Damhorst Lancet ID 2022).
+    "2026-05-11",
 }
 
 
-@pytest.mark.parametrize("pmid", sorted(PMID_REGISTRY.keys()))
+# Subphase 1.4 commit 5.4.0: DOI-only registry keys (no PubMed indexing at
+# registration time) are tested by the dedicated lock-in suite in
+# tests/test_subphase_1_4_pmid_registry_lockin.py rather than here, since
+# this completeness test enforces a 7-8 digit pmid field via _PMID_DIGIT_RE.
+def _numeric_pmid_keys() -> list[str]:
+    return sorted(k for k in PMID_REGISTRY.keys() if k.isdigit())
+
+
+@pytest.mark.parametrize("pmid", _numeric_pmid_keys())
 def test_pmid_metadata_completeness(pmid, pmid_registry):
     meta = pmid_registry[pmid]
     missing = _REQUIRED_PMID_KEYS - set(meta.keys())

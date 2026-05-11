@@ -1891,6 +1891,582 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
             "verification deferred per USER ASSIGNMENT 5."
         ),
     },
+    # ========================================================================
+    # Subphase 1.4 commit 5.4.0 ADDs - Class 4 (TBM) + Class 5 (Cryptococcal)
+    # + Class 6 (GAE) anchor PMIDs. 18 total: 6 TBM + 6 Crypto + 6 GAE.
+    # PubMed-verified via web search 2026-05-11 (verification_method=
+    # claude_web_pubmed_ui_v5_2026_05_11). DOI-only entries (Gotuzzo OFID
+    # 2026 supplement abstract) carry verification_confidence < 0.90 with
+    # explicit caveat disclosure of pre-PubMed-indexing status.
+    # Zero modifications to pre-existing PMID_REGISTRY entries.
+    # ========================================================================
+    # ---- Class 4 (Tuberculous meningitis) anchors ----
+    "15496623": {
+        "pmid": "15496623",
+        "doi": "10.1056/NEJMoa040573",
+        "authors_short": "Thwaites GE et al.",
+        "authors_full": [
+            "Thwaites GE", "Nguyen DB", "Nguyen HD", "Hoang TQ",
+            "Do TTO", "Nguyen TCT", "Nguyen QH", "Nguyen TT",
+            "Nguyen NH", "Nguyen TNL", "Nguyen NL", "Nguyen HD",
+            "Vu NT", "Cao HH", "Tran THC", "Pham PM", "Nguyen TD",
+            "Stepniewska K", "White NJ", "Tran TH", "Farrar JJ",
+        ],
+        "journal": "N Engl J Med",
+        "journal_short_code": "NEJM",
+        "year": 2004,
+        "volume": "351",
+        "issue": "17",
+        "pages": "1741-1751",
+        "title": "Dexamethasone for the treatment of tuberculous meningitis in adolescents and adults",
+        "anchor_type": "rct",
+        "anchor_subtype": "hcmc_vietnam_dexamethasone_tbm_rct_adults",
+        "verification_confidence": 0.85,
+        "verification_method": "claude_web_pubmed_ui_v5_2026_05_11",
+        "last_verified_date": "2026-05-11",
+        "caveat": (
+            "Subphase 1.4 commit 5.4.0 anchor for Class 4 TBM. HCMC "
+            "Vietnam dexamethasone RCT in adolescents and adults with TBM; "
+            "mortality reduction with adjunctive dexamethasone. 21-author "
+            "Vancouver list confirmed via PubMed UI. verification_confidence"
+            "=0.85 pre-direct-fetch."
+        ),
+    },
+    "20822958": {
+        "pmid": "20822958",
+        "doi": "10.1016/S1473-3099(10)70138-9",
+        "authors_short": "Marais S et al.",
+        "authors_full": [
+            "Marais S", "Thwaites G", "Schoeman JF", "Torok ME",
+            "Misra UK", "Prasad K", "Donald PR", "Wilkinson RJ",
+            "Marais BJ",
+        ],
+        "journal": "Lancet Infect Dis",
+        "journal_short_code": "Lancet Infect Dis",
+        "year": 2010,
+        "volume": "10",
+        "issue": "11",
+        "pages": "803-812",
+        "title": "Tuberculous meningitis: a uniform case definition for use in clinical research",
+        "anchor_type": "guideline",
+        "anchor_subtype": "tbm_uniform_case_definition_clinical_research",
+        "verification_confidence": 0.85,
+        "verification_method": "claude_web_pubmed_ui_v5_2026_05_11",
+        "last_verified_date": "2026-05-11",
+        "caveat": (
+            "Subphase 1.4 commit 5.4.0 anchor for Class 4 TBM. Marais "
+            "2010 uniform case definition is the canonical clinical "
+            "research framework cited in ml/schemas/labels.py docstring. "
+            "Torok ME diacritic O-with-umlaut rendered as plain O for "
+            "ASCII safety; original is Torok with diacritic. "
+            "verification_confidence=0.85 pre-direct-fetch."
+        ),
+    },
+    "24655399": {
+        "pmid": "24655399",
+        "doi": "10.1016/j.spen.2014.01.006",
+        "authors_short": "van Toorn R, Solomons R",
+        "authors_full": ["van Toorn R", "Solomons R"],
+        "journal": "Semin Pediatr Neurol",
+        "journal_short_code": "Semin-Pediatr-Neurol",
+        "year": 2014,
+        "volume": "21",
+        "issue": "1",
+        "pages": "12-18",
+        "title": "Update on the diagnosis and management of tuberculous meningitis in children",
+        "anchor_type": "review",
+        "anchor_subtype": "pediatric_tbm_review_diagnosis_management",
+        "verification_confidence": 0.85,
+        "verification_method": "claude_web_pubmed_ui_v5_2026_05_11",
+        "last_verified_date": "2026-05-11",
+        "caveat": (
+            "Subphase 1.4 commit 5.4.0 anchor for Class 4 pediatric TBM "
+            "stratum (8 slots median 6mo-2y per master prompt 1.4.4). "
+            "Master plan referenced J Child Neurol; actual journal is "
+            "Semin Pediatr Neurol per PubMed. Corrected at registration. "
+            "verification_confidence=0.85 pre-direct-fetch."
+        ),
+    },
+    "26760084": {
+        "pmid": "26760084",
+        "doi": "10.1056/NEJMoa1507062",
+        "authors_short": "Heemskerk AD et al.",
+        "authors_full": [
+            "Heemskerk AD", "Bang ND", "Mai NTH", "Chau TTH", "Phu NH",
+            "Loc PP", "Chau NVV", "Hien TT", "Dung NH", "Lan NTN",
+            "Lan NH", "Lan NN", "Phong LT", "Vien NN", "Hien NQ",
+            "Yen NTB", "Ha DTM", "Day JN", "Caws M", "Merson L",
+            "Thinh TTV", "Wolbers M", "Thwaites GE", "Farrar JJ",
+        ],
+        "journal": "N Engl J Med",
+        "journal_short_code": "NEJM",
+        "year": 2016,
+        "volume": "374",
+        "issue": "2",
+        "pages": "124-134",
+        "title": "Intensified Antituberculosis Therapy in Adults with Tuberculous Meningitis",
+        "anchor_type": "rct",
+        "anchor_subtype": "intensified_tbm_rct_hcmc_vietnam_2016",
+        "verification_confidence": 0.85,
+        "verification_method": "claude_web_pubmed_ui_v5_2026_05_11",
+        "last_verified_date": "2026-05-11",
+        "caveat": (
+            "Subphase 1.4 commit 5.4.0 anchor for Class 4 TBM. HCMC "
+            "intensified anti-TB therapy RCT; no mortality benefit at "
+            "9 months. Anchor for HIV-coinfected and adult HIV-negative "
+            "strata. 24-author Vancouver list confirmed via PubMed UI. "
+            "verification_confidence=0.85 pre-direct-fetch."
+        ),
+    },
+    "35429482": {
+        "pmid": "35429482",
+        "doi": "10.1016/S1474-4422(21)00435-X",
+        "authors_short": "Huynh J et al.",
+        "authors_full": [
+            "Huynh J", "Donovan J", "Phu NH", "Nghia HDT",
+            "Thuong NTT", "Thwaites GE",
+        ],
+        "journal": "Lancet Neurol",
+        "journal_short_code": "Lancet-Neurol",
+        "year": 2022,
+        "volume": "21",
+        "issue": "5",
+        "pages": "450-464",
+        "title": "Tuberculous meningitis: progress and remaining questions",
+        "anchor_type": "review",
+        "anchor_subtype": "tbm_progress_review_2022_cn_palsy_30pct",
+        "verification_confidence": 0.85,
+        "verification_method": "claude_web_pubmed_ui_v5_2026_05_11",
+        "last_verified_date": "2026-05-11",
+        "caveat": (
+            "Subphase 1.4 commit 5.4.0 anchor for Class 4 TBM. Huynh "
+            "2022 Lancet Neurology progress review (already cited in "
+            "ml/schemas/vignette.py PhysicalExam.cranial_nerve_palsy "
+            "docstring re: CN VI 30 percent in TBM). Anchor for adult "
+            "non-HIV TBM phenotype, CN VI palsy subset, basal "
+            "meningeal enhancement imaging. verification_confidence=0.85 "
+            "pre-direct-fetch."
+        ),
+    },
+    "35288778": {
+        "pmid": "35288778",
+        "doi": "10.1007/s00415-022-11052-8",
+        "authors_short": "Navarro-Flores A et al.",
+        "authors_full": [
+            "Navarro-Flores A", "Fernandez-Chinguel JE",
+            "Pacheco-Barrios N", "Soriano-Moreno DR",
+            "Pacheco-Barrios K",
+        ],
+        "journal": "J Neurol",
+        "journal_short_code": "J-Neurol",
+        "year": 2022,
+        "volume": "269",
+        "issue": "7",
+        "pages": "3482-3494",
+        "title": "Global morbidity and mortality of central nervous system tuberculosis: a systematic review and meta-analysis",
+        "anchor_type": "meta_analysis",
+        "anchor_subtype": "cns_tb_global_meta_analysis_2022_latam_authors",
+        "verification_confidence": 0.85,
+        "verification_method": "claude_web_pubmed_ui_v5_2026_05_11",
+        "last_verified_date": "2026-05-11",
+        "caveat": (
+            "Subphase 1.4 commit 5.4.0 anchor for Class 4 TBM. "
+            "Navarro-Flores 2022 systematic review and meta-analysis "
+            "of CNS-TB morbidity and mortality; LATAM-author team "
+            "(Pacheco-Barrios K Peru) supports LMIC geographic anchor "
+            "per master prompt 1.4.10 (>=20/30 LMIC). "
+            "verification_confidence=0.85 pre-direct-fetch."
+        ),
+    },
+    # ---- Class 5 (Cryptococcal / fungal meningitis) anchors ----
+    "20047480": {
+        "pmid": "20047480",
+        "doi": "10.1086/649858",
+        "authors_short": "Perfect JR et al.",
+        "authors_full": [
+            "Perfect JR", "Dismukes WE", "Dromer F", "Goldman DL",
+            "Graybill JR", "Hamill RJ", "Harrison TS", "Larsen RA",
+            "Lortholary O", "Nguyen MH", "Pappas PG", "Powderly WG",
+            "Singh N", "Sobel JD", "Sorrell TC",
+        ],
+        "journal": "Clin Infect Dis",
+        "journal_short_code": "CID",
+        "year": 2010,
+        "volume": "50",
+        "issue": "3",
+        "pages": "291-322",
+        "title": "Clinical practice guidelines for the management of cryptococcal disease: 2010 update by the Infectious Diseases Society of America",
+        "anchor_type": "guideline",
+        "anchor_subtype": "idsa_cryptococcal_2010_guidelines",
+        "verification_confidence": 0.85,
+        "verification_method": "claude_web_pubmed_ui_v5_2026_05_11",
+        "last_verified_date": "2026-05-11",
+        "caveat": (
+            "Subphase 1.4 commit 5.4.0 anchor for Class 5 Cryptococcal. "
+            "IDSA 2010 cryptococcal disease management guidelines; "
+            "anchor for HIV+CD4<100, transplant, and non-HIV strata. "
+            "15 authors verified via secondary PubMed fetch. "
+            "verification_confidence=0.85 pre-direct-fetch."
+        ),
+    },
+    "19182676": {
+        "pmid": "19182676",
+        "doi": "10.1097/QAD.0b013e328322ffac",
+        "authors_short": "Park BJ et al.",
+        "authors_full": [
+            "Park BJ", "Wannemuehler KA", "Marston BJ", "Govender N",
+            "Pappas PG", "Chiller TM",
+        ],
+        "journal": "AIDS",
+        "journal_short_code": "AIDS",
+        "year": 2009,
+        "volume": "23",
+        "issue": "4",
+        "pages": "525-530",
+        "title": "Estimation of the current global burden of cryptococcal meningitis among persons living with HIV/AIDS",
+        "anchor_type": "meta_analysis",
+        "anchor_subtype": "global_hiv_cryptococcal_burden_estimate",
+        "verification_confidence": 0.85,
+        "verification_method": "claude_web_pubmed_ui_v5_2026_05_11",
+        "last_verified_date": "2026-05-11",
+        "caveat": (
+            "Subphase 1.4 commit 5.4.0 anchor for Class 5 Cryptococcal. "
+            "Park 2009 AIDS global burden estimate (approximately 1 "
+            "million cases, 625,000 deaths annually pre-ART scale-up). "
+            "Anchor for HIV+CD4<100 22-slot bulk stratum per master "
+            "prompt 1.4.5. verification_confidence=0.85 pre-direct-fetch."
+        ),
+    },
+    "17262720": {
+        "pmid": "17262720",
+        "doi": "10.1086/511438",
+        "authors_short": "Singh N et al.",
+        "authors_full": [
+            "Singh N", "Alexander BD", "Lortholary O", "Dromer F",
+            "Gupta KL", "John GT", "del Busto R", "Klintmalm GB",
+            "Somani J", "Lyon GM", "Pursell K", "Stosor V", "Munoz P",
+            "Limaye AP", "Kalil AC", "Pruett TL", "Garcia-Diaz J",
+            "Humar A", "Houston S", "House AA", "Wray D", "Orloff S",
+            "Dowdy LA", "Fisher RA", "Heitman J", "Wagener MM",
+            "Husain S",
+        ],
+        "journal": "J Infect Dis",
+        "journal_short_code": "JID",
+        "year": 2007,
+        "volume": "195",
+        "issue": "5",
+        "pages": "756-764",
+        "title": "Cryptococcus neoformans in organ transplant recipients: impact of calcineurin-inhibitor agents on mortality",
+        "anchor_type": "cohort",
+        "anchor_subtype": "transplant_cryptococcus_calcineurin_mortality",
+        "verification_confidence": 0.85,
+        "verification_method": "claude_web_pubmed_ui_v5_2026_05_11",
+        "last_verified_date": "2026-05-11",
+        "caveat": (
+            "Subphase 1.4 commit 5.4.0 anchor for Class 5 Cryptococcal. "
+            "Singh 2007 JID multicenter cohort substituted at "
+            "verification time for non-resolving 'Pappas CID 2009 "
+            "transplant cryptococcus' from master plan. Same role: "
+            "anchor for 4-slot transplant stratum per master prompt 1.4.5. "
+            "verification_confidence=0.85 pre-direct-fetch."
+        ),
+    },
+    "24963568": {
+        "pmid": "24963568",
+        "doi": "10.1056/NEJMoa1312884",
+        "authors_short": "Boulware DR et al.",
+        "authors_full": [
+            "Boulware DR", "Meya DB", "Muzoora C", "Rolfes MA",
+            "Huppler Hullsiek K", "Musubire A", "Taseera K",
+            "Nabeta HW", "Schutz C", "Williams DA", "Rajasingham R",
+            "Rhein J", "Thienemann F", "Lo MW", "Nielsen K",
+            "Bergemann TL", "Kambugu A", "Manabe YC", "Janoff EN",
+            "Bohjanen PR", "Meintjes G",
+        ],
+        "journal": "N Engl J Med",
+        "journal_short_code": "NEJM",
+        "year": 2014,
+        "volume": "370",
+        "issue": "26",
+        "pages": "2487-2498",
+        "title": "Timing of antiretroviral therapy after diagnosis of cryptococcal meningitis",
+        "anchor_type": "rct",
+        "anchor_subtype": "art_timing_crypto_iris_rct_cost_trial",
+        "verification_confidence": 0.85,
+        "verification_method": "claude_web_pubmed_ui_v5_2026_05_11",
+        "last_verified_date": "2026-05-11",
+        "caveat": (
+            "Subphase 1.4 commit 5.4.0 anchor for Class 5 Cryptococcal. "
+            "Boulware 2014 COST trial: early ART (within 1-2 wk) vs "
+            "deferred (5 wk) post-crypto-meningitis-diagnosis; early ART "
+            "harm via IRIS. Anchor for HIV+ ART-naive presentation slots. "
+            "verification_confidence=0.85 pre-direct-fetch."
+        ),
+    },
+    "35320642": {
+        "pmid": "35320642",
+        "doi": "10.1056/NEJMoa2111904",
+        "authors_short": "Jarvis JN et al.",
+        "authors_full": [
+            "Jarvis JN", "Lawrence DS", "Meya DB", "Kagimu E",
+            "Kasibante J", "Mpoza E", "Rutakingirwa MK",
+            "Ssebambulidde K", "Tugume L", "Rhein J", "Boulware DR",
+            "Mwandumba HC", "Moyo M", "Mzinganjira H", "Kanyama C",
+            "Hosseinipour MC", "Chawinga C", "Meintjes G", "Schutz C",
+            "Comins K", "Singh A", "Muzoora C", "Jjunju S",
+            "Nuwagira E", "Mosepele M", "Leeme T", "Siamisang K",
+            "Ndhlovu CE", "Hlupeni A", "Mutata C", "van Widenfelt E",
+            "Chen T", "Lortholary O",
+        ],
+        "journal": "N Engl J Med",
+        "journal_short_code": "NEJM",
+        "year": 2022,
+        "volume": "386",
+        "issue": "12",
+        "pages": "1109-1120",
+        "title": "Single-Dose Liposomal Amphotericin B Treatment for Cryptococcal Meningitis",
+        "anchor_type": "rct",
+        "anchor_subtype": "ambition_cm_single_dose_lipo_ampb_2022",
+        "verification_confidence": 0.80,
+        "verification_method": "claude_web_pubmed_ui_v5_2026_05_11",
+        "last_verified_date": "2026-05-11",
+        "caveat": (
+            "Subphase 1.4 commit 5.4.0 anchor for Class 5 Cryptococcal. "
+            "AMBITION-cm RCT (Jarvis 2022). Author list TRUNCATED in "
+            "PubMed UI display past Chen T; full author roster of the "
+            "AMBITION-cm Consortium not enumerable from single PubMed "
+            "fetch. 33 named authors captured plus Lortholary O at end "
+            "from secondary PubMed fetch. verification_confidence=0.80 "
+            "reflects truncated-author-list honest disclosure (lower "
+            "than default 0.85)."
+        ),
+    },
+    "19757550": {
+        "pmid": "19757550",
+        "doi": "10.3201/eid1508.081384",
+        "authors_short": "Datta K et al.",
+        "authors_full": [
+            "Datta K", "Bartlett KH", "Baer R", "Byrnes E", "Galanis E",
+            "Heitman J", "Hoang L", "Leslie MJ", "MacDougall L",
+            "Magill SS", "Morshed MG", "Marr KA",
+        ],
+        "journal": "Emerg Infect Dis",
+        "journal_short_code": "EID",
+        "year": 2009,
+        "volume": "15",
+        "issue": "8",
+        "pages": "1185-1191",
+        "title": "Spread of Cryptococcus gattii into Pacific Northwest region of the United States",
+        "anchor_type": "surveillance",
+        "anchor_subtype": "cryptococcus_gattii_pacific_nw_spread_2009",
+        "verification_confidence": 0.85,
+        "verification_method": "claude_web_pubmed_ui_v5_2026_05_11",
+        "last_verified_date": "2026-05-11",
+        "caveat": (
+            "Subphase 1.4 commit 5.4.0 anchor for Class 5 Cryptococcal. "
+            "Datta 2009 EID Pacific Northwest C. gattii expansion; "
+            "anchor for the 2-slot C. gattii immunocompetent stratum per "
+            "master prompt 1.4.5. Group attribution 'Cryptococcus gattii "
+            "Working Group of the Pacific Northwest' present in PubMed; "
+            "12-author Vancouver list captured plus working-group "
+            "attribution. verification_confidence=0.85 pre-direct-fetch."
+        ),
+    },
+    # ---- Class 6 (Granulomatous amebic encephalitis) anchors ----
+    "DOI_10_1093_ofid_ofaf695_345": {
+        "pmid": "",
+        "doi": "10.1093/ofid/ofaf695.345",
+        "authors_short": "Gotuzzo E et al.",
+        "authors_full": [
+            "Gotuzzo E", "Martinez D", "Cornejo-Esparza BM",
+            "Guillen D", "Seas C", "Bravo FG",
+        ],
+        "journal": "Open Forum Infect Dis",
+        "journal_short_code": "OFID",
+        "year": 2026,
+        "volume": "13",
+        "issue": "Supplement_1",
+        "pages": "ofaf695.345",
+        "title": "P-117. Clinical and Epidemiological Characteristics of Balamuthia mandrillaris Infection in Peru: A Retrospective Case Series",
+        "anchor_type": "case_series",
+        "anchor_subtype": "gotuzzo_peru_balamuthia_68_case_series_ofid_2026_supplement",
+        "verification_confidence": 0.75,
+        "verification_method": "claude_web_doi_resolve_oxford_academic_2026_05_11",
+        "last_verified_date": "2026-05-11",
+        "caveat": (
+            "Subphase 1.4 commit 5.4.0 anchor for Class 6 GAE. "
+            "DOI-only entry: this is an Open Forum Infectious Diseases "
+            "2026 supplement / conference abstract (IDWeek-style) and is "
+            "NOT PubMed-indexed at registration time 2026-05-11. Registry "
+            "key prefixed DOI_ to disambiguate from numeric PMIDs. "
+            "Vignettes anchored to this entry must resolve via doi field "
+            "in LiteratureAnchor (not pmid). Master prompt 1.4.6 cites "
+            "this as the 68-case Peru Balamuthia primary anchor; 91.7 "
+            "percent mortality and centro-facial skin lesion preceding "
+            "CNS by median 15 months. verification_confidence=0.75 "
+            "reflects supplement-abstract (not full peer-reviewed paper) "
+            "honest disclosure. doi-only registration."
+        ),
+    },
+    "35059659": {
+        "pmid": "35059659",
+        "doi": "10.1016/j.jdin.2021.11.005",
+        "authors_short": "Alvarez P et al.",
+        "authors_full": [
+            "Alvarez P", "Torres-Cabala C", "Gotuzzo E", "Bravo F",
+        ],
+        "journal": "JAAD Int",
+        "journal_short_code": "JAAD-Int",
+        "year": 2022,
+        "volume": "6",
+        "issue": "",
+        "pages": "51-58",
+        "title": "Cutaneous balamuthiasis: A clinicopathological study",
+        "anchor_type": "case_series",
+        "anchor_subtype": "bravo_alvarez_cutaneous_balamuthiasis_clinpath_peru",
+        "verification_confidence": 0.85,
+        "verification_method": "claude_web_pubmed_ui_v5_2026_05_11",
+        "last_verified_date": "2026-05-11",
+        "caveat": (
+            "Subphase 1.4 commit 5.4.0 anchor for Class 6 GAE. Master "
+            "plan referenced 'Bravo PMC8760460'; actual primary "
+            "byline is Alvarez P et al. with Bravo F as senior author. "
+            "PMC ID PMC8760460 confirmed. Anchor for centro-facial skin "
+            "lesion phenotype preceding CNS in Balamuthia per master "
+            "prompt 1.4.6 (12/15 Balamuthia slots with skin lesion). "
+            "Gotuzzo E listed as 3rd author. verification_confidence=0.85 "
+            "pre-direct-fetch."
+        ),
+    },
+    "31758593": {
+        "pmid": "31758593",
+        "doi": "10.1111/neup.12617",
+        "authors_short": "Cabello-Vilchez AM et al.",
+        "authors_full": [
+            "Cabello-Vilchez AM", "Chura-Araujo MA",
+            "Anicama Lima WE",
+        ],
+        "journal": "Neuropathology",
+        "journal_short_code": "Neuropathology",
+        "year": 2020,
+        "volume": "40",
+        "issue": "2",
+        "pages": "180-184",
+        "title": "Fatal granulomatous amoebic encephalitis due to free-living amoebae in two boys in two different hospitals in Lima, Peru",
+        "anchor_type": "case_report",
+        "anchor_subtype": "cabello_vilchez_lima_peru_pediatric_gae_fatal_2cases",
+        "verification_confidence": 0.85,
+        "verification_method": "claude_web_pubmed_ui_v5_2026_05_11",
+        "last_verified_date": "2026-05-11",
+        "caveat": (
+            "Subphase 1.4 commit 5.4.0 anchor for Class 6 GAE. Master "
+            "plan referenced 'Cabello-Vilchez 2023'; actual canonical "
+            "Peru clinical-phenotype paper is Cabello-Vilchez et al. "
+            "2020 Neuropathology with two fatal pediatric Lima cases. "
+            "Diacritic Cabello-Vilchez (i with acute accent on i in "
+            "original) rendered as plain ASCII Cabello-Vilchez for "
+            "safety. Anchor for Peru pediatric GAE stratum. "
+            "Author list captured per PubMed (3 named; et al. for "
+            "additional authors if any). verification_confidence=0.85 "
+            "pre-direct-fetch."
+        ),
+    },
+    "17428307": {
+        "pmid": "17428307",
+        "doi": "10.1111/j.1574-695X.2007.00232.x",
+        "authors_short": "Visvesvara GS, Moura H, Schuster FL",
+        "authors_full": [
+            "Visvesvara GS", "Moura H", "Schuster FL",
+        ],
+        "journal": "FEMS Immunol Med Microbiol",
+        "journal_short_code": "FEMS-Immunol-Med-Microbiol",
+        "year": 2007,
+        "volume": "50",
+        "issue": "1",
+        "pages": "1-26",
+        "title": "Pathogenic and opportunistic free-living amoebae: Acanthamoeba spp., Balamuthia mandrillaris, Naegleria fowleri, and Sappinia diploidea",
+        "anchor_type": "review",
+        "anchor_subtype": "visvesvara_2007_free_living_amoebae_review",
+        "verification_confidence": 0.85,
+        "verification_method": "claude_web_pubmed_ui_v5_2026_05_11",
+        "last_verified_date": "2026-05-11",
+        "caveat": (
+            "Subphase 1.4 commit 5.4.0 anchor for Class 6 GAE. "
+            "Canonical Visvesvara 2007 FEMS Immunology review of free-"
+            "living amoebae (Acanthamoeba spp., B. mandrillaris, N. "
+            "fowleri, S. diploidea); 26-page comprehensive clinical and "
+            "epidemiologic phenotype review. Anchor for Acanthamoeba "
+            "GAE majority stratum. Visvesvara GS is a co-author on "
+            "multiple existing Subphase 1.1/1.2 PAM registry entries "
+            "(Naegleria role); this anchor is the Acanthamoeba/Balamuthia"
+            " role distinct from those. verification_confidence=0.85 "
+            "pre-direct-fetch."
+        ),
+    },
+    "30239654": {
+        "pmid": "30239654",
+        "doi": "10.1093/cid/ciy813",
+        "authors_short": "Cope JR et al.",
+        "authors_full": [
+            "Cope JR", "Landa J", "Nethercut H", "Collier SA",
+            "Glaser C", "Moser M", "Puttagunta R", "Yoder JS",
+            "Ali IK", "Roy SL",
+        ],
+        "journal": "Clin Infect Dis",
+        "journal_short_code": "CID",
+        "year": 2019,
+        "volume": "68",
+        "issue": "11",
+        "pages": "1815-1822",
+        "title": "The Epidemiology and Clinical Features of Balamuthia mandrillaris Disease in the United States, 1974-2016",
+        "anchor_type": "surveillance",
+        "anchor_subtype": "cope_balamuthia_us_1974_2016_epidemiology",
+        "verification_confidence": 0.85,
+        "verification_method": "claude_web_pubmed_ui_v5_2026_05_11",
+        "last_verified_date": "2026-05-11",
+        "caveat": (
+            "Subphase 1.4 commit 5.4.0 anchor for Class 6 GAE. Cope 2019 "
+            "CID US Balamuthia surveillance 1974-2016 (109 cases; 90 "
+            "percent case-fatality among those with known outcome). "
+            "Anchor for non-Peru Balamuthia stratum (3 of 15 Balamuthia "
+            "slots per master prompt 1.4.6) and for the Hispanic-"
+            "overrepresentation signal in US-published series. Cope JR "
+            "already appears in registry as Naegleria co-author; this "
+            "anchor is the Balamuthia role distinct from those. "
+            "verification_confidence=0.85 pre-direct-fetch."
+        ),
+    },
+    "34461057": {
+        "pmid": "34461057",
+        "doi": "10.1016/S1473-3099(20)30933-6",
+        "authors_short": "Damhorst GL et al.",
+        "authors_full": [
+            "Damhorst GL", "Watts A", "Hernandez-Romieu A", "Mel N",
+            "Palmore M", "Ali IKM", "Neill SG", "Kalapila A",
+            "Cope JR",
+        ],
+        "journal": "Lancet Infect Dis",
+        "journal_short_code": "Lancet Infect Dis",
+        "year": 2022,
+        "volume": "22",
+        "issue": "2",
+        "pages": "e59-e65",
+        "title": "Acanthamoeba castellanii encephalitis in a patient with AIDS: a case report and literature review",
+        "anchor_type": "case_report",
+        "anchor_subtype": "damhorst_acanthamoeba_aids_case_lit_review_2022",
+        "verification_confidence": 0.85,
+        "verification_method": "claude_web_pubmed_ui_v5_2026_05_11",
+        "last_verified_date": "2026-05-11",
+        "caveat": (
+            "Subphase 1.4 commit 5.4.0 anchor for Class 6 GAE. Damhorst "
+            "2022 (NOT 2020 as master plan stated) Lancet Infect Dis "
+            "case report + literature review of Acanthamoeba castellanii "
+            "encephalitis in an AIDS patient. Anchor for Acanthamoeba "
+            "immunocompromised stratum (10 of 15 Acanthamoeba slots per "
+            "master prompt 1.4.6). Year corrected from 2020 to 2022 at "
+            "verification. verification_confidence=0.85 pre-direct-fetch."
+        ),
+    },
 }
 
 
