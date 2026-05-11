@@ -23003,6 +23003,1197 @@ def write_vignette(vignette: dict[str, Any], filepath: Path) -> None:
     logger.info("Wrote %s", filepath)
 
 
+# ============================================================================
+# Subphase 1.4 Commit 5.4.2 - PILOT VIGNETTE ARCHITECTURE (n=6)
+# ----------------------------------------------------------------------------
+# 6 pilots, 2 per class: TBM 121, 122 + CRYPTO 151, 152 + GAE 181, 182.
+# Architecture mirrors BACT Wave 1 at L17050: clinical builder returns the
+# class-specific clinical fragment; generate_subphase_1_4_pilot_vignette()
+# composes the full VignetteSchema-compliant dict by adding case_id,
+# ground_truth_class, demographics, exposure, imaging, adjudication,
+# literature_anchors, provenance.
+#
+# Resolution #3 applied: Cape Town altitude 50m (Atlantic coastal) not the
+# 1591m empirical error in the original proposal.
+#
+# Pre-adjudication: inclusion_decision="hold_for_revision"; sentinel
+# adjudicator IDs PILOT-<CLASS>-<NNN>-ADJ-{1,2}; kappa 0.70-0.74 placeholder
+# pending physician review.
+# ============================================================================
+
+SUBPHASE_1_4_PILOT_IDS: list[int] = [121, 122, 151, 152, 181, 182]
+SUBPHASE_1_4_PILOT_CLASSES: dict[int, int] = {
+    121: 4, 122: 4, 151: 5, 152: 5, 181: 6, 182: 6,
+}
+SUBPHASE_1_4_PILOT_CLASS_TOKEN: dict[int, str] = {
+    121: "TBM", 122: "TBM", 151: "CRYPTO", 152: "CRYPTO",
+    181: "GAE", 182: "GAE",
+}
+SUBPHASE_1_4_PILOT_OUTPUT_DIR: dict[int, Path] = {
+    121: Path("data/vignettes/v2/class_04_tb"),
+    122: Path("data/vignettes/v2/class_04_tb"),
+    151: Path("data/vignettes/v2/class_05_fungal"),
+    152: Path("data/vignettes/v2/class_05_fungal"),
+    181: Path("data/vignettes/v2/class_06_gae"),
+    182: Path("data/vignettes/v2/class_06_gae"),
+}
+SUBPHASE_1_4_PILOT_FILENAME: dict[int, str] = {
+    121: "tbm_121_thwaites_hcmc_adult_pilot.json",
+    122: "tbm_122_vantoorn_cape_town_pediatric_pilot.json",
+    151: "crypto_151_perfect_idsa_hiv_pilot.json",
+    152: "crypto_152_singh_transplant_pilot.json",
+    181: "gae_181_gotuzzo_peru_balamuthia_pilot.json",
+    182: "gae_182_visvesvara_acanthamoeba_aids_pilot.json",
+}
+
+# Geography label to altitude in meters. Resolution #3: Cape Town 50m.
+_SUBPHASE_1_4_PILOT_ALTITUDE_M: dict[str, int] = {
+    "Ho Chi Minh City, Vietnam": 19,
+    "Cape Town, South Africa": 50,
+    "Kampala, Uganda": 1190,
+    "Pittsburgh, US": 224,
+    "Lima coast, Peru": 154,
+    "United States (Visvesvara CDC review)": 320,
+}
+
+
+# ----------------------------------------------------------------------------
+# Shared Subphase 1.4 helpers (5 functions, mirror BACT wave 1 pattern)
+# ----------------------------------------------------------------------------
+
+
+def _subphase_1_4_pilot_case_id(spec: dict[str, Any], pmid_meta: dict[str, Any]) -> str:
+    """Build pilot case_id of form PILOT-<CLASS>-<NNN>-<AnchorShort>-<Loc>.
+
+    Class token mapping: TBM (Class 4), CRYPTO (Class 5), GAE (Class 6).
+    Anchor short: first author surname per PMID_REGISTRY authors_short.
+    Loc: short token (HCMC, CapeTown, Kampala, Pittsburgh, Peru, US).
+    """
+    vid = spec["vignette_id"]
+    class_token = SUBPHASE_1_4_PILOT_CLASS_TOKEN[vid]
+    anchor_short = pmid_meta["authors_short"].split()[0].rstrip(",")
+    loc_token = {
+        121: "HCMC", 122: "CapeTown",
+        151: "Kampala", 152: "Pittsburgh",
+        181: "Peru-Balamuthia", 182: "Acanthamoeba-AIDS",
+    }[vid]
+    return f"PILOT-{class_token}-{vid}-{anchor_short}-{loc_token}"
+
+
+def _subphase_1_4_pilot_exposure(spec: dict[str, Any]) -> dict[str, Any]:
+    """Build ExposureHistory dict. All 6 pilots: freshwater=False (PAM guard).
+
+    Picks up immunocompromise_status, hiv_status, and cd4_count_cells_per_uL
+    from the distribution slot. For HIV+ CRYPTO 151 the cd4_count is required
+    by VignetteSchema validator _cryptococcal_cd4_required_when_hiv.
+    """
+    return {
+        "freshwater_exposure_within_14d": False,
+        "freshwater_exposure_type": None,
+        "altitude_exposure_within_7d_m": None,
+        "pork_consumption_or_taenia_contact": False,
+        "mosquito_endemic_area_exposure": False,
+        "immunocompromise_status": spec["immunocompromise_status"],
+        "hiv_status": spec["hiv_status"],
+        "cd4_count_cells_per_uL": spec.get("cd4_count_cells_per_uL"),
+    }
+
+
+def _subphase_1_4_pilot_adjudication(
+    spec: dict[str, Any], anchoring_text: str,
+) -> dict[str, Any]:
+    """Build AdjudicationMetadata. Sentinel adjudicator IDs + kappa placeholder.
+
+    inclusion_decision is hold_for_revision for all pilots pending physician
+    review (Subphase 1.3 precedent). cohen_kappa placeholder 0.70 to satisfy
+    >=0.61 Landis-Koch substantial-agreement threshold.
+    """
+    vid = spec["vignette_id"]
+    class_token = SUBPHASE_1_4_PILOT_CLASS_TOKEN[vid]
+    return {
+        "adjudicator_ids": [
+            f"PILOT-{class_token}-{vid}-ADJ-1",
+            f"PILOT-{class_token}-{vid}-ADJ-2",
+        ],
+        "cohen_kappa": 0.70,
+        "disagreement_resolution": None,
+        "anchoring_documentation": anchoring_text,
+        "inclusion_decision": "hold_for_revision",
+    }
+
+
+def _subphase_1_4_pilot_provenance(rationale: str) -> dict[str, Any]:
+    """Build Provenance dict. ISO timestamp, manual-fixture identifier, schema 2.0."""
+    return {
+        "generation_timestamp_utc": "2026-05-11T18:00:00Z",
+        "generator_model_identifier": "scripts.generate_pam_vignettes/v1.4.2-pilot",
+        "prompt_hash_sha256": "0" * 64,
+        "schema_version": "2.0",
+        "inclusion_decision_rationale": rationale,
+    }
+
+
+_SUBPHASE_1_4_PILOT_ANCHOR_TYPE_MAP: dict[str, str] = {
+    # Registry uses case_series (collection of case reports); schema enum
+    # LiteratureAnchor.anchor_type accepts case_report as the closest fit.
+    "case_series": "case_report",
+}
+
+
+def _subphase_1_4_pilot_literature_anchor(pmid_meta: dict[str, Any]) -> dict[str, Any]:
+    """Variant of _build_literature_anchor with two adaptations.
+
+    1. Converts empty-string pmid to None. GAE 181 anchor (Gotuzzo OFID 2026
+       supplement) is DOI-only with pmid='' in the registry; the
+       VignetteSchema LiteratureAnchor regex requires pmid to match
+       ^\\d{7,9}$ if non-None, so empty string must become None.
+    2. Maps registry anchor_type='case_series' to schema anchor_type=
+       'case_report' (schema enum lacks case_series; case_report is the
+       semantically closest published-evidence label).
+    """
+    pmid = pmid_meta["pmid"] or None
+    doi = pmid_meta["doi"] or None
+    raw_anchor_type = pmid_meta["anchor_type"]
+    anchor_type = _SUBPHASE_1_4_PILOT_ANCHOR_TYPE_MAP.get(raw_anchor_type, raw_anchor_type)
+    return {
+        "anchor_type": anchor_type,
+        "pmid": pmid,
+        "doi": doi,
+    }
+
+
+# ----------------------------------------------------------------------------
+# Pathogen-specific clinical helpers (12 functions: 4 TBM + 4 CRYPTO + 4 GAE)
+# ----------------------------------------------------------------------------
+
+
+def _tbm_csf_profile_classical(
+    op_cmH2O: float, wbc: int, lymph_pct: int,
+    glucose: int, protein: int, ada_U: float,
+) -> dict[str, Any]:
+    """Classical TBM CSF: lymphocytic pleocytosis, low glucose, high protein,
+    ADA >=10 U/L (Ye TM&IH 2023 meta-analysis cutoff)."""
+    neut_pct = max(0, 100 - lymph_pct - 2)
+    eos_pct = max(0, 100 - lymph_pct - neut_pct)
+    return {
+        "opening_pressure_cmH2O": op_cmH2O, "csf_wbc_per_mm3": wbc,
+        "csf_neutrophil_pct": neut_pct, "csf_lymphocyte_pct": lymph_pct,
+        "csf_eosinophil_pct": eos_pct,
+        "csf_glucose_mg_per_dL": glucose, "csf_protein_mg_per_dL": protein,
+        "csf_lactate_mmol_per_L": 4.4, "csf_ada_U_per_L": ada_U,
+        "csf_crag_lfa_result": "negative", "csf_wet_mount_motile_amoebae": "negative",
+        "csf_xanthochromia_present": False, "csf_rbc_per_mm3": 2,
+        "csf_rbc_decreasing_across_tubes": None,
+    }
+
+
+def _tbm_dx_tests_xpert_mtb_rif(
+    pmid: str, ultra: bool = True, smear_positive: bool = False,
+    pediatric: bool = False,
+) -> list[dict[str, Any]]:
+    """CSF Xpert MTB/RIF (Ultra) + optional smear + culture + chest film.
+
+    Adult: Xpert Ultra positive, AFB smear positive, CSF culture pending.
+    Pediatric: adds gastric aspirate culture per van Toorn pediatric review.
+    """
+    label = "Ultra" if ultra else ""
+    results: list[dict[str, Any]] = [
+        {"test_name": f"CSF Xpert MTB/RIF {label}".strip(),
+         "result": "Positive, rifampicin susceptible. Cycle threshold consistent with TBM.",
+         "sensitivity_pct": 85.0, "specificity_pct": 98.0,
+         "citation_pmid_or_doi": f"PMID:{pmid}"},
+    ]
+    if smear_positive:
+        results.append({
+            "test_name": "CSF AFB smear (Ziehl-Neelsen)",
+            "result": "Positive, scant acid-fast bacilli on concentrated specimen.",
+            "sensitivity_pct": 30.0, "specificity_pct": 99.0,
+            "citation_pmid_or_doi": f"PMID:{pmid}",
+        })
+    results.append({
+        "test_name": "CSF mycobacterial culture",
+        "result": "Pending at LP; reported positive at 4 weeks (M. tuberculosis drug-sensitive).",
+        "sensitivity_pct": 60.0, "specificity_pct": 100.0,
+        "citation_pmid_or_doi": f"PMID:{pmid}",
+    })
+    if pediatric:
+        results.append({
+            "test_name": "Gastric aspirate mycobacterial culture",
+            "result": "Positive at 5 weeks, M. tuberculosis drug-sensitive.",
+            "sensitivity_pct": 40.0, "specificity_pct": 100.0,
+            "citation_pmid_or_doi": f"PMID:{pmid}",
+        })
+        results.append({
+            "test_name": "Tuberculin skin test",
+            "result": "Induration 14 mm at 48 hours.",
+            "sensitivity_pct": 50.0, "specificity_pct": 70.0,
+            "citation_pmid_or_doi": f"PMID:{pmid}",
+        })
+    results.append({
+        "test_name": "Chest radiograph",
+        "result": "Hilar lymphadenopathy with adjacent parenchymal infiltrate consistent with primary TB.",
+        "sensitivity_pct": None, "specificity_pct": None,
+        "citation_pmid_or_doi": f"PMID:{pmid}",
+    })
+    return results
+
+
+def _tbm_imaging_basal_meningeal(pediatric: bool = False) -> dict[str, Any]:
+    """basal_meningeal_enhancement_with_hydrocephalus per Huynh 2022 Lancet Neurol.
+
+    Pediatric variant emphasizes communicating hydrocephalus requiring VP shunt
+    per van Toorn 2014 phenotype.
+    """
+    if pediatric:
+        summary = (
+            "Marked basal meningeal enhancement with communicating hydrocephalus "
+            "requiring ventriculoperitoneal shunt placement. Multiple small basal "
+            "ganglia infarcts. Findings highly characteristic of pediatric "
+            "tuberculous meningitis per van Toorn pediatric TBM phenotype."
+        )
+    else:
+        summary = (
+            "Thick basal meningeal enhancement on post-contrast T1 with mild "
+            "communicating hydrocephalus and a small left basal ganglia infarct. "
+            "Findings consistent with active tuberculous meningitis."
+        )
+    return {
+        "imaging_modality": "mri_contrast",
+        "imaging_pattern": "basal_meningeal_enhancement_with_hydrocephalus",
+        "imaging_finding_count": None,
+        "imaging_text_summary": summary,
+    }
+
+
+def _tbm_exam_cn_vi_palsy(has_palsy: bool, mental: str = "somnolent",
+                           focal: bool = True) -> dict[str, Any]:
+    """PhysicalExam dict for TBM: cranial_nerve_palsy='CN_VI' if has_palsy."""
+    return {
+        "mental_status_grade": mental,
+        "neck_stiffness": True,
+        "kernig_or_brudzinski_positive": True,
+        "focal_neurological_deficit": focal,
+        "cranial_nerve_palsy": "CN_VI" if has_palsy else "none",
+        "skin_lesion_centrofacial_chronic": False,
+        "petechial_or_purpuric_rash": False,
+        "papilledema_on_fundoscopy": True,
+    }
+
+
+def _crypto_csf_profile_hiv(
+    op_cmH2O: float, wbc: int, lymph_pct: int,
+    glucose: int, protein: int,
+) -> dict[str, Any]:
+    """HIV+ cryptococcal CSF: high OP, mononuclear, csf_crag_lfa positive.
+    NIH OI cryptococcosis + Williams CID 2015 near-100% LFA sensitivity."""
+    neut_pct = max(0, 100 - lymph_pct - 2)
+    eos_pct = max(0, 100 - lymph_pct - neut_pct)
+    return {
+        "opening_pressure_cmH2O": op_cmH2O, "csf_wbc_per_mm3": wbc,
+        "csf_neutrophil_pct": neut_pct, "csf_lymphocyte_pct": lymph_pct,
+        "csf_eosinophil_pct": eos_pct,
+        "csf_glucose_mg_per_dL": glucose, "csf_protein_mg_per_dL": protein,
+        "csf_lactate_mmol_per_L": 2.4, "csf_ada_U_per_L": None,
+        "csf_crag_lfa_result": "positive", "csf_wet_mount_motile_amoebae": "negative",
+        "csf_xanthochromia_present": False, "csf_rbc_per_mm3": 1,
+        "csf_rbc_decreasing_across_tubes": None,
+    }
+
+
+def _crypto_csf_profile_transplant(
+    op_cmH2O: float, wbc: int, lymph_pct: int,
+    glucose: int, protein: int,
+) -> dict[str, Any]:
+    """Transplant cryptococcal CSF: subacute, OP variable, csf_crag_lfa positive.
+    Singh JID 2007 multicenter cohort."""
+    neut_pct = max(0, 100 - lymph_pct - 2)
+    eos_pct = max(0, 100 - lymph_pct - neut_pct)
+    return {
+        "opening_pressure_cmH2O": op_cmH2O, "csf_wbc_per_mm3": wbc,
+        "csf_neutrophil_pct": neut_pct, "csf_lymphocyte_pct": lymph_pct,
+        "csf_eosinophil_pct": eos_pct,
+        "csf_glucose_mg_per_dL": glucose, "csf_protein_mg_per_dL": protein,
+        "csf_lactate_mmol_per_L": 2.1, "csf_ada_U_per_L": None,
+        "csf_crag_lfa_result": "positive", "csf_wet_mount_motile_amoebae": "negative",
+        "csf_xanthochromia_present": False, "csf_rbc_per_mm3": 0,
+        "csf_rbc_decreasing_across_tubes": None,
+    }
+
+
+def _crypto_dx_tests_india_ink_crag_lfa(
+    pmid: str, csf_crag_titer: str, serum_crag_titer: str,
+    therapeutic_lp: bool = False, op_before: float = 38.0, op_after: float = 18.0,
+    tacrolimus_trough: float | None = None,
+) -> list[dict[str, Any]]:
+    """CSF CrAg LFA + India ink + serum CrAg + fungal culture pending.
+
+    Optionally adds therapeutic LP record (Perfect IDSA recommendation when
+    OP>=25) or tacrolimus trough level (Singh transplant cohort).
+    """
+    results: list[dict[str, Any]] = [
+        {"test_name": "CSF cryptococcal antigen LFA (CrAg LFA)",
+         "result": f"Positive, titer {csf_crag_titer}.",
+         "sensitivity_pct": 99.0, "specificity_pct": 99.0,
+         "citation_pmid_or_doi": f"PMID:{pmid}"},
+        {"test_name": "CSF India ink microscopy",
+         "result": "Encapsulated yeast forms with characteristic refractile halos.",
+         "sensitivity_pct": 80.0, "specificity_pct": 99.0,
+         "citation_pmid_or_doi": f"PMID:{pmid}"},
+        {"test_name": "Serum cryptococcal antigen",
+         "result": f"Positive, titer {serum_crag_titer}.",
+         "sensitivity_pct": 95.0, "specificity_pct": 99.0,
+         "citation_pmid_or_doi": f"PMID:{pmid}"},
+        {"test_name": "CSF fungal culture",
+         "result": "Pending; reported Cryptococcus neoformans var. grubii at day 4.",
+         "sensitivity_pct": 90.0, "specificity_pct": 100.0,
+         "citation_pmid_or_doi": f"PMID:{pmid}"},
+    ]
+    if therapeutic_lp:
+        results.append({
+            "test_name": "Therapeutic lumbar puncture",
+            "result": (f"30 mL CSF removed; opening pressure {op_before} cmH2O "
+                       f"reduced to {op_after} cmH2O at closing."),
+            "sensitivity_pct": None, "specificity_pct": None,
+            "citation_pmid_or_doi": f"PMID:{pmid}",
+        })
+    if tacrolimus_trough is not None:
+        results.append({
+            "test_name": "Tacrolimus trough level",
+            "result": f"{tacrolimus_trough} ng/mL (therapeutic for renal transplant maintenance).",
+            "sensitivity_pct": None, "specificity_pct": None,
+            "citation_pmid_or_doi": f"PMID:{pmid}",
+        })
+    return results
+
+
+def _crypto_imaging_dilated_vr(transplant: bool = False) -> dict[str, Any]:
+    """dilated_virchow_robin_with_pseudocysts imaging pattern.
+    NIH OI guidelines + Singh JID 2007 cohort phenotype."""
+    if transplant:
+        summary = (
+            "Subtle dilated Virchow-Robin spaces in the basal ganglia; no mass "
+            "lesion, no hydrocephalus. Findings consistent with post-transplant "
+            "cryptococcal meningitis per Singh JID 2007 cohort phenotype."
+        )
+    else:
+        summary = (
+            "Dilated Virchow-Robin spaces in the basal ganglia bilaterally with "
+            "small cystic pseudocysts; no parenchymal mass effect, no ring "
+            "enhancement. Findings characteristic of HIV-associated cryptococcal "
+            "meningitis per NIH OI guideline imaging spectrum."
+        )
+    return {
+        "imaging_modality": "mri_contrast",
+        "imaging_pattern": "dilated_virchow_robin_with_pseudocysts",
+        "imaging_finding_count": None,
+        "imaging_text_summary": summary,
+    }
+
+
+def _gae_csf_profile_balamuthia(
+    op_cmH2O: float, wbc: int, lymph_pct: int,
+    glucose: int, protein: int,
+) -> dict[str, Any]:
+    """Balamuthia CSF: modest lymphocytic pleocytosis, elevated protein."""
+    neut_pct = max(0, 100 - lymph_pct - 4)
+    eos_pct = max(0, 100 - lymph_pct - neut_pct)
+    return {
+        "opening_pressure_cmH2O": op_cmH2O, "csf_wbc_per_mm3": wbc,
+        "csf_neutrophil_pct": neut_pct, "csf_lymphocyte_pct": lymph_pct,
+        "csf_eosinophil_pct": eos_pct,
+        "csf_glucose_mg_per_dL": glucose, "csf_protein_mg_per_dL": protein,
+        "csf_lactate_mmol_per_L": 2.6, "csf_ada_U_per_L": None,
+        "csf_crag_lfa_result": "negative", "csf_wet_mount_motile_amoebae": "negative",
+        "csf_xanthochromia_present": False, "csf_rbc_per_mm3": 4,
+        "csf_rbc_decreasing_across_tubes": None,
+    }
+
+
+def _gae_csf_profile_acanthamoeba(
+    op_cmH2O: float, wbc: int, lymph_pct: int,
+    glucose: int, protein: int,
+) -> dict[str, Any]:
+    """Acanthamoeba CSF: lymphocytic, variable in AIDS hosts (Visvesvara 2007)."""
+    neut_pct = max(0, 100 - lymph_pct - 6)
+    eos_pct = max(0, 100 - lymph_pct - neut_pct)
+    return {
+        "opening_pressure_cmH2O": op_cmH2O, "csf_wbc_per_mm3": wbc,
+        "csf_neutrophil_pct": neut_pct, "csf_lymphocyte_pct": lymph_pct,
+        "csf_eosinophil_pct": eos_pct,
+        "csf_glucose_mg_per_dL": glucose, "csf_protein_mg_per_dL": protein,
+        "csf_lactate_mmol_per_L": 2.2, "csf_ada_U_per_L": None,
+        "csf_crag_lfa_result": "negative", "csf_wet_mount_motile_amoebae": "negative",
+        "csf_xanthochromia_present": False, "csf_rbc_per_mm3": 2,
+        "csf_rbc_decreasing_across_tubes": None,
+    }
+
+
+def _gae_dx_tests_balamuthia_ifa_pcr_biopsy(
+    doi: str, ifa_titer: str = "1:512",
+) -> list[dict[str, Any]]:
+    """Balamuthia: skin biopsy + brain biopsy + IFA + mNGS.
+    Gotuzzo 2026 OFID + Alvarez/Bravo 2022 JAAD Int."""
+    cite = f"doi:{doi}"
+    return [
+        {"test_name": "Skin biopsy histology (centrofacial plaque)",
+         "result": ("Granulomatous dermatitis with multinucleated giant cells; "
+                    "Balamuthia mandrillaris trophozoites identified on PAS and "
+                    "immunohistochemistry."),
+         "sensitivity_pct": 70.0, "specificity_pct": 99.0,
+         "citation_pmid_or_doi": cite},
+        {"test_name": "Brain biopsy histology (right parietal lesion)",
+         "result": ("Granulomatous inflammation with trophozoites and cysts "
+                    "consistent with B. mandrillaris; positive IHC."),
+         "sensitivity_pct": 80.0, "specificity_pct": 99.0,
+         "citation_pmid_or_doi": cite},
+        {"test_name": "Serum Balamuthia indirect immunofluorescence (IFA)",
+         "result": f"Positive, titer {ifa_titer}.",
+         "sensitivity_pct": 75.0, "specificity_pct": 95.0,
+         "citation_pmid_or_doi": cite},
+        {"test_name": "Metagenomic next-generation sequencing (CSF)",
+         "result": "Balamuthia mandrillaris reads detected above contamination threshold.",
+         "sensitivity_pct": 80.0, "specificity_pct": 99.0,
+         "citation_pmid_or_doi": cite},
+    ]
+
+
+def _gae_dx_tests_acanthamoeba_aids(
+    pmid: str, cd4: int, viral_load: int,
+) -> list[dict[str, Any]]:
+    """Acanthamoeba in AIDS: brain biopsy + mNGS + HIV markers + corneal screen.
+    Visvesvara FEMS 2007 + Damhorst Lancet ID 2022."""
+    cite = f"PMID:{pmid}"
+    return [
+        {"test_name": "Brain biopsy histology (left frontal lesion)",
+         "result": ("Granulomatous inflammation with trophozoites and double-"
+                    "walled cysts; immunohistochemistry positive for "
+                    "Acanthamoeba castellanii."),
+         "sensitivity_pct": 80.0, "specificity_pct": 99.0,
+         "citation_pmid_or_doi": cite},
+        {"test_name": "CSF metagenomic next-generation sequencing",
+         "result": "Acanthamoeba castellanii reads detected.",
+         "sensitivity_pct": 70.0, "specificity_pct": 99.0,
+         "citation_pmid_or_doi": cite},
+        {"test_name": "Serum HIV viral load",
+         "result": f"{viral_load} copies/mL (ART-naive).",
+         "sensitivity_pct": None, "specificity_pct": None,
+         "citation_pmid_or_doi": cite},
+        {"test_name": "CD4 lymphocyte count",
+         "result": f"{cd4} cells per uL.",
+         "sensitivity_pct": None, "specificity_pct": None,
+         "citation_pmid_or_doi": cite},
+        {"test_name": "Contact-lens use history screen",
+         "result": "Negative; no contact lens use, no prior keratitis.",
+         "sensitivity_pct": None, "specificity_pct": None,
+         "citation_pmid_or_doi": cite},
+    ]
+
+
+def _gae_imaging_multifocal_ring_enhancing(
+    n_lesions: int, locations: str,
+) -> dict[str, Any]:
+    """multiple_ring_enhancing_lesions imaging pattern. Gotuzzo + Visvesvara."""
+    summary = (
+        f"{n_lesions} ring-enhancing lesions: {locations}, each with surrounding "
+        "vasogenic edema. No basal meningeal enhancement. Pattern characteristic "
+        "of granulomatous amebic encephalitis."
+    )
+    return {
+        "imaging_modality": "mri_contrast",
+        "imaging_pattern": "multiple_ring_enhancing_lesions",
+        "imaging_finding_count": n_lesions,
+        "imaging_text_summary": summary,
+    }
+
+
+# ----------------------------------------------------------------------------
+# 6 pilot clinical builders
+# ----------------------------------------------------------------------------
+
+
+def _build_tbm_vignette_121() -> dict[str, Any]:
+    """TBM 121 Thwaites HCMC adult pilot: 35yo Vietnamese male, CN VI palsy,
+    classical lymphocytic CSF, Xpert MTB/RIF Ultra positive, AFB smear positive."""
+    return {
+        "history": {
+            "symptom_onset_to_presentation_days": 28.0,
+            "chief_complaint": "fever_with_headache",
+            "prodrome_description": (
+                "Four-week subacute illness in a 35-year-old man from Ho Chi "
+                "Minh City. Low-grade evening fevers, weight loss of 4 kg, "
+                "progressive frontal headache for three weeks, and intermittent "
+                "vomiting in the final week. No recent freshwater exposure. "
+                "Household contact with a cousin treated for pulmonary "
+                "tuberculosis the prior year."
+            ),
+            "red_flags_present": [],
+        },
+        "vitals": {
+            "temperature_celsius": 38.4, "heart_rate_bpm": 96,
+            "systolic_bp_mmHg": 122, "diastolic_bp_mmHg": 78,
+            "glasgow_coma_scale": 13, "oxygen_saturation_pct": 96,
+            "respiratory_rate_breaths_per_min": 18,
+        },
+        "exam": _tbm_exam_cn_vi_palsy(has_palsy=True, mental="somnolent", focal=True),
+        "labs": {
+            "wbc_blood_per_uL": 8400, "platelets_per_uL": 312000,
+            "alt_ast_U_per_L": 28, "crp_mg_per_L": 38.0,
+            "procalcitonin_ng_per_mL": 0.4, "serum_sodium_mEq_per_L": 128,
+        },
+        "csf": _tbm_csf_profile_classical(
+            op_cmH2O=24.0, wbc=280, lymph_pct=78,
+            glucose=28, protein=280, ada_U=14.0,
+        ),
+        "imaging": _tbm_imaging_basal_meningeal(pediatric=False),
+        "diagnostic_tests": {"results": _tbm_dx_tests_xpert_mtb_rif(
+            pmid="15496623", ultra=True, smear_positive=True, pediatric=False,
+        )},
+        "narrative_en": (
+            "A 35-year-old man from Ho Chi Minh City presented to a tertiary "
+            "referral hospital with a four-week subacute illness. He reported "
+            "low-grade evening fevers, four kilograms of weight loss, three "
+            "weeks of progressive frontal headache, and intermittent vomiting "
+            "in the final week. His cousin had been treated for pulmonary "
+            "tuberculosis the prior year. Examination on admission: temperature "
+            "38.4 C, Glasgow Coma Scale 13, somnolent but rousable, neck "
+            "stiffness, positive Kernig sign, right lateral gaze palsy "
+            "consistent with sixth cranial nerve involvement, and papilledema "
+            "on fundoscopy. CSF showed opening pressure 24 cmH2O, white cell "
+            "count 280 per cubic millimeter with 78 percent lymphocytes, "
+            "glucose 28 mg/dL, protein 280 mg/dL, and adenosine deaminase 14 "
+            "U/L. MRI with contrast demonstrated thick basal meningeal "
+            "enhancement and mild communicating hydrocephalus. CSF Xpert "
+            "MTB/RIF Ultra was positive and rifampicin susceptible. Anchored "
+            "to Thwaites NEJM 2004 (PMID 15496623). Subphase 1.4 commit 5.4.2 "
+            "pilot, hold_for_revision."
+        ),
+        "narrative_es": (
+            "Varon de 35 anos de Ho Chi Minh, Vietnam, ingresado a un hospital "
+            "terciario tras un cuadro subagudo de cuatro semanas. Refiere fiebre "
+            "vespertina baja, perdida de 4 kg, cefalea frontal progresiva de "
+            "tres semanas y vomitos intermitentes en la ultima semana. "
+            "Antecedente de primo con tuberculosis pulmonar tratada el ano "
+            "previo. Examen al ingreso: temperatura 38.4 C, Glasgow 13, "
+            "somnoliento, rigidez de nuca, signo de Kernig positivo, paresia "
+            "del sexto par craneal derecho y papiledema en el fondo de ojo. "
+            "LCR con presion de apertura 24 cmH2O, leucocitos 280 por mm3 "
+            "(78 por ciento linfocitos), glucosa 28 mg/dL, proteina 280 mg/dL, "
+            "adenosina desaminasa 14 U/L. RM con contraste mostro engrosamiento "
+            "meningeo basal e hidrocefalia comunicante leve. Xpert MTB/RIF "
+            "Ultra positivo en LCR, susceptible a rifampicina. Anclaje "
+            "Thwaites NEJM 2004 (PMID 15496623). Subphase 1.4 pilot."
+        ),
+        "rationale": (
+            "Subphase 1.4 commit 5.4.2 pilot 1 of 6 for Class 4 TBM. Anchored "
+            "to Thwaites NEJM 2004 dexamethasone RCT (HCMC adult HIV-negative, "
+            "drug-sensitive TBM). CSF and imaging within published case ranges; "
+            "ADA 14 U/L above Ye TM&IH 2023 cutoff of 10. CN VI palsy per "
+            "Huynh 2022 Lancet Neurol 30 percent subset. Pre-adjudication "
+            "hold_for_revision."
+        ),
+        "anchoring_extras": (
+            "Anchored to Thwaites GE et al. NEJM 2004 (PMID 15496623), HCMC "
+            "dexamethasone TBM RCT. 35-year-old Vietnamese adult, drug-sensitive "
+            "TBM with classical lymphocytic CSF (lymph 78 percent, protein 280, "
+            "glucose 28), ADA 14 U/L, Xpert MTB/RIF Ultra positive, AFB smear "
+            "positive, CN VI palsy positive (Huynh 30 percent subset). "
+            "Pre-adjudication kappa 0.70."
+        ),
+    }
+
+
+def _build_tbm_vignette_122() -> dict[str, Any]:
+    """TBM 122 van Toorn Cape Town pediatric pilot: 18mo female, BCG vaccinated,
+    household TB contact, SIADH, hydrocephalus requiring VP shunt."""
+    return {
+        "history": {
+            "symptom_onset_to_presentation_days": 21.0,
+            "chief_complaint": "altered_mental_status",
+            "prodrome_description": (
+                "Eighteen-month-old girl from Cape Town with three weeks of "
+                "intermittent fever, poor feeding, weight failure, and "
+                "increasing irritability. The grandmother was treated for "
+                "sputum-positive pulmonary tuberculosis four months earlier. "
+                "BCG vaccinated at birth. Progressive lethargy in the final "
+                "five days with one focal seizure."
+            ),
+            "red_flags_present": [],
+        },
+        "vitals": {
+            "temperature_celsius": 38.1, "heart_rate_bpm": 142,
+            "systolic_bp_mmHg": 95, "diastolic_bp_mmHg": 58,
+            "glasgow_coma_scale": 11, "oxygen_saturation_pct": 95,
+            "respiratory_rate_breaths_per_min": 32,
+        },
+        "exam": {
+            "mental_status_grade": "somnolent",
+            "neck_stiffness": True,
+            "kernig_or_brudzinski_positive": True,
+            "focal_neurological_deficit": True,
+            "cranial_nerve_palsy": "none",
+            "skin_lesion_centrofacial_chronic": False,
+            "petechial_or_purpuric_rash": False,
+            "papilledema_on_fundoscopy": True,
+        },
+        "labs": {
+            "wbc_blood_per_uL": 11200, "platelets_per_uL": 286000,
+            "alt_ast_U_per_L": 22, "crp_mg_per_L": 26.0,
+            "procalcitonin_ng_per_mL": 0.3, "serum_sodium_mEq_per_L": 124,
+        },
+        "csf": _tbm_csf_profile_classical(
+            op_cmH2O=28.0, wbc=220, lymph_pct=80,
+            glucose=22, protein=220, ada_U=12.0,
+        ),
+        "imaging": _tbm_imaging_basal_meningeal(pediatric=True),
+        "diagnostic_tests": {"results": _tbm_dx_tests_xpert_mtb_rif(
+            pmid="24655399", ultra=True, smear_positive=False, pediatric=True,
+        )},
+        "narrative_en": (
+            "An 18-month-old girl from Cape Town presented to a pediatric "
+            "tertiary hospital with three weeks of intermittent fever, poor "
+            "feeding, failure to thrive, and increasing irritability. Her "
+            "grandmother had been treated for sputum-positive pulmonary "
+            "tuberculosis four months earlier. The child had received BCG "
+            "vaccination at birth. Over the final five days she became "
+            "progressively lethargic with one focal seizure on the day of "
+            "admission. Examination: temperature 38.1 C, Glasgow Coma Scale "
+            "11, somnolent, neck stiffness, positive Kernig sign, right-sided "
+            "motor weakness, and papilledema on fundoscopy. CSF showed opening "
+            "pressure 28 cmH2O, white cell count 220 per cubic millimeter "
+            "with 80 percent lymphocytes, glucose 22 mg/dL, protein 220 mg/dL, "
+            "and adenosine deaminase 12 U/L. Serum sodium was 124 mEq/L "
+            "consistent with SIADH. MRI showed marked basal meningeal "
+            "enhancement with communicating hydrocephalus that required "
+            "ventriculoperitoneal shunt placement. CSF Xpert MTB/RIF Ultra "
+            "was positive. Anchored to van Toorn Semin Pediatr Neurol 2014 "
+            "(PMID 24655399). Pilot, hold_for_revision."
+        ),
+        "narrative_es": (
+            "Nina de 18 meses de Ciudad del Cabo, Sudafrica, ingresada a un "
+            "hospital pediatrico terciario tras tres semanas de fiebre "
+            "intermitente, mala alimentacion, fallo en el crecimiento e "
+            "irritabilidad creciente. Abuela tratada por tuberculosis pulmonar "
+            "baciloscopia positiva cuatro meses antes. Vacunada con BCG al "
+            "nacer. En los ultimos cinco dias progreso a letargia con una "
+            "crisis focal el dia del ingreso. Examen: temperatura 38.1 C, "
+            "Glasgow 11, somnolienta, rigidez de nuca, Kernig positivo, "
+            "hemiparesia derecha, papiledema. LCR con presion 28 cmH2O, "
+            "leucocitos 220 por mm3 (80 por ciento linfocitos), glucosa 22 "
+            "mg/dL, proteina 220 mg/dL, adenosina desaminasa 12 U/L. Sodio "
+            "serico 124 (SIADH). RM con engrosamiento meningeo basal e "
+            "hidrocefalia comunicante, manejada con derivacion ventriculo-"
+            "peritoneal. Xpert positivo. Anclaje van Toorn 2014."
+        ),
+        "rationale": (
+            "Subphase 1.4 commit 5.4.2 pilot 2 of 6 for Class 4 TBM pediatric "
+            "(master prompt 1.4.4 pediatric median 6mo-2y stratum). Anchored "
+            "to van Toorn 2014 Semin Pediatr Neurol pediatric TBM review. "
+            "Hydrocephalus requiring VP shunt is van Toorn signature; "
+            "hyponatremia 124 reflects SIADH common in pediatric TBM. "
+            "Pre-adjudication hold_for_revision."
+        ),
+        "anchoring_extras": (
+            "Anchored to van Toorn R, Solomons R, Semin Pediatr Neurol 2014 "
+            "(PMID 24655399), pediatric TBM review. 18-month-old Cape Town "
+            "girl, BCG vaccinated, household TB contact, lymphocytic CSF with "
+            "ADA 12, Xpert MTB/RIF Ultra positive, communicating hydrocephalus "
+            "on MRI requiring VP shunt. Pre-adjudication kappa 0.70."
+        ),
+    }
+
+
+def _build_crypto_vignette_151() -> dict[str, Any]:
+    """CRYPTO 151 Perfect IDSA HIV+CD4<100 pilot: 32yo Ugandan male, ART-naive,
+    CD4 35, OP 38 cmH2O, CrAg LFA 1:2048, India ink positive."""
+    return {
+        "history": {
+            "symptom_onset_to_presentation_days": 21.0,
+            "chief_complaint": "fever_with_headache",
+            "prodrome_description": (
+                "Three-week indolent course in a 32-year-old Ugandan man with "
+                "newly diagnosed HIV. Fever, persistent frontal and bitemporal "
+                "headache, and progressive nausea. Five-kilogram weight loss "
+                "over the prior two months. No focal weakness. Antiretroviral "
+                "therapy not yet started. No recent freshwater exposure or "
+                "travel."
+            ),
+            "red_flags_present": ["immunocompromise"],
+        },
+        "vitals": {
+            "temperature_celsius": 38.6, "heart_rate_bpm": 102,
+            "systolic_bp_mmHg": 118, "diastolic_bp_mmHg": 74,
+            "glasgow_coma_scale": 14, "oxygen_saturation_pct": 97,
+            "respiratory_rate_breaths_per_min": 18,
+        },
+        "exam": {
+            "mental_status_grade": "confused", "neck_stiffness": True,
+            "kernig_or_brudzinski_positive": False,
+            "focal_neurological_deficit": False,
+            "cranial_nerve_palsy": "none",
+            "skin_lesion_centrofacial_chronic": False,
+            "petechial_or_purpuric_rash": False,
+            "papilledema_on_fundoscopy": True,
+        },
+        "labs": {
+            "wbc_blood_per_uL": 3800, "platelets_per_uL": 198000,
+            "alt_ast_U_per_L": 32, "crp_mg_per_L": 24.0,
+            "procalcitonin_ng_per_mL": 0.3, "serum_sodium_mEq_per_L": 133,
+        },
+        "csf": _crypto_csf_profile_hiv(
+            op_cmH2O=38.0, wbc=45, lymph_pct=86, glucose=38, protein=95,
+        ),
+        "imaging": _crypto_imaging_dilated_vr(transplant=False),
+        "diagnostic_tests": {"results": _crypto_dx_tests_india_ink_crag_lfa(
+            pmid="20047480", csf_crag_titer="1:2048", serum_crag_titer="1:1024",
+            therapeutic_lp=True, op_before=38.0, op_after=18.0,
+        )},
+        "narrative_en": (
+            "A 32-year-old man from Kampala, Uganda, presented to a regional "
+            "referral hospital with a three-week indolent course of fever, "
+            "persistent frontal and bitemporal headache, and progressive "
+            "nausea. He had been diagnosed with HIV two weeks prior and had "
+            "not yet started antiretroviral therapy; his CD4 count was 35 "
+            "cells per microliter. He reported no recent freshwater exposure "
+            "and no travel. Examination on admission: temperature 38.6 C, "
+            "Glasgow Coma Scale 14, confused but oriented to person, neck "
+            "stiffness, and bilateral papilledema on fundoscopy. CSF showed "
+            "an opening pressure of 38 cmH2O, white cell count 45 per cubic "
+            "millimeter with 86 percent lymphocytes, glucose 38 mg/dL, and "
+            "protein 95 mg/dL. CSF cryptococcal antigen lateral flow assay "
+            "was positive at a titer of 1:2048, and India ink microscopy "
+            "showed encapsulated yeast forms with refractile halos. Serum "
+            "CrAg was 1:1024. Therapeutic lumbar puncture reduced the "
+            "pressure from 38 to 18 cmH2O. MRI with contrast showed dilated "
+            "Virchow-Robin spaces with small pseudocysts. Anchored to "
+            "Perfect CID 2010 IDSA (PMID 20047480). Pilot, hold_for_revision."
+        ),
+        "narrative_es": (
+            "Varon de 32 anos de Kampala, Uganda, ingresado a un hospital "
+            "regional tras tres semanas de fiebre, cefalea frontal y "
+            "bitemporal persistente, y nauseas progresivas. Diagnostico "
+            "reciente de VIH (dos semanas antes), sin terapia antirretroviral "
+            "iniciada; CD4 35 por microlitro. Sin exposicion a agua dulce, "
+            "sin viajes. Examen: temperatura 38.6 C, Glasgow 14, confuso "
+            "pero orientado, rigidez de nuca, papiledema bilateral. LCR con "
+            "presion de apertura 38 cmH2O, leucocitos 45 por mm3 (86 por "
+            "ciento linfocitos), glucosa 38 mg/dL, proteina 95 mg/dL. "
+            "Antigeno criptococico en LCR positivo (1:2048) y tinta china "
+            "con levaduras encapsuladas. CrAg serico 1:1024. Puncion lumbar "
+            "terapeutica redujo la presion de 38 a 18 cmH2O. RM con espacios "
+            "de Virchow-Robin dilatados con pseudoquistes. Anclaje Perfect "
+            "IDSA 2010 (PMID 20047480)."
+        ),
+        "rationale": (
+            "Subphase 1.4 commit 5.4.2 pilot 3 of 6 for Class 5 Cryptococcal "
+            "(master prompt 1.4.5 HIV+CD4<100 22-slot bulk stratum). Anchored "
+            "to Perfect 2010 CID IDSA guidelines. OP 38 satisfies >=25 master "
+            "prompt requirement; CrAg LFA positive satisfies >=28/30 "
+            "requirement. cd4_count_cells_per_uL=35 per Ford CID 2018 "
+            "validator. Pre-adjudication hold_for_revision."
+        ),
+        "anchoring_extras": (
+            "Anchored to Perfect JR et al. CID 2010 IDSA cryptococcal "
+            "guidelines (PMID 20047480). 32-year-old Ugandan ART-naive HIV+ "
+            "with CD4 35, opening pressure 38 cmH2O, csf_crag_lfa positive "
+            "1:2048, mononuclear CSF, dilated VR spaces on MRI. Therapeutic "
+            "LP per IDSA. Pre-adjudication kappa 0.70."
+        ),
+    }
+
+
+def _build_crypto_vignette_152() -> dict[str, Any]:
+    """CRYPTO 152 Singh transplant pilot: 49yo US male 18mo post-renal-tx on
+    tacrolimus + MMF + prednisone, CrAg LFA 1:256, calcineurin-protected."""
+    return {
+        "history": {
+            "symptom_onset_to_presentation_days": 14.0,
+            "chief_complaint": "fever_with_headache",
+            "prodrome_description": (
+                "Two-week subacute illness in a 49-year-old man eighteen "
+                "months post-renal-transplant on tacrolimus, mycophenolate "
+                "mofetil, and low-dose prednisone. Daily low-grade fevers, "
+                "gradual frontal headache, and three days of mild confusion "
+                "noted by his wife. No freshwater exposure. Cadaveric donor; "
+                "immunosuppression unchanged over the prior twelve months."
+            ),
+            "red_flags_present": ["immunocompromise"],
+        },
+        "vitals": {
+            "temperature_celsius": 38.0, "heart_rate_bpm": 88,
+            "systolic_bp_mmHg": 132, "diastolic_bp_mmHg": 84,
+            "glasgow_coma_scale": 14, "oxygen_saturation_pct": 97,
+            "respiratory_rate_breaths_per_min": 16,
+        },
+        "exam": {
+            "mental_status_grade": "confused", "neck_stiffness": True,
+            "kernig_or_brudzinski_positive": False,
+            "focal_neurological_deficit": False,
+            "cranial_nerve_palsy": "none",
+            "skin_lesion_centrofacial_chronic": False,
+            "petechial_or_purpuric_rash": False,
+            "papilledema_on_fundoscopy": False,
+        },
+        "labs": {
+            "wbc_blood_per_uL": 6400, "platelets_per_uL": 224000,
+            "alt_ast_U_per_L": 26, "crp_mg_per_L": 18.0,
+            "procalcitonin_ng_per_mL": 0.2, "serum_sodium_mEq_per_L": 135,
+        },
+        "csf": _crypto_csf_profile_transplant(
+            op_cmH2O=22.0, wbc=30, lymph_pct=88, glucose=45, protein=80,
+        ),
+        "imaging": _crypto_imaging_dilated_vr(transplant=True),
+        "diagnostic_tests": {"results": _crypto_dx_tests_india_ink_crag_lfa(
+            pmid="17262720", csf_crag_titer="1:256", serum_crag_titer="1:128",
+            therapeutic_lp=False, tacrolimus_trough=9.2,
+        )},
+        "narrative_en": (
+            "A 49-year-old man in Pittsburgh presented to a transplant "
+            "infectious diseases service with a two-week subacute illness. "
+            "He was eighteen months post-cadaveric renal transplant on "
+            "tacrolimus, mycophenolate mofetil, and low-dose prednisone with "
+            "unchanged dosing over the prior year. He reported daily low-grade "
+            "fevers, gradual frontal headache, and three days of mild "
+            "confusion noted by his wife. There was no freshwater exposure. "
+            "Examination on admission: temperature 38.0 C, Glasgow Coma Scale "
+            "14, mild confusion, neck stiffness, and no focal deficit. CSF "
+            "showed an opening pressure of 22 cmH2O, white cell count 30 per "
+            "cubic millimeter with 88 percent lymphocytes, glucose 45 mg/dL, "
+            "and protein 80 mg/dL. CSF cryptococcal antigen lateral flow "
+            "assay was positive at 1:256, India ink showed encapsulated "
+            "yeast, and serum CrAg was 1:128. Tacrolimus trough was 9.2 "
+            "ng/mL. MRI showed subtle dilated Virchow-Robin spaces without "
+            "mass lesion. Anchored to Singh JID 2007 transplant cohort "
+            "(PMID 17262720). Subphase 1.4 pilot, hold_for_revision."
+        ),
+        "narrative_es": (
+            "Varon de 49 anos en Pittsburgh, Estados Unidos, evaluado por el "
+            "servicio de enfermedades infecciosas en transplante con un "
+            "cuadro subagudo de dos semanas. Diez y ocho meses postransplante "
+            "renal cadaverico, en tacrolimus, micofenolato mofetil y "
+            "prednisona en dosis bajas estables el ano previo. Refiere fiebre "
+            "baja diaria, cefalea frontal gradual y tres dias de confusion "
+            "leve referida por la esposa. Sin exposicion a agua dulce. "
+            "Examen: temperatura 38.0 C, Glasgow 14, confusion leve, rigidez "
+            "de nuca, sin deficit focal. LCR con presion 22 cmH2O, leucocitos "
+            "30 por mm3 (88 por ciento linfocitos), glucosa 45 mg/dL, proteina "
+            "80 mg/dL. Antigeno criptococico en LCR positivo 1:256, tinta "
+            "china con levaduras encapsuladas, CrAg serico 1:128. Nivel de "
+            "tacrolimus 9.2 ng/mL. RM con espacios de Virchow-Robin "
+            "discretamente dilatados sin masa."
+        ),
+        "rationale": (
+            "Subphase 1.4 commit 5.4.2 pilot 4 of 6 for Class 5 Cryptococcal "
+            "transplant stratum (master prompt 1.4.5 4-slot transplant). "
+            "Anchored to Singh 2007 JID multicenter transplant cohort; "
+            "tacrolimus exposure aligns with calcineurin-protective mortality "
+            "observation. Pre-adjudication hold_for_revision."
+        ),
+        "anchoring_extras": (
+            "Anchored to Singh N et al. JID 2007 transplant cryptococcus "
+            "calcineurin-inhibitor cohort (PMID 17262720). 49-year-old US "
+            "renal transplant recipient 18 months post-tx on tacrolimus + "
+            "MMF + prednisone, csf_crag_lfa positive 1:256, lymphocytic CSF, "
+            "dilated VR spaces. Pre-adjudication kappa 0.70."
+        ),
+    }
+
+
+def _build_gae_vignette_181() -> dict[str, Any]:
+    """GAE 181 Gotuzzo Peru Balamuthia pilot: 42yo mestizo Lima coast male,
+    centrofacial skin lesion 15 months preceding CNS, three ring-enhancing
+    brain lesions, IFA 1:512 + brain biopsy + mNGS positive."""
+    return {
+        "history": {
+            "symptom_onset_to_presentation_days": 28.0,
+            "chief_complaint": "headache",
+            "prodrome_description": (
+                "Four-week neurologic illness in a 42-year-old man from "
+                "coastal Lima. Subacute progressive headache, intermittent "
+                "low-grade fevers, and two weeks of word-finding difficulty. "
+                "Fifteen months earlier the patient had developed a "
+                "persistent indurated plaque on the central face that had "
+                "been treated as cutaneous leishmaniasis without resolution. "
+                "No recent freshwater exposure. Mestizo ethnicity, outdoor "
+                "manual labor in agricultural soil."
+            ),
+            "red_flags_present": [],
+        },
+        "vitals": {
+            "temperature_celsius": 37.6, "heart_rate_bpm": 92,
+            "systolic_bp_mmHg": 124, "diastolic_bp_mmHg": 78,
+            "glasgow_coma_scale": 13, "oxygen_saturation_pct": 97,
+            "respiratory_rate_breaths_per_min": 18,
+        },
+        "exam": {
+            "mental_status_grade": "confused", "neck_stiffness": False,
+            "kernig_or_brudzinski_positive": False,
+            "focal_neurological_deficit": True,
+            "cranial_nerve_palsy": "none",
+            "skin_lesion_centrofacial_chronic": True,
+            "petechial_or_purpuric_rash": False,
+            "papilledema_on_fundoscopy": False,
+        },
+        "labs": {
+            "wbc_blood_per_uL": 8800, "platelets_per_uL": 268000,
+            "alt_ast_U_per_L": 24, "crp_mg_per_L": 14.0,
+            "procalcitonin_ng_per_mL": 0.2, "serum_sodium_mEq_per_L": 138,
+        },
+        "csf": _gae_csf_profile_balamuthia(
+            op_cmH2O=18.0, wbc=45, lymph_pct=78, glucose=48, protein=120,
+        ),
+        "imaging": _gae_imaging_multifocal_ring_enhancing(
+            n_lesions=3,
+            locations="right parietal cortex 1.8 cm, left temporal lobe 1.2 cm, and right cerebellar hemisphere 0.9 cm",
+        ),
+        "diagnostic_tests": {"results": _gae_dx_tests_balamuthia_ifa_pcr_biopsy(
+            doi="10.1093/ofid/ofaf695.345", ifa_titer="1:512",
+        )},
+        "narrative_en": (
+            "A 42-year-old mestizo man from coastal Lima, Peru, presented to "
+            "a national infectious diseases referral hospital with a "
+            "four-week neurologic illness: subacute progressive headache, "
+            "intermittent low-grade fevers, and two weeks of word-finding "
+            "difficulty. Fifteen months earlier he had developed a persistent "
+            "indurated plaque on the central face that had been treated "
+            "empirically as cutaneous leishmaniasis without resolution. He "
+            "worked outdoors in agricultural soil and reported no freshwater "
+            "exposure. Examination on admission: temperature 37.6 C, Glasgow "
+            "Coma Scale 13, mild confusion, no neck stiffness, and a "
+            "right-sided motor deficit. The central facial plaque remained "
+            "indurated and weeping. CSF showed an opening pressure of 18 "
+            "cmH2O, white cell count 45 per cubic millimeter with 78 percent "
+            "lymphocytes, glucose 48 mg/dL, and protein 120 mg/dL. MRI with "
+            "contrast showed three ring-enhancing lesions in the right "
+            "parietal cortex, left temporal lobe, and right cerebellar "
+            "hemisphere. Skin and brain biopsies showed Balamuthia "
+            "mandrillaris trophozoites on histology and immunohistochemistry. "
+            "Anchored to Gotuzzo OFID 2026. Pilot, hold_for_revision."
+        ),
+        "narrative_es": (
+            "Varon mestizo de 42 anos de Lima costera, Peru, ingresado al "
+            "instituto nacional de salud con cuadro neurologico de cuatro "
+            "semanas: cefalea subaguda progresiva, fiebre baja intermitente "
+            "y dos semanas de dificultad para encontrar palabras. Quince "
+            "meses antes desarrollo una placa indurada persistente en la "
+            "cara central, tratada empiricamente como leishmaniasis cutanea "
+            "sin respuesta. Trabaja al aire libre con suelo agricola; sin "
+            "exposicion a agua dulce. Examen: temperatura 37.6 C, Glasgow "
+            "13, confusion leve, sin rigidez de nuca, paresia derecha. La "
+            "placa centro-facial persiste indurada y supurativa. LCR con "
+            "presion 18 cmH2O, leucocitos 45 por mm3 (78 por ciento "
+            "linfocitos), glucosa 48 mg/dL, proteina 120 mg/dL. RM con tres "
+            "lesiones anulares (parietal derecha, temporal izquierda, "
+            "hemisferio cerebeloso derecho). Biopsias de piel y cerebro con "
+            "Balamuthia mandrillaris en histologia e IHC."
+        ),
+        "rationale": (
+            "Subphase 1.4 commit 5.4.2 pilot 5 of 6 for Class 6 GAE Balamuthia "
+            "Peru stratum (master prompt 1.4.6 12/15 Peru-Hispanic with skin "
+            "lesion 15-month preceding interval). Anchored via DOI to Gotuzzo "
+            "2026 OFID supplement (DOI-only entry per PMID_REGISTRY commit "
+            "5.4.0 caveat). Three ring-enhancing lesions match multifocal "
+            "imaging mandate. Pre-adjudication hold_for_revision."
+        ),
+        "anchoring_extras": (
+            "Anchored to Gotuzzo E et al. OFID 2026 supplement (doi:"
+            "10.1093/ofid/ofaf695.345), Peru 68-case Balamuthia retrospective "
+            "series. 42-year-old Lima mestizo male, centrofacial skin lesion "
+            "15 months preceding CNS, modest lymphocytic CSF, three ring-"
+            "enhancing brain lesions, Balamuthia IFA 1:512, brain biopsy and "
+            "mNGS positive. Pre-adjudication kappa 0.70."
+        ),
+    }
+
+
+def _build_gae_vignette_182() -> dict[str, Any]:
+    """GAE 182 Visvesvara Acanthamoeba AIDS pilot: 47yo US male with advanced
+    HIV (CD4 38), two ring-enhancing lesions, A. castellanii IHC positive."""
+    return {
+        "history": {
+            "symptom_onset_to_presentation_days": 21.0,
+            "chief_complaint": "altered_mental_status",
+            "prodrome_description": (
+                "Three-week subacute encephalopathy in a 47-year-old man with "
+                "advanced HIV (CD4 38, viral load 480000 copies, ART-naive). "
+                "Progressive headache, mild fevers, and two weeks of "
+                "personality change with episodic disorientation. No focal "
+                "weakness initially; right hemiparesis developed in the final "
+                "five days. No freshwater exposure. No skin lesions identified "
+                "on full exam."
+            ),
+            "red_flags_present": ["immunocompromise"],
+        },
+        "vitals": {
+            "temperature_celsius": 37.8, "heart_rate_bpm": 98,
+            "systolic_bp_mmHg": 118, "diastolic_bp_mmHg": 72,
+            "glasgow_coma_scale": 12, "oxygen_saturation_pct": 96,
+            "respiratory_rate_breaths_per_min": 18,
+        },
+        "exam": {
+            "mental_status_grade": "confused", "neck_stiffness": False,
+            "kernig_or_brudzinski_positive": False,
+            "focal_neurological_deficit": True,
+            "cranial_nerve_palsy": "none",
+            "skin_lesion_centrofacial_chronic": False,
+            "petechial_or_purpuric_rash": False,
+            "papilledema_on_fundoscopy": False,
+        },
+        "labs": {
+            "wbc_blood_per_uL": 3200, "platelets_per_uL": 178000,
+            "alt_ast_U_per_L": 38, "crp_mg_per_L": 16.0,
+            "procalcitonin_ng_per_mL": 0.2, "serum_sodium_mEq_per_L": 135,
+        },
+        "csf": _gae_csf_profile_acanthamoeba(
+            op_cmH2O=16.0, wbc=28, lymph_pct=72, glucose=40, protein=95,
+        ),
+        "imaging": _gae_imaging_multifocal_ring_enhancing(
+            n_lesions=2,
+            locations="left frontal lobe 2.1 cm and right thalamus 1.4 cm",
+        ),
+        "diagnostic_tests": {"results": _gae_dx_tests_acanthamoeba_aids(
+            pmid="17428307", cd4=38, viral_load=480000,
+        )},
+        "narrative_en": (
+            "A 47-year-old man in the US South region presented to an "
+            "academic infectious diseases service with a three-week subacute "
+            "encephalopathy. He had been diagnosed with HIV ten years prior "
+            "but had been lost to follow-up; his admission CD4 count was 38 "
+            "cells per microliter and his viral load was 480000 copies per "
+            "milliliter, off antiretroviral therapy. He reported progressive "
+            "headache, mild fevers, and two weeks of personality change with "
+            "episodic disorientation; right-sided weakness developed in the "
+            "final five days. There was no freshwater exposure and no "
+            "contact-lens use. Examination: temperature 37.8 C, Glasgow Coma "
+            "Scale 12, confused, no neck stiffness, and right hemiparesis. "
+            "CSF showed an opening pressure of 16 cmH2O, white cell count 28 "
+            "per cubic millimeter with 72 percent lymphocytes, glucose 40 "
+            "mg/dL, and protein 95 mg/dL. MRI showed two ring-enhancing "
+            "lesions in the left frontal lobe and right thalamus. Brain "
+            "biopsy demonstrated granulomatous inflammation with double-"
+            "walled cysts and immunohistochemistry positive for Acanthamoeba "
+            "castellanii. Anchored to Visvesvara FEMS 2007 (PMID 17428307). "
+            "Pilot, hold_for_revision."
+        ),
+        "narrative_es": (
+            "Varon de 47 anos en region sur de Estados Unidos, evaluado por "
+            "enfermedades infecciosas con cuadro encefalopatico subagudo de "
+            "tres semanas. Diagnostico de VIH hace diez anos, perdido al "
+            "seguimiento; al ingreso CD4 38 por microlitro, carga viral "
+            "480000 copias por mL, sin terapia antirretroviral. Refiere "
+            "cefalea progresiva, fiebre leve y dos semanas de cambio de "
+            "personalidad con desorientacion episodica; debilidad derecha en "
+            "los ultimos cinco dias. Sin exposicion a agua dulce, sin uso de "
+            "lentes de contacto. Examen: temperatura 37.8 C, Glasgow 12, "
+            "confuso, sin rigidez de nuca, hemiparesia derecha. LCR con "
+            "presion 16 cmH2O, leucocitos 28 por mm3 (72 por ciento "
+            "linfocitos), glucosa 40 mg/dL, proteina 95 mg/dL. RM con dos "
+            "lesiones anulares (frontal izquierda, talamo derecho). Biopsia "
+            "cerebral con Acanthamoeba castellanii en IHC."
+        ),
+        "rationale": (
+            "Subphase 1.4 commit 5.4.2 pilot 6 of 6 for Class 6 GAE "
+            "Acanthamoeba immunocompromised stratum (master prompt 1.4.6 "
+            "10/15 immunocompromised). Anchored to Visvesvara 2007 FEMS "
+            "canonical free-living amoebae review. Two ring-enhancing "
+            "lesions match multifocal imaging mandate. Pre-adjudication "
+            "hold_for_revision."
+        ),
+        "anchoring_extras": (
+            "Anchored to Visvesvara GS et al. FEMS Immunol Med Microbiol "
+            "2007 (PMID 17428307), canonical free-living amoebae review. "
+            "47-year-old US man with AIDS (CD4 38), two ring-enhancing brain "
+            "lesions, brain biopsy granulomatous with A. castellanii on IHC, "
+            "mNGS confirmation. Pre-adjudication kappa 0.70."
+        ),
+    }
+
+
+# ----------------------------------------------------------------------------
+# Composer + writer + orchestrator
+# ----------------------------------------------------------------------------
+
+
+_SUBPHASE_1_4_PILOT_BUILDERS: dict[int, Any] = {
+    121: _build_tbm_vignette_121,
+    122: _build_tbm_vignette_122,
+    151: _build_crypto_vignette_151,
+    152: _build_crypto_vignette_152,
+    181: _build_gae_vignette_181,
+    182: _build_gae_vignette_182,
+}
+
+
+def generate_subphase_1_4_pilot_vignette(vignette_id: int) -> dict[str, Any]:
+    """Build one Subphase 1.4 pilot vignette dict from a vignette_id.
+
+    Looks up the distribution spec, PMID_REGISTRY metadata, and clinical
+    builder, then composes the full VignetteSchema-compliant dict.
+    """
+    if vignette_id not in SUBPHASE_1_4_PILOT_IDS:
+        raise KeyError(
+            f"vignette_id {vignette_id!r} not in SUBPHASE_1_4_PILOT_IDS "
+            f"{SUBPHASE_1_4_PILOT_IDS}"
+        )
+    all_dists = TBM_DISTRIBUTION + CRYPTO_DISTRIBUTION + GAE_DISTRIBUTION
+    spec = next(s for s in all_dists if s["vignette_id"] == vignette_id)
+    pmid_meta = load_pmid_metadata(spec["anchor_pmid"])
+    clinical = _SUBPHASE_1_4_PILOT_BUILDERS[vignette_id]()
+
+    region = spec["geography_region"]
+    ethnicity = spec.get("ethnicity") or "other"
+    altitude = _SUBPHASE_1_4_PILOT_ALTITUDE_M.get(spec["geography_label"], 100)
+
+    return {
+        "schema_version": "2.0",
+        "case_id": _subphase_1_4_pilot_case_id(spec, pmid_meta),
+        "ground_truth_class": SUBPHASE_1_4_PILOT_CLASSES[vignette_id],
+        "demographics": {
+            "age_years": spec["age_years"],
+            "sex": spec["sex"],
+            "ethnicity": ethnicity,
+            "geography_region": region,
+            "altitude_residence_m": altitude,
+        },
+        "history": clinical["history"],
+        "exposure": _subphase_1_4_pilot_exposure(spec),
+        "vitals": clinical["vitals"],
+        "exam": clinical["exam"],
+        "labs": clinical["labs"],
+        "csf": clinical["csf"],
+        "imaging": clinical["imaging"],
+        "diagnostic_tests": clinical["diagnostic_tests"],
+        "adjudication": _subphase_1_4_pilot_adjudication(
+            spec, clinical["anchoring_extras"]),
+        "literature_anchors": [_subphase_1_4_pilot_literature_anchor(pmid_meta)],
+        "provenance": _subphase_1_4_pilot_provenance(clinical["rationale"]),
+        "narrative_es": clinical["narrative_es"],
+        "narrative_en": clinical["narrative_en"],
+    }
+
+
+def write_subphase_1_4_pilot_vignette(vignette_id: int) -> Path:
+    """Build, validate, and write one Subphase 1.4 pilot vignette to disk."""
+    vignette = generate_subphase_1_4_pilot_vignette(vignette_id)
+    VignetteSchema.model_validate(vignette)
+    output_dir = SUBPHASE_1_4_PILOT_OUTPUT_DIR[vignette_id]
+    output_dir.mkdir(parents=True, exist_ok=True)
+    filepath = output_dir / SUBPHASE_1_4_PILOT_FILENAME[vignette_id]
+    filepath.write_text(
+        json.dumps(vignette, indent=2, sort_keys=False, ensure_ascii=False),
+        encoding="utf-8",
+    )
+    logger.info("Wrote %s", filepath)
+    return filepath
+
+
+def write_subphase_1_4_pilot_corpus() -> list[Path]:
+    """Build, validate, and write all 6 Subphase 1.4 pilot vignettes."""
+    paths: list[Path] = []
+    for vid in SUBPHASE_1_4_PILOT_IDS:
+        paths.append(write_subphase_1_4_pilot_vignette(vid))
+    return paths
+
+
 def main() -> None:
     """CLI entry point.
 
