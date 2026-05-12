@@ -1626,31 +1626,15 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
             "verification_confidence=0.85 pre-direct-fetch."
         ),
     },
-    "16517432": {
-        "pmid": "16517432",
-        "doi": "10.1016/S1473-3099(06)70414-6",
-        "authors_short": "Whitley RJ",
-        "authors_full": ["Whitley RJ"],
-        "journal": "Lancet Infect Dis",
-        "journal_short_code": "Lancet Infect Dis",
-        "year": 2006,
-        "volume": "6",
-        "issue": "3",
-        "pages": "182-184",
-        "title": "Herpes simplex encephalitis: adolescents and adults",
-        "anchor_type": "review",
-        "anchor_subtype": "hsv1_encephalitis_review_acyclovir_era",
-        "verification_confidence": 0.85,
-        "verification_method": "consensus_anchor_subphase_1_3_initial",
-        "last_verified_date": "2026-05-06",
-        "caveat": (
-            "HSV-1 encephalitis review (Whitley 2006): bimodal age "
-            "distribution under 20 / over 50, mesial-temporal MRI "
-            "predominance, acyclovir-era mortality 6-15%. Anchor for "
-            "Class 3 HSV1 vignettes. verification_confidence=0.85 "
-            "pre-direct-fetch."
-        ),
-    },
+    # Errata 5.4.3.1 (2026-05-11): the entry that lived here as PMID
+    # 16517432 had registry metadata claiming Whitley's HSV-1 review in
+    # Lancet Infect Dis with DOI 10.1016/S1473-3099(06)70414-6, but NCBI
+    # E-utilities verification revealed PMID 16517432 is actually a J Asthma
+    # 2006 paper on Danish skin test reactivity (Phadiatop / ImmunoCAP).
+    # The correct Whitley HSV-1 review is PMID 16675036 (Antiviral Res 2006;
+    # 71(2-3):141-148), which is registered below at its primary location.
+    # This block is removed; the 6 vignettes that anchored to 16517432 now
+    # anchor to 16675036 via the existing primary registry entry.
     "19886816": {
         "pmid": "19886816",
         "doi": "10.1086/589747",
@@ -1680,8 +1664,8 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
             "pre-direct-fetch."
         ),
     },
-    "21088000": {
-        "pmid": "21088000",
+    "20952256": {
+        "pmid": "20952256",
         "doi": "10.1016/S1473-3099(10)70222-X",
         "authors_short": "Granerod J et al.",
         "authors_full": [
@@ -1699,39 +1683,44 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "title": "Causes of encephalitis and differences in their clinical presentations in England: a multicentre, population-based prospective study",
         "anchor_type": "cohort",
         "anchor_subtype": "england_encephalitis_etiology_population_based",
-        "verification_confidence": 0.85,
-        "verification_method": "consensus_anchor_subphase_1_3_initial",
-        "last_verified_date": "2026-05-06",
+        "verification_confidence": 0.95,
+        "verification_method": "claude_web_pubmed_ncbi_esummary_2026_05_11",
+        "last_verified_date": "2026-05-11",
         "caveat": (
             "England population-based encephalitis etiology study, 203 "
             "cases. HSV 19%, VZV 5%, autoimmune anti-NMDAR 4%, unknown "
             "37%. Anchor for Class 3 etiology distribution and "
-            "PCR-negative-at-72h ambiguity cases. "
-            "verification_confidence=0.85 pre-direct-fetch."
+            "PCR-negative-at-72h ambiguity cases. Errata 5.4.3.1: PMID "
+            "corrected from 21088000 (Thorne 2011 Nucleic Acids Res "
+            "epigenetics paper) to 20952256 per NCBI E-utilities "
+            "verification 2026-05-11."
         ),
     },
-    "29490180": {
-        "pmid": "29490180",
+    "30089069": {
+        "pmid": "30089069",
         "doi": "10.1056/NEJMra1708714",
         "authors_short": "Tyler KL",
         "authors_full": ["Tyler KL"],
         "journal": "N Engl J Med",
         "journal_short_code": "NEJM",
         "year": 2018,
-        "volume": "378",
-        "issue": "9",
-        "pages": "839-855",
-        "title": "Acute viral encephalitis",
+        "volume": "379",
+        "issue": "6",
+        "pages": "557-566",
+        "title": "Acute Viral Encephalitis",
         "anchor_type": "review",
         "anchor_subtype": "viral_encephalitis_clinical_review",
-        "verification_confidence": 0.85,
-        "verification_method": "consensus_anchor_subphase_1_3_initial",
-        "last_verified_date": "2026-05-06",
+        "verification_confidence": 0.95,
+        "verification_method": "claude_web_pubmed_ncbi_esummary_2026_05_11",
+        "last_verified_date": "2026-05-11",
         "caveat": (
             "NEJM clinical review of acute viral encephalitis. Anchor "
             "for Class 3 enterovirus + arboviral + HSV-2/VZV vignettes; "
             "documents pathogen-specific imaging and CSF profiles. "
-            "verification_confidence=0.85 pre-direct-fetch."
+            "Errata 5.4.3.1: PMID corrected from 29490180 (a NEJM Letter "
+            "on breast cancer recurrence) to 30089069 per NCBI E-utilities "
+            "verification 2026-05-11. Volume/issue/pages corrected to "
+            "379(6):557-566 (NEJM 2018-08-09 issue)."
         ),
     },
     # ========================================================================
@@ -1803,9 +1792,13 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
             "onset. MRI demonstrates temporal lobe edema and hemorrhage. "
             "EEG shows spike-and-slow-wave activity over temporal "
             "lobes. Anchor for Class 3 HSV-1 adult primary-source "
-            "vignettes (Subphase 1.3 commit 5.3.2). Coexists with "
-            "PMID 16517432 (Whitley 2006 Lancet Infect Dis general "
-            "HSV review)."
+            "vignettes (Subphase 1.3 commit 5.3.2). Errata 5.4.3.1 "
+            "(2026-05-11): the previously-registered companion PMID "
+            "16517432 was removed; NCBI E-utilities verification "
+            "showed 16517432 is a J Asthma 2006 Danish skin-test "
+            "reactivity paper, not a Whitley HSV review. The 6 "
+            "vignettes that anchored to 16517432 now anchor to this "
+            "entry (16675036)."
         ),
     },
     "17668054": {
@@ -3996,7 +3989,7 @@ VIRAL_DISTRIBUTION: list[dict[str, Any]] = [
         "filename": "vir_091_hsv1_pediatric_sequelae.json",
         "pathogen": "HSV1",
         "cluster": "viral_encephalitis_HSV1",
-        "pmid": "16517432",
+        "pmid": "16675036",
         "age_years": 8,
         "age_label": "8 years",
         "sex": "female",
@@ -4033,7 +4026,7 @@ VIRAL_DISTRIBUTION: list[dict[str, Any]] = [
         "filename": "vir_093_hsv1_elderly_fatal.json",
         "pathogen": "HSV1",
         "cluster": "viral_encephalitis_HSV1",
-        "pmid": "16517432",
+        "pmid": "16675036",
         "age_years": 67,
         "age_label": "67 years",
         "sex": "female",
@@ -4051,7 +4044,7 @@ VIRAL_DISTRIBUTION: list[dict[str, Any]] = [
         "filename": "vir_094_hsv1_young_adult.json",
         "pathogen": "HSV1",
         "cluster": "viral_encephalitis_HSV1",
-        "pmid": "21088000",
+        "pmid": "20952256",
         "age_years": 23,
         "age_label": "23 years",
         "sex": "female",
@@ -4069,7 +4062,7 @@ VIRAL_DISTRIBUTION: list[dict[str, Any]] = [
         "filename": "vir_095_hsv1_adolescent.json",
         "pathogen": "HSV1",
         "cluster": "viral_encephalitis_HSV1",
-        "pmid": "16517432",
+        "pmid": "16675036",
         "age_years": 14,
         "age_label": "14 years",
         "sex": "male",
@@ -4087,7 +4080,7 @@ VIRAL_DISTRIBUTION: list[dict[str, Any]] = [
         "filename": "vir_096_hsv1_adult.json",
         "pathogen": "HSV1",
         "cluster": "viral_encephalitis_HSV1",
-        "pmid": "29490180",
+        "pmid": "30089069",
         "age_years": 45,
         "age_label": "45 years",
         "sex": "female",
@@ -4105,7 +4098,7 @@ VIRAL_DISTRIBUTION: list[dict[str, Any]] = [
         "filename": "vir_097_hsv1_elderly_fatal.json",
         "pathogen": "HSV1",
         "cluster": "viral_encephalitis_HSV1",
-        "pmid": "21088000",
+        "pmid": "20952256",
         "age_years": 78,
         "age_label": "78 years",
         "sex": "male",
@@ -4123,7 +4116,7 @@ VIRAL_DISTRIBUTION: list[dict[str, Any]] = [
         "filename": "vir_098_hsv1_pediatric.json",
         "pathogen": "HSV1",
         "cluster": "viral_encephalitis_HSV1",
-        "pmid": "16517432",
+        "pmid": "16675036",
         "age_years": 9,
         "age_label": "9 years",
         "sex": "female",
@@ -4141,7 +4134,7 @@ VIRAL_DISTRIBUTION: list[dict[str, Any]] = [
         "filename": "vir_099_hsv1_lima_adult.json",
         "pathogen": "HSV1",
         "cluster": "viral_encephalitis_HSV1",
-        "pmid": "29490180",
+        "pmid": "30089069",
         "age_years": 38,
         "age_label": "38 years",
         "sex": "male",
@@ -4159,7 +4152,7 @@ VIRAL_DISTRIBUTION: list[dict[str, Any]] = [
         "filename": "vir_100_hsv1_adult.json",
         "pathogen": "HSV1",
         "cluster": "viral_encephalitis_HSV1",
-        "pmid": "21088000",
+        "pmid": "20952256",
         "age_years": 60,
         "age_label": "60 years",
         "sex": "female",
@@ -4177,7 +4170,7 @@ VIRAL_DISTRIBUTION: list[dict[str, Any]] = [
         "filename": "vir_101_hsv1_adolescent.json",
         "pathogen": "HSV1",
         "cluster": "viral_encephalitis_HSV1",
-        "pmid": "16517432",
+        "pmid": "16675036",
         "age_years": 17,
         "age_label": "17 years",
         "sex": "male",
@@ -4195,7 +4188,7 @@ VIRAL_DISTRIBUTION: list[dict[str, Any]] = [
         "filename": "vir_102_hsv1_adult.json",
         "pathogen": "HSV1",
         "cluster": "viral_encephalitis_HSV1",
-        "pmid": "29490180",
+        "pmid": "30089069",
         "age_years": 50,
         "age_label": "50 years",
         "sex": "male",
@@ -4214,7 +4207,7 @@ VIRAL_DISTRIBUTION: list[dict[str, Any]] = [
         "filename": "vir_103_hsv_pcr_negative_72h_ambiguity.json",
         "pathogen": "HSV_PCR_negative_72h",
         "cluster": "viral_PCR_negative_72h",
-        "pmid": "21088000",
+        "pmid": "20952256",
         "age_years": 42,
         "age_label": "42 years",
         "sex": "male",
@@ -4232,7 +4225,7 @@ VIRAL_DISTRIBUTION: list[dict[str, Any]] = [
         "filename": "vir_104_hsv_pcr_negative_72h_ambiguity.json",
         "pathogen": "HSV_PCR_negative_72h",
         "cluster": "viral_PCR_negative_72h",
-        "pmid": "21088000",
+        "pmid": "20952256",
         "age_years": 35,
         "age_label": "35 years",
         "sex": "female",
@@ -4270,7 +4263,7 @@ VIRAL_DISTRIBUTION: list[dict[str, Any]] = [
         "filename": "vir_106_enterovirus_pediatric.json",
         "pathogen": "enterovirus",
         "cluster": "viral_meningitis_enteroviral",
-        "pmid": "29490180",
+        "pmid": "30089069",
         "age_years": 7,
         "age_label": "7 years",
         "sex": "female",
@@ -4287,7 +4280,7 @@ VIRAL_DISTRIBUTION: list[dict[str, Any]] = [
         "filename": "vir_107_enterovirus_young_adult.json",
         "pathogen": "enterovirus",
         "cluster": "viral_meningitis_enteroviral",
-        "pmid": "29490180",
+        "pmid": "30089069",
         "age_years": 22,
         "age_label": "22 years",
         "sex": "female",
@@ -4305,7 +4298,7 @@ VIRAL_DISTRIBUTION: list[dict[str, Any]] = [
         "filename": "vir_108_enterovirus_school_outbreak.json",
         "pathogen": "enterovirus",
         "cluster": "viral_meningitis_enteroviral",
-        "pmid": "29490180",
+        "pmid": "30089069",
         "age_years": 11,
         "age_label": "11 years",
         "sex": "male",
@@ -4322,7 +4315,7 @@ VIRAL_DISTRIBUTION: list[dict[str, Any]] = [
         "filename": "vir_109_enterovirus_infant.json",
         "pathogen": "enterovirus",
         "cluster": "viral_meningitis_enteroviral",
-        "pmid": "29490180",
+        "pmid": "30089069",
         "age_years": 3,
         "age_label": "3 years",
         "sex": "female",
@@ -4339,7 +4332,7 @@ VIRAL_DISTRIBUTION: list[dict[str, Any]] = [
         "filename": "vir_110_enterovirus_college_age.json",
         "pathogen": "enterovirus",
         "cluster": "viral_meningitis_enteroviral",
-        "pmid": "21088000",
+        "pmid": "20952256",
         "age_years": 19,
         "age_label": "19 years",
         "sex": "female",
@@ -4356,7 +4349,7 @@ VIRAL_DISTRIBUTION: list[dict[str, Any]] = [
         "filename": "vir_111_enterovirus_pediatric.json",
         "pathogen": "enterovirus",
         "cluster": "viral_meningitis_enteroviral",
-        "pmid": "29490180",
+        "pmid": "30089069",
         "age_years": 5,
         "age_label": "5 years",
         "sex": "male",
@@ -4373,7 +4366,7 @@ VIRAL_DISTRIBUTION: list[dict[str, Any]] = [
         "filename": "vir_112_enterovirus_adolescent.json",
         "pathogen": "enterovirus",
         "cluster": "viral_meningitis_enteroviral",
-        "pmid": "21088000",
+        "pmid": "20952256",
         "age_years": 14,
         "age_label": "14 years",
         "sex": "female",
@@ -4391,7 +4384,7 @@ VIRAL_DISTRIBUTION: list[dict[str, Any]] = [
         "filename": "vir_113_hsv2_mollaret_recurrent_ambiguity.json",
         "pathogen": "HSV2",
         "cluster": "viral_meningitis_HSV2",
-        "pmid": "29490180",
+        "pmid": "30089069",
         "age_years": 28,
         "age_label": "28 years",
         "sex": "female",
@@ -4409,7 +4402,7 @@ VIRAL_DISTRIBUTION: list[dict[str, Any]] = [
         "filename": "vir_114_hsv2_first_episode.json",
         "pathogen": "HSV2",
         "cluster": "viral_meningitis_HSV2",
-        "pmid": "29490180",
+        "pmid": "30089069",
         "age_years": 35,
         "age_label": "35 years",
         "sex": "male",
@@ -4427,7 +4420,7 @@ VIRAL_DISTRIBUTION: list[dict[str, Any]] = [
         "filename": "vir_115_vzv_zoster_ophthalmicus_immunocompromised.json",
         "pathogen": "VZV",
         "cluster": "viral_encephalitis_VZV",
-        "pmid": "21088000",
+        "pmid": "20952256",
         "age_years": 65,
         "age_label": "65 years",
         "sex": "male",
@@ -4444,7 +4437,7 @@ VIRAL_DISTRIBUTION: list[dict[str, Any]] = [
         "filename": "vir_116_vzv_post_zoster_encephalitis.json",
         "pathogen": "VZV",
         "cluster": "viral_encephalitis_VZV",
-        "pmid": "21088000",
+        "pmid": "20952256",
         "age_years": 71,
         "age_label": "71 years",
         "sex": "female",
@@ -4462,7 +4455,7 @@ VIRAL_DISTRIBUTION: list[dict[str, Any]] = [
         "filename": "vir_117_dengue_lima_ambiguity.json",
         "pathogen": "dengue",
         "cluster": "viral_arboviral_dengue",
-        "pmid": "29490180",
+        "pmid": "30089069",
         "age_years": 32,
         "age_label": "32 years",
         "sex": "female",
@@ -4500,7 +4493,7 @@ VIRAL_DISTRIBUTION: list[dict[str, Any]] = [
         "filename": "vir_119_dengue_tumbes.json",
         "pathogen": "dengue",
         "cluster": "viral_arboviral_dengue",
-        "pmid": "29490180",
+        "pmid": "30089069",
         "age_years": 41,
         "age_label": "41 years",
         "sex": "male",
@@ -4519,7 +4512,7 @@ VIRAL_DISTRIBUTION: list[dict[str, Any]] = [
         "filename": "vir_120_eee_northeast_us_fatal.json",
         "pathogen": "EEE",
         "cluster": "viral_arboviral_EEE",
-        "pmid": "29490180",
+        "pmid": "30089069",
         "age_years": 58,
         "age_label": "58 years",
         "sex": "male",
@@ -18883,7 +18876,7 @@ def write_bact_wave2_corpus(
 # Subphase 1.3 commit 5.3.5 - Wave 1 VIRAL vignette builders (n=13)
 # ----------------------------------------------------------------------------
 # Slot IDs: 96, 99, 102, 106, 107, 108, 109, 111, 113, 114, 117, 119, 120.
-# All 13 anchored to PMID 29490180 (Tyler KL 2018 NEJM viral encephalitis
+# All 13 anchored to PMID 30089069 (Tyler KL 2018 NEJM viral encephalitis
 # review, anchor_type=review).
 # Pathogens: 3 HSV1 (v96, v99, v102) + 5 enterovirus (v106, v107, v108,
 # v109, v111) + 2 HSV2 (v113, v114) + 2 dengue (v117, v119) + 1 EEE (v120).
@@ -19340,7 +19333,7 @@ def _build_viral_vignette_096() -> dict[str, Any]:
             "PCR positive. Brain MRI with DWI/FLAIR showed mesial temporal "
             "T2/FLAIR hyperintensity asymmetric with basal ganglia sparing. "
             "Acyclovir initiated within five hours. Anchored to Tyler 2018 "
-            "NEJM viral encephalitis review (PMID 29490180). Outcome: "
+            "NEJM viral encephalitis review (PMID 30089069). Outcome: "
             "survived with mild memory deficit. Subphase 1.3 commit 5.3.5 "
             "wave 1, pre-adjudication hold_for_revision."
         ),
@@ -19358,11 +19351,11 @@ def _build_viral_vignette_096() -> dict[str, Any]:
             "35 con xantocromia leve. PCR de HSV-1 positiva. RM cerebral "
             "mostro hiperintensidad temporal mesial T2/FLAIR asimetrica con "
             "preservacion de ganglios basales. Anclaje en revision Tyler "
-            "2018 NEJM encefalitis viral aguda (PMID 29490180). Subphase "
+            "2018 NEJM encefalitis viral aguda (PMID 30089069). Subphase "
             "1.3 commit 5.3.5 wave 1."
         ),
         "rationale": (
-            "Anchored to PMID 29490180 (Tyler KL 2018 NEJM clinical review "
+            "Anchored to PMID 30089069 (Tyler KL 2018 NEJM clinical review "
             "of acute viral encephalitis), HSV1 mesial-temporal-encephalitis "
             "phenotype. Demographic anchor (45yo F adult HSE) sits in adult-"
             "HSE stratum (HSE bimodal age, peaks at adulthood). CSF "
@@ -19379,7 +19372,7 @@ def _build_viral_vignette_096() -> dict[str, Any]:
             "5.3.5 wave1 HSV1-NL-adult-female."
         ),
         "anchoring_extras": "anchor=Tyler-NEJM-2018 stratum=HSV1-adult-HSE.",
-        "diagnostic_tests": _viral_wave1_dx_tests_hsv1_pcr("29490180"),
+        "diagnostic_tests": _viral_wave1_dx_tests_hsv1_pcr("30089069"),
     }
 
 
@@ -19458,7 +19451,7 @@ def _build_viral_vignette_099() -> dict[str, Any]:
             "DWI/FLAIR showed mesial temporal T2/FLAIR hyperintensity "
             "asymmetric with basal ganglia sparing. Acyclovir initiated "
             "within eight hours. Anchored to Tyler 2018 NEJM viral "
-            "encephalitis review (PMID 29490180), Peru-Lima coastal "
+            "encephalitis review (PMID 30089069), Peru-Lima coastal "
             "stratum. Outcome: survived with mild memory deficit. Subphase "
             "1.3 commit 5.3.5 wave 1, pre-adjudication hold_for_revision."
         ),
@@ -19475,11 +19468,11 @@ def _build_viral_vignette_099() -> dict[str, Any]:
             "mg/dL, proteina 105 mg/dL, eritrocitos 28 con xantocromia "
             "leve. PCR de HSV-1 positiva. RM cerebral mostro hiperintensidad "
             "temporal mesial T2/FLAIR asimetrica. Anclaje en revision Tyler "
-            "2018 NEJM (PMID 29490180), estrato Lima coastal. Subphase 1.3 "
+            "2018 NEJM (PMID 30089069), estrato Lima coastal. Subphase 1.3 "
             "commit 5.3.5 wave 1."
         ),
         "rationale": (
-            "Anchored to PMID 29490180 (Tyler 2018 NEJM viral encephalitis "
+            "Anchored to PMID 30089069 (Tyler 2018 NEJM viral encephalitis "
             "review). HSV1 mesial-temporal-encephalitis phenotype with "
             "olfactory hallucinations + aphasia + partial seizure (classic "
             "limbic-dominant signature). Demographic anchor (38yo M Lima) "
@@ -19495,7 +19488,7 @@ def _build_viral_vignette_099() -> dict[str, Any]:
             "review. 5.3.5 wave1 HSV1-Lima-adult-male."
         ),
         "anchoring_extras": "anchor=Tyler-NEJM-2018 region=Lima-Peru.",
-        "diagnostic_tests": _viral_wave1_dx_tests_hsv1_pcr("29490180"),
+        "diagnostic_tests": _viral_wave1_dx_tests_hsv1_pcr("30089069"),
     }
 
 
@@ -19575,7 +19568,7 @@ def _build_viral_vignette_102() -> dict[str, Any]:
             "asymmetric with bilateral but left-dominant involvement and "
             "basal ganglia sparing. Acyclovir initiated within four hours. "
             "Anchored to Tyler 2018 NEJM viral encephalitis review (PMID "
-            "29490180). Outcome: survived with moderate memory deficit. "
+            "30089069). Outcome: survived with moderate memory deficit. "
             "Subphase 1.3 commit 5.3.5 wave 1, pre-adjudication "
             "hold_for_revision."
         ),
@@ -19592,11 +19585,11 @@ def _build_viral_vignette_102() -> dict[str, Any]:
             "mg/dL, proteina 135 mg/dL, eritrocitos 40 con xantocromia. "
             "PCR de HSV-1 positiva. RM cerebral mostro hiperintensidad "
             "temporal mesial T2/FLAIR bilateral con dominancia izquierda. "
-            "Anclaje en revision Tyler 2018 NEJM (PMID 29490180). Subphase "
+            "Anclaje en revision Tyler 2018 NEJM (PMID 30089069). Subphase "
             "1.3 commit 5.3.5 wave 1, pre-adjudicacion hold_for_revision."
         ),
         "rationale": (
-            "Anchored to PMID 29490180 (Tyler 2018 NEJM viral encephalitis "
+            "Anchored to PMID 30089069 (Tyler 2018 NEJM viral encephalitis "
             "review). HSV1 mesial-temporal-encephalitis phenotype with "
             "frontal-disinhibition + anomic aphasia (limbic + frontal "
             "extension). Demographic anchor (50yo M adult HSE) sits in "
@@ -19612,7 +19605,7 @@ def _build_viral_vignette_102() -> dict[str, Any]:
             "HSV1-NL-adult-male-bilateral."
         ),
         "anchoring_extras": "anchor=Tyler-NEJM-2018 stratum=HSV1-adult-bilateral.",
-        "diagnostic_tests": _viral_wave1_dx_tests_hsv1_pcr("29490180"),
+        "diagnostic_tests": _viral_wave1_dx_tests_hsv1_pcr("30089069"),
     }
 
 
@@ -19687,7 +19680,7 @@ def _build_viral_vignette_106() -> dict[str, Any]:
             "CSF enterovirus PCR positive. Gram stain and culture negative. "
             "No imaging performed (uncomplicated viral meningitis "
             "presentation in a child with normal mental status). Anchored "
-            "to Tyler 2018 NEJM viral encephalitis review (PMID 29490180), "
+            "to Tyler 2018 NEJM viral encephalitis review (PMID 30089069), "
             "summer enteroviral peak stratum. Outcome: survived with full "
             "recovery in five days. Subphase 1.3 commit 5.3.5 wave 1, "
             "pre-adjudication hold_for_revision."
@@ -19704,11 +19697,11 @@ def _build_viral_vignette_106() -> dict[str, Any]:
             "enterovirus en liquido cefalorraquideo positiva. Tincion de "
             "Gram y cultivo negativos. Sin imagenes (presentacion no "
             "complicada). Anclaje en revision Tyler 2018 NEJM (PMID "
-            "29490180), estrato pico estival enteroviral. Subphase 1.3 "
+            "30089069), estrato pico estival enteroviral. Subphase 1.3 "
             "commit 5.3.5 wave 1, pre-adjudicacion hold_for_revision."
         ),
         "rationale": (
-            "Anchored to PMID 29490180 (Tyler 2018 NEJM viral encephalitis "
+            "Anchored to PMID 30089069 (Tyler 2018 NEJM viral encephalitis "
             "review). Enteroviral aseptic meningitis with classic summer "
             "pediatric presentation. Demographic anchor (7yo F US South "
             "summer) sits in pediatric-aseptic-meningitis-summer-peak "
@@ -19723,7 +19716,7 @@ def _build_viral_vignette_106() -> dict[str, Any]:
             "pediatric-summer."
         ),
         "anchoring_extras": "anchor=Tyler-NEJM-2018 stratum=EV-pediatric-summer.",
-        "diagnostic_tests": _viral_wave1_dx_tests_ev_pcr("29490180"),
+        "diagnostic_tests": _viral_wave1_dx_tests_ev_pcr("30089069"),
     }
 
 
@@ -19799,7 +19792,7 @@ def _build_viral_vignette_107() -> dict[str, Any]:
             "protein 65 mg/dL. CSF enterovirus PCR positive. Gram stain "
             "and culture negative. No imaging performed (uncomplicated "
             "presentation). Anchored to Tyler 2018 NEJM viral "
-            "encephalitis review (PMID 29490180), young-adult enteroviral "
+            "encephalitis review (PMID 30089069), young-adult enteroviral "
             "summer-peak stratum. Outcome: survived with full recovery in "
             "seven days. Subphase 1.3 commit 5.3.5 wave 1, pre-adjudication "
             "hold_for_revision."
@@ -19815,12 +19808,12 @@ def _build_viral_vignette_107() -> dict[str, Any]:
             "leucocitos 220 por mm3 (78 por ciento linfocitos), glucosa "
             "55 mg/dL, proteina 65 mg/dL. PCR de enterovirus en LCR "
             "positiva. Tincion de Gram y cultivo negativos. Sin imagenes. "
-            "Anclaje en revision Tyler 2018 NEJM (PMID 29490180), estrato "
+            "Anclaje en revision Tyler 2018 NEJM (PMID 30089069), estrato "
             "adulto joven pico estival enteroviral. Subphase 1.3 commit "
             "5.3.5 wave 1, pre-adjudicacion hold_for_revision."
         ),
         "rationale": (
-            "Anchored to PMID 29490180 (Tyler 2018 NEJM viral encephalitis "
+            "Anchored to PMID 30089069 (Tyler 2018 NEJM viral encephalitis "
             "review). Enteroviral aseptic meningitis young-adult pattern. "
             "Demographic anchor (22yo F NL university summer) sits in "
             "young-adult-aseptic-meningitis-summer stratum. CSF "
@@ -19834,7 +19827,7 @@ def _build_viral_vignette_107() -> dict[str, Any]:
             "within_review. 5.3.5 wave1 EV-NL-young-adult."
         ),
         "anchoring_extras": "anchor=Tyler-NEJM-2018 stratum=EV-young-adult-summer.",
-        "diagnostic_tests": _viral_wave1_dx_tests_ev_pcr("29490180"),
+        "diagnostic_tests": _viral_wave1_dx_tests_ev_pcr("30089069"),
     }
 
 
@@ -19910,7 +19903,7 @@ def _build_viral_vignette_108() -> dict[str, Any]:
             "180 per cubic millimeter (82 percent lymphocytes), glucose 58 "
             "mg/dL, protein 60 mg/dL. CSF enterovirus PCR positive. Gram "
             "stain and culture negative. No imaging performed. Anchored to "
-            "Tyler 2018 NEJM viral encephalitis review (PMID 29490180), "
+            "Tyler 2018 NEJM viral encephalitis review (PMID 30089069), "
             "school-outbreak enteroviral stratum. Outcome: survived with "
             "full recovery in six days. Subphase 1.3 commit 5.3.5 wave 1, "
             "pre-adjudication hold_for_revision."
@@ -19928,11 +19921,11 @@ def _build_viral_vignette_108() -> dict[str, Any]:
             "leucocitos 180 por mm3 (82 por ciento linfocitos), glucosa "
             "58 mg/dL, proteina 60 mg/dL. PCR de enterovirus en LCR "
             "positiva. Anclaje en revision Tyler 2018 NEJM (PMID "
-            "29490180), estrato brote escolar. Subphase 1.3 commit 5.3.5 "
+            "30089069), estrato brote escolar. Subphase 1.3 commit 5.3.5 "
             "wave 1."
         ),
         "rationale": (
-            "Anchored to PMID 29490180 (Tyler 2018 NEJM viral encephalitis "
+            "Anchored to PMID 30089069 (Tyler 2018 NEJM viral encephalitis "
             "review). Enteroviral aseptic meningitis with school-outbreak "
             "epidemiology. Demographic anchor (11yo M US school outbreak "
             "September) sits in school-outbreak-pediatric stratum. CSF "
@@ -19947,7 +19940,7 @@ def _build_viral_vignette_108() -> dict[str, Any]:
             "review. 5.3.5 wave1 EV-school-outbreak-pediatric."
         ),
         "anchoring_extras": "anchor=Tyler-NEJM-2018 stratum=EV-school-outbreak.",
-        "diagnostic_tests": _viral_wave1_dx_tests_ev_pcr("29490180"),
+        "diagnostic_tests": _viral_wave1_dx_tests_ev_pcr("30089069"),
     }
 
 
@@ -20022,7 +20015,7 @@ def _build_viral_vignette_109() -> dict[str, Any]:
             "lymphocytes), glucose 56 mg/dL, protein 55 mg/dL. CSF "
             "enterovirus PCR positive. Gram stain and culture negative. "
             "No imaging performed. Anchored to Tyler 2018 NEJM viral "
-            "encephalitis review (PMID 29490180), early-childhood "
+            "encephalitis review (PMID 30089069), early-childhood "
             "enteroviral summer stratum. Outcome: survived with full "
             "recovery in five days. Subphase 1.3 commit 5.3.5 wave 1, "
             "pre-adjudication hold_for_revision."
@@ -20038,12 +20031,12 @@ def _build_viral_vignette_109() -> dict[str, Any]:
             "leucocitos 145 por mm3 (85 por ciento linfocitos), glucosa "
             "56 mg/dL, proteina 55 mg/dL. PCR de enterovirus en LCR "
             "positiva. Tincion de Gram y cultivo negativos. Sin imagenes. "
-            "Anclaje en revision Tyler 2018 NEJM (PMID 29490180), estrato "
+            "Anclaje en revision Tyler 2018 NEJM (PMID 30089069), estrato "
             "infancia temprana pico estival enteroviral. Subphase 1.3 "
             "commit 5.3.5 wave 1, pre-adjudicacion hold_for_revision."
         ),
         "rationale": (
-            "Anchored to PMID 29490180 (Tyler 2018 NEJM viral encephalitis "
+            "Anchored to PMID 30089069 (Tyler 2018 NEJM viral encephalitis "
             "review). Enteroviral aseptic meningitis early-childhood "
             "summer pattern. Demographic anchor (3yo F NL summer) sits in "
             "early-childhood-EV-summer stratum. CSF lymphocytic (145 WBC, "
@@ -20057,7 +20050,7 @@ def _build_viral_vignette_109() -> dict[str, Any]:
             "infant-summer."
         ),
         "anchoring_extras": "anchor=Tyler-NEJM-2018 stratum=EV-early-childhood-summer.",
-        "diagnostic_tests": _viral_wave1_dx_tests_ev_pcr("29490180"),
+        "diagnostic_tests": _viral_wave1_dx_tests_ev_pcr("30089069"),
     }
 
 
@@ -20133,7 +20126,7 @@ def _build_viral_vignette_111() -> dict[str, Any]:
             "negative. No imaging performed (uncomplicated viral "
             "meningitis presentation in a child with normal mental "
             "status). Anchored to Tyler 2018 NEJM viral encephalitis "
-            "review (PMID 29490180), pediatric enteroviral summer-peak "
+            "review (PMID 30089069), pediatric enteroviral summer-peak "
             "stratum. Outcome: survived with full recovery in six days. "
             "Subphase 1.3 commit 5.3.5 wave 1, pre-adjudication "
             "hold_for_revision."
@@ -20149,12 +20142,12 @@ def _build_viral_vignette_111() -> dict[str, Any]:
             "glucosa 55 mg/dL, proteina 58 mg/dL. PCR de enterovirus en "
             "LCR positiva. Tincion de Gram y cultivo negativos. Sin "
             "imagenes. Anclaje en revision Tyler 2018 NEJM (PMID "
-            "29490180), estrato pediatrico pico estival enteroviral. "
+            "30089069), estrato pediatrico pico estival enteroviral. "
             "Subphase 1.3 commit 5.3.5 wave 1, pre-adjudicacion "
             "hold_for_revision."
         ),
         "rationale": (
-            "Anchored to PMID 29490180 (Tyler 2018 NEJM viral encephalitis "
+            "Anchored to PMID 30089069 (Tyler 2018 NEJM viral encephalitis "
             "review). Enteroviral aseptic meningitis pediatric summer "
             "pattern. Demographic anchor (5yo M US South August) sits in "
             "pediatric-EV-summer stratum. CSF lymphocytic (165 WBC, 80 "
@@ -20167,7 +20160,7 @@ def _build_viral_vignette_111() -> dict[str, Any]:
             "within_review. 5.3.5 wave1 EV-US-pediatric-summer-2."
         ),
         "anchoring_extras": "anchor=Tyler-NEJM-2018 stratum=EV-pediatric-summer-2.",
-        "diagnostic_tests": _viral_wave1_dx_tests_ev_pcr("29490180"),
+        "diagnostic_tests": _viral_wave1_dx_tests_ev_pcr("30089069"),
     }
 
 
@@ -20255,7 +20248,7 @@ def _build_viral_vignette_113() -> dict[str, Any]:
             "WBC with 35 percent neutrophils raised initial bacterial-"
             "meningitis differential; HSV2 PCR confirmed organism. "
             "Anchored to Tyler 2018 NEJM viral encephalitis review (PMID "
-            "29490180). Outcome: survived with full recovery. Subphase "
+            "30089069). Outcome: survived with full recovery. Subphase "
             "1.3 commit 5.3.5 wave 1, pre-adjudication hold_for_revision."
         ),
         "narrative_es": (
@@ -20271,11 +20264,11 @@ def _build_viral_vignette_113() -> dict[str, Any]:
             "mg/dL. PCR de HSV-2 en LCR positiva. RM cerebral normal. "
             "Ambiguedad diagnostica por meningismo prominente con DDx "
             "bacteriana inicial. Anclaje en revision Tyler 2018 NEJM "
-            "(PMID 29490180). Subphase 1.3 commit 5.3.5 wave 1, "
+            "(PMID 30089069). Subphase 1.3 commit 5.3.5 wave 1, "
             "pre-adjudicacion hold_for_revision."
         ),
         "rationale": (
-            "Anchored to PMID 29490180 (Tyler 2018 NEJM viral encephalitis "
+            "Anchored to PMID 30089069 (Tyler 2018 NEJM viral encephalitis "
             "review). HSV2 first-episode lymphocytic meningitis with "
             "prominent meningismus that mimics bacterial DDx. Diagnostic_"
             "ambiguity=true; type=hsv2_first_episode_with_prominent_"
@@ -20295,7 +20288,7 @@ def _build_viral_vignette_113() -> dict[str, Any]:
             "review. 5.3.5 wave1 HSV2-first-episode-ambiguity."
         ),
         "anchoring_extras": "anchor=Tyler-NEJM-2018 type=hsv2_first_episode_with_prominent_meningismus_bacterial_ddx.",
-        "diagnostic_tests": _viral_wave1_dx_tests_hsv2_pcr("29490180"),
+        "diagnostic_tests": _viral_wave1_dx_tests_hsv2_pcr("30089069"),
     }
 
 
@@ -20370,7 +20363,7 @@ def _build_viral_vignette_114() -> dict[str, Any]:
             "PCR positive. Gram stain and culture negative. MRI brain "
             "with DWI/FLAIR normal. Empiric IV acyclovir initiated. "
             "Anchored to Tyler 2018 NEJM viral encephalitis review (PMID "
-            "29490180), HSV2 first-episode lymphocytic meningitis stratum. "
+            "30089069), HSV2 first-episode lymphocytic meningitis stratum. "
             "Outcome: survived with full recovery in six days. Subphase "
             "1.3 commit 5.3.5 wave 1, pre-adjudication hold_for_revision."
         ),
@@ -20386,12 +20379,12 @@ def _build_viral_vignette_114() -> dict[str, Any]:
             "55 mg/dL, proteina 80 mg/dL. PCR de HSV-2 en LCR positiva. "
             "Tincion de Gram y cultivo negativos. RM cerebral normal. "
             "Aciclovir IV empirico iniciado. Anclaje en revision Tyler "
-            "2018 NEJM (PMID 29490180), estrato HSV2 primer episodio. "
+            "2018 NEJM (PMID 30089069), estrato HSV2 primer episodio. "
             "Subphase 1.3 commit 5.3.5 wave 1, pre-adjudicacion "
             "hold_for_revision."
         ),
         "rationale": (
-            "Anchored to PMID 29490180 (Tyler 2018 NEJM viral encephalitis "
+            "Anchored to PMID 30089069 (Tyler 2018 NEJM viral encephalitis "
             "review). HSV2 first-episode lymphocytic meningitis. "
             "Demographic anchor (35yo M US post-genital-herpes) sits in "
             "HSV2-first-episode-male stratum. CSF lymphocytic (280 WBC, "
@@ -20405,7 +20398,7 @@ def _build_viral_vignette_114() -> dict[str, Any]:
             "review. 5.3.5 wave1 HSV2-first-episode-male."
         ),
         "anchoring_extras": "anchor=Tyler-NEJM-2018 stratum=HSV2-first-episode-male.",
-        "diagnostic_tests": _viral_wave1_dx_tests_hsv2_pcr("29490180"),
+        "diagnostic_tests": _viral_wave1_dx_tests_hsv2_pcr("30089069"),
     }
 
 
@@ -20493,7 +20486,7 @@ def _build_viral_vignette_117() -> dict[str, Any]:
             "and DENV-2 PCR positive. Brain MRI normal. Diagnostic_"
             "ambiguity=true; type=dengue_with_prominent_cns_arbo_"
             "encephalitis_overlap. Anchored to Tyler 2018 NEJM viral "
-            "encephalitis review (PMID 29490180). Outcome: survived. "
+            "encephalitis review (PMID 30089069). Outcome: survived. "
             "Subphase 1.3 commit 5.3.5 wave 1, pre-adjudication "
             "hold_for_revision."
         ),
@@ -20513,10 +20506,10 @@ def _build_viral_vignette_117() -> dict[str, Any]:
             "positivo y PCR DENV-2 positiva. RM cerebral normal. "
             "Ambiguedad diagnostica por superposicion CNS arbo-"
             "encefalitis. Anclaje en revision Tyler 2018 NEJM (PMID "
-            "29490180). Subphase 1.3 commit 5.3.5 wave 1."
+            "30089069). Subphase 1.3 commit 5.3.5 wave 1."
         ),
         "rationale": (
-            "Anchored to PMID 29490180 (Tyler 2018 NEJM viral encephalitis "
+            "Anchored to PMID 30089069 (Tyler 2018 NEJM viral encephalitis "
             "review) with prominent CNS-arbo-encephalitis-overlap "
             "phenotype. Diagnostic_ambiguity=true; type=dengue_with_"
             "prominent_cns_arbo_encephalitis_overlap (verbatim from spec). "
@@ -20534,7 +20527,7 @@ def _build_viral_vignette_117() -> dict[str, Any]:
             "5.3.5 wave1 dengue-Lima-arbo-overlap."
         ),
         "anchoring_extras": "anchor=Tyler-NEJM-2018 type=dengue_with_prominent_cns_arbo_encephalitis_overlap region=Lima-Peru.",
-        "diagnostic_tests": _viral_wave1_dx_tests_dengue("29490180", "DENV_2"),
+        "diagnostic_tests": _viral_wave1_dx_tests_dengue("30089069", "DENV_2"),
     }
 
 
@@ -20612,7 +20605,7 @@ def _build_viral_vignette_119() -> dict[str, Any]:
             "mg/dL, protein 75 mg/dL. DENV NS1 antigen positive and "
             "DENV-2 PCR positive. Brain MRI normal (metabolic / cytokine-"
             "mediated encephalopathy). Anchored to Tyler 2018 NEJM viral "
-            "encephalitis review (PMID 29490180), Peru-coastal-Tumbes "
+            "encephalitis review (PMID 30089069), Peru-coastal-Tumbes "
             "dengue stratum. Outcome: survived with full recovery. "
             "Subphase 1.3 commit 5.3.5 wave 1, pre-adjudication "
             "hold_for_revision."
@@ -20629,12 +20622,12 @@ def _build_viral_vignette_119() -> dict[str, Any]:
             "leucocitos 95 por mm3 (72 por ciento linfocitos), glucosa 60 "
             "mg/dL, proteina 75 mg/dL. NS1 antigeno DENV positivo y PCR "
             "DENV-2 positiva. RM cerebral normal. Anclaje en revision "
-            "Tyler 2018 NEJM (PMID 29490180), estrato Tumbes-coastal "
+            "Tyler 2018 NEJM (PMID 30089069), estrato Tumbes-coastal "
             "dengue. Subphase 1.3 commit 5.3.5 wave 1, pre-adjudicacion "
             "hold_for_revision."
         ),
         "rationale": (
-            "Anchored to PMID 29490180 (Tyler 2018 NEJM viral encephalitis "
+            "Anchored to PMID 30089069 (Tyler 2018 NEJM viral encephalitis "
             "review). Dengue with transient encephalopathy in Peru-"
             "coastal-Tumbes stratum. Demographic anchor (41yo M Tumbes) "
             "sits in Peru-coastal-dengue stratum. Platelets 85k satisfies "
@@ -20651,7 +20644,7 @@ def _build_viral_vignette_119() -> dict[str, Any]:
             "dengue-Tumbes-coastal."
         ),
         "anchoring_extras": "anchor=Tyler-NEJM-2018 region=Tumbes-Peru.",
-        "diagnostic_tests": _viral_wave1_dx_tests_dengue("29490180", "DENV_2"),
+        "diagnostic_tests": _viral_wave1_dx_tests_dengue("30089069", "DENV_2"),
     }
 
 
@@ -20730,7 +20723,7 @@ def _build_viral_vignette_120() -> dict[str, Any]:
             "EEE PCR positive. Brain MRI with DWI/FLAIR showed diffuse "
             "cerebral edema with basal ganglia and thalamic involvement "
             "(EEE predilection per Tyler review). Anchored to Tyler 2018 "
-            "NEJM viral encephalitis review (PMID 29490180), EEE high-"
+            "NEJM viral encephalitis review (PMID 30089069), EEE high-"
             "mortality older-adult stratum (case fatality approximately "
             "30 percent, permanent sequelae in 50 percent of survivors). "
             "Outcome: fatal hospital day 4. Subphase 1.3 commit 5.3.5 "
@@ -20750,11 +20743,11 @@ def _build_viral_vignette_120() -> dict[str, Any]:
             "ciento neutrofilos), glucosa 48 mg/dL, proteina 145 mg/dL. "
             "IgM y PCR de EEE en LCR positivas. RM cerebral con edema "
             "cerebral difuso con compromiso de ganglios basales y talamo. "
-            "Anclaje en revision Tyler 2018 NEJM (PMID 29490180), estrato "
+            "Anclaje en revision Tyler 2018 NEJM (PMID 30089069), estrato "
             "EEE alta mortalidad. Subphase 1.3 commit 5.3.5 wave 1."
         ),
         "rationale": (
-            "Anchored to PMID 29490180 (Tyler 2018 NEJM viral encephalitis "
+            "Anchored to PMID 30089069 (Tyler 2018 NEJM viral encephalitis "
             "review). EEE high-mortality older-adult phenotype (case "
             "fatality approximately 30 percent, permanent neurologic "
             "sequelae in 50 percent of survivors per Tyler review). "
@@ -20773,7 +20766,7 @@ def _build_viral_vignette_120() -> dict[str, Any]:
             "review. 5.3.5 wave1 EEE-older-adult-fatal."
         ),
         "anchoring_extras": "anchor=Tyler-NEJM-2018 stratum=EEE-older-adult-fatal mosquito_endemic=true.",
-        "diagnostic_tests": _viral_wave1_dx_tests_eee("29490180"),
+        "diagnostic_tests": _viral_wave1_dx_tests_eee("30089069"),
     }
 
 
@@ -20868,9 +20861,9 @@ def write_viral_wave1_corpus(
 # Subphase 1.3 commit 5.3.6 - Wave 2 VIRAL vignette builders (n=14, FINAL)
 # ----------------------------------------------------------------------------
 # Slot IDs: 91, 93, 94, 95, 97, 98, 100, 101, 103, 104, 110, 112, 115, 116.
-# 9 anchored to Granerod 2010 Lancet Infect Dis (PMID 21088000, anchor_type=
+# 9 anchored to Granerod 2010 Lancet Infect Dis (PMID 20952256, anchor_type=
 # cohort, prospective UK encephalitis cohort N=203) + 5 anchored to Whitley
-# 2006 Lancet Infect Dis (PMID 16517432, anchor_type=review, HSE pathogenesis).
+# 2006 Lancet Infect Dis (PMID 16675036, anchor_type=review, HSE pathogenesis).
 # Pathogens: 8 HSV1 + 2 HSV_PCR_negative_72h (ambiguity) + 2 enterovirus + 2
 # VZV (zoster ophthalmicus immunocompromised + post-zoster encephalitis).
 # Diagnostic ambiguity: 2 of 14 (v103, v104 HSV-PCR-negative-72h with empiric
@@ -20926,9 +20919,9 @@ def _viral_wave2_adjudication(
     Embeds verbatim self_review_disposition=hold_for_revision.
     """
     pmid = spec["pmid"]
-    if pmid == "21088000":
+    if pmid == "20952256":
         anchor_short = "Granerod 2010 Lancet ID UK encephalitis cohort"
-    elif pmid == "16517432":
+    elif pmid == "16675036":
         anchor_short = "Whitley 2006 Lancet ID HSE pathogenesis review"
     else:
         raise KeyError(f"Wave 5.3.6 unexpected anchor PMID {pmid!r}")
@@ -21134,7 +21127,7 @@ def _build_viral_vignette_091() -> dict[str, Any]:
             "HSV-1 PCR positive. Brain MRI with DWI/FLAIR showed mesial "
             "temporal T2/FLAIR hyperintensity asymmetric. Acyclovir "
             "initiated within four hours. Anchored to Whitley 2006 "
-            "Lancet Infect Dis HSE pathogenesis review (PMID 16517432). "
+            "Lancet Infect Dis HSE pathogenesis review (PMID 16675036). "
             "Outcome: survived with moderate cognitive sequelae. Subphase "
             "1.3 commit 5.3.6 wave 2, pre-adjudication hold_for_revision."
         ),
@@ -21152,11 +21145,11 @@ def _build_viral_vignette_091() -> dict[str, Any]:
             "mg/dL, eritrocitos 38 con xantocromia. PCR de HSV-1 positiva. "
             "RM cerebral con hiperintensidad temporal mesial T2/FLAIR. "
             "Aciclovir en cuatro horas. Anclaje en revision Whitley 2006 "
-            "Lancet ID HSE (PMID 16517432). Subphase 1.3 commit 5.3.6 "
+            "Lancet ID HSE (PMID 16675036). Subphase 1.3 commit 5.3.6 "
             "wave 2, pre-adjudicacion hold_for_revision."
         ),
         "rationale": (
-            "Anchored to PMID 16517432 (Whitley 2006 Lancet ID HSE "
+            "Anchored to PMID 16675036 (Whitley 2006 Lancet ID HSE "
             "pathogenesis review). Pediatric HSE phenotype with classic "
             "limbic-frontal extension and late-presentation obtundation. "
             "Demographic anchor (8yo F US South pediatric HSE) sits in "
@@ -21173,7 +21166,7 @@ def _build_viral_vignette_091() -> dict[str, Any]:
             "Whitley-pediatric-sequelae."
         ),
         "anchoring_extras": "anchor=Whitley-Lancet-ID-2006 stratum=pediatric-HSE-sequelae.",
-        "diagnostic_tests": _viral_wave1_dx_tests_hsv1_pcr("16517432"),
+        "diagnostic_tests": _viral_wave1_dx_tests_hsv1_pcr("16675036"),
     }
 
 
@@ -21254,7 +21247,7 @@ def _build_viral_vignette_093() -> dict[str, Any]:
             "hyperintensity bilateral. Acyclovir initiated at hour 12 "
             "(delayed by atypical presentation). Anchored to Whitley "
             "2006 Lancet Infect Dis HSE pathogenesis review (PMID "
-            "16517432). Outcome: fatal hospital day 5 per Whitley HSE "
+            "16675036). Outcome: fatal hospital day 5 per Whitley HSE "
             "elderly-mortality data. Subphase 1.3 commit 5.3.6 wave 2, "
             "pre-adjudication hold_for_revision."
         ),
@@ -21273,10 +21266,10 @@ def _build_viral_vignette_093() -> dict[str, Any]:
             "hiperintensidad temporal mesial T2/FLAIR bilateral. "
             "Aciclovir en hora 12 (retraso por presentacion atipica). "
             "Anclaje en revision Whitley 2006 Lancet ID HSE (PMID "
-            "16517432). Subphase 1.3 commit 5.3.6 wave 2."
+            "16675036). Subphase 1.3 commit 5.3.6 wave 2."
         ),
         "rationale": (
-            "Anchored to PMID 16517432 (Whitley 2006 Lancet ID HSE "
+            "Anchored to PMID 16675036 (Whitley 2006 Lancet ID HSE "
             "pathogenesis review). Elderly HSE with delayed-acyclovir "
             "fatal outcome per Whitley elderly-mortality stratum. "
             "Demographic anchor (67yo F NL elderly HSE delayed-treatment) "
@@ -21293,7 +21286,7 @@ def _build_viral_vignette_093() -> dict[str, Any]:
             "fatal."
         ),
         "anchoring_extras": "anchor=Whitley-Lancet-ID-2006 stratum=elderly-fatal-delayed-treatment.",
-        "diagnostic_tests": _viral_wave1_dx_tests_hsv1_pcr("16517432"),
+        "diagnostic_tests": _viral_wave1_dx_tests_hsv1_pcr("16675036"),
     }
 
 
@@ -21372,7 +21365,7 @@ def _build_viral_vignette_094() -> dict[str, Any]:
             "mesial temporal T2/FLAIR hyperintensity asymmetric. "
             "Acyclovir initiated within four hours. Anchored to "
             "Granerod 2010 Lancet Infect Dis prospective UK encephalitis "
-            "cohort (PMID 21088000, N=203 with 42 percent infectious "
+            "cohort (PMID 20952256, N=203 with 42 percent infectious "
             "encephalitis cause-attribution). Outcome: survived with "
             "mild memory deficit. Subphase 1.3 commit 5.3.6 wave 2, "
             "pre-adjudication hold_for_revision."
@@ -21391,10 +21384,10 @@ def _build_viral_vignette_094() -> dict[str, Any]:
             "positiva. RM cerebral con hiperintensidad temporal mesial "
             "T2/FLAIR. Aciclovir en cuatro horas. Anclaje en cohorte "
             "prospectiva Granerod 2010 Lancet ID encefalitis Reino Unido "
-            "(PMID 21088000). Subphase 1.3 commit 5.3.6 wave 2."
+            "(PMID 20952256). Subphase 1.3 commit 5.3.6 wave 2."
         ),
         "rationale": (
-            "Anchored to PMID 21088000 (Granerod 2010 Lancet Infect Dis), "
+            "Anchored to PMID 20952256 (Granerod 2010 Lancet Infect Dis), "
             "203-patient prospective UK encephalitis cohort with HSV1 "
             "as the most common identified cause (19 percent of cohort). "
             "Demographic anchor (23yo F NL young-adult HSE) sits in "
@@ -21410,7 +21403,7 @@ def _build_viral_vignette_094() -> dict[str, Any]:
             "young-adult."
         ),
         "anchoring_extras": "anchor=Granerod-Lancet-ID-2010 stratum=young-adult-HSE.",
-        "diagnostic_tests": _viral_wave1_dx_tests_hsv1_pcr("21088000"),
+        "diagnostic_tests": _viral_wave1_dx_tests_hsv1_pcr("20952256"),
     }
 
 
@@ -21490,7 +21483,7 @@ def _build_viral_vignette_095() -> dict[str, Any]:
             "with DWI/FLAIR showed mesial temporal T2/FLAIR "
             "hyperintensity asymmetric. Acyclovir initiated within "
             "five hours. Anchored to Whitley 2006 Lancet Infect Dis "
-            "HSE pathogenesis review (PMID 16517432), adolescent-HSE "
+            "HSE pathogenesis review (PMID 16675036), adolescent-HSE "
             "stratum. Outcome: survived with mild memory deficit. "
             "Subphase 1.3 commit 5.3.6 wave 2, pre-adjudication "
             "hold_for_revision."
@@ -21509,11 +21502,11 @@ def _build_viral_vignette_095() -> dict[str, Any]:
             "105 mg/dL, eritrocitos 28 con xantocromia. PCR de HSV-1 "
             "positiva. RM cerebral con hiperintensidad temporal mesial "
             "T2/FLAIR. Aciclovir en cinco horas. Anclaje en revision "
-            "Whitley 2006 Lancet ID HSE (PMID 16517432). Subphase 1.3 "
+            "Whitley 2006 Lancet ID HSE (PMID 16675036). Subphase 1.3 "
             "commit 5.3.6 wave 2."
         ),
         "rationale": (
-            "Anchored to PMID 16517432 (Whitley 2006 Lancet ID HSE "
+            "Anchored to PMID 16675036 (Whitley 2006 Lancet ID HSE "
             "pathogenesis review). Adolescent HSE phenotype with classic "
             "limbic-frontal pattern. Demographic anchor (14yo M US "
             "South adolescent HSE) sits in Whitley adolescent-HSE "
@@ -21528,7 +21521,7 @@ def _build_viral_vignette_095() -> dict[str, Any]:
             "5.3.6 wave2 HSV1-Whitley-adolescent."
         ),
         "anchoring_extras": "anchor=Whitley-Lancet-ID-2006 stratum=adolescent-HSE.",
-        "diagnostic_tests": _viral_wave1_dx_tests_hsv1_pcr("16517432"),
+        "diagnostic_tests": _viral_wave1_dx_tests_hsv1_pcr("16675036"),
     }
 
 
@@ -21609,7 +21602,7 @@ def _build_viral_vignette_097() -> dict[str, Any]:
             "Brain MRI with DWI/FLAIR showed mesial temporal T2/FLAIR "
             "hyperintensity bilateral. Acyclovir initiated at hour 8 "
             "(delayed). Anchored to Granerod 2010 Lancet Infect Dis UK "
-            "encephalitis cohort (PMID 21088000), elderly-HSE-mortality "
+            "encephalitis cohort (PMID 20952256), elderly-HSE-mortality "
             "stratum. Outcome: fatal hospital day 4. Subphase 1.3 commit "
             "5.3.6 wave 2, pre-adjudication hold_for_revision."
         ),
@@ -21627,12 +21620,12 @@ def _build_viral_vignette_097() -> dict[str, Any]:
             "eritrocitos 60 con xantocromia. PCR de HSV-1 positiva. "
             "RM cerebral con hiperintensidad temporal mesial T2/FLAIR "
             "bilateral. Aciclovir en hora 8 (retraso). Anclaje en "
-            "cohorte Granerod 2010 Lancet ID (PMID 21088000), estrato "
+            "cohorte Granerod 2010 Lancet ID (PMID 20952256), estrato "
             "HSE adulto mayor. Resultado: fatal en hospital dia 4. "
             "Subphase 1.3 commit 5.3.6 wave 2."
         ),
         "rationale": (
-            "Anchored to PMID 21088000 (Granerod 2010 Lancet ID UK "
+            "Anchored to PMID 20952256 (Granerod 2010 Lancet ID UK "
             "encephalitis cohort). Elderly HSE with delayed-acyclovir "
             "fatal outcome. Demographic anchor (78yo M NL elderly HSE "
             "delayed-treatment) sits in elderly-fatal-HSE stratum. CSF "
@@ -21648,7 +21641,7 @@ def _build_viral_vignette_097() -> dict[str, Any]:
             "fatal."
         ),
         "anchoring_extras": "anchor=Granerod-Lancet-ID-2010 stratum=elderly-fatal-HSE.",
-        "diagnostic_tests": _viral_wave1_dx_tests_hsv1_pcr("21088000"),
+        "diagnostic_tests": _viral_wave1_dx_tests_hsv1_pcr("20952256"),
     }
 
 
@@ -21727,7 +21720,7 @@ def _build_viral_vignette_098() -> dict[str, Any]:
             "mesial temporal T2/FLAIR hyperintensity asymmetric. "
             "Acyclovir initiated within four hours. Anchored to Whitley "
             "2006 Lancet Infect Dis HSE pathogenesis review (PMID "
-            "16517432), pediatric-HSE stratum. Outcome: survived with "
+            "16675036), pediatric-HSE stratum. Outcome: survived with "
             "mild cognitive sequelae. Subphase 1.3 commit 5.3.6 wave 2, "
             "pre-adjudication hold_for_revision."
         ),
@@ -21745,11 +21738,11 @@ def _build_viral_vignette_098() -> dict[str, Any]:
             "eritrocitos 30 con xantocromia. PCR de HSV-1 positiva. RM "
             "cerebral con hiperintensidad temporal mesial T2/FLAIR. "
             "Aciclovir en cuatro horas. Anclaje en revision Whitley "
-            "2006 Lancet ID HSE (PMID 16517432). Subphase 1.3 commit "
+            "2006 Lancet ID HSE (PMID 16675036). Subphase 1.3 commit "
             "5.3.6 wave 2, pre-adjudicacion hold_for_revision."
         ),
         "rationale": (
-            "Anchored to PMID 16517432 (Whitley 2006 Lancet ID HSE "
+            "Anchored to PMID 16675036 (Whitley 2006 Lancet ID HSE "
             "pathogenesis review). Pediatric HSE with classic limbic "
             "phenotype. Demographic anchor (9yo F US South pediatric "
             "HSE) sits in Whitley pediatric-HSE stratum. CSF "
@@ -21764,7 +21757,7 @@ def _build_viral_vignette_098() -> dict[str, Any]:
             "5.3.6 wave2 HSV1-Whitley-pediatric."
         ),
         "anchoring_extras": "anchor=Whitley-Lancet-ID-2006 stratum=pediatric-HSE.",
-        "diagnostic_tests": _viral_wave1_dx_tests_hsv1_pcr("16517432"),
+        "diagnostic_tests": _viral_wave1_dx_tests_hsv1_pcr("16675036"),
     }
 
 
@@ -21844,7 +21837,7 @@ def _build_viral_vignette_100() -> dict[str, Any]:
             "DWI/FLAIR showed mesial temporal T2/FLAIR hyperintensity "
             "asymmetric. Acyclovir initiated within six hours. Anchored "
             "to Granerod 2010 Lancet Infect Dis UK encephalitis cohort "
-            "(PMID 21088000). Outcome: survived with mild memory "
+            "(PMID 20952256). Outcome: survived with mild memory "
             "deficit. Subphase 1.3 commit 5.3.6 wave 2, pre-adjudication "
             "hold_for_revision."
         ),
@@ -21862,10 +21855,10 @@ def _build_viral_vignette_100() -> dict[str, Any]:
             "xantocromia. PCR de HSV-1 positiva. RM cerebral con "
             "hiperintensidad temporal mesial T2/FLAIR. Aciclovir en "
             "seis horas. Anclaje en cohorte Granerod 2010 Lancet ID "
-            "(PMID 21088000). Subphase 1.3 commit 5.3.6 wave 2."
+            "(PMID 20952256). Subphase 1.3 commit 5.3.6 wave 2."
         ),
         "rationale": (
-            "Anchored to PMID 21088000 (Granerod 2010 Lancet ID UK "
+            "Anchored to PMID 20952256 (Granerod 2010 Lancet ID UK "
             "encephalitis cohort). Older-adult HSE phenotype. "
             "Demographic anchor (60yo F NL older-adult HSE) sits in "
             "Granerod older-adult-HSE stratum. CSF lymphocytic with "
@@ -21880,7 +21873,7 @@ def _build_viral_vignette_100() -> dict[str, Any]:
             "older-adult-female."
         ),
         "anchoring_extras": "anchor=Granerod-Lancet-ID-2010 stratum=older-adult-HSE.",
-        "diagnostic_tests": _viral_wave1_dx_tests_hsv1_pcr("21088000"),
+        "diagnostic_tests": _viral_wave1_dx_tests_hsv1_pcr("20952256"),
     }
 
 
@@ -21958,7 +21951,7 @@ def _build_viral_vignette_101() -> dict[str, Any]:
             "PCR positive. Brain MRI with DWI/FLAIR showed mesial "
             "temporal T2/FLAIR hyperintensity asymmetric. Acyclovir "
             "initiated within four hours. Anchored to Whitley 2006 "
-            "Lancet Infect Dis HSE pathogenesis review (PMID 16517432), "
+            "Lancet Infect Dis HSE pathogenesis review (PMID 16675036), "
             "older-adolescent-HSE stratum. Outcome: survived with mild "
             "memory deficit. Subphase 1.3 commit 5.3.6 wave 2, "
             "pre-adjudication hold_for_revision."
@@ -21977,11 +21970,11 @@ def _build_viral_vignette_101() -> dict[str, Any]:
             "mg/dL, eritrocitos 30 con xantocromia. PCR de HSV-1 "
             "positiva. RM cerebral con hiperintensidad temporal mesial "
             "T2/FLAIR. Aciclovir en cuatro horas. Anclaje en revision "
-            "Whitley 2006 Lancet ID HSE (PMID 16517432). Subphase 1.3 "
+            "Whitley 2006 Lancet ID HSE (PMID 16675036). Subphase 1.3 "
             "commit 5.3.6 wave 2, pre-adjudicacion hold_for_revision."
         ),
         "rationale": (
-            "Anchored to PMID 16517432 (Whitley 2006 Lancet ID HSE "
+            "Anchored to PMID 16675036 (Whitley 2006 Lancet ID HSE "
             "pathogenesis review). Older-adolescent HSE phenotype. "
             "Demographic anchor (17yo M US South older-adolescent HSE) "
             "sits in Whitley adolescent-HSE stratum. CSF lymphocytic "
@@ -21996,7 +21989,7 @@ def _build_viral_vignette_101() -> dict[str, Any]:
             "older-adolescent."
         ),
         "anchoring_extras": "anchor=Whitley-Lancet-ID-2006 stratum=older-adolescent-HSE.",
-        "diagnostic_tests": _viral_wave1_dx_tests_hsv1_pcr("16517432"),
+        "diagnostic_tests": _viral_wave1_dx_tests_hsv1_pcr("16675036"),
     }
 
 
@@ -22081,7 +22074,7 @@ def _build_viral_vignette_103() -> dict[str, Any]:
             "full 21-day course. Diagnostic_ambiguity=true; type=hsv_"
             "clinical_phenotype_pcr_negative_at_72h. Anchored to "
             "Granerod 2010 Lancet ID UK encephalitis cohort (PMID "
-            "21088000). Outcome: survived with full recovery. Subphase "
+            "20952256). Outcome: survived with full recovery. Subphase "
             "1.3 commit 5.3.6 wave 2, pre-adjudication hold."
         ),
         "narrative_es": (
@@ -22098,11 +22091,11 @@ def _build_viral_vignette_103() -> dict[str, Any]:
             "mesial T2/FLAIR asimetrica. Aciclovir empirico continuado "
             "por 21 dias completos. Ambiguedad diagnostica: fenotipo "
             "clinico de HSE con PCR negativa. Anclaje en cohorte "
-            "Granerod 2010 Lancet ID (PMID 21088000). Subphase 1.3 "
+            "Granerod 2010 Lancet ID (PMID 20952256). Subphase 1.3 "
             "commit 5.3.6 wave 2."
         ),
         "rationale": (
-            "Anchored to PMID 21088000 (Granerod 2010 Lancet ID UK "
+            "Anchored to PMID 20952256 (Granerod 2010 Lancet ID UK "
             "encephalitis cohort) documenting PCR-negative-but-clinical-"
             "HSE phenotype. Diagnostic_ambiguity=true; type=hsv_clinical_"
             "phenotype_pcr_negative_at_72h (verbatim from spec). "
@@ -22120,7 +22113,7 @@ def _build_viral_vignette_103() -> dict[str, Any]:
             "review_ambiguity. 5.3.6 wave2 HSV-PCR-neg-male."
         ),
         "anchoring_extras": "anchor=Granerod-Lancet-ID-2010 type=hsv_clinical_phenotype_pcr_negative_at_72h.",
-        "diagnostic_tests": _viral_wave2_dx_tests_hsv_pcr_negative_72h("21088000"),
+        "diagnostic_tests": _viral_wave2_dx_tests_hsv_pcr_negative_72h("20952256"),
     }
 
 
@@ -22205,7 +22198,7 @@ def _build_viral_vignette_104() -> dict[str, Any]:
             "acyclovir continued for the full 21-day course. "
             "Diagnostic_ambiguity=true; type=hsv_clinical_phenotype_"
             "pcr_negative_at_72h. Anchored to Granerod 2010 Lancet ID "
-            "(PMID 21088000). Outcome: survived with mild memory "
+            "(PMID 20952256). Outcome: survived with mild memory "
             "deficit. Subphase 1.3 commit 5.3.6 wave 2, pre-adj hold."
         ),
         "narrative_es": (
@@ -22223,11 +22216,11 @@ def _build_viral_vignette_104() -> dict[str, Any]:
             "hiperintensidad temporal mesial T2/FLAIR. Aciclovir "
             "empirico continuado por 21 dias. Ambiguedad diagnostica "
             "HSE con PCR negativa. Anclaje en cohorte Granerod 2010 "
-            "Lancet ID (PMID 21088000). Subphase 1.3 commit 5.3.6 "
+            "Lancet ID (PMID 20952256). Subphase 1.3 commit 5.3.6 "
             "wave 2."
         ),
         "rationale": (
-            "Anchored to PMID 21088000 (Granerod 2010 Lancet ID UK "
+            "Anchored to PMID 20952256 (Granerod 2010 Lancet ID UK "
             "encephalitis cohort) PCR-negative-HSE phenotype. "
             "Diagnostic_ambiguity=true; type=hsv_clinical_phenotype_pcr_"
             "negative_at_72h (verbatim from spec). Demographic anchor "
@@ -22243,7 +22236,7 @@ def _build_viral_vignette_104() -> dict[str, Any]:
             "ambiguity. 5.3.6 wave2 HSV-PCR-neg-female."
         ),
         "anchoring_extras": "anchor=Granerod-Lancet-ID-2010 type=hsv_clinical_phenotype_pcr_negative_at_72h.",
-        "diagnostic_tests": _viral_wave2_dx_tests_hsv_pcr_negative_72h("21088000"),
+        "diagnostic_tests": _viral_wave2_dx_tests_hsv_pcr_negative_72h("20952256"),
     }
 
 
@@ -22319,7 +22312,7 @@ def _build_viral_vignette_110() -> dict[str, Any]:
             "mg/dL, protein 60 mg/dL. CSF enterovirus PCR positive. "
             "Gram stain and culture negative. No imaging performed. "
             "Anchored to Granerod 2010 Lancet Infect Dis UK encephalitis "
-            "cohort (PMID 21088000), college-age-enteroviral-meningitis "
+            "cohort (PMID 20952256), college-age-enteroviral-meningitis "
             "stratum. Outcome: survived with full recovery in six days. "
             "Subphase 1.3 commit 5.3.6 wave 2, pre-adjudication "
             "hold_for_revision."
@@ -22336,12 +22329,12 @@ def _build_viral_vignette_110() -> dict[str, Any]:
             "glucosa 56 mg/dL, proteina 60 mg/dL. PCR de enterovirus "
             "en LCR positiva. Tincion de Gram y cultivo negativos. Sin "
             "imagenes. Anclaje en cohorte Granerod 2010 Lancet ID "
-            "(PMID 21088000), estrato adulto joven enteroviral. "
+            "(PMID 20952256), estrato adulto joven enteroviral. "
             "Subphase 1.3 commit 5.3.6 wave 2, pre-adjudicacion "
             "hold_for_revision."
         ),
         "rationale": (
-            "Anchored to PMID 21088000 (Granerod 2010 Lancet ID UK "
+            "Anchored to PMID 20952256 (Granerod 2010 Lancet ID UK "
             "encephalitis cohort). Enteroviral aseptic meningitis "
             "college-age summer phenotype. Demographic anchor (19yo F "
             "NL university summer) sits in college-age-enteroviral "
@@ -22355,7 +22348,7 @@ def _build_viral_vignette_110() -> dict[str, Any]:
             "within_review. 5.3.6 wave2 EV-Granerod-college-age."
         ),
         "anchoring_extras": "anchor=Granerod-Lancet-ID-2010 stratum=college-age-EV.",
-        "diagnostic_tests": _viral_wave1_dx_tests_ev_pcr("21088000"),
+        "diagnostic_tests": _viral_wave1_dx_tests_ev_pcr("20952256"),
     }
 
 
@@ -22430,7 +22423,7 @@ def _build_viral_vignette_112() -> dict[str, Any]:
             "lymphocytes), glucose 58 mg/dL, protein 58 mg/dL. CSF "
             "enterovirus PCR positive. Gram stain and culture negative. "
             "No imaging performed. Anchored to Granerod 2010 Lancet "
-            "Infect Dis UK encephalitis cohort (PMID 21088000), "
+            "Infect Dis UK encephalitis cohort (PMID 20952256), "
             "adolescent-enteroviral-summer-meningitis stratum. Outcome: "
             "survived with full recovery in five days. Subphase 1.3 "
             "commit 5.3.6 wave 2, pre-adjudication hold_for_revision."
@@ -22448,12 +22441,12 @@ def _build_viral_vignette_112() -> dict[str, Any]:
             "58 mg/dL. PCR de enterovirus en LCR positiva. Tincion de "
             "Gram y cultivo negativos. Sin estudios de neuroimagen. "
             "Anclaje en cohorte Granerod 2010 Lancet ID (PMID "
-            "21088000), estrato adolescente enteroviral de verano. "
+            "20952256), estrato adolescente enteroviral de verano. "
             "Resultado: recuperacion completa en cinco dias. Subphase "
             "1.3 commit 5.3.6 wave 2, pre-adjudicacion en hold."
         ),
         "rationale": (
-            "Anchored to PMID 21088000 (Granerod 2010 Lancet ID UK "
+            "Anchored to PMID 20952256 (Granerod 2010 Lancet ID UK "
             "encephalitis cohort). Enteroviral aseptic meningitis "
             "adolescent summer phenotype. Demographic anchor (14yo F "
             "NL adolescent summer) sits in adolescent-enteroviral "
@@ -22467,7 +22460,7 @@ def _build_viral_vignette_112() -> dict[str, Any]:
             "within_review. 5.3.6 wave2 EV-Granerod-adolescent."
         ),
         "anchoring_extras": "anchor=Granerod-Lancet-ID-2010 stratum=adolescent-EV.",
-        "diagnostic_tests": _viral_wave1_dx_tests_ev_pcr("21088000"),
+        "diagnostic_tests": _viral_wave1_dx_tests_ev_pcr("20952256"),
     }
 
 
@@ -22550,7 +22543,7 @@ def _build_viral_vignette_115() -> dict[str, Any]:
             "VZV PCR positive. VZV IgM serology positive. Vesicle swab "
             "Tzanck smear showed multinucleated giant cells. Brain MRI "
             "with DWI/FLAIR was normal. Anchored to Granerod 2010 "
-            "Lancet Infect Dis UK encephalitis cohort (PMID 21088000), "
+            "Lancet Infect Dis UK encephalitis cohort (PMID 20952256), "
             "VZV-immunocompromised-zoster-ophthalmicus stratum. Outcome: "
             "survived with mild residual visual field deficit. Subphase "
             "1.3 commit 5.3.6 wave 2, pre-adjudication hold_for_revision."
@@ -22570,11 +22563,11 @@ def _build_viral_vignette_115() -> dict[str, Any]:
             "glucosa 52 mg/dL, proteina 110 mg/dL. PCR de VZV en LCR "
             "positiva. IgM VZV positiva. Tzanck con celulas gigantes "
             "multinucleadas. RM cerebral normal. Anclaje en cohorte "
-            "Granerod 2010 Lancet ID (PMID 21088000). Subphase 1.3 "
+            "Granerod 2010 Lancet ID (PMID 20952256). Subphase 1.3 "
             "commit 5.3.6 wave 2."
         ),
         "rationale": (
-            "Anchored to PMID 21088000 (Granerod 2010 Lancet ID UK "
+            "Anchored to PMID 20952256 (Granerod 2010 Lancet ID UK "
             "encephalitis cohort). VZV-immunocompromised-zoster-"
             "ophthalmicus phenotype with V1 dermatomal vesicular rash "
             "+ CSF lymphocytic pleocytosis + VZV PCR positive. "
@@ -22592,7 +22585,7 @@ def _build_viral_vignette_115() -> dict[str, Any]:
             "ophthalmicus."
         ),
         "anchoring_extras": "anchor=Granerod-Lancet-ID-2010 stratum=VZV-immunocompromised-zoster-ophthalmicus.",
-        "diagnostic_tests": _viral_wave2_dx_tests_vzv("21088000"),
+        "diagnostic_tests": _viral_wave2_dx_tests_vzv("20952256"),
     }
 
 
@@ -22672,7 +22665,7 @@ def _build_viral_vignette_116() -> dict[str, Any]:
             "54 mg/dL, protein 105 mg/dL. CSF VZV PCR positive. VZV "
             "IgM serology positive. Brain MRI with DWI/FLAIR was "
             "normal. Anchored to Granerod 2010 Lancet Infect Dis UK "
-            "encephalitis cohort (PMID 21088000), post-zoster-CNS-"
+            "encephalitis cohort (PMID 20952256), post-zoster-CNS-"
             "reactivation-cerebellitis stratum. Outcome: survived with "
             "full recovery on 14-day acyclovir course. Subphase 1.3 "
             "commit 5.3.6 wave 2, pre-adjudication hold_for_revision."
@@ -22691,11 +22684,11 @@ def _build_viral_vignette_116() -> dict[str, Any]:
             "ciento linfocitos), glucosa 54 mg/dL, proteina 105 mg/dL. "
             "PCR de VZV en LCR positiva. IgM VZV positiva. RM cerebral "
             "normal. Anclaje en cohorte Granerod 2010 Lancet ID (PMID "
-            "21088000). Subphase 1.3 commit 5.3.6 wave 2, pre-"
+            "20952256). Subphase 1.3 commit 5.3.6 wave 2, pre-"
             "adjudicacion hold_for_revision."
         ),
         "rationale": (
-            "Anchored to PMID 21088000 (Granerod 2010 Lancet ID UK "
+            "Anchored to PMID 20952256 (Granerod 2010 Lancet ID UK "
             "encephalitis cohort). Post-zoster CNS-reactivation-"
             "cerebellitis phenotype: thoracic dermatomal zoster rash 2 "
             "weeks prior, then CSF VZV-PCR-positive lymphocytic "
@@ -22713,7 +22706,7 @@ def _build_viral_vignette_116() -> dict[str, Any]:
             "review. 5.3.6 wave2 VZV-Granerod-post-zoster-cerebellitis."
         ),
         "anchoring_extras": "anchor=Granerod-Lancet-ID-2010 stratum=post-zoster-cerebellitis.",
-        "diagnostic_tests": _viral_wave2_dx_tests_vzv("21088000"),
+        "diagnostic_tests": _viral_wave2_dx_tests_vzv("20952256"),
     }
 
 

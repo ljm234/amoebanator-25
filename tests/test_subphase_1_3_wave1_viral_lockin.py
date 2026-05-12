@@ -1,7 +1,7 @@
 """Subphase 1.3 Commit 5.3.5 Wave 1 VIRAL lock-in tests.
 
 13 vignettes all anchored to Tyler KL 2018 NEJM viral encephalitis review
-(PMID 29490180). Pathogens: 3 HSV1 + 5 enterovirus + 2 HSV2 + 2 dengue +
+(PMID 30089069). Pathogens: 3 HSV1 + 5 enterovirus + 2 HSV2 + 2 dengue +
 1 EEE per VIRAL_DISTRIBUTION spec. 2 ambiguity slots (v113 HSV2 first-
 episode with prominent meningismus, v117 dengue with prominent CNS arbo
 overlap).
@@ -28,7 +28,7 @@ VIRAL_WAVE1_IDS = [96, 99, 102, 106, 107, 108, 109, 111, 113, 114, 117, 119, 120
 VIRAL_WAVE1_AMBIGUITY_IDS = {113, 117}
 VIRAL_WAVE1_PERU_IDS = {99, 117, 119}
 WAVE1_DIR = _REPO_ROOT / "data" / "vignettes" / "v2" / "class_03_viral"
-TYLER_PMID = "29490180"
+TYLER_PMID = "30089069"
 
 
 def _wave1_slot(vid: int) -> dict:

@@ -1,8 +1,8 @@
 """Subphase 1.3 Commit 5.3.6 Wave 2 VIRAL lock-in tests (FINAL 1.3 wave).
 
 14 vignettes split: 9 anchored to Granerod 2010 Lancet ID UK encephalitis
-cohort (PMID 21088000, anchor_type=cohort) + 5 anchored to Whitley 2006
-Lancet ID HSE pathogenesis review (PMID 16517432, anchor_type=review).
+cohort (PMID 20952256, anchor_type=cohort) + 5 anchored to Whitley 2006
+Lancet ID HSE pathogenesis review (PMID 16675036, anchor_type=review).
 
 Pathogens: 8 HSV1 (3 Granerod + 5 Whitley) + 2 HSV-PCR-negative-72h
 (Granerod, ambiguity) + 2 enterovirus (Granerod) + 2 VZV (Granerod).
@@ -31,8 +31,8 @@ VIRAL_WAVE2_PERU_IDS: set[int] = set()  # All Wave 5.3.6 slots are NL or US Sout
 VIRAL_WAVE2_GRANEROD_IDS = {94, 97, 100, 103, 104, 110, 112, 115, 116}
 VIRAL_WAVE2_WHITLEY_IDS = {91, 93, 95, 98, 101}
 WAVE2_DIR = _REPO_ROOT / "data" / "vignettes" / "v2" / "class_03_viral"
-GRANEROD_PMID = "21088000"
-WHITLEY_PMID = "16517432"
+GRANEROD_PMID = "20952256"
+WHITLEY_PMID = "16675036"
 
 
 def _wave2_slot(vid: int) -> dict:
@@ -106,12 +106,18 @@ def test_viral_wave2_anchor_type_correct(vid):
 
 
 def test_viral_wave2_count_14():
-    """Empirical extraction must match hardcoded list."""
+    """Empirical extraction must match hardcoded list. Wave 2 filter required
+    on the Whitley side because errata 5.4.3.1 unified the wave 2 Whitley
+    anchor with the existing 5.3.2 pilot anchor under PMID 16675036; vir_092
+    (pilot) shares the same PMID but is NOT a wave 2 vignette."""
+    wave2_set = set(VIRAL_WAVE2_IDS)
     granerod = sorted(
-        s["vignette_id"] for s in VIRAL_DISTRIBUTION if s.get("pmid") == GRANEROD_PMID
+        s["vignette_id"] for s in VIRAL_DISTRIBUTION
+        if s.get("pmid") == GRANEROD_PMID and s["vignette_id"] in wave2_set
     )
     whitley = sorted(
-        s["vignette_id"] for s in VIRAL_DISTRIBUTION if s.get("pmid") == WHITLEY_PMID
+        s["vignette_id"] for s in VIRAL_DISTRIBUTION
+        if s.get("pmid") == WHITLEY_PMID and s["vignette_id"] in wave2_set
     )
     assert sorted(VIRAL_WAVE2_IDS) == sorted(granerod + whitley), (
         f"Hardcoded {VIRAL_WAVE2_IDS} != empirical Granerod {granerod} + Whitley {whitley}"

@@ -81,21 +81,21 @@
         "result": "positive",
         "sensitivity_pct": 95.0,
         "specificity_pct": 99.0,
-        "citation_pmid_or_doi": "PMID:29490180"
+        "citation_pmid_or_doi": "PMID:30089069"
       },
       {
         "test_name": "csf_gram_stain",
         "result": "no_organisms",
         "sensitivity_pct": null,
         "specificity_pct": null,
-        "citation_pmid_or_doi": "PMID:29490180"
+        "citation_pmid_or_doi": "PMID:30089069"
       },
       {
         "test_name": "csf_culture",
         "result": "no_growth",
         "sensitivity_pct": null,
         "specificity_pct": null,
-        "citation_pmid_or_doi": "PMID:29490180"
+        "citation_pmid_or_doi": "PMID:30089069"
       }
     ]
   },
@@ -106,13 +106,13 @@
     ],
     "cohen_kappa": 0.0,
     "disagreement_resolution": null,
-    "anchoring_documentation": "stage=pre_adjudication; status=pending_external_review; self_review_disposition=hold_for_revision; self_review_notes=wave 5.3.5 VIRAL vignette anchored to PMID 29490180 (Tyler 2018 NEJM viral encephalitis review); external clinical adjudication pending; classification provisional. adjudicator_ids=VIRAL-WAVE1-PRE-ADJ-1, VIRAL-WAVE1-PRE-ADJ-2 (sentinel); cohen_kappa=0.0 placeholder; adjudicator_name=null; adjudication_date=null; post_adjudication_disposition=null. Subphase 1.3 commit 5.3.5 (2026-05-08). anchor=Tyler-NEJM-2018 stratum=HSV1-adult-HSE.",
+    "anchoring_documentation": "stage=pre_adjudication; status=pending_external_review; self_review_disposition=hold_for_revision; self_review_notes=wave 5.3.5 VIRAL vignette anchored to PMID 30089069 (Tyler 2018 NEJM viral encephalitis review); external clinical adjudication pending; classification provisional. adjudicator_ids=VIRAL-WAVE1-PRE-ADJ-1, VIRAL-WAVE1-PRE-ADJ-2 (sentinel); cohen_kappa=0.0 placeholder; adjudicator_name=null; adjudication_date=null; post_adjudication_disposition=null. Subphase 1.3 commit 5.3.5 (2026-05-08). anchor=Tyler-NEJM-2018 stratum=HSV1-adult-HSE.",
     "inclusion_decision": "hold_for_revision"
   },
   "literature_anchors": [
     {
       "anchor_type": "review",
-      "pmid": "29490180",
+      "pmid": "30089069",
       "doi": "10.1056/NEJMra1708714"
     }
   ],
@@ -121,8 +121,8 @@
     "generator_model_identifier": "scripts.generate_pam_vignettes/v1.subphase_1_3_commit_5_3_5",
     "prompt_hash_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
     "schema_version": "2.0",
-    "inclusion_decision_rationale": "Anchored to PMID 29490180 (Tyler KL 2018 NEJM clinical review of acute viral encephalitis), HSV1 mesial-temporal-encephalitis phenotype. Demographic anchor (45yo F adult HSE) sits in adult-HSE stratum (HSE bimodal age, peaks at adulthood). CSF lymphocytic (220 WBC, 75 percent lymphocytes), normal glucose 55, mildly elevated protein 120, RBC 35 with xanthochromia (hemorrhagic temporal necrosis component). MRI mesial temporal T2/FLAIR hyperintensity per master prompt 1.3.4 mandate. Imputation tiers: tier_1_primary={age, sex, hsv1_pcr, imaging_pattern, focal_aphasia}; tier_3_within_review={csf_wbc, neutrophil_pct, glucose, protein, rbc, xanthochromia, gcs}; tier_4_priors={temp, symptom_days}. Indeterminate=none. Diagnostic_ambiguity=false. Outcome=survived_mild_memory_deficit. Acyclovir_hours=5. Tier: tier_3_imputation_within_review. 5.3.5 wave1 HSV1-NL-adult-female."
+    "inclusion_decision_rationale": "Anchored to PMID 30089069 (Tyler KL 2018 NEJM clinical review of acute viral encephalitis), HSV1 mesial-temporal-encephalitis phenotype. Demographic anchor (45yo F adult HSE) sits in adult-HSE stratum (HSE bimodal age, peaks at adulthood). CSF lymphocytic (220 WBC, 75 percent lymphocytes), normal glucose 55, mildly elevated protein 120, RBC 35 with xanthochromia (hemorrhagic temporal necrosis component). MRI mesial temporal T2/FLAIR hyperintensity per master prompt 1.3.4 mandate. Imputation tiers: tier_1_primary={age, sex, hsv1_pcr, imaging_pattern, focal_aphasia}; tier_3_within_review={csf_wbc, neutrophil_pct, glucose, protein, rbc, xanthochromia, gcs}; tier_4_priors={temp, symptom_days}. Indeterminate=none. Diagnostic_ambiguity=false. Outcome=survived_mild_memory_deficit. Acyclovir_hours=5. Tier: tier_3_imputation_within_review. 5.3.5 wave1 HSV1-NL-adult-female."
   },
-  "narrative_es": "Mujer de 45 anos en Paises Bajos (Amsterdam), ingresada a urgencias terciarias con curso progresivo de cuatro dias: fiebre 38.7 C, cefalea intensa, cambio conductual con alteracion de personalidad al segundo dia, afasia expresiva al tercer dia, crisis focal derecha al cuarto dia que motivo consulta. Sin rigidez de nuca al examen. Sin exposicion a agua dulce. Examen: escala de Glasgow 12, deficit focal (afasia expresiva). Liquido cefalorraquideo mostro presion de apertura 22 cmH2O, leucocitos 220 por mm3 (75 por ciento linfocitos), glucosa 55 mg/dL, proteina 120 mg/dL, eritrocitos 35 con xantocromia leve. PCR de HSV-1 positiva. RM cerebral mostro hiperintensidad temporal mesial T2/FLAIR asimetrica con preservacion de ganglios basales. Anclaje en revision Tyler 2018 NEJM encefalitis viral aguda (PMID 29490180). Subphase 1.3 commit 5.3.5 wave 1.",
-  "narrative_en": "A 45-year-old woman in the Netherlands presented to a tertiary emergency department in Amsterdam with a 4-day progressive course: fever to 38.7 C, severe headache, behavioral change with personality alteration on day 2, expressive aphasia on day 3, and a right-sided focal seizure on day 4 prompting ED presentation. She had no neck stiffness on examination and no antecedent freshwater exposure. Examination on admission: Glasgow Coma Scale 12, focal neurological deficit (expressive aphasia). CSF showed opening pressure 22 cmH2O, white cell count 220 per cubic millimeter (75 percent lymphocytes), glucose 55 mg/dL, protein 120 mg/dL, RBC 35 with mild xanthochromia (canonical hemorrhagic component). CSF HSV-1 PCR positive. Brain MRI with DWI/FLAIR showed mesial temporal T2/FLAIR hyperintensity asymmetric with basal ganglia sparing. Acyclovir initiated within five hours. Anchored to Tyler 2018 NEJM viral encephalitis review (PMID 29490180). Outcome: survived with mild memory deficit. Subphase 1.3 commit 5.3.5 wave 1, pre-adjudication hold_for_revision."
+  "narrative_es": "Mujer de 45 anos en Paises Bajos (Amsterdam), ingresada a urgencias terciarias con curso progresivo de cuatro dias: fiebre 38.7 C, cefalea intensa, cambio conductual con alteracion de personalidad al segundo dia, afasia expresiva al tercer dia, crisis focal derecha al cuarto dia que motivo consulta. Sin rigidez de nuca al examen. Sin exposicion a agua dulce. Examen: escala de Glasgow 12, deficit focal (afasia expresiva). Liquido cefalorraquideo mostro presion de apertura 22 cmH2O, leucocitos 220 por mm3 (75 por ciento linfocitos), glucosa 55 mg/dL, proteina 120 mg/dL, eritrocitos 35 con xantocromia leve. PCR de HSV-1 positiva. RM cerebral mostro hiperintensidad temporal mesial T2/FLAIR asimetrica con preservacion de ganglios basales. Anclaje en revision Tyler 2018 NEJM encefalitis viral aguda (PMID 30089069). Subphase 1.3 commit 5.3.5 wave 1.",
+  "narrative_en": "A 45-year-old woman in the Netherlands presented to a tertiary emergency department in Amsterdam with a 4-day progressive course: fever to 38.7 C, severe headache, behavioral change with personality alteration on day 2, expressive aphasia on day 3, and a right-sided focal seizure on day 4 prompting ED presentation. She had no neck stiffness on examination and no antecedent freshwater exposure. Examination on admission: Glasgow Coma Scale 12, focal neurological deficit (expressive aphasia). CSF showed opening pressure 22 cmH2O, white cell count 220 per cubic millimeter (75 percent lymphocytes), glucose 55 mg/dL, protein 120 mg/dL, RBC 35 with mild xanthochromia (canonical hemorrhagic component). CSF HSV-1 PCR positive. Brain MRI with DWI/FLAIR showed mesial temporal T2/FLAIR hyperintensity asymmetric with basal ganglia sparing. Acyclovir initiated within five hours. Anchored to Tyler 2018 NEJM viral encephalitis review (PMID 30089069). Outcome: survived with mild memory deficit. Subphase 1.3 commit 5.3.5 wave 1, pre-adjudication hold_for_revision."
 }
