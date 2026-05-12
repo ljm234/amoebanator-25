@@ -81,21 +81,21 @@
         "result": "positive",
         "sensitivity_pct": 95.0,
         "specificity_pct": 99.0,
-        "citation_pmid_or_doi": "PMID:29490180"
+        "citation_pmid_or_doi": "PMID:30089069"
       },
       {
         "test_name": "csf_gram_stain",
         "result": "no_organisms",
         "sensitivity_pct": null,
         "specificity_pct": null,
-        "citation_pmid_or_doi": "PMID:29490180"
+        "citation_pmid_or_doi": "PMID:30089069"
       },
       {
         "test_name": "csf_culture",
         "result": "no_growth",
         "sensitivity_pct": null,
         "specificity_pct": null,
-        "citation_pmid_or_doi": "PMID:29490180"
+        "citation_pmid_or_doi": "PMID:30089069"
       }
     ]
   },
@@ -106,13 +106,13 @@
     ],
     "cohen_kappa": 0.0,
     "disagreement_resolution": null,
-    "anchoring_documentation": "stage=pre_adjudication; status=pending_external_review; self_review_disposition=hold_for_revision; self_review_notes=wave 5.3.5 VIRAL vignette anchored to PMID 29490180 (Tyler 2018 NEJM viral encephalitis review); external clinical adjudication pending; classification provisional. adjudicator_ids=VIRAL-WAVE1-PRE-ADJ-1, VIRAL-WAVE1-PRE-ADJ-2 (sentinel); cohen_kappa=0.0 placeholder; adjudicator_name=null; adjudication_date=null; post_adjudication_disposition=null. Subphase 1.3 commit 5.3.5 (2026-05-08). anchor=Tyler-NEJM-2018 region=Lima-Peru.",
+    "anchoring_documentation": "stage=pre_adjudication; status=pending_external_review; self_review_disposition=hold_for_revision; self_review_notes=wave 5.3.5 VIRAL vignette anchored to PMID 30089069 (Tyler 2018 NEJM viral encephalitis review); external clinical adjudication pending; classification provisional. adjudicator_ids=VIRAL-WAVE1-PRE-ADJ-1, VIRAL-WAVE1-PRE-ADJ-2 (sentinel); cohen_kappa=0.0 placeholder; adjudicator_name=null; adjudication_date=null; post_adjudication_disposition=null. Subphase 1.3 commit 5.3.5 (2026-05-08). anchor=Tyler-NEJM-2018 region=Lima-Peru.",
     "inclusion_decision": "hold_for_revision"
   },
   "literature_anchors": [
     {
       "anchor_type": "review",
-      "pmid": "29490180",
+      "pmid": "30089069",
       "doi": "10.1056/NEJMra1708714"
     }
   ],
@@ -121,8 +121,8 @@
     "generator_model_identifier": "scripts.generate_pam_vignettes/v1.subphase_1_3_commit_5_3_5",
     "prompt_hash_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
     "schema_version": "2.0",
-    "inclusion_decision_rationale": "Anchored to PMID 29490180 (Tyler 2018 NEJM viral encephalitis review). HSV1 mesial-temporal-encephalitis phenotype with olfactory hallucinations + aphasia + partial seizure (classic limbic-dominant signature). Demographic anchor (38yo M Lima) sits in adult-HSE stratum + Peru-coastal-tertiary-care stratum. CSF lymphocytic with hemorrhagic component. MRI mesial temporal pattern. Imputation tiers: tier_1_primary={age, sex, region, hsv1_pcr, imaging_pattern, olfactory_hallucinations, aphasia}; tier_3_within_review={csf_wbc, neutrophil_pct, glucose, protein, rbc, xanthochromia, gcs}; tier_4_priors={temp, symptom_days}. Indeterminate=none. Diagnostic_ambiguity=false. Outcome=survived_mild_memory_deficit. Acyclovir_hours=8. Tier: tier_3_imputation_within_review. 5.3.5 wave1 HSV1-Lima-adult-male."
+    "inclusion_decision_rationale": "Anchored to PMID 30089069 (Tyler 2018 NEJM viral encephalitis review). HSV1 mesial-temporal-encephalitis phenotype with olfactory hallucinations + aphasia + partial seizure (classic limbic-dominant signature). Demographic anchor (38yo M Lima) sits in adult-HSE stratum + Peru-coastal-tertiary-care stratum. CSF lymphocytic with hemorrhagic component. MRI mesial temporal pattern. Imputation tiers: tier_1_primary={age, sex, region, hsv1_pcr, imaging_pattern, olfactory_hallucinations, aphasia}; tier_3_within_review={csf_wbc, neutrophil_pct, glucose, protein, rbc, xanthochromia, gcs}; tier_4_priors={temp, symptom_days}. Indeterminate=none. Diagnostic_ambiguity=false. Outcome=survived_mild_memory_deficit. Acyclovir_hours=8. Tier: tier_3_imputation_within_review. 5.3.5 wave1 HSV1-Lima-adult-male."
   },
-  "narrative_es": "Varon de 38 anos en Lima, Peru, ingresado a urgencias urbanas terciarias con curso de cinco dias: febricula 38.5 C, cefalea intensa, alucinaciones olfativas de novo al tercer dia, afasia expresiva al cuarto dia y crisis parcial compleja al quinto dia que motivo consulta. Sin rigidez de nuca al examen. Sin exposicion a agua dulce. Examen: escala de Glasgow 13, deficit focal (afasia expresiva, alucinaciones olfativas). Liquido cefalorraquideo mostro presion de apertura 21 cmH2O, leucocitos 180 por mm3 (78 por ciento linfocitos), glucosa 58 mg/dL, proteina 105 mg/dL, eritrocitos 28 con xantocromia leve. PCR de HSV-1 positiva. RM cerebral mostro hiperintensidad temporal mesial T2/FLAIR asimetrica. Anclaje en revision Tyler 2018 NEJM (PMID 29490180), estrato Lima coastal. Subphase 1.3 commit 5.3.5 wave 1.",
-  "narrative_en": "A 38-year-old man in Lima, Peru presented to a tertiary urban emergency department with a 5-day course: low-grade fever to 38.5 C, severe headache, then new-onset olfactory hallucinations on day 3, expressive aphasia on day 4, and a complex partial seizure on day 5 prompting ED presentation. He had no neck stiffness on examination and no antecedent freshwater exposure. Examination on admission: Glasgow Coma Scale 13, focal neurological deficit (expressive aphasia and olfactory hallucinations). CSF showed opening pressure 21 cmH2O, white cell count 180 per cubic millimeter (78 percent lymphocytes), glucose 58 mg/dL, protein 105 mg/dL, RBC 28 with mild xanthochromia. CSF HSV-1 PCR positive. Brain MRI with DWI/FLAIR showed mesial temporal T2/FLAIR hyperintensity asymmetric with basal ganglia sparing. Acyclovir initiated within eight hours. Anchored to Tyler 2018 NEJM viral encephalitis review (PMID 29490180), Peru-Lima coastal stratum. Outcome: survived with mild memory deficit. Subphase 1.3 commit 5.3.5 wave 1, pre-adjudication hold_for_revision."
+  "narrative_es": "Varon de 38 anos en Lima, Peru, ingresado a urgencias urbanas terciarias con curso de cinco dias: febricula 38.5 C, cefalea intensa, alucinaciones olfativas de novo al tercer dia, afasia expresiva al cuarto dia y crisis parcial compleja al quinto dia que motivo consulta. Sin rigidez de nuca al examen. Sin exposicion a agua dulce. Examen: escala de Glasgow 13, deficit focal (afasia expresiva, alucinaciones olfativas). Liquido cefalorraquideo mostro presion de apertura 21 cmH2O, leucocitos 180 por mm3 (78 por ciento linfocitos), glucosa 58 mg/dL, proteina 105 mg/dL, eritrocitos 28 con xantocromia leve. PCR de HSV-1 positiva. RM cerebral mostro hiperintensidad temporal mesial T2/FLAIR asimetrica. Anclaje en revision Tyler 2018 NEJM (PMID 30089069), estrato Lima coastal. Subphase 1.3 commit 5.3.5 wave 1.",
+  "narrative_en": "A 38-year-old man in Lima, Peru presented to a tertiary urban emergency department with a 5-day course: low-grade fever to 38.5 C, severe headache, then new-onset olfactory hallucinations on day 3, expressive aphasia on day 4, and a complex partial seizure on day 5 prompting ED presentation. He had no neck stiffness on examination and no antecedent freshwater exposure. Examination on admission: Glasgow Coma Scale 13, focal neurological deficit (expressive aphasia and olfactory hallucinations). CSF showed opening pressure 21 cmH2O, white cell count 180 per cubic millimeter (78 percent lymphocytes), glucose 58 mg/dL, protein 105 mg/dL, RBC 28 with mild xanthochromia. CSF HSV-1 PCR positive. Brain MRI with DWI/FLAIR showed mesial temporal T2/FLAIR hyperintensity asymmetric with basal ganglia sparing. Acyclovir initiated within eight hours. Anchored to Tyler 2018 NEJM viral encephalitis review (PMID 30089069), Peru-Lima coastal stratum. Outcome: survived with mild memory deficit. Subphase 1.3 commit 5.3.5 wave 1, pre-adjudication hold_for_revision."
 }

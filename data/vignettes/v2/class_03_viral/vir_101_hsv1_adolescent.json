@@ -81,21 +81,21 @@
         "result": "positive",
         "sensitivity_pct": 95.0,
         "specificity_pct": 99.0,
-        "citation_pmid_or_doi": "PMID:16517432"
+        "citation_pmid_or_doi": "PMID:16675036"
       },
       {
         "test_name": "csf_gram_stain",
         "result": "no_organisms",
         "sensitivity_pct": null,
         "specificity_pct": null,
-        "citation_pmid_or_doi": "PMID:16517432"
+        "citation_pmid_or_doi": "PMID:16675036"
       },
       {
         "test_name": "csf_culture",
         "result": "no_growth",
         "sensitivity_pct": null,
         "specificity_pct": null,
-        "citation_pmid_or_doi": "PMID:16517432"
+        "citation_pmid_or_doi": "PMID:16675036"
       }
     ]
   },
@@ -106,13 +106,13 @@
     ],
     "cohen_kappa": 0.0,
     "disagreement_resolution": null,
-    "anchoring_documentation": "stage=pre_adjudication; status=pending_external_review; self_review_disposition=hold_for_revision; self_review_notes=wave 5.3.6 VIRAL vignette anchored to PMID 16517432 (Whitley 2006 Lancet ID HSE pathogenesis review); external clinical adjudication pending; classification provisional. adjudicator_ids=VIRAL-WAVE2-PRE-ADJ-1, VIRAL-WAVE2-PRE-ADJ-2 (sentinel); cohen_kappa=0.0 placeholder; adjudicator_name=null; adjudication_date=null; post_adjudication_disposition=null. Subphase 1.3 commit 5.3.6 (2026-05-08, FINAL Subphase 1.3 wave). anchor=Whitley-Lancet-ID-2006 stratum=older-adolescent-HSE.",
+    "anchoring_documentation": "stage=pre_adjudication; status=pending_external_review; self_review_disposition=hold_for_revision; self_review_notes=wave 5.3.6 VIRAL vignette anchored to PMID 16675036 (Whitley 2006 Lancet ID HSE pathogenesis review); external clinical adjudication pending; classification provisional. adjudicator_ids=VIRAL-WAVE2-PRE-ADJ-1, VIRAL-WAVE2-PRE-ADJ-2 (sentinel); cohen_kappa=0.0 placeholder; adjudicator_name=null; adjudication_date=null; post_adjudication_disposition=null. Subphase 1.3 commit 5.3.6 (2026-05-08, FINAL Subphase 1.3 wave). anchor=Whitley-Lancet-ID-2006 stratum=older-adolescent-HSE.",
     "inclusion_decision": "hold_for_revision"
   },
   "literature_anchors": [
     {
       "anchor_type": "review",
-      "pmid": "16517432",
+      "pmid": "16675036",
       "doi": "10.1016/S1473-3099(06)70414-6"
     }
   ],
@@ -121,8 +121,8 @@
     "generator_model_identifier": "scripts.generate_pam_vignettes/v1.subphase_1_3_commit_5_3_6",
     "prompt_hash_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
     "schema_version": "2.0",
-    "inclusion_decision_rationale": "Anchored to PMID 16517432 (Whitley 2006 Lancet ID HSE pathogenesis review). Older-adolescent HSE phenotype. Demographic anchor (17yo M US South older-adolescent HSE) sits in Whitley adolescent-HSE stratum. CSF lymphocytic with hemorrhagic component. MRI mesial temporal. Imputation tiers: tier_1_primary={age, sex, hsv1_pcr, imaging_pattern, focal_aphasia, behavioral_change}; tier_3_within_review={csf_wbc, neutrophil_pct, glucose, protein, rbc, xanthochromia, gcs}; tier_4_priors={temp, symptom_days}. Indeterminate=none. Diagnostic_ambiguity=false. Outcome=survived_mild_memory_deficit. Acyclovir_hours=4. Tier: tier_3_imputation_within_review. 5.3.6 wave2 HSV1-Whitley-older-adolescent."
+    "inclusion_decision_rationale": "Anchored to PMID 16675036 (Whitley 2006 Lancet ID HSE pathogenesis review). Older-adolescent HSE phenotype. Demographic anchor (17yo M US South older-adolescent HSE) sits in Whitley adolescent-HSE stratum. CSF lymphocytic with hemorrhagic component. MRI mesial temporal. Imputation tiers: tier_1_primary={age, sex, hsv1_pcr, imaging_pattern, focal_aphasia, behavioral_change}; tier_3_within_review={csf_wbc, neutrophil_pct, glucose, protein, rbc, xanthochromia, gcs}; tier_4_priors={temp, symptom_days}. Indeterminate=none. Diagnostic_ambiguity=false. Outcome=survived_mild_memory_deficit. Acyclovir_hours=4. Tier: tier_3_imputation_within_review. 5.3.6 wave2 HSV1-Whitley-older-adolescent."
   },
-  "narrative_es": "Varon de 17 anos en region sur de Estados Unidos, ingresado a urgencias terciarias con curso de cuatro dias: fiebre 38.5 C, cefalea, cambio conductual con alteracion de personalidad al segundo dia, afasia anomica al tercer dia y crisis parcial compleja al cuarto. Sin rigidez de nuca. Sin exposicion a agua dulce. Examen: temperatura 38.5 C, escala de Glasgow 13, deficit focal (afasia anomica), sin exantema. Liquido cefalorraquideo mostro presion de apertura 22 cmH2O, leucocitos 200 por mm3 (78 por ciento linfocitos), glucosa 56 mg/dL, proteina 110 mg/dL, eritrocitos 30 con xantocromia. PCR de HSV-1 positiva. RM cerebral con hiperintensidad temporal mesial T2/FLAIR. Aciclovir en cuatro horas. Anclaje en revision Whitley 2006 Lancet ID HSE (PMID 16517432). Subphase 1.3 commit 5.3.6 wave 2, pre-adjudicacion hold_for_revision.",
-  "narrative_en": "A 17-year-old man in the US South region presented to a tertiary emergency department with a 4-day course: fever to 38.5 C, headache, behavioral change with personality alteration on day 2, anomic aphasia on day 3, and a complex partial seizure on day 4. He had no neck stiffness and no antecedent freshwater exposure. Examination on admission: temperature 38.5 C, Glasgow Coma Scale 13, focal deficit (anomic aphasia), no rash. CSF showed opening pressure 22 cmH2O, white cell count 200 per cubic millimeter (78 percent lymphocytes), glucose 56 mg/dL, protein 110 mg/dL, RBC 30 with xanthochromia. CSF HSV-1 PCR positive. Brain MRI with DWI/FLAIR showed mesial temporal T2/FLAIR hyperintensity asymmetric. Acyclovir initiated within four hours. Anchored to Whitley 2006 Lancet Infect Dis HSE pathogenesis review (PMID 16517432), older-adolescent-HSE stratum. Outcome: survived with mild memory deficit. Subphase 1.3 commit 5.3.6 wave 2, pre-adjudication hold_for_revision."
+  "narrative_es": "Varon de 17 anos en region sur de Estados Unidos, ingresado a urgencias terciarias con curso de cuatro dias: fiebre 38.5 C, cefalea, cambio conductual con alteracion de personalidad al segundo dia, afasia anomica al tercer dia y crisis parcial compleja al cuarto. Sin rigidez de nuca. Sin exposicion a agua dulce. Examen: temperatura 38.5 C, escala de Glasgow 13, deficit focal (afasia anomica), sin exantema. Liquido cefalorraquideo mostro presion de apertura 22 cmH2O, leucocitos 200 por mm3 (78 por ciento linfocitos), glucosa 56 mg/dL, proteina 110 mg/dL, eritrocitos 30 con xantocromia. PCR de HSV-1 positiva. RM cerebral con hiperintensidad temporal mesial T2/FLAIR. Aciclovir en cuatro horas. Anclaje en revision Whitley 2006 Lancet ID HSE (PMID 16675036). Subphase 1.3 commit 5.3.6 wave 2, pre-adjudicacion hold_for_revision.",
+  "narrative_en": "A 17-year-old man in the US South region presented to a tertiary emergency department with a 4-day course: fever to 38.5 C, headache, behavioral change with personality alteration on day 2, anomic aphasia on day 3, and a complex partial seizure on day 4. He had no neck stiffness and no antecedent freshwater exposure. Examination on admission: temperature 38.5 C, Glasgow Coma Scale 13, focal deficit (anomic aphasia), no rash. CSF showed opening pressure 22 cmH2O, white cell count 200 per cubic millimeter (78 percent lymphocytes), glucose 56 mg/dL, protein 110 mg/dL, RBC 30 with xanthochromia. CSF HSV-1 PCR positive. Brain MRI with DWI/FLAIR showed mesial temporal T2/FLAIR hyperintensity asymmetric. Acyclovir initiated within four hours. Anchored to Whitley 2006 Lancet Infect Dis HSE pathogenesis review (PMID 16675036), older-adolescent-HSE stratum. Outcome: survived with mild memory deficit. Subphase 1.3 commit 5.3.6 wave 2, pre-adjudication hold_for_revision."
 }
