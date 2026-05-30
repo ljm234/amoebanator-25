@@ -1534,12 +1534,12 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
             "verification_confidence=0.85 pre-direct-fetch."
         ),
     },
-    "11873028": {
-        "pmid": "11873028",
-        "doi": "10.1097/00005792-200203000-00004",
+    "12169881": {
+        "pmid": "12169881",
+        "doi": "10.1097/00005792-200207000-00002",
         "authors_short": "Mylonakis E et al.",
         "authors_full": [
-            "Mylonakis E", "Hohmann EL", "Calderwood SB",
+            "Mylonakis E", "Paliou M", "Hohmann EL", "Calderwood SB", "Wing EJ",
         ],
         "journal": "Medicine (Baltimore)",
         "journal_short_code": "Medicine",
@@ -3909,7 +3909,7 @@ BACTERIAL_DISTRIBUTION: list[dict[str, Any]] = [
         "filename": "bact_088_listeria_tumbes_pregnancy.json",
         "pathogen": "Listeria_monocytogenes",
         "cluster": "bacterial_meningitis_pregnancy",
-        "pmid": "11873028",
+        "pmid": "12169881",
         "age_years": 28,
         "age_label": "28 years (30 weeks gestation)",
         "sex": "female",
@@ -3927,7 +3927,7 @@ BACTERIAL_DISTRIBUTION: list[dict[str, Any]] = [
         "filename": "bact_089_listeria_elderly.json",
         "pathogen": "Listeria_monocytogenes",
         "cluster": "bacterial_meningitis_elderly",
-        "pmid": "11873028",
+        "pmid": "12169881",
         "age_years": 76,
         "age_label": "76 years",
         "sex": "female",
@@ -17121,7 +17121,7 @@ def write_bact_wave1_corpus(
 # Slot IDs: 61, 63, 68, 70, 72, 74, 83, 84, 85, 86, 87, 88, 89.
 # Anchors: 6 Bijlsma 2016 Lancet ID (PMID 26652862, anchor_type=cohort) +
 #          5 Soeters 2020 MMWR CDC ABCs (PMID 32935747, anchor_type=
-#          surveillance) + 2 Mylonakis 2002 Medicine (PMID 11873028,
+#          surveillance) + 2 Mylonakis 2002 Medicine (PMID 12169881,
 #          anchor_type=cohort).
 # Pathogens: 6 SP + 3 NM + 2 Hib + 2 Listeria.
 # Diagnostic ambiguity: 1 of 13 (v84 NM Loreto infant; partial-antibiotic
@@ -17145,7 +17145,7 @@ def _bact_wave2_anchor_short(pmid: str) -> str:
         return "Bijlsma 2016 Lancet ID"
     if pmid == "32935747":
         return "Soeters 2020 MMWR CDC ABCs"
-    if pmid == "11873028":
+    if pmid == "12169881":
         return "Mylonakis 2002 Medicine"
     raise KeyError(pmid)
 
@@ -18625,7 +18625,7 @@ def _build_bact_vignette_088() -> dict[str, Any]:
             "millimeter (55 percent neutrophils), glucose 28 mg/dL, protein "
             "130 mg/dL. Gram stain revealed short gram-positive bacilli; CSF "
             "and blood cultures grew Listeria monocytogenes. Anchored to "
-            "Mylonakis 2002 Medicine (PMID 11873028) listerial-meningitis "
+            "Mylonakis 2002 Medicine (PMID 12169881) listerial-meningitis "
             "review (pregnancy stratum approximately 27 percent of adult "
             "Listeria CNS infection in maternal-fetal cohort). Outcome: "
             "maternal survived no sequelae; preterm-but-viable fetus "
@@ -18644,12 +18644,12 @@ def _build_bact_vignette_088() -> dict[str, Any]:
             "ciento neutrofilos), glucosa 28 mg/dL, proteina 130 mg/dL. "
             "Tincion de Gram con bacilos grampositivos cortos; cultivos de "
             "liquido y sangre crecieron Listeria monocytogenes. Anclaje en "
-            "revision Mylonakis 2002 Medicine (PMID 11873028, estrato gestante "
+            "revision Mylonakis 2002 Medicine (PMID 12169881, estrato gestante "
             "alrededor del 27 por ciento de Listeria SNC en adultos). "
             "Subphase 1.3 commit 5.3.4 wave 2."
         ),
         "rationale": (
-            "Anchored to PMID 11873028 (Mylonakis 2002 Medicine listerial-"
+            "Anchored to PMID 12169881 (Mylonakis 2002 Medicine listerial-"
             "meningitis review). Demographic anchor (28yo F Tumbes 30-week "
             "gestation with unpasteurized-cheese exposure) sits in pregnancy "
             "stratum (approximately 27 percent of adult Listeria CNS "
@@ -18666,7 +18666,7 @@ def _build_bact_vignette_088() -> dict[str, Any]:
             "pregnancy."
         ),
         "anchoring_extras": "anchor=Mylonakis-Medicine-2002 stratum=pregnancy-foodborne.",
-        "diagnostic_tests": _bact_wave2_dx_tests_listeria("11873028"),
+        "diagnostic_tests": _bact_wave2_dx_tests_listeria("12169881"),
     }
 
 
@@ -18741,7 +18741,7 @@ def _build_bact_vignette_089() -> dict[str, Any]:
             "millimeter (60 percent neutrophils), glucose 25 mg/dL, protein "
             "145 mg/dL. Gram stain revealed short gram-positive bacilli; "
             "CSF and blood cultures grew Listeria monocytogenes. Anchored to "
-            "Mylonakis 2002 Medicine (PMID 11873028, elderly-immunosenescence "
+            "Mylonakis 2002 Medicine (PMID 12169881, elderly-immunosenescence "
             "stratum approximately 70 percent of adult Listeria CNS "
             "infection). The brainstem-rhombencephalitis pattern (CN VII "
             "palsy) is a documented Listeria phenotype. Outcome: survived "
@@ -18760,12 +18760,12 @@ def _build_bact_vignette_089() -> dict[str, Any]:
             "ciento neutrofilos), glucosa 25 mg/dL, proteina 145 mg/dL. "
             "Tincion de Gram con bacilos grampositivos cortos; cultivos de "
             "liquido y sangre crecieron Listeria monocytogenes. Anclaje en "
-            "revision Mylonakis 2002 Medicine (PMID 11873028, estrato adulto "
+            "revision Mylonakis 2002 Medicine (PMID 12169881, estrato adulto "
             "mayor inmunosenescencia, alrededor del 70 por ciento de "
             "Listeria SNC en adultos). Subphase 1.3 commit 5.3.4 wave 2."
         ),
         "rationale": (
-            "Anchored to PMID 11873028 (Mylonakis 2002 Medicine review). "
+            "Anchored to PMID 12169881 (Mylonakis 2002 Medicine review). "
             "Demographic anchor (76yo F elderly with deli-meat exposure + "
             "CN VII palsy) sits in elderly-immunosenescence stratum "
             "(approximately 70 percent of adult Listeria CNS infection) and "
@@ -18781,7 +18781,7 @@ def _build_bact_vignette_089() -> dict[str, Any]:
             "rhombencephalitis."
         ),
         "anchoring_extras": "anchor=Mylonakis-Medicine-2002 stratum=elderly-rhombencephalitis.",
-        "diagnostic_tests": _bact_wave2_dx_tests_listeria("11873028"),
+        "diagnostic_tests": _bact_wave2_dx_tests_listeria("12169881"),
     }
 
 

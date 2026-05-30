@@ -81,21 +81,21 @@
         "result": "gram_positive_bacilli_short",
         "sensitivity_pct": 30.0,
         "specificity_pct": 99.0,
-        "citation_pmid_or_doi": "PMID:11873028"
+        "citation_pmid_or_doi": "PMID:12169881"
       },
       {
         "test_name": "csf_culture",
         "result": "listeria_monocytogenes",
         "sensitivity_pct": 90.0,
         "specificity_pct": 100.0,
-        "citation_pmid_or_doi": "PMID:11873028"
+        "citation_pmid_or_doi": "PMID:12169881"
       },
       {
         "test_name": "blood_culture",
         "result": "listeria_monocytogenes_positive",
         "sensitivity_pct": 75.0,
         "specificity_pct": 99.0,
-        "citation_pmid_or_doi": "PMID:11873028"
+        "citation_pmid_or_doi": "PMID:12169881"
       }
     ]
   },
@@ -106,14 +106,14 @@
     ],
     "cohen_kappa": 0.0,
     "disagreement_resolution": null,
-    "anchoring_documentation": "stage=pre_adjudication; status=pending_external_review; self_review_disposition=hold_for_revision; self_review_notes=wave 2 vignette anchored to PMID 11873028 (Mylonakis 2002 Medicine); external clinical adjudication pending; classification provisional. adjudicator_ids=WAVE2-PRE-ADJ-1, WAVE2-PRE-ADJ-2 (sentinel); cohen_kappa=0.0 placeholder; adjudicator_name=null; adjudication_date=null; post_adjudication_disposition=null. Subphase 1.3 commit 5.3.4 (2026-05-08). anchor=Mylonakis-Medicine-2002 stratum=elderly-rhombencephalitis.",
+    "anchoring_documentation": "stage=pre_adjudication; status=pending_external_review; self_review_disposition=hold_for_revision; self_review_notes=wave 2 vignette anchored to PMID 12169881 (Mylonakis 2002 Medicine); external clinical adjudication pending; classification provisional. adjudicator_ids=WAVE2-PRE-ADJ-1, WAVE2-PRE-ADJ-2 (sentinel); cohen_kappa=0.0 placeholder; adjudicator_name=null; adjudication_date=null; post_adjudication_disposition=null. Subphase 1.3 commit 5.3.4 (2026-05-08). anchor=Mylonakis-Medicine-2002 stratum=elderly-rhombencephalitis.",
     "inclusion_decision": "hold_for_revision"
   },
   "literature_anchors": [
     {
       "anchor_type": "cohort",
-      "pmid": "11873028",
-      "doi": "10.1097/00005792-200203000-00004"
+      "pmid": "12169881",
+      "doi": "10.1097/00005792-200207000-00002"
     }
   ],
   "provenance": {
@@ -121,8 +121,8 @@
     "generator_model_identifier": "scripts.generate_pam_vignettes/v1.subphase_1_3_commit_5_3_4",
     "prompt_hash_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
     "schema_version": "2.0",
-    "inclusion_decision_rationale": "Anchored to PMID 11873028 (Mylonakis 2002 Medicine review). Demographic anchor (76yo F elderly with deli-meat exposure + CN VII palsy) sits in elderly-immunosenescence stratum (approximately 70 percent of adult Listeria CNS infection) and demonstrates the documented Listeria brainstem-rhombencephalitis phenotype. CSF profile bacterial range at master prompt 1.3.3 floor (neutrophil 60 percent). Imputation tiers: tier_1_primary={age, sex, csf_culture, csf_gram_stain, deli_meat_exposure, cn7_palsy}; tier_3_within_cohort={csf_wbc, neutrophil_pct, glucose, protein, gcs}; tier_4_priors={temp, symptom_days}. Indeterminate=none. Diagnostic_ambiguity=false. Outcome=survived_with_mild_residual_ataxia. Tier: tier_3_imputation_within_cohort_review. 5.3.4 wave2 Listeria-elderly-rhombencephalitis."
+    "inclusion_decision_rationale": "Anchored to PMID 12169881 (Mylonakis 2002 Medicine review). Demographic anchor (76yo F elderly with deli-meat exposure + CN VII palsy) sits in elderly-immunosenescence stratum (approximately 70 percent of adult Listeria CNS infection) and demonstrates the documented Listeria brainstem-rhombencephalitis phenotype. CSF profile bacterial range at master prompt 1.3.3 floor (neutrophil 60 percent). Imputation tiers: tier_1_primary={age, sex, csf_culture, csf_gram_stain, deli_meat_exposure, cn7_palsy}; tier_3_within_cohort={csf_wbc, neutrophil_pct, glucose, protein, gcs}; tier_4_priors={temp, symptom_days}. Indeterminate=none. Diagnostic_ambiguity=false. Outcome=survived_with_mild_residual_ataxia. Tier: tier_3_imputation_within_cohort_review. 5.3.4 wave2 Listeria-elderly-rhombencephalitis."
   },
-  "narrative_es": "Mujer de 76 anos en Paises Bajos (Amsterdam), ingresada a urgencias terciarias tras cinco dias de febricula, fatiga, ataxia de marcha y luego cefalea, confusion y rigidez de nuca. Antecedente de consumo reciente de fiambres frios. Examen: temperatura 38.4 C, escala de Glasgow 12, rigidez de nuca, signo de Kernig positivo, deficit focal (paresia facial derecha, par craneal VII), sin exantema. Liquido cefalorraquideo mostro presion de apertura 24 cmH2O, leucocitos 1,800 por mm3 (60 por ciento neutrofilos), glucosa 25 mg/dL, proteina 145 mg/dL. Tincion de Gram con bacilos grampositivos cortos; cultivos de liquido y sangre crecieron Listeria monocytogenes. Anclaje en revision Mylonakis 2002 Medicine (PMID 11873028, estrato adulto mayor inmunosenescencia, alrededor del 70 por ciento de Listeria SNC en adultos). Subphase 1.3 commit 5.3.4 wave 2.",
-  "narrative_en": "A 76-year-old woman in the Netherlands presented to a tertiary emergency department in Amsterdam after a 5-day course of low-grade fever, fatigue, gait ataxia, then headache, confusion, and neck stiffness. She had recent consumption of cold deli meats. Examination on admission: temperature 38.4 C, Glasgow Coma Scale 12, neck stiffness, positive Kernig sign, focal deficit (right facial weakness, CN VII), no rash. CSF showed opening pressure 24 cmH2O, white cell count 1,800 per cubic millimeter (60 percent neutrophils), glucose 25 mg/dL, protein 145 mg/dL. Gram stain revealed short gram-positive bacilli; CSF and blood cultures grew Listeria monocytogenes. Anchored to Mylonakis 2002 Medicine (PMID 11873028, elderly-immunosenescence stratum approximately 70 percent of adult Listeria CNS infection). The brainstem-rhombencephalitis pattern (CN VII palsy) is a documented Listeria phenotype. Outcome: survived with mild residual ataxia. Subphase 1.3 commit 5.3.4 wave 2, pre-adjudication hold_for_revision."
+  "narrative_es": "Mujer de 76 anos en Paises Bajos (Amsterdam), ingresada a urgencias terciarias tras cinco dias de febricula, fatiga, ataxia de marcha y luego cefalea, confusion y rigidez de nuca. Antecedente de consumo reciente de fiambres frios. Examen: temperatura 38.4 C, escala de Glasgow 12, rigidez de nuca, signo de Kernig positivo, deficit focal (paresia facial derecha, par craneal VII), sin exantema. Liquido cefalorraquideo mostro presion de apertura 24 cmH2O, leucocitos 1,800 por mm3 (60 por ciento neutrofilos), glucosa 25 mg/dL, proteina 145 mg/dL. Tincion de Gram con bacilos grampositivos cortos; cultivos de liquido y sangre crecieron Listeria monocytogenes. Anclaje en revision Mylonakis 2002 Medicine (PMID 12169881, estrato adulto mayor inmunosenescencia, alrededor del 70 por ciento de Listeria SNC en adultos). Subphase 1.3 commit 5.3.4 wave 2.",
+  "narrative_en": "A 76-year-old woman in the Netherlands presented to a tertiary emergency department in Amsterdam after a 5-day course of low-grade fever, fatigue, gait ataxia, then headache, confusion, and neck stiffness. She had recent consumption of cold deli meats. Examination on admission: temperature 38.4 C, Glasgow Coma Scale 12, neck stiffness, positive Kernig sign, focal deficit (right facial weakness, CN VII), no rash. CSF showed opening pressure 24 cmH2O, white cell count 1,800 per cubic millimeter (60 percent neutrophils), glucose 25 mg/dL, protein 145 mg/dL. Gram stain revealed short gram-positive bacilli; CSF and blood cultures grew Listeria monocytogenes. Anchored to Mylonakis 2002 Medicine (PMID 12169881, elderly-immunosenescence stratum approximately 70 percent of adult Listeria CNS infection). The brainstem-rhombencephalitis pattern (CN VII palsy) is a documented Listeria phenotype. Outcome: survived with mild residual ataxia. Subphase 1.3 commit 5.3.4 wave 2, pre-adjudication hold_for_revision."
 }
