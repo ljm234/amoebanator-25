@@ -71,7 +71,7 @@ The 12/8/4/4/2 mix follows the published etiology of acute viral
 encephalitis (Tyler 2018 NEJM PMID 29490180; Granerod 2010 Lancet Infect
 Dis PMID 21088000 England population-based study; Whitley 2006 Lancet
 Infect Dis PMID 16517432) and IDSA Tunkel 2008 encephalitis guidelines
-(PMID 19886816). HSV-1 dominance at 40% (12/30) reflects the etiology
+(PMID 18582201). HSV-1 dominance at 40% (12/30) reflects the etiology
 mix in untreated acute-encephalitis cohorts; mesial-temporal T2/FLAIR
 hyperintensity is the single most-cited imaging finding and is mandated
 for all 12 HSV-1 cases per master prompt test 1.3.4.
