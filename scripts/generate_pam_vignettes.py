@@ -1734,7 +1734,7 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
     # ========================================================================
     "27831604": {
         "pmid": "27831604",
-        "doi": "10.17843/rpmesp.2016.333.2317",
+        "doi": "10.17843/rpmesp.2016.333.2349",
         "authors_short": "Davalos L et al.",
         "authors_full": [
             "Davalos L", "Terrazas Y", "Quintana A", "Egoavil M",
