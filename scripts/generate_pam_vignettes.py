@@ -1635,8 +1635,8 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
     # 71(2-3):141-148), which is registered below at its primary location.
     # This block is removed; the 6 vignettes that anchored to 16517432 now
     # anchor to 16675036 via the existing primary registry entry.
-    "19886816": {
-        "pmid": "19886816",
+    "18582201": {
+        "pmid": "18582201",
         "doi": "10.1086/589747",
         "authors_short": "Tunkel AR et al.",
         "authors_full": [
