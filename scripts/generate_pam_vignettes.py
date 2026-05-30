@@ -536,7 +536,7 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
     },
     "25595746": {
         "pmid": "25595746",
-        "doi": "10.1093/cid/ciu936",
+        "doi": "10.1093/cid/civ017",
         "authors_short": "Cope et al.",
         "authors_full": [
             "Cope JR", "Ratard RC", "Hill VR", "Sokol T", "Causey JJ",
