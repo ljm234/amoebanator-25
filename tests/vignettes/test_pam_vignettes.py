@@ -91,6 +91,11 @@ _VALID_VERIFICATION_DATES = {
     # 2022, Cabello-Vilchez Neuropathology 2020, Visvesvara FEMS 2007,
     # Cope CID 2019, Damhorst Lancet ID 2022).
     "2026-05-11",
+    # Errata 5.4.3.2 (2026-05-30): dissolved Frankenstein PMID 32935747;
+    # the 5 NM/Hib slots (v83-v87) re-anchored to 4 real papers verified
+    # via Claude web PubMed/PMC: MacNeil 2018 CID 29126310, Marcus 2022
+    # OFID 35493127, Park 2022 JOGH 35265327, Soeters 2018 CID 29509834.
+    "2026-05-30",
 }
 
 

@@ -1597,33 +1597,138 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
             "corrected to canonical 18626301 in 5.3.2."
         ),
     },
-    "32935747": {
-        "pmid": "32935747",
-        "doi": "10.15585/mmwr.mm6936a3",
+    "29126310": {
+        "pmid": "29126310",
+        "doi": "10.1093/cid/cix993",
+        "authors_short": "MacNeil JR et al.",
+        "authors_full": [
+            "MacNeil JR", "Blain AE", "Wang X", "Cohn AC",
+        ],
+        "journal": "Clin Infect Dis",
+        "journal_short_code": "CID",
+        "year": 2018,
+        "volume": "66",
+        "issue": "8",
+        "pages": "1276-1281",
+        "title": "Current Epidemiology and Trends in Meningococcal Disease-United States, 1996-2015",
+        "anchor_type": "surveillance",
+        "anchor_subtype": "us_meningococcal_epidemiology_nndss_abcs_1996_2015",
+        "verification_confidence": 0.95,
+        "verification_method": "claude_web_pubmed_oxford_fulltext_2026_05_30",
+        "last_verified_date": "2026-05-30",
+        "caveat": (
+            "US meningococcal disease epidemiology. NNDSS 2006-2015 "
+            "(7924 cases, overall CFR 14.9 percent) plus ABCs 1996-2015. "
+            "Serogroup B 35.8 percent of cases (CFR 11.5 percent), Y 28.5 "
+            "percent, C 22.8 percent, W 6.8 percent. Infants under 1 year "
+            "highest incidence 2.45 per 100000. Anchor for US NM "
+            "serogroup-B adolescent (v83) and the serogroup-B-in-infant "
+            "demographic of the Loreto pediatric case (v84). Replaces "
+            "dissolved Frankenstein PMID 32935747, whose author list was "
+            "the Soeters Rhode Island college serogroup-B paper (real "
+            "PMID 26068563) mis-stitched with fabricated MMWR 2020 ABCs "
+            "metadata."
+        ),
+    },
+    "35493127": {
+        "pmid": "35493127",
+        "doi": "10.1093/ofid/ofac162",
+        "authors_short": "Marcus JE et al.",
+        "authors_full": [
+            "Marcus JE", "Bennett WN", "Frankel DN", "Kieffer JW",
+            "Casey TM", "Huston AE", "Hintz CN", "Keller AP",
+            "Smolka MT", "Sikorski CS", "Yun HC", "Dolan MJ",
+            "Kiley JL",
+        ],
+        "journal": "Open Forum Infect Dis",
+        "journal_short_code": "OFID",
+        "year": 2022,
+        "volume": "9",
+        "issue": "5",
+        "pages": "ofac162",
+        "title": "Response to a Serogroup B Meningococcal Disease Case Among Military Trainees",
+        "anchor_type": "case_report",
+        "anchor_subtype": "serogroup_b_meningococcal_military_trainee_congregate",
+        "verification_confidence": 0.95,
+        "verification_method": "claude_web_pubmed_pmc_fulltext_2026_05_30",
+        "last_verified_date": "2026-05-30",
+        "caveat": (
+            "US Air Force special-warfare trainee with serogroup B "
+            "meningococcal disease in a congregate setting (shared dive "
+            "breathing equipment). CSF neutrophilic pleocytosis, "
+            "gram-negative diplococci, PCR and culture positive for "
+            "N. meningitidis, serogroup B by whole-genome sequencing; "
+            "survived on ceftriaxone, no secondary cases. Anchor for the "
+            "NM serogroup-B military young-adult case (v85). PMCID "
+            "PMC9043002."
+        ),
+    },
+    "35265327": {
+        "pmid": "35265327",
+        "doi": "10.7189/jogh.12.04014",
+        "authors_short": "Park JJ et al.",
+        "authors_full": [
+            "Park JJ", "Narayanan S", "Tiefenbach J", "Luksic I",
+            "Ale BM", "Adeloye D", "Rudan I",
+        ],
+        "journal": "J Glob Health",
+        "journal_short_code": "JOGH",
+        "year": 2022,
+        "volume": "12",
+        "issue": "",
+        "pages": "04014",
+        "title": "Estimating the global and regional burden of meningitis in children caused by Haemophilus influenzae type b: A systematic review and meta-analysis",
+        "anchor_type": "meta_analysis",
+        "anchor_subtype": "global_regional_hib_meningitis_burden_children_meta_analysis",
+        "verification_confidence": 0.95,
+        "verification_method": "claude_web_pubmed_pmc_fulltext_2026_05_30",
+        "last_verified_date": "2026-05-30",
+        "caveat": (
+            "Systematic review and meta-analysis of Hib meningitis in "
+            "children under 5 years, CSF-culture-confirmed, 2010-2020. "
+            "33 studies across the 6 WHO regions including the Americas. "
+            "Pooled incidence 1.13 per 100000 child-years; pooled CFR "
+            "11.21 percent, higher where medical access is limited, with "
+            "neurological sequelae in 30 to 40 percent of survivors. "
+            "Frames undervaccination, resurgence, and surveillance gaps. "
+            "Anchor for the undervaccinated Hib pediatric meningitis case "
+            "in low-resource Andean Peru (v86, Cusco). PMCID PMC8893283. "
+            "anchor_type set to meta_analysis (schema enum has no "
+            "systematic_review value)."
+        ),
+    },
+    "29509834": {
+        "pmid": "29509834",
+        "doi": "10.1093/cid/ciy187",
         "authors_short": "Soeters HM et al.",
         "authors_full": [
-            "Soeters HM", "McNamara LA", "Whaley M", "Wang X",
-            "Alexander-Scott N", "Kanadanian KV", "Kelleher CM",
-            "King M", "Lawrence GL", "MacNeil JR",
+            "Soeters HM", "Blain A", "Pondo T", "Doman B",
+            "Farley MM", "Harrison LH", "Lynfield R", "Miller L",
+            "Petit S", "Reingold A", "Schaffner W", "Thomas A",
+            "Zansky SM", "Wang X", "Briere EC",
         ],
-        "journal": "MMWR Morb Mortal Wkly Rep",
-        "journal_short_code": "MMWR",
-        "year": 2020,
-        "volume": "69",
-        "issue": "37",
-        "pages": "1245-1249",
-        "title": "Active Bacterial Core Surveillance for invasive bacterial diseases",
+        "journal": "Clin Infect Dis",
+        "journal_short_code": "CID",
+        "year": 2018,
+        "volume": "67",
+        "issue": "6",
+        "pages": "881-889",
+        "title": "Current Epidemiology and Trends in Invasive Haemophilus influenzae Disease-United States, 2009-2015",
         "anchor_type": "surveillance",
-        "anchor_subtype": "cdc_abcs_hib_nm_surveillance_2008_2019",
-        "verification_confidence": 0.85,
-        "verification_method": "consensus_anchor_subphase_1_3_initial",
-        "last_verified_date": "2026-05-06",
+        "anchor_subtype": "us_invasive_h_influenzae_epidemiology_abcs_2009_2015",
+        "verification_confidence": 0.95,
+        "verification_method": "claude_web_pubmed_fulltext_2026_05_30",
+        "last_verified_date": "2026-05-30",
         "caveat": (
-            "CDC Active Bacterial Core surveillance: H. influenzae and "
-            "N. meningitidis incidence and serogroup distribution, US "
-            "2008-2019. Anchor for Class 2 Hib (pediatric unimmunized) "
-            "and NM serogroup distribution vignettes. "
-            "verification_confidence=0.85 pre-direct-fetch."
+            "US invasive H. influenzae surveillance through ABCs, "
+            "2009-2015. Mean annual incidence 1.70 per 100000; highest in "
+            "adults 65 and older (6.30) and infants under 1 year (8.45). "
+            "Hib now rare post-vaccine (incidence 0.03, CFR 4 percent); "
+            "nontypeable strains highest. Overall CFR 14.5 percent. "
+            "Anchor for the unvaccinated-infant Hib case in the US (v87). "
+            "PMCID PMC6181225. Distinct from the Soeters Rhode Island "
+            "college serogroup-B MMWR paper (PMID 26068563) whose authors "
+            "were mis-stitched into dissolved Frankenstein PMID 32935747."
         ),
     },
     # Errata 5.4.3.1 (2026-05-11): the entry that lived here as PMID
@@ -3810,13 +3915,27 @@ BACTERIAL_DISTRIBUTION: list[dict[str, Any]] = [
         "filename": "bact_083_nm_adolescent_fatal.json",
         "pathogen": "N_meningitidis",
         "cluster": "bacterial_meningitis_community",
-        # 5.3.2 errata fix removed typo PMID 18626302 from PMID_REGISTRY
-        # (corrected to canonical Heckenberg 18626301 for v82). v83
-        # adolescent NM fatal slot is more demographically appropriate
-        # against CDC ABCs surveillance (Soeters 2020 MMWR PMID 32935747)
-        # than the Heckenberg adult cohort, so v83 re-anchors to 32935747.
-        # Subphase 1.3.x errata 2026-05-08.
-        "pmid": "32935747",
+        # Errata 5.4.3.2 (2026-05-30): dissolved Frankenstein PMID 32935747, a
+        # three-source chimera that anchored none of the 5 NM/Hib slots. Full
+        # decode in AUDIT_anchor_32935747_Soeters_2020.md; all three sources
+        # re-verified against PubMed 2026-05-30:
+        #   - stored PMID 32935747 indexes Mattar R et al., a colorectal fecal
+        #     immunochemical test screening trial, Arq Gastroenterol 2020;
+        #     57(3):316-322 (DOI 10.1590/S0004-2803.202000000-58);
+        #   - stored DOI 10.15585/mmwr.mm6936a3 indexes Boal/Shockey/Silver
+        #     et al., essential critical infrastructure workers, MMWR 2020;
+        #     69(36):1244-1249;
+        #   - stored author list matched the Soeters 2015 Rhode Island college
+        #     serogroup B outbreak paper, PMID 26068563 (MMWR 2015;64(22):
+        #     606-607);
+        #   - title, year, and volume were fabricated MMWR-2020 ABCs metadata.
+        # The 5 slots re-anchor to 4 real verified papers: v83 and v84 to
+        # MacNeil 2018 CID 29126310 (US NM epidemiology, serogroup B 35.8
+        # percent), v85 to Marcus 2022 OFID 35493127 (serogroup B military
+        # trainee), v86 to Park 2022 JOGH 35265327 (Hib meningitis burden),
+        # v87 to Soeters 2018 CID 29509834 (US invasive H. influenzae). v83
+        # here re-anchors to 29126310.
+        "pmid": "29126310",
         "age_years": 17,
         "age_label": "17 years",
         "sex": "female",
@@ -3827,14 +3946,14 @@ BACTERIAL_DISTRIBUTION: list[dict[str, Any]] = [
         "risk_factors": ["none"],
         "diagnostic_ambiguity": False,
         "freshwater_exposure_within_14d": False,
-        "methodology": "tier_4_imputation_cdc_abcs_anchored",
+        "methodology": "tier_4_imputation_literature_anchored",
     },
     {
         "vignette_id": 84,
         "filename": "bact_084_nm_loreto_infant_partial_treatment_ambiguity.json",
         "pathogen": "N_meningitidis",
         "cluster": "bacterial_meningitis_pediatric",
-        "pmid": "32935747",
+        "pmid": "29126310",
         "age_years": 1,
         "age_label": "14 months",
         "sex": "male",
@@ -3846,14 +3965,14 @@ BACTERIAL_DISTRIBUTION: list[dict[str, Any]] = [
         "diagnostic_ambiguity": True,
         "ambiguity_type": "partial_antibiotic_pretreatment_sterile_cultures",
         "freshwater_exposure_within_14d": False,
-        "methodology": "tier_4_imputation_cdc_abcs_anchored",
+        "methodology": "tier_4_imputation_literature_anchored",
     },
     {
         "vignette_id": 85,
         "filename": "bact_085_nm_military.json",
         "pathogen": "N_meningitidis",
         "cluster": "bacterial_meningitis_community",
-        "pmid": "32935747",
+        "pmid": "35493127",
         "age_years": 22,
         "age_label": "22 years",
         "sex": "female",
@@ -3864,7 +3983,7 @@ BACTERIAL_DISTRIBUTION: list[dict[str, Any]] = [
         "risk_factors": ["none"],
         "diagnostic_ambiguity": False,
         "freshwater_exposure_within_14d": False,
-        "methodology": "tier_4_imputation_cdc_abcs_anchored",
+        "methodology": "tier_4_imputation_literature_anchored",
     },
     # --- H. influenzae (2 cases) ---
     {
@@ -3872,7 +3991,7 @@ BACTERIAL_DISTRIBUTION: list[dict[str, Any]] = [
         "filename": "bact_086_hib_cusco_pediatric.json",
         "pathogen": "H_influenzae",
         "cluster": "bacterial_meningitis_pediatric",
-        "pmid": "32935747",
+        "pmid": "35265327",
         "age_years": 3,
         "age_label": "3 years",
         "sex": "male",
@@ -3883,14 +4002,14 @@ BACTERIAL_DISTRIBUTION: list[dict[str, Any]] = [
         "risk_factors": ["age_extreme"],
         "diagnostic_ambiguity": False,
         "freshwater_exposure_within_14d": False,
-        "methodology": "tier_4_imputation_cdc_abcs_anchored",
+        "methodology": "tier_4_imputation_literature_anchored",
     },
     {
         "vignette_id": 87,
         "filename": "bact_087_hib_unimmunized_infant.json",
         "pathogen": "H_influenzae",
         "cluster": "bacterial_meningitis_pediatric",
-        "pmid": "32935747",
+        "pmid": "29509834",
         "age_years": 1,
         "age_label": "18 months",
         "sex": "male",
@@ -3901,7 +4020,7 @@ BACTERIAL_DISTRIBUTION: list[dict[str, Any]] = [
         "risk_factors": ["age_extreme"],
         "diagnostic_ambiguity": False,
         "freshwater_exposure_within_14d": False,
-        "methodology": "tier_4_imputation_cdc_abcs_anchored",
+        "methodology": "tier_4_imputation_literature_anchored",
     },
     # --- Listeria monocytogenes (2 cases) ---
     {
@@ -17120,8 +17239,10 @@ def write_bact_wave1_corpus(
 # ----------------------------------------------------------------------------
 # Slot IDs: 61, 63, 68, 70, 72, 74, 83, 84, 85, 86, 87, 88, 89.
 # Anchors: 6 Bijlsma 2016 Lancet ID (PMID 26652862, anchor_type=cohort) +
-#          5 Soeters 2020 MMWR CDC ABCs (PMID 32935747, anchor_type=
-#          surveillance) + 2 Mylonakis 2002 Medicine (PMID 12169881,
+#          5 NM/Hib re-anchored in errata 5.4.3.2 (dissolved Frankenstein
+#          slot): v83 and v84 MacNeil 2018 CID 29126310, v85 Marcus 2022
+#          OFID 35493127, v86 Park 2022 JOGH 35265327, v87 Soeters 2018 CID
+#          29509834 + 2 Mylonakis 2002 Medicine (PMID 12169881,
 #          anchor_type=cohort).
 # Pathogens: 6 SP + 3 NM + 2 Hib + 2 Listeria.
 # Diagnostic ambiguity: 1 of 13 (v84 NM Loreto infant; partial-antibiotic
@@ -17143,8 +17264,14 @@ BACT_WAVE2_PERU_IDS: set[int] = {84, 86, 88}
 def _bact_wave2_anchor_short(pmid: str) -> str:
     if pmid == "26652862":
         return "Bijlsma 2016 Lancet ID"
-    if pmid == "32935747":
-        return "Soeters 2020 MMWR CDC ABCs"
+    if pmid == "29126310":
+        return "MacNeil 2018 CID"
+    if pmid == "35493127":
+        return "Marcus 2022 OFID"
+    if pmid == "35265327":
+        return "Park 2022 JOGH"
+    if pmid == "29509834":
+        return "Soeters 2018 CID"
     if pmid == "12169881":
         return "Mylonakis 2002 Medicine"
     raise KeyError(pmid)
@@ -17206,7 +17333,7 @@ def _bact_wave2_dx_tests_nm_pretreated(pmid: str) -> list[dict[str, Any]]:
         },
         {
             "test_name": "csf_meningococcal_pcr",
-            "result": "neisseria_meningitidis_positive_serogroup_C",
+            "result": "neisseria_meningitidis_positive_serogroup_B",
             "sensitivity_pct": 92.0,
             "specificity_pct": 96.0,
             "citation_pmid_or_doi": cit,
@@ -18064,8 +18191,9 @@ def _build_bact_vignette_083() -> dict[str, Any]:
             "millimeter (88 percent neutrophils), glucose 18 mg/dL, protein "
             "240 mg/dL. Gram stain revealed gram-negative diplococci; culture "
             "identified Neisseria meningitidis serogroup B. Anchored to "
-            "Soeters 2020 MMWR CDC ABCs (PMID 32935747, US adolescent NM "
-            "surveillance, mortality 12 percent). Outcome: fatal hospital day "
+            "MacNeil 2018 CID (PMID 29126310, US meningococcal disease "
+            "epidemiology 1996-2015; serogroup B 35.8 percent of cases, "
+            "overall case-fatality 14.9 percent). Outcome: fatal hospital day "
             "2. Subphase 1.3 commit 5.3.4 wave 2, pre-adjudication "
             "hold_for_revision."
         ),
@@ -18081,15 +18209,18 @@ def _build_bact_vignette_083() -> dict[str, Any]:
             "cmH2O, leucocitos 4,500 por mm3 (88 por ciento neutrofilos), "
             "glucosa 18 mg/dL, proteina 240 mg/dL. Tincion de Gram con "
             "diplococos gramnegativos y cultivo Neisseria meningitidis "
-            "serogrupo B. Anclaje en Soeters 2020 MMWR ABCs CDC (PMID "
-            "32935747, vigilancia adolescente). Subphase 1.3 commit 5.3.4 "
-            "wave 2."
+            "serogrupo B. Anclaje en MacNeil 2018 CID (PMID 29126310, "
+            "epidemiologia meningococica en Estados Unidos 1996-2015; "
+            "serogrupo B 35.8 por ciento de casos, letalidad global 14.9 por "
+            "ciento). Subphase 1.3 commit 5.3.4 wave 2."
         ),
         "rationale": (
-            "Anchored to PMID 32935747 (Soeters 2020 MMWR CDC ABCs surveillance) "
-            "covering US adolescent and young adult NM epidemiology with "
-            "approximately 12 percent overall NM case-fatality and elevated "
-            "fulminant-purpura subgroup mortality. Demographic anchor (17yo F "
+            "Anchored to PMID 29126310 (MacNeil 2018 CID US meningococcal "
+            "epidemiology 1996-2015) with overall case-fatality 14.9 percent, "
+            "serogroup B 35.8 percent of cases, and adolescents and young "
+            "adults a documented age stratum. Fulminant purpura with "
+            "disseminated intravascular coagulation marks the severe end of "
+            "the clinical spectrum. Demographic anchor (17yo F "
             "adolescent) sits in target surveillance stratum. CSF bacterial "
             "range; petechial-to-purpuric evolution + DIC consistent with "
             "fulminant meningococcemia. Imputation tiers: tier_1_primary={age, "
@@ -18097,11 +18228,11 @@ def _build_bact_vignette_083() -> dict[str, Any]:
             "tier_3_within_cohort={csf_wbc, neutrophil_pct, glucose, protein}; "
             "tier_4_priors={temp, gcs, symptom_days}. Indeterminate=none. "
             "Diagnostic_ambiguity=false. Outcome=fatal_hospital_day_2. "
-            "Tier: tier_4_imputation_cdc_abcs_anchored. 5.3.4 wave2 NM-"
+            "Tier: tier_4_imputation_literature_anchored. 5.3.4 wave2 NM-"
             "adolescent-fulminant-fatal."
         ),
-        "anchoring_extras": "anchor=Soeters-MMWR-CDC-ABCs-2020 stratum=adolescent-fulminant.",
-        "diagnostic_tests": _bact_wave2_dx_tests_nm_culture_positive("32935747"),
+        "anchoring_extras": "anchor=MacNeil-2018-CID-US-meningococcal-epidemiology stratum=adolescent-fulminant.",
+        "diagnostic_tests": _bact_wave2_dx_tests_nm_culture_positive("29126310"),
     }
 
 
@@ -18178,12 +18309,16 @@ def _build_bact_vignette_084() -> dict[str, Any]:
             "millimeter (60 percent neutrophils), glucose 28 mg/dL, protein "
             "165 mg/dL. Gram stain unrevealing; CSF + blood cultures sterile "
             "after partial-antibiotic pretreatment and remote specimen "
-            "handling delay; CSF meningococcal PCR positive for serogroup C. "
+            "handling delay; CSF meningococcal PCR positive for serogroup B. "
             "Diagnostic_ambiguity=true; type=partial_antibiotic_pretreatment_"
-            "sterile_cultures. Anchored to Soeters 2020 MMWR CDC ABCs (PMID "
-            "32935747, NM surveillance overlaid with Peru-Amazon care-access "
-            "context). Outcome: fatal. Subphase 1.3 commit 5.3.4 wave 2, "
-            "pre-adjudication hold_for_revision."
+            "sterile_cultures. Anchored to MacNeil 2018 CID (PMID 29126310, "
+            "US meningococcal epidemiology with serogroup B predominance) "
+            "overlaid with Peru-Amazon care-access context and the August "
+            "2024 serogroup B meningococcal outbreak in Loreto, Peru "
+            "(Fairweather et al., Global Biosecurity 2025, doi:10.31646/"
+            "gbio.296) as regional epidemiologic context. Outcome: fatal. "
+            "Subphase 1.3 commit 5.3.4 wave 2, pre-adjudication "
+            "hold_for_revision."
         ),
         "narrative_es": (
             "Lactante varon de 14 meses originario de comunidad ribereña en "
@@ -18198,28 +18333,34 @@ def _build_bact_vignette_084() -> dict[str, Any]:
             "mg/dL, proteina 165 mg/dL. Tincion de Gram sin organismos; "
             "cultivos de liquido y sangre esteriles tras pretratamiento "
             "antibiotico parcial y demora en manejo de muestras; PCR "
-            "meningococica en liquido positiva para serogrupo C. Ambiguedad "
-            "diagnostica por pretratamiento parcial. Subphase 1.3 commit "
-            "5.3.4 wave 2."
+            "meningococica en liquido positiva para serogrupo B. Ambiguedad "
+            "diagnostica por pretratamiento parcial. Anclaje en MacNeil 2018 "
+            "CID (PMID 29126310, predominio de serogrupo B) con contexto "
+            "regional del brote de meningococo serogrupo B en Loreto Peru de "
+            "agosto 2024 (Fairweather et al., Global Biosecurity 2025, "
+            "doi:10.31646/gbio.296). Subphase 1.3 commit 5.3.4 wave 2."
         ),
         "rationale": (
-            "Anchored to PMID 32935747 (Soeters 2020 MMWR CDC ABCs) "
-            "surveillance with overlaid Peru-Amazon care-access context. "
+            "Anchored to PMID 29126310 (MacNeil 2018 CID US meningococcal "
+            "epidemiology, serogroup B 35.8 percent of cases) overlaid with "
+            "Peru-Amazon care-access context and the August 2024 Loreto "
+            "serogroup B meningococcal outbreak (Fairweather et al., Global "
+            "Biosecurity 2025, doi:10.31646/gbio.296). "
             "Diagnostic_ambiguity=true; type=partial_antibiotic_pretreatment_"
             "sterile_cultures with secondary remote-specimen-handling-delay "
             "compounding feature. Demographic anchor (14mo M Loreto pediatric "
             "outpatient pretreated then air-evac) sits in ambiguity stratum. "
             "CSF profile attenuated (WBC 1800, neutrophil 60 percent). PCR "
-            "confirms organism (serogroup C). Imputation tiers: tier_1_primary"
+            "confirms organism (serogroup B). Imputation tiers: tier_1_primary"
             "={age, sex, csf_meningococcal_pcr, pretreatment_history, "
             "petechial_rash}; tier_3_within_cohort={csf_wbc, neutrophil_pct, "
             "glucose, protein attenuation}; tier_4_priors={temp, gcs, hr}. "
             "Indeterminate=culture-based-organism-confirmation. Outcome=fatal. "
-            "Tier: tier_4_imputation_cdc_abcs_anchored. 5.3.4 wave2 NM-"
+            "Tier: tier_4_imputation_literature_anchored. 5.3.4 wave2 NM-"
             "Loreto-infant-ambiguity."
         ),
-        "anchoring_extras": "anchor=Soeters-MMWR-CDC-ABCs-2020 type=partial_antibiotic_pretreatment region=peru-loreto-amazon.",
-        "diagnostic_tests": _bact_wave2_dx_tests_nm_pretreated("32935747"),
+        "anchoring_extras": "anchor=MacNeil-2018-CID-US-meningococcal-epidemiology context=loreto-2024-serogroupB-outbreak-Fairweather-GlobalBiosecurity-doi-10.31646-gbio.296 type=partial_antibiotic_pretreatment region=peru-loreto-amazon.",
+        "diagnostic_tests": _bact_wave2_dx_tests_nm_pretreated("29126310"),
     }
 
 
@@ -18292,9 +18433,9 @@ def _build_bact_vignette_085() -> dict[str, Any]:
             "count 5,200 per cubic millimeter (90 percent neutrophils), "
             "glucose 22 mg/dL, protein 200 mg/dL. Gram stain revealed "
             "gram-negative diplococci; culture identified Neisseria "
-            "meningitidis serogroup B. Anchored to Soeters 2020 MMWR CDC ABCs "
-            "(PMID 32935747, US young-adult NM surveillance; military "
-            "barracks an established outbreak setting). Outcome: survived no "
+            "meningitidis serogroup B. Anchored to Marcus 2022 OFID (PMID "
+            "35493127, US serogroup B meningococcal disease in a military "
+            "trainee in a congregate setting). Outcome: survived no "
             "sequelae. Subphase 1.3 commit 5.3.4 wave 2, pre-adjudication "
             "hold_for_revision."
         ),
@@ -18308,24 +18449,26 @@ def _build_bact_vignette_085() -> dict[str, Any]:
             "mostro presion de apertura 26 cmH2O, leucocitos 5,200 por mm3 "
             "(90 por ciento neutrofilos), glucosa 22 mg/dL, proteina 200 mg/dL. "
             "Tincion de Gram con diplococos gramnegativos y cultivo Neisseria "
-            "meningitidis serogrupo B. Anclaje en Soeters 2020 MMWR ABCs CDC "
-            "(PMID 32935747, vigilancia adulto joven; cuartel militar como "
-            "entorno de brote establecido). Subphase 1.3 commit 5.3.4 wave 2."
+            "meningitidis serogrupo B. Anclaje en Marcus 2022 OFID (PMID "
+            "35493127, enfermedad meningococica serogrupo B en recluta "
+            "militar en entorno de congregacion). Subphase 1.3 commit 5.3.4 "
+            "wave 2."
         ),
         "rationale": (
-            "Anchored to PMID 32935747 (Soeters 2020 MMWR CDC ABCs surveillance). "
-            "Demographic anchor (22yo F young adult military barracks) sits "
-            "in CDC-documented outbreak-setting stratum. CSF profile bacterial "
+            "Anchored to PMID 35493127 (Marcus 2022 OFID serogroup B "
+            "meningococcal disease in a military trainee). Demographic anchor "
+            "(22yo F young adult military congregate setting) matches the "
+            "trainee congregate-setting stratum. CSF profile bacterial "
             "range; petechial rash + classic NM serogroup B. Imputation tiers: "
             "tier_1_primary={age, sex, csf_culture, csf_gram_stain, "
             "petechial_rash, military_barracks_setting}; tier_3_within_cohort"
             "={csf_wbc, neutrophil_pct, glucose, protein}; tier_4_priors={temp, "
             "gcs, symptom_days}. Indeterminate=none. Diagnostic_ambiguity=false. "
-            "Outcome=survived_no_sequelae. Tier: tier_4_imputation_cdc_abcs_"
+            "Outcome=survived_no_sequelae. Tier: tier_4_imputation_literature_"
             "anchored. 5.3.4 wave2 NM-young-adult-military."
         ),
-        "anchoring_extras": "anchor=Soeters-MMWR-CDC-ABCs-2020 stratum=young-adult-military.",
-        "diagnostic_tests": _bact_wave2_dx_tests_nm_culture_positive("32935747"),
+        "anchoring_extras": "anchor=Marcus-2022-OFID-serogroup-B-military-trainee stratum=young-adult-military.",
+        "diagnostic_tests": _bact_wave2_dx_tests_nm_culture_positive("35493127"),
     }
 
 
@@ -18401,9 +18544,10 @@ def _build_bact_vignette_086() -> dict[str, Any]:
             "4,800 per cubic millimeter (88 percent neutrophils), glucose 22 "
             "mg/dL, protein 210 mg/dL. Gram stain revealed gram-negative "
             "coccobacilli; culture identified Haemophilus influenzae type b; "
-            "CSF Hib capsular antigen positive. Anchored to Soeters 2020 MMWR "
-            "CDC ABCs (PMID 32935747) Hib surveillance overlaid with "
-            "incomplete-vaccination-coverage Andean stratum. Outcome: "
+            "CSF Hib capsular antigen positive. Anchored to Park 2022 JOGH "
+            "(PMID 35265327, global and regional burden of Hib meningitis in "
+            "children under 5, pooled case-fatality 11.21 percent) overlaid "
+            "with incomplete-vaccination-coverage Andean stratum. Outcome: "
             "survived no sequelae. Subphase 1.3 commit 5.3.4 wave 2, "
             "pre-adjudication hold_for_revision."
         ),
@@ -18419,12 +18563,16 @@ def _build_bact_vignette_086() -> dict[str, Any]:
             "leucocitos 4,800 por mm3 (88 por ciento neutrofilos), glucosa "
             "22 mg/dL, proteina 210 mg/dL. Tincion de Gram con cocobacilos "
             "gramnegativos y cultivo Haemophilus influenzae tipo b; antigeno "
-            "Hib en liquido positivo. Anclaje en Soeters 2020 MMWR ABCs CDC "
-            "(PMID 32935747). Subphase 1.3 commit 5.3.4 wave 2."
+            "Hib en liquido positivo. Anclaje en Park 2022 JOGH (PMID "
+            "35265327, carga global y regional de meningitis por Hib en "
+            "menores de 5 anos, letalidad combinada 11.21 por ciento). "
+            "Subphase 1.3 commit 5.3.4 wave 2."
         ),
         "rationale": (
-            "Anchored to PMID 32935747 (Soeters 2020 MMWR CDC ABCs) "
-            "surveillance overlaid with Andean-pediatric incomplete-Hib-"
+            "Anchored to PMID 35265327 (Park 2022 JOGH systematic review and "
+            "meta-analysis of Hib meningitis burden in children under 5, "
+            "pooled case-fatality 11.21 percent, sequelae in 30 to 40 percent "
+            "of survivors) overlaid with Andean-pediatric incomplete-Hib-"
             "coverage stratum (Cusco altitude region 3,399m). Demographic "
             "anchor (3yo M Cusco pediatric undervaccinated post-otitis-"
             "media) sits in surveillance gap stratum. CSF bacterial range; "
@@ -18434,11 +18582,11 @@ def _build_bact_vignette_086() -> dict[str, Any]:
             "{csf_wbc, neutrophil_pct, glucose, protein}; tier_4_priors="
             "{temp, gcs, symptom_days}. Indeterminate=papilledema_on_"
             "fundoscopy. Diagnostic_ambiguity=false. Outcome=survived. Tier: "
-            "tier_4_imputation_cdc_abcs_anchored. 5.3.4 wave2 Hib-Cusco-"
+            "tier_4_imputation_literature_anchored. 5.3.4 wave2 Hib-Cusco-"
             "pediatric."
         ),
-        "anchoring_extras": "anchor=Soeters-MMWR-CDC-ABCs-2020 stratum=pediatric-Cusco-altitude.",
-        "diagnostic_tests": _bact_wave2_dx_tests_hib("32935747"),
+        "anchoring_extras": "anchor=Park-2022-JOGH-Hib-meningitis-burden stratum=pediatric-Cusco-altitude.",
+        "diagnostic_tests": _bact_wave2_dx_tests_hib("35265327"),
     }
 
 
@@ -18513,9 +18661,10 @@ def _build_bact_vignette_087() -> dict[str, Any]:
             "per cubic millimeter (90 percent neutrophils), glucose 20 mg/dL, "
             "protein 230 mg/dL. Gram stain revealed gram-negative "
             "coccobacilli; culture identified Haemophilus influenzae type b; "
-            "CSF Hib capsular antigen positive. Anchored to Soeters 2020 MMWR "
-            "CDC ABCs (PMID 32935747) Hib surveillance, undervaccinated-"
-            "infant resurgence stratum. Outcome: survived no sequelae. "
+            "CSF Hib capsular antigen positive. Anchored to Soeters 2018 CID "
+            "(PMID 29509834, US invasive Haemophilus influenzae surveillance "
+            "2009-2015), undervaccinated-infant Hib stratum. Outcome: "
+            "survived no sequelae. "
             "Subphase 1.3 commit 5.3.4 wave 2, pre-adjudication "
             "hold_for_revision."
         ),
@@ -18531,25 +18680,27 @@ def _build_bact_vignette_087() -> dict[str, Any]:
             "(90 por ciento neutrofilos), glucosa 20 mg/dL, proteina 230 mg/dL. "
             "Tincion de Gram con cocobacilos gramnegativos y cultivo "
             "Haemophilus influenzae tipo b; antigeno Hib positivo. Anclaje "
-            "en Soeters 2020 MMWR ABCs CDC (PMID 32935747, estrato lactante "
-            "no vacunado). Subphase 1.3 commit 5.3.4 wave 2."
+            "en Soeters 2018 CID (PMID 29509834, vigilancia de Haemophilus "
+            "influenzae invasivo en Estados Unidos 2009-2015, estrato "
+            "lactante no vacunado). Subphase 1.3 commit 5.3.4 wave 2."
         ),
         "rationale": (
-            "Anchored to PMID 32935747 (Soeters 2020 MMWR CDC ABCs) Hib "
-            "surveillance with undervaccinated-infant resurgence stratum. "
-            "Demographic anchor (18mo M unimmunized Hib) sits in "
-            "post-vaccine-era resurgence stratum documented by ABCs. CSF "
+            "Anchored to PMID 29509834 (Soeters 2018 CID US invasive H. "
+            "influenzae surveillance 2009-2015) with undervaccinated-infant "
+            "Hib stratum. Demographic anchor (18mo M unimmunized Hib) sits in "
+            "the post-vaccine-era stratum documented by US ABCs invasive Hi "
+            "surveillance. CSF "
             "bacterial range; Gram + culture + antigen all confirm Hib. "
             "Imputation tiers: tier_1_primary={age, sex, csf_culture, csf_"
             "gram_stain, csf_hib_antigen, vaccine_decline}; tier_3_within_"
             "cohort={csf_wbc, neutrophil_pct, glucose, protein}; tier_4_"
             "priors={temp, gcs, hr, symptom_days}. Indeterminate=papilledema_"
             "on_fundoscopy. Diagnostic_ambiguity=false. Outcome=survived. "
-            "Tier: tier_4_imputation_cdc_abcs_anchored. 5.3.4 wave2 Hib-"
+            "Tier: tier_4_imputation_literature_anchored. 5.3.4 wave2 Hib-"
             "unimmunized-infant."
         ),
-        "anchoring_extras": "anchor=Soeters-MMWR-CDC-ABCs-2020 stratum=undervaccinated-infant.",
-        "diagnostic_tests": _bact_wave2_dx_tests_hib("32935747"),
+        "anchoring_extras": "anchor=Soeters-2018-CID-US-invasive-H-influenzae stratum=undervaccinated-infant.",
+        "diagnostic_tests": _bact_wave2_dx_tests_hib("29509834"),
     }
 
 

@@ -1,7 +1,8 @@
 """Subphase 1.3 Commit 5.3.4 Wave 2 BACT lock-in tests.
 
-13 vignettes: Bijlsma 6 SP NL cohort + Soeters 5 NM/Hib CDC ABCs +
-Mylonakis 2 Listeria. 1 ambiguity case (v84 NM Loreto infant).
+13 vignettes: Bijlsma 6 SP NL cohort + 5 NM/Hib re-anchored under errata
+5.4.3.2 (MacNeil 2018 CID, Marcus 2022 OFID, Park 2022 JOGH, Soeters 2018
+CID) + Mylonakis 2 Listeria. 1 ambiguity case (v84 NM Loreto infant).
 3 Peru anchors (v84 Loreto, v86 Cusco, v88 Tumbes).
 """
 from __future__ import annotations
