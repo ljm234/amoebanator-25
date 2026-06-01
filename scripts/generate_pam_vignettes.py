@@ -1462,17 +1462,20 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "title": "Clinical features and prognostic factors in adults with bacterial meningitis",
         "anchor_type": "cohort",
         "anchor_subtype": "netherlands_adult_community_bacterial_meningitis_696_episodes",
-        "verification_confidence": 0.85,
-        "verification_method": "consensus_anchor_subphase_1_3_initial",
-        "last_verified_date": "2026-05-06",
+        "verification_confidence": 0.95,
+        "verification_method": "claude_web_pubmed_nejm_fulltext_2026_05_30",
+        "last_verified_date": "2026-05-30",
         "caveat": (
             "Landmark Netherlands prospective cohort of 696 adult community-"
             "acquired bacterial meningitis episodes 1998-2002. Anchor for "
             "Class 2 SP-adult and NM-adult vignettes (presentation tetrad: "
             "fever, neck stiffness, altered mental status, plus headache). "
-            "verification_confidence=0.85 indicates consensus anchor without "
-            "PubMed UI direct fetch in commit 5.3.1; primary-source pull "
-            "will follow in subsequent Subphase 1.3 commits."
+            "Direct PubMed/NEJM full-text fetch 2026-05-30 confirms 6 authors "
+            "(van de Beek D, de Gans J, Spanjaard L, Weisfelt M, Reitsma JB, "
+            "Vermeulen M), DOI 10.1056/NEJMoa040845, NEJM 2004;351(18):1849-"
+            "1859, 696-episode Netherlands community-acquired cohort, overall "
+            "mortality 21 percent (pneumococcal 30 percent vs meningococcal 7 "
+            "percent), unfavorable outcome 34 percent."
         ),
     },
     "15494903": {
@@ -1492,16 +1495,19 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "title": "Practice guidelines for the management of bacterial meningitis",
         "anchor_type": "guideline",
         "anchor_subtype": "idsa_bacterial_meningitis_guidelines_2004",
-        "verification_confidence": 0.85,
-        "verification_method": "consensus_anchor_subphase_1_3_initial",
-        "last_verified_date": "2026-05-06",
+        "verification_confidence": 0.95,
+        "verification_method": "claude_web_pubmed_oxford_fulltext_2026_05_31",
+        "last_verified_date": "2026-05-31",
         "caveat": (
             "IDSA bacterial meningitis management guidelines (Tunkel 2004). "
             "Canonical reference for empiric therapy decisions, CSF profile "
             "thresholds, and prognostic indicators in Class 2 vignettes. "
             "Anchor for guideline-imputed Class 2 entries where exact case "
             "demographic is sampled from IDSA recommended-empiric-therapy "
-            "patient profiles. verification_confidence=0.85 pre-direct-fetch."
+            "patient profiles. Direct PubMed/Oxford full-text fetch 2026-05-31 "
+            "confirms 7 authors (Tunkel AR, Hartman BJ, Kaplan SL, Kaufman BA, "
+            "Roos KL, Scheld WM, Whitley RJ), DOI 10.1086/425368, CID "
+            "2004;39(9):1267-1284."
         ),
     },
     "26652862": {
@@ -1522,43 +1528,21 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "title": "Community-acquired bacterial meningitis in adults in the Netherlands, 2006-14: a prospective cohort study",
         "anchor_type": "cohort",
         "anchor_subtype": "netherlands_pneumococcal_2006_2014_1412_cases",
-        "verification_confidence": 0.85,
-        "verification_method": "consensus_anchor_subphase_1_3_initial",
-        "last_verified_date": "2026-05-06",
+        "verification_confidence": 0.95,
+        "verification_method": "claude_web_pubmed_lancet_fulltext_2026_05_31",
+        "last_verified_date": "2026-05-31",
         "caveat": (
             "Netherlands prospective adult community-acquired bacterial "
             "meningitis cohort 2006-2014, 1412 cases (72% pneumococcal). "
             "Anchor for SP-adult Class 2 vignettes with mortality 17%, "
-            "unfavorable outcome 39%. Pairs with van de Beek 2004 (PMID "
+            "unfavorable outcome 38%. Pairs with van de Beek 2004 (PMID "
             "15509818) for two-decade Netherlands continuity. "
-            "verification_confidence=0.85 pre-direct-fetch."
-        ),
-    },
-    "12169881": {
-        "pmid": "12169881",
-        "doi": "10.1097/00005792-200207000-00002",
-        "authors_short": "Mylonakis E et al.",
-        "authors_full": [
-            "Mylonakis E", "Paliou M", "Hohmann EL", "Calderwood SB", "Wing EJ",
-        ],
-        "journal": "Medicine (Baltimore)",
-        "journal_short_code": "Medicine",
-        "year": 2002,
-        "volume": "81",
-        "issue": "4",
-        "pages": "260-269",
-        "title": "Listeriosis during pregnancy: a case series and review of 222 cases",
-        "anchor_type": "cohort",
-        "anchor_subtype": "listeria_pregnancy_222_cases_review",
-        "verification_confidence": 0.85,
-        "verification_method": "consensus_anchor_subphase_1_3_initial",
-        "last_verified_date": "2026-05-06",
-        "caveat": (
-            "Listeria monocytogenes infection during pregnancy review of "
-            "222 cases. Anchor for Class 2 pregnancy-Listeria vignettes; "
-            "documents maternal-fetal transmission, third-trimester "
-            "presentation, and high neonatal morbidity. "
-            "verification_confidence=0.85 pre-direct-fetch."
+            "Direct PubMed/Lancet full-text fetch 2026-05-31 confirms 8 "
+            "authors (Bijlsma MW, Brouwer MC, Kasanmoentalib ES, Kloek AT, "
+            "Lucas MJ, Tanck MW, van der Ende A, van de Beek D), DOI "
+            "10.1016/S1473-3099(15)00430-2, Lancet Infect Dis 2016;16(3):339-"
+            "347, 1412 episodes, 72 percent pneumococcal, mortality 17 "
+            "percent, unfavorable 38 percent."
         ),
     },
     # 18626302 ENTRY REMOVED in commit 5.3.2: was a typo for the
@@ -1583,18 +1567,26 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_type": "cohort",
         "anchor_subtype": "neisseria_meningitidis_adult_258_cases",
         "verification_confidence": 0.95,
-        "verification_method": "claude_web_pubmed_ui_v4_2026_05_07",
-        "last_verified_date": "2026-05-07",
+        "verification_method": "claude_web_pubmed_lww_fulltext_2026_05_31",
+        "last_verified_date": "2026-05-31",
         "caveat": (
-            "Adult meningococcal meningitis prospective Netherlands "
-            "cohort of 258 cases (1998-2002). Headache 92 percent, neck "
-            "stiffness 76 percent, fever on admission 53 percent, rash "
-            "46 percent (petechial in 81 percent of those = 37 percent "
-            "overall), classic triad in 21 percent, focal cerebral "
-            "deficits 11 percent. Median CSF leukocyte count 5,730/mm3 "
-            "(IQR 1,820-12,225). Mortality 7 percent. ERRATA: "
-            "previously stored as PMID 18626302 in 5.3.1 PMID_REGISTRY; "
-            "corrected to canonical 18626301 in 5.3.2."
+            "Adult meningococcal meningitis prospective Netherlands cohort of "
+            "258 cases (1998-2002), a subset of the 696-episode van de Beek "
+            "cohort. Classic triad (fever, neck stiffness, altered mental "
+            "status) in only 27 percent (70/258); fever above 38.0 C in 64 "
+            "percent; change in mental status in 51 percent; at least 2 of 4 "
+            "signs (triad plus headache) in 95 percent (246/258). Rash in 64 "
+            "percent (164), petechial in 91 percent of those (145/160). Focal "
+            "neurologic abnormalities in 22 percent (56/256), aphasia in 11 "
+            "percent. Cranial nerve palsy in 7 percent. Mortality 7 percent "
+            "(19/258); unfavorable outcome 12 percent (30/258); neurologic "
+            "sequelae 12 percent, hearing loss 8 percent. Direct PubMed/LWW "
+            "full-text fetch 2026-05-31 confirms 8 authors (Heckenberg SGB, de "
+            "Gans J, Brouwer MC, Weisfelt M, Piet JR, Spanjaard L, van der "
+            "Ende A, van de Beek D), DOI 10.1097/MD.0b013e318180a6b4, Medicine "
+            "(Baltimore) 2008;87(4):185-192. ERRATA: prior caveat figures were "
+            "erroneously imported from a later 15-year Netherlands cohort; "
+            "corrected to Heckenberg 2008 values."
         ),
     },
     "29126310": {
@@ -4021,43 +4013,6 @@ BACTERIAL_DISTRIBUTION: list[dict[str, Any]] = [
         "diagnostic_ambiguity": False,
         "freshwater_exposure_within_14d": False,
         "methodology": "tier_4_imputation_literature_anchored",
-    },
-    # --- Listeria monocytogenes (2 cases) ---
-    {
-        "vignette_id": 88,
-        "filename": "bact_088_listeria_tumbes_pregnancy.json",
-        "pathogen": "Listeria_monocytogenes",
-        "cluster": "bacterial_meningitis_pregnancy",
-        "pmid": "12169881",
-        "age_years": 28,
-        "age_label": "28 years (30 weeks gestation)",
-        "sex": "female",
-        "geography_label": "Tumbes, PE",
-        "geography_region": "peru_tumbes",
-        "stage": "mid",
-        "outcome": "survived",
-        "risk_factors": ["pregnancy"],
-        "diagnostic_ambiguity": False,
-        "freshwater_exposure_within_14d": False,
-        "methodology": "tier_3_imputation_within_cohort_review",
-    },
-    {
-        "vignette_id": 89,
-        "filename": "bact_089_listeria_elderly.json",
-        "pathogen": "Listeria_monocytogenes",
-        "cluster": "bacterial_meningitis_elderly",
-        "pmid": "12169881",
-        "age_years": 76,
-        "age_label": "76 years",
-        "sex": "female",
-        "geography_label": "Netherlands",
-        "geography_region": "other_global",
-        "stage": "mid",
-        "outcome": "survived_with_sequelae",
-        "risk_factors": ["age_extreme"],
-        "diagnostic_ambiguity": False,
-        "freshwater_exposure_within_14d": False,
-        "methodology": "tier_3_imputation_within_cohort_review",
     },
     # --- Gram-negative (1 case) ---
     {
@@ -17235,19 +17190,20 @@ def write_bact_wave1_corpus(
 
 
 # ============================================================================
-# Subphase 1.3 commit 5.3.4 - Wave 2 BACTERIAL vignette builders (n=13)
+# Subphase 1.3 commit 5.3.4 - Wave 2 BACTERIAL vignette builders (n=11)
 # ----------------------------------------------------------------------------
-# Slot IDs: 61, 63, 68, 70, 72, 74, 83, 84, 85, 86, 87, 88, 89.
+# Slot IDs: 61, 63, 68, 70, 72, 74, 83, 84, 85, 86, 87.
 # Anchors: 6 Bijlsma 2016 Lancet ID (PMID 26652862, anchor_type=cohort) +
 #          5 NM/Hib re-anchored in errata 5.4.3.2 (dissolved Frankenstein
 #          slot): v83 and v84 MacNeil 2018 CID 29126310, v85 Marcus 2022
 #          OFID 35493127, v86 Park 2022 JOGH 35265327, v87 Soeters 2018 CID
-#          29509834 + 2 Mylonakis 2002 Medicine (PMID 12169881,
-#          anchor_type=cohort).
-# Pathogens: 6 SP + 3 NM + 2 Hib + 2 Listeria.
+#          29509834. (Both Mylonakis 2002 Listeria slots v88/v89 were
+#          removed in errata 5.4.3.3 - full-text verification standard not
+#          met; corpus 270->268.)
+# Pathogens: 6 SP + 3 NM + 2 Hib.
 # Diagnostic ambiguity: 1 of 13 (v84 NM Loreto infant; partial-antibiotic
 # pretreatment + remote specimen handling delay).
-# Peru-anchored: 3 of 13 (v84 Loreto, v86 Cusco, v88 Tumbes).
+# Peru-anchored: 2 of 11 (v84 Loreto, v86 Cusco).
 # Architecture: extends Wave 1 by reusing _bact_wave1_altitude,
 # _bact_wave1_ethnicity, _bact_wave1_case_id, _bact_wave1_imaging_for,
 # _build_literature_anchor; adds Wave 2 dx_tests + adjudication +
@@ -17256,9 +17212,9 @@ def write_bact_wave1_corpus(
 # ============================================================================
 
 BACT_WAVE2_OUTPUT_DIR = Path("data/vignettes/v2/class_02_bacterial")
-BACT_WAVE2_IDS: list[int] = [61, 63, 68, 70, 72, 74, 83, 84, 85, 86, 87, 88, 89]
+BACT_WAVE2_IDS: list[int] = [61, 63, 68, 70, 72, 74, 83, 84, 85, 86, 87]
 BACT_WAVE2_AMBIGUITY_IDS: set[int] = {84}
-BACT_WAVE2_PERU_IDS: set[int] = {84, 86, 88}
+BACT_WAVE2_PERU_IDS: set[int] = {84, 86}
 
 
 def _bact_wave2_anchor_short(pmid: str) -> str:
@@ -17272,8 +17228,6 @@ def _bact_wave2_anchor_short(pmid: str) -> str:
         return "Park 2022 JOGH"
     if pmid == "29509834":
         return "Soeters 2018 CID"
-    if pmid == "12169881":
-        return "Mylonakis 2002 Medicine"
     raise KeyError(pmid)
 
 
@@ -17371,34 +17325,6 @@ def _bact_wave2_dx_tests_hib(pmid: str) -> list[dict[str, Any]]:
             "result": "haemophilus_influenzae_type_b_positive",
             "sensitivity_pct": 90.0,
             "specificity_pct": 95.0,
-            "citation_pmid_or_doi": cit,
-        },
-    ]
-
-
-def _bact_wave2_dx_tests_listeria(pmid: str) -> list[dict[str, Any]]:
-    """L. monocytogenes: Gram-positive bacilli + culture (slow-growing)."""
-    cit = f"PMID:{pmid}"
-    return [
-        {
-            "test_name": "csf_gram_stain",
-            "result": "gram_positive_bacilli_short",
-            "sensitivity_pct": 30.0,
-            "specificity_pct": 99.0,
-            "citation_pmid_or_doi": cit,
-        },
-        {
-            "test_name": "csf_culture",
-            "result": "listeria_monocytogenes",
-            "sensitivity_pct": 90.0,
-            "specificity_pct": 100.0,
-            "citation_pmid_or_doi": cit,
-        },
-        {
-            "test_name": "blood_culture",
-            "result": "listeria_monocytogenes_positive",
-            "sensitivity_pct": 75.0,
-            "specificity_pct": 99.0,
             "citation_pmid_or_doi": cit,
         },
     ]
@@ -18704,238 +18630,6 @@ def _build_bact_vignette_087() -> dict[str, Any]:
     }
 
 
-def _build_bact_vignette_088() -> dict[str, Any]:
-    """v88 Listeria 28F Tumbes pregnancy 30wk mid survived (Mylonakis 2002)."""
-    return {
-        "history": {
-            "symptom_onset_to_presentation_days": 4.0,
-            "chief_complaint": "fever_with_headache",
-            "prodrome_description": (
-                "28-year-old female, Tumbes Peru coastal community, 30 weeks "
-                "gestation. 4-day course: fever 38.6 C, headache, neck "
-                "stiffness, mild back pain. Recent unpasteurized soft-cheese "
-                "consumption. Tertiary obstetric ED. No freshwater. Outcome: "
-                "maternal survived no sequelae; fetal preterm but viable. "
-                "Antibiotic at hour 2 (ampicillin) plus gentamicin per IDSA "
-                "Listeria pregnancy protocol."
-            ),
-            "red_flags_present": ["pregnancy_postpartum"],
-        },
-        "vitals": {
-            "temperature_celsius": 38.6,
-            "heart_rate_bpm": 102,
-            "systolic_bp_mmHg": 110,
-            "diastolic_bp_mmHg": 68,
-            "glasgow_coma_scale": 14,
-            "oxygen_saturation_pct": 97,
-            "respiratory_rate_breaths_per_min": 20,
-        },
-        "exam": {
-            "mental_status_grade": "alert",
-            "neck_stiffness": True,
-            "kernig_or_brudzinski_positive": True,
-            "focal_neurological_deficit": False,
-            "cranial_nerve_palsy": "none",
-            "skin_lesion_centrofacial_chronic": False,
-            "petechial_or_purpuric_rash": False,
-            "papilledema_on_fundoscopy": False,
-        },
-        "labs": {
-            "wbc_blood_per_uL": 14500,
-            "platelets_per_uL": 220000,
-            "alt_ast_U_per_L": 24,
-            "crp_mg_per_L": 88.0,
-            "procalcitonin_ng_per_mL": 2.4,
-            "serum_sodium_mEq_per_L": 137,
-        },
-        "csf": {
-            "opening_pressure_cmH2O": 22.0,
-            "csf_wbc_per_mm3": 1500,
-            "csf_neutrophil_pct": 55,
-            "csf_lymphocyte_pct": 45,
-            "csf_eosinophil_pct": 0,
-            "csf_glucose_mg_per_dL": 28,
-            "csf_protein_mg_per_dL": 130,
-            "csf_lactate_mmol_per_L": 4.0,
-            "csf_ada_U_per_L": None,
-            "csf_crag_lfa_result": "negative",
-            "csf_wet_mount_motile_amoebae": "negative",
-            "csf_xanthochromia_present": False,
-            "csf_rbc_per_mm3": 3,
-            "csf_rbc_decreasing_across_tubes": None,
-        },
-        "narrative_en": (
-            "A 28-year-old woman from a Tumbes Peru coastal community at 30 "
-            "weeks gestation presented to a tertiary obstetric emergency "
-            "department after a 4-day course of fever to 38.6 C, headache, "
-            "neck stiffness, and mild back pain. She had recent consumption "
-            "of unpasteurized soft cheese. Examination on admission: "
-            "temperature 38.6 C, Glasgow Coma Scale 14, neck stiffness, "
-            "positive Kernig sign, no focal deficit, no rash. CSF showed "
-            "opening pressure 22 cmH2O, white cell count 1,500 per cubic "
-            "millimeter (55 percent neutrophils), glucose 28 mg/dL, protein "
-            "130 mg/dL. Gram stain revealed short gram-positive bacilli; CSF "
-            "and blood cultures grew Listeria monocytogenes. Anchored to "
-            "Mylonakis 2002 Medicine (PMID 12169881) listerial-meningitis "
-            "review (pregnancy stratum approximately 27 percent of adult "
-            "Listeria CNS infection in maternal-fetal cohort). Outcome: "
-            "maternal survived no sequelae; preterm-but-viable fetus "
-            "delivered. Subphase 1.3 commit 5.3.4 wave 2, pre-adjudication "
-            "hold_for_revision."
-        ),
-        "narrative_es": (
-            "Mujer de 28 anos de comunidad costera en Tumbes Peru a las 30 "
-            "semanas de gestacion, ingresada a urgencias obstetricas "
-            "terciarias tras cuatro dias de fiebre 38.6 C, cefalea, rigidez "
-            "de nuca y dolor lumbar leve. Antecedente de consumo reciente de "
-            "queso fresco no pasteurizado. Examen: temperatura 38.6 C, "
-            "escala de Glasgow 14, rigidez de nuca, signo de Kernig positivo, "
-            "sin deficit focal, sin exantema. Liquido cefalorraquideo mostro "
-            "presion de apertura 22 cmH2O, leucocitos 1,500 por mm3 (55 por "
-            "ciento neutrofilos), glucosa 28 mg/dL, proteina 130 mg/dL. "
-            "Tincion de Gram con bacilos grampositivos cortos; cultivos de "
-            "liquido y sangre crecieron Listeria monocytogenes. Anclaje en "
-            "revision Mylonakis 2002 Medicine (PMID 12169881, estrato gestante "
-            "alrededor del 27 por ciento de Listeria SNC en adultos). "
-            "Subphase 1.3 commit 5.3.4 wave 2."
-        ),
-        "rationale": (
-            "Anchored to PMID 12169881 (Mylonakis 2002 Medicine listerial-"
-            "meningitis review). Demographic anchor (28yo F Tumbes 30-week "
-            "gestation with unpasteurized-cheese exposure) sits in pregnancy "
-            "stratum (approximately 27 percent of adult Listeria CNS "
-            "infection in maternal-fetal cohort). CSF profile within "
-            "bacterial range with master prompt 1.3.3 floor on neutrophil "
-            "predominance (55 percent); Listeria classically can present "
-            "with lower neutrophil dominance but built at floor here. "
-            "Imputation tiers: tier_1_primary={age, sex, region, csf_culture, "
-            "pregnancy_status, soft_cheese_exposure}; tier_3_within_cohort="
-            "{csf_wbc, neutrophil_pct, glucose, protein}; tier_4_priors="
-            "{temp, gcs, symptom_days}. Indeterminate=none. Diagnostic_"
-            "ambiguity=false. Outcome=survived_no_sequelae. Tier: tier_3_"
-            "imputation_within_cohort_review. 5.3.4 wave2 Listeria-Tumbes-"
-            "pregnancy."
-        ),
-        "anchoring_extras": "anchor=Mylonakis-Medicine-2002 stratum=pregnancy-foodborne.",
-        "diagnostic_tests": _bact_wave2_dx_tests_listeria("12169881"),
-    }
-
-
-def _build_bact_vignette_089() -> dict[str, Any]:
-    """v89 Listeria 76F Netherlands mid survived_with_sequelae (Mylonakis)."""
-    return {
-        "history": {
-            "symptom_onset_to_presentation_days": 5.0,
-            "chief_complaint": "altered_mental_status",
-            "prodrome_description": (
-                "76-year-old female, Netherlands. 5-day course: low-grade "
-                "fever, fatigue, gait ataxia, then headache, confusion, neck "
-                "stiffness. Recent deli-meat consumption. Tertiary ED "
-                "Amsterdam. No freshwater. Outcome: survived with mild "
-                "residual ataxia. Antibiotic at hour 3 (ampicillin) plus "
-                "gentamicin IDSA Listeria elderly protocol."
-            ),
-            "red_flags_present": [],
-        },
-        "vitals": {
-            "temperature_celsius": 38.4,
-            "heart_rate_bpm": 96,
-            "systolic_bp_mmHg": 132,
-            "diastolic_bp_mmHg": 78,
-            "glasgow_coma_scale": 12,
-            "oxygen_saturation_pct": 95,
-            "respiratory_rate_breaths_per_min": 20,
-        },
-        "exam": {
-            "mental_status_grade": "confused",
-            "neck_stiffness": True,
-            "kernig_or_brudzinski_positive": True,
-            "focal_neurological_deficit": True,
-            "cranial_nerve_palsy": "CN_VII",
-            "skin_lesion_centrofacial_chronic": False,
-            "petechial_or_purpuric_rash": False,
-            "papilledema_on_fundoscopy": False,
-        },
-        "labs": {
-            "wbc_blood_per_uL": 15800,
-            "platelets_per_uL": 215000,
-            "alt_ast_U_per_L": 32,
-            "crp_mg_per_L": 105.0,
-            "procalcitonin_ng_per_mL": 3.8,
-            "serum_sodium_mEq_per_L": 134,
-        },
-        "csf": {
-            "opening_pressure_cmH2O": 24.0,
-            "csf_wbc_per_mm3": 1800,
-            "csf_neutrophil_pct": 60,
-            "csf_lymphocyte_pct": 40,
-            "csf_eosinophil_pct": 0,
-            "csf_glucose_mg_per_dL": 25,
-            "csf_protein_mg_per_dL": 145,
-            "csf_lactate_mmol_per_L": 4.4,
-            "csf_ada_U_per_L": None,
-            "csf_crag_lfa_result": "negative",
-            "csf_wet_mount_motile_amoebae": "negative",
-            "csf_xanthochromia_present": False,
-            "csf_rbc_per_mm3": 4,
-            "csf_rbc_decreasing_across_tubes": None,
-        },
-        "narrative_en": (
-            "A 76-year-old woman in the Netherlands presented to a tertiary "
-            "emergency department in Amsterdam after a 5-day course of "
-            "low-grade fever, fatigue, gait ataxia, then headache, confusion, "
-            "and neck stiffness. She had recent consumption of cold deli "
-            "meats. Examination on admission: temperature 38.4 C, Glasgow "
-            "Coma Scale 12, neck stiffness, positive Kernig sign, focal "
-            "deficit (right facial weakness, CN VII), no rash. CSF showed "
-            "opening pressure 24 cmH2O, white cell count 1,800 per cubic "
-            "millimeter (60 percent neutrophils), glucose 25 mg/dL, protein "
-            "145 mg/dL. Gram stain revealed short gram-positive bacilli; "
-            "CSF and blood cultures grew Listeria monocytogenes. Anchored to "
-            "Mylonakis 2002 Medicine (PMID 12169881, elderly-immunosenescence "
-            "stratum approximately 70 percent of adult Listeria CNS "
-            "infection). The brainstem-rhombencephalitis pattern (CN VII "
-            "palsy) is a documented Listeria phenotype. Outcome: survived "
-            "with mild residual ataxia. Subphase 1.3 commit 5.3.4 wave 2, "
-            "pre-adjudication hold_for_revision."
-        ),
-        "narrative_es": (
-            "Mujer de 76 anos en Paises Bajos (Amsterdam), ingresada a "
-            "urgencias terciarias tras cinco dias de febricula, fatiga, "
-            "ataxia de marcha y luego cefalea, confusion y rigidez de nuca. "
-            "Antecedente de consumo reciente de fiambres frios. Examen: "
-            "temperatura 38.4 C, escala de Glasgow 12, rigidez de nuca, "
-            "signo de Kernig positivo, deficit focal (paresia facial derecha, "
-            "par craneal VII), sin exantema. Liquido cefalorraquideo mostro "
-            "presion de apertura 24 cmH2O, leucocitos 1,800 por mm3 (60 por "
-            "ciento neutrofilos), glucosa 25 mg/dL, proteina 145 mg/dL. "
-            "Tincion de Gram con bacilos grampositivos cortos; cultivos de "
-            "liquido y sangre crecieron Listeria monocytogenes. Anclaje en "
-            "revision Mylonakis 2002 Medicine (PMID 12169881, estrato adulto "
-            "mayor inmunosenescencia, alrededor del 70 por ciento de "
-            "Listeria SNC en adultos). Subphase 1.3 commit 5.3.4 wave 2."
-        ),
-        "rationale": (
-            "Anchored to PMID 12169881 (Mylonakis 2002 Medicine review). "
-            "Demographic anchor (76yo F elderly with deli-meat exposure + "
-            "CN VII palsy) sits in elderly-immunosenescence stratum "
-            "(approximately 70 percent of adult Listeria CNS infection) and "
-            "demonstrates the documented Listeria brainstem-rhombencephalitis "
-            "phenotype. CSF profile bacterial range at master prompt 1.3.3 "
-            "floor (neutrophil 60 percent). Imputation tiers: tier_1_primary"
-            "={age, sex, csf_culture, csf_gram_stain, deli_meat_exposure, "
-            "cn7_palsy}; tier_3_within_cohort={csf_wbc, neutrophil_pct, "
-            "glucose, protein, gcs}; tier_4_priors={temp, symptom_days}. "
-            "Indeterminate=none. Diagnostic_ambiguity=false. Outcome="
-            "survived_with_mild_residual_ataxia. Tier: tier_3_imputation_"
-            "within_cohort_review. 5.3.4 wave2 Listeria-elderly-"
-            "rhombencephalitis."
-        ),
-        "anchoring_extras": "anchor=Mylonakis-Medicine-2002 stratum=elderly-rhombencephalitis.",
-        "diagnostic_tests": _bact_wave2_dx_tests_listeria("12169881"),
-    }
-
-
 _BACT_WAVE2_BUILDERS: dict[int, Any] = {
     61: _build_bact_vignette_061,
     63: _build_bact_vignette_063,
@@ -18948,8 +18642,6 @@ _BACT_WAVE2_BUILDERS: dict[int, Any] = {
     85: _build_bact_vignette_085,
     86: _build_bact_vignette_086,
     87: _build_bact_vignette_087,
-    88: _build_bact_vignette_088,
-    89: _build_bact_vignette_089,
 }
 
 

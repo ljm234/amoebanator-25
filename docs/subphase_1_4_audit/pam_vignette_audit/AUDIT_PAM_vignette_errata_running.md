@@ -50,4 +50,10 @@ ERR-020: pam_d2_046 Lares-Villa 1993 (PMID 8458963) | UNVERIFIABLE _reuse | vign
 - _reuse_ flag is consistently applied to disclosed imputations (Day-2 set)
 - NEW PATTERN: Even demographic-matching vignettes have CSF values fabricated with "PAM-classic" templates that don't match atypical real cases (Rauf Kerala best example: real case low WBC + lymphocytic vs vignette high WBC + neutrophilic)
 
+## Errata 5.4.3.3 - Listeria slots removed (2026-05-31)
+- **bact_088** (Tumbes pregnancy Listeria): was anchored to PMID 12169881 (Mylonakis 2002 "Listeriosis during pregnancy: a case series and review of 222 cases"). The registry and narratives mislabeled it a "listerial-meningitis review" and asserted a fabricated "pregnancy stratum approximately 27 percent of adult Listeria CNS infection" figure that the pregnancy-specific paper does not support.
+- **bact_089** (Netherlands elderly Listeria rhombencephalitis): same anchor 12169881, with a fabricated "elderly-immunosenescence stratum approximately 70 percent" figure and a brainstem-rhombencephalitis phenotype claim not supported by the pregnancy-focused source.
+- **PMID 9772921** (Mylonakis 1998, CNS Listeria, 33 years / 776 episodes) was considered as the correct CNS anchor; its identity is confirmed from the article first page, but no full text could be verified to the project full-text standard, so it was NOT used to re-anchor.
+- **Resolution:** both Listeria vignettes (bact_088, bact_089) deleted; registry entry 12169881 removed; the master-prompt 2-Listeria bacterial mandate retired (L1413: 21 SP / 4 NM / 2 Hib / 0 Listeria / 1 GN = 28); corpus total 270 -> 268. Reconstructible if a full-text-verified Listeria CNS source is obtained.
+
 End of file.

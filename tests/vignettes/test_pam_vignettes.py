@@ -96,6 +96,12 @@ _VALID_VERIFICATION_DATES = {
     # via Claude web PubMed/PMC: MacNeil 2018 CID 29126310, Marcus 2022
     # OFID 35493127, Park 2022 JOGH 35265327, Soeters 2018 CID 29509834.
     "2026-05-30",
+    # Errata 5.4.3.3 (2026-05-31): deleted both Mylonakis 2002 Listeria
+    # vignettes (v88/v89; full-text verification standard not met) and
+    # deep-verified 3 BACT anchors via web PubMed full-text -- Tunkel 2004
+    # CID 15494903, Bijlsma 2016 Lancet ID 26652862, Heckenberg 2008
+    # Medicine 18626301. (van de Beek 15509818 was deep-verified 2026-05-30.)
+    "2026-05-31",
 }
 
 
@@ -1196,7 +1202,7 @@ _PERU_GEOGRAPHY_REGIONS = {
 
 
 def test_bacterial_distribution_count():
-    assert len(BACTERIAL_DISTRIBUTION) == 30
+    assert len(BACTERIAL_DISTRIBUTION) == 28
 
 
 def test_viral_distribution_count():
@@ -1204,14 +1210,15 @@ def test_viral_distribution_count():
 
 
 def test_bacterial_pathogen_counts():
-    """Master prompt L1413: 21 SP / 4 NM / 2 Hib / 2 Listeria / 1 GN."""
+    """Master prompt L1413: 21 SP / 4 NM / 2 Hib / 0 Listeria / 1 GN
+    (2 Listeria slots removed in errata 5.4.3.3)."""
     counts = _collections.Counter(
         s["pathogen"] for s in BACTERIAL_DISTRIBUTION
     )
     assert counts["S_pneumoniae"] == 21, counts
     assert counts["N_meningitidis"] == 4, counts
     assert counts["H_influenzae"] == 2, counts
-    assert counts["Listeria_monocytogenes"] == 2, counts
+    assert counts["Listeria_monocytogenes"] == 0, counts
     assert counts["gram_negative"] == 1, counts
 
 
@@ -1232,13 +1239,13 @@ def test_viral_pathogen_counts():
 
 
 def test_bacterial_peru_anchor_share():
-    """5/30 Peru-anchored: 2 Lima SP + 1 Loreto NM + 1 Cusco Hib +
-    1 Tumbes Listeria (Q8 lock decision)."""
+    """4/28 Peru-anchored: 2 Lima SP + 1 Loreto NM + 1 Cusco Hib
+    (1 Tumbes Listeria removed in errata 5.4.3.3)."""
     peru = sum(
         1 for s in BACTERIAL_DISTRIBUTION
         if s["geography_region"] in _PERU_GEOGRAPHY_REGIONS
     )
-    assert peru == 5
+    assert peru == 4
 
 
 def test_viral_dengue_peru_anchor():
@@ -1295,18 +1302,19 @@ def test_dengue_platelet_mandate_present_in_specs():
 
 
 def test_subphase_1_3_vignette_ids_contiguous():
-    """Class 2 occupies 61-90; Class 3 occupies 91-120; combined 60 specs
-    are contiguous and disjoint from Day-1 (1-20) and Day-2 (21-60)."""
+    """Class 2 occupies 61-90 minus 88/89 (the 2 Listeria slots removed in
+    errata 5.4.3.3); Class 3 occupies 91-120; specs are disjoint from Day-1
+    (1-20) and Day-2 (21-60)."""
     bact_ids = sorted(s["vignette_id"] for s in BACTERIAL_DISTRIBUTION)
     viral_ids = sorted(s["vignette_id"] for s in VIRAL_DISTRIBUTION)
-    assert bact_ids == list(range(61, 91))
+    assert bact_ids == [i for i in range(61, 91) if i not in (88, 89)]
     assert viral_ids == list(range(91, 121))
 
 
 def test_marginals_files_exist_and_valid():
     """marginals.json artifacts present per master prompt 1.3.1 / 1.3.2."""
     cases = [
-        ("data/vignettes/v2/class_02_bacterial/marginals.json", 2, 30),
+        ("data/vignettes/v2/class_02_bacterial/marginals.json", 2, 28),
         ("data/vignettes/v2/class_03_viral/marginals.json", 3, 30),
     ]
     for path, class_id, total_n in cases:

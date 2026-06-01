@@ -1,9 +1,10 @@
 """Subphase 1.3 Commit 5.3.4 Wave 2 BACT lock-in tests.
 
-13 vignettes: Bijlsma 6 SP NL cohort + 5 NM/Hib re-anchored under errata
+11 vignettes: Bijlsma 6 SP NL cohort + 5 NM/Hib re-anchored under errata
 5.4.3.2 (MacNeil 2018 CID, Marcus 2022 OFID, Park 2022 JOGH, Soeters 2018
-CID) + Mylonakis 2 Listeria. 1 ambiguity case (v84 NM Loreto infant).
-3 Peru anchors (v84 Loreto, v86 Cusco, v88 Tumbes).
+CID). 1 ambiguity case (v84 NM Loreto infant). 2 Peru anchors (v84 Loreto,
+v86 Cusco). The 2 Mylonakis 2002 Listeria slots (v88/v89) were removed in
+errata 5.4.3.3 (full-text verification standard not met).
 """
 from __future__ import annotations
 
@@ -21,9 +22,9 @@ from ml.schemas.vignette import VignetteSchema  # noqa: E402
 from scripts.generate_pam_vignettes import BACTERIAL_DISTRIBUTION  # noqa: E402
 
 
-BACT_WAVE2_IDS = [61, 63, 68, 70, 72, 74, 83, 84, 85, 86, 87, 88, 89]
+BACT_WAVE2_IDS = [61, 63, 68, 70, 72, 74, 83, 84, 85, 86, 87]
 BACT_WAVE2_AMBIGUITY_IDS = {84}
-BACT_WAVE2_PERU_IDS = {84, 86, 88}
+BACT_WAVE2_PERU_IDS = {84, 86}
 WAVE2_DIR = _REPO_ROOT / "data" / "vignettes" / "v2" / "class_02_bacterial"
 
 
@@ -158,7 +159,7 @@ def test_bact_wave2_peru_anchors():
 
 
 def test_bact_wave2_pathogen_distribution():
-    """6 SP + 3 NM + 2 Hib + 2 Listeria."""
+    """6 SP + 3 NM + 2 Hib (2 Listeria removed in errata 5.4.3.3)."""
     counts: dict[str, int] = {}
     for vid in BACT_WAVE2_IDS:
         p = _wave2_slot(vid)["pathogen"]
@@ -167,7 +168,6 @@ def test_bact_wave2_pathogen_distribution():
         "S_pneumoniae": 6,
         "N_meningitidis": 3,
         "H_influenzae": 2,
-        "Listeria_monocytogenes": 2,
     }, f"Wave 2 pathogen distribution: {counts}"
 
 

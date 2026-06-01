@@ -298,7 +298,7 @@ def test_subphase_1_3_complete_60_60():
         p
         for p in (_REPO_ROOT / "data/vignettes/v2/class_03_viral").glob("vir_*.json")
     )
-    assert len(bact) == 30, f"BACT count {len(bact)} != 30"
+    assert len(bact) == 28, f"BACT count {len(bact)} != 28"
     assert len(viral) == 30, f"VIRAL count {len(viral)} != 30"
     for p in bact + viral:
         VignetteSchema.model_validate(json.loads(p.read_text(encoding="utf-8")))
