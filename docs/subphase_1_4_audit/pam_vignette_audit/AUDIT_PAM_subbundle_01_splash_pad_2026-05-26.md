@@ -20,7 +20,7 @@ Per-anchor distribution within this sub-bundle:
 **2. class_label / ground_truth_class:** Class 1 (PAM)
 **3. literature_anchors[0]:** PMID `40146665` | Dulski TM et al. | MMWR Morb Mortal Wkly Rep | 2025 | anchor_type=surveillance | doi=`10.15585/mmwr.mm7410a2`
 **4. demographics:** age_years=1, sex=male, ethnicity=white_non_hispanic, altitude_residence_m=100
-**5. geography:** geography_region=`us_south` — narrative city/state hint: see narrative excerpt below
+**5. geography:** geography_region=`us_south` - narrative city/state hint: see narrative excerpt below
 **6. exposure:**
    - freshwater_exposure_within_14d: Yes
    - freshwater_exposure_type: `splash_pad`
@@ -37,7 +37,7 @@ Per-anchor distribution within this sub-bundle:
    - focal_neurological_deficit: No, cranial_nerve_palsy: `none`
    - papilledema_on_fundoscopy: Yes, petechial_or_purpuric_rash: No
    - skin_lesion_centrofacial_chronic: No
-   - seizure mention (narrative/prodrome regex): Yes — tonic-clonic
+   - seizure mention (narrative/prodrome regex): Yes - tonic-clonic
 **9. diagnostic_tests:**
    - CSF: OP=42.0cmH2O, WBC=3800/mm3, lymph%=4, neut%=95, eos%=1, glucose=14mg/dL, protein=380mg/dL, lactate=8.4mmol/L, ADA=None, CrAg LFA=negative, wet_mount_motile_amoebae=positive, RBC=540, xanthochromia=No
    - Blood/Labs: WBC=16400/uL, plt=224000/uL, ALT/AST=38, CRP=92.0mg/L, PCT=3.2ng/mL, Na=134mEq/L
@@ -76,7 +76,7 @@ Per-anchor distribution within this sub-bundle:
 **2. class_label / ground_truth_class:** Class 1 (PAM)
 **3. literature_anchors[0]:** PMID `40146665` | Dulski TM et al. | MMWR Morb Mortal Wkly Rep | 2025 | anchor_type=surveillance | doi=`10.15585/mmwr.mm7410a2`
 **4. demographics:** age_years=3, sex=female, ethnicity=white_non_hispanic, altitude_residence_m=100
-**5. geography:** geography_region=`us_south` — narrative city/state hint: see narrative excerpt below
+**5. geography:** geography_region=`us_south` - narrative city/state hint: see narrative excerpt below
 **6. exposure:**
    - freshwater_exposure_within_14d: Yes
    - freshwater_exposure_type: `splash_pad`
@@ -106,7 +106,7 @@ Per-anchor distribution within this sub-bundle:
    - drugs mentioned: (none detected)
    - initiation timing hint: (see narrative)
 **11. outcome:** fatal (hospital day five)
-   - sequelae mention: Yes — deficit
+   - sequelae mention: Yes - deficit
 **12. narrative_en (full text):**
 > Three-year-old previously healthy female presented with four days of high fever, severe headache, photophobia, and intermittent vomiting following community splash pad exposure approximately four days before symptom onset. On the day of admission she developed neck stiffness and increasing irritability without focal deficits. Examination showed temperature 40.1 C, tachycardia, neck stiffness, positive Brudzinski sign, and a Glasgow Coma Scale of 13. Cerebrospinal fluid showed opening pressure 28 cmH2O, white blood cell count 2,200 per cubic millimeter (92 percent neutrophils), glucose 26 mg/dL, protein 240 mg/dL, lactate 5.6 mmol/L, and motile trophozoites on wet mount; CDC reference laboratory CSF real-time PCR confirmed Naegleria fowleri. The CDC six-drug protocol was initiated within hours of admission; the child progressed to coma and died on hospital day five despite intracranial pressure management.
 
@@ -132,7 +132,7 @@ Per-anchor distribution within this sub-bundle:
 **2. class_label / ground_truth_class:** Class 1 (PAM)
 **3. literature_anchors[0]:** PMID `37470480` | Eger L, Pence MA | J Clin Microbiol | 2023 | anchor_type=case_report | doi=``
 **4. demographics:** age_years=3, sex=male, ethnicity=white_non_hispanic, altitude_residence_m=100
-**5. geography:** geography_region=`us_south` — narrative city/state hint: see narrative excerpt below
+**5. geography:** geography_region=`us_south` - narrative city/state hint: see narrative excerpt below
 **6. exposure:**
    - freshwater_exposure_within_14d: Yes
    - freshwater_exposure_type: `splash_pad`
@@ -188,7 +188,7 @@ Per-anchor distribution within this sub-bundle:
 **2. class_label / ground_truth_class:** Class 1 (PAM)
 **3. literature_anchors[0]:** PMID `37470480` | Eger L, Pence MA | J Clin Microbiol | 2023 | anchor_type=case_report | doi=``
 **4. demographics:** age_years=4, sex=male, ethnicity=white_non_hispanic, altitude_residence_m=100
-**5. geography:** geography_region=`us_south` — narrative city/state hint: see narrative excerpt below
+**5. geography:** geography_region=`us_south` - narrative city/state hint: see narrative excerpt below
 **6. exposure:**
    - freshwater_exposure_within_14d: Yes
    - freshwater_exposure_type: `splash_pad`
@@ -205,7 +205,7 @@ Per-anchor distribution within this sub-bundle:
    - focal_neurological_deficit: No, cranial_nerve_palsy: `none`
    - papilledema_on_fundoscopy: Yes, petechial_or_purpuric_rash: No
    - skin_lesion_centrofacial_chronic: No
-   - seizure mention (narrative/prodrome regex): Yes — tonic-clonic
+   - seizure mention (narrative/prodrome regex): Yes - tonic-clonic
 **9. diagnostic_tests:**
    - CSF: OP=48.0cmH2O, WBC=4600/mm3, lymph%=3, neut%=96, eos%=1, glucose=12mg/dL, protein=420mg/dL, lactate=9.2mmol/L, ADA=None, CrAg LFA=negative, wet_mount_motile_amoebae=positive, RBC=820, xanthochromia=No
    - Blood/Labs: WBC=18800/uL, plt=198000/uL, ALT/AST=44, CRP=110.0mg/L, PCT=4.6ng/mL, Na=132mEq/L
@@ -244,7 +244,7 @@ Per-anchor distribution within this sub-bundle:
 **2. class_label / ground_truth_class:** Class 1 (PAM)
 **3. literature_anchors[0]:** PMID `40146665` | Dulski TM et al. | MMWR Morb Mortal Wkly Rep | 2025 | anchor_type=surveillance | doi=`10.15585/mmwr.mm7410a2`
 **4. demographics:** age_years=5, sex=male, ethnicity=white_non_hispanic, altitude_residence_m=100
-**5. geography:** geography_region=`us_south` — narrative city/state hint: see narrative excerpt below
+**5. geography:** geography_region=`us_south` - narrative city/state hint: see narrative excerpt below
 **6. exposure:**
    - freshwater_exposure_within_14d: Yes
    - freshwater_exposure_type: `splash_pad`
@@ -273,7 +273,7 @@ Per-anchor distribution within this sub-bundle:
    - drugs mentioned: (none detected)
    - initiation timing hint: (see narrative)
 **11. outcome:** (unknown) ()
-   - sequelae mention: Yes — deficit
+   - sequelae mention: Yes - deficit
 **12. narrative_en (full text):**
 > A 5-year-old previously healthy boy from Pulaski County, Arkansas presented with four days of fever, headache, vomiting, and progressive somnolence with neck stiffness one week after splash-pad play. Examination showed temperature 39.5 C, Glasgow Coma Scale 11, neck stiffness, and a positive Kernig sign without focal deficit. CSF showed opening pressure 28 cmH2O, white cell count 2,840 per cubic millimeter (89 percent neutrophils), glucose 22 mg/dL, protein 344 mg/dL, and lactate 6.6 mmol/L. CSF PCR for Naegleria fowleri at the CDC reference laboratory was positive. The CDC PAM regimen was started but the patient died. Day-1 used Dulski 2025 MMWR for v1 (16-month-old boy) and v2 (3-year-old girl); v50 is a within-cohort imputation for a 5-year-old male within the same Pulaski County Arkansas splash-pad case context (PMID 40146665).
 
@@ -299,7 +299,7 @@ Per-anchor distribution within this sub-bundle:
 **2. class_label / ground_truth_class:** Class 1 (PAM)
 **3. literature_anchors[0]:** PMID `37470480` | Eger L, Pence MA | J Clin Microbiol | 2023 | anchor_type=case_report | doi=``
 **4. demographics:** age_years=6, sex=male, ethnicity=white_non_hispanic, altitude_residence_m=100
-**5. geography:** geography_region=`us_south` — narrative city/state hint: see narrative excerpt below
+**5. geography:** geography_region=`us_south` - narrative city/state hint: see narrative excerpt below
 **6. exposure:**
    - freshwater_exposure_within_14d: Yes
    - freshwater_exposure_type: `splash_pad`
@@ -329,7 +329,7 @@ Per-anchor distribution within this sub-bundle:
    - drugs mentioned: (none detected)
    - initiation timing hint: (see narrative)
 **11. outcome:** (unknown) ()
-   - sequelae mention: Yes — deficit
+   - sequelae mention: Yes - deficit
 **12. narrative_en (full text):**
 > A 6-year-old previously healthy boy from Texas presented with three days of fever, headache, vomiting, and rapid progression to coma with focal motor weakness, five days after splash-pad play. Examination showed temperature 39.7 C, Glasgow Coma Scale 4, neck stiffness, papilledema, and a focal deficit. CSF showed opening pressure 38 cmH2O, white cell count 4,540 per cubic millimeter (92 percent neutrophils), glucose 13 mg/dL, protein 454 mg/dL, lactate 8.5 mmol/L, and motile trophozoites on wet mount; the CDC reference laboratory CSF PCR confirmed Naegleria fowleri. The CDC PAM regimen was started but the patient died. Day-1 used Eger 2023 for v3 (3-year-old boy) and v4 (4-year-old boy); v51 is a within-cohort imputation for a 6-year-old male, late-stage demographic within the same Texas splash-pad case context (PMID 37470480).
 
@@ -429,6 +429,6 @@ Totals: {'fatal': 4, '(unknown)': 2}
 | Cross-vignette pattern analysis | Excellent (demo/CSF/vitals/treatment/outcome/anchor/dx_citation tables) |
 | Pre-flight flags | Exceptional (PAM-specific clinical-plausibility thresholds + anchor-set check + geography check) |
 
-**Overall Sub-Bundle 01 readiness for Claude 5-layer review**: **Exceptional**
+**Overall Sub-Bundle 01 readiness for the assistant 5-layer review**: **Exceptional**
 
 Phase 2 Sub-Bundle 01 extraction complete. Next sub-bundle audit awaits separate prompt.

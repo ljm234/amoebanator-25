@@ -40,7 +40,7 @@ Bundle type: CLASS-LOCKED-BATCH (class viral, small clusters packed)
   "anchor_type": "cohort",
   "anchor_subtype": "pediatric_aseptic_meningitis_pmn_predominant_enterovirus_cohort",
   "verification_confidence": 0.95,
-  "verification_method": "claude_web_pubmed_ui_v4_2026_05_07",
+  "verification_method": "web_pubmed_ui_v4_2026_05_07",
   "last_verified_date": "2026-05-07",
   "caveat": "506-child aseptic meningitis cohort Athens Greece (Aghia Sophia Children's Hospital tertiary center serving approximately 70 percent of Athens metropolitan area pediatric meningitis), Jan 1994 to Dec 2002. Median age 5 years. Annual incidence 17 per 100,000 in under 14y. Summer 38 percent (Jun-Aug), autumn 24 percent, peak month June. Symptoms: fever 98 percent, headache 94 percent, vomiting 67 percent, neck stiffness 60 percent, lethargy or irritation 46 percent, seizures 2.3 percent. Median CSF cell count 201 per mm3. CRITICAL ANCHOR: polymorphonuclear predominance greater than 50 percent in 58.3 percent of EV PCR-positive cases (47/96 tested EV PCR-positive = 48.9 percent). Contradicts textbook viral-CSF-lymphocytic simplification. Anchor for Class 3 enterovirus pediatric PMN-predominant ambiguity case (Subphase 1.3 commit 5.3.2). PubMed canonical 2(7); PLOS website cites 2(8)."
 }
@@ -265,16 +265,16 @@ ADJUDICATION:
   disagreement_resolution: None
 ```
 
-### REVIEWER PROMPT (Claude chat fills below)
+### REVIEWER PROMPT (the reviewer fills below)
 
-For each vignette above, the reviewer (Claude chat) must answer:
+For each vignette above, the reviewer must answer:
 1. Does the vignette's clinical content match the anchor paper's actual claims?
 2. Are demographics, CSF, vitals, imaging plausible per the paper?
 3. Does the narrative reference the anchor accurately (year, author, claim)?
 4. Would this vignette anchor better to a different paper in the registry? (specify which if yes)
 5. Severity if issues found: [Catastrophic / Needs Errata / Minor / Clean]
 
-### REVIEWER NOTES (Claude chat YYYY-MM-DD)
+### REVIEWER NOTES (the reviewer YYYY-MM-DD)
 
 _(empty; to be filled during chat verification)_
 
@@ -314,7 +314,7 @@ _(empty; to be filled during chat verification)_
   "anchor_type": "surveillance",
   "anchor_subtype": "peru_2023_dengue_outbreak_post_cyclone_yaku_denv2_circulating",
   "verification_confidence": 0.95,
-  "verification_method": "claude_web_pubmed_ui_v4_2026_05_07",
+  "verification_method": "web_pubmed_ui_v4_2026_05_07",
   "last_verified_date": "2026-05-07",
   "caveat": "Peru 2023 dengue outbreak surveillance. 222,620 dengue cases reported in first 30 weeks of 2023 (exceeding previous 5-year average by approximately 10x). 381 dengue-associated deaths. Lima metropolitan area showed substantially higher incidence vs historical baseline (where few locally-acquired cases observed). Outbreak linked to Cyclone Yaku (March 2023) and coastal El Nino. DENV-2 serotype documented as established circulating serotype in Peru since 2019. Annual case range 2017-2022 was 4,698 to 68,290; 2023 exceeded all prior years dramatically. Anchor for Class 3 dengue Peru primary-source vignettes (Subphase 1.3 commit 5.3.2). Note: exact serotype split (DENV-1 vs DENV-2 vs DENV-3) not in MMWR Notes-from-the-Field abstract; full-text verification deferred per USER ASSIGNMENT 5."
 }
@@ -564,15 +564,15 @@ ADJUDICATION:
   disagreement_resolution: None
 ```
 
-### REVIEWER PROMPT (Claude chat fills below)
+### REVIEWER PROMPT (the reviewer fills below)
 
-For each vignette above, the reviewer (Claude chat) must answer:
+For each vignette above, the reviewer must answer:
 1. Does the vignette's clinical content match the anchor paper's actual claims?
 2. Are demographics, CSF, vitals, imaging plausible per the paper?
 3. Does the narrative reference the anchor accurately (year, author, claim)?
 4. Would this vignette anchor better to a different paper in the registry? (specify which if yes)
 5. Severity if issues found: [Catastrophic / Needs Errata / Minor / Clean]
 
-### REVIEWER NOTES (Claude chat YYYY-MM-DD)
+### REVIEWER NOTES (the reviewer YYYY-MM-DD)
 
 _(empty; to be filled during chat verification)_

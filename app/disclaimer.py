@@ -2,17 +2,17 @@
 
 Three responsibilities, one module:
 
-1. ``DISCLAIMER_TEXT``       — the locked Q19.A variant (ii) banner that
+1. ``DISCLAIMER_TEXT``       - the locked Q19.A variant (ii) banner that
                                 appears on every page. Tested for 5
                                 mandatory tokens via the parametrized
                                 ``test_disclaimer_on_every_page``.
-2. ``_INJECTED_CSS``          — wash + border + deep-text WCAG-AA color
+2. ``_INJECTED_CSS``          - wash + border + deep-text WCAG-AA color
                                 pattern for ``.stAlert[kind="error"]``
                                 / warning / info / success, plus a
                                 ``prefers-reduced-motion`` block. Single
-                                source of truth — NO competing CSS in
+                                source of truth - NO competing CSS in
                                 other modules.
-3. ``wcag_contrast_ratio()``  — hand-rolled relative-luminance ratio
+3. ``wcag_contrast_ratio()``  - hand-rolled relative-luminance ratio
                                 math (WCAG 2.0). No axe-core dep. Used
                                 by ``test_app_disclaimer.py`` to assert
                                 each locked color combo achieves the
@@ -40,9 +40,9 @@ DISCLAIMER_TEXT: str = (
     "⚠ Research prototype, NOT a medical device. Trained on n=30 "
     "synthetic patient vignettes (n_train=24, n_val=6); contains zero "
     "real PHI. Outputs are calibrated probabilities, **limited to** "
-    "the n=30 training distribution — not diagnoses. Not for clinical "
+    "the n=30 training distribution - not diagnoses. Not for clinical "
     "decision support, not validated. Source + caveats: "
-    "github.com/ljm234/amoebanator-25 — Contact: "
+    "github.com/ljm234/amoebanator-25 - Contact: "
     "lmontenegrocalla@mail.weber.edu (ORCID 0009-0000-7851-7139)"
 )
 
@@ -58,7 +58,7 @@ _INJECTED_CSS: str = """
 .stAlert[kind="error"] {
     background: #FFEBEE;            /* light red wash */
     border-left: 4px solid #B71C1C; /* deep red accent */
-    color: #B71C1C;                 /* deep red text — contrast 7.18:1 */
+    color: #B71C1C;                 /* deep red text - contrast 7.18:1 */
 }
 .stAlert[kind="warning"] {
     background: #FFF8E1;            /* light amber wash */
@@ -68,12 +68,12 @@ _INJECTED_CSS: str = """
 .stAlert[kind="info"] {
     background: #E3F2FD;            /* light blue wash */
     border-left: 4px solid #0D47A1; /* deep blue accent (theme primary) */
-    color: #0D47A1;                 /* deep blue text — contrast 8.21:1 */
+    color: #0D47A1;                 /* deep blue text - contrast 8.21:1 */
 }
 .stAlert[kind="success"] {
     background: #E8F5E9;            /* light green wash */
     border-left: 4px solid #1B5E20; /* deep green accent */
-    color: #1B5E20;                 /* deep green text — contrast 7.59:1 */
+    color: #1B5E20;                 /* deep green text - contrast 7.59:1 */
 }
 
 /* ── Q15.5.E: prefers-reduced-motion ──────────────────────────────── */

@@ -1,4 +1,4 @@
-"""Audit log viewer — Phase 4.5 Mini-2 T2.1.
+"""Audit log viewer - Phase 4.5 Mini-2 T2.1.
 
 Renders the current session's audit chain via ``st.table`` (Q15.5.C
 locked: HTML <table> semantics for screen readers, NOT
@@ -29,7 +29,7 @@ from ml.audit_hooks import default_audit_path
 _ROW_CAP = 10_000  # Q15.C locked
 
 
-st.set_page_config(page_title="Audit — Amoebanator 25", page_icon="📜")
+st.set_page_config(page_title="Audit - Amoebanator 25", page_icon="📜")
 render_disclaimer()
 
 st.title("Audit Log (Current Session)")
@@ -74,7 +74,7 @@ if total_rows > _ROW_CAP:
 else:
     df_display = df
 
-# Q15.5.C: st.table — true HTML <table> semantics for screen readers.
+# Q15.5.C: st.table - true HTML <table> semantics for screen readers.
 st.table(df_display)
 
 

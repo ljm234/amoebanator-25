@@ -133,14 +133,14 @@ Sorted descending by usage count in PAM vignettes:
 
 Each sub-bundle target: 8-12 vignettes for sequential 5-layer review.
 
-### Option A — by primary anchor (anchor-locked sub-bundles)
+### Option A - by primary anchor (anchor-locked sub-bundles)
 
 Pros: matches Subphase 1.4 audit-bundle pattern. Mostly small clusters (most PMIDs cite 1-5 vignettes each); requires packing of low-count anchors.
 
 Anchor distribution: 33 unique anchors over 60 vignettes. Top anchors: 22238170 (n=5), 34307045 (n=5), 26582886 (n=5), 22919000 (n=4), 40146665 (n=3)
 Cons: many tiny clusters force grouping by token-pack, scattering vignettes across diagnosis.
 
-### Option B — by exposure route (clinically coherent)
+### Option B - by exposure route (clinically coherent)
 
 Distribution per exposure cluster:
   - (other): 31 vignettes ← split
@@ -158,7 +158,7 @@ Distribution per exposure cluster:
 Pros: each sub-bundle is clinically coherent (same exposure mechanism). Easy reviewer prompt: "Are these N vignettes faithful to the exposure cluster's published clinical pattern?"
 Cons: 'lake/pond' or 'splash_pad' may exceed 12; small categories ('indoor_surfing', 'tap/groundwater') need merging.
 
-### Option C — by geography (US South / US North / Pakistan / Latin America / Asia)
+### Option C - by geography (US South / US North / Pakistan / Latin America / Asia)
 
 Distribution per geography:
   - us_south: 32 vignettes ← split
@@ -168,7 +168,7 @@ Distribution per geography:
 
 Pros: aligns with public-health geography (e.g., Karachi ablution cluster). Cons: schema region enum is coarse (`us_south`, `other_global`); many low-count regions force merge.
 
-### Option D — by outcome (fatal cohort vs survivor cohort)
+### Option D - by outcome (fatal cohort vs survivor cohort)
 
   - fatal: 53 vignettes
   - survivor: 7 vignettes

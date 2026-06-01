@@ -27,7 +27,7 @@ def main() -> None:
 
     lines = []
     lines += [
-        "# DECIDE-AI — Early Clinical Evaluation (Amoebanator Pro)",
+        "# DECIDE-AI - Early Clinical Evaluation (Amoebanator Pro)",
         f"_Generated {datetime.datetime.now().isoformat(timespec='seconds')}_",
         "",
         "## Clinical Context & Intended Integration",
@@ -44,7 +44,7 @@ def main() -> None:
         f"- [x] Coverage α={conf.get('alpha','NA')}, empirical={conf.get('coverage','NA')}, abstain={conf.get('abstain_rate','NA')}",
         f"- [x] OOD gate: Mahalanobis; range checks over {', '.join(ood.get('numeric_cols', [])) if ood else 'NA'}",
         "",
-        "## Benefit–Harm Balance",
+        "## Benefit-Harm Balance",
         "- [x] Threshold chosen by decision-curve analysis (net benefit).",
         "",
         "## Risks & Mitigations",

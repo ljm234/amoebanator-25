@@ -27,7 +27,7 @@ Bundle type: BIG (n>=5 vignettes single-anchor)
   "anchor_type": "review",
   "anchor_subtype": "viral_encephalitis_clinical_review",
   "verification_confidence": 0.95,
-  "verification_method": "claude_web_pubmed_ncbi_esummary_2026_05_11",
+  "verification_method": "web_pubmed_ncbi_esummary_2026_05_11",
   "last_verified_date": "2026-05-11",
   "caveat": "NEJM clinical review of acute viral encephalitis. Anchor for Class 3 enterovirus + arboviral + HSV-2/VZV vignettes; documents pathogen-specific imaging and CSF profiles. Errata 5.4.3.1: PMID corrected from 29490180 (a NEJM Letter on breast cancer recurrence) to 30089069 per NCBI E-utilities verification 2026-05-11. Volume/issue/pages corrected to 379(6):557-566 (NEJM 2018-08-09 issue)."
 }
@@ -1034,15 +1034,15 @@ ADJUDICATION:
   disagreement_resolution: None
 ```
 
-### REVIEWER PROMPT (Claude chat fills below)
+### REVIEWER PROMPT (the reviewer fills below)
 
-For each vignette above, the reviewer (Claude chat) must answer:
+For each vignette above, the reviewer must answer:
 1. Does the vignette's clinical content match the anchor paper's actual claims?
 2. Are demographics, CSF, vitals, imaging plausible per the paper?
 3. Does the narrative reference the anchor accurately (year, author, claim)?
 4. Would this vignette anchor better to a different paper in the registry? (specify which if yes)
 5. Severity if issues found: [Catastrophic / Needs Errata / Minor / Clean]
 
-### REVIEWER NOTES (Claude chat YYYY-MM-DD)
+### REVIEWER NOTES (the reviewer YYYY-MM-DD)
 
 _(empty; to be filled during chat verification)_

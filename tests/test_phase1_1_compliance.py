@@ -1,5 +1,5 @@
 """
-Phase 1.1 Compliance Module — Comprehensive Test Suite.
+Phase 1.1 Compliance Module - Comprehensive Test Suite.
 
 Tests cover:
   - ORCID validation (format, checksum, ISO 7064 Mod 11-2)
@@ -915,7 +915,7 @@ class TestValueObjects:
 
 
 # ═══════════════════════════════════════════════════════════════════════════
-# Coverage Gap Tests — previously uncovered lines
+# Coverage Gap Tests - previously uncovered lines
 # ═══════════════════════════════════════════════════════════════════════════
 
 
@@ -1284,7 +1284,7 @@ class TestJurisdictionEnum:
 
 
 # ═══════════════════════════════════════════════════════════════════════════
-# Final Coverage Completeness — targeting remaining uncovered lines
+# Final Coverage Completeness - targeting remaining uncovered lines
 # ═══════════════════════════════════════════════════════════════════════════
 
 

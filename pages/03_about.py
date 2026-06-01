@@ -1,4 +1,4 @@
-"""About page — Phase 4.5 Mini-2 T2.2.
+"""About page - Phase 4.5 Mini-2 T2.2.
 
 Reviewer-grade landing page for the model card excerpt + feature
 importance panel + interactive conformal regime explorer + authorship
@@ -16,7 +16,7 @@ Q4.A locked: Advanced expander hosts the α slider so PIs can move
 respond. Pedagogical, not load-bearing for the landing-page render.
 
 Q19.D locked: handle-disclosure one-liner ("Repo: github.com/ljm234/
-amoebanator-25 — HuggingFace Space: huggingface.co/spaces/
+amoebanator-25 - HuggingFace Space: huggingface.co/spaces/
 luisjordanmontenegro/amoebanator-25 (same author, separate handles)")
 appears in the authorship section.
 """
@@ -53,18 +53,18 @@ def _compute_feature_importance() -> pd.DataFrame:
 
     Returns a DataFrame with feature names + normalized |w_i| values
     suitable for st.bar_chart consumption. Cached because the model
-    is frozen — recomputing every rerun would be wasted CPU.
+    is frozen - recomputing every rerun would be wasted CPU.
     """
     state = torch.load(_MODEL_PATH, map_location="cpu", weights_only=True)
     if hasattr(state, "state_dict"):
         state = state.state_dict()
-    w = state["net.0.weight"]  # shape (32, 10) — Linear(in=10, out=32)
+    w = state["net.0.weight"]  # shape (32, 10) - Linear(in=10, out=32)
     imp = w.abs().mean(dim=0).numpy()  # mean across 32 output dims → (10,)
     imp_norm = imp / imp.sum()
     return pd.DataFrame({"feature": list(_FEATURE_NAMES), "|w_i|": imp_norm})
 
 
-st.set_page_config(page_title="About — Amoebanator 25", page_icon="ℹ️")
+st.set_page_config(page_title="About - Amoebanator 25", page_icon="ℹ️")
 render_disclaimer()
 
 st.title("About Amoebanator 25")
@@ -74,7 +74,7 @@ st.title("About Amoebanator 25")
 st.subheader("Model architecture")
 st.markdown(
     "Tabular MLP, 914 parameters, 6.4 KB serialized. "
-    "`Linear(10, 32) → ReLU → Linear(32, 16) → ReLU → Linear(16, 2)` — "
+    "`Linear(10, 32) → ReLU → Linear(32, 16) → ReLU → Linear(16, 2)` - "
     "binary classifier (PAM risk: Low / High) with two output logits "
     "consumed by softmax + temperature scaling at inference time. "
     "Architecture verified against `outputs/model/model.pt` "
@@ -89,7 +89,7 @@ st.markdown(
     "marginals (Yoder 2010, Cope 2016, CDC 2025). Train/val split: "
     "n_train=24, n_val=6, `random_state=42`, `test_size=0.2`, "
     "`stratify=y`. Zero real PHI; vignettes are reproducibility-friendly "
-    "but not externally calibrated — Phase 6 (MIMIC-IV cohort, target "
+    "but not externally calibrated - Phase 6 (MIMIC-IV cohort, target "
     "n ≥ 200) will provide the first contact with real-world clinical data. "
     "See `docs/data_card.md` (Gebru et al. 2021 datasheet format) for "
     "the full lineage."
@@ -101,7 +101,7 @@ st.subheader("Calibration")
 st.markdown(
     "Temperature scaling (Guo et al. 2017) optimised via L-BFGS on the "
     "n=6 validation set. Current `T = 0.27`. **T < 1 means the calibrator "
-    "amplifies the model's raw confidence** — the opposite of typical "
+    "amplifies the model's raw confidence** - the opposite of typical "
     "Guo 2017 behaviour (T > 1 attenuates overconfidence). On n=6 the "
     "L-BFGS landscape lacks curvature to constrain T meaningfully; "
     "different random subsets of n=6 would produce T values in the "
@@ -116,10 +116,10 @@ st.subheader("Feature importance (model-level)")
 imp_df = _compute_feature_importance()
 st.bar_chart(imp_df, x="feature", y="|w_i|", horizontal=True)
 
-# Q17.C verbatim caption — locked text, do not reword.
+# Q17.C verbatim caption - locked text, do not reword.
 st.caption(
     "Feature importance via |w_i| (model-level mean of first Linear "
-    "layer weights, normalized). NOT per-prediction attribution — for "
+    "layer weights, normalized). NOT per-prediction attribution - for "
     "that, see SHAP (deferred to Phase 6 with MIMIC-IV n ≥ 200). "
     f"Current range: {imp_df['|w_i|'].min():.1%} to "
     f"{imp_df['|w_i|'].max():.1%}, max/min ratio "
@@ -175,11 +175,11 @@ with st.expander("Advanced: explore conformal coverage"):
 # ── §6. Authorship + handle disclosure (Q19.D) ────────────────────────
 st.subheader("Authorship")
 st.markdown(
-    "Jordan Montenegro-Calla — ORCID 0009-0000-7851-7139 — "
+    "Jordan Montenegro-Calla - ORCID 0009-0000-7851-7139 - "
     "lmontenegrocalla@mail.weber.edu"
 )
 st.caption(
-    "Repo: github.com/ljm234/amoebanator-25 — HuggingFace Space: "
+    "Repo: github.com/ljm234/amoebanator-25 - HuggingFace Space: "
     "huggingface.co/spaces/luisjordanmontenegro/amoebanator-25 "
     "(same author, separate handles)."
 )

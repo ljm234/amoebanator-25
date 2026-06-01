@@ -1,25 +1,25 @@
 """
-ml.data — wired data-pipeline modules.
+ml.data - wired data-pipeline modules.
 
 Six modules are imported and re-exported at the package level. These have
 unit-test coverage and at least one production caller (training, inference,
 dashboard, or the Phase 7 governance wiring).
 
-  * audit_trail        — hash-chained, Merkle-checkpointed audit log
+  * audit_trail        - hash-chained, Merkle-checkpointed audit log
                          (wired via ml.audit_hooks)
-  * acquisition        — CDC data transfer, manifests, retry/circuit-breaker
+  * acquisition        - CDC data transfer, manifests, retry/circuit-breaker
                          policies
-  * clinical           — clinical record parsing and validation
-  * compliance         — IRB / CITI / safeguard state machines
+  * clinical           - clinical record parsing and validation
+  * compliance         - IRB / CITI / safeguard state machines
                          (wired via ml.irb_gate)
-  * deidentification   — HIPAA Safe Harbor processor
+  * deidentification   - HIPAA Safe Harbor processor
                          (wired via ml.data_loader)
-  * microscopy         — image loading and preprocessing primitives
+  * microscopy         - image loading and preprocessing primitives
 
 Ten additional WIP scaffolds (synthetic, literature, who_database,
 pathology_atlas, labeling, dvc_versioning, versioning, quality_assurance,
 negative_collection, annotation_protocol) live under ml/data/_wip/. They
-are intentionally not re-exported here — see ml/data/_wip/README.md for the
+are intentionally not re-exported here - see ml/data/_wip/README.md for the
 roadmap unblock checklist.
 """
 from __future__ import annotations

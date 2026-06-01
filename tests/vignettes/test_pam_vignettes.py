@@ -75,14 +75,14 @@ _VALID_VERIFICATION_DATES = {
     # Tunkel-encephalitis, Granerod, Tyler) at verification_confidence=0.85
     # pending PubMed UI direct fetch in 5.3.2-5.3.4.
     "2026-05-06",
-    # Subphase 1.3 commit 5.3.2 added 5 new pilot anchors via Claude web
+    # Subphase 1.3 commit 5.3.2 added 5 new pilot anchors via the assistant web
     # research v4 PubMed UI verification (Davalos 2016 Lima cohort,
     # Heckenberg 2008 18626301 errata fix from 18626302, Whitley 2006
     # Antiviral Res HSE adult review, Michos 2007 PLoS One enterovirus
     # PMN-predominant cohort, Munayco 2024 MMWR Peru dengue outbreak).
     "2026-05-07",
     # Subphase 1.4 commit 5.4.0 added 18 Class 4 (TBM) + Class 5
-    # (Cryptococcal) + Class 6 (GAE) anchor PMIDs via Claude web PubMed UI
+    # (Cryptococcal) + Class 6 (GAE) anchor PMIDs via the assistant web PubMed UI
     # verification v5 (Thwaites NEJM 2004, Marais Lancet ID 2010, van Toorn
     # Semin Pediatr Neurol 2014, Heemskerk NEJM 2016, Huynh Lancet Neurol
     # 2022, Navarro-Flores J Neurol 2022; Perfect CID 2010, Park AIDS 2009,
@@ -93,7 +93,7 @@ _VALID_VERIFICATION_DATES = {
     "2026-05-11",
     # Errata 5.4.3.2 (2026-05-30): dissolved Frankenstein PMID 32935747;
     # the 5 NM/Hib slots (v83-v87) re-anchored to 4 real papers verified
-    # via Claude web PubMed/PMC: MacNeil 2018 CID 29126310, Marcus 2022
+    # via the assistant web PubMed/PMC: MacNeil 2018 CID 29126310, Marcus 2022
     # OFID 35493127, Park 2022 JOGH 35265327, Soeters 2018 CID 29509834.
     "2026-05-30",
     # Errata 5.4.3.3 (2026-05-31): deleted both Mylonakis 2002 Listeria
@@ -205,8 +205,8 @@ def test_no_em_dashes_in_content(generated_vignettes):
     en = 0
     for vignette in generated_vignettes:
         for s in _walk_strings(vignette):
-            em += s.count("—")  # em-dash
-            en += s.count("–")  # en-dash
+            em += s.count(chr(0x2014))  # em-dash
+            en += s.count(chr(0x2013))  # en-dash
     assert em == 0, f"Found {em} em-dash(es) in generated content"
     assert en == 0, f"Found {en} en-dash(es) in generated content"
 

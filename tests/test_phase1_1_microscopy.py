@@ -1,4 +1,4 @@
-"""Comprehensive tests for ml.data.microscopy module — targeting 100 % coverage.
+"""Comprehensive tests for ml.data.microscopy module - targeting 100 % coverage.
 
 Covers every class, method, branch, enum member, factory function, and I/O
 function in microscopy.py.
@@ -766,11 +766,11 @@ class TestMorphologyProcessor:
     def test_fallthrough_returns_input(self) -> None:
         """If operation doesn't match any known branch, return image as-is.
         For grayscale images, opening/closing etc. fall through to gradient/tophat/blackhat
-        checks — if those also don't match, we get image back."""
+        checks - if those also don't match, we get image back."""
         mp = MorphologyProcessor()
         gray = _gray(32, 32)
         # Opening on grayscale falls through both binary and grayscale erosion/dilation
-        # branches and goes to gradient/tophat/blackhat check — none match → returns image
+        # branches and goes to gradient/tophat/blackhat check - none match → returns image
         result = mp.apply(gray, MorphologyOperation.OPENING)
         assert result.shape == gray.shape
 

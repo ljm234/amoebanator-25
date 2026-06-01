@@ -1,5 +1,5 @@
 """
-ml/data/_wip/ — work-in-progress data pipeline scaffolds.
+ml/data/_wip/ - work-in-progress data pipeline scaffolds.
 
 Intentionally NOT exposed at the ml.data package level. These modules were
 moved here in Phase 7.4 of the V1.0 sprint because they are scaffolding

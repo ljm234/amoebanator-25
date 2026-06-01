@@ -274,16 +274,16 @@ ADJUDICATION:
   disagreement_resolution: None
 ```
 
-### REVIEWER PROMPT (Claude chat fills below)
+### REVIEWER PROMPT (the reviewer fills below)
 
-For each vignette above, the reviewer (Claude chat) must answer:
+For each vignette above, the reviewer must answer:
 1. Does the vignette's clinical content match the anchor paper's actual claims?
 2. Are demographics, CSF, vitals, imaging plausible per the paper?
 3. Does the narrative reference the anchor accurately (year, author, claim)?
 4. Would this vignette anchor better to a different paper in the registry? (specify which if yes)
 5. Severity if issues found: [Catastrophic / Needs Errata / Minor / Clean]
 
-### REVIEWER NOTES (Claude chat YYYY-MM-DD)
+### REVIEWER NOTES (the reviewer YYYY-MM-DD)
 
 _(empty; to be filled during chat verification)_
 
@@ -533,16 +533,16 @@ ADJUDICATION:
   disagreement_resolution: None
 ```
 
-### REVIEWER PROMPT (Claude chat fills below)
+### REVIEWER PROMPT (the reviewer fills below)
 
-For each vignette above, the reviewer (Claude chat) must answer:
+For each vignette above, the reviewer must answer:
 1. Does the vignette's clinical content match the anchor paper's actual claims?
 2. Are demographics, CSF, vitals, imaging plausible per the paper?
 3. Does the narrative reference the anchor accurately (year, author, claim)?
 4. Would this vignette anchor better to a different paper in the registry? (specify which if yes)
 5. Severity if issues found: [Catastrophic / Needs Errata / Minor / Clean]
 
-### REVIEWER NOTES (Claude chat YYYY-MM-DD)
+### REVIEWER NOTES (the reviewer YYYY-MM-DD)
 
 _(empty; to be filled during chat verification)_
 
@@ -820,16 +820,16 @@ ADJUDICATION:
   disagreement_resolution: None
 ```
 
-### REVIEWER PROMPT (Claude chat fills below)
+### REVIEWER PROMPT (the reviewer fills below)
 
-For each vignette above, the reviewer (Claude chat) must answer:
+For each vignette above, the reviewer must answer:
 1. Does the vignette's clinical content match the anchor paper's actual claims?
 2. Are demographics, CSF, vitals, imaging plausible per the paper?
 3. Does the narrative reference the anchor accurately (year, author, claim)?
 4. Would this vignette anchor better to a different paper in the registry? (specify which if yes)
 5. Severity if issues found: [Catastrophic / Needs Errata / Minor / Clean]
 
-### REVIEWER NOTES (Claude chat YYYY-MM-DD)
+### REVIEWER NOTES (the reviewer YYYY-MM-DD)
 
 _(empty; to be filled during chat verification)_
 
@@ -1162,16 +1162,16 @@ ADJUDICATION:
   disagreement_resolution: None
 ```
 
-### REVIEWER PROMPT (Claude chat fills below)
+### REVIEWER PROMPT (the reviewer fills below)
 
-For each vignette above, the reviewer (Claude chat) must answer:
+For each vignette above, the reviewer must answer:
 1. Does the vignette's clinical content match the anchor paper's actual claims?
 2. Are demographics, CSF, vitals, imaging plausible per the paper?
 3. Does the narrative reference the anchor accurately (year, author, claim)?
 4. Would this vignette anchor better to a different paper in the registry? (specify which if yes)
 5. Severity if issues found: [Catastrophic / Needs Errata / Minor / Clean]
 
-### REVIEWER NOTES (Claude chat YYYY-MM-DD)
+### REVIEWER NOTES (the reviewer YYYY-MM-DD)
 
 _(empty; to be filled during chat verification)_
 
@@ -1417,16 +1417,16 @@ ADJUDICATION:
   disagreement_resolution: None
 ```
 
-### REVIEWER PROMPT (Claude chat fills below)
+### REVIEWER PROMPT (the reviewer fills below)
 
-For each vignette above, the reviewer (Claude chat) must answer:
+For each vignette above, the reviewer must answer:
 1. Does the vignette's clinical content match the anchor paper's actual claims?
 2. Are demographics, CSF, vitals, imaging plausible per the paper?
 3. Does the narrative reference the anchor accurately (year, author, claim)?
 4. Would this vignette anchor better to a different paper in the registry? (specify which if yes)
 5. Severity if issues found: [Catastrophic / Needs Errata / Minor / Clean]
 
-### REVIEWER NOTES (Claude chat YYYY-MM-DD)
+### REVIEWER NOTES (the reviewer YYYY-MM-DD)
 
 _(empty; to be filled during chat verification)_
 
@@ -1771,15 +1771,15 @@ ADJUDICATION:
   disagreement_resolution: None
 ```
 
-### REVIEWER PROMPT (Claude chat fills below)
+### REVIEWER PROMPT (the reviewer fills below)
 
-For each vignette above, the reviewer (Claude chat) must answer:
+For each vignette above, the reviewer must answer:
 1. Does the vignette's clinical content match the anchor paper's actual claims?
 2. Are demographics, CSF, vitals, imaging plausible per the paper?
 3. Does the narrative reference the anchor accurately (year, author, claim)?
 4. Would this vignette anchor better to a different paper in the registry? (specify which if yes)
 5. Severity if issues found: [Catastrophic / Needs Errata / Minor / Clean]
 
-### REVIEWER NOTES (Claude chat YYYY-MM-DD)
+### REVIEWER NOTES (the reviewer YYYY-MM-DD)
 
 _(empty; to be filled during chat verification)_

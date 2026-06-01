@@ -162,13 +162,13 @@ def _full_text(data: dict) -> str:
 @pytest.mark.parametrize("vid", PILOT_IDS)
 def test_pilot_no_em_dashes(vid):
     text = _full_text(_load(vid))
-    assert "—" not in text, f"vid {vid} narrative contains em-dash (U+2014)"
+    assert chr(0x2014) not in text, f"vid {vid} narrative contains em-dash (U+2014)"
 
 
 @pytest.mark.parametrize("vid", PILOT_IDS)
 def test_pilot_no_en_dashes(vid):
     text = _full_text(_load(vid))
-    assert "–" not in text, f"vid {vid} narrative contains en-dash (U+2013)"
+    assert chr(0x2013) not in text, f"vid {vid} narrative contains en-dash (U+2013)"
 
 
 AI_TELLS = [

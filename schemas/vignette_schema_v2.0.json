@@ -67,7 +67,7 @@
     },
     "CSFProfile": {
       "additionalProperties": false,
-      "description": "CSF analysis results — the primary diagnostic discriminator across 9 classes.\n\nCitations:\n    - IDSA Tunkel 2004 (bacterial cutoffs from van de Beek 422-pt analysis)\n    - Huynh Lancet Neurol 2022 (TB CSF patterns)\n    - NIH OI cryptococcosis (OP>=25 in 60-80%)\n    - Ye TM&IH 2023 doi:10.1111/tmi.13849 (ADA cutoff 10 U/L)\n    - Prasad Cureus 2023 doi:10.7759/cureus.39896 (ADA confirmation)\n    - Williams CID 2015 (CrAg LFA near-100% sensitivity)\n    - StatPearls NBK535447 (PAM wet mount diagnosis)\n    - Perry BMJ 2015 PMID 25739953 (xanthochromia + RBC for SAH)\n    - Sakushima J Infect 2011 (lactate>3.5 favors bacterial)\n    - Del Brutto 2017 (eosinophilic CSF in racemose NCC)",
+      "description": "CSF analysis results - the primary diagnostic discriminator across 9 classes.\n\nCitations:\n    - IDSA Tunkel 2004 (bacterial cutoffs from van de Beek 422-pt analysis)\n    - Huynh Lancet Neurol 2022 (TB CSF patterns)\n    - NIH OI cryptococcosis (OP>=25 in 60-80%)\n    - Ye TM&IH 2023 doi:10.1111/tmi.13849 (ADA cutoff 10 U/L)\n    - Prasad Cureus 2023 doi:10.7759/cureus.39896 (ADA confirmation)\n    - Williams CID 2015 (CrAg LFA near-100% sensitivity)\n    - StatPearls NBK535447 (PAM wet mount diagnosis)\n    - Perry BMJ 2015 PMID 25739953 (xanthochromia + RBC for SAH)\n    - Sakushima J Infect 2011 (lactate>3.5 favors bacterial)\n    - Del Brutto 2017 (eosinophilic CSF in racemose NCC)",
       "properties": {
         "opening_pressure_cmH2O": {
           "description": "Opening pressure cmH2O. >=25 cmH2O in 60-80% of HIV-cryptococcal (NIH OI guidelines, AMBITION-cm); >=30 = therapeutic LP trigger.",
@@ -926,7 +926,7 @@
           "type": "string"
         },
         "generator_model_identifier": {
-          "description": "Model identifier string used for generation (e.g., 'claude-sonnet-4.5/2026-04-15' or 'manual-fixture-2026-05-02').",
+          "description": "Model identifier string used for generation (e.g., 'example-model-1.0/2026-04-15' or 'manual-fixture-2026-05-02').",
           "maxLength": 200,
           "minLength": 1,
           "title": "Generator Model Identifier",

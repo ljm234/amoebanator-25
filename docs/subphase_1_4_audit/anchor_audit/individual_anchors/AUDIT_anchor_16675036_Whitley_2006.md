@@ -27,7 +27,7 @@ Bundle type: BIG (n>=5 vignettes single-anchor)
   "anchor_type": "review",
   "anchor_subtype": "hsv_encephalitis_adolescents_adults_review_acyclovir_protocol",
   "verification_confidence": 0.95,
-  "verification_method": "claude_web_pubmed_ui_v4_2026_05_07",
+  "verification_method": "web_pubmed_ui_v4_2026_05_07",
   "last_verified_date": "2026-05-07",
   "caveat": "Comprehensive HSE review for adolescents and adults. Acyclovir 10 mg/kg every 8 hours for 21 days protocol. Even with early acyclovir, approximately two-thirds of survivors have significant residual neurologic deficits. Untreated mortality 70 percent. PCR is gold standard for diagnosis; false negatives can occur early after disease onset. MRI demonstrates temporal lobe edema and hemorrhage. EEG shows spike-and-slow-wave activity over temporal lobes. Anchor for Class 3 HSV-1 adult primary-source vignettes (Subphase 1.3 commit 5.3.2). Errata 5.4.3.1 (2026-05-11): the previously-registered companion PMID 16517432 was removed; NCBI E-utilities verification showed 16517432 is a J Asthma 2006 Danish skin-test reactivity paper, not a Whitley HSV review. The 6 vignettes that anchored to 16517432 now anchor to this entry (16675036)."
 }
@@ -565,15 +565,15 @@ ADJUDICATION:
   disagreement_resolution: None
 ```
 
-### REVIEWER PROMPT (Claude chat fills below)
+### REVIEWER PROMPT (the reviewer fills below)
 
-For each vignette above, the reviewer (Claude chat) must answer:
+For each vignette above, the reviewer must answer:
 1. Does the vignette's clinical content match the anchor paper's actual claims?
 2. Are demographics, CSF, vitals, imaging plausible per the paper?
 3. Does the narrative reference the anchor accurately (year, author, claim)?
 4. Would this vignette anchor better to a different paper in the registry? (specify which if yes)
 5. Severity if issues found: [Catastrophic / Needs Errata / Minor / Clean]
 
-### REVIEWER NOTES (Claude chat YYYY-MM-DD)
+### REVIEWER NOTES (the reviewer YYYY-MM-DD)
 
 _(empty; to be filled during chat verification)_

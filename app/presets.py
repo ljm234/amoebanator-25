@@ -2,20 +2,20 @@
 
 Three presets cover the demo's discrimination story:
 
-1. ``high_risk_pam``                    — positive control (PAM-likely
+1. ``high_risk_pam``                    - positive control (PAM-likely
                                           pediatric patient).
-2. ``bacterial_meningitis_limitation``  — D18 honesty demo: model
+2. ``bacterial_meningitis_limitation``  - D18 honesty demo: model
                                           cannot distinguish bacterial-
                                           NOT-PAM from PAM at n=30.
                                           UI renders red banner adjacent
                                           to result.
-3. ``normal_csf``                       — negative control (adult, no
+3. ``normal_csf``                       - negative control (adult, no
                                           PAM risk factors).
 
 The page-load NEUTRAL state functions as a fourth implicit scenario.
 
 Per Q12.B: the field name ``current_behavior`` (NOT ``expected``) is
-mandatory. ``current_behavior`` is descriptive — it logs what
+mandatory. ``current_behavior`` is descriptive - it logs what
 ``infer_one`` returns at ``snapshot_date``. ``expected`` would carry
 normative ML connotation that conflicts with the D18 trajectory (Phase
 6 will flip the bacterial preset's behavior; we don't *expect* the
@@ -78,7 +78,7 @@ PRESETS: dict[str, dict[str, Any]] = {
             "the model cannot distinguish bacterial-NOT-PAM from PAM. "
             "The Phase 6 MIMIC-IV cohort (target n ≥ 200, includes "
             "bacterial vs viral meningitis labels) will fix this. We "
-            "surface this preset deliberately as an honesty signal — "
+            "surface this preset deliberately as an honesty signal - "
             "every model has limits, and showing them where they bite is "
             "more useful than hiding them. Try the other 2 presets to "
             "see the model's working regime."
@@ -99,7 +99,7 @@ PRESETS: dict[str, dict[str, Any]] = {
             "snapshot_date": _SNAPSHOT_DATE,
         },
         # UI renders description as red banner adjacent to result panel
-        # (Q12.C lock: NOT before "Run inference" — co-located).
+        # (Q12.C lock: NOT before "Run inference" - co-located).
         "limitation_banner": True,
     },
 
@@ -134,7 +134,7 @@ PRESETS: dict[str, dict[str, Any]] = {
 def load_preset(key: str) -> dict[str, Any]:
     """Return the preset dict for ``key``.
 
-    Raises ``KeyError`` if ``key`` not in :data:`PRESETS` — fail-loud
+    Raises ``KeyError`` if ``key`` not in :data:`PRESETS` - fail-loud
     over silent default so an upstream typo surfaces immediately rather
     than rendering an empty form.
     """

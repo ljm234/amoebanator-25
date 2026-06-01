@@ -175,8 +175,8 @@ def test_bact_wave2_no_em_dashes():
     """No em-dashes (\\u2014) or en-dashes (\\u2013)."""
     for vid in BACT_WAVE2_IDS:
         text = _wave2_json_path(vid).read_text(encoding="utf-8")
-        assert "—" not in text, f"v{vid} contains em-dash"
-        assert "–" not in text, f"v{vid} contains en-dash"
+        assert chr(0x2014) not in text, f"v{vid} contains em-dash"
+        assert chr(0x2013) not in text, f"v{vid} contains en-dash"
 
 
 def test_bact_wave2_no_ai_tells():

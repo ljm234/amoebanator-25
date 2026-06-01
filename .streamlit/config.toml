@@ -2,12 +2,12 @@
 # All keys verified against Streamlit 1.52: zero deprecations.
 
 [server]
-# Hot-reload off — HF free-tier inotify watches consume CPU we need
+# Hot-reload off - HF free-tier inotify watches consume CPU we need
 # for inference; we don't edit the Space at runtime.
 runOnSave = false
 fileWatcherType = "none"
 # Port verified against HF auto-Dockerfile (EXPOSE 8501 +
-# --server.port=8501). NOT 7860 (Gradio default) — locked Q16.c.
+# --server.port=8501). NOT 7860 (Gradio default) - locked Q16.c.
 port = 8501
 
 [global]
@@ -24,7 +24,7 @@ showSidebarNavigation = true
 
 [theme]
 # Q16.b neutral-medical palette: clinical-adjacent demo, NOT branded.
-# Material Design 900 family — armonises with the WCAG-AA wash+border
+# Material Design 900 family - armonises with the WCAG-AA wash+border
 # colours in app/disclaimer.py _INJECTED_CSS.
 primaryColor = "#0D47A1"            # Material Blue 900
 backgroundColor = "#FFFFFF"

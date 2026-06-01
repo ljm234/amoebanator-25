@@ -3,7 +3,7 @@ Calibrated random forest baseline (Phase 3.2).
 
 Random forests systematically push probabilities toward 0.5 (Niculescu-Mizil
 & Caruana 2005). We wrap sklearn's RandomForestClassifier in
-CalibratedClassifierCV with isotonic regression by default — isotonic is the
+CalibratedClassifierCV with isotonic regression by default - isotonic is the
 right choice for RF because the calibration curve is non-monotone-S-shaped,
 not just temperature-shifted.
 

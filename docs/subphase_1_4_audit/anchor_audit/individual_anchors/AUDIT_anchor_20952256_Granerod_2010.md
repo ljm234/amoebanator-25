@@ -42,7 +42,7 @@ Bundle type: BIG (n>=5 vignettes single-anchor)
   "anchor_type": "cohort",
   "anchor_subtype": "england_encephalitis_etiology_population_based",
   "verification_confidence": 0.95,
-  "verification_method": "claude_web_pubmed_ncbi_esummary_2026_05_11",
+  "verification_method": "web_pubmed_ncbi_esummary_2026_05_11",
   "last_verified_date": "2026-05-11",
   "caveat": "England population-based encephalitis etiology study, 203 cases. HSV 19%, VZV 5%, autoimmune anti-NMDAR 4%, unknown 37%. Anchor for Class 3 etiology distribution and PCR-negative-at-72h ambiguity cases. Errata 5.4.3.1: PMID corrected from 21088000 (Thorne 2011 Nucleic Acids Res epigenetics paper) to 20952256 per NCBI E-utilities verification 2026-05-11."
 }
@@ -876,15 +876,15 @@ ADJUDICATION:
   disagreement_resolution: None
 ```
 
-### REVIEWER PROMPT (Claude chat fills below)
+### REVIEWER PROMPT (the reviewer fills below)
 
-For each vignette above, the reviewer (Claude chat) must answer:
+For each vignette above, the reviewer must answer:
 1. Does the vignette's clinical content match the anchor paper's actual claims?
 2. Are demographics, CSF, vitals, imaging plausible per the paper?
 3. Does the narrative reference the anchor accurately (year, author, claim)?
 4. Would this vignette anchor better to a different paper in the registry? (specify which if yes)
 5. Severity if issues found: [Catastrophic / Needs Errata / Minor / Clean]
 
-### REVIEWER NOTES (Claude chat YYYY-MM-DD)
+### REVIEWER NOTES (the reviewer YYYY-MM-DD)
 
 _(empty; to be filled during chat verification)_

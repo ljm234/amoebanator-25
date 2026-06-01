@@ -1,4 +1,4 @@
-"""Tests for pages/03_about.py — Phase 4.5 Mini-2 T2.5 (2 of 4)."""
+"""Tests for pages/03_about.py - Phase 4.5 Mini-2 T2.5 (2 of 4)."""
 from __future__ import annotations
 
 from pathlib import Path
@@ -81,7 +81,7 @@ def test_3_state_regime_badge_invalid_at_default() -> None:
 
 
 def test_handle_disclosure_one_liner_present() -> None:
-    """Q19.D: 'Repo: github.com/ljm234/amoebanator-25 — HuggingFace Space: ...
+    """Q19.D: 'Repo: github.com/ljm234/amoebanator-25 - HuggingFace Space: ...
     (same author, separate handles).'"""
     at = AppTest.from_file(PAGE_PATH)
     at.run(timeout=30)

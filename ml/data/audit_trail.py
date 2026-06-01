@@ -104,12 +104,12 @@ CHECKPOINT_INTERVAL: Final[int] = 100
 class AuditEventType(Enum):
     """Classification of audit events.
 
-    Cleanup history — Q7.A (Phase 4.5 sprint): 10 dead values removed
+    Cleanup history - Q7.A (Phase 4.5 sprint): 10 dead values removed
     (no production callers, no behavior coverage in tests). The 5
     test-fixture references in tests/test_phase1_1_audit_trail.py were
     substituted with kept values (the tests verify audit-trail
     infrastructure on arbitrary event types, not production emission).
-    INTEGRITY_VIOLATION kept — Q15.A correlation-ID error path uses it.
+    INTEGRITY_VIOLATION kept - Q15.A correlation-ID error path uses it.
     3 new WEB_* values added for the Phase 4.5 web layer.
     """
 
@@ -1564,7 +1564,7 @@ class AuditLogArchiver:
 
 
 # ═══════════════════════════════════════════════════════════════════════════
-# Audit Export — HIPAA §164.312(b) / FDA 21 CFR Part 11 §11.10(e)
+# Audit Export - HIPAA §164.312(b) / FDA 21 CFR Part 11 §11.10(e)
 # ═══════════════════════════════════════════════════════════════════════════
 
 

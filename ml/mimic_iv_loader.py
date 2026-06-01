@@ -1,5 +1,5 @@
 """
-Phase 2.2 — MIMIC-IV CSF lab + diagnosis loader (scaffold).
+Phase 2.2 - MIMIC-IV CSF lab + diagnosis loader (scaffold).
 
 Cannot be executed against real MIMIC-IV data without a signed PhysioNet
 Data Use Agreement (see docs/USER_ASSIGNMENTS.md). Until that completes,
@@ -10,7 +10,7 @@ this module exposes:
   * A loader that operates on PhysioNet-shaped CSV files and returns a
     cohort dataframe with the same column schema the Amoebanator pipeline
     expects.
-  * `synthesize_mimic_shaped_csvs()` — produces tiny PhysioNet-shaped CSVs
+  * `synthesize_mimic_shaped_csvs()` - produces tiny PhysioNet-shaped CSVs
     in a temp directory so the loader's row-extraction logic is tested
     end-to-end before real data arrives. The synthesised data is marked
     `subject_id` in a synthetic range so it cannot collide with real IDs.
@@ -31,8 +31,8 @@ CSF microbiology lives in `hosp.microbiologyevents` filtered on
 
 ICD-10-CM codes (FY2026, effective 2025-10-01):
 
-  * G00.0–G00.9  Bacterial meningitis (G00.x)
-  * A87.0–A87.9  Viral meningitis (A87.x)
+  * G00.0-G00.9  Bacterial meningitis (G00.x)
+  * A87.0-A87.9  Viral meningitis (A87.x)
   * B60.2        Naegleriasis (PAM)
 
 In MIMIC-IV `diagnoses_icd`, codes are stored without the dot
@@ -183,9 +183,9 @@ def assemble_cohort(
     """
     Join labs + diagnosis labels + (optional) microbiology into a single
     Amoebanator-shaped row per subject_id. Returns columns the rest of the
-    pipeline understands: age (placeholder NaN — comes from patients table),
-    csf_glucose, csf_protein, csf_wbc, pcr (NaN — needs separate query),
-    microscopy (from gram), exposure (NaN — not in MIMIC), risk_label
+    pipeline understands: age (placeholder NaN - comes from patients table),
+    csf_glucose, csf_protein, csf_wbc, pcr (NaN - needs separate query),
+    microscopy (from gram), exposure (NaN - not in MIMIC), risk_label
     (mapped from ICD), source="mimic_iv".
     """
     cfg = cfg or MimicCohortConfig()

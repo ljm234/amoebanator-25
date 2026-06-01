@@ -3,7 +3,7 @@ Stratified train/val/test split with optional group-disjoint constraint.
 
 Phase 2.5. Used by every downstream pipeline (baselines, conformal calibration,
 OOD fits) so that no row in the test set ever appears in the training or
-calibration sets — including across grouping variables like site or year when
+calibration sets - including across grouping variables like site or year when
 those are available.
 
 The function returns a dict of index arrays so that callers can apply the same
@@ -49,7 +49,7 @@ def stratified_split(
     StratifiedShuffleSplit. When `groups` is provided the split is
     group-disjoint (GroupShuffleSplit): no group appears in more than one
     partition, so site- or year-leakage is impossible. Group-disjoint splits
-    cannot strictly enforce class stratification — we warn if the realised
+    cannot strictly enforce class stratification - we warn if the realised
     class balance drifts more than 5 percentage points from the marginal.
 
     Reproducibility: `seed` is passed to scikit-learn's RNG.

@@ -1,7 +1,7 @@
-"""Predict page — Phase 4.5 Mini-1.
+"""Predict page - Phase 4.5 Mini-1.
 
 Form-based PAM risk prediction using the n=30 MLP at outputs/model/model.pt.
-Wires the existing ml.infer.infer_one path (frozen — do not modify) through:
+Wires the existing ml.infer.infer_one path (frozen - do not modify) through:
 
 - 8 form widgets with NEUTRAL clinical defaults (Q11.A locked).
 - 3 preset buttons (high_risk_pam / bacterial_meningitis_limitation /
@@ -37,7 +37,7 @@ from ml.data.audit_trail import AuditEventType
 from ml.infer import infer_one
 
 
-st.set_page_config(page_title="Predict — Amoebanator 25", page_icon="🔬")
+st.set_page_config(page_title="Predict - Amoebanator 25", page_icon="🔬")
 render_disclaimer()
 
 
@@ -48,14 +48,14 @@ if _irb_bypass_active and not st.session_state.get("_irb_bypass_emitted"):
         AuditEventType.IRB_STATUS_CHANGE,
         actor="env_var",
         resource="AMOEBANATOR_IRB_BYPASS",
-        action_detail="bypass active — synthetic-data research mode",
+        action_detail="bypass active - synthetic-data research mode",
         metadata={"bypass": True},
     )
     st.session_state["_irb_bypass_emitted"] = True
 
 if _irb_bypass_active:
     st.error(
-        "⚠ IRB bypass active — research mode only. "
+        "⚠ IRB bypass active - research mode only. "
         "Synthetic n=30 data; no PHI. Phase 6 with MIMIC-IV will require "
         "AMOEBANATOR_IRB_BYPASS=0 + a real IRB record."
     )
@@ -137,7 +137,7 @@ def _render_result(out: dict[str, Any]) -> None:
     st.markdown(
         '<span title="Calibrated by temperature scaling (Guo 2017, '
         "L-BFGS, n=6 validation). T=0.27 means the calibrator amplifies "
-        "the model's raw confidence — typical temperature scaling has "
+        "the model's raw confidence - typical temperature scaling has "
         "T>1 (attenuation); T<1 here is unusual and reflects fitting "
         "on only 6 samples. ECE and coverage estimates are empirical-"
         'only, not asymptotic. See docs/model_card.md §9.">'
@@ -175,7 +175,7 @@ def _render_result(out: dict[str, Any]) -> None:
             "only. Phase 6 MIMIC-IV (target n≥200) will fix this."
         )
 
-    # Key numeric metrics — _fmt_metric tolerates missing/None/garbage.
+    # Key numeric metrics - _fmt_metric tolerates missing/None/garbage.
     st.markdown(
         f"**p_high:** {_fmt_metric(out, 'p_high')} &nbsp;&nbsp; "
         f"**Mahalanobis d²:** {_fmt_metric(out, 'mahalanobis_d2')} "
@@ -194,7 +194,7 @@ if submitted:
         )
         if lock_age < 30:
             st.warning(
-                "Already processing — wait for the current prediction to "
+                "Already processing - wait for the current prediction to "
                 "complete before submitting again."
             )
             st.stop()
@@ -248,7 +248,7 @@ if submitted:
             "re-fit. See README §Quickstart for refit instructions."
         )
         st.session_state["_artefact_missing"] = True
-    except Exception as e:  # noqa: BLE001 — Q15.A correlation-ID catch-all
+    except Exception as e:  # noqa: BLE001 - Q15.A correlation-ID catch-all
         # Q15.A: uuid4 full server-side, 12-char display, audit emit.
         error_id_full = uuid.uuid4().hex
         error_id_user = error_id_full[:12]

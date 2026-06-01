@@ -1,16 +1,16 @@
 """
-test_coverage_boost.py — Tests targeting 0%-coverage modules to boost overall coverage.
+test_coverage_boost.py - Tests targeting 0%-coverage modules to boost overall coverage.
 
 Covers:
-  ml/infer.py             — infer_one, _read_json, _real_logits, _choose_qhat, _energy_tau
-  ml/training.py          — MLP, load_tabular
-  ml/training_calib_dca.py — MLP, load_tabular, stable_softmax
-  ml/ui_phase2.py         — render_phase2_panel (via streamlit mock)
-  ml/ui_phase3.py         — _read_json, _write_json, render_phase3_panel
-  ml/ui_robust.py         — render_robust_panel
-  ml/ood.py               — fit_tabular_stats (empty + non-empty), ood_abstain_from_p, _load_entropy_gate
-  ml/ood_simple.py        — ood_score with various inputs
-  ml/robust.py            — score_tabular with missing cols
+  ml/infer.py             - infer_one, _read_json, _real_logits, _choose_qhat, _energy_tau
+  ml/training.py          - MLP, load_tabular
+  ml/training_calib_dca.py - MLP, load_tabular, stable_softmax
+  ml/ui_phase2.py         - render_phase2_panel (via streamlit mock)
+  ml/ui_phase3.py         - _read_json, _write_json, render_phase3_panel
+  ml/ui_robust.py         - render_robust_panel
+  ml/ood.py               - fit_tabular_stats (empty + non-empty), ood_abstain_from_p, _load_entropy_gate
+  ml/ood_simple.py        - ood_score with various inputs
+  ml/robust.py            - score_tabular with missing cols
 """
 
 from __future__ import annotations
@@ -32,7 +32,7 @@ import pytest
 
 
 class TestInfer:
-    """Tests for ml.infer — inference pipeline."""
+    """Tests for ml.infer - inference pipeline."""
 
     @pytest.fixture()
     def _stats(self, tmp_path: Path) -> dict[str, Any]:
@@ -187,7 +187,7 @@ class TestInfer:
             "mu": [0.0],
             "S": [[1.0]],
             "use_diagonal": True,
-            "tau": 999.0,  # very permissive — won't trigger OOD
+            "tau": 999.0,  # very permissive - won't trigger OOD
         }
         (met / "feature_stats.json").write_text(json.dumps(stats))
         # Energy tau very low → any real energy will be above → ABSTAIN.
@@ -286,7 +286,7 @@ class TestInfer:
 
 
 class TestTraining:
-    """Tests for ml.training — MLP and load_tabular."""
+    """Tests for ml.training - MLP and load_tabular."""
 
     def test_mlp_forward(self) -> None:
         import torch
@@ -340,7 +340,7 @@ class TestTraining:
 
 
 class TestTrainingCalibDCA:
-    """Tests for ml.training_calib_dca — stable_softmax, MLP, load_tabular."""
+    """Tests for ml.training_calib_dca - stable_softmax, MLP, load_tabular."""
 
     def test_stable_softmax_basic(self) -> None:
         from ml.training_calib_dca import stable_softmax
@@ -397,7 +397,7 @@ class TestTrainingCalibDCA:
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# ml/ood.py — fit_tabular_stats and ood_abstain_from_p coverage
+# ml/ood.py - fit_tabular_stats and ood_abstain_from_p coverage
 # ─────────────────────────────────────────────────────────────────────────────
 
 
@@ -508,7 +508,7 @@ class TestOodAbstainFromP:
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# ml/ood_simple.py — ood_score with various inputs
+# ml/ood_simple.py - ood_score with various inputs
 # ─────────────────────────────────────────────────────────────────────────────
 
 
@@ -583,7 +583,7 @@ class TestOodSimpleExtended:
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# ml/robust.py — additional coverage
+# ml/robust.py - additional coverage
 # ─────────────────────────────────────────────────────────────────────────────
 
 

@@ -36,7 +36,7 @@ def make_adjudication(kappa: float, anchoring_doc: str) -> dict:
 
 
 # ============================================================================
-# Fixture 2: Bacterial meningitis — van de Beek NEJM 2004 (PMID 15509818)
+# Fixture 2: Bacterial meningitis - van de Beek NEJM 2004 (PMID 15509818)
 # ============================================================================
 BACTERIAL = {
     "schema_version": "2.0",
@@ -148,7 +148,7 @@ BACTERIAL = {
 
 
 # ============================================================================
-# Fixture 3: Viral meningoencephalitis (HSV-1) — Montano Peru 2016 (PMID 26733400)
+# Fixture 3: Viral meningoencephalitis (HSV-1) - Montano Peru 2016 (PMID 26733400)
 # ============================================================================
 VIRAL = {
     "schema_version": "2.0",
@@ -253,7 +253,7 @@ VIRAL = {
 
 
 # ============================================================================
-# Fixture 4: TB meningitis — Soria HNDM Lima 2018 (PMID 30611205)
+# Fixture 4: TB meningitis - Soria HNDM Lima 2018 (PMID 30611205)
 # ============================================================================
 TBM = {
     "schema_version": "2.0",
@@ -365,7 +365,7 @@ TBM = {
 
 
 # ============================================================================
-# Fixture 5: Cryptococcal meningitis — AMBITION-cm 2022 (PMID 35320642)
+# Fixture 5: Cryptococcal meningitis - AMBITION-cm 2022 (PMID 35320642)
 # ============================================================================
 CRYPTOCOCCAL = {
     "schema_version": "2.0",
@@ -477,7 +477,7 @@ CRYPTOCOCCAL = {
 
 
 # ============================================================================
-# Fixture 6: GAE/Balamuthia — Martinez Peru 2010 (PMID 20550438)
+# Fixture 6: GAE/Balamuthia - Martinez Peru 2010 (PMID 20550438)
 # ============================================================================
 GAE = {
     "schema_version": "2.0",
@@ -590,7 +590,7 @@ GAE = {
 
 
 # ============================================================================
-# Fixture 7: Neurocysticercosis — Allen Tumbes 2023 (PMID 38003778)
+# Fixture 7: Neurocysticercosis - Allen Tumbes 2023 (PMID 38003778)
 # ============================================================================
 NCC = {
     "schema_version": "2.0",
@@ -695,7 +695,7 @@ NCC = {
 
 
 # ============================================================================
-# Fixture 8: Cerebral malaria (P. vivax) — Paredes-Obando Loreto 2022 (PMID 36477327)
+# Fixture 8: Cerebral malaria (P. vivax) - Paredes-Obando Loreto 2022 (PMID 36477327)
 # ============================================================================
 CEREBRAL_MALARIA = {
     "schema_version": "2.0",
@@ -807,7 +807,7 @@ CEREBRAL_MALARIA = {
 
 
 # ============================================================================
-# Fixture 9: Anti-NMDAR encephalitis — Keller 2014 (PMID 25400967)
+# Fixture 9: Anti-NMDAR encephalitis - Keller 2014 (PMID 25400967)
 # ============================================================================
 NMDAR = {
     "schema_version": "2.0",

@@ -1,9 +1,9 @@
-# Subphase 1.4 PAM Vignette Deep Audit — Sub-Bundle 04: Neti / Ritual / Tap / Thermal
+# Subphase 1.4 PAM Vignette Deep Audit - Sub-Bundle 04: Neti / Ritual / Tap / Thermal
 
 **Date:** 2026-05-27
 **Sub-bundle:** 04 of 12
 **Scope:** PAM vignettes with exposure type matching neti pot, nasal rinse, ablution, ritual, tap water, hot spring, or geothermal sources.
-**Status:** READ-ONLY raw extraction; cross-check vs paper truth + errata logging pending (Claude follow-up).
+**Status:** READ-ONLY raw extraction; cross-check vs paper truth + errata logging pending (the assistant follow-up).
 **Corpus denominator:** 270 vignettes total target (60 PAM shipped). Sub-Bundle 04 covers 26 vignettes = 9.6% of full corpus, 43.3% of PAM.
 
 ## Match Summary
@@ -15,7 +15,7 @@
 | MMWR USVI / ablution / Virgin Islands sweep | 9 |
 | **Union (de-duped)** | **26** |
 
-**Scope discrepancy disclosed:** User prompt estimate was 10-15 vignettes; union = 26. Some matches likely incidental keyword hits (e.g. "thermal" or "tap" appearing in narrative text without being the primary exposure type). All matches extracted below; Claude will classify scope-fit during cross-check phase.
+**Scope discrepancy disclosed:** User prompt estimate was 10-15 vignettes; union = 26. Some matches likely incidental keyword hits (e.g. "thermal" or "tap" appearing in narrative text without being the primary exposure type). All matches extracted below; the assistant will classify scope-fit during cross-check phase.
 
 ## Sub-Bundle 04 Confirmed Anchors (from prompt)
 
@@ -29,11 +29,11 @@
 
 ## Per-Vignette Extraction Tables
 
-Each block below is raw extraction from the JSON file. No opinions, no clinical interpretation — just data.
+Each block below is raw extraction from the JSON file. No opinions, no clinical interpretation - just data.
 
 ---
 
-### Vignette 1 — `pam_d1_006_pond_pediatric.json`
+### Vignette 1 - `pam_d1_006_pond_pediatric.json`
 
 **case_id:** PAM-D1-006-IDCases-2021-Florida-Lake-Pond
 
@@ -63,7 +63,7 @@ Each block below is raw extraction from the JSON file. No opinions, no clinical 
 
 ---
 
-### Vignette 2 — `pam_d1_009_lake_adolescent.json`
+### Vignette 2 - `pam_d1_009_lake_adolescent.json`
 
 **case_id:** PAM-D1-009-IDCases-2021-Florida-Lake-Pond
 
@@ -93,7 +93,7 @@ Each block below is raw extraction from the JSON file. No opinions, no clinical 
 
 ---
 
-### Vignette 3 — `pam_d1_010_neti_pot_adult.json`
+### Vignette 3 - `pam_d1_010_neti_pot_adult.json`
 
 **case_id:** PAM-D1-010-CID-2012-Louisiana-Nasal-Irrigation
 
@@ -123,7 +123,7 @@ Each block below is raw extraction from the JSON file. No opinions, no clinical 
 
 ---
 
-### Vignette 4 — `pam_d1_011_neti_pot_adult.json`
+### Vignette 4 - `pam_d1_011_neti_pot_adult.json`
 
 **case_id:** PAM-D1-011-CID-2012-Louisiana-Nasal-Irrigation
 
@@ -153,7 +153,7 @@ Each block below is raw extraction from the JSON file. No opinions, no clinical 
 
 ---
 
-### Vignette 5 — `pam_d1_012_rv_nasal_adult.json`
+### Vignette 5 - `pam_d1_012_rv_nasal_adult.json`
 
 **case_id:** PAM-D1-012-MMWR-2025-Texas-Nasal-Irrigation
 
@@ -183,7 +183,7 @@ Each block below is raw extraction from the JSON file. No opinions, no clinical 
 
 ---
 
-### Vignette 6 — `pam_d1_013_hot_spring_pediatric.json`
+### Vignette 6 - `pam_d1_013_hot_spring_pediatric.json`
 
 **case_id:** PAM-D1-013-MMWR-2019-California-Hot-Springs
 
@@ -213,7 +213,7 @@ Each block below is raw extraction from the JSON file. No opinions, no clinical 
 
 ---
 
-### Vignette 7 — `pam_d1_014_hot_spring_adult.json`
+### Vignette 7 - `pam_d1_014_hot_spring_adult.json`
 
 **case_id:** PAM-D1-014-MMWR-2016-California-Hot-Springs
 
@@ -243,7 +243,7 @@ Each block below is raw extraction from the JSON file. No opinions, no clinical 
 
 ---
 
-### Vignette 8 — `pam_d1_015_ablution_pediatric.json`
+### Vignette 8 - `pam_d1_015_ablution_pediatric.json`
 
 **case_id:** PAM-D1-015-EID-2011-Karachi-Pakistan-Ablution
 
@@ -273,7 +273,7 @@ Each block below is raw extraction from the JSON file. No opinions, no clinical 
 
 ---
 
-### Vignette 9 — `pam_d1_016_ablution_adult.json`
+### Vignette 9 - `pam_d1_016_ablution_adult.json`
 
 **case_id:** PAM-D1-016-AJTMH-2017-Karachi-Pakistan-Ablution
 
@@ -303,7 +303,7 @@ Each block below is raw extraction from the JSON file. No opinions, no clinical 
 
 ---
 
-### Vignette 10 — `pam_d1_017_costa_rica_pediatric.json`
+### Vignette 10 - `pam_d1_017_costa_rica_pediatric.json`
 
 **case_id:** PAM-D1-017-EID-2015-Florida-(acquired-Costa-Rica)-Latam
 
@@ -333,7 +333,7 @@ Each block below is raw extraction from the JSON file. No opinions, no clinical 
 
 ---
 
-### Vignette 11 — `pam_d1_019_burki_adult_survivor.json`
+### Vignette 11 - `pam_d1_019_burki_adult_survivor.json`
 
 **case_id:** PAM-D1-019-Emerg Infect Dis-2024-Karachi-Survivor-Adult
 
@@ -363,7 +363,7 @@ Each block below is raw extraction from the JSON file. No opinions, no clinical 
 
 ---
 
-### Vignette 12 — `pam_d2_023_lin_sichuan_myocarditis.json`
+### Vignette 12 - `pam_d2_023_lin_sichuan_myocarditis.json`
 
 **case_id:** PAM-D2-023-Front Microbiol-2024-Sichuan-Splash-Pad
 
@@ -393,7 +393,7 @@ Each block below is raw extraction from the JSON file. No opinions, no clinical 
 
 ---
 
-### Vignette 13 — `pam_d2_024_hong_korea_thailand_travel.json`
+### Vignette 13 - `pam_d2_024_hong_korea_thailand_travel.json`
 
 **case_id:** PAM-D2-024-Yonsei Med J-2023-Korea-(acquired-Thailand)-Lake-Pond
 
@@ -423,7 +423,7 @@ Each block below is raw extraction from the JSON file. No opinions, no clinical 
 
 ---
 
-### Vignette 14 — `pam_d2_025_linam_kali_hardig_survivor.json`
+### Vignette 14 - `pam_d2_025_linam_kali_hardig_survivor.json`
 
 **case_id:** PAM-D2-025-Pediatrics-2015-Arkansas-Splash-Pad
 
@@ -453,7 +453,7 @@ Each block below is raw extraction from the JSON file. No opinions, no clinical 
 
 ---
 
-### Vignette 15 — `pam_d2_035_anjum_florida_reuse_a.json`
+### Vignette 15 - `pam_d2_035_anjum_florida_reuse_a.json`
 
 **case_id:** PAM-D2-035-IDCases-2021-Florida-Lake-Pond
 
@@ -483,7 +483,7 @@ Each block below is raw extraction from the JSON file. No opinions, no clinical 
 
 ---
 
-### Vignette 16 — `pam_d2_036_anjum_florida_reuse_b.json`
+### Vignette 16 - `pam_d2_036_anjum_florida_reuse_b.json`
 
 **case_id:** PAM-D2-036-IDCases-2021-Florida-Lake-Pond
 
@@ -513,7 +513,7 @@ Each block below is raw extraction from the JSON file. No opinions, no clinical 
 
 ---
 
-### Vignette 17 — `pam_d2_037_anjum_florida_reuse_c.json`
+### Vignette 17 - `pam_d2_037_anjum_florida_reuse_c.json`
 
 **case_id:** PAM-D2-037-IDCases-2021-Florida-Lake-Pond
 
@@ -543,7 +543,7 @@ Each block below is raw extraction from the JSON file. No opinions, no clinical 
 
 ---
 
-### Vignette 18 — `pam_d2_040_yoder2010_us_review_imputed.json`
+### Vignette 18 - `pam_d2_040_yoder2010_us_review_imputed.json`
 
 **case_id:** PAM-D2-040-EpidemiolInfect-2010-US-South-region-Lake-Pond
 
@@ -573,7 +573,7 @@ Each block below is raw extraction from the JSON file. No opinions, no clinical 
 
 ---
 
-### Vignette 19 — `pam_d2_053_yoder2012_louisiana_reuse_a.json`
+### Vignette 19 - `pam_d2_053_yoder2012_louisiana_reuse_a.json`
 
 **case_id:** PAM-D2-053-CID-2012-Louisiana-Nasal-Irrigation
 
@@ -603,7 +603,7 @@ Each block below is raw extraction from the JSON file. No opinions, no clinical 
 
 ---
 
-### Vignette 20 — `pam_d2_054_yoder2012_louisiana_reuse_b.json`
+### Vignette 20 - `pam_d2_054_yoder2012_louisiana_reuse_b.json`
 
 **case_id:** PAM-D2-054-CID-2012-Louisiana-Nasal-Irrigation
 
@@ -633,7 +633,7 @@ Each block below is raw extraction from the JSON file. No opinions, no clinical 
 
 ---
 
-### Vignette 21 — `pam_d2_055_smith_texas_rv_reuse.json`
+### Vignette 21 - `pam_d2_055_smith_texas_rv_reuse.json`
 
 **case_id:** PAM-D2-055-MMWR-2025-Texas-Nasal-Irrigation
 
@@ -663,7 +663,7 @@ Each block below is raw extraction from the JSON file. No opinions, no clinical 
 
 ---
 
-### Vignette 22 — `pam_d2_056_cope_louisiana_treated_tap.json`
+### Vignette 22 - `pam_d2_056_cope_louisiana_treated_tap.json`
 
 **case_id:** PAM-D2-056-CID-2015-Louisiana-Nasal-Irrigation
 
@@ -693,7 +693,7 @@ Each block below is raw extraction from the JSON file. No opinions, no clinical 
 
 ---
 
-### Vignette 23 — `pam_d2_057_gharpure_eid_imputed_neti.json`
+### Vignette 23 - `pam_d2_057_gharpure_eid_imputed_neti.json`
 
 **case_id:** PAM-D2-057-EID-2021-US-South-region-Nasal-Irrigation
 
@@ -723,7 +723,7 @@ Each block below is raw extraction from the JSON file. No opinions, no clinical 
 
 ---
 
-### Vignette 24 — `pam_d2_058_gharpure_cid_imputed_neti.json`
+### Vignette 24 - `pam_d2_058_gharpure_cid_imputed_neti.json`
 
 **case_id:** PAM-D2-058-CID-2021-US-South-region-Nasal-Irrigation
 
@@ -753,7 +753,7 @@ Each block below is raw extraction from the JSON file. No opinions, no clinical 
 
 ---
 
-### Vignette 25 — `pam_d2_059_sandi_costa_rica_reuse.json`
+### Vignette 25 - `pam_d2_059_sandi_costa_rica_reuse.json`
 
 **case_id:** PAM-D2-059-EID-2015-Florida-(acquired-Costa-Rica)-Hot-Springs
 
@@ -783,7 +783,7 @@ Each block below is raw extraction from the JSON file. No opinions, no clinical 
 
 ---
 
-### Vignette 26 — `pam_d2_060_burki_pakistan_survivor_reuse.json`
+### Vignette 26 - `pam_d2_060_burki_pakistan_survivor_reuse.json`
 
 **case_id:** PAM-D2-060-Emerg Infect Dis-2024-Karachi-Pakistan-Ablution
 
@@ -818,13 +818,13 @@ Each block below is raw extraction from the JSON file. No opinions, no clinical 
 - Vignettes extracted: 26
 - Source directory: `data/vignettes/pam/`
 - Extraction method: Python json.load + structured field pull (replaced earlier jq attempt that hit parenthesis-balancing issues)
-- Cross-check phase: PENDING (Claude to verify each vignette vs paper truth, flag scope-fit, log errata)
+- Cross-check phase: PENDING (the assistant to verify each vignette vs paper truth, flag scope-fit, log errata)
 
 ## Status statement
 
 **READ-ONLY**: No vignette JSON files were modified during this extraction. The audit doc is the sole new artifact created.
 
-**Cross-check pending**: Per established Sub-Bundle audit protocol, Claude will follow up with:
+**Cross-check pending**: Per established Sub-Bundle audit protocol, the assistant will follow up with:
 1. Scope-fit classification per vignette (Sub-Bundle 04 / different sub-bundle / out of scope)
 2. Anchor-paper truth comparison (CSF values, demographics, outcome, treatment vs source paper)
 3. Cross-vignette pattern detection (duplicate templates, copy-paste errors)

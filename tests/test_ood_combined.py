@@ -1,4 +1,4 @@
-"""Phase 5.3 — tests for ml.ood_combined."""
+"""Phase 5.3 - tests for ml.ood_combined."""
 from __future__ import annotations
 
 import pytest
@@ -98,7 +98,7 @@ def test_combined_decision_end_to_end() -> None:
 
 
 def test_logit_energy_flag_inverted_correctly() -> None:
-    """ml.infer treats `energy > tau` as LogitEnergyAboveOODShift abstain — the adapter should preserve that."""
+    """ml.infer treats `energy > tau` as LogitEnergyAboveOODShift abstain - the adapter should preserve that."""
     out = {"energy": 5.0, "energy_tau": -0.99}
     sigs = signals_from_infer_output(out)
     le = next(s for s in sigs if s["name"] == "logit_energy")

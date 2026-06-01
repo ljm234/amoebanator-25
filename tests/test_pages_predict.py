@@ -1,9 +1,9 @@
-"""Tests for pages/01_predict.py — Phase 4.5 Mini-1 T1.7.
+"""Tests for pages/01_predict.py - Phase 4.5 Mini-1 T1.7.
 
 18 spec-enumerated tests covering form, presets, error paths, badges,
 debounce, and D18 banner. Plus 2 IRB_BYPASS branch tests (Mini-1
 closure gate criterion #6) and 1 visual snapshot baseline test
-(criterion #7) — total 21 tests.
+(criterion #7) - total 21 tests.
 
 AppTest is the load-bearing fixture. We mock ``infer_one`` for tests
 that don't need real inference (most of them) and let the real model
@@ -18,7 +18,7 @@ import re
 import tempfile
 from pathlib import Path
 from typing import Any
-from unittest.mock import patch  # noqa: F401 — used by patch() in tests #9, 10, 15-18
+from unittest.mock import patch  # noqa: F401 - used by patch() in tests #9, 10, 15-18
 
 import pytest
 from streamlit.testing.v1 import AppTest
@@ -113,7 +113,7 @@ def test_form_uses_neutral_defaults() -> None:
 # 4. Q11.A sanity gate: neutral defaults predict Low with p_high < 0.001
 # ─────────────────────────────────────────────────────────────────────
 def test_neutral_defaults_predict_low_p_high_lt_001() -> None:
-    """Calls real infer_one on the locked NEUTRAL defaults. No mock —
+    """Calls real infer_one on the locked NEUTRAL defaults. No mock -
     if this regresses, the model itself has changed and the demo's
     'page-load shows Low' invariant breaks."""
     from app.utils import build_row
@@ -161,7 +161,7 @@ def test_loading_high_risk_pam_preset_populates_form() -> None:
 # ─────────────────────────────────────────────────────────────────────
 def test_submit_calls_infer_one_with_built_row() -> None:
     """AppTest can't patch script-level imports across runs (the page
-    is loaded as a script, not a module — `pages.predict` is not
+    is loaded as a script, not a module - `pages.predict` is not
     importable). We verify the *contract* instead: ``build_row`` emits
     the dict shape ``infer_one`` accepts. Patch-based call-arg
     verification is covered indirectly by tests #15-#17 (they patch
@@ -270,7 +270,7 @@ def test_stale_lock_recovers_after_30s() -> None:
     at.run(timeout=30)
     at.button[3].click()
     at.run(timeout=30)
-    # No "Already processing" warning — stale lock was bypassed.
+    # No "Already processing" warning - stale lock was bypassed.
     warnings = [w.value for w in at.warning]
     assert not any("Already processing" in w for w in warnings)
 
@@ -309,7 +309,7 @@ def test_decision_badge_color_blind_safe(
     badge = decision_badge(prediction, reason="OOD" if prediction == "ABSTAIN" else None)
     stripped = re.sub(r":\w+\[|\]$", "", badge)
     assert icon in stripped
-    assert f"**{label}" in stripped  # bold prefix; ABSTAIN may have suffix " — OOD"
+    assert f"**{label}" in stripped  # bold prefix; ABSTAIN may have suffix " - OOD"
 
 
 # ─────────────────────────────────────────────────────────────────────
@@ -395,7 +395,7 @@ def test_d18_limitation_banner_only_on_bacterial_preset() -> None:
 # 19. IRB_BYPASS=1 → red banner + IRB_STATUS_CHANGE audit emit
 # ─────────────────────────────────────────────────────────────────────
 def test_irb_bypass_active_renders_banner_and_emits_event() -> None:
-    """Mini-1 closure gate criterion #6 — IRB_BYPASS=1 branch."""
+    """Mini-1 closure gate criterion #6 - IRB_BYPASS=1 branch."""
     with tempfile.NamedTemporaryFile(mode="w", suffix=".jsonl", delete=False) as f:
         tmp_path = Path(f.name)
     os.environ["AMOEBANATOR_AUDIT_PATH"] = str(tmp_path)
@@ -419,7 +419,7 @@ def test_irb_bypass_active_renders_banner_and_emits_event() -> None:
 # 20. IRB_BYPASS unset → NO banner + NO event
 # ─────────────────────────────────────────────────────────────────────
 def test_irb_bypass_inactive_no_banner_no_event() -> None:
-    """Mini-1 closure gate criterion #6 — IRB_BYPASS=0/unset branch."""
+    """Mini-1 closure gate criterion #6 - IRB_BYPASS=0/unset branch."""
     with tempfile.NamedTemporaryFile(mode="w", suffix=".jsonl", delete=False) as f:
         tmp_path = Path(f.name)
     os.environ["AMOEBANATOR_AUDIT_PATH"] = str(tmp_path)
@@ -445,7 +445,7 @@ def test_visual_snapshot_baseline() -> None:
     """Capture markdown blob from page render; compare to committed baseline.
 
     Skipped until T1.9 lands the baseline file. Once committed, the
-    test fails if the page's markdown drifts >5% character delta —
+    test fails if the page's markdown drifts >5% character delta -
     catching nav/disclaimer regressions that unit tests miss.
     """
     if not SNAPSHOT_PATH.exists():

@@ -1,4 +1,4 @@
-"""Tests for app/presets.py — Phase 4.5 Mini-1 T1.8 (1 of 3).
+"""Tests for app/presets.py - Phase 4.5 Mini-1 T1.8 (1 of 3).
 
 20 tests: 5 parametrized × 3 presets + 1 xfail-decorated bacterial
 regression + 4 cross-preset invariants. The xfail decorator uses
@@ -80,7 +80,7 @@ def test_preset_live_snapshot_matches(preset_key: str) -> None:
     For ``bacterial_meningitis_limitation`` this currently passes
     because the model returns 'High' (the D18 limitation). When Phase
     6 fixes the limitation the model will return 'Low'/'Moderate' and
-    this test will fail — the standalone xfail-decorated test below
+    this test will fail - the standalone xfail-decorated test below
     catches that transition cleanly.
     """
     from ml.infer import infer_one

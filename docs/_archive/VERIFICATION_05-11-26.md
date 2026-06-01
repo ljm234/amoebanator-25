@@ -1,4 +1,4 @@
-# VERIFICATION 05-11-26 — Deep clinical extraction, 140 vignettes
+# VERIFICATION 05-11-26 - Deep clinical extraction, 140 vignettes
 
 === CLASS 1 | vignette_id: 001 | subphase: 1.1 PAM Day1 | file: pam_d1_001_splash_pad_pediatric.json ===
 
@@ -15120,4 +15120,4 @@ ADJUDICATION:
 
 === END vignette ===
 
-# End — 140 vignettes printed.
+# End - 140 vignettes printed.

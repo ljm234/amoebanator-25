@@ -1,5 +1,5 @@
 """
-Phase 1.1 De-identification Module — Comprehensive Test Suite.
+Phase 1.1 De-identification Module - Comprehensive Test Suite.
 
 Tests cover:
   - Safe Harbor processing (18 identifiers, age cap, ZIP truncation,
@@ -130,7 +130,7 @@ class TestSafeHarborProcessor:
 
     def test_zip_truncation_to_3_digits(self) -> None:
         proc = SafeHarborProcessor()
-        # Use "postal_code" — "zip_code" is a direct identifier that gets
+        # Use "postal_code" - "zip_code" is a direct identifier that gets
         # removed before geographic truncation runs.  The truncation step
         # matches any surviving key containing "zip" or "postal".
         record = _make_clinical_record(postal_code="84408")
@@ -600,7 +600,7 @@ class TestDeidentificationPipeline:
 
 
 # ═══════════════════════════════════════════════════════════════════════════
-# Coverage Gap Tests — previously uncovered lines
+# Coverage Gap Tests - previously uncovered lines
 # ═══════════════════════════════════════════════════════════════════════════
 
 
@@ -1338,7 +1338,7 @@ class TestPrivacyRiskScorecard:
 
 
 # ═══════════════════════════════════════════════════════════════════════════
-# compute_privacy_scorecard Tests — All 5 Classification Levels
+# compute_privacy_scorecard Tests - All 5 Classification Levels
 # ═══════════════════════════════════════════════════════════════════════════
 
 

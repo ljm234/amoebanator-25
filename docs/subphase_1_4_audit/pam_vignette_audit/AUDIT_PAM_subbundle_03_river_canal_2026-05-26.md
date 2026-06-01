@@ -4,7 +4,7 @@ Date: 2026-05-26
 ## Cluster Summary
 
 - **Cluster theme:** river / canal / Rio Grande / Mexicali / Bangladesh river / Hunan river / Costa Rica groundwater / Kerala river freshwater exposure PAM
-- **Total vignettes:** 11 (user prompt expected 6; JSON-grep `freshwater_exposure_type="river"` returned 11 — discrepancy disclosed)
+- **Total vignettes:** 11 (user prompt expected 6; JSON-grep `freshwater_exposure_type="river"` returned 11 - discrepancy disclosed)
 - **Discrepancy note:** Phase 1 catalog PAM-03 used filename heuristics → 6 files. This audit uses actual JSON `exposure.freshwater_exposure_type` field → 11 files. Additional 5 vignettes (pam_d1_018, pam_d2_041, pam_d2_042, pam_d2_043, pam_d2_049) carry `river` exposure_type but were Phase 1-routed to other bundles. All 11 audited here for completeness.
 
 Per-anchor distribution within this sub-bundle:
@@ -28,7 +28,7 @@ Per-anchor distribution within this sub-bundle:
 **2. class_label / ground_truth_class:** Class 1 (PAM)
 **3. literature_anchors[0]:** PMID `37460088` | Maloney P et al. | Am J Trop Med Hyg | 2023 | anchor_type=case_report | doi=`10.4269/ajtmh.23-0211`
 **4. demographics:** age_years=8, sex=male, ethnicity=other, altitude_residence_m=100
-**5. geography:** geography_region=`other_global` — narrative city/state hint: see narrative excerpt below
+**5. geography:** geography_region=`other_global` - narrative city/state hint: see narrative excerpt below
 **6. exposure:**
    - freshwater_exposure_within_14d: Yes
    - freshwater_exposure_type: `river`
@@ -45,7 +45,7 @@ Per-anchor distribution within this sub-bundle:
    - focal_neurological_deficit: No, cranial_nerve_palsy: `none`
    - papilledema_on_fundoscopy: Yes, petechial_or_purpuric_rash: No
    - skin_lesion_centrofacial_chronic: No
-   - seizure mention: Yes — seizure
+   - seizure mention: Yes - seizure
 **9. diagnostic_tests:**
    - CSF: OP=50.0cmH2O, WBC=5200/mm3, lymph%=3, neut%=96, eos%=1, glucose=10mg/dL, protein=460mg/dL, lactate=9.6mmol/L, RBC=1240, xanthochromia=No, wet_mount_motile_amoebae=positive, ADA=None, CrAg LFA=negative
    - Blood/Labs: WBC=19400/uL, plt=184000/uL, ALT/AST=48, CRP=124.0mg/L, PCT=5.2ng/mL, Na=131mEq/L
@@ -85,7 +85,7 @@ Per-anchor distribution within this sub-bundle:
 **2. class_label / ground_truth_class:** Class 1 (PAM)
 **3. literature_anchors[0]:** PMID `8458963` | Lares-Villa F et al. | J Clin Microbiol | 1993 | anchor_type=case_report | doi=``
 **4. demographics:** age_years=9, sex=male, ethnicity=other, altitude_residence_m=100
-**5. geography:** geography_region=`other_latam` — narrative city/state hint: see narrative excerpt below
+**5. geography:** geography_region=`other_latam` - narrative city/state hint: see narrative excerpt below
 **6. exposure:**
    - freshwater_exposure_within_14d: Yes
    - freshwater_exposure_type: `river`
@@ -142,7 +142,7 @@ Per-anchor distribution within this sub-bundle:
 **2. class_label / ground_truth_class:** Class 1 (PAM)
 **3. literature_anchors[0]:** PMID `35463884` | Zhou W et al. | Frontiers in Pediatrics | 2022 | anchor_type=case_report | doi=`10.3389/fped.2022.785735`
 **4. demographics:** age_years=14, sex=male, ethnicity=other, altitude_residence_m=100
-**5. geography:** geography_region=`other_global` — narrative city/state hint: see narrative excerpt below
+**5. geography:** geography_region=`other_global` - narrative city/state hint: see narrative excerpt below
 **6. exposure:**
    - freshwater_exposure_within_14d: Yes
    - freshwater_exposure_type: `river`
@@ -172,7 +172,7 @@ Per-anchor distribution within this sub-bundle:
    - drugs mentioned: (none detected)
    - initiation timing hint: (see narrative)
 **11. outcome:** (unknown) ()
-   - sequelae mention: Yes — deficit
+   - sequelae mention: Yes - deficit
 **12. narrative_en (full text):**
 > A 14-year-old previously healthy boy from Hunan, China presented to a regional hospital with three days of fever, frontal headache, and vomiting roughly five days after swimming in a rural river. Empiric ceftriaxone and vancomycin were started for presumed bacterial meningitis. Within 24 hours mental status declined to stupor; the patient was transferred to a tertiary center where examination showed temperature 39.6 C, Glasgow Coma Scale 8, neck stiffness, papilledema, and a focal motor deficit. CSF showed opening pressure 36 cmH2O, white cell count 4,400 per cubic millimeter (92 percent neutrophils), glucose 14 mg/dL, and protein 438 mg/dL. CSF metagenomic next-generation sequencing detected Naegleria fowleri, prompting a diagnostic revision from bacterial meningitis to PAM. The CDC PAM regimen was started but the patient died of refractory cerebral edema. Clinical specifics where not directly reported by the primary source are inferred from PAM-cohort epidemiology consistent with Zhou 2022's documented misdiagnosis-to-mNGS-revision case context (PMID 35463884).
 
@@ -198,7 +198,7 @@ Per-anchor distribution within this sub-bundle:
 **2. class_label / ground_truth_class:** Class 1 (PAM)
 **3. literature_anchors[0]:** PMID `31734864` | Sazzad HMS et al. | Parasitology Research | 2020 | anchor_type=case_report | doi=`10.1007/s00436-019-06463-y`
 **4. demographics:** age_years=30, sex=male, ethnicity=other, altitude_residence_m=100
-**5. geography:** geography_region=`other_global` — narrative city/state hint: see narrative excerpt below
+**5. geography:** geography_region=`other_global` - narrative city/state hint: see narrative excerpt below
 **6. exposure:**
    - freshwater_exposure_within_14d: Yes
    - freshwater_exposure_type: `river`
@@ -228,7 +228,7 @@ Per-anchor distribution within this sub-bundle:
    - drugs mentioned: (none detected)
    - initiation timing hint: (see narrative)
 **11. outcome:** fatal (hospital day 6)
-   - sequelae mention: Yes — deficit
+   - sequelae mention: Yes - deficit
 **12. narrative_en (full text):**
 > A 30-year-old man from rural Bangladesh presented to a Dhaka tertiary center with four days of fever, severe occipital headache, vomiting, and progressive somnolence after two weeks of daily bathing and submerging in a slow-moving river. Examination showed temperature 39.2 C, Glasgow Coma Scale 10, neck stiffness, and a positive Kernig sign without focal deficit. CSF showed opening pressure 28 cmH2O, white cell count 3,100 per cubic millimeter (90 percent neutrophils), glucose 20 mg/dL, protein 360 mg/dL, and lactate 7.0 mmol/L. CSF Naegleria fowleri PCR at the icddr,b reference laboratory was positive; postmortem histology confirmed trophozoites in cerebral parenchyma. The CDC PAM regimen was started but the patient died on hospital day 6. Clinical specifics not reported by the primary source are inferred from PAM-cohort epidemiology, consistent with Sazzad 2020's first documented Bangladesh case-context (PMID 31734864).
 
@@ -254,7 +254,7 @@ Per-anchor distribution within this sub-bundle:
 **2. class_label / ground_truth_class:** Class 1 (PAM)
 **3. literature_anchors[0]:** PMID `32752181` | Retana Moreira L et al. | Pathogens | 2020 | anchor_type=case_report | doi=`10.3390/pathogens9080629`
 **4. demographics:** age_years=7, sex=male, ethnicity=other, altitude_residence_m=100
-**5. geography:** geography_region=`other_latam` — narrative city/state hint: see narrative excerpt below
+**5. geography:** geography_region=`other_latam` - narrative city/state hint: see narrative excerpt below
 **6. exposure:**
    - freshwater_exposure_within_14d: Yes
    - freshwater_exposure_type: `river`
@@ -284,7 +284,7 @@ Per-anchor distribution within this sub-bundle:
    - drugs mentioned: (none detected)
    - initiation timing hint: (see narrative)
 **11. outcome:** (unknown) ()
-   - sequelae mention: Yes — deficit
+   - sequelae mention: Yes - deficit
 **12. narrative_en (full text):**
 > A 7-year-old previously healthy boy from Costa Rica presented to a national pediatric center with three days of fever, frontal headache, vomiting, and progressive lethargy one week after splashing and submerging in a river-fed groundwater swimming hole. Examination showed temperature 39.5 C, Glasgow Coma Scale 7, neck stiffness, papilledema, and a focal deficit. CSF showed opening pressure 38 cmH2O, white cell count 4,520 per cubic millimeter (92 percent neutrophils), glucose 13 mg/dL, protein 452 mg/dL, lactate 8.6 mmol/L, and motile trophozoites on wet mount; the national reference laboratory CSF PCR confirmed Naegleria fowleri. The CDC PAM regimen was started but the patient died of refractory cerebral edema. Clinical specifics where not directly reported by the primary source are inferred from PAM-cohort epidemiology, consistent with Retana Moreira 2020's Costa Rica groundwater 3-case series context (PMID 32752181).
 
@@ -310,7 +310,7 @@ Per-anchor distribution within this sub-bundle:
 **2. class_label / ground_truth_class:** Class 1 (PAM)
 **3. literature_anchors[0]:** PMID `8923775` | DeNapoli et al. | Tex Med | 1996 | anchor_type=case_report | doi=`None`
 **4. demographics:** age_years=8, sex=female, ethnicity=white_non_hispanic, altitude_residence_m=100
-**5. geography:** geography_region=`us_south` — narrative city/state hint: see narrative excerpt below
+**5. geography:** geography_region=`us_south` - narrative city/state hint: see narrative excerpt below
 **6. exposure:**
    - freshwater_exposure_within_14d: Yes
    - freshwater_exposure_type: `river`
@@ -339,7 +339,7 @@ Per-anchor distribution within this sub-bundle:
    - drugs mentioned: (none detected)
    - initiation timing hint: (see narrative)
 **11. outcome:** (unknown) ()
-   - sequelae mention: Yes — deficit
+   - sequelae mention: Yes - deficit
 **12. narrative_en (full text):**
 > An 8-year-old previously healthy girl from south Texas presented to a regional pediatric center with four days of fever, headache, vomiting, and progressive somnolence with neck stiffness, six days after swimming and submerging in the Rio Grande river. Examination showed temperature 39.4 C, Glasgow Coma Scale 11, neck stiffness, and a positive Kernig sign without focal deficit. CSF showed opening pressure 28 cmH2O, white cell count 2,960 per cubic millimeter (89 percent neutrophils), glucose 22 mg/dL, protein 352 mg/dL, and lactate 6.6 mmol/L. CSF PCR for Naegleria fowleri at the state public health laboratory was positive. The CDC PAM regimen was started but the patient died of refractory cerebral edema. Clinical specifics where not directly reported by the primary source are inferred from PAM-cohort epidemiology, consistent with DeNapoli 1996's documented south-Texas Rio Grande pediatric case context (PMID 8923775).
 
@@ -365,7 +365,7 @@ Per-anchor distribution within this sub-bundle:
 **2. class_label / ground_truth_class:** Class 1 (PAM)
 **3. literature_anchors[0]:** PMID `8923775` | DeNapoli et al. | Tex Med | 1996 | anchor_type=case_report | doi=`None`
 **4. demographics:** age_years=10, sex=male, ethnicity=white_non_hispanic, altitude_residence_m=100
-**5. geography:** geography_region=`us_south` — narrative city/state hint: see narrative excerpt below
+**5. geography:** geography_region=`us_south` - narrative city/state hint: see narrative excerpt below
 **6. exposure:**
    - freshwater_exposure_within_14d: Yes
    - freshwater_exposure_type: `river`
@@ -395,7 +395,7 @@ Per-anchor distribution within this sub-bundle:
    - drugs mentioned: (none detected)
    - initiation timing hint: (see narrative)
 **11. outcome:** (unknown) ()
-   - sequelae mention: Yes — deficit
+   - sequelae mention: Yes - deficit
 **12. narrative_en (full text):**
 > A 10-year-old previously healthy boy from south Texas presented to a tertiary pediatric center with three days of fever, frontal headache, vomiting, and rapid progression to stupor with focal motor weakness, five days after swimming and underwater diving in the Rio Grande river. Examination showed temperature 39.6 C, Glasgow Coma Scale 6, neck stiffness, papilledema, and a focal deficit. CSF showed opening pressure 38 cmH2O, white cell count 4,620 per cubic millimeter (92 percent neutrophils), glucose 14 mg/dL, protein 448 mg/dL, lactate 8.4 mmol/L, and motile trophozoites on wet mount; the state public health laboratory CSF PCR confirmed Naegleria fowleri. The CDC PAM regimen was started but the patient died. This vignette is a second within-cohort pediatric case from the DeNapoli 1996 Rio Grande series; clinical specifics not directly reported by the primary source are inferred from PAM-cohort epidemiology consistent with the documented case context (PMID 8923775).
 
@@ -421,7 +421,7 @@ Per-anchor distribution within this sub-bundle:
 **2. class_label / ground_truth_class:** Class 1 (PAM)
 **3. literature_anchors[0]:** PMID `8458963` | Lares-Villa F et al. | J Clin Microbiol | 1993 | anchor_type=case_report | doi=``
 **4. demographics:** age_years=11, sex=male, ethnicity=other, altitude_residence_m=100
-**5. geography:** geography_region=`other_latam` — narrative city/state hint: see narrative excerpt below
+**5. geography:** geography_region=`other_latam` - narrative city/state hint: see narrative excerpt below
 **6. exposure:**
    - freshwater_exposure_within_14d: Yes
    - freshwater_exposure_type: `river`
@@ -450,7 +450,7 @@ Per-anchor distribution within this sub-bundle:
    - drugs mentioned: (none detected)
    - initiation timing hint: (see narrative)
 **11. outcome:** (unknown) ()
-   - sequelae mention: Yes — deficit
+   - sequelae mention: Yes - deficit
 **12. narrative_en (full text):**
 > An 11-year-old previously healthy boy from Mexicali presented to a tertiary center with four days of fever, headache, vomiting, and progressive somnolence one week after recreational swimming in an irrigation canal. Examination showed temperature 39.3 C, Glasgow Coma Scale 12, neck stiffness, and a positive Kernig sign without focal deficit. CSF showed opening pressure 28 cmH2O, white cell count 3,060 per cubic millimeter (89 percent neutrophils), glucose 21 mg/dL, protein 358 mg/dL, and lactate 6.8 mmol/L. CSF PCR for Naegleria fowleri at the national reference laboratory was positive. The CDC PAM regimen was started but the patient died. Day-1 used Lares-Villa 1993 for v18 (9-year-old boy, same Mexicali canal exposure); v46 is a within-cohort imputation for a different pediatric demographic within the same anchor's documented case context, encoded under the river cluster (PMID 8458963).
 
@@ -476,7 +476,7 @@ Per-anchor distribution within this sub-bundle:
 **2. class_label / ground_truth_class:** Class 1 (PAM)
 **3. literature_anchors[0]:** PMID `26582886` | Capewell et al. | J Pediatric Infect Dis Soc | 2015 | anchor_type=review | doi=`10.1093/jpids/piu103`
 **4. demographics:** age_years=12, sex=male, ethnicity=white_non_hispanic, altitude_residence_m=100
-**5. geography:** geography_region=`us_south` — narrative city/state hint: see narrative excerpt below
+**5. geography:** geography_region=`us_south` - narrative city/state hint: see narrative excerpt below
 **6. exposure:**
    - freshwater_exposure_within_14d: Yes
    - freshwater_exposure_type: `river`
@@ -531,7 +531,7 @@ Per-anchor distribution within this sub-bundle:
 **2. class_label / ground_truth_class:** Class 1 (PAM)
 **3. literature_anchors[0]:** PMID `33350926` | Gharpure et al. | Emerg Infect Dis | 2021 | anchor_type=review | doi=`10.3201/eid2701.202119`
 **4. demographics:** age_years=14, sex=male, ethnicity=white_non_hispanic, altitude_residence_m=100
-**5. geography:** geography_region=`us_south` — narrative city/state hint: see narrative excerpt below
+**5. geography:** geography_region=`us_south` - narrative city/state hint: see narrative excerpt below
 **6. exposure:**
    - freshwater_exposure_within_14d: Yes
    - freshwater_exposure_type: `river`
@@ -587,7 +587,7 @@ Per-anchor distribution within this sub-bundle:
 **2. class_label / ground_truth_class:** Class 1 (PAM)
 **3. literature_anchors[0]:** PMID `40009134` | Rauf A, Rahiman FA, Poornima MV, Sudarsana J, Sehgal R, Ummer K | Indian J Pediatr | 2025 | anchor_type=case_report | doi=``
 **4. demographics:** age_years=11, sex=male, ethnicity=other, altitude_residence_m=100
-**5. geography:** geography_region=`other_global` — narrative city/state hint: see narrative excerpt below
+**5. geography:** geography_region=`other_global` - narrative city/state hint: see narrative excerpt below
 **6. exposure:**
    - freshwater_exposure_within_14d: Yes
    - freshwater_exposure_type: `river`
@@ -617,7 +617,7 @@ Per-anchor distribution within this sub-bundle:
    - drugs mentioned: amphotericin, miltefosine, fluconazole, azithromycin, rifampin, dexamethasone
    - initiation timing hint: (see narrative)
 **11. outcome:** survivor ()
-   - sequelae mention: Yes — deficit
+   - sequelae mention: Yes - deficit
 **12. narrative_en (full text):**
 > An 11-year-old previously healthy boy from Kerala, India presented to a pediatric tertiary center with three days of fever, frontal headache, vomiting, and increasing irritability after swimming and underwater play in a river-fed pond about six days earlier. Family-recognized early decline prompted arrival within hours of mental-status change. Examination showed temperature 39.4 C, Glasgow Coma Scale 13, neck stiffness, and a positive Kernig sign without focal deficit. CSF showed opening pressure 26 cmH2O, white cell count 1,820 per cubic millimeter (87 percent neutrophils), glucose 33 mg/dL, protein 196 mg/dL, lactate 4.6 mmol/L, and motile trophozoites on wet mount; the regional reference laboratory CSF real-time PCR confirmed Naegleria fowleri. Early miltefosine was started within an hour of bedside microscopy alongside intravenous amphotericin B, dexamethasone, fluconazole, azithromycin, rifampin, and aggressive intracranial pressure control with targeted temperature management. The boy avoided endotracheal intubation, with gradual neurologic improvement over the first week, and was discharged from the pediatric ICU on hospital day 16 and from acute care on hospital day 24 with preserved cognition, representing a pediatric Indian PAM survivor. Day-1 used Rauf 2025 for v20 (14-year-old male Kerala pediatric survivor); v49 is a within-cohort imputation for a younger Indian pediatric survivor demographic within the same anchor's documented Kerala recreational freshwater context (PMID 40009134).
 
@@ -696,15 +696,15 @@ Per-anchor distribution within this sub-bundle:
 |---|---|---|---|
 | `pam_d1_007_river_pediatric` | **fatal** | hospital day two | No |
 | `pam_d1_018_mexicali_pediatric` | **fatal** | hospital day five | No |
-| `pam_d2_041_zhou_hunan_misdiagnosis` | **(unknown)** |  | Yes — deficit |
-| `pam_d2_042_sazzad_bangladesh_first` | **fatal** | hospital day 6 | Yes — deficit |
-| `pam_d2_043_retana_costa_rica_groundwater` | **(unknown)** |  | Yes — deficit |
-| `pam_d2_044_denapoli_rio_grande_a` | **(unknown)** |  | Yes — deficit |
-| `pam_d2_045_denapoli_rio_grande_b` | **(unknown)** |  | Yes — deficit |
-| `pam_d2_046_lares_villa_mexicali_canal` | **(unknown)** |  | Yes — deficit |
+| `pam_d2_041_zhou_hunan_misdiagnosis` | **(unknown)** |  | Yes - deficit |
+| `pam_d2_042_sazzad_bangladesh_first` | **fatal** | hospital day 6 | Yes - deficit |
+| `pam_d2_043_retana_costa_rica_groundwater` | **(unknown)** |  | Yes - deficit |
+| `pam_d2_044_denapoli_rio_grande_a` | **(unknown)** |  | Yes - deficit |
+| `pam_d2_045_denapoli_rio_grande_b` | **(unknown)** |  | Yes - deficit |
+| `pam_d2_046_lares_villa_mexicali_canal` | **(unknown)** |  | Yes - deficit |
 | `pam_d2_047_capewell_imputed_river` | **(unknown)** |  | No |
 | `pam_d2_048_gharpure_eid_imputed_river` | **(unknown)** |  | No |
-| `pam_d2_049_rauf_kerala_survivor_reuse` | **survivor** |  | Yes — deficit |
+| `pam_d2_049_rauf_kerala_survivor_reuse` | **survivor** |  | Yes - deficit |
 
 Totals: {'fatal': 3, '(unknown)': 7, 'survivor': 1}
 
@@ -726,27 +726,27 @@ Totals: {'fatal': 3, '(unknown)': 7, 'survivor': 1}
 
 ### Internal contradictions (dx_test citations vs anchor PMID)
 
-- _None — all dx_test citations match the anchor PMID for every vignette._
+- _None - all dx_test citations match the anchor PMID for every vignette._
 
 ## Pre-flight Quality Flags
 
-- `pam_d1_007_river_pediatric` — PLAIN filename (no _imputed_ or _reuse_) — demographic match against anchor paper is mandatory; flagged for verification (see PAM_vignette_errata_running.md for known issues)
-- `pam_d1_018_mexicali_pediatric` — PLAIN filename (no _imputed_ or _reuse_) — demographic match against anchor paper is mandatory; flagged for verification (see PAM_vignette_errata_running.md for known issues)
-- `pam_d2_041_zhou_hunan_misdiagnosis` — PLAIN filename (no _imputed_ or _reuse_) — demographic match against anchor paper is mandatory; flagged for verification (see PAM_vignette_errata_running.md for known issues)
-- `pam_d2_042_sazzad_bangladesh_first` — PLAIN filename (no _imputed_ or _reuse_) — demographic match against anchor paper is mandatory; flagged for verification (see PAM_vignette_errata_running.md for known issues)
-- `pam_d2_043_retana_costa_rica_groundwater` — PLAIN filename (no _imputed_ or _reuse_) — demographic match against anchor paper is mandatory; flagged for verification (see PAM_vignette_errata_running.md for known issues)
-- `pam_d2_044_denapoli_rio_grande_a` — PLAIN filename (no _imputed_ or _reuse_) — demographic match against anchor paper is mandatory; flagged for verification (see PAM_vignette_errata_running.md for known issues)
-- `pam_d2_045_denapoli_rio_grande_b` — PLAIN filename (no _imputed_ or _reuse_) — demographic match against anchor paper is mandatory; flagged for verification (see PAM_vignette_errata_running.md for known issues)
-- `pam_d2_046_lares_villa_mexicali_canal` — PLAIN filename (no _imputed_ or _reuse_) — demographic match against anchor paper is mandatory; flagged for verification (see PAM_vignette_errata_running.md for known issues)
+- `pam_d1_007_river_pediatric` - PLAIN filename (no _imputed_ or _reuse_) - demographic match against anchor paper is mandatory; flagged for verification (see PAM_vignette_errata_running.md for known issues)
+- `pam_d1_018_mexicali_pediatric` - PLAIN filename (no _imputed_ or _reuse_) - demographic match against anchor paper is mandatory; flagged for verification (see PAM_vignette_errata_running.md for known issues)
+- `pam_d2_041_zhou_hunan_misdiagnosis` - PLAIN filename (no _imputed_ or _reuse_) - demographic match against anchor paper is mandatory; flagged for verification (see PAM_vignette_errata_running.md for known issues)
+- `pam_d2_042_sazzad_bangladesh_first` - PLAIN filename (no _imputed_ or _reuse_) - demographic match against anchor paper is mandatory; flagged for verification (see PAM_vignette_errata_running.md for known issues)
+- `pam_d2_043_retana_costa_rica_groundwater` - PLAIN filename (no _imputed_ or _reuse_) - demographic match against anchor paper is mandatory; flagged for verification (see PAM_vignette_errata_running.md for known issues)
+- `pam_d2_044_denapoli_rio_grande_a` - PLAIN filename (no _imputed_ or _reuse_) - demographic match against anchor paper is mandatory; flagged for verification (see PAM_vignette_errata_running.md for known issues)
+- `pam_d2_045_denapoli_rio_grande_b` - PLAIN filename (no _imputed_ or _reuse_) - demographic match against anchor paper is mandatory; flagged for verification (see PAM_vignette_errata_running.md for known issues)
+- `pam_d2_046_lares_villa_mexicali_canal` - PLAIN filename (no _imputed_ or _reuse_) - demographic match against anchor paper is mandatory; flagged for verification (see PAM_vignette_errata_running.md for known issues)
 
 ## Cross-reference to existing errata log
 
 From `docs/AUDIT_PAM_vignette_errata_running.md`, the following errors apply to this sub-bundle:
-- **ERR-002**: pam_d2_041 Zhou Hunan — vignette 14/M vs paper 9/M (AGE CRITICAL)
-- **ERR-003**: pam_d2_042 Sazzad Bangladesh — vignette 30/M vs paper 15/M (AGE CRITICAL)
-- **ERR-005**: pam_d2_043 Retana Costa Rica — FRANKENSTEIN (7/M groundwater survivor matches no actual case)
-- **ERR-006**: pam_d2_044 DeNapoli Rio Grande A — 8/F vs paper 13/M (AGE+SEX CRITICAL, no _imputed_ flag)
-- **ERR-007**: pam_d2_045 DeNapoli Rio Grande B — 10/M vs paper 13/M (AGE CRITICAL, no _imputed_ flag)
+- **ERR-002**: pam_d2_041 Zhou Hunan - vignette 14/M vs paper 9/M (AGE CRITICAL)
+- **ERR-003**: pam_d2_042 Sazzad Bangladesh - vignette 30/M vs paper 15/M (AGE CRITICAL)
+- **ERR-005**: pam_d2_043 Retana Costa Rica - FRANKENSTEIN (7/M groundwater survivor matches no actual case)
+- **ERR-006**: pam_d2_044 DeNapoli Rio Grande A - 8/F vs paper 13/M (AGE+SEX CRITICAL, no _imputed_ flag)
+- **ERR-007**: pam_d2_045 DeNapoli Rio Grande B - 10/M vs paper 13/M (AGE CRITICAL, no _imputed_ flag)
 - 6 of 11 vignettes in this sub-bundle have unresolved demographic/clinical errata pending Errata 5.4.3.3 batch fix.
 
 ## Sub-Bundle 03 Quality Rating
@@ -758,7 +758,7 @@ From `docs/AUDIT_PAM_vignette_errata_running.md`, the following errors apply to 
 | Cross-vignette pattern analysis | Excellent (demo/CSF/vitals/treatment/outcome/anchor/citation tables) |
 | Pre-flight flags | Exceptional (PAM-specific thresholds + anchor-set + plain-filename mandatory-verification flag + exposure-type checks; cross-ref to existing ERR log) |
 
-**Overall Sub-Bundle 03 readiness for Claude 5-layer review**: **Exceptional**
+**Overall Sub-Bundle 03 readiness for the assistant 5-layer review**: **Exceptional**
 
 Note: scope expanded from user's stated 6 vignettes to 11 based on strict JSON `exposure_type=river` filter. Phase 1 catalog grouped 5 of these into other 'misc' bundles based on filename heuristics; this audit confirms they belong with river/canal cluster per actual JSON content. User may choose to (a) accept 11-vignette sub-bundle, (b) restrict to the original 6 + re-route the 5 extras to their own bundle, or (c) revise Phase 1 catalog bundle definitions.
 

@@ -1,4 +1,4 @@
-# Amoebanator V1.0 — Vignette Schema v2.0
+# Amoebanator V1.0 - Vignette Schema v2.0
 
 Comprehensive reference for the Pydantic v2 schema underlying the 9-class
 meningoencephalitis differential ML system. Schema locked at v2.0 as of
@@ -88,7 +88,7 @@ Exposure history including the PAM always-flag fields.
 
 | Field | Type | Constraint |
 |---|---|---|
-| `freshwater_exposure_within_14d` | `bool` | **CRITICAL — required** for PAM always-flag rule |
+| `freshwater_exposure_within_14d` | `bool` | **CRITICAL - required** for PAM always-flag rule |
 | `freshwater_exposure_type` | `Optional[Literal[8 values]]` | optional |
 | `altitude_exposure_within_7d_m` | `Optional[int]` | 0-6000 |
 | `pork_consumption_or_taenia_contact` | `Optional[bool]` | NCC criterion (Del Brutto 2017) |
@@ -142,7 +142,7 @@ Peripheral lab values.
 | `procalcitonin_ng_per_mL` | `Optional[float]` | 0-200 (>0.5 favors bacterial, Vikse 2015) |
 | `serum_sodium_mEq_per_L` | `int` | 100-170 (<125 = severe symptomatic hyponatremia) |
 
-### 2.7 CSFProfile (14 fields + 1 validator) — diagnostic core
+### 2.7 CSFProfile (14 fields + 1 validator) - diagnostic core
 
 The primary diagnostic discriminator across the 9 classes.
 
@@ -272,15 +272,15 @@ Validators: see Section 4 (`_pam_always_flag_rule`, `_cryptococcal_cd4_required_
 For each of 9 classes: enum value, canonical anchor, optional Peru companion,
 geographic relevance score for Peru deployment, adjudicator notes.
 
-### 3.1 ClassLabel.PAM (1) — Primary Amebic Meningoencephalitis
+### 3.1 ClassLabel.PAM (1) - Primary Amebic Meningoencephalitis
 
 - **Canonical anchor:** PMID 40146665 (MMWR 2025) + CDC PAM 2017 case definition
 - **DOI:** 10.15585/mmwr.mm7410a2
-- **Peru relevance:** medium — Peru reports rare; primary literature US/Pakistan
+- **Peru relevance:** medium - Peru reports rare; primary literature US/Pakistan
 - **Adjudicator notes:** confirm always-flag rule wording; verify splash pad as
   acceptable freshwater exposure type per MMWR 2025 Pulaski County Arkansas case
 
-### 3.2 ClassLabel.BACTERIAL (2) — Acute bacterial meningitis
+### 3.2 ClassLabel.BACTERIAL (2) - Acute bacterial meningitis
 
 - **Canonical anchor:** PMID 15509818, DOI 10.1056/NEJMoa040845
   - van de Beek D, et al. Clinical features and prognostic factors in adults
@@ -295,27 +295,27 @@ geographic relevance score for Peru deployment, adjudicator notes.
 - **Adjudicator notes:** confirm acceptability of pediatric Peru companion ONLY;
   flag if HNDM/HCH/Almenara local extraction should be commissioned in Phase 2
 
-### 3.3 ClassLabel.VIRAL (3) — Viral meningoencephalitis
+### 3.3 ClassLabel.VIRAL (3) - Viral meningoencephalitis
 
 - **Canonical Peru anchor:** PMID 26733400, DOI 10.1017/S0950268815003222
   - **Montano SM, Mori N, Nelson CA, Ton TGN, Celis V**, et al.
     Epidemiol Infect 2016;144(8):1673-1678. HSV encephalitis 5 Peru cities
   - **D.1 Fix 3 applied:** corrected from "Becerra" to Montano SM first author
-- **Peru relevance:** high — Lima cohort directly Peruvian
+- **Peru relevance:** high - Lima cohort directly Peruvian
 - **Adjudicator notes:** confirm HSV-1 representativeness; consider HSV-2,
   enterovirus, arboviral subclasses for Phase 2 expansion
 
-### 3.4 ClassLabel.TUBERCULOUS (4) — TB meningitis
+### 3.4 ClassLabel.TUBERCULOUS (4) - TB meningitis
 
 - **Canonical Peru anchor:** PMID 30611205, DOI 10.1186/s12879-018-3633-4
   - Soria J, et al. BMC Infect Dis 2018. HNDM Lima TB meningitis cohort
 - **Pathophysiology reference:** Marais S, et al. Lancet Infect Dis 2010;10(11):803-812
   - DOI 10.1016/S1473-3099(10)70138-9
-- **Peru relevance:** high — directly anchored to Hospital Nacional Dos de Mayo Lima
+- **Peru relevance:** high - directly anchored to Hospital Nacional Dos de Mayo Lima
 - **Adjudicator notes:** confirm CSF ADA cutoff (>=10 U/L per Ye TM&IH 2023)
   and basal meningeal enhancement + hydrocephalus as canonical imaging pattern
 
-### 3.5 ClassLabel.CRYPTOCOCCAL_FUNGAL (5) — Cryptococcal/fungal meningitis
+### 3.5 ClassLabel.CRYPTOCOCCAL_FUNGAL (5) - Cryptococcal/fungal meningitis
 
 - **Canonical anchor:** PMID 35320642, DOI 10.1056/NEJMoa2111904
   - Jarvis JN, et al. Single-Dose Liposomal Amphotericin B Treatment for
@@ -324,11 +324,11 @@ geographic relevance score for Peru deployment, adjudicator notes.
   - Concha-Velasco F, González-Lagos E, Seas C, Bustamante B. Factors
     associated with early mycological clearance in HIV-associated cryptococcal
     meningitis. PLoS One 2017;12(3):e0174459. Hospital Cayetano Heredia Lima
-- **Peru relevance:** high — Peru companion directly relevant
+- **Peru relevance:** high - Peru companion directly relevant
 - **Adjudicator notes:** confirm CD4-required-when-HIV+ validator; document
   5-FC unavailability at HCH per Concha-Velasco 2017 limitation
 
-### 3.6 ClassLabel.GAE (6) — Granulomatous amebic encephalitis (Acanthamoeba/Balamuthia)
+### 3.6 ClassLabel.GAE (6) - Granulomatous amebic encephalitis (Acanthamoeba/Balamuthia)
 
 - **Canonical Peru single-patient:** PMID 20550438, DOI 10.1086/653609
   - **Martínez DY, Seas C, Bravo F, Legua P, Ramos C, Cabello AM, Gotuzzo E.**
@@ -340,22 +340,22 @@ geographic relevance score for Peru deployment, adjudicator notes.
     2022;6:51-58 (NOT JAAD Case Reports)
   - **D.1 Fix 2 applied:** corrected from DOI 10.1016/j.jdcr.2021.11.022 (JAAD
     Case Reports) to DOI 10.1016/j.jdin.2021.11.005 (JAAD International)
-- **Peru relevance:** highest — Peru is global Balamuthia hotspot per UPCH/HCH
+- **Peru relevance:** highest - Peru is global Balamuthia hotspot per UPCH/HCH
 - **Adjudicator notes:** verify centrofacial skin lesion preceding CNS by
   median 15 months (Bravo PMC8760460 cohort); confirm Hispanic ethnicity
   framing as epidemiologic observation, not predictor
 
-### 3.7 ClassLabel.NEUROCYSTICERCOSIS (7) — Acute neurocysticercosis
+### 3.7 ClassLabel.NEUROCYSTICERCOSIS (7) - Acute neurocysticercosis
 
 - **Canonical Peru anchor:** PMID 38003778, DOI 10.3390/pathogens12111313
   - Allen et al. Pathogens 2023;12(11):1313. Tumbes community-based NCC + epilepsy
 - **Diagnostic criteria:** Del Brutto OH, et al. J Neurol Sci 2017;372:202-210
   - PMID 28017213 (revised diagnostic criteria, scolex within cyst absolute)
-- **Peru relevance:** highest — 38% community-acquired epilepsy in Tumbes is NCC
+- **Peru relevance:** highest - 38% community-acquired epilepsy in Tumbes is NCC
 - **Adjudicator notes:** confirm scolex-within-cyst as the absolute criterion;
   validate Taenia/pork exposure field for endemic-area risk stratification
 
-### 3.8 ClassLabel.CEREBRAL_MALARIA_OR_SEVERE_ARBO (8) — Cerebral malaria + severe arboviral CNS
+### 3.8 ClassLabel.CEREBRAL_MALARIA_OR_SEVERE_ARBO (8) - Cerebral malaria + severe arboviral CNS
 
 **Critical paradigm shift:** Peru malaria is 81% P. vivax (INS surveillance).
 African pediatric P. falciparum cerebral malaria is biologically and clinically
@@ -367,12 +367,12 @@ literature is comparative-only.
     in the Peruvian Amazon: case report. RPMESP 2022;39(2):241-244. Hospital
     Regional de Loreto, Iquitos
 - **Comparative pathophysiology only:** Idro R, et al. Lancet Neurol 2005;4(12):827-840
-  - PMID 15005962 — kept as physiology reference, NOT vignette anchor
-- **Peru relevance:** highest — Loreto/Madre de Dios endemic
+  - PMID 15005962 - kept as physiology reference, NOT vignette anchor
+- **Peru relevance:** highest - Loreto/Madre de Dios endemic
 - **Adjudicator notes:** validate P. vivax vs P. falciparum distinction in
   fixture demographic + parasitemia% representation
 
-### 3.9 ClassLabel.NON_INFECTIOUS_MIMIC (9) — Non-infectious mimics
+### 3.9 ClassLabel.NON_INFECTIOUS_MIMIC (9) - Non-infectious mimics
 
 Heterogeneous catch-all: anti-NMDAR encephalitis, HACE, severe migraine,
 hyponatremia <125, PRES/RCVS, SAH.
@@ -382,7 +382,7 @@ hyponatremia <125, PRES/RCVS, SAH.
 - **Diagnostic criteria:** Graus F, et al. Lancet Neurol 2016;15(4):391-404
   - DOI 10.1016/S1474-4422(15)00401-9 (autoimmune encephalitis criteria)
 - **Other mimic references:** Hinchey J, et al. NEJM 1996;334(8):494-500 (PRES)
-- **Peru relevance:** medium — HACE highly relevant for Cusco/Puno deployment
+- **Peru relevance:** medium - HACE highly relevant for Cusco/Puno deployment
 - **Adjudicator notes:** confirm subtype enumeration is sufficient or whether
   Phase 2 should split into NMDAR/HACE/PRES/SAH/HYPONATREMIA distinct labels
 
@@ -444,7 +444,7 @@ sub-model. Tests verify each fires correctly with appropriate error messages.
 
 ## Section 5: Documented limitations
 
-### 5.1 Class 2 (Bacterial meningitis) — no Peru adult cohort
+### 5.1 Class 2 (Bacterial meningitis) - no Peru adult cohort
 
 No large Peruvian adult community-acquired pyogenic bacterial meningitis cohort
 exists in indexed literature (PubMed, SciELO, RPMESP) as of May 2026. Available
@@ -458,7 +458,7 @@ Peru evidence is pediatric (Castillo 2016 PMID 27831604; Marin-Portocarrero
 - **Adjudicator action:** confirm acceptability OR commission HNDM/HCH/Almenara
   local data extraction in Phase 2 supplement
 
-### 5.2 Class 5 (Cryptococcal) — no Peru AMBITION-equivalent
+### 5.2 Class 5 (Cryptococcal) - no Peru AMBITION-equivalent
 
 No Peru randomized controlled trial of liposomal amphotericin B + 5-FC dual
 therapy. Concha-Velasco 2017 explicitly documents 5-FC unavailability at HCH.
@@ -470,7 +470,7 @@ therapy. Concha-Velasco 2017 explicitly documents 5-FC unavailability at HCH.
 - **Adjudicator action:** acknowledge reality in fixture provenance + preprint
   limitations section
 
-### 5.3 Class 8 (Cerebral malaria) — Peru P. vivax paradigm replaces African P. falciparum
+### 5.3 Class 8 (Cerebral malaria) - Peru P. vivax paradigm replaces African P. falciparum
 
 Peru malaria is dominated by P. vivax (~81% per INS surveillance). African
 pediatric P. falciparum cerebral malaria literature (Idro et al.) is
@@ -478,7 +478,7 @@ biologically and clinically distinct (different rosetting, different sequestrati
 different age distribution, different mortality profile).
 
 - **Primary Peru anchor:** Paredes-Obando 2022 PMID 36477327 (Loreto, Iquitos)
-- **Comparative pathophysiology only:** Idro 2005 PMID 15005962 (Uganda) —
+- **Comparative pathophysiology only:** Idro 2005 PMID 15005962 (Uganda) -
   retained as physiology reference, NOT vignette anchor
 - **Implication:** P. vivax cerebral involvement is rarer but documented in
   Peruvian Amazon. Fixture reflects this Peru-relevant paradigm.
@@ -530,7 +530,7 @@ network for clinical-fidelity review. Specific questions per class:
   acceptable?
 - **Class 6 (GAE Balamuthia):** Confirm Martínez 2010 single-patient + Alvarez
   2022 series pairing. Hispanic ethnicity overrepresentation framed as
-  epidemiologic observation rather than predictor — acceptable framing?
+  epidemiologic observation rather than predictor - acceptable framing?
 - **Class 7 (NCC):** Confirm Allen 2023 Tumbes cohort representative case.
   Scolex-within-cyst as absolute criterion sufficient?
 - **Class 8 (Cerebral malaria):** Confirm Peru P. vivax paradigm

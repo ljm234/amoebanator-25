@@ -1,5 +1,5 @@
 """
-Phase 1.4 — tests for the energy gate fit script.
+Phase 1.4 - tests for the energy gate fit script.
 
 Covers:
   * fit_logit_energy: math is correct, n recorded, q recorded

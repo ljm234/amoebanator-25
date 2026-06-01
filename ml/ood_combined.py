@@ -1,5 +1,5 @@
 """
-Phase 5.3 — Combined OOD gate decision rule.
+Phase 5.3 - Combined OOD gate decision rule.
 
 The Amoebanator pipeline now has three independent OOD/uncertainty signals:
 
@@ -10,9 +10,9 @@ The Amoebanator pipeline now has three independent OOD/uncertainty signals:
 Each emits a boolean `flag` plus a continuous `score`. This module composes
 them into a single decision under one of three rules:
 
-  * "OR"        — abstain if any gate fires (most conservative)
-  * "AND"       — abstain only if all gates fire (least conservative)
-  * "WEIGHTED"  — sum of weighted scores ≥ threshold → abstain
+  * "OR"        - abstain if any gate fires (most conservative)
+  * "AND"       - abstain only if all gates fire (least conservative)
+  * "WEIGHTED"  - sum of weighted scores ≥ threshold → abstain
 
 A simple wrapper takes the dict that infer_one returns and produces the
 combined decision plus a per-gate breakdown so a reviewer can see why.

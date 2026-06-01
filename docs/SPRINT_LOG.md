@@ -115,7 +115,7 @@ quickstart with working scripts, what-is-wired/what-is-not tables, limitations,
 **Status:** USER ASSIGNMENT (escalated)
 **Files:** `docs/USER_ASSIGNMENTS.md` (5 numbered sections; PhysioNet steps
 verified against the current 2026 process, CITI course, credentialing
-review 1–3 weeks, DUA at the project page).
+review 1-3 weeks, DUA at the project page).
 **Reorder:** Per sprint directive, Phase 2.2 + 2.5 + 5.5 real-data work moves
 to "after Jordan completes Step 1 of `USER_ASSIGNMENTS.md`"; meanwhile the
 loader, splitter, and case-series modules ship complete with synthetic
@@ -310,9 +310,9 @@ supports adding fungal codes (`B45.x`) by extending
 See `docs/USER_ASSIGNMENTS.md`. Two **REQUIRED** assignments:
 
 1. **PhysioNet credentialed access** (Step 1), blocks the real-data path of
-   Phases 2.2 / 3 / 5.5. Realistic timeline: 2–4 weeks (CITI course + review).
+   Phases 2.2 / 3 / 5.5. Realistic timeline: 2-4 weeks (CITI course + review).
 2. **Weber State IRB exemption letter** (Step 2), blocks medRxiv preprint
-   submission. Realistic timeline: 2–4 weeks for an exempt determination.
+   submission. Realistic timeline: 2-4 weeks for an exempt determination.
 
 Two **OPTIONAL** assignments:
 

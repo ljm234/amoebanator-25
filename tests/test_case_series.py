@@ -1,4 +1,4 @@
-"""Phase 2.3 — tests for ml.case_series (Yoder 2010, CDC, Cope 2016 constants)."""
+"""Phase 2.3 - tests for ml.case_series (Yoder 2010, CDC, Cope 2016 constants)."""
 from __future__ import annotations
 
 import numpy as np
@@ -35,7 +35,7 @@ def test_cdc_constants_have_correct_cfr() -> None:
 
 
 def test_cope_qualitative_present() -> None:
-    """Cope 2016 has only qualitative CSF — make sure that's documented."""
+    """Cope 2016 has only qualitative CSF - make sure that's documented."""
     assert "qualitative" in COPE_QUALITATIVE.citation.lower() or "see Capewell" in COPE_QUALITATIVE.citation
     assert COPE_QUALITATIVE.incubation_days_median == 5.0
 

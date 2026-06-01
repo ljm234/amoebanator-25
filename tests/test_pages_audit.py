@@ -1,4 +1,4 @@
-"""Tests for pages/02_audit.py — Phase 4.5 Mini-2 T2.5 (1 of 4)."""
+"""Tests for pages/02_audit.py - Phase 4.5 Mini-2 T2.5 (1 of 4)."""
 from __future__ import annotations
 
 import os
@@ -142,7 +142,7 @@ def test_audit_page_uses_st_table_not_dataframe(populated_audit_log: Path) -> No
 
 
 def test_audit_page_renders_under_5s(populated_audit_log: Path) -> None:
-    """Boot-time budget — Mini-2 closure gate criterion #3 inherits this."""
+    """Boot-time budget - Mini-2 closure gate criterion #3 inherits this."""
     import time
     t0 = time.time()
     at = AppTest.from_file(PAGE_PATH)

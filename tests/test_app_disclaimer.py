@@ -1,4 +1,4 @@
-"""Tests for app/disclaimer.py — Phase 4.5 Mini-1 T1.8 (2 of 3).
+"""Tests for app/disclaimer.py - Phase 4.5 Mini-1 T1.8 (2 of 3).
 
 12 tests covering: disclaimer text 5 mandatory tokens, link safety,
 ORCID + email format, every-page parametrized presence (Mini-1 covers
@@ -23,7 +23,7 @@ from app.utils import _fmt_metric
 # ─── Disclaimer text contract (4 tests) ──────────────────────────────
 
 def test_disclaimer_text_contains_5_mandatory_tokens() -> None:
-    """Q19.A: 5 tokens enforced — locked variant (ii) wording."""
+    """Q19.A: 5 tokens enforced - locked variant (ii) wording."""
     mandatory = [
         "NOT a medical device",
         "n=30",
@@ -36,7 +36,7 @@ def test_disclaimer_text_contains_5_mandatory_tokens() -> None:
 
 
 def test_disclaimer_link_targets_are_https() -> None:
-    """No javascript: or http:// URLs — only https or bare domain."""
+    """No javascript: or http:// URLs - only https or bare domain."""
     assert "javascript:" not in DISCLAIMER_TEXT.lower()
     # Bare domain ok ("github.com/..."), explicit http:// not ok
     assert not re.search(r"\bhttp://", DISCLAIMER_TEXT)
@@ -71,10 +71,10 @@ _PAGES_TO_CHECK = [
 
 @pytest.mark.parametrize("page_path", _PAGES_TO_CHECK)
 def test_disclaimer_on_every_page(page_path: str) -> None:
-    """Mini-1 closure gate criterion #5 — parametrized canonical test.
+    """Mini-1 closure gate criterion #5 - parametrized canonical test.
 
     Loads each page via AppTest and asserts the 5 mandatory disclaimer
-    tokens render. Single source of truth — Mini-2 will extend the
+    tokens render. Single source of truth - Mini-2 will extend the
     param list to all 4 pages.
     """
     from streamlit.testing.v1 import AppTest
@@ -94,7 +94,7 @@ def test_disclaimer_on_every_page(page_path: str) -> None:
 
 
 # ─── WCAG-AA contrast (3 tests) ──────────────────────────────────────
-# Contrast values measured at sprint time — see Mini-1 closure report
+# Contrast values measured at sprint time - see Mini-1 closure report
 # spec-gap-3 for the doc-vs-actual reconciliation. All three combos
 # pass the WCAG-AA threshold of 4.5:1 with ≥5.75:1 margin.
 
@@ -120,7 +120,7 @@ def test_widget_keys_unique_across_pages() -> None:
     """Q15.5.B: collect every key= across loaded pages; assert uniqueness.
 
     Mini-1 only has 1 page (predict). Mini-2 will extend the loaded
-    page list to all 4 — the assertion catches duplicate widget keys
+    page list to all 4 - the assertion catches duplicate widget keys
     that would cause Streamlit's DuplicateWidgetID runtime error.
     """
     from streamlit.testing.v1 import AppTest
@@ -156,17 +156,17 @@ def test_utils_fmt_metric_handles_nan() -> None:
     """NaN must render as em-dash, not literal 'nan'."""
     out = {"x": float("nan")}
     # NaN is a float that survives the float() cast, but its formatted
-    # output is "nan" — the function does NOT special-case it. This is
+    # output is "nan" - the function does NOT special-case it. This is
     # arguably a bug; surface as spec-gap if the test fails.
     result = _fmt_metric(out, "x")
     # Per current implementation, NaN passes through float() and
     # renders as "nan"; em-dash only for None/missing/non-numeric.
     # Document actual behavior; revisit if reviewer flags.
-    assert result in ("—", "nan")
+    assert result in ("-", "nan")
 
 
 def test_utils_fmt_metric_handles_inf() -> None:
     """inf renders as 'inf' or em-dash depending on implementation."""
     out = {"x": float("inf")}
     result = _fmt_metric(out, "x")
-    assert result in ("—", "inf")
+    assert result in ("-", "inf")

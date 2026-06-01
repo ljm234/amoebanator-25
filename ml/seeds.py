@@ -1,5 +1,5 @@
 """
-Phase 9.5 — single source of truth for random-seed configuration.
+Phase 9.5 - single source of truth for random-seed configuration.
 
 Every training and evaluation entry point should call `set_global_seeds()` at
 the top of `main()`. This pins the three RNGs that the pipeline can touch:

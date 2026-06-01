@@ -1,15 +1,15 @@
 """
-test_ml_core.py — 2060-level comprehensive tests for ML core modules.
+test_ml_core.py - 2060-level comprehensive tests for ML core modules.
 
 Covers:
-  ml/calibration.py      — TemperatureScaler, fit_temperature
-  ml/conformal.py        — set_from_p_high, decision_from_p_high
-  ml/dca.py              — decision_curve
-  ml/ood.py              — tabular OOD (ood.py helpers)
-  ml/ood_energy.py       — energy-based OOD gate
-  ml/ood_maha.py         — Mahalanobis OOD fitting/scoring
-  ml/ood_simple.py       — simplified unified OOD scorer
-  ml/robust.py           — tabular feature-stats & scoring utilities
+  ml/calibration.py      - TemperatureScaler, fit_temperature
+  ml/conformal.py        - set_from_p_high, decision_from_p_high
+  ml/dca.py              - decision_curve
+  ml/ood.py              - tabular OOD (ood.py helpers)
+  ml/ood_energy.py       - energy-based OOD gate
+  ml/ood_maha.py         - Mahalanobis OOD fitting/scoring
+  ml/ood_simple.py       - simplified unified OOD scorer
+  ml/robust.py           - tabular feature-stats & scoring utilities
 
 All tests are self-contained (no disk I/O side-effects on persistent paths).
 File I/O tests use pytest's tmp_path fixture.

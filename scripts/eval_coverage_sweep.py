@@ -1,5 +1,5 @@
 """
-Phase 4.4 — empirical conformal coverage across alpha in {0.05, 0.10, 0.20}.
+Phase 4.4 - empirical conformal coverage across alpha in {0.05, 0.10, 0.20}.
 
 Uses ml/conformal_advanced.coverage_sweep. Splits val_preds.csv into a
 calibration half and a held-out half (proper conformal protocol; current

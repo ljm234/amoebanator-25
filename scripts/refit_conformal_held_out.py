@@ -1,5 +1,5 @@
 """
-Phase 4.1 — proper held-out split-conformal calibration framework.
+Phase 4.1 - proper held-out split-conformal calibration framework.
 
 Replaces the audit-flagged practice of fitting conformal qhat on the same n=6
 validation set used for calibration. The framework here:
@@ -7,7 +7,7 @@ validation set used for calibration. The framework here:
   1. Loads val_preds.csv (or any (y, p_high_cal) CSV) plus an optional
      test_preds.csv with the same columns.
   2. Refuses to silently proceed when the calibration set is below
-     SMALL_CAL_FLOOR (=100) — the SmallCalibrationWarning fires, and a
+     SMALL_CAL_FLOOR (=100) - the SmallCalibrationWarning fires, and a
      `--force-small` flag is required to write the artifact anyway. This
      blocks accidental shipment of a coverage claim against tiny n.
   3. Writes outputs/metrics/conformal_heldout.json with the computed qhat,

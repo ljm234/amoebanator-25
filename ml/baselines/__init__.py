@@ -8,9 +8,9 @@ uniformly:
     predict_proba(model, X) -> np.ndarray of shape (n,)   # P(High)
 
 Baselines:
-  * logistic.LogisticPlatt    — sklearn LogisticRegression + Platt scaling
-  * random_forest.RFCalibrated — sklearn RandomForestClassifier + sigmoid/isotonic
-  * gbm.GBMIsotonic           — LightGBM if available, else GradientBoostingClassifier,
+  * logistic.LogisticPlatt    - sklearn LogisticRegression + Platt scaling
+  * random_forest.RFCalibrated - sklearn RandomForestClassifier + sigmoid/isotonic
+  * gbm.GBMIsotonic           - LightGBM if available, else GradientBoostingClassifier,
                                  with isotonic calibration
 
 `build_all_baselines()` returns a list of named (factory, hyperparams) tuples

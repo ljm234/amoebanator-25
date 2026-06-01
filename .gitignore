@@ -211,7 +211,7 @@ __marimo__/
 .vscode/
 .idea/
 
-# Private / personal — do not publish
+# Private / personal - do not publish
 docs/AI/
 docs/PHD_APPLICATION_PLAN_2026.md
 apex/

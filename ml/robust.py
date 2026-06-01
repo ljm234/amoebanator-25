@@ -1,4 +1,4 @@
-# ml/robust.py  — Tabular out-of-distribution detection utilities
+# ml/robust.py  - Tabular out-of-distribution detection utilities
 from __future__ import annotations
 import json
 from pathlib import Path

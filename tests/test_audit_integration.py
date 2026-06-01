@@ -1,5 +1,5 @@
 """
-Phase 7.1 — integration tests for audit-trail wiring.
+Phase 7.1 - integration tests for audit-trail wiring.
 
 Verifies that:
   * a full training run emits the five expected event types

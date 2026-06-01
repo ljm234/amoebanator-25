@@ -1,4 +1,4 @@
-# User Assignments, work that requires Jordan, not Claude Code
+# User Assignments, work that requires Jordan, not the coding assistant
 
 **Last refreshed:** 2026-04-27 (Phase 4.5 PRE-FLIGHT audit close)
 **Companion docs:** `PHASE_4_5_PLAN.md` §7, `PHASE_4_5_PROMPT_FINAL.md` §7
@@ -170,9 +170,9 @@ gh repo view --json url --jq .url
 
 **No user action required.** The sprint is autonomous between Mini-1 kickoff and Mini-2 close.
 
-The Mini-1 → Mini-2 transition is a Claude Code pause for explicit user vote (per `PHASE_4_5_PROMPT_FINAL.md` §5.2 standing instruction): after all 7 Mini-1 closure gates green, Claude waits for "go Mini-2" from Jordan before continuing. This is a verification + approval touchpoint, not a coding action.
+The Mini-1 → Mini-2 transition is a the coding assistant pause for explicit user vote (per `PHASE_4_5_PROMPT_FINAL.md` §5.2 standing instruction): after all 7 Mini-1 closure gates green, the assistant waits for "go Mini-2" from Jordan before continuing. This is a verification + approval touchpoint, not a coding action.
 
-If Mini-1 reports any closure gate fail, Claude stops and reports, Jordan decides whether to fix-and-retry, redirect, or pause.
+If Mini-1 reports any closure gate fail, the assistant stops and reports, Jordan decides whether to fix-and-retry, redirect, or pause.
 
 ---
 
@@ -364,6 +364,6 @@ No standalone user action required. Loader handles the fungal/parasitic OOD held
 | §4 Future | 9 | IRB_BYPASS flip + irb_record.json | deferred until Phase 6 Mini-X |
 | §5 Historical |, | Phase 1-9 completed items | reference only |
 
-**Sprint kickoff blocker:** Steps 1, 2, 3, 4, 6 in §1 must all be ✓ before pasting `PHASE_4_5_PROMPT_FINAL.md` into a fresh Claude Code session. Step 5 is informational (does not block Phase 4.5; blocks Phase 6).
+**Sprint kickoff blocker:** Steps 1, 2, 3, 4, 6 in §1 must all be ✓ before pasting `PHASE_4_5_PROMPT_FINAL.md` into a fresh the coding assistant session. Step 5 is informational (does not block Phase 4.5; blocks Phase 6).
 
 Update this file as each step completes. The Phase 6 verification scripts (Step 9 onward) will read it implicitly to determine which gates are open.

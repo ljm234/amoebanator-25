@@ -4,11 +4,11 @@ Advanced split-conformal predictor: marginal + label-conditional + coverage tool
 Phase 4.2 / 4.3 / 4.4. Builds on ml/conformal.py (which only exposes the
 threshold-band decision rule) by adding:
 
-  * compute_qhat            — finite-sample-corrected split conformal threshold
-  * label_conditional_qhats — per-class threshold dictionary
-  * empirical_coverage      — joint and per-class coverage on a held-out set
-  * coverage_sweep          — coverage / abstain-rate across multiple alphas
-  * SmallCalibrationWarning — issued when n_cal is below the recommended floor
+  * compute_qhat            - finite-sample-corrected split conformal threshold
+  * label_conditional_qhats - per-class threshold dictionary
+  * empirical_coverage      - joint and per-class coverage on a held-out set
+  * coverage_sweep          - coverage / abstain-rate across multiple alphas
+  * SmallCalibrationWarning - issued when n_cal is below the recommended floor
 
 References:
   - Vovk V, Gammerman A, Shafer G. Algorithmic Learning in a Random World.

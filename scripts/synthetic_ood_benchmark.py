@@ -1,13 +1,13 @@
 """
-Phase 5.4 — Synthetic OOD shift benchmarks.
+Phase 5.4 - Synthetic OOD shift benchmarks.
 
 Generates two adversarial shifts of the bundled simulated data and reports
 the detection rate of each OOD/uncertainty gate (Mahalanobis, logit-energy,
 neg-energy):
 
-  * covariate_shift — multiply CSF lab values by random factors in [0.5, 2.0]
+  * covariate_shift - multiply CSF lab values by random factors in [0.5, 2.0]
                       and add Gaussian noise; keep labels as-is.
-  * label_shift     — flip labels with probability 0.5 (model now sees a
+  * label_shift     - flip labels with probability 0.5 (model now sees a
                       population whose label distribution is uniform-random).
 
 For each shift type we report per-gate detection rate, false-alarm rate on
@@ -76,7 +76,7 @@ def covariate_shift(df: pd.DataFrame, seed: int = 0) -> pd.DataFrame:
 
 def label_shift(df: pd.DataFrame, seed: int = 1) -> pd.DataFrame:
     """Randomly flip risk_label with prob 0.5 (gate will not see the label, but the
-    *covariate* distribution conditional on label changes — equivalent to a label
+    *covariate* distribution conditional on label changes - equivalent to a label
     shift relative to training)."""
     rng = np.random.default_rng(seed)
     shifted = df.copy()

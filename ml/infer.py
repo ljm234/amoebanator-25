@@ -207,7 +207,7 @@ def infer_one(row_in: dict | pd.Series) -> dict:
     a `reason` field: "OOD", "LogitEnergyAboveOODShift", or
     "ConformalAmbiguity". The energy-gate reason name is precise on three
     dimensions: (1) signal = logit energy, (2) direction = above OOD shift,
-    (3) reference = above the in-distribution validation 95th percentile —
+    (3) reference = above the in-distribution validation 95th percentile -
     Liu 2020 canonical semantics (high energy → OOD). See git log for
     refactor history.
     """

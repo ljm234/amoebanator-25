@@ -21,7 +21,7 @@ def entropy_from_p(p: float) -> float:
 def main(q: float = 0.98) -> None:
     METRICS_DIR.mkdir(parents=True, exist_ok=True)
     if not VAL_PREDS.exists():
-        raise SystemExit("Missing outputs/metrics/val_preds.csv — run ml.training_calib_dca first.")
+        raise SystemExit("Missing outputs/metrics/val_preds.csv - run ml.training_calib_dca first.")
     df = pd.read_csv(VAL_PREDS)
     if "p_high_cal" not in df.columns:
         raise SystemExit("val_preds.csv must contain column p_high_cal")

@@ -1463,7 +1463,7 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_type": "cohort",
         "anchor_subtype": "netherlands_adult_community_bacterial_meningitis_696_episodes",
         "verification_confidence": 0.95,
-        "verification_method": "claude_web_pubmed_nejm_fulltext_2026_05_30",
+        "verification_method": "web_pubmed_nejm_fulltext_2026_05_30",
         "last_verified_date": "2026-05-30",
         "caveat": (
             "Landmark Netherlands prospective cohort of 696 adult community-"
@@ -1496,7 +1496,7 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_type": "guideline",
         "anchor_subtype": "idsa_bacterial_meningitis_guidelines_2004",
         "verification_confidence": 0.95,
-        "verification_method": "claude_web_pubmed_oxford_fulltext_2026_05_31",
+        "verification_method": "web_pubmed_oxford_fulltext_2026_05_31",
         "last_verified_date": "2026-05-31",
         "caveat": (
             "IDSA bacterial meningitis management guidelines (Tunkel 2004). "
@@ -1529,7 +1529,7 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_type": "cohort",
         "anchor_subtype": "netherlands_pneumococcal_2006_2014_1412_cases",
         "verification_confidence": 0.95,
-        "verification_method": "claude_web_pubmed_lancet_fulltext_2026_05_31",
+        "verification_method": "web_pubmed_lancet_fulltext_2026_05_31",
         "last_verified_date": "2026-05-31",
         "caveat": (
             "Netherlands prospective adult community-acquired bacterial "
@@ -1547,7 +1547,7 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
     },
     # 18626302 ENTRY REMOVED in commit 5.3.2: was a typo for the
     # Heckenberg 2008 Medicine 87(4):185-192 paper. Correct PubMed ID is
-    # 18626301 (verified PubMed UI 2026-05-07 via Claude web research v4).
+    # 18626301 (verified PubMed UI 2026-05-07 via the assistant web research v4).
     # Replacement entry below with primary-source verification.
     "18626301": {
         "pmid": "18626301",
@@ -1567,7 +1567,7 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_type": "cohort",
         "anchor_subtype": "neisseria_meningitidis_adult_258_cases",
         "verification_confidence": 0.95,
-        "verification_method": "claude_web_pubmed_lww_fulltext_2026_05_31",
+        "verification_method": "web_pubmed_lww_fulltext_2026_05_31",
         "last_verified_date": "2026-05-31",
         "caveat": (
             "Adult meningococcal meningitis prospective Netherlands cohort of "
@@ -1606,7 +1606,7 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_type": "surveillance",
         "anchor_subtype": "us_meningococcal_epidemiology_nndss_abcs_1996_2015",
         "verification_confidence": 0.95,
-        "verification_method": "claude_web_pubmed_oxford_fulltext_2026_05_30",
+        "verification_method": "web_pubmed_oxford_fulltext_2026_05_30",
         "last_verified_date": "2026-05-30",
         "caveat": (
             "US meningococcal disease epidemiology. NNDSS 2006-2015 "
@@ -1642,7 +1642,7 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_type": "case_report",
         "anchor_subtype": "serogroup_b_meningococcal_military_trainee_congregate",
         "verification_confidence": 0.95,
-        "verification_method": "claude_web_pubmed_pmc_fulltext_2026_05_30",
+        "verification_method": "web_pubmed_pmc_fulltext_2026_05_30",
         "last_verified_date": "2026-05-30",
         "caveat": (
             "US Air Force special-warfare trainee with serogroup B "
@@ -1673,7 +1673,7 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_type": "meta_analysis",
         "anchor_subtype": "global_regional_hib_meningitis_burden_children_meta_analysis",
         "verification_confidence": 0.95,
-        "verification_method": "claude_web_pubmed_pmc_fulltext_2026_05_30",
+        "verification_method": "web_pubmed_pmc_fulltext_2026_05_30",
         "last_verified_date": "2026-05-30",
         "caveat": (
             "Systematic review and meta-analysis of Hib meningitis in "
@@ -1709,7 +1709,7 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_type": "surveillance",
         "anchor_subtype": "us_invasive_h_influenzae_epidemiology_abcs_2009_2015",
         "verification_confidence": 0.95,
-        "verification_method": "claude_web_pubmed_fulltext_2026_05_30",
+        "verification_method": "web_pubmed_fulltext_2026_05_30",
         "last_verified_date": "2026-05-30",
         "caveat": (
             "US invasive H. influenzae surveillance through ABCs, "
@@ -1781,7 +1781,7 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_type": "cohort",
         "anchor_subtype": "england_encephalitis_etiology_population_based",
         "verification_confidence": 0.95,
-        "verification_method": "claude_web_pubmed_ncbi_esummary_2026_05_11",
+        "verification_method": "web_pubmed_ncbi_esummary_2026_05_11",
         "last_verified_date": "2026-05-11",
         "caveat": (
             "England population-based encephalitis etiology study, 203 "
@@ -1808,7 +1808,7 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_type": "review",
         "anchor_subtype": "viral_encephalitis_clinical_review",
         "verification_confidence": 0.95,
-        "verification_method": "claude_web_pubmed_ncbi_esummary_2026_05_11",
+        "verification_method": "web_pubmed_ncbi_esummary_2026_05_11",
         "last_verified_date": "2026-05-11",
         "caveat": (
             "NEJM clinical review of acute viral encephalitis. Anchor "
@@ -1823,7 +1823,7 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
     # ========================================================================
     # Subphase 1.3 commit 5.3.2 pilot anchors (added 2026-05-07)
     # ------------------------------------------------------------------------
-    # Five new primary-source-direct anchors verified by Claude web research
+    # Five new primary-source-direct anchors verified by the assistant web research
     # v4 against PubMed UI on 2026-05-07. Used as direct primary sources for
     # the 6 pilot vignettes (bact_062, bact_064, bact_082, vir_092, vir_105,
     # vir_118) per Section 5 slot mapping protocol of the 5.3.2 prompt.
@@ -1849,7 +1849,7 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_type": "cohort",
         "anchor_subtype": "peru_lima_pediatric_pneumococcal_meningitis_2006_2011",
         "verification_confidence": 0.95,
-        "verification_method": "claude_web_pubmed_ui_v4_2026_05_07",
+        "verification_method": "web_pubmed_ui_v4_2026_05_07",
         "last_verified_date": "2026-05-07",
         "caveat": (
             "44-episode pediatric pneumococcal meningitis multicenter "
@@ -1877,7 +1877,7 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_type": "review",
         "anchor_subtype": "hsv_encephalitis_adolescents_adults_review_acyclovir_protocol",
         "verification_confidence": 0.95,
-        "verification_method": "claude_web_pubmed_ui_v4_2026_05_07",
+        "verification_method": "web_pubmed_ui_v4_2026_05_07",
         "last_verified_date": "2026-05-07",
         "caveat": (
             "Comprehensive HSE review for adolescents and adults. "
@@ -1917,7 +1917,7 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_type": "cohort",
         "anchor_subtype": "pediatric_aseptic_meningitis_pmn_predominant_enterovirus_cohort",
         "verification_confidence": 0.95,
-        "verification_method": "claude_web_pubmed_ui_v4_2026_05_07",
+        "verification_method": "web_pubmed_ui_v4_2026_05_07",
         "last_verified_date": "2026-05-07",
         "caveat": (
             "506-child aseptic meningitis cohort Athens Greece (Aghia "
@@ -1961,7 +1961,7 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_type": "surveillance",
         "anchor_subtype": "peru_2023_dengue_outbreak_post_cyclone_yaku_denv2_circulating",
         "verification_confidence": 0.95,
-        "verification_method": "claude_web_pubmed_ui_v4_2026_05_07",
+        "verification_method": "web_pubmed_ui_v4_2026_05_07",
         "last_verified_date": "2026-05-07",
         "caveat": (
             "Peru 2023 dengue outbreak surveillance. 222,620 dengue "
@@ -1985,7 +1985,7 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
     # Subphase 1.4 commit 5.4.0 ADDs - Class 4 (TBM) + Class 5 (Cryptococcal)
     # + Class 6 (GAE) anchor PMIDs. 18 total: 6 TBM + 6 Crypto + 6 GAE.
     # PubMed-verified via web search 2026-05-11 (verification_method=
-    # claude_web_pubmed_ui_v5_2026_05_11). DOI-only entries (Gotuzzo OFID
+    # web_pubmed_ui_v5_2026_05_11). DOI-only entries (Gotuzzo OFID
     # 2026 supplement abstract) carry verification_confidence < 0.90 with
     # explicit caveat disclosure of pre-PubMed-indexing status.
     # Zero modifications to pre-existing PMID_REGISTRY entries.
@@ -2012,7 +2012,7 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_type": "rct",
         "anchor_subtype": "hcmc_vietnam_dexamethasone_tbm_rct_adults",
         "verification_confidence": 0.85,
-        "verification_method": "claude_web_pubmed_ui_v5_2026_05_11",
+        "verification_method": "web_pubmed_ui_v5_2026_05_11",
         "last_verified_date": "2026-05-11",
         "caveat": (
             "Subphase 1.4 commit 5.4.0 anchor for Class 4 TBM. HCMC "
@@ -2041,7 +2041,7 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_type": "guideline",
         "anchor_subtype": "tbm_uniform_case_definition_clinical_research",
         "verification_confidence": 0.85,
-        "verification_method": "claude_web_pubmed_ui_v5_2026_05_11",
+        "verification_method": "web_pubmed_ui_v5_2026_05_11",
         "last_verified_date": "2026-05-11",
         "caveat": (
             "Subphase 1.4 commit 5.4.0 anchor for Class 4 TBM. Marais "
@@ -2067,7 +2067,7 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_type": "review",
         "anchor_subtype": "pediatric_tbm_review_diagnosis_management",
         "verification_confidence": 0.85,
-        "verification_method": "claude_web_pubmed_ui_v5_2026_05_11",
+        "verification_method": "web_pubmed_ui_v5_2026_05_11",
         "last_verified_date": "2026-05-11",
         "caveat": (
             "Subphase 1.4 commit 5.4.0 anchor for Class 4 pediatric TBM "
@@ -2098,7 +2098,7 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_type": "rct",
         "anchor_subtype": "intensified_tbm_rct_hcmc_vietnam_2016",
         "verification_confidence": 0.85,
-        "verification_method": "claude_web_pubmed_ui_v5_2026_05_11",
+        "verification_method": "web_pubmed_ui_v5_2026_05_11",
         "last_verified_date": "2026-05-11",
         "caveat": (
             "Subphase 1.4 commit 5.4.0 anchor for Class 4 TBM. HCMC "
@@ -2126,7 +2126,7 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_type": "review",
         "anchor_subtype": "tbm_progress_review_2022_cn_palsy_30pct",
         "verification_confidence": 0.85,
-        "verification_method": "claude_web_pubmed_ui_v5_2026_05_11",
+        "verification_method": "web_pubmed_ui_v5_2026_05_11",
         "last_verified_date": "2026-05-11",
         "caveat": (
             "Subphase 1.4 commit 5.4.0 anchor for Class 4 TBM. Huynh "
@@ -2157,7 +2157,7 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_type": "meta_analysis",
         "anchor_subtype": "cns_tb_global_meta_analysis_2022_latam_authors",
         "verification_confidence": 0.85,
-        "verification_method": "claude_web_pubmed_ui_v5_2026_05_11",
+        "verification_method": "web_pubmed_ui_v5_2026_05_11",
         "last_verified_date": "2026-05-11",
         "caveat": (
             "Subphase 1.4 commit 5.4.0 anchor for Class 4 TBM. "
@@ -2189,7 +2189,7 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_type": "guideline",
         "anchor_subtype": "idsa_cryptococcal_2010_guidelines",
         "verification_confidence": 0.85,
-        "verification_method": "claude_web_pubmed_ui_v5_2026_05_11",
+        "verification_method": "web_pubmed_ui_v5_2026_05_11",
         "last_verified_date": "2026-05-11",
         "caveat": (
             "Subphase 1.4 commit 5.4.0 anchor for Class 5 Cryptococcal. "
@@ -2217,7 +2217,7 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_type": "meta_analysis",
         "anchor_subtype": "global_hiv_cryptococcal_burden_estimate",
         "verification_confidence": 0.85,
-        "verification_method": "claude_web_pubmed_ui_v5_2026_05_11",
+        "verification_method": "web_pubmed_ui_v5_2026_05_11",
         "last_verified_date": "2026-05-11",
         "caveat": (
             "Subphase 1.4 commit 5.4.0 anchor for Class 5 Cryptococcal. "
@@ -2250,7 +2250,7 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_type": "cohort",
         "anchor_subtype": "transplant_cryptococcus_calcineurin_mortality",
         "verification_confidence": 0.85,
-        "verification_method": "claude_web_pubmed_ui_v5_2026_05_11",
+        "verification_method": "web_pubmed_ui_v5_2026_05_11",
         "last_verified_date": "2026-05-11",
         "caveat": (
             "Subphase 1.4 commit 5.4.0 anchor for Class 5 Cryptococcal. "
@@ -2283,7 +2283,7 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_type": "rct",
         "anchor_subtype": "art_timing_crypto_iris_rct_cost_trial",
         "verification_confidence": 0.85,
-        "verification_method": "claude_web_pubmed_ui_v5_2026_05_11",
+        "verification_method": "web_pubmed_ui_v5_2026_05_11",
         "last_verified_date": "2026-05-11",
         "caveat": (
             "Subphase 1.4 commit 5.4.0 anchor for Class 5 Cryptococcal. "
@@ -2318,7 +2318,7 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_type": "rct",
         "anchor_subtype": "ambition_cm_single_dose_lipo_ampb_2022",
         "verification_confidence": 0.80,
-        "verification_method": "claude_web_pubmed_ui_v5_2026_05_11",
+        "verification_method": "web_pubmed_ui_v5_2026_05_11",
         "last_verified_date": "2026-05-11",
         "caveat": (
             "Subphase 1.4 commit 5.4.0 anchor for Class 5 Cryptococcal. "
@@ -2350,7 +2350,7 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_type": "surveillance",
         "anchor_subtype": "cryptococcus_gattii_pacific_nw_spread_2009",
         "verification_confidence": 0.85,
-        "verification_method": "claude_web_pubmed_ui_v5_2026_05_11",
+        "verification_method": "web_pubmed_ui_v5_2026_05_11",
         "last_verified_date": "2026-05-11",
         "caveat": (
             "Subphase 1.4 commit 5.4.0 anchor for Class 5 Cryptococcal. "
@@ -2381,7 +2381,7 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_type": "case_series",
         "anchor_subtype": "gotuzzo_peru_balamuthia_68_case_series_ofid_2026_supplement",
         "verification_confidence": 0.75,
-        "verification_method": "claude_web_doi_resolve_oxford_academic_2026_05_11",
+        "verification_method": "web_doi_resolve_oxford_academic_2026_05_11",
         "last_verified_date": "2026-05-11",
         "caveat": (
             "Subphase 1.4 commit 5.4.0 anchor for Class 6 GAE. "
@@ -2415,7 +2415,7 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_type": "case_series",
         "anchor_subtype": "bravo_alvarez_cutaneous_balamuthiasis_clinpath_peru",
         "verification_confidence": 0.85,
-        "verification_method": "claude_web_pubmed_ui_v5_2026_05_11",
+        "verification_method": "web_pubmed_ui_v5_2026_05_11",
         "last_verified_date": "2026-05-11",
         "caveat": (
             "Subphase 1.4 commit 5.4.0 anchor for Class 6 GAE. Master "
@@ -2446,7 +2446,7 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_type": "case_report",
         "anchor_subtype": "cabello_vilchez_lima_peru_pediatric_gae_fatal_2cases",
         "verification_confidence": 0.85,
-        "verification_method": "claude_web_pubmed_ui_v5_2026_05_11",
+        "verification_method": "web_pubmed_ui_v5_2026_05_11",
         "last_verified_date": "2026-05-11",
         "caveat": (
             "Subphase 1.4 commit 5.4.0 anchor for Class 6 GAE. Master "
@@ -2478,7 +2478,7 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_type": "review",
         "anchor_subtype": "visvesvara_2007_free_living_amoebae_review",
         "verification_confidence": 0.85,
-        "verification_method": "claude_web_pubmed_ui_v5_2026_05_11",
+        "verification_method": "web_pubmed_ui_v5_2026_05_11",
         "last_verified_date": "2026-05-11",
         "caveat": (
             "Subphase 1.4 commit 5.4.0 anchor for Class 6 GAE. "
@@ -2512,7 +2512,7 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_type": "surveillance",
         "anchor_subtype": "cope_balamuthia_us_1974_2016_epidemiology",
         "verification_confidence": 0.85,
-        "verification_method": "claude_web_pubmed_ui_v5_2026_05_11",
+        "verification_method": "web_pubmed_ui_v5_2026_05_11",
         "last_verified_date": "2026-05-11",
         "caveat": (
             "Subphase 1.4 commit 5.4.0 anchor for Class 6 GAE. Cope 2019 "
@@ -2545,7 +2545,7 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_type": "case_report",
         "anchor_subtype": "damhorst_acanthamoeba_aids_case_lit_review_2022",
         "verification_confidence": 0.85,
-        "verification_method": "claude_web_pubmed_ui_v5_2026_05_11",
+        "verification_method": "web_pubmed_ui_v5_2026_05_11",
         "last_verified_date": "2026-05-11",
         "caveat": (
             "Subphase 1.4 commit 5.4.0 anchor for Class 6 GAE. Damhorst "

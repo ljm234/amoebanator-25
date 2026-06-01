@@ -1,4 +1,4 @@
-# MANUAL VERIFICATION CHECKLIST — 53 anchor PMIDs used in shipped vignettes (2026-05-11)
+# MANUAL VERIFICATION CHECKLIST - 53 anchor PMIDs used in shipped vignettes (2026-05-11)
 
 Sorted alphabetically by first-author surname. Click each PubMed link, verify all 9 checkboxes per anchor, record result.
 
@@ -498,7 +498,7 @@ Title:       "P-117. Clinical and Epidemiological Characteristics of Balamuthia 
 Type:        case_series
 ```
 
-**🔗 Verify via DOI (no PubMed PMID — DOI-only registry entry):**
+**🔗 Verify via DOI (no PubMed PMID - DOI-only registry entry):**
 https://doi.org/10.1093/ofid/ofaf695.345
 
 **Checklist:**

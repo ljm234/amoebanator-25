@@ -5,7 +5,7 @@ import streamlit as st
 from ml.infer import infer_one
 
 def render_phase2_panel() -> None:
-    st.subheader("Phase 2 — Conformal prediction (q̂) & ABSTAIN")
+    st.subheader("Phase 2 - Conformal prediction (q̂) & ABSTAIN")
 
     met = Path("outputs/metrics")
     conf_p = met / "conformal.json"

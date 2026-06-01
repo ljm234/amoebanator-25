@@ -28,7 +28,7 @@ def main() -> None:
 
     lines = []
     lines += [
-        "# TRIPOD+AI — Reporting Checklist (Amoebanator Pro)",
+        "# TRIPOD+AI - Reporting Checklist (Amoebanator Pro)",
         f"_Generated {datetime.datetime.now().isoformat(timespec='seconds')}_",
         "",
         "## Title/Abstract",

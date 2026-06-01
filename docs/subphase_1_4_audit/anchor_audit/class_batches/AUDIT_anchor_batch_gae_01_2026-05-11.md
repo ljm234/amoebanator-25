@@ -103,16 +103,16 @@ ADJUDICATION:
   disagreement_resolution: None
 ```
 
-### REVIEWER PROMPT (Claude chat fills below)
+### REVIEWER PROMPT (the reviewer fills below)
 
-For each vignette above, the reviewer (Claude chat) must answer:
+For each vignette above, the reviewer must answer:
 1. Does the vignette's clinical content match the anchor paper's actual claims?
 2. Are demographics, CSF, vitals, imaging plausible per the paper?
 3. Does the narrative reference the anchor accurately (year, author, claim)?
 4. Would this vignette anchor better to a different paper in the registry? (specify which if yes)
 5. Severity if issues found: [Catastrophic / Needs Errata / Minor / Clean]
 
-### REVIEWER NOTES (Claude chat YYYY-MM-DD)
+### REVIEWER NOTES (the reviewer YYYY-MM-DD)
 
 _(empty; to be filled during chat verification)_
 
@@ -140,7 +140,7 @@ _(empty; to be filled during chat verification)_
   "anchor_type": "review",
   "anchor_subtype": "visvesvara_2007_free_living_amoebae_review",
   "verification_confidence": 0.85,
-  "verification_method": "claude_web_pubmed_ui_v5_2026_05_11",
+  "verification_method": "web_pubmed_ui_v5_2026_05_11",
   "last_verified_date": "2026-05-11",
   "caveat": "Subphase 1.4 commit 5.4.0 anchor for Class 6 GAE. Canonical Visvesvara 2007 FEMS Immunology review of free-living amoebae (Acanthamoeba spp., B. mandrillaris, N. fowleri, S. diploidea); 26-page comprehensive clinical and epidemiologic phenotype review. Anchor for Acanthamoeba GAE majority stratum. Visvesvara GS is a co-author on multiple existing Subphase 1.1/1.2 PAM registry entries (Naegleria role); this anchor is the Acanthamoeba/Balamuthia role distinct from those. verification_confidence=0.85 pre-direct-fetch."
 }
@@ -324,15 +324,15 @@ ADJUDICATION:
   disagreement_resolution: None
 ```
 
-### REVIEWER PROMPT (Claude chat fills below)
+### REVIEWER PROMPT (the reviewer fills below)
 
-For each vignette above, the reviewer (Claude chat) must answer:
+For each vignette above, the reviewer must answer:
 1. Does the vignette's clinical content match the anchor paper's actual claims?
 2. Are demographics, CSF, vitals, imaging plausible per the paper?
 3. Does the narrative reference the anchor accurately (year, author, claim)?
 4. Would this vignette anchor better to a different paper in the registry? (specify which if yes)
 5. Severity if issues found: [Catastrophic / Needs Errata / Minor / Clean]
 
-### REVIEWER NOTES (Claude chat YYYY-MM-DD)
+### REVIEWER NOTES (the reviewer YYYY-MM-DD)
 
 _(empty; to be filled during chat verification)_

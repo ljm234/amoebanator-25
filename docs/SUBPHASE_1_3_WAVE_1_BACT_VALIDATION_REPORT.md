@@ -159,8 +159,8 @@
 | Schema validation pass rate | 14/14 |
 | All v2/class_02_bacterial vignette JSONs validate | 17/17 (3 pilots + 14 wave-1) |
 | Cross-corpus v2 vignette schema | 20/20 (3 BACT pilots + 14 BACT wave-1 + 3 VIRAL pilots) |
-| Em-dashes (—) corpus-wide | 0 |
-| En-dashes (–) corpus-wide | 0 |
+| Em-dashes (-) corpus-wide | 0 |
+| En-dashes (-) corpus-wide | 0 |
 | AI-tell vocabulary corpus-wide | 0 |
 | Spanish narrative coverage | 14/14 |
 | Spanish narrative length 700-900 char band | 14/14 (range 707-887) |

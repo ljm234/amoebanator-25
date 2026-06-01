@@ -148,8 +148,8 @@
 | 13 wave-2 vignettes constructed | 13/13 |
 | Schema validation pass rate | 13/13 |
 | All v2/class_02_bacterial vignette JSONs validate | 30/30 (3 pilot + 14 wave1 + 13 wave2 = COMPLETE BACT class) |
-| Em-dashes (—) corpus-wide | 0 |
-| En-dashes (–) corpus-wide | 0 |
+| Em-dashes (-) corpus-wide | 0 |
+| En-dashes (-) corpus-wide | 0 |
 | AI-tell vocabulary corpus-wide | 0 |
 | Spanish narrative coverage | 13/13 in 700-900 char band (range 709-869) |
 | English narrative coverage | 13/13 in 800-1200 char band (range 802-1085) |

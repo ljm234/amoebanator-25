@@ -58,7 +58,7 @@ def bootstrap_ci(
     Percentile bootstrap CI for `metric_fn(y_true, y_score)`.
 
     Returns lo/hi at the (alpha/2, 1-alpha/2) quantiles, plus the point
-    estimate computed on the full sample. Stratified by default — flip
+    estimate computed on the full sample. Stratified by default - flip
     to False only if you want the unstratified Efron bootstrap.
     """
     if not (0.0 < alpha < 0.5):

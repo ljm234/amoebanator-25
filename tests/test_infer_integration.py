@@ -1,5 +1,5 @@
 """
-Phase 1.1 / 1.2 — wired-inference test suite.
+Phase 1.1 / 1.2 - wired-inference test suite.
 
 This module is the regression boundary for the audit's #1 credibility-killer:
 ml.infer used to return a constant (0.0, 0.3) from _toy_logits regardless of
@@ -71,7 +71,7 @@ _SEVERE: dict[str, Any] = _row(
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# Phase 1.2 — end-to-end integration
+# Phase 1.2 - end-to-end integration
 # ─────────────────────────────────────────────────────────────────────────────
 
 
@@ -148,7 +148,7 @@ def test_no_constant_output_across_perturbations() -> None:
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# Unit tests — _build_feature_vector
+# Unit tests - _build_feature_vector
 # ─────────────────────────────────────────────────────────────────────────────
 
 
@@ -207,7 +207,7 @@ def test_build_feature_vector_ignores_extra_columns() -> None:
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# Unit tests — _real_logits and _softmax_high
+# Unit tests - _real_logits and _softmax_high
 # ─────────────────────────────────────────────────────────────────────────────
 
 
@@ -264,7 +264,7 @@ def test_softmax_high_returns_zero_to_one() -> None:
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# Load-time validation — error paths
+# Load-time validation - error paths
 # ─────────────────────────────────────────────────────────────────────────────
 
 

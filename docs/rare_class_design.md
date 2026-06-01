@@ -2,7 +2,7 @@
 
 **Phase 2.4** of the Amoebanator V1.0 roadmap. Defines the supervised task,
 explains why PAM is operationalised through a proxy, and pins down the
-evaluation protocol so Phases 3–5 can be reproduced from this document alone.
+evaluation protocol so Phases 3-5 can be reproduced from this document alone.
 
 ---
 
@@ -23,7 +23,7 @@ This is a textbook low-prevalence, high-asymmetric-cost decision problem.
 
 PAM is too rare to train on directly. The CDC reports 167 cumulative U.S.
 cases between 1962 and 2024 (CDC, *About Primary Amebic Meningoencephalitis*,
-2025). Yoder et al. 2010 (Epidemiol Infect 138(7):968–975) document 111
+2025). Yoder et al. 2010 (Epidemiol Infect 138(7):968-975) document 111
 cases over a 47-year window with a case-fatality rate of 99.1%. A standard
 80/10/10 split on this corpus yields a test set that is single-digit
 positive, incapable of distinguishing model behaviour from sampling noise.
@@ -109,7 +109,7 @@ chance, distinctly below the perfect 1.0 that would suggest data leakage.
 
 * PhysioNet credentialed access (CITI training + DUA), see
   `docs/USER_ASSIGNMENTS.md`. Blocks all real-data evaluation.
-* Optional: Capewell LG et al., *J Pediatric Infect Dis Soc* 2015;4(4):e68–e75
+* Optional: Capewell LG et al., *J Pediatric Infect Dis Soc* 2015;4(4):e68-e75
   (PMID 26582886) for tabulated per-case PAM CSF values. Cope 2016 reports
   the patterns qualitatively only.
 
@@ -118,11 +118,11 @@ chance, distinctly below the perfect 1.0 that would suggest data leakage.
 **References:**
 
 * Yoder JS, Eddy BA, Visvesvara GS, Capewell L, Beach MJ. *Epidemiol Infect*
-  2010;138(7):968–975. PMID 19845995.
+  2010;138(7):968-975. PMID 19845995.
 * Cope JR, Ali IK. *Curr Infect Dis Rep* 2016;18(10):31. PMID 27614893.
 * CDC. *About Primary Amebic Meningoencephalitis (PAM).* 2025.
   https://www.cdc.gov/naegleria/about/index.html
 * Lei J, G'Sell M, Rinaldo A, Tibshirani RJ, Wasserman L. *J Am Stat Assoc*
-  2018;113(523):1094–1111.
-* Vovk V. *Mach Learn* 2013;92(2–3):349–376. (Mondrian / label-conditional
+  2018;113(523):1094-1111.
+* Vovk V. *Mach Learn* 2013;92(2-3):349-376. (Mondrian / label-conditional
   conformal.)

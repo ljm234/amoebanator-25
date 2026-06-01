@@ -1,4 +1,4 @@
-"""Comprehensive tests for ml.data.acquisition – CDC Data Acquisition Client.
+"""Comprehensive tests for ml.data.acquisition - CDC Data Acquisition Client.
 
 Targets 100 % statement coverage of every class, method, branch, and factory
 function in the acquisition module.

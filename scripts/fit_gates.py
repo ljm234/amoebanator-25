@@ -2,13 +2,13 @@
 Fit both energy-based OOD/uncertainty gates from validation predictions.
 
 Writes:
-  outputs/metrics/energy_threshold.json — Liu et al. 2020 energy on raw logits
-  outputs/metrics/ood_energy.json       — neg-energy-from-probability gate
+  outputs/metrics/energy_threshold.json - Liu et al. 2020 energy on raw logits
+  outputs/metrics/ood_energy.json       - neg-energy-from-probability gate
 
 If outputs/metrics/val_preds.csv lacks logit_low/logit_high columns (older
 trainings did not emit them), this script recomputes the validation logits by
 re-deriving the train/val split deterministically (random_state=42,
-test_size=0.2, stratify=y — matching ml/training_calib_dca.py) and running
+test_size=0.2, stratify=y - matching ml/training_calib_dca.py) and running
 the saved model.pt over the val rows.
 
 Usage:

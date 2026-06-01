@@ -1,4 +1,4 @@
-# AUDIT index — per-anchor verification bundles 2026-05-11
+# AUDIT index - per-anchor verification bundles 2026-05-11
 
 ## Build summary
 
@@ -49,7 +49,7 @@ _None._
 
 ## Registry-vs-NCBI deltas detected
 
-These deltas are surfaced inside each bundle's `### Registry-vs-NCBI delta` section and require Claude chat review.
+These deltas are surfaced inside each bundle's `### Registry-vs-NCBI delta` section and require the reviewer review.
 
 | PMID | Author | Year | n_deltas | fields |
 |---|---|---|---|---|
@@ -79,11 +79,11 @@ These deltas are surfaced inside each bundle's `### Registry-vs-NCBI delta` sect
 
 ## User Assignment
 
-1. **Upload to Claude chat** (drag & drop), in priority order:
+1. **Upload to the reviewer** (drag & drop), in priority order:
    - Big anchors first: `AUDIT_anchor_<pmid>_<author>_<year>.md`
    - Then class-locked batches per class: `AUDIT_anchor_batch_<class>_<n>_*.md`
-2. **Claude chat fills `REVIEWER NOTES` section** per vignette via research mode (PubMed lookup of anchor paper, compare to vignette content).
-3. **After all bundles reviewed**, Claude chat consolidates findings into `docs/AUDIT_findings_consolidated_2026-05-11.md`.
+2. **the reviewer fills `REVIEWER NOTES` section** per vignette via research mode (PubMed lookup of anchor paper, compare to vignette content).
+3. **After all bundles reviewed**, the reviewer consolidates findings into `docs/AUDIT_findings_consolidated_2026-05-11.md`.
 4. **Errata 5.4.3.2 (bundled)** generated FROM the consolidated findings.
 
 ## Bundle output size

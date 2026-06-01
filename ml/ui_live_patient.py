@@ -1,5 +1,5 @@
 """
-Live patient panel — single-case form input → wired inference output.
+Live patient panel - single-case form input → wired inference output.
 
 Phase 1.3 deliverable. Renders a Streamlit form for the 10 trained features,
 calls ml.infer.infer_one on submit, and displays the prediction with all
@@ -53,7 +53,7 @@ def decision_badge(prediction: str, reason: str | None) -> str:
     p = (prediction or "").strip()
     if p == "ABSTAIN":
         tag = reason if reason else "unspecified"
-        return f":orange[ABSTAIN — {tag}]"
+        return f":orange[ABSTAIN - {tag}]"
     if p == "High":
         return ":red[HIGH RISK]"
     if p == "Low":
@@ -66,16 +66,16 @@ def decision_badge(prediction: str, reason: str | None) -> str:
 def _fmt_metric(out: dict[str, Any], key: str, fmt: str = "{:.3f}") -> str:
     val = out.get(key)
     if val is None:
-        return "—"
+        return "-"
     try:
         return fmt.format(float(val))
     except (TypeError, ValueError):
-        return "—"
+        return "-"
 
 
 def render_live_patient_panel() -> None:
     """Render the live-patient prediction widget into the current Streamlit app."""
-    with st.expander("🩺 Live Patient — single-case prediction", expanded=True):
+    with st.expander("🩺 Live Patient - single-case prediction", expanded=True):
         st.caption(
             "Research and educational use only. Not a medical device, not validated "
             "for clinical decisions. Outputs are calibrated probabilities under the "
@@ -168,7 +168,7 @@ def render_live_patient_panel() -> None:
 
         if out.get("ood_abstain_energy_neg"):
             st.warning(
-                "Secondary neg-energy gate is above its threshold — the model is "
+                "Secondary neg-energy gate is above its threshold - the model is "
                 "uncertain enough that the prob-energy signal would also recommend abstaining."
             )
 

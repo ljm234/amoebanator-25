@@ -13,7 +13,7 @@ and patient/public involvement.
 | # | Item | Status | Response |
 |---|------|--------|----------|
 | 1 | Identification | DONE | This work develops a multivariable prediction model for high-risk meningitis triage; the target population is patients with acute meningitis-like presentations; the outcome is a "high-risk" tier proxy operationalised via bacterial-meningitis ICD-10 codes; ML methods are used (PyTorch MLP + temperature scaling). |
-| 2 | Structured summary | Pending preprint | A TRIPOD+AI-for-Abstracts–conformant abstract will accompany the medRxiv submission. The methods + open-science halves are fixed by this checklist; the results half is gated on Phase 6 real-data access. |
+| 2 | Structured summary | Pending preprint | A TRIPOD+AI-for-Abstracts-conformant abstract will accompany the medRxiv submission. The methods + open-science halves are fixed by this checklist; the results half is gated on Phase 6 real-data access. |
 
 ## Introduction
 

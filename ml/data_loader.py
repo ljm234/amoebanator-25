@@ -1,5 +1,5 @@
 """
-Phase 7.2 — production wiring of ml.data.deidentification into the data load path.
+Phase 7.2 - production wiring of ml.data.deidentification into the data load path.
 
 `ml.data.deidentification.SafeHarborProcessor` implements 45 CFR §164.514(b)(2)
 (removal of the 18 HIPAA identifier categories, age cap at 89, ZIP truncation
@@ -14,18 +14,18 @@ scrubbing at load time means the model never sees identifiers it shouldn't.
 Field mapping for the bundled simulated dataset
 (outputs/diagnosis_log_pro.csv):
 
-  * `case_id`      — opaque UUID, NOT a HIPAA identifier; passes through.
-  * `physician`    — actor name; treated as a *user* identifier per the
+  * `case_id`      - opaque UUID, NOT a HIPAA identifier; passes through.
+  * `physician`    - actor name; treated as a *user* identifier per the
                      Safe Harbor catch-all (b)(2)(ii). Always scrubbed.
-  * `age`          — capped at 89 per (b)(2)(i)(C).
-  * `sex`          — demographic, not an identifier; passes through.
-  * `csf_*`        — clinical labs; pass through.
-  * `symptoms`     — clinical free text; passes through (no PHI in the
+  * `age`          - capped at 89 per (b)(2)(i)(C).
+  * `sex`          - demographic, not an identifier; passes through.
+  * `csf_*`        - clinical labs; pass through.
+  * `symptoms`     - clinical free text; passes through (no PHI in the
                      bundled vocabulary).
-  * `comments`     — free-text; subject to length-based scrubbing inside
+  * `comments`     - free-text; subject to length-based scrubbing inside
                      SafeHarborProcessor.
-  * `timestamp_tz` — date; truncated to year per (b)(2)(i)(C).
-  * `risk_score`, `risk_label`, `pcr`, `microscopy`, `exposure` — clinical;
+  * `timestamp_tz` - date; truncated to year per (b)(2)(i)(C).
+  * `risk_score`, `risk_label`, `pcr`, `microscopy`, `exposure` - clinical;
                      pass through.
 
 The bundled CSV has `source="simulated"` on every row, so this scrub is a

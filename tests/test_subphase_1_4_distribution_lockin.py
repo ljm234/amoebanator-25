@@ -162,7 +162,7 @@ def test_tbm_lmic_geography_ge_20_of_30():
     lmic_regions = {"peru_lima_coast", "peru_loreto_amazon", "peru_cusco_altitude",
                     "peru_puno_altitude", "peru_tumbes", "peru_madre_de_dios",
                     "other_latam"}
-    # other_global hosts Vietnam HCMC, South Africa, India — also LMIC. Use
+    # other_global hosts Vietnam HCMC, South Africa, India - also LMIC. Use
     # geography_label substring to disambiguate non-LMIC (UK, US, EU).
     non_lmic_label_markers = ("United Kingdom", "London", "United States",
                               "US ", "Europe", "Germany", "France")

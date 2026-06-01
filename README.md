@@ -37,8 +37,8 @@ US cases between 1962 and 2024 with 4 survivors**, a case-fatality rate of
 163 / 167 ≈ **97.6 %**, and notes that "typically, fewer than 10 people a
 year in the United States get PAM." See also Cope JR & Ali IK, *Curr Infect
 Dis Rep* 2016;18(10):31 (PMID 27614893) for clinical context, and Yoder JS et
-al., *Epidemiol Infect* 2010;138(7):968–975 (PMID 19845995) for the
-1962–2008 US epidemiology (n = 111 cases, CFR = 110 / 111 ≈ 99.1 %, median
+al., *Epidemiol Infect* 2010;138(7):968-975 (PMID 19845995) for the
+1962-2008 US epidemiology (n = 111 cases, CFR = 110 / 111 ≈ 99.1 %, median
 age 12 years, 79.3 % male, 73.6 % freshwater-exposure source). Full citation
 records in `docs/references.bib`.
 
@@ -191,7 +191,7 @@ tests/                       # 1100+ unit + integration tests
 * **Mahalanobis OOD.** Lee K, Lee K, Lee H, Shin J. "A Simple Unified Framework
   for Detecting Out-of-Distribution Samples and Adversarial Attacks." NeurIPS 2018.
 * **Decision curve analysis.** Vickers AJ, Elkin EB. "Decision Curve Analysis:
-  A Novel Method for Evaluating Prediction Models." Med Decis Making 2006;26(6):565–574.
+  A Novel Method for Evaluating Prediction Models." Med Decis Making 2006;26(6):565-574.
 * **Model card structure.** Mitchell M et al. "Model Cards for Model Reporting."
   FAccT 2019.
 * **PAM clinical baseline.** Cope JR, Ali IK. "Primary Amebic Meningoencephalitis:

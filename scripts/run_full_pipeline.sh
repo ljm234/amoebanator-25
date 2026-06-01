@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Amoebanator V1.0 — end-to-end pipeline runner.
+# Amoebanator V1.0 - end-to-end pipeline runner.
 #
 # Trains the MLP, fits temperature scaling, fits both energy gates, fits
 # Mahalanobis on the train split only, refits conformal qhat (with the small-
@@ -10,7 +10,7 @@
 #   PYTHONPATH=. bash scripts/run_full_pipeline.sh
 #
 # Exit code 0 means every artefact was produced. Any non-zero exit is a hard
-# failure — `set -euo pipefail` aborts on the first error.
+# failure - `set -euo pipefail` aborts on the first error.
 
 set -euo pipefail
 
@@ -101,5 +101,5 @@ if [[ "$missing" -eq 0 ]]; then
     echo "[VERIFY] all ${#EXPECTED[@]} expected artefacts present."
     exit 0
 fi
-echo "[VERIFY] FAIL — ${missing} of ${#EXPECTED[@]} artefacts missing."
+echo "[VERIFY] FAIL - ${missing} of ${#EXPECTED[@]} artefacts missing."
 exit 1

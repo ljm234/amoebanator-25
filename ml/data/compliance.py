@@ -1887,7 +1887,7 @@ class DataProtectionImpactAssessment:
 
 
 # ═══════════════════════════════════════════════════════════════════════════
-# Consent Management — 45 CFR 46.116 / GDPR Art. 6–7 / LGPD Art. 11
+# Consent Management - 45 CFR 46.116 / GDPR Art. 6-7 / LGPD Art. 11
 # ═══════════════════════════════════════════════════════════════════════════
 
 
@@ -1957,7 +1957,7 @@ class ConsentRecord:
 class ConsentRegistry:
     """Manage research consent records across subjects and studies.
 
-    Implements 45 CFR 46.116 (USA), GDPR Art. 6–7 (EU),
+    Implements 45 CFR 46.116 (USA), GDPR Art. 6-7 (EU),
     LGPD Art. 11 (Brazil), and LFPDPPP Chapter II (Mexico)
     consent tracking requirements.
     """

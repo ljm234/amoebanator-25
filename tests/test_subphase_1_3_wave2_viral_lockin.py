@@ -184,8 +184,8 @@ def test_viral_wave2_pre_adjudication_hold():
 def test_viral_wave2_no_em_dashes():
     for vid in VIRAL_WAVE2_IDS:
         text = _wave2_json_path(vid).read_text(encoding="utf-8")
-        assert "—" not in text, f"v{vid} contains em-dash"
-        assert "–" not in text, f"v{vid} contains en-dash"
+        assert chr(0x2014) not in text, f"v{vid} contains em-dash"
+        assert chr(0x2013) not in text, f"v{vid} contains en-dash"
 
 
 def test_viral_wave2_no_ai_tells():

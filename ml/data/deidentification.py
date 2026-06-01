@@ -1618,7 +1618,7 @@ class ReidentificationRiskEstimator:
 
 
 # ═══════════════════════════════════════════════════════════════════════════
-# Privacy Risk Scorecard — Comprehensive Risk Summary
+# Privacy Risk Scorecard - Comprehensive Risk Summary
 # ═══════════════════════════════════════════════════════════════════════════
 
 
@@ -1753,7 +1753,7 @@ def compute_privacy_scorecard(
 
 
 # ═══════════════════════════════════════════════════════════════════════════
-# Synthetic Data Evaluator — Utility vs Privacy Trade-off
+# Synthetic Data Evaluator - Utility vs Privacy Trade-off
 # ═══════════════════════════════════════════════════════════════════════════
 
 
@@ -1927,7 +1927,7 @@ class SyntheticDataEvaluator:
                 )
                 diffs.append(abs(orig_corr - synth_corr))
 
-        if not diffs:  # pragma: no cover — defensive guard, unreachable with >=2 cols
+        if not diffs:  # pragma: no cover - defensive guard, unreachable with >=2 cols
             return 1.0
         return max(0.0, 1.0 - sum(diffs) / len(diffs))
 

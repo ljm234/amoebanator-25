@@ -1,4 +1,4 @@
-"""Tests for pages/04_references.py — Phase 4.5 Mini-2 T2.5 (3 of 4)."""
+"""Tests for pages/04_references.py - Phase 4.5 Mini-2 T2.5 (3 of 4)."""
 from __future__ import annotations
 
 from pathlib import Path

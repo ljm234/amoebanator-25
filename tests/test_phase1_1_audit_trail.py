@@ -1,5 +1,5 @@
 """
-Phase 1.1 Audit Trail Module — Comprehensive Test Suite.
+Phase 1.1 Audit Trail Module - Comprehensive Test Suite.
 
 Tests cover:
   - Hash-chained audit entry recording
@@ -601,7 +601,7 @@ class TestMerkleCheckpoint:
 
 
 # ═══════════════════════════════════════════════════════════════════════════
-# Coverage Gap Tests — previously uncovered lines
+# Coverage Gap Tests - previously uncovered lines
 # ═══════════════════════════════════════════════════════════════════════════
 
 
@@ -932,7 +932,7 @@ class TestAuditStatistics:
 
 
 # ═══════════════════════════════════════════════════════════════════════════
-# Final Coverage Completeness — targeting remaining uncovered lines
+# Final Coverage Completeness - targeting remaining uncovered lines
 # ═══════════════════════════════════════════════════════════════════════════
 
 
@@ -1469,7 +1469,7 @@ class TestAuditComplianceReport:
 
 
 def _build_populated_log() -> AuditLog:
-    """Helper — construct a log with 3 entries across different types."""
+    """Helper - construct a log with 3 entries across different types."""
     log = create_audit_log()
     log.record(
         event_type=AuditEventType.DATA_RECEIVED,
@@ -1494,7 +1494,7 @@ def _build_populated_log() -> AuditLog:
 
 
 class TestAuditExporter:
-    """Comprehensive tests for AuditExporter — JSON, CSV, NDJSON."""
+    """Comprehensive tests for AuditExporter - JSON, CSV, NDJSON."""
 
     def test_export_json_default(self) -> None:
         log = _build_populated_log()

@@ -1,13 +1,13 @@
 """
-Phase 4.5 — ABSTAIN-rate vs accuracy Pareto frontier.
+Phase 4.5 - ABSTAIN-rate vs accuracy Pareto frontier.
 
 Sweeps qhat across the unit interval, computes the conformal abstain rate
 at each setting, and plots the resulting trade-off between abstain rate
 (x) and accuracy on the kept rows (y). Higher and to the left is better.
 
 Output:
-  outputs/metrics/abstain_pareto.json — table of (qhat, abstain, accuracy)
-  outputs/metrics/abstain_pareto.png  — figure
+  outputs/metrics/abstain_pareto.json - table of (qhat, abstain, accuracy)
+  outputs/metrics/abstain_pareto.png  - figure
 """
 from __future__ import annotations
 

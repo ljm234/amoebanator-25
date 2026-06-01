@@ -3,7 +3,7 @@ Gradient boosted trees + isotonic calibration baseline (Phase 3.3).
 
 Prefers LightGBM (faster, better small-leaf handling) but falls back to
 sklearn's GradientBoostingClassifier if LightGBM is not installed. The
-fallback path is functionally equivalent for ablation purposes — both produce
+fallback path is functionally equivalent for ablation purposes - both produce
 miscalibrated trees that benefit from isotonic post-hoc calibration.
 
 References:

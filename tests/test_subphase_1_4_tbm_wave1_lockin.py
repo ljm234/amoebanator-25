@@ -172,12 +172,12 @@ def _full_text(data: dict) -> str:
 
 @pytest.mark.parametrize("vid", WAVE1_IDS)
 def test_wave1_no_em_dashes(vid):
-    assert "—" not in _full_text(_load(vid)), f"vid {vid} em-dash"
+    assert chr(0x2014) not in _full_text(_load(vid)), f"vid {vid} em-dash"
 
 
 @pytest.mark.parametrize("vid", WAVE1_IDS)
 def test_wave1_no_en_dashes(vid):
-    assert "–" not in _full_text(_load(vid)), f"vid {vid} en-dash"
+    assert chr(0x2013) not in _full_text(_load(vid)), f"vid {vid} en-dash"
 
 
 AI_TELLS = [

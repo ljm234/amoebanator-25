@@ -154,8 +154,8 @@ def test_viral_wave1_no_em_dashes():
     """No em-dashes (\\u2014) or en-dashes (\\u2013)."""
     for vid in VIRAL_WAVE1_IDS:
         text = _wave1_json_path(vid).read_text(encoding="utf-8")
-        assert "—" not in text, f"v{vid} contains em-dash"
-        assert "–" not in text, f"v{vid} contains en-dash"
+        assert chr(0x2014) not in text, f"v{vid} contains em-dash"
+        assert chr(0x2013) not in text, f"v{vid} contains en-dash"
 
 
 def test_viral_wave1_no_ai_tells():

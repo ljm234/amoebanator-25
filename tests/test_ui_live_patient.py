@@ -1,5 +1,5 @@
 """
-Phase 1.3 — tests for the live-patient widget.
+Phase 1.3 - tests for the live-patient widget.
 
 Covers:
   * build_row: schema correctness, type coercion, symptom joining
@@ -66,10 +66,10 @@ def test_build_row_strips_blank_symptom_tokens() -> None:
         ("High", None, "HIGH"),
         ("Low", None, "LOW"),
         ("Moderate", None, "MODERATE"),
-        ("ABSTAIN", "OOD", "ABSTAIN — OOD"),
-        ("ABSTAIN", "LogitEnergyAboveOODShift", "ABSTAIN — LogitEnergyAboveOODShift"),
-        ("ABSTAIN", "ConformalAmbiguity", "ABSTAIN — ConformalAmbiguity"),
-        ("ABSTAIN", None, "ABSTAIN — unspecified"),
+        ("ABSTAIN", "OOD", "ABSTAIN - OOD"),
+        ("ABSTAIN", "LogitEnergyAboveOODShift", "ABSTAIN - LogitEnergyAboveOODShift"),
+        ("ABSTAIN", "ConformalAmbiguity", "ABSTAIN - ConformalAmbiguity"),
+        ("ABSTAIN", None, "ABSTAIN - unspecified"),
         ("", None, "unknown"),
     ],
 )
@@ -85,9 +85,9 @@ def test_fmt_metric_handles_missing_and_garbage() -> None:
     mod = _import_module()
     out = {"a": 1.5, "b": None, "c": "xyz"}
     assert mod._fmt_metric(out, "a") == "1.500"
-    assert mod._fmt_metric(out, "b") == "—"
-    assert mod._fmt_metric(out, "c") == "—"
-    assert mod._fmt_metric(out, "missing") == "—"
+    assert mod._fmt_metric(out, "b") == "-"
+    assert mod._fmt_metric(out, "c") == "-"
+    assert mod._fmt_metric(out, "missing") == "-"
     assert mod._fmt_metric(out, "a", "{:.1f}") == "1.5"
 
 

@@ -27,7 +27,7 @@
 
 ### Demographic distribution (Wave 5.3.6)
 
-All 14 slots are Netherlands-tertiary referral pipeline (matches Granerod UK-prospective and Whitley HSE review epidemiology); no Peru slots in this wave. Age span 14–87. Ambiguity slots = 2 (v103, v104).
+All 14 slots are Netherlands-tertiary referral pipeline (matches Granerod UK-prospective and Whitley HSE review epidemiology); no Peru slots in this wave. Age span 14-87. Ambiguity slots = 2 (v103, v104).
 
 ---
 
@@ -39,7 +39,7 @@ All 14 slots are Netherlands-tertiary referral pipeline (matches Granerod UK-pro
 | --- | --- |
 | Test file created | `tests/test_subphase_1_3_wave2_viral_lockin.py` (298 lines) |
 | Test count | 85 (parametrized + corpus + closure) |
-| RED run result | 83 failed, 2 passed (the 2 passing tests are list-shape invariants over VIRAL_DISTRIBUTION which are static — failure mode is JSON absence) |
+| RED run result | 83 failed, 2 passed (the 2 passing tests are list-shape invariants over VIRAL_DISTRIBUTION which are static - failure mode is JSON absence) |
 | Cause of RED | All 14 `vir_NNN_*.json` files absent; final `test_subphase_1_3_complete_60_60` asserts VIRAL count==30 (was 16) |
 
 ### GREEN phase (post-construction)
@@ -61,8 +61,8 @@ All 14 slots are Netherlands-tertiary referral pipeline (matches Granerod UK-pro
 | Em-dash count (Wave 5.3.6) | 0 | 0 | ✅ Exceptional |
 | En-dash count (Wave 5.3.6) | 0 | 0 | ✅ Exceptional |
 | AI-tells count (Wave 5.3.6) | 0 | 0 | ✅ Exceptional |
-| Spanish narrative length 700–900c (Wave 5.3.6) | 14/14 in band | 14/14 (range 738–868c) | ✅ Exceptional |
-| English narrative length 800–1200c (Wave 5.3.6) | 14/14 in band | 14/14 (range 832–1126c) | ✅ Exceptional |
+| Spanish narrative length 700-900c (Wave 5.3.6) | 14/14 in band | 14/14 (range 738-868c) | ✅ Exceptional |
+| English narrative length 800-1200c (Wave 5.3.6) | 14/14 in band | 14/14 (range 832-1126c) | ✅ Exceptional |
 | Granerod anchor count | 9 | 9 | ✅ Exceptional |
 | Whitley anchor count | 5 | 5 | ✅ Exceptional |
 | PMID_REGISTRY membership | 14/14 in registry | 14/14 | ✅ Exceptional |
@@ -100,7 +100,7 @@ Both vignettes disclose verbatim:
 - Empiric acyclovir initiated on admission and **continued through full 21-day course** despite negative HSV-1 PCR at 24h AND 72h
 - Mesial temporal T2/FLAIR hyperintensity on MRI supporting clinical HSE phenotype
 - EEG periodic lateralized epileptiform discharges (left v103, right v104) lateralizing to symptomatic hemisphere
-- Anchored to Granerod 2010 UK cohort, which empirically documented PCR-negative-but-clinical-HSE cases — the literature foundation for this ambiguity class
+- Anchored to Granerod 2010 UK cohort, which empirically documented PCR-negative-but-clinical-HSE cases - the literature foundation for this ambiguity class
 
 ### VZV (v115, v116, Granerod-anchored)
 
@@ -119,7 +119,7 @@ All 5 Whitley-anchored vignettes are HSV1 (Whitley 2006 review's focus). Age str
 
 ---
 
-## 5. Subphase 1.3 Final State Summary — BACT 30 + VIRAL 30 = 60/60 COMPLETE
+## 5. Subphase 1.3 Final State Summary - BACT 30 + VIRAL 30 = 60/60 COMPLETE
 
 ### Class roster
 
@@ -182,7 +182,7 @@ Single MD file (this report), single new test file, no schema changes, no PMID_R
 | TDD discipline | RED 83/85 failures pre-construction (the 2 passing tests are list-shape invariants), GREEN 85/85 post-construction, full suite 2161 pass | **Exceptional** |
 | Schema fidelity | Wave 5.3.6 14/14 + entire Subphase 1.3 corpus 60/60 schema-valid | **Exceptional** |
 | Anchor accuracy | Granerod 9/9 (`anchor_type=cohort`) + Whitley 5/5 (`anchor_type=review`) verified empirically; all 14 PMIDs present in PMID_REGISTRY | **Exceptional** |
-| Linguistic quality | em-dashes 0, en-dashes 0, AI-tells 0, Spanish 14/14 in 700–900c band, English 14/14 in 800–1200c band | **Exceptional** |
+| Linguistic quality | em-dashes 0, en-dashes 0, AI-tells 0, Spanish 14/14 in 700-900c band, English 14/14 in 800-1200c band | **Exceptional** |
 | Pathogen authenticity | HSV-PCR-neg-72h (v103/v104) empiric-acyclovir-21d disclosure verified; VZV (v115/v116) dermatomal + cerebellitis + zoster markers verified; Granerod cohort framing verbatim; Whitley HSE review framing verbatim | **Exceptional** |
 | No regressions | Full pytest 2161 pass across 5.3.0.3 + 5.3.1 + 5.3.2 + 5.3.3 + 5.3.4 + 5.3.5 + 5.3.6 lock-ins; 0 failures | **Exceptional** |
 

@@ -1,5 +1,5 @@
 """
-Phase 7.1 — production wiring of ml.data.audit_trail into the training pipeline.
+Phase 7.1 - production wiring of ml.data.audit_trail into the training pipeline.
 
 ml.data.audit_trail provides AuditLog (hash-chained, Merkle-checkpointed,
 tamper-evident) but is in-memory only. This module adds:
@@ -19,7 +19,7 @@ Design notes:
   - We use AuditLog.record() so the upstream chain hashing logic is the source
     of truth. We never compute hashes ourselves.
   - We persist *after* AuditLog.record() returns, so an in-memory entry that
-    fails to land on disk simply means the singleton is ahead of the file —
+    fails to land on disk simply means the singleton is ahead of the file -
     next call rewrites the full log via _flush_log().
   - The wrapper is intentionally thin. If callers need the raw API
     (e.g. anomaly detection, archival, exports), import ml.data.audit_trail

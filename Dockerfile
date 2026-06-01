@@ -1,4 +1,4 @@
-# Amoebanator V1.0 — reproducible runtime container.
+# Amoebanator V1.0 - reproducible runtime container.
 #
 # Two-stage build keeps the final image small:
 #   Stage 1 (deps): install pip dependencies into a venv.
@@ -51,12 +51,12 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     STREAMLIT_SERVER_PORT=8501 \
     STREAMLIT_SERVER_ADDRESS=0.0.0.0
 
-# AMOEBANATOR_IRB_BYPASS — IRB gate bypass switch
+# AMOEBANATOR_IRB_BYPASS - IRB gate bypass switch
 #
 # WHY THIS EXISTS:
 #   The Phase 4.5 demo trains on n=30 synthetic patient vignettes derived from
 #   published case-series marginals (Yoder 2010, Cope 2016, CDC 2025). No real
-#   PHI, no human subjects. Hence no IRB review is required — but the IRB gate
+#   PHI, no human subjects. Hence no IRB review is required - but the IRB gate
 #   in ml/irb_gate.py refuses to boot the app without an IRB JSON record. This
 #   bypass env var short-circuits the gate WITH a mandatory audit log emission
 #   (AuditEventType.IRB_STATUS_CHANGE → actor="env_var") so the bypass is

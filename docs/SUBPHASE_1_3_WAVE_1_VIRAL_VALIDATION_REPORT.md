@@ -157,8 +157,8 @@
 | Schema validation pass rate | 13/13 |
 | All v2/class_03_viral vignette JSONs validate | 16/16 (3 pilot + 13 wave-1) |
 | Cross-class schema validation | 46/46 (30 BACT + 16 VIRAL) |
-| Em-dashes (—) corpus-wide | 0 |
-| En-dashes (–) corpus-wide | 0 |
+| Em-dashes (-) corpus-wide | 0 |
+| En-dashes (-) corpus-wide | 0 |
 | AI-tell vocabulary corpus-wide | 0 |
 | Spanish narrative coverage | 13/13 in 700-900 char band (range 710-898) |
 | English narrative coverage | 13/13 in 800-1200 char band (range 838-1145) |
@@ -168,7 +168,7 @@
 | Diagnostic ambiguity slots = 2 | 2/2 (v113, v117) |
 | Peru-anchored slots = 3 | 3/3 (v99 Lima HSV1, v117 Lima dengue, v119 Tumbes dengue) |
 | Pathogen distribution | 3 HSV1 + 5 enterovirus + 2 HSV2 + 2 dengue + 1 EEE (matches Tyler-anchored slot inventory) |
-| HSV1 temporal lobe authenticity (focal/CN >=50 percent) | 3/3 (exceeds target — all HSV1 cases have focal_neurological_deficit=true) |
+| HSV1 temporal lobe authenticity (focal/CN >=50 percent) | 3/3 (exceeds target - all HSV1 cases have focal_neurological_deficit=true) |
 | Dengue thrombocytopenia (platelets <150,000) | 2/2 (v117=75k, v119=85k) |
 | EEE severe outcome | 1/1 (v120 outcome=fatal, GCS 6 comatose) |
 | ground_truth_class=3 | 13/13 |
@@ -256,7 +256,7 @@ TDD discipline: all tests confirmed RED (77 parametrized failures + 3 pre-passes
 | Viral (Class 3) | 3/30 | 16/30 |
 | **Subphase 1.3 total** | **33/60 (55 percent)** | **46/60 (77 percent)** |
 
-Tyler-anchored cohort (the largest single-anchor set in VIRAL_DISTRIBUTION) is now complete. Remaining VIRAL workstream: 14 slots covering remaining HSV1 (9 slots), HSV_PCR_negative_72h (2 slots), VZV (2 slots), and 1 dengue slot — anchored to non-Tyler PMIDs per VIRAL_DISTRIBUTION.
+Tyler-anchored cohort (the largest single-anchor set in VIRAL_DISTRIBUTION) is now complete. Remaining VIRAL workstream: 14 slots covering remaining HSV1 (9 slots), HSV_PCR_negative_72h (2 slots), VZV (2 slots), and 1 dengue slot - anchored to non-Tyler PMIDs per VIRAL_DISTRIBUTION.
 
 ## Forward-Compatibility Notes
 

@@ -1,5 +1,5 @@
 """
-Phase 5.1 — Refit Mahalanobis OOD on the TRAIN split only.
+Phase 5.1 - Refit Mahalanobis OOD on the TRAIN split only.
 
 Audit context: ml.robust.fit_tabular_stats currently fits per-feature stats
 over the entire diagnosis_log_pro.csv, including rows that may end up in
@@ -8,7 +8,7 @@ moments) but a reviewer will catch it. This script rederives the train
 indices the same way ml/training_calib_dca.py does (random_state=42,
 test_size=0.2, stratify=y) and refits the stats only on those rows.
 
-Output: outputs/metrics/feature_stats_train.json — same schema as
+Output: outputs/metrics/feature_stats_train.json - same schema as
 feature_stats.json but provably train-only.
 
 Usage:

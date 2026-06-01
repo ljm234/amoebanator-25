@@ -5,7 +5,7 @@ Single source of truth for the trained MLP. Moved here in pre-Phase-4.5
 refactor (Q2.2) to:
   * de-duplicate the class definition that previously lived in both
     ml/training.py and ml/training_calib_dca.py
-  * decouple inference from the training module — ml/infer.py now imports
+  * decouple inference from the training module - ml/infer.py now imports
     from ml.model, not from ml.training, so loading model.pt does not
     pull in sklearn / training-only dependencies.
 

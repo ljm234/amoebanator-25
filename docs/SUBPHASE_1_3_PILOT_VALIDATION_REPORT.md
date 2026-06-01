@@ -81,7 +81,7 @@
 
 ## Errata Fixes
 
-- **PMID 18626302 → 18626301:** PMID 18626302 in 5.3.1 PMID_REGISTRY was a typo for the Heckenberg 2008 Medicine 87(4):185-192 paper (`Clinical features, outcome, and meningococcal genotype in 258 adults with meningococcal meningitis: a prospective cohort study`). The correct PubMed ID is **18626301** (verified PubMed UI 2026-05-07 via Claude web research v4). The 18626302 entry was REMOVED from PMID_REGISTRY in this commit; new 18626301 entry added with full metadata; v82 BACTERIAL_DISTRIBUTION slot updated to reference 18626301; an `errata_note` field was added to the v82 spec.
+- **PMID 18626302 → 18626301:** PMID 18626302 in 5.3.1 PMID_REGISTRY was a typo for the Heckenberg 2008 Medicine 87(4):185-192 paper (`Clinical features, outcome, and meningococcal genotype in 258 adults with meningococcal meningitis: a prospective cohort study`). The correct PubMed ID is **18626301** (verified PubMed UI 2026-05-07 via the assistant web research v4). The 18626302 entry was REMOVED from PMID_REGISTRY in this commit; new 18626301 entry added with full metadata; v82 BACTERIAL_DISTRIBUTION slot updated to reference 18626301; an `errata_note` field was added to the v82 spec.
 
 ## Schema Translation Notes
 

@@ -48,7 +48,7 @@ Bundle type: CLASS-LOCKED-BATCH (class bact, small clusters packed)
   "anchor_type": "cohort",
   "anchor_subtype": "peru_lima_pediatric_pneumococcal_meningitis_2006_2011",
   "verification_confidence": 0.95,
-  "verification_method": "claude_web_pubmed_ui_v4_2026_05_07",
+  "verification_method": "web_pubmed_ui_v4_2026_05_07",
   "last_verified_date": "2026-05-07",
   "caveat": "44-episode pediatric pneumococcal meningitis multicenter Lima cohort 2006-2011 (UPCH + HNCH + INSN + HEP + HNERM + HNDM). 68.2 percent of cases were under 2 years of age. Case fatality rate 32.6 percent. 92.9 percent of fatal cases were under 2 years. Malnutrition associated with fatal outcome. 64.3 percent of fatal cases died within first 48 hours. Anchor for Class 2 SP-pediatric Lima Peru primary-source vignettes (Subphase 1.3 commit 5.3.2)."
 }
@@ -299,16 +299,16 @@ ADJUDICATION:
   disagreement_resolution: None
 ```
 
-### REVIEWER PROMPT (Claude chat fills below)
+### REVIEWER PROMPT (the reviewer fills below)
 
-For each vignette above, the reviewer (Claude chat) must answer:
+For each vignette above, the reviewer must answer:
 1. Does the vignette's clinical content match the anchor paper's actual claims?
 2. Are demographics, CSF, vitals, imaging plausible per the paper?
 3. Does the narrative reference the anchor accurately (year, author, claim)?
 4. Would this vignette anchor better to a different paper in the registry? (specify which if yes)
 5. Severity if issues found: [Catastrophic / Needs Errata / Minor / Clean]
 
-### REVIEWER NOTES (Claude chat YYYY-MM-DD)
+### REVIEWER NOTES (the reviewer YYYY-MM-DD)
 
 _(empty; to be filled during chat verification)_
 
@@ -341,7 +341,7 @@ _(empty; to be filled during chat verification)_
   "anchor_type": "cohort",
   "anchor_subtype": "neisseria_meningitidis_adult_258_cases",
   "verification_confidence": 0.95,
-  "verification_method": "claude_web_pubmed_ui_v4_2026_05_07",
+  "verification_method": "web_pubmed_ui_v4_2026_05_07",
   "last_verified_date": "2026-05-07",
   "caveat": "Adult meningococcal meningitis prospective Netherlands cohort of 258 cases (1998-2002). Headache 92 percent, neck stiffness 76 percent, fever on admission 53 percent, rash 46 percent (petechial in 81 percent of those = 37 percent overall), classic triad in 21 percent, focal cerebral deficits 11 percent. Median CSF leukocyte count 5,730/mm3 (IQR 1,820-12,225). Mortality 7 percent. ERRATA: previously stored as PMID 18626302 in 5.3.1 PMID_REGISTRY; corrected to canonical 18626301 in 5.3.2."
 }
@@ -550,16 +550,16 @@ ADJUDICATION:
   disagreement_resolution: None
 ```
 
-### REVIEWER PROMPT (Claude chat fills below)
+### REVIEWER PROMPT (the reviewer fills below)
 
-For each vignette above, the reviewer (Claude chat) must answer:
+For each vignette above, the reviewer must answer:
 1. Does the vignette's clinical content match the anchor paper's actual claims?
 2. Are demographics, CSF, vitals, imaging plausible per the paper?
 3. Does the narrative reference the anchor accurately (year, author, claim)?
 4. Would this vignette anchor better to a different paper in the registry? (specify which if yes)
 5. Severity if issues found: [Catastrophic / Needs Errata / Minor / Clean]
 
-### REVIEWER NOTES (Claude chat YYYY-MM-DD)
+### REVIEWER NOTES (the reviewer YYYY-MM-DD)
 
 _(empty; to be filled during chat verification)_
 
@@ -847,15 +847,15 @@ ADJUDICATION:
   disagreement_resolution: None
 ```
 
-### REVIEWER PROMPT (Claude chat fills below)
+### REVIEWER PROMPT (the reviewer fills below)
 
-For each vignette above, the reviewer (Claude chat) must answer:
+For each vignette above, the reviewer must answer:
 1. Does the vignette's clinical content match the anchor paper's actual claims?
 2. Are demographics, CSF, vitals, imaging plausible per the paper?
 3. Does the narrative reference the anchor accurately (year, author, claim)?
 4. Would this vignette anchor better to a different paper in the registry? (specify which if yes)
 5. Severity if issues found: [Catastrophic / Needs Errata / Minor / Clean]
 
-### REVIEWER NOTES (Claude chat YYYY-MM-DD)
+### REVIEWER NOTES (the reviewer YYYY-MM-DD)
 
 _(empty; to be filled during chat verification)_

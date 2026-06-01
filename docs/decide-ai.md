@@ -2,7 +2,7 @@
 
 Per Vasey B et al., *Reporting guideline for the early-stage clinical
 evaluation of decision support systems driven by artificial intelligence:
-DECIDE-AI*, Nature Medicine 2022;28(5):924–933 (DOI 10.1038/s41591-022-01772-9;
+DECIDE-AI*, Nature Medicine 2022;28(5):924-933 (DOI 10.1038/s41591-022-01772-9;
 PMID 35585198). 27 items: 10 generic + 17 AI-specific.
 
 The Amoebanator V1.0 sprint targets *infrastructure readiness* for a future
@@ -32,7 +32,7 @@ are the honest signal a reviewer should look for in an early-stage report.
 |---|------|--------|----------|
 | 5 | Ethical approval | Pending (USER ASSIGNMENT) | Weber State IRB exemption letter is `docs/USER_ASSIGNMENTS.md` step 2. Synthetic-data training does not require IRB; real-data evaluation does. The IRB gate (`ml/irb_gate.py`) refuses to run training on non-synthetic data without an `approved` or `conditionally_approved` JSON record at `outputs/irb/current_irb.json`. |
 | 6 | Study design | Planned | Prospective evaluation is out of scope for V1.0. The future DECIDE-AI study will be a single-site, retrospective MIMIC-IV cohort comparison with the bacterial-vs-viral classifier as exposure and clinician triage as comparator. |
-| 7 | Participants, patients | Planned | MIMIC-IV CSF cohort (`hosp.labevents` itemids 51790, 51802, 52286, 52281; ICD-10 G00.x / A87.x / B60.2). Eligibility: ≥ 1 CSF analyte and ≥ 1 meningitis diagnosis code. Setting: Beth Israel Deaconess Medical Center, 2008–2019. Recruitment dates: anonymised by MIMIC-IV. |
+| 7 | Participants, patients | Planned | MIMIC-IV CSF cohort (`hosp.labevents` itemids 51790, 51802, 52286, 52281; ICD-10 G00.x / A87.x / B60.2). Eligibility: ≥ 1 CSF analyte and ≥ 1 meningitis diagnosis code. Setting: Beth Israel Deaconess Medical Center, 2008-2019. Recruitment dates: anonymised by MIMIC-IV. |
 | 8 | Participants, users | Planned | The Streamlit live-patient widget targets methods researchers, not clinicians. A clinician-facing study would require usability-evaluation participants under separate IRB. |
 | 9 | AI system description | DONE | Inputs: 10 tabular features (age, four CSF labs, three binary clinical findings, three symptom indicators). Outputs: calibrated `p(High)` ∈ [0, 1], conformal prediction set ⊆ {High, Low}, three OOD gate flags, four-tier prediction label. Algorithm: 32-16-2 MLP with cross-entropy + class weighting, L-BFGS temperature scaling. Versioned in `outputs/model/model.pt`. |
 | 10 | Human-AI interface | DONE | Single Streamlit form widget at the top of `app.py` (mounted by `ml/ui_live_patient.py`). Renders prediction badge with abstain reason, calibrated probability with progress bar, four safety-stack metrics, conformal prediction set, raw-output JSON expander. Disclaimer banner above the form: "Research and educational use only. Not validated for clinical decisions." |
@@ -45,7 +45,7 @@ are the honest signal a reviewer should look for in an early-stage report.
 
 ## Results
 
-The Results-section items 17–23 are intentionally not reported in this
+The Results-section items 17-23 are intentionally not reported in this
 checklist because no live clinical evaluation has been conducted. They will
 populate when the DECIDE-AI study runs against real-data MIMIC-IV access.
 

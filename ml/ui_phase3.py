@@ -43,8 +43,8 @@ def render_phase3_panel() -> None:
 
         c5, c6, c7 = st.columns(3)
         c5.metric("p(High)", f"{float(out.get('p_high', float('nan'))):.3f}")
-        c6.metric("q̂", f"{float(out.get('qhat', float('nan'))):.3f}" if "qhat" in out else "—")
-        c7.metric("α", f"{float(out.get('alpha', float('nan'))):.2f}" if "alpha" in out else "—")
+        c6.metric("q̂", f"{float(out.get('qhat', float('nan'))):.3f}" if "qhat" in out else "-")
+        c7.metric("α", f"{float(out.get('alpha', float('nan'))):.2f}" if "alpha" in out else "-")
 
         st.write(f"Decision: {out.get('prediction','?')}" + (f" ({out.get('reason')})" if out.get('prediction')=='ABSTAIN' and out.get('reason') else ""))
 

@@ -1,4 +1,4 @@
-"""Phase 2.5 — tests for ml.splits.stratified_split / split_summary."""
+"""Phase 2.5 - tests for ml.splits.stratified_split / split_summary."""
 from __future__ import annotations
 
 import warnings
@@ -117,7 +117,7 @@ def test_group_split_warns_when_class_drift_large() -> None:
     with warnings.catch_warnings(record=True) as caught:
         warnings.simplefilter("always", category=UserWarning)
         stratified_split(y, 0.5, 0.25, 0.25, groups=groups, seed=0)
-    # Either the warning fires, or the random draw happened to land balanced — both are valid;
+    # Either the warning fires, or the random draw happened to land balanced - both are valid;
     # the assertion only checks the warning is *possible*, not always emitted.
     has_drift = any("drifts from marginal" in str(w.message) for w in caught)
     # Soft assertion: with extreme group→label correlation, drift is overwhelmingly likely.

@@ -1,14 +1,14 @@
 """
-Phase 3.4 — Four-cell ablation across baselines and the Amoebanator MLP.
+Phase 3.4 - Four-cell ablation across baselines and the Amoebanator MLP.
 
 For each (model, ablation cell) pair, we fit on the training split, evaluate on
 the held-out test split, and report AUC + recall@operating-point with bootstrap
 95% CIs (Phase 3.5). The four cells are:
 
-    base       — model alone, raw probabilities
-    +cal       — Platt or isotonic calibration on the model output
-    +conformal — base or calibrated probability + split conformal abstain rule
-    +ood       — calibrated + conformal + Mahalanobis OOD gate (abstain on OOD)
+    base       - model alone, raw probabilities
+    +cal       - Platt or isotonic calibration on the model output
+    +conformal - base or calibrated probability + split conformal abstain rule
+    +ood       - calibrated + conformal + Mahalanobis OOD gate (abstain on OOD)
 
 Models compared:
   * logistic_platt   (sklearn LogisticRegression + Platt)

@@ -1,6 +1,6 @@
-# Amoebanator V1.0 — runtime dependencies, exact pins.
+# Amoebanator V1.0 - runtime dependencies, exact pins.
 # Versions match the ones the V1.0 sprint was tested against on macOS 14
-# (Apple Silicon, Python 3.12.11). CPU-only PyTorch by default — uncomment
+# (Apple Silicon, Python 3.12.11). CPU-only PyTorch by default - uncomment
 # the torch index URL block at the bottom for explicit CPU wheels in CI.
 
 # ML core
@@ -14,7 +14,7 @@ scipy==1.16.3
 matplotlib==3.10.6
 streamlit==1.52.0
 
-# Optional baselines (Phase 3.3) — uncomment if you want the LightGBM
+# Optional baselines (Phase 3.3) - uncomment if you want the LightGBM
 # backend; the GBM baseline auto-falls-back to sklearn.GradientBoostingClassifier
 # when LightGBM is absent.
 # lightgbm==4.6.0
@@ -31,6 +31,6 @@ mypy==1.19.1
 #   --extra-index-url https://download.pytorch.org/whl/cpu
 # and replace torch==2.9.1 above with the matching CPU wheel name.
 
-# Subphase 1.1 — Vignette schema
+# Subphase 1.1 - Vignette schema
 pydantic>=2.5.0
 jsonschema>=4.20.0

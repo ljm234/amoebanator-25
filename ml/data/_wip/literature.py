@@ -1459,7 +1459,7 @@ class CaptionParser:
     ]
 
     FIGURE_LABEL_PATTERN: Final[re.Pattern[str]] = re.compile(
-        r"^(?:Fig(?:ure)?\.?\s*)?(\d+[A-Za-z]?(?:\s*[-–]\s*[A-Za-z])?)\s*[.:]?\s*",
+        r"^(?:Fig(?:ure)?\.?\s*)?(\d+[A-Za-z]?(?:\s*[--]\s*[A-Za-z])?)\s*[.:]?\s*",
         re.IGNORECASE,
     )
 

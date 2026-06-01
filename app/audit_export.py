@@ -8,14 +8,14 @@ audit-portability feature.
 
 Two public functions:
 
-- ``export_audit_to_csv(jsonl_path)``         — read the JSONL audit log
+- ``export_audit_to_csv(jsonl_path)``         - read the JSONL audit log
                                                  at ``jsonl_path``,
                                                  return CSV bytes
                                                  preserving every column
                                                  plus a ``schema_version``.
                                                  Emits
                                                  ``AUDIT_EXPORT_REQUESTED``.
-- ``verify_csv_chain_integrity(csv_bytes)``    — re-parse the CSV, walk
+- ``verify_csv_chain_integrity(csv_bytes)``    - re-parse the CSV, walk
                                                  the chain, return True
                                                  iff every row's
                                                  ``entry_hash`` matches
@@ -39,11 +39,11 @@ from ml.data.audit_trail import AuditEventType, _compute_entry_hash
 
 # CSV format version; bump when columns / serialisation changes.
 # Independent of the JSONL log's schema (the JSONL has no version field
-# yet — that's a separate cleanup tracked as Mini-1 spec-gap-4).
+# yet - that's a separate cleanup tracked as Mini-1 spec-gap-4).
 CSV_SCHEMA_VERSION: str = "1"
 
 
-# Column order is the contract — downstream verify_csv_chain_integrity
+# Column order is the contract - downstream verify_csv_chain_integrity
 # and any external reviewer-side tooling reads in this exact order.
 _CSV_COLUMNS: tuple[str, ...] = (
     "schema_version",
@@ -63,7 +63,7 @@ _CSV_COLUMNS: tuple[str, ...] = (
 def export_audit_to_csv(jsonl_path: Path) -> bytes:
     """Read the JSONL audit log at ``jsonl_path``; return CSV-encoded bytes.
 
-    No filtering, no truncation — every entry survives the round-trip.
+    No filtering, no truncation - every entry survives the round-trip.
     The CSV is UTF-8 encoded with ``\\r\\n`` line endings (RFC 4180).
     Metadata dicts are JSON-encoded into their cell so the CSV stays
     flat-table-friendly while preserving all nested structure.
@@ -114,10 +114,10 @@ def verify_csv_chain_integrity(csv_bytes: bytes) -> bool:
 
     Returns ``True`` iff every row passes AND the ``previous_hash`` of
     each row equals the ``entry_hash`` of the prior row (chain links
-    intact). Returns ``False`` on any mismatch — fail-closed because a
+    intact). Returns ``False`` on any mismatch - fail-closed because a
     silent True on a tampered chain defeats the audit's whole purpose.
 
-    Empty CSV (header row only, no entries) returns ``True`` —
+    Empty CSV (header row only, no entries) returns ``True`` -
     vacuously correct.
     """
     text = csv_bytes.decode("utf-8")

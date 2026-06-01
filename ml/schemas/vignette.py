@@ -408,10 +408,10 @@ class Labs(BaseModel):
 
 
 # ============================================================================
-# CSFProfile sub-model — diagnostic core
+# CSFProfile sub-model - diagnostic core
 # ============================================================================
 class CSFProfile(BaseModel):
-    """CSF analysis results — the primary diagnostic discriminator across 9 classes.
+    """CSF analysis results - the primary diagnostic discriminator across 9 classes.
 
     Citations:
         - IDSA Tunkel 2004 (bacterial cutoffs from van de Beek 422-pt analysis)
@@ -732,7 +732,7 @@ class Provenance(BaseModel):
     generator_model_identifier: str = Field(
         ..., min_length=1, max_length=200,
         description="Model identifier string used for generation (e.g., "
-                    "'claude-sonnet-4.5/2026-04-15' or 'manual-fixture-2026-05-02').",
+                    "'example-model-1.0/2026-04-15' or 'manual-fixture-2026-05-02').",
     )
     prompt_hash_sha256: str = Field(
         ..., pattern=r"^[a-f0-9]{64}$",
@@ -750,7 +750,7 @@ class Provenance(BaseModel):
 
 
 # ============================================================================
-# VignetteSchema — top-level container with class-conditional validators
+# VignetteSchema - top-level container with class-conditional validators
 # ============================================================================
 class VignetteSchema(BaseModel):
     """Top-level vignette container for 9-class meningitis/encephalitis differential.

@@ -1,5 +1,5 @@
 """
-Phase 2.3 — Published PAM case-series summary statistics.
+Phase 2.3 - Published PAM case-series summary statistics.
 
 This module encodes *only* what is published in peer-reviewed sources, with
 explicit citations. It does not invent any case-level data. The summary
@@ -17,7 +17,7 @@ statistics support two downstream uses:
 Sources:
   * Yoder JS, Eddy BA, Visvesvara GS, Capewell L, Beach MJ.
     "The epidemiology of primary amoebic meningoencephalitis in the USA,
-    1962–2008." Epidemiol Infect 2010;138(7):968-975.
+    1962-2008." Epidemiol Infect 2010;138(7):968-975.
     DOI 10.1017/S0950268809991014 ; PMID 19845995.
   * Cope JR, Ali IK. "Primary Amebic Meningoencephalitis: What Have We
     Learned in the Last 5 Years?" Curr Infect Dis Rep 2016;18(10):31.
@@ -25,7 +25,7 @@ Sources:
   * CDC. "About Primary Amebic Meningoencephalitis (PAM)."
     https://www.cdc.gov/naegleria/about/index.html (last verified 2026-04-24).
 
-Cope 2016 does NOT publish numeric CSF lab summary statistics — the CSF
+Cope 2016 does NOT publish numeric CSF lab summary statistics - the CSF
 distributions below are stated qualitatively in that paper ("predominantly
 neutrophilic pleocytosis, elevated protein, low glucose"). For numeric CSF
 ranges in PAM cases, Capewell LG et al., J Pediatric Infect Dis Soc 2015;
@@ -87,7 +87,7 @@ class CDCAggregateStats:
 class CopeQualitativeCSF:
     """
     Cope 2016 reports CSF abnormalities qualitatively only. The numeric
-    plausibility ranges below are *not* from Cope 2016 — they are clinical
+    plausibility ranges below are *not* from Cope 2016 - they are clinical
     reference ranges for bacterial-meningitis-pattern CSF, used to bound
     synthetic sampling. Real numeric ranges per PAM case should be sourced
     from Capewell 2015 (PMID 26582886) when that paper is added.

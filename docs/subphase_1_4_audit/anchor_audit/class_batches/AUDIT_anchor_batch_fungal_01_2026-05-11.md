@@ -47,7 +47,7 @@ Bundle type: CLASS-LOCKED-BATCH (class fungal, small clusters packed)
   "anchor_type": "guideline",
   "anchor_subtype": "idsa_cryptococcal_2010_guidelines",
   "verification_confidence": 0.85,
-  "verification_method": "claude_web_pubmed_ui_v5_2026_05_11",
+  "verification_method": "web_pubmed_ui_v5_2026_05_11",
   "last_verified_date": "2026-05-11",
   "caveat": "Subphase 1.4 commit 5.4.0 anchor for Class 5 Cryptococcal. IDSA 2010 cryptococcal disease management guidelines; anchor for HIV+CD4<100, transplant, and non-HIV strata. 15 authors verified via secondary PubMed fetch. verification_confidence=0.85 pre-direct-fetch."
 }
@@ -313,16 +313,16 @@ ADJUDICATION:
   disagreement_resolution: None
 ```
 
-### REVIEWER PROMPT (Claude chat fills below)
+### REVIEWER PROMPT (the reviewer fills below)
 
-For each vignette above, the reviewer (Claude chat) must answer:
+For each vignette above, the reviewer must answer:
 1. Does the vignette's clinical content match the anchor paper's actual claims?
 2. Are demographics, CSF, vitals, imaging plausible per the paper?
 3. Does the narrative reference the anchor accurately (year, author, claim)?
 4. Would this vignette anchor better to a different paper in the registry? (specify which if yes)
 5. Severity if issues found: [Catastrophic / Needs Errata / Minor / Clean]
 
-### REVIEWER NOTES (Claude chat YYYY-MM-DD)
+### REVIEWER NOTES (the reviewer YYYY-MM-DD)
 
 _(empty; to be filled during chat verification)_
 
@@ -374,7 +374,7 @@ _(empty; to be filled during chat verification)_
   "anchor_type": "cohort",
   "anchor_subtype": "transplant_cryptococcus_calcineurin_mortality",
   "verification_confidence": 0.85,
-  "verification_method": "claude_web_pubmed_ui_v5_2026_05_11",
+  "verification_method": "web_pubmed_ui_v5_2026_05_11",
   "last_verified_date": "2026-05-11",
   "caveat": "Subphase 1.4 commit 5.4.0 anchor for Class 5 Cryptococcal. Singh 2007 JID multicenter cohort substituted at verification time for non-resolving 'Pappas CID 2009 transplant cryptococcus' from master plan. Same role: anchor for 4-slot transplant stratum per master prompt 1.4.5. verification_confidence=0.85 pre-direct-fetch."
 }
@@ -712,15 +712,15 @@ ADJUDICATION:
   disagreement_resolution: None
 ```
 
-### REVIEWER PROMPT (Claude chat fills below)
+### REVIEWER PROMPT (the reviewer fills below)
 
-For each vignette above, the reviewer (Claude chat) must answer:
+For each vignette above, the reviewer must answer:
 1. Does the vignette's clinical content match the anchor paper's actual claims?
 2. Are demographics, CSF, vitals, imaging plausible per the paper?
 3. Does the narrative reference the anchor accurately (year, author, claim)?
 4. Would this vignette anchor better to a different paper in the registry? (specify which if yes)
 5. Severity if issues found: [Catastrophic / Needs Errata / Minor / Clean]
 
-### REVIEWER NOTES (Claude chat YYYY-MM-DD)
+### REVIEWER NOTES (the reviewer YYYY-MM-DD)
 
 _(empty; to be filled during chat verification)_

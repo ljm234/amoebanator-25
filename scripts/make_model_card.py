@@ -55,7 +55,7 @@ def main() -> None:
 
     lines = []
     lines += [
-        "# Amoebanator Pro — Model Card",
+        "# Amoebanator Pro - Model Card",
         "",
         f"_Generated: {datetime.datetime.now().isoformat(timespec='seconds')}_",
         "",
@@ -80,8 +80,8 @@ def main() -> None:
         a = ci.get("auc_calibrated_CI95", {})
         r = ci.get("recall_high@0.5_CI95", {})
         lines += [
-            f"- **AUC 95% CI:** {a.get('lo','?'):.3f}–{a.get('hi','?'):.3f} (mean {a.get('mean','?'):.3f})",
-            f"- **Recall@0.5 95% CI:** {r.get('lo','?'):.3f}–{r.get('hi','?'):.3f} (mean {r.get('mean','?'):.3f})",
+            f"- **AUC 95% CI:** {a.get('lo','?'):.3f}-{a.get('hi','?'):.3f} (mean {a.get('mean','?'):.3f})",
+            f"- **Recall@0.5 95% CI:** {r.get('lo','?'):.3f}-{r.get('hi','?'):.3f} (mean {r.get('mean','?'):.3f})",
         ]
 
     lines += [

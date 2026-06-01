@@ -20,7 +20,7 @@ Per-anchor distribution within this sub-bundle:
 **2. class_label / ground_truth_class:** Class 1 (PAM)
 **3. literature_anchors[0]:** PMID `22238170` | Kemble SK et al. | Clin Infect Dis | 2012 | anchor_type=case_report | doi=``
 **4. demographics:** age_years=7, sex=female, ethnicity=other, altitude_residence_m=100
-**5. geography:** geography_region=`other_global` — narrative city/state hint: see narrative excerpt
+**5. geography:** geography_region=`other_global` - narrative city/state hint: see narrative excerpt
 **6. exposure:**
    - freshwater_exposure_within_14d: Yes
    - freshwater_exposure_type: `lake`
@@ -37,7 +37,7 @@ Per-anchor distribution within this sub-bundle:
    - focal_neurological_deficit: No, cranial_nerve_palsy: `none`
    - papilledema_on_fundoscopy: Yes, petechial_or_purpuric_rash: No
    - skin_lesion_centrofacial_chronic: No
-   - seizure mention: Yes — seizure
+   - seizure mention: Yes - seizure
 **9. diagnostic_tests:**
    - CSF: OP=40.0cmH2O, WBC=3600/mm3, lymph%=5, neut%=94, eos%=1, glucose=16mg/dL, protein=360mg/dL, lactate=8.0mmol/L, RBC=460, xanthochromia=No, wet_mount_motile_amoebae=positive, ADA=None, CrAg LFA=negative
    - Blood/Labs: WBC=17600/uL, plt=232000/uL, ALT/AST=36, CRP=96.0mg/L, PCT=3.4ng/mL, Na=133mEq/L
@@ -76,7 +76,7 @@ Per-anchor distribution within this sub-bundle:
 **2. class_label / ground_truth_class:** Class 1 (PAM)
 **3. literature_anchors[0]:** PMID `34307045` | Anjum SK et al. | IDCases | 2021 | anchor_type=case_report | doi=`10.1016/j.idcr.2021.e01208`
 **4. demographics:** age_years=13, sex=male, ethnicity=white_non_hispanic, altitude_residence_m=100
-**5. geography:** geography_region=`us_south` — narrative city/state hint: see narrative excerpt
+**5. geography:** geography_region=`us_south` - narrative city/state hint: see narrative excerpt
 **6. exposure:**
    - freshwater_exposure_within_14d: Yes
    - freshwater_exposure_type: `lake`
@@ -132,7 +132,7 @@ Per-anchor distribution within this sub-bundle:
 **2. class_label / ground_truth_class:** Class 1 (PAM)
 **3. literature_anchors[0]:** PMID `22238170` | Kemble SK et al. | Clin Infect Dis | 2012 | anchor_type=case_report | doi=``
 **4. demographics:** age_years=9, sex=male, ethnicity=other, altitude_residence_m=100
-**5. geography:** geography_region=`other_global` — narrative city/state hint: see narrative excerpt
+**5. geography:** geography_region=`other_global` - narrative city/state hint: see narrative excerpt
 **6. exposure:**
    - freshwater_exposure_within_14d: Yes
    - freshwater_exposure_type: `lake`
@@ -188,7 +188,7 @@ Per-anchor distribution within this sub-bundle:
 **2. class_label / ground_truth_class:** Class 1 (PAM)
 **3. literature_anchors[0]:** PMID `34307045` | Anjum SK et al. | IDCases | 2021 | anchor_type=case_report | doi=`10.1016/j.idcr.2021.e01208`
 **4. demographics:** age_years=14, sex=male, ethnicity=white_non_hispanic, altitude_residence_m=100
-**5. geography:** geography_region=`us_south` — narrative city/state hint: see narrative excerpt
+**5. geography:** geography_region=`us_south` - narrative city/state hint: see narrative excerpt
 **6. exposure:**
    - freshwater_exposure_within_14d: Yes
    - freshwater_exposure_type: `lake`
@@ -205,7 +205,7 @@ Per-anchor distribution within this sub-bundle:
    - focal_neurological_deficit: No, cranial_nerve_palsy: `none`
    - papilledema_on_fundoscopy: Yes, petechial_or_purpuric_rash: No
    - skin_lesion_centrofacial_chronic: No
-   - seizure mention: Yes — seizure
+   - seizure mention: Yes - seizure
 **9. diagnostic_tests:**
    - CSF: OP=44.0cmH2O, WBC=4200/mm3, lymph%=4, neut%=95, eos%=1, glucose=14mg/dL, protein=400mg/dL, lactate=8.6mmol/L, RBC=680, xanthochromia=No, wet_mount_motile_amoebae=positive, ADA=None, CrAg LFA=negative
    - Blood/Labs: WBC=17800/uL, plt=218000/uL, ALT/AST=40, CRP=104.0mg/L, PCT=4.0ng/mL, Na=132mEq/L
@@ -244,7 +244,7 @@ Per-anchor distribution within this sub-bundle:
 **2. class_label / ground_truth_class:** Class 1 (PAM)
 **3. literature_anchors[0]:** PMID `22238170` | Kemble SK et al. | Clin Infect Dis | 2012 | anchor_type=case_report | doi=``
 **4. demographics:** age_years=11, sex=male, ethnicity=other, altitude_residence_m=100
-**5. geography:** geography_region=`other_global` — narrative city/state hint: see narrative excerpt
+**5. geography:** geography_region=`other_global` - narrative city/state hint: see narrative excerpt
 **6. exposure:**
    - freshwater_exposure_within_14d: Yes
    - freshwater_exposure_type: `lake`
@@ -299,7 +299,7 @@ Per-anchor distribution within this sub-bundle:
 **2. class_label / ground_truth_class:** Class 1 (PAM)
 **3. literature_anchors[0]:** PMID `22238170` | Kemble SK et al. | Clin Infect Dis | 2012 | anchor_type=case_report | doi=``
 **4. demographics:** age_years=6, sex=male, ethnicity=other, altitude_residence_m=100
-**5. geography:** geography_region=`other_global` — narrative city/state hint: see narrative excerpt
+**5. geography:** geography_region=`other_global` - narrative city/state hint: see narrative excerpt
 **6. exposure:**
    - freshwater_exposure_within_14d: Yes
    - freshwater_exposure_type: `lake`
@@ -328,7 +328,7 @@ Per-anchor distribution within this sub-bundle:
    - drugs mentioned: (none detected)
    - initiation timing hint: (see narrative)
 **11. outcome:** (unknown) ()
-   - sequelae mention: Yes — deficit
+   - sequelae mention: Yes - deficit
 **12. narrative_en (full text):**
 > A 6-year-old male from Minnesota presented with a five-day history of fever, headache, and rapid progression to stupor with focal deficit following lake exposure during the summer recreational season. On admission temperature was 39.4 C, Glasgow Coma Scale 7. CSF showed white cell count 4,480 per cubic millimeter (89 percent neutrophils), glucose 15 mg/dL, and protein 432 mg/dL. Acute-phase reactants were CRP 112 mg/L and procalcitonin 2.9 ng/mL. CSF PCR confirmed Naegleria fowleri at the CDC reference laboratory. CT showed diffuse cerebral edema. Treatment per CDC PAM protocol was initiated; the patient died. This vignette is a within-cohort imputation per Kemble 2012 Minnesota northern-tier expansion case-context: demographics are locked from the Day-2 distribution table, and clinical specifics follow the documented Minnesota lake-exposure PAM epidemiology (PMID 22238170).
 
@@ -354,7 +354,7 @@ Per-anchor distribution within this sub-bundle:
 **2. class_label / ground_truth_class:** Class 1 (PAM)
 **3. literature_anchors[0]:** PMID `22238170` | Kemble SK et al. | Clin Infect Dis | 2012 | anchor_type=case_report | doi=``
 **4. demographics:** age_years=14, sex=male, ethnicity=other, altitude_residence_m=100
-**5. geography:** geography_region=`other_global` — narrative city/state hint: see narrative excerpt
+**5. geography:** geography_region=`other_global` - narrative city/state hint: see narrative excerpt
 **6. exposure:**
    - freshwater_exposure_within_14d: Yes
    - freshwater_exposure_type: `lake`
@@ -409,7 +409,7 @@ Per-anchor distribution within this sub-bundle:
 **2. class_label / ground_truth_class:** Class 1 (PAM)
 **3. literature_anchors[0]:** PMID `34307045` | Anjum SK et al. | IDCases | 2021 | anchor_type=case_report | doi=`10.1016/j.idcr.2021.e01208`
 **4. demographics:** age_years=10, sex=male, ethnicity=white_non_hispanic, altitude_residence_m=100
-**5. geography:** geography_region=`us_south` — narrative city/state hint: see narrative excerpt
+**5. geography:** geography_region=`us_south` - narrative city/state hint: see narrative excerpt
 **6. exposure:**
    - freshwater_exposure_within_14d: Yes
    - freshwater_exposure_type: `lake`
@@ -438,7 +438,7 @@ Per-anchor distribution within this sub-bundle:
    - drugs mentioned: (none detected)
    - initiation timing hint: (see narrative)
 **11. outcome:** (unknown) ()
-   - sequelae mention: Yes — deficit
+   - sequelae mention: Yes - deficit
 **12. narrative_en (full text):**
 > A 10-year-old male from Florida presented with a four-day history of fever, headache, and stupor with focal deficit and papilledema following recreational freshwater (lake) exposure. On admission temperature was 39.6 C, Glasgow Coma Scale 7. CSF showed white cell count 4,260 per cubic millimeter (91 percent neutrophils), glucose 16 mg/dL, and protein 418 mg/dL. Acute-phase reactants were CRP 104 mg/L and procalcitonin 2.7 ng/mL. CSF PCR confirmed Naegleria fowleri at the CDC reference laboratory. CT showed diffuse cerebral edema. Treatment per CDC PAM protocol was initiated; the patient died. This vignette is a within-cohort imputation per Anjum 2021 Florida tap-water/lake-context case-set: demographics are locked from the Day-2 distribution table, and clinical specifics follow the documented Florida PAM epidemiology (PMID 34307045).
 
@@ -464,7 +464,7 @@ Per-anchor distribution within this sub-bundle:
 **2. class_label / ground_truth_class:** Class 1 (PAM)
 **3. literature_anchors[0]:** PMID `34307045` | Anjum SK et al. | IDCases | 2021 | anchor_type=case_report | doi=`10.1016/j.idcr.2021.e01208`
 **4. demographics:** age_years=12, sex=female, ethnicity=white_non_hispanic, altitude_residence_m=100
-**5. geography:** geography_region=`us_south` — narrative city/state hint: see narrative excerpt
+**5. geography:** geography_region=`us_south` - narrative city/state hint: see narrative excerpt
 **6. exposure:**
    - freshwater_exposure_within_14d: Yes
    - freshwater_exposure_type: `lake`
@@ -519,7 +519,7 @@ Per-anchor distribution within this sub-bundle:
 **2. class_label / ground_truth_class:** Class 1 (PAM)
 **3. literature_anchors[0]:** PMID `34307045` | Anjum SK et al. | IDCases | 2021 | anchor_type=case_report | doi=`10.1016/j.idcr.2021.e01208`
 **4. demographics:** age_years=15, sex=male, ethnicity=white_non_hispanic, altitude_residence_m=100
-**5. geography:** geography_region=`us_south` — narrative city/state hint: see narrative excerpt
+**5. geography:** geography_region=`us_south` - narrative city/state hint: see narrative excerpt
 **6. exposure:**
    - freshwater_exposure_within_14d: Yes
    - freshwater_exposure_type: `lake`
@@ -628,9 +628,9 @@ Per-anchor distribution within this sub-bundle:
 | `pam_d1_008_lake_pediatric` | **fatal** | hospital day five | No |
 | `pam_d1_009_lake_adolescent` | **fatal** | hospital day three | No |
 | `pam_d2_032_kemble_minnesota_reuse_a` | **(unknown)** |  | No |
-| `pam_d2_033_kemble_minnesota_reuse_b` | **(unknown)** |  | Yes — deficit |
+| `pam_d2_033_kemble_minnesota_reuse_b` | **(unknown)** |  | Yes - deficit |
 | `pam_d2_034_kemble_minnesota_reuse_c` | **(unknown)** |  | No |
-| `pam_d2_035_anjum_florida_reuse_a` | **(unknown)** |  | Yes — deficit |
+| `pam_d2_035_anjum_florida_reuse_a` | **(unknown)** |  | Yes - deficit |
 | `pam_d2_036_anjum_florida_reuse_b` | **(unknown)** |  | No |
 | `pam_d2_037_anjum_florida_reuse_c` | **(unknown)** |  | No |
 
@@ -653,7 +653,7 @@ Totals: {'fatal': 4, '(unknown)': 6}
 
 ### Internal contradictions (dx_test citations vs anchor PMID)
 
-- _None — all dx_test citations match the anchor PMID for every vignette._
+- _None - all dx_test citations match the anchor PMID for every vignette._
 
 ## Pre-flight Quality Flags
 
@@ -668,6 +668,6 @@ Totals: {'fatal': 4, '(unknown)': 6}
 | Cross-vignette pattern analysis | Excellent (demo/CSF/vitals/treatment/outcome/anchor/citation tables) |
 | Pre-flight flags | Exceptional (PAM-specific thresholds + anchor-set + geo-sanity per-anchor + exposure-type checks) |
 
-**Overall Sub-Bundle 02 readiness for Claude 5-layer review**: **Exceptional**
+**Overall Sub-Bundle 02 readiness for the assistant 5-layer review**: **Exceptional**
 
 Phase 2 Sub-Bundle 02 extraction complete. Sub-Bundle 03 awaits separate prompt.

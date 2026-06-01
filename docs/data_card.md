@@ -1,7 +1,7 @@
 # Data card, Amoebanator bundled dataset
 
 Per Gebru T et al., *Datasheets for Datasets*, Communications of the ACM
-2021;64(12):86–92 (DOI 10.1145/3458723; arXiv:1803.09010).
+2021;64(12):86-92 (DOI 10.1145/3458723; arXiv:1803.09010).
 
 This card documents `outputs/diagnosis_log_pro.csv`, the only dataset that
 ships with the V1.0 release. It is **30 simulated patient vignettes**, not
@@ -24,7 +24,7 @@ traceable.
 * **Funding.** Unfunded.
 * **Other comments.** The synthetic vignettes are clinically *plausible*
  , feature distributions mimic published PAM presentations
-  (Yoder JS et al., *Epidemiol Infect* 2010;138:968–975; Cope JR &
+  (Yoder JS et al., *Epidemiol Infect* 2010;138:968-975; Cope JR &
   Ali IK, *Curr Infect Dis Rep* 2016;18:31). They are *not* drawn from
   any patient population.
 
@@ -87,7 +87,7 @@ traceable.
 * **Sampling strategy.** Not applicable (no underlying population).
 * **Who was involved?** Single author. No crowdworkers, contractors,
   or annotators.
-* **Timeframe.** 2025–2026 (the `timestamp_tz` field carries plausible
+* **Timeframe.** 2025-2026 (the `timestamp_tz` field carries plausible
   but synthetic dates within this window).
 * **Ethical review.** Not required, no human subjects. Real-data
   extension via MIMIC-IV is gated by Weber State IRB exemption (see

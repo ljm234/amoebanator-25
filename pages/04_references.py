@@ -1,4 +1,4 @@
-"""References page — Phase 4.5 Mini-2 T2.3.
+"""References page - Phase 4.5 Mini-2 T2.3.
 
 Renders the 22 BibTeX entries from ``docs/references.bib`` as a
 reviewer-friendly grouped list, ordered by category to mirror the
@@ -21,7 +21,7 @@ import streamlit as st
 from app.disclaimer import render_disclaimer
 
 
-st.set_page_config(page_title="References — Amoebanator 25", page_icon="📚")
+st.set_page_config(page_title="References - Amoebanator 25", page_icon="📚")
 render_disclaimer()
 
 st.title("References")
@@ -30,7 +30,7 @@ st.caption(
     "22 entries from `docs/references.bib`. Methodology references "
     "(Guo 2017, Vovk 2005/2013, Lei 2018, Liu 2020, Lee 2018, "
     "Mitchell 2019, etc.) are intentionally retained at original "
-    "publication year — post-2022 companion citations will be added "
+    "publication year - post-2022 companion citations will be added "
     "during the medRxiv preprint prep (Phase 8.5)."
 )
 
@@ -40,8 +40,8 @@ st.subheader("PAM clinical")
 st.markdown(
     """
 - **`cope2016pam`** Cope JR, Ali IKM. *Primary Amebic Meningoencephalitis: What Have We Learned in the Last 5 Years?* **Current Infectious Disease Reports** 2016. PMID 27614893. DOI 10.1007/s11908-016-0539-4.
-- **`yoder2010pam`** Yoder JS, Eddy BA, Visvesvara GS, Capewell L, Beach MJ. *The epidemiology of primary amoebic meningoencephalitis in the USA, 1962–2008.* **Epidemiology and Infection** 2010. PMID 19845995. DOI 10.1017/S0950268809991014.
-- **`capewell2015pam`** Capewell LG, Harris AM, Yoder JS, Cope JR, et al. *Diagnosis, Clinical Course, and Treatment of Primary Amoebic Meningoencephalitis in the United States, 1937–2013: A Review of the Historical Literature.* **Journal of the Pediatric Infectious Diseases Society** 2015. PMID 26582886. DOI 10.1093/jpids/piu103.
+- **`yoder2010pam`** Yoder JS, Eddy BA, Visvesvara GS, Capewell L, Beach MJ. *The epidemiology of primary amoebic meningoencephalitis in the USA, 1962-2008.* **Epidemiology and Infection** 2010. PMID 19845995. DOI 10.1017/S0950268809991014.
+- **`capewell2015pam`** Capewell LG, Harris AM, Yoder JS, Cope JR, et al. *Diagnosis, Clinical Course, and Treatment of Primary Amoebic Meningoencephalitis in the United States, 1937-2013: A Review of the Historical Literature.* **Journal of the Pediatric Infectious Diseases Society** 2015. PMID 26582886. DOI 10.1093/jpids/piu103.
 - **`cdc2025pam`** Centers for Disease Control and Prevention. *About Primary Amebic Meningoencephalitis (PAM).* 2025. Source for the 97% case-fatality figure (167 cumulative U.S. cases / 4 survivors through 2024).
 - **`tunkel2004idsa`** Tunkel AR, Hartman BJ, Kaplan SL, et al. *Practice guidelines for the management of bacterial meningitis.* **Clinical Infectious Diseases** 2004. PMID 15494903. DOI 10.1086/425368. IDSA canonical reference; used in the Q11 inline-tooltip heuristic.
 - **`seehusen2003csf`** Seehusen DA, Reeves MM, Fomin DA. *Cerebrospinal fluid analysis.* **American Family Physician** 2003. PMID 14524396. AAFP review used in the Q11 normal-CSF tooltip bucket.

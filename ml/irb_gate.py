@@ -1,5 +1,5 @@
 """
-Phase 7.3 — IRB compliance gate for the training pipeline.
+Phase 7.3 - IRB compliance gate for the training pipeline.
 
 Behaviour:
   * If the dataset declares itself synthetic (column `source` exclusively
@@ -8,8 +8,8 @@ Behaviour:
   * Otherwise, the gate reads `outputs/irb/current_irb.json`. If the JSON
     contains an `irb_status` field whose value is APPROVED or
     CONDITIONALLY_APPROVED (case-insensitive, hyphens/underscores ignored),
-    training proceeds. Any other status — including missing file or
-    malformed JSON — raises `IRBGateBlocked` with an actionable message.
+    training proceeds. Any other status - including missing file or
+    malformed JSON - raises `IRBGateBlocked` with an actionable message.
 
 The IRB record schema is intentionally minimal so it can be hand-edited or
 populated from `ml.data.compliance.IRBApplication.to_dict()`. Required
@@ -24,8 +24,8 @@ fields:
     }
 
 Configuration:
-  * AMOEBANATOR_IRB_PATH — override path to current_irb.json
-  * AMOEBANATOR_IRB_BYPASS — when set to "1"/"true"/"yes", skip the check
+  * AMOEBANATOR_IRB_PATH - override path to current_irb.json
+  * AMOEBANATOR_IRB_BYPASS - when set to "1"/"true"/"yes", skip the check
     entirely (CI / smoke tests). The bypass is recorded in the audit log
     so it is never invisible.
 """

@@ -1,4 +1,4 @@
-"""Tests for app/audit_export.py — Phase 4.5 Mini-1 T1.8 (3 of 3).
+"""Tests for app/audit_export.py - Phase 4.5 Mini-1 T1.8 (3 of 3).
 
 10 tests covering CSV export contract, hash-chain round-trip
 (Mini-1 closure gate criterion #4), tamper detection, schema
@@ -93,7 +93,7 @@ def test_export_preserves_all_rows(tmp_audit_log: Path) -> None:
     reader = csv.DictReader(io.StringIO(csv_bytes.decode("utf-8")))
     rows = list(reader)
     # 10 emitted events + 1 from export_audit_to_csv self-emit
-    # (AUDIT_EXPORT_REQUESTED) — the export reads the file fresh, so
+    # (AUDIT_EXPORT_REQUESTED) - the export reads the file fresh, so
     # the self-emit is NOT yet in the bytes returned. Only 10 rows.
     assert len(rows) == 10
 
@@ -101,7 +101,7 @@ def test_export_preserves_all_rows(tmp_audit_log: Path) -> None:
 # ─── Test 4: round-trip hash chain byte-equal ────────────────────────
 
 def test_round_trip_hash_chain_byte_equal(tmp_audit_log: Path) -> None:
-    """Mini-1 closure gate criterion #4 — the load-bearing test."""
+    """Mini-1 closure gate criterion #4 - the load-bearing test."""
     _emit_n_events(10)
     csv_bytes = export_audit_to_csv(tmp_audit_log)
     assert verify_csv_chain_integrity(csv_bytes) is True

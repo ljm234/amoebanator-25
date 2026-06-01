@@ -14,7 +14,7 @@ corrections surface; structural issues deferred to user decision.
 
 - 7 of 9 dimensions PASS with zero issues.
 - 1 dimension PASS-with-warnings (D4 em-dash sweep): 1 mechanical en-dash
-  fix applied in `docs/model_card.md:62` (was `8 months – 66 years`,
+  fix applied in `docs/model_card.md:62` (was `8 months - 66 years`,
   now `8 months to 66 years`); 976 pre-existing em-dashes in 86 prior-
   phase files (Phase 1.1 + Phase 4.5 era content) are flagged as
   out-of-scope and deferred to a separate hygiene pass.
@@ -88,7 +88,7 @@ Day-2 scope (this commit's surfaces):
 | `docs/PMID_DAY2_CANONIZATION_2026-05-04.md` | 0 | 0 | clean |
 | `docs/PMID_CORRECTIONS_2026-05-04.md` | 0 | 0 | clean |
 | `docs/DAY2_BASELINE_AUDIT_2026-05-04.md` | 0 | 0 | clean |
-| `tests/vignettes/test_pam_vignettes.py` | 1 | 1 | LEGITIMATE (regex chars in `s.count("—")` and `s.count("–")` ban-test logic at lines 166-167) |
+| `tests/vignettes/test_pam_vignettes.py` | 1 | 1 | LEGITIMATE (regex chars in `s.count("-")` and `s.count("-")` ban-test logic at lines 166-167) |
 | `tests/vignettes/conftest.py` | 0 | 0 | clean |
 | `tests/schemas/*.py` | 0 | 0 | clean |
 | `data/vignettes/pam/*.json` (20 files) | 0 | 0 | clean |
@@ -105,7 +105,7 @@ Out-of-scope finding (full-repo Python sweep using `chr(0x2014)`):
   pass (see Section 4).
 
 Methodology disclosure: my initial em-dash sweep using
-`grep -c "—"` on `git ls-files` output reported 0 hits, which was
+`grep -c "-"` on `git ls-files` output reported 0 hits, which was
 incorrect due to encoding handling at the shell layer. The precise
 Python-based sweep using `content.count(chr(0x2014))` is the
 authoritative count.
@@ -227,7 +227,7 @@ those UI deps installed; not verified on this machine.
 
 | # | File | Line | Before | After | Class |
 |---|---|---|---|---|---|
-| 1 | `docs/model_card.md` | 62 | `8 months – 66` | `8 months to 66` | mechanical (en-dash removal in numeric range expression) |
+| 1 | `docs/model_card.md` | 62 | `8 months - 66` | `8 months to 66` | mechanical (en-dash removal in numeric range expression) |
 
 Total: 1 file changed, 1 insertion, 1 deletion.
 
@@ -253,7 +253,7 @@ Affected categories:
 - `docker-compose.yml`, `.streamlit/config.toml`, `Dockerfile`,
   `legacy_app.py`: small counts each.
 
-Most instances are stylistic narrative em-dashes ("`X — Y`" rather
+Most instances are stylistic narrative em-dashes ("`X - Y`" rather
 than "`X - Y`" or "`X. Y`") in docstrings, comments, or text content.
 Mechanical replacement is straightforward but represents a
 substantial diff outside the Subphase 1.2 ship envelope.
@@ -264,7 +264,7 @@ substantial diff outside the Subphase 1.2 ship envelope.
 - `scripts/make_model_card.py:103`: `"## Robustness (Out-of-Distribution Gate)"`
 - `scripts/make_tripod_ai_checklist.py:58`: `"## Robustness/OOD"`
 - `tests/test_phase1_1_acquisition.py:1`: `"Comprehensive tests for ml.data.acquisition"`
-- `tests/test_phase1_1_audit_trail.py:2`: `"Phase 1.1 Audit Trail Module — Comprehensive Test Suite."`
+- `tests/test_phase1_1_audit_trail.py:2`: `"Phase 1.1 Audit Trail Module - Comprehensive Test Suite."`
 - `tests/test_phase1_1_audit_trail.py:1497`: `"Comprehensive tests for AuditExporter"`
 - `tests/test_phase1_1_clinical.py:1`: `"Comprehensive tests for ml.data.clinical"`
 - `tests/test_phase1_1_compliance.py:2,220,1614`: 3 narrative `Comprehensive` uses
@@ -328,8 +328,8 @@ en-dashes, and instances of banned-vocabulary words (`delve`,
 `tapestry`, `navigate the realm`, `vibrant`, `intricate`, `robust`,
 `comprehensive`). All occurrences are inside backtick-quoted string
 literals that quote the actual content surfaced by the audit (e.g.,
-the original `8 months – 66 years` text that was corrected, the
-regex characters `s.count("—")` and `s.count("–")` in the test file
+the original `8 months - 66 years` text that was corrected, the
+regex characters `s.count("-")` and `s.count("-")` in the test file
 that performs the dash-counting check, the `_AI_TELLS` constant's
 content, and the table headers naming the words being checked).
 Replacing them in this report would falsify the audit by hiding

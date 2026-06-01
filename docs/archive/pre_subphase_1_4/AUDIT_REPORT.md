@@ -1,7 +1,7 @@
 # Audit Report, Amoebanator 25 (Phase 4.5 PRE-FLIGHT Discovery)
 
 **Author:** Jordan Montenegro-Calla (ORCID 0009-0000-7851-7139)
-**Auditor (LLM):** Claude Code, model `claude-opus-4-7`
+**Auditor (LLM):** the coding assistant, model `llm-assistant`
 **Audit window:** 2026-04-26 → 2026-04-27
 **Repo audited:** `/Users/jordanmontenegro/Desktop/Amoebanator 25/Amoebanator 25/` at commit `46f33c4` (pre-audit baseline)
 **Repo state at audit close:** commit `b8f62e3` (4 refactor commits + 1 docs + 1 test landed)
@@ -18,7 +18,7 @@ This document is the reviewer-grade retrospective of the Phase 4.5 PRE-FLIGHT di
 
 ### 1.1 What this audit was
 
-A structured, single-question-at-a-time discovery interview between Jordan Montenegro-Calla (clinical-AI researcher, post-bac, target medRxiv submission Oct 2026) and Claude Code (Opus 4.7), conducted in the Amoebanator 25 working directory. The audit's job was *not* to ship the Phase 4.5 web-layer sprint. It was to lock every consequential decision the sprint will need, then write four output documents (this report plus three companions) that contain enough specification for a fresh Claude Code session to execute the sprint without re-deriving any of the audit's findings.
+A structured, single-question-at-a-time discovery interview between Jordan Montenegro-Calla (clinical-AI researcher, post-bac, target medRxiv submission Oct 2026) and the coding assistant (Opus 4.7), conducted in the Amoebanator 25 working directory. The audit's job was *not* to ship the Phase 4.5 web-layer sprint. It was to lock every consequential decision the sprint will need, then write four output documents (this report plus three companions) that contain enough specification for a fresh the coding assistant session to execute the sprint without re-deriving any of the audit's findings.
 
 The quality bar was set verbatim by Jordan as: *"we need to make everything realistic and honest 2060 year 100% exceptional 5/5 stars, A+"*, interpreted throughout as **honest > impressive, reviewer-grade > feature-rich, 2026-real not fantasy, evidence-based not vibes**. The reviewer panel imagined for every decision: Marinka Zitnik (Harvard, graph + clinical AI), Jonathan Chen (Stanford, clinical informatics), Andrew Beam (Harvard, calibration + uncertainty), Pranav Rajpurkar (Harvard, clinical foundation models), Brett Pickett (BYU, computational epidemiology). Every option presented during the audit was scored against "would Beam catch this in 30 seconds?"
 
@@ -964,7 +964,7 @@ T=0.2723 was found by running L-BFGS optimization of the negative log-likelihood
 The audit chain is preserved per session via in-UI CSV export (Q13.A locked feature) but is wiped across container restarts (~48h idle or any deploy). For permanent audit trails, the deploy needs paid hardware or external storage (S3/Postgres), both out of scope for this sprint.
 
 ### 7.5 Single-author audit, no peer code review
-The audit was conducted by one human (Jordan Montenegro-Calla) with one LLM (Claude Code Opus 4.7). No second pair of human eyes reviewed the audit's findings or the 7 commits before this report was written. Reviewer-grade defensibility relies on: (i) the verbatim user prompts in §9 Appendix A (showing the discovery process was real, not retconned), (ii) the per-commit Q-traceability via the Closes/Refs footer convention (Q16.a), and (iii) the post-flip preset re-verification table (§3.A Q5+Q11.A.fix) being independently re-runnable from `outputs/model/model.pt` (sha256 in §1).
+The audit was conducted by one human (Jordan Montenegro-Calla) with one LLM (the LLM assistant). No second pair of human eyes reviewed the audit's findings or the 7 commits before this report was written. Reviewer-grade defensibility relies on: (i) the verbatim user prompts in §9 Appendix A (showing the discovery process was real, not retconned), (ii) the per-commit Q-traceability via the Closes/Refs footer convention (Q16.a), and (iii) the post-flip preset re-verification table (§3.A Q5+Q11.A.fix) being independently re-runnable from `outputs/model/model.pt` (sha256 in §1).
 
 ### 7.6 The discovery prompt itself is non-deterministic
 Different LLM sessions running the same Phase 4.5 PRE-FLIGHT prompt would surface different Dxx findings in different orders. The 18 D-findings in §4 are not exhaustive, they are the findings this audit surfaced. A rerun with a different LLM or different ordering of Q evidence could produce additional findings the sprint should incorporate. The audit's defensibility rests on the findings it *did* surface being correctly handled, not on having found everything findable.
@@ -1011,7 +1011,7 @@ The audit relies on 22 BibTeX entries in `docs/references.bib` (post-`6f02a75` c
 
 ### A. Verbatim audit-phase user prompts (chronological)
 
-The full chronological user-message log from the audit phase has been extracted to `/tmp/audit_extract/00_audit_user_msgs.md` (170 KB, 3,403 lines covering 22 user messages from `msg #98` paste-ready audit prompt through `msg #205` outline approvals). The extract is a working artifact, not a permanent commitment, the canonical audit transcript lives in the Claude Code session jsonl at `/Users/jordanmontenegro/.claude/projects/-Users-jordanmontenegro-Desktop-Amoebanator-25/a62ae6d8-9c41-48c4-aa08-f855fdc6cfb5.jsonl` (6.2 MB, 1,836 lines, 543 user msgs / 820 assistant msgs).
+The full chronological user-message log from the audit phase has been extracted to `/tmp/audit_extract/00_audit_user_msgs.md` (170 KB, 3,403 lines covering 22 user messages from `msg #98` paste-ready audit prompt through `msg #205` outline approvals). The extract is a working artifact, not a permanent commitment, the canonical audit transcript lives in the the coding assistant session jsonl at `/Users/jordanmontenegro/.llm/projects/-Users-jordanmontenegro-Desktop-Amoebanator-25/a62ae6d8-9c41-48c4-aa08-f855fdc6cfb5.jsonl` (6.2 MB, 1,836 lines, 543 user msgs / 820 assistant msgs).
 
 For reviewer audit-trail defensibility, the most consequential verbatim user excerpts have already been embedded throughout §3 (e.g., Q5 self-correction recognition at §3.A Q5+Q11.A.fix; refactor cap override at §2.4; Q11.A NEUTRAL defaults reasoning at §3.C Q11; Q19 "limited to" micro-correction at §3.B Q19; Q20 honest-density anti-padding reasoning at §3.C Q20). The decision to embed verbatim only the load-bearing excerpts (rather than the full chronological log) was made at §3 outline approval (Phase J Doc 1 outline, "AUDIT_REPORT §3 verbatim user prompts: condensed in §3 + full in Appendix A").
 
