@@ -1605,7 +1605,7 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "title": "Current Epidemiology and Trends in Meningococcal Disease-United States, 1996-2015",
         "anchor_type": "surveillance",
         "anchor_subtype": "us_meningococcal_epidemiology_nndss_abcs_1996_2015",
-        "verification_confidence": 0.95,
+        "verification_confidence": 1.0,
         "verification_method": "web_pubmed_oxford_fulltext_2026_05_30",
         "last_verified_date": "2026-05-30",
         "caveat": (
@@ -1641,7 +1641,7 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "title": "Response to a Serogroup B Meningococcal Disease Case Among Military Trainees",
         "anchor_type": "case_report",
         "anchor_subtype": "serogroup_b_meningococcal_military_trainee_congregate",
-        "verification_confidence": 0.95,
+        "verification_confidence": 1.0,
         "verification_method": "web_pubmed_pmc_fulltext_2026_05_30",
         "last_verified_date": "2026-05-30",
         "caveat": (
@@ -1672,7 +1672,7 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "title": "Estimating the global and regional burden of meningitis in children caused by Haemophilus influenzae type b: A systematic review and meta-analysis",
         "anchor_type": "meta_analysis",
         "anchor_subtype": "global_regional_hib_meningitis_burden_children_meta_analysis",
-        "verification_confidence": 0.95,
+        "verification_confidence": 1.0,
         "verification_method": "web_pubmed_pmc_fulltext_2026_05_30",
         "last_verified_date": "2026-05-30",
         "caveat": (
@@ -1708,7 +1708,7 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "title": "Current Epidemiology and Trends in Invasive Haemophilus influenzae Disease-United States, 2009-2015",
         "anchor_type": "surveillance",
         "anchor_subtype": "us_invasive_h_influenzae_epidemiology_abcs_2009_2015",
-        "verification_confidence": 0.95,
+        "verification_confidence": 1.0,
         "verification_method": "web_pubmed_fulltext_2026_05_30",
         "last_verified_date": "2026-05-30",
         "caveat": (
