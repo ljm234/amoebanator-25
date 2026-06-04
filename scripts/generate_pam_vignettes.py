@@ -1477,9 +1477,9 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "title": "Clinical features and prognostic factors in adults with bacterial meningitis",
         "anchor_type": "cohort",
         "anchor_subtype": "netherlands_adult_community_bacterial_meningitis_696_episodes",
-        "verification_confidence": 0.95,
+        "verification_confidence": 1.0,
         "verification_method": "web_pubmed_nejm_fulltext_2026_05_30",
-        "last_verified_date": "2026-05-30",
+        "last_verified_date": "2026-06-04",
         "caveat": (
             "Landmark Netherlands prospective cohort of 696 adult community-"
             "acquired bacterial meningitis episodes 1998-2002. Anchor for "
@@ -1490,7 +1490,7 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
             "Vermeulen M), DOI 10.1056/NEJMoa040845, NEJM 2004;351(18):1849-"
             "1859, 696-episode Netherlands community-acquired cohort, overall "
             "mortality 21 percent (pneumococcal 30 percent vs meningococcal 7 "
-            "percent), unfavorable outcome 34 percent."
+            "percent), unfavorable outcome 34 percent. Erratum in: N Engl J Med 2005 Mar 3;352(9):950."
         ),
     },
     "15494903": {
@@ -1510,9 +1510,9 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "title": "Practice guidelines for the management of bacterial meningitis",
         "anchor_type": "guideline",
         "anchor_subtype": "idsa_bacterial_meningitis_guidelines_2004",
-        "verification_confidence": 0.95,
+        "verification_confidence": 1.0,
         "verification_method": "web_pubmed_oxford_fulltext_2026_05_31",
-        "last_verified_date": "2026-05-31",
+        "last_verified_date": "2026-06-04",
         "caveat": (
             "IDSA bacterial meningitis management guidelines (Tunkel 2004). "
             "Canonical reference for empiric therapy decisions, CSF profile "
@@ -1543,9 +1543,9 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "title": "Community-acquired bacterial meningitis in adults in the Netherlands, 2006-14: a prospective cohort study",
         "anchor_type": "cohort",
         "anchor_subtype": "netherlands_pneumococcal_2006_2014_1412_cases",
-        "verification_confidence": 0.95,
+        "verification_confidence": 1.0,
         "verification_method": "web_pubmed_lancet_fulltext_2026_05_31",
-        "last_verified_date": "2026-05-31",
+        "last_verified_date": "2026-06-04",
         "caveat": (
             "Netherlands prospective adult community-acquired bacterial "
             "meningitis cohort 2006-2014, 1412 cases (72% pneumococcal). "
@@ -1581,9 +1581,9 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "title": "Clinical features, outcome, and meningococcal genotype in 258 adults with meningococcal meningitis: a prospective cohort study",
         "anchor_type": "cohort",
         "anchor_subtype": "neisseria_meningitidis_adult_258_cases",
-        "verification_confidence": 0.95,
+        "verification_confidence": 1.0,
         "verification_method": "web_pubmed_lww_fulltext_2026_05_31",
-        "last_verified_date": "2026-05-31",
+        "last_verified_date": "2026-06-04",
         "caveat": (
             "Adult meningococcal meningitis prospective Netherlands cohort of "
             "258 cases (1998-2002), a subset of the 696-episode van de Beek "
