@@ -99,7 +99,6 @@ jobs:
           for f in README.md \
                    docs/SPRINT_LOG.md \
                    docs/USER_ASSIGNMENTS.md \
-                   docs/AMOEBANATOR_MASTER_PROMPT.md \
                    docs/governance_integration.md \
                    docs/model_card.md \
                    docs/decide-ai.md \
