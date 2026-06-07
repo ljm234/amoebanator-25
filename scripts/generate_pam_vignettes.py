@@ -304,8 +304,8 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_type": "case_report",
         "pmc_id": "PMC3204751",
         "verification_confidence": 1.0,
-        "verification_method": "web_pmc_fulltext_2026_06_03",
-        "last_verified_date": "2026-06-03",
+        "verification_method": "web_plus_user_eyeson_2026_06_06",
+        "last_verified_date": "2026-06-06",
         "caveat": "13-case Karachi series; ritual ablution exposure inferred (no aquatic activity).",
     },
     "29016297": {
@@ -322,12 +322,12 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "volume": "97",
         "issue": "5",
         "pages": "1600-1602",
-        "title": "N. fowleri PAM case series, Karachi (PCR diagnosis, 19 of 116 suspected, 2014-2015)",
+        "title": "Case Series of Naegleria fowleri Primary Ameobic Meningoencephalitis from Karachi, Pakistan",
         "anchor_type": "cohort",
         "pmc_id": "PMC5817751",
         "verification_confidence": 1.0,
-        "verification_method": "web_pmc_fulltext_2026_06_03",
-        "last_verified_date": "2026-06-03",
+        "verification_method": "web_plus_user_eyeson_2026_06_06",
+        "last_verified_date": "2026-06-06",
         "caveat": (
             "Quote precisely: 19 PCR-confirmed cases of 116 suspected at AKU "
             "2014-2015, median age 28y, 84% male, 16% female."
@@ -347,12 +347,12 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "volume": "21",
         "issue": "2",
         "pages": "382-384",
-        "title": "Naegleria fowleri meningoencephalitis from hot-spring exposure, Costa Rica",
+        "title": "Fatal meningoencephalitis in child and isolation of Naegleria fowleri from hot springs in Costa Rica",
         "anchor_type": "case_report",
         "pmc_id": "PMC4313663",
         "verification_confidence": 1.0,
-        "verification_method": "web_pmc_fulltext_2026_06_03",
-        "last_verified_date": "2026-06-03",
+        "verification_method": "web_plus_user_eyeson_2026_06_06",
+        "last_verified_date": "2026-06-06",
         "caveat": (
             "Used as LATAM substitute; no Peru-specific PAM PMID exists. "
             "Diacritic on Sandí preserved per 5-pass UTF-8 verification."
@@ -373,12 +373,12 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "volume": "31",
         "issue": "3",
         "pages": "685-688",
-        "title": "Five cases of PAM in Mexicali, Mexico, plus canal-water environmental isolate",
+        "title": "Five cases of primary amebic meningoencephalitis in Mexicali, Mexico: study of the isolates",
         "anchor_type": "case_report",
         "pmc_id": "PMC262842",
         "verification_confidence": 1.0,
-        "verification_method": "web_pmc_fulltext_2026_06_03",
-        "last_verified_date": "2026-06-03",
+        "verification_method": "web_plus_user_eyeson_2026_06_06",
+        "last_verified_date": "2026-06-06",
         "caveat": (
             "First Mexican human N. fowleri isolations. "
             "Fernandez-Quintanilla unaccented per original 1993 JCM "
@@ -441,22 +441,27 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
     "40009134": {
         "pmid": "40009134",
         "doi": "10.1007/s12098-025-05458-1",
-        "authors_short": "Rauf A, Rahiman FA, Poornima MV, Sudarsana J, Sehgal R, Ummer K",
-        "authors_full": "Rauf A, Rahiman FA, Poornima MV, Sudarsana J, Sehgal R, Ummer K",
+        "authors_short": "Rauf A et al.",
+        "authors_full": [
+            "Rauf A", "Rahiman FA", "Poornima MV",
+            "Sudarsana J", "Sehgal R", "Ummer K",
+        ],
         "journal": "Indian J Pediatr",
         "journal_short_code": "IJP",
         "year": 2025,
         "volume": "92",
         "issue": "4",
         "pages": "446",
-        "title": "Pediatric PAM survivor in Kerala on early miltefosine plus adjuncts",
+        "title": "Early Diagnosis and Successful Treatment of a Child with Confirmed Primary Amebic Meningoencephalitis",
         "anchor_type": "case_report",
+        "pmc_id": None,
         "verification_confidence": 1.0,
-        "verification_method": "web_springer_fulltext_2026_06_03",
-        "last_verified_date": "2026-06-03",
+        "verification_method": "user_eyeson_pubmed_2026_06_06",
+        "last_verified_date": "2026-06-06",
         "caveat": (
-            "Author list verified via PubMed UI Pass 5: 6 authors, "
-            "Sehgal R was added in Pass 5."
+            "First confirmed PAM survivor reported from India (14yo, Kerala); "
+            "early miltefosine plus adjuncts. Letter, no PMC mirror. "
+            "Author list verified via PubMed: 6 authors."
         ),
     },
     # ------------------------------------------------------------------------
@@ -466,7 +471,7 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
     "8923775": {
         "pmid": "8923775",
         "doi": None,
-        "authors_short": "DeNapoli et al.",
+        "authors_short": "DeNapoli TS et al.",
         "authors_full": ["DeNapoli TS", "Rutman JY", "Robinson JR", "Rhodes MM"],
         "journal": "Tex Med",
         "journal_short_code": "TexMed",
@@ -482,8 +487,8 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_subtype": "case_report_pediatric_river",
         "pmc_id": None,
         "verification_confidence": 1.0,
-        "verification_method": "web_pubmed_2026_06_03",
-        "last_verified_date": "2026-06-03",
+        "verification_method": "web_pubmed_plus_user_eyeson_2026_06_06",
+        "last_verified_date": "2026-06-06",
         "caveat": (
             "Author attribution corrected from prior misrouting. NOT "
             "Lares-Villa (PMID 8458963 is the correct Lares-Villa Mexicali "
