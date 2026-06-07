@@ -517,7 +517,8 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_subtype": "review_us_surveillance",
         "pmc_id": None,
         "verification_confidence": 1.0,
-        "last_verified_date": "2026-06-06",
+        "verification_method": "user_eyeson_pubmed_fulltext_2026_06_07",
+        "last_verified_date": "2026-06-07",
         "caveat": (
             "Review article (US PAM 1937-2013, approximately 140-145 cases "
             "over 76 years). PMC ID NOT confirmable - cite PMID + DOI only. "
@@ -548,7 +549,8 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_subtype": "review_us_geographic_range",
         "pmc_id": "PMC7774533",
         "verification_confidence": 1.0,
-        "last_verified_date": "2026-06-06",
+        "verification_method": "user_eyeson_pubmed_pmc_2026_06_07",
+        "last_verified_date": "2026-06-07",
         "caveat": (
             "First author corrected from Cope to Gharpure. Documents "
             "northward range expansion 1978-2018."
@@ -580,7 +582,8 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_subtype": "case_report_treated_tap_water",
         "pmc_id": "PMC4627687",
         "verification_confidence": 1.0,
-        "last_verified_date": "2026-06-06",
+        "verification_method": "user_eyeson_pubmed_pmc_2026_06_07",
+        "last_verified_date": "2026-06-07",
         "caveat": (
             "First reported PAM case associated with culturable N. fowleri "
             "in treated US tap water (Louisiana 2013). PMC ID confirmed "
@@ -607,7 +610,8 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_subtype": "review_therapeutic_recent",
         "pmc_id": None,
         "verification_confidence": 1.0,
-        "last_verified_date": "2026-06-06",
+        "verification_method": "user_eyeson_pubmed_fulltext_2026_06_07",
+        "last_verified_date": "2026-06-07",
         "caveat": (
             "Most recent (2025) PAM therapeutic review. Open access at "
             "publisher (Taylor and Francis); no PMC mirror, cite PMID + DOI."
@@ -634,7 +638,8 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_subtype": "review_us_surveillance_foundational",
         "pmc_id": None,
         "verification_confidence": 1.0,
-        "last_verified_date": "2026-06-06",
+        "verification_method": "user_eyeson_pubmed_fulltext_2026_06_07",
+        "last_verified_date": "2026-06-07",
         "caveat": (
             "Foundational US PAM surveillance covering 111 cases 1962-2008."
         ),
@@ -662,7 +667,8 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_subtype": "review_global",
         "pmc_id": "PMC8739754",
         "verification_confidence": 1.0,
-        "last_verified_date": "2026-06-06",
+        "verification_method": "user_eyeson_pubmed_pmc_2026_06_07",
+        "last_verified_date": "2026-06-07",
         "caveat": (
             "Global PAM review, 381 cases 1937-2018, US 41% / Pakistan 11% "
             "/ Mexico 9%. Companion to Capewell 2015 (US-only)."
