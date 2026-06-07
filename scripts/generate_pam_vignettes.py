@@ -2446,10 +2446,11 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
     "31758593": {
         "pmid": "31758593",
         "doi": "10.1111/neup.12617",
-        "authors_short": "Cabello-Vilchez AM et al.",
+        "authors_short": "Cabello-Vílchez AM et al.",
         "authors_full": [
-            "Cabello-Vilchez AM", "Chura-Araujo MA",
-            "Anicama Lima WE",
+            "Cabello-Vílchez AM", "Chura-Araujo MA", "Anicama Lima WE",
+            "Vela C", "Asencio AY", "García H", "Garaycochea MDC",
+            "Náquira C", "Rojas E", "Martínez DY",
         ],
         "journal": "Neuropathology",
         "journal_short_code": "Neuropathology",
@@ -2457,23 +2458,21 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "volume": "40",
         "issue": "2",
         "pages": "180-184",
-        "title": "Fatal granulomatous amoebic encephalitis due to free-living amoebae in two boys in two different hospitals in Lima, Peru",
+        "title": "Fatal granulomatous amoebic encephalitis due to free-living amoebae in two boys in two different hospitals in Lima, Perú",
         "anchor_type": "case_report",
         "anchor_subtype": "cabello_vilchez_lima_peru_pediatric_gae_fatal_2cases",
-        "verification_confidence": 0.85,
-        "verification_method": "web_pubmed_ui_v5_2026_05_11",
-        "last_verified_date": "2026-05-11",
+        "pmc_id": None,
+        "verification_confidence": 1.00,
+        "last_verified_date": "2026-06-06",
+        "verification_method": "user_pubmed_ui_direct_fetch_2026-06-06",
         "caveat": (
-            "Subphase 1.4 commit 5.4.0 anchor for Class 6 GAE. Master "
-            "plan referenced 'Cabello-Vilchez 2023'; actual canonical "
-            "Peru clinical-phenotype paper is Cabello-Vilchez et al. "
-            "2020 Neuropathology with two fatal pediatric Lima cases. "
-            "Diacritic Cabello-Vilchez (i with acute accent on i in "
-            "original) rendered as plain ASCII Cabello-Vilchez for "
-            "safety. Anchor for Peru pediatric GAE stratum. "
-            "Author list captured per PubMed (3 named; et al. for "
-            "additional authors if any). verification_confidence=0.85 "
-            "pre-direct-fetch."
+            "Subphase 1.4 anchor for Class 6 GAE. Master plan "
+            "referenced 'Cabello-Vilchez 2023'; actual canonical Peru "
+            "clinical-phenotype paper is Cabello-Vílchez et al. 2020 "
+            "Neuropathology, two fatal pediatric Lima cases, GAE "
+            "confirmed on brain biopsy. Full 10-author roster per "
+            "PubMed with diacritics preserved verbatim. Two-party "
+            "direct fetch (web + PubMed UI) 2026-06-06; confidence 1.00."
         ),
     },
     "17428307": {
@@ -2483,8 +2482,8 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "authors_full": [
             "Visvesvara GS", "Moura H", "Schuster FL",
         ],
-        "journal": "FEMS Immunol Med Microbiol",
-        "journal_short_code": "FEMS-Immunol-Med-Microbiol",
+        "journal": "FEMS Immunology & Medical Microbiology",
+        "journal_short_code": "FEMS Immunol Med Microbiol",
         "year": 2007,
         "volume": "50",
         "issue": "1",
@@ -2492,20 +2491,21 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "title": "Pathogenic and opportunistic free-living amoebae: Acanthamoeba spp., Balamuthia mandrillaris, Naegleria fowleri, and Sappinia diploidea",
         "anchor_type": "review",
         "anchor_subtype": "visvesvara_2007_free_living_amoebae_review",
-        "verification_confidence": 0.85,
-        "verification_method": "web_pubmed_ui_v5_2026_05_11",
-        "last_verified_date": "2026-05-11",
+        "pmc_id": None,
+        "verification_confidence": 1.00,
+        "last_verified_date": "2026-06-06",
+        "verification_method": "user_pubmed_ui_direct_fetch_2026-06-06",
         "caveat": (
-            "Subphase 1.4 commit 5.4.0 anchor for Class 6 GAE. "
-            "Canonical Visvesvara 2007 FEMS Immunology review of free-"
-            "living amoebae (Acanthamoeba spp., B. mandrillaris, N. "
-            "fowleri, S. diploidea); 26-page comprehensive clinical and "
-            "epidemiologic phenotype review. Anchor for Acanthamoeba "
-            "GAE majority stratum. Visvesvara GS is a co-author on "
-            "multiple existing Subphase 1.1/1.2 PAM registry entries "
-            "(Naegleria role); this anchor is the Acanthamoeba/Balamuthia"
-            " role distinct from those. verification_confidence=0.85 "
-            "pre-direct-fetch."
+            "Subphase 1.4 anchor for Class 6 GAE. Canonical Visvesvara "
+            "2007 FEMS Immunology & Medical Microbiology review of "
+            "free-living amoebae (Acanthamoeba spp., B. mandrillaris, "
+            "N. fowleri, S. diploidea); 26-page clinical and "
+            "epidemiologic phenotype review, pp. 1-26. Anchor for "
+            "Acanthamoeba GAE majority stratum. Visvesvara GS is a "
+            "co-author on multiple existing PAM registry entries "
+            "(Naegleria role); this anchor is the Acanthamoeba/"
+            "Balamuthia role distinct from those. Two-party direct "
+            "fetch (web + PubMed UI) 2026-06-06; confidence 1.00."
         ),
     },
     "30239654": {
