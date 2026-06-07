@@ -7,7 +7,7 @@ tests assert global invariants (master prompt sanity, HSV-1 imaging
 mandate, dengue platelets mandate, pre-adjudication hold_for_revision,
 PMID_REGISTRY integrity post-errata-fix).
 
-Reference: docs/SUBPHASE_1_3_PILOT_VALIDATION_REPORT.md and v3 prompt
+Reference: docs/archive/subphase_1_3/SUBPHASE_1_3_PILOT_VALIDATION_REPORT.md and v3 prompt
 sections 6, 7, 11.
 """
 from __future__ import annotations
