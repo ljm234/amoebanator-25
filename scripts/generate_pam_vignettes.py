@@ -75,8 +75,8 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_type": "surveillance",
         "pmc_id": "PMC11949314",
         "verification_confidence": 1.0,
-        "verification_method": "web_pmc_fulltext_2026_06_03",
-        "last_verified_date": "2026-06-03",
+        "verification_method": "web_pmc_user_eyeson_2026_06_07",
+        "last_verified_date": "2026-06-07",
         "caveat": "",
     },
     "37470480": {
@@ -94,9 +94,9 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_type": "case_report",
         "pmc_id": "PMC10358179",
         "verification_confidence": 1.0,
-        "verification_method": "web_pmc_fulltext_2026_06_03",
-        "last_verified_date": "2026-06-03",
-        "caveat": "Full text required for full demographics; abstract is brief.",
+        "verification_method": "user_eyeson_pubmed_pmc_2026_06_07",
+        "last_verified_date": "2026-06-07",
+        "caveat": "No abstract on PubMed; full text reviewed for full demographics.",
     },
     "22238170": {
         "pmid": "22238170",
@@ -1626,8 +1626,8 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_type": "surveillance",
         "anchor_subtype": "us_meningococcal_epidemiology_nndss_abcs_1996_2015",
         "verification_confidence": 1.0,
-        "verification_method": "web_pubmed_oxford_fulltext_2026_05_30",
-        "last_verified_date": "2026-05-30",
+        "verification_method": "web_pubmed_oxford_fulltext_user_eyeson_2026_06_07",
+        "last_verified_date": "2026-06-07",
         "caveat": (
             "US meningococcal disease epidemiology. NNDSS 2006-2015 "
             "(7924 cases, overall CFR 14.9 percent) plus ABCs 1996-2015. "
@@ -1662,8 +1662,8 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_type": "case_report",
         "anchor_subtype": "serogroup_b_meningococcal_military_trainee_congregate",
         "verification_confidence": 1.0,
-        "verification_method": "web_pubmed_pmc_fulltext_2026_05_30",
-        "last_verified_date": "2026-05-30",
+        "verification_method": "user_eyeson_pubmed_pmc_2026_06_07",
+        "last_verified_date": "2026-06-07",
         "caveat": (
             "US Air Force special-warfare trainee with serogroup B "
             "meningococcal disease in a congregate setting (shared dive "
@@ -1680,7 +1680,7 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "doi": "10.7189/jogh.12.04014",
         "authors_short": "Park JJ et al.",
         "authors_full": [
-            "Park JJ", "Narayanan S", "Tiefenbach J", "Luksic I",
+            "Park JJ", "Narayanan S", "Tiefenbach J", "Lukšić I",
             "Ale BM", "Adeloye D", "Rudan I",
         ],
         "journal": "J Glob Health",
@@ -1693,8 +1693,8 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_type": "meta_analysis",
         "anchor_subtype": "global_regional_hib_meningitis_burden_children_meta_analysis",
         "verification_confidence": 1.0,
-        "verification_method": "web_pubmed_pmc_fulltext_2026_05_30",
-        "last_verified_date": "2026-05-30",
+        "verification_method": "user_eyeson_pubmed_pmc_2026_06_07",
+        "last_verified_date": "2026-06-07",
         "caveat": (
             "Systematic review and meta-analysis of Hib meningitis in "
             "children under 5 years, CSF-culture-confirmed, 2010-2020. "
@@ -1729,8 +1729,8 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_type": "surveillance",
         "anchor_subtype": "us_invasive_h_influenzae_epidemiology_abcs_2009_2015",
         "verification_confidence": 1.0,
-        "verification_method": "web_pubmed_fulltext_2026_05_30",
-        "last_verified_date": "2026-05-30",
+        "verification_method": "user_eyeson_pubmed_pmc_2026_06_07",
+        "last_verified_date": "2026-06-07",
         "caveat": (
             "US invasive H. influenzae surveillance through ABCs, "
             "2009-2015. Mean annual incidence 1.70 per 100000; highest in "
