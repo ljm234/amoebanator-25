@@ -117,8 +117,8 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "title": "Fatal Naegleria fowleri infection acquired in Minnesota: possible expanded range of a deadly thermophilic organism",
         "anchor_type": "case_report",
         "verification_confidence": 1.0,
-        "verification_method": "web_pubmed_abstract_2026_06_03",
-        "last_verified_date": "2026-06-03",
+        "verification_method": "user_eyeson_pubmed_2026_06_07",
+        "last_verified_date": "2026-06-07",
         "caveat": "",
     },
     "34307045": {
@@ -2474,8 +2474,8 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_subtype": "cabello_vilchez_lima_peru_pediatric_gae_fatal_2cases",
         "pmc_id": None,
         "verification_confidence": 1.00,
-        "last_verified_date": "2026-06-06",
-        "verification_method": "user_pubmed_ui_direct_fetch_2026-06-06",
+        "last_verified_date": "2026-06-07",
+        "verification_method": "user_eyeson_pubmed_2026_06_07",
         "caveat": (
             "Subphase 1.4 anchor for Class 6 GAE. Master plan "
             "referenced 'Cabello-Vilchez 2023'; actual canonical Peru "
@@ -2504,8 +2504,8 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_subtype": "visvesvara_2007_free_living_amoebae_review",
         "pmc_id": None,
         "verification_confidence": 1.00,
-        "last_verified_date": "2026-06-06",
-        "verification_method": "user_pubmed_ui_direct_fetch_2026-06-06",
+        "last_verified_date": "2026-06-07",
+        "verification_method": "user_eyeson_pubmed_2026_06_07",
         "caveat": (
             "Subphase 1.4 anchor for Class 6 GAE. Canonical Visvesvara "
             "2007 FEMS Immunology & Medical Microbiology review of "
