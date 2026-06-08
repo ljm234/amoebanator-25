@@ -916,8 +916,8 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_subtype": "asia_vietnam_cryptic_pediatric_fatal_prolonged_survival",
         "pmc_id": "PMC11719733",
         "verification_confidence": 1.00,
-        "last_verified_date": "2026-05-05",
-        "verification_method": "research_mode_4pass_plus_user_mdpi_fulltext_2026-05-05",
+        "last_verified_date": "2026-06-07",
+        "verification_method": "user_eyeson_pubmed_pmc_2026_06_07",
         "caveat": (
             "10mo F Mekong Delta Vietnam, FATAL: 14 days from disease "
             "onset, 11 days hospitalization (Section 2 Case "
@@ -1384,8 +1384,8 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_subtype": "review_systematic_global_98patient_cohort",
         "pmc_id": "PMC11765897",
         "verification_confidence": 1.00,
-        "last_verified_date": "2026-05-05",
-        "verification_method": "user_pubmed_ui_direct_fetch_plus_user_mdpi_fulltext_2026-05-05",
+        "last_verified_date": "2026-06-07",
+        "verification_method": "user_eyeson_pubmed_pmc_2026_06_07",
         "caveat": (
             "7-author Romanian systematic review (Iasi, Univ Med & Pharmacy "
             "Grigore T. Popa) of 52 PAM case-report articles via Web of Science "
@@ -1489,8 +1489,8 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_type": "cohort",
         "anchor_subtype": "netherlands_adult_community_bacterial_meningitis_696_episodes",
         "verification_confidence": 1.0,
-        "verification_method": "web_pubmed_nejm_fulltext_2026_05_30",
-        "last_verified_date": "2026-06-04",
+        "verification_method": "user_eyeson_pubmed_fulltext_2026_06_07",
+        "last_verified_date": "2026-06-07",
         "caveat": (
             "Landmark Netherlands prospective cohort of 696 adult community-"
             "acquired bacterial meningitis episodes 1998-2002. Anchor for "
@@ -1522,8 +1522,8 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_type": "guideline",
         "anchor_subtype": "idsa_bacterial_meningitis_guidelines_2004",
         "verification_confidence": 1.0,
-        "verification_method": "web_pubmed_oxford_fulltext_2026_05_31",
-        "last_verified_date": "2026-06-04",
+        "verification_method": "user_eyeson_pubmed_fulltext_2026_06_07",
+        "last_verified_date": "2026-06-07",
         "caveat": (
             "IDSA bacterial meningitis management guidelines (Tunkel 2004). "
             "Canonical reference for empiric therapy decisions, CSF profile "
@@ -1555,8 +1555,8 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_type": "cohort",
         "anchor_subtype": "netherlands_pneumococcal_2006_2014_1412_cases",
         "verification_confidence": 1.0,
-        "verification_method": "web_pubmed_lancet_fulltext_2026_05_31",
-        "last_verified_date": "2026-06-04",
+        "verification_method": "user_eyeson_pubmed_fulltext_2026_06_07",
+        "last_verified_date": "2026-06-07",
         "caveat": (
             "Netherlands prospective adult community-acquired bacterial "
             "meningitis cohort 2006-2014, 1412 cases (72% pneumococcal). "
@@ -1593,8 +1593,8 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_type": "cohort",
         "anchor_subtype": "neisseria_meningitidis_adult_258_cases",
         "verification_confidence": 1.0,
-        "verification_method": "web_pubmed_lww_fulltext_2026_05_31",
-        "last_verified_date": "2026-06-04",
+        "verification_method": "user_eyeson_pubmed_fulltext_2026_06_07",
+        "last_verified_date": "2026-06-07",
         "caveat": (
             "Adult meningococcal meningitis prospective Netherlands cohort of "
             "258 cases (1998-2002), a subset of the 696-episode van de Beek "
