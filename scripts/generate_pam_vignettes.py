@@ -178,8 +178,8 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "erratum_doi": "10.4269/ajtmh.23-0211cor",
         "erratum_pmc": "PMC11965766",
         "verification_confidence": 1.0,
-        "verification_method": "web_pmc_fulltext_2026_06_03",
-        "last_verified_date": "2026-06-03",
+        "verification_method": "user_eyeson_pubmed_pmc_2026_06_07",
+        "last_verified_date": "2026-06-07",
         "caveat": (
             "Pair with 2025 erratum DOI 10.4269/ajtmh.23-0211cor "
             "(AJTMH 112(4):942, PMC11965766). Erratum has no separate PMID; "
@@ -209,8 +209,8 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "pmc_id": "PMC11307261",
         "nihmsid": "NIHMS2012368",
         "verification_confidence": 1.0,
-        "verification_method": "web_pmc_fulltext_2026_06_03",
-        "last_verified_date": "2026-06-03",
+        "verification_method": "user_eyeson_pubmed_pmc_2026_06_07",
+        "last_verified_date": "2026-06-07",
         "caveat": (
             "PMC11307261 is an NIHMS author-manuscript deposit posted "
             "retroactively (2024) for the 2012 paper. Publisher of record "
@@ -236,8 +236,8 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_type": "surveillance",
         "pmc_id": "PMC12121732",
         "verification_confidence": 1.0,
-        "verification_method": "web_pmc_fulltext_2026_06_03",
-        "last_verified_date": "2026-06-03",
+        "verification_method": "user_eyeson_pubmed_pmc_2026_06_07",
+        "last_verified_date": "2026-06-07",
         "caveat": (
             "5-pass verified 14 authors (NOT 13). Kunz J added as author "
             "#14 (corresponding author). Citation: MMWR 74(19):334-335."
@@ -261,8 +261,8 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_type": "surveillance",
         "pmc_id": "PMC6753969",
         "verification_confidence": 1.0,
-        "verification_method": "web_pmc_fulltext_2026_06_03",
-        "last_verified_date": "2026-06-03",
+        "verification_method": "user_eyeson_pubmed_pmc_2026_06_07",
+        "last_verified_date": "2026-06-07",
         "caveat": "",
     },
     "27123690": {
@@ -282,8 +282,8 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "title": "Notes from the Field: Primary Amebic Meningoencephalitis Associated with Exposure to Swimming Pool Water Supplied by an Overland Pipe - Inyo County, California, 2015",
         "anchor_type": "surveillance",
         "verification_confidence": 1.0,
-        "verification_method": "web_cdc_fulltext_2026_06_03",
-        "last_verified_date": "2026-06-03",
+        "verification_method": "user_eyeson_pubmed_fulltext_2026_06_07",
+        "last_verified_date": "2026-06-07",
         "caveat": "",
     },
     "21291600": {
