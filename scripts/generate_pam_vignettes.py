@@ -1632,7 +1632,7 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_type": "surveillance",
         "anchor_subtype": "us_meningococcal_epidemiology_nndss_abcs_1996_2015",
         "verification_confidence": 1.0,
-        "verification_method": "web_pubmed_oxford_fulltext_user_eyeson_2026_06_07",
+        "verification_method": "user_eyeson_pubmed_fulltext_2026_06_07",
         "last_verified_date": "2026-06-07",
         "caveat": (
             "US meningococcal disease epidemiology. NNDSS 2006-2015 "
