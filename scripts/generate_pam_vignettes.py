@@ -75,7 +75,7 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_type": "surveillance",
         "pmc_id": "PMC11949314",
         "verification_confidence": 1.0,
-        "verification_method": "web_pmc_user_eyeson_2026_06_07",
+        "verification_method": "user_eyeson_pubmed_pmc_2026_06_07",
         "last_verified_date": "2026-06-07",
         "caveat": "",
     },
@@ -304,8 +304,8 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_type": "case_report",
         "pmc_id": "PMC3204751",
         "verification_confidence": 1.0,
-        "verification_method": "web_plus_user_eyeson_2026_06_06",
-        "last_verified_date": "2026-06-06",
+        "verification_method": "user_eyeson_pubmed_pmc_2026_06_07",
+        "last_verified_date": "2026-06-07",
         "caveat": "13-case Karachi series; ritual ablution exposure inferred (no aquatic activity).",
     },
     "29016297": {
@@ -326,8 +326,8 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_type": "cohort",
         "pmc_id": "PMC5817751",
         "verification_confidence": 1.0,
-        "verification_method": "web_plus_user_eyeson_2026_06_06",
-        "last_verified_date": "2026-06-06",
+        "verification_method": "user_eyeson_pubmed_pmc_2026_06_07",
+        "last_verified_date": "2026-06-07",
         "caveat": (
             "Quote precisely: 19 PCR-confirmed cases of 116 suspected at AKU "
             "2014-2015, median age 28y, 84% male, 16% female."
@@ -351,8 +351,8 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_type": "case_report",
         "pmc_id": "PMC4313663",
         "verification_confidence": 1.0,
-        "verification_method": "web_plus_user_eyeson_2026_06_06",
-        "last_verified_date": "2026-06-06",
+        "verification_method": "user_eyeson_pubmed_pmc_2026_06_07",
+        "last_verified_date": "2026-06-07",
         "caveat": (
             "Used as LATAM substitute; no Peru-specific PAM PMID exists. "
             "Diacritic on Sandí preserved per 5-pass UTF-8 verification."
@@ -377,8 +377,8 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_type": "case_report",
         "pmc_id": "PMC262842",
         "verification_confidence": 1.0,
-        "verification_method": "web_plus_user_eyeson_2026_06_06",
-        "last_verified_date": "2026-06-06",
+        "verification_method": "user_eyeson_pubmed_pmc_2026_06_07",
+        "last_verified_date": "2026-06-07",
         "caveat": (
             "First Mexican human N. fowleri isolations. "
             "Fernandez-Quintanilla unaccented per original 1993 JCM "
@@ -487,8 +487,8 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_subtype": "case_report_pediatric_river",
         "pmc_id": None,
         "verification_confidence": 1.0,
-        "verification_method": "web_pubmed_plus_user_eyeson_2026_06_06",
-        "last_verified_date": "2026-06-06",
+        "verification_method": "user_eyeson_pubmed_2026_06_07",
+        "last_verified_date": "2026-06-07",
         "caveat": (
             "Author attribution corrected from prior misrouting. NOT "
             "Lares-Villa (PMID 8458963 is the correct Lares-Villa Mexicali "
