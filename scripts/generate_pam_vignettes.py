@@ -425,8 +425,8 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_subtype": "case_report_adult_SURVIVOR_pakistan_first_pakistani_survivor",
         "pmc_id": "PMC10977850",
         "verification_confidence": 1.00,
-        "last_verified_date": "2026-05-05",
-        "verification_method": "research_mode_4pass_revalidated_2026-05-05",
+        "last_verified_date": "2026-06-09",
+        "verification_method": "user_eyeson_pubmed_pmc_2026_06_09",
         "caveat": (
             "22yo M Pakistan 2023, 8th confirmed N. fowleri SURVIVOR "
             "globally (1971-2023). PNS Shifa Hospital Karachi. Pairs "
@@ -809,8 +809,8 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_subtype": "case_report_pediatric_fatal_misdiagnosis_as_bacterial_meningitis",
         "pmc_id": "PMC9033202",
         "verification_confidence": 1.00,
-        "last_verified_date": "2026-05-05",
-        "verification_method": "research_mode_4pass_revalidated_2026-05-05",
+        "last_verified_date": "2026-06-09",
+        "verification_method": "user_eyeson_pubmed_pmc_2026_06_09",
         "caveat": (
             "Pediatric case + literature review. Strong "
             "physician-adjudicator anchor for misdiagnosis-as-bacterial-"
@@ -989,16 +989,15 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_subtype": "asia_taiwan_indoor_surfing_recreational_fatal",
         "pmc_id": "PMC11346987",
         "verification_confidence": 1.00,
-        "last_verified_date": "2026-05-05",
-        "verification_method": "research_mode_4pass",
+        "last_verified_date": "2026-06-09",
+        "verification_method": "user_eyeson_pubmed_pmc_2026_06_09",
         "caveat": (
             "30yo F northern Taiwan, indoor surfing center July 2023, "
-            "symptom onset 26 Jul 2023, died 1 Aug 2023; first Taiwan "
-            "PAM in 12 years (since Su et al. 2013 PMID 23710088). 7 "
-            "authors. Author 7 'Su CP' rendered Chia-ping Su (lowercase "
-            "p) in publisher byline; PubMed normalizes to Su CP. "
-            "Authors: Hsin-Yi Wei, Yi-Wen Lai, Shu-Ying Li, Yen-I Lee, "
-            "Meng-Kai Hu, Da-Der Ji, Chia-ping Su."
+            "symptom onset 5 days post-visit, died 3 days after "
+            "admission. 7 authors. Author 7 'Su CP' rendered Chia-ping "
+            "Su (lowercase p) in publisher byline; PubMed normalizes to "
+            "Su CP. Authors: Hsin-Yi Wei, Yi-Wen Lai, Shu-Ying Li, Yen-I "
+            "Lee, Meng-Kai Hu, Da-Der Ji, Chia-ping Su."
         ),
     },
     "37727924": {
@@ -1014,23 +1013,24 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "volume": "64",
         "issue": "10",
         "pages": "641-645",
-        "title": "Fatal Primary Amebic Meningoencephalitis Due to Naegleria fowleri: The First Imported Case in Korea",
+        "title": "Fatal Primary Amebic Meningoencephalitis due to Naegleria fowleri: The First Imported Case in Korea",
         "anchor_type": "case_report",
         "anchor_subtype": "asia_korea_imported_thailand_travel_fatal",
         "pmc_id": "PMC10522881",
         "verification_confidence": 1.00,
-        "last_verified_date": "2026-05-05",
-        "verification_method": "research_mode_4pass",
+        "last_verified_date": "2026-06-09",
+        "verification_method": "user_eyeson_pubmed_pmc_2026_06_09",
         "caveat": (
-            "Korean man in 50s, 4-month Thailand stay, returned Korea "
-            "10 Dec 2022, symptoms began evening of arrival, admitted "
-            "11 Dec, died 21 Dec 2022 (13d post-onset); first imported "
-            "PAM case in Korea; KDCA-confirmed 99.6% genetic match to "
-            "overseas PAM strain. atypical_type=travel_imported_lake. "
-            "6 authors with hyphenated Korean given names (Kyung-Wook, "
-            "Jong-Hwan, Jung-Hyun, Sung-Hee, Jung-Won, In-Gyu). "
-            "Authors: Kyung-Wook Hong, Jong Hwan Jeong, Jung-Hyun "
-            "Byun, Sung-Hee Hong, Jung-Won Ju, In-Gyu Bae."
+            "Korean man in 50s, 4-month Thailand stay, returned Korea 10 "
+            "Dec 2022 (1d before presentation), 3-day symptom history at "
+            "presentation, admitted 11 Dec, died 13d post-onset; first "
+            "imported PAM case in Korea; KDCA-confirmed 99.6% genetic "
+            "match to overseas PAM strain. "
+            "atypical_type=travel_imported. 6 authors, Korean given "
+            "names (Kyung-Wook, Jong Hwan, Jung-Hyun, Sung-Hee, "
+            "Jung-Won, In-Gyu). Authors: Kyung-Wook Hong, Jong Hwan "
+            "Jeong, Jung-Hyun Byun, Sung-Hee Hong, Jung-Won Ju, In-Gyu "
+            "Bae."
         ),
     },
     "15504272": {
@@ -1104,12 +1104,12 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_subtype": "south_asia_bangladesh_first_nasal_rinsing_groundwater_fatal",
         "pmc_id": None,
         "verification_confidence": 1.00,
-        "last_verified_date": "2026-05-05",
-        "verification_method": "research_mode_4pass",
+        "last_verified_date": "2026-06-09",
+        "verification_method": "user_eyeson_pubmed_fulltext_2026_06_09",
         "caveat": (
             "15yo M Bangladesh; daily nasal rinsing with untreated "
             "groundwater + bathing in untreated groundwater/river water; "
-            "FATAL <6 days post-onset; first recognized Bangladesh PAM "
+            "FATAL within 6 days post-onset; first recognized Bangladesh PAM "
             "case. 10 authors ending Cope JR, Ali IKM. No PMC mirror "
             "(Springer paywall, expected). Authors: Hossain M.S. Sazzad, "
             "Stephen P. Luby, James Sejvar, Mahmudur Rahman, Emily S. "
@@ -1122,8 +1122,8 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "doi": "10.18502/ijpa.v17i1.9015",
         "authors_short": "Aurongzeb M et al.",
         "authors_full": [
-            "Aurongzeb M", "Rashid Y", "Naqvi SHA", "Khatoon A",
-            "Haq SA", "Azim MK", "Kaleem I", "Bashir S",
+            "Aurongzeb M", "Rashid Y", "Ahmed Naqvi SH", "Khatoon A",
+            "Abdul Haq S", "Azim MK", "Kaleem I", "Bashir S",
         ],
         "journal": "Iranian Journal of Parasitology",
         "journal_short_code": "Iran J Parasitol",
@@ -1136,8 +1136,8 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_subtype": "south_asia_pakistan_karachi_ablution_genotype2_first",
         "pmc_id": "PMC9375727",
         "verification_confidence": 1.00,
-        "last_verified_date": "2026-05-05",
-        "verification_method": "research_mode_4pass",
+        "last_verified_date": "2026-06-09",
+        "verification_method": "user_eyeson_pubmed_pmc_2026_06_09",
         "caveat": (
             "28yo Karachi Pakistan May 2019 (Imam Zain-Ul-Abdin "
             "Hospital); ablution exposure; FIRST Pakistani N. fowleri "
