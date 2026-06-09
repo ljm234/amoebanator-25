@@ -430,7 +430,7 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "caveat": (
             "22yo M Pakistan 2023, 8th confirmed N. fowleri SURVIVOR "
             "globally (1971-2023). PNS Shifa Hospital Karachi. Pairs "
-            "naturally with Linam 2015 Kali Hardig (PMID 25667249) for "
+            "naturally with Linam 2015 (PMID 25667249) for "
             "outcome-contrast adjudication. Co-author Ghanchi NK also "
             "first author of PMID 27648572 (2016 EID Pakistan public "
             "water supply). Authors: Ahmed Mujadid Khan Burki, Luqman "
@@ -2926,7 +2926,7 @@ DAY1_DISTRIBUTION: list[dict[str, Any]] = [
 #   - cryptic exposure: v21 Phung 2025 (PMID 39795618) Mekong Delta
 #   - atypical:        v23 Lin 2024 (PMID 39606118) Sichuan myocarditis
 #   - travel-imported: v24 Hong 2023 (PMID 37727924) Korea-from-Thailand
-#   - Linam 3-chain:   v25 Linam 2015 (PMID 25667249) Kali Hardig survivor
+#   - Linam 3-chain:   v25 Linam 2015 (PMID 25667249) survivor
 #                      (companion PMIDs 28013053 + 29241583 are commentary
 #                      anchors, not anchored to specific vignettes)
 #
@@ -10229,7 +10229,7 @@ def _build_vignette_025() -> dict[str, Any]:
     """Vignette 25: 12-year-old female, Arkansas, late stage, SURVIVED.
 
     Anchored to Linam WM et al. Pediatrics 2015;135(3):e744-e748
-    (PMID 25667249, PMC4634363). Kali Hardig case: outdoor water park
+    (PMID 25667249, PMC4634363). Outdoor water park
     exposure 7 days pre-onset. Reference patient for miltefosine +
     therapeutic hypothermia + AmB IV/IT + 26-day antimicrobial regimen.
     Survived with full neurological recovery at 6 months.
@@ -10390,7 +10390,7 @@ def _build_vignette_025() -> dict[str, Any]:
                     "citation_pmid_or_doi": "PMID:25667249",
                 },
                 {
-                    "test_name": "Environmental sampling (Willow Springs Water Park lake water)",
+                    "test_name": "Environmental sampling (waterpark water)",
                     "result": "Naegleria fowleri detected in waterpark water on environmental sampling.",
                     "sensitivity_pct": None,
                     "specificity_pct": None,
