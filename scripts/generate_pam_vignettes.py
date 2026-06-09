@@ -1166,8 +1166,8 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_subtype": "americas_usvi_caribbean_ablution_nasal_rinsing_tap_water_fatal",
         "pmc_id": "PMC4585351",
         "verification_confidence": 1.00,
-        "last_verified_date": "2026-05-05",
-        "verification_method": "research_mode_4pass",
+        "last_verified_date": "2026-06-08",
+        "verification_method": "user_eyeson_pubmed_pmc_2026_06_08",
         "caveat": (
             "47yo M U.S. Virgin Islands St. Thomas; only freshwater "
             "exposure was tap water for daily household activities + "
@@ -1178,7 +1178,7 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
             "household water sources. Pre-DOI MMWR Notes from Field, "
             "no DOI expected. PubMed byline: corporate single author "
             "'Centers for Disease Control and Prevention (CDC)'. "
-            "Longer companion report at PMC4585351. Pairs with Anjum "
+            "PMC mirror (named-author version) at PMC4585351. Pairs with Anjum "
             "2021 N Florida (PMID 34307045) for tap-water transmission "
             "cluster adjudication."
         ),
@@ -1234,10 +1234,10 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_subtype": "americas_usa_arkansas_third_north_american_survivor_miltefosine_hypothermia",
         "pmc_id": "PMC4634363",
         "verification_confidence": 1.00,
-        "last_verified_date": "2026-05-05",
-        "verification_method": "research_mode_4pass",
+        "last_verified_date": "2026-06-08",
+        "verification_method": "user_eyeson_pubmed_pmc_2026_06_08",
         "caveat": (
-            "12yo F (Kali Hardig); Willow Springs Water Park Arkansas "
+            "12yo F; outdoor water park, Arkansas, "
             "July 2013; SURVIVED with combination antimicrobials "
             "(including miltefosine) + therapeutic hypothermia + ICP "
             "management on TBI principles; THIRD documented North "
