@@ -957,8 +957,8 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_subtype": "asia_china_first_mainland_NGS_diagnosis_fatal",
         "pmc_id": "PMC6064090",
         "verification_confidence": 1.00,
-        "last_verified_date": "2026-05-05",
-        "verification_method": "research_mode_4pass",
+        "last_verified_date": "2026-06-08",
+        "verification_method": "user_eyeson_pubmed_pmc_2026_06_08",
         "caveat": (
             "42yo M Shenzhen Third People's Hospital (acquired Hangzhou); "
             "first reported mainland China PAM case; FATAL; NGS "
@@ -1202,8 +1202,8 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_subtype": "south_asia_pakistan_karachi_public_water_supply_AKU",
         "pmc_id": "PMC5038392",
         "verification_confidence": 1.00,
-        "last_verified_date": "2026-05-05",
-        "verification_method": "research_mode_4pass",
+        "last_verified_date": "2026-06-08",
+        "verification_method": "user_eyeson_pubmed_pmc_2026_06_08",
         "caveat": (
             "EID Letter (no abstract). 6 authors. DISTINCT from "
             "Ghanchi 2017 AJTMH case series (PMID 29016297) already in "
@@ -1315,8 +1315,8 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_subtype": "americas_usa_response_to_letter_of_concern_linam_chain_completion",
         "pmc_id": None,
         "verification_confidence": 1.00,
-        "last_verified_date": "2026-05-05",
-        "verification_method": "research_mode_4pass",
+        "last_verified_date": "2026-06-08",
+        "verification_method": "user_eyeson_pubmed_fulltext_2026_06_08",
         "caveat": (
             "Closes the Linam 3-chain: (a) Linam 2015 PMID 25667249 "
             "-> (b) Heggie & Küpper 2017 PMID 28013053 -> (c) "
