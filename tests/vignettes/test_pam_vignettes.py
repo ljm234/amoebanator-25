@@ -102,6 +102,9 @@ _VALID_VERIFICATION_DATES = {
     # CID 15494903, Bijlsma 2016 Lancet ID 26652862, Heckenberg 2008
     # Medicine 18626301. (van de Beek 15509818 was deep-verified 2026-05-30.)
     "2026-05-31",
+    # 2026-06 verification campaign sweep dates
+    "2026-06-06", "2026-06-07", "2026-06-08",
+    "2026-06-09", "2026-06-10",
 }
 
 
