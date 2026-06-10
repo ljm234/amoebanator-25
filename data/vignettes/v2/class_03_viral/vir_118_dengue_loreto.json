@@ -12,7 +12,7 @@
   "history": {
     "symptom_onset_to_presentation_days": 4.0,
     "chief_complaint": "fever_with_headache",
-    "prodrome_description": "32-year-old female in Loreto, Peruvian Amazon. 4-day febrile illness during Peru 2023 dengue outbreak (post Cyclone Yaku, coastal El Nino): fever 39.6 C, retro-orbital pain, severe myalgia, severe headache, bleeding gums day 3, encephalopathic mental status day 4. No neck stiffness. Regional hospital. No freshwater exposure (dengue is mosquito-borne arboviral). Outcome: survived full recovery.",
+    "prodrome_description": "32-year-old female in Loreto, Peruvian Amazon. 4-day febrile illness during regional dengue activity: fever 39.6 C, retro-orbital pain, severe myalgia, severe headache, bleeding gums day 3, encephalopathic mental status day 4. No neck stiffness. Regional hospital. No freshwater exposure (dengue is mosquito-borne arboviral). Outcome: survived full recovery.",
     "red_flags_present": []
   },
   "exposure": {
@@ -79,30 +79,30 @@
       {
         "test_name": "denv_ns1_antigen",
         "result": "positive",
-        "sensitivity_pct": 90.0,
-        "specificity_pct": 99.0,
-        "citation_pmid_or_doi": "PMID:38300858"
+        "sensitivity_pct": null,
+        "specificity_pct": null,
+        "citation_pmid_or_doi": "PMID:38157877"
       },
       {
         "test_name": "denv_pcr",
         "result": "DENV_2_serotype_positive",
-        "sensitivity_pct": 95.0,
-        "specificity_pct": 99.0,
-        "citation_pmid_or_doi": "PMID:38300858"
+        "sensitivity_pct": null,
+        "specificity_pct": null,
+        "citation_pmid_or_doi": "PMID:38157877"
       },
       {
         "test_name": "csf_gram_stain",
         "result": "no_organisms",
         "sensitivity_pct": null,
         "specificity_pct": null,
-        "citation_pmid_or_doi": "PMID:38300858"
+        "citation_pmid_or_doi": "PMID:30540031"
       },
       {
         "test_name": "csf_culture",
         "result": "no_growth",
         "sensitivity_pct": null,
         "specificity_pct": null,
-        "citation_pmid_or_doi": "PMID:38300858"
+        "citation_pmid_or_doi": "PMID:30540031"
       }
     ]
   },
@@ -113,14 +113,19 @@
     ],
     "cohen_kappa": 0.0,
     "disagreement_resolution": null,
-    "anchoring_documentation": "stage=pre_adjudication; status=pending_external_review; self_review_disposition=hold_for_revision; self_review_notes=pilot vignette anchored to PMID 38300858 (Munayco MMWR 2024 Peru 2023 dengue outbreak); external clinical adjudication pending; classification provisional. adjudicator_ids=PILOT-PRE-ADJ-1, PILOT-PRE-ADJ-2 (sentinel); cohen_kappa=0.0 placeholder; adjudicator_name=null; adjudication_date=null; post_adjudication_disposition=null. Subphase 1.3 commit 5.3.2 (2026-05-07).",
+    "anchoring_documentation": "stage=pre_adjudication; status=pending_external_review; self_review_disposition=hold_for_revision; self_review_notes=pilot vignette anchored to PMID 30540031 (Bastos 2018 Mem Inst Oswaldo Cruz, dengue CNS infection in Brazilian Amazonia, DENV-2) with diagnostic methods per PMID 38157877 (Puccioni-Sohler 2023 Arq Neuropsiquiatr dengue-neuro review); external clinical adjudication pending; classification provisional. adjudicator_ids=PILOT-PRE-ADJ-1, PILOT-PRE-ADJ-2 (sentinel); cohen_kappa=0.0 placeholder; adjudicator_name=null; adjudication_date=null; post_adjudication_disposition=null. Subphase 1.3 commit 5.3.2 (2026-05-07). Anchor re-verified 2026-06-10.",
     "inclusion_decision": "hold_for_revision"
   },
   "literature_anchors": [
     {
-      "anchor_type": "surveillance",
-      "pmid": "38300858",
-      "doi": "10.15585/mmwr.mm7304a4"
+      "anchor_type": "cohort",
+      "pmid": "30540031",
+      "doi": "10.1590/0074-02760180450"
+    },
+    {
+      "anchor_type": "review",
+      "pmid": "38157877",
+      "doi": "10.1055/s-0043-1777104"
     }
   ],
   "provenance": {
@@ -128,8 +133,8 @@
     "generator_model_identifier": "scripts.generate_pam_vignettes/v1.subphase_1_3_commit_5_3_2",
     "prompt_hash_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
     "schema_version": "2.0",
-    "inclusion_decision_rationale": "Anchored to PMID 38300858 (Munayco MMWR 2024), Peru 2023 dengue outbreak surveillance (222,620 cases / 381 deaths first 30 weeks; 10x prior 5-year average; post Cyclone Yaku + coastal El Nino; DENV-2 circulating since 2019). Anchor (32yo F Loreto Amazon) within high-incidence Peruvian Amazon stratum. Platelets 65,000 per uL satisfies master prompt below 150,000 and WHO 2009 dengue-with-warning-signs threshold. Encephalopathic clinical form documented neurologic presentation in severe dengue. Lymphocytic CSF (WBC 85, lymphocytes 70 percent), NS1 antigen + DENV-2 PCR canonical. Imputation tiers: tier_1_primary={age, sex, region, denv_pcr, ns1, platelets, outbreak_context}; tier_3_within_cohort={csf_wbc, glucose, protein}; tier_4_priors={temp, gcs, symptom_days}. Indeterminate=none. Ambiguity=false. Outcome=survived_full_recovery. Per USER ASSIGNMENT 5: serotype split not in MMWR abstract. Tier: primary_source_direct (Peru). 5.3.2 pilot 6."
+    "inclusion_decision_rationale": "Anchored to PMID 30540031 (Bastos 2018 Mem Inst Oswaldo Cruz), a primary clinical study of dengue CNS infection in Brazilian Amazonia: 700 CSF samples, DENV-2 predominant by RT-PCR, encephalitis and meningoencephalitis with lymphocytic pleocytosis, including a 32yo female DENV-2 meningoencephalitis case concordant with this 32yo F Loreto Peruvian Amazon anchor. Diagnostic methods per PMID 38157877 (Puccioni-Sohler 2023 dengue-neuro review). Platelets 65,000 per uL satisfies master prompt below 150,000 and WHO 2009 warning-signs threshold. Lymphocytic CSF (WBC 85, 70 percent lymphocytes). NS1 antigen positive and serum DENV-2 RT-PCR positive; point sensitivity/specificity not reported as single estimates in the cited literature, so left null. Imputation: tier_1 clinical anchors, tier_3 within-cohort CSF, tier_4 priors. Indeterminate=none. Ambiguity=false. Outcome=survived_full_recovery. Tier: primary_source_direct. 5.3.2 pilot 6; re-verified 2026-06-10."
   },
-  "narrative_es": "Mujer de 32 anos en Loreto, Amazonia peruana, ingresada a hospital regional durante el brote de dengue post Ciclon Yaku (2023, vinculado a fenomeno El Nino costero, Munayco MMWR 2024). Cuatro dias de enfermedad febril: fiebre 39.6 C, dolor retro-orbitario, mialgia severa, cefalea intensa, sangrado gingival al tercer dia, estado mental encefalopatico al cuarto dia. Sin rigidez de nuca al examen. Sin exposicion a agua dulce (dengue arboviral, no amebica). Examen: temperatura 39.6 C, escala de Glasgow 12, confusa. Plaquetas 65,000 por mm3 (umbral de signos de alarma de dengue OMS 2009 menor de 150,000). Liquido cefalorraquideo mostro leucocitos 85 por mm3 (70 por ciento linfocitos), glucosa 62 mg/dL, proteina 75 mg/dL. NS1 antigeno de DENV positivo y PCR DENV-2 positiva. RM cerebral normal (encefalopatia metabolica o mediada por citoquinas). Anclaje primario en vigilancia MMWR del brote peruano de dengue 2023 (PMID 38300858, Munayco 2024, 222,620 casos primeras 30 semanas, 381 muertes, DENV-2 circulante desde 2019). Subphase 1.3 commit 5.3.2 pilot 6.",
-  "narrative_en": "A 32-year-old woman in Loreto, Peruvian Amazon presented to a regional hospital during the Peru 2023 post-Cyclone-Yaku dengue outbreak (March 2023, linked to coastal El Nino, Munayco MMWR 2024). Four-day febrile illness: fever to 39.6 C, retro-orbital pain, severe myalgia, severe headache, bleeding gums on day 3, encephalopathic mental status by day 4. No neck stiffness on examination. No antecedent freshwater exposure (dengue is mosquito-borne arboviral, not freshwater amoebic). Examination on admission: temperature 39.6 C, Glasgow Coma Scale 12, confused. Platelets 65,000 per cubic millimeter (WHO 2009 dengue with warning signs threshold below 150,000 satisfied). CSF showed white cell count 85 per cubic millimeter (70 percent lymphocytes), glucose 62 mg/dL, protein 75 mg/dL. DENV NS1 antigen positive and DENV-2 PCR positive. Brain MRI normal (dengue encephalopathy in this case is metabolic or cytokine-mediated rather than direct viral invasion). Primary anchor: PMID 38300858 (Munayco MMWR 2024), Peru 2023 dengue outbreak surveillance (222,620 cases first 30 weeks, 381 deaths, DENV-2 circulating since 2019). Outcome: survived with full recovery. Subphase 1.3 commit 5.3.2 pilot 6, pre-adjudication hold_for_revision."
+  "narrative_es": "Mujer de 32 anos en Loreto, Amazonia peruana, ingresada a hospital regional durante actividad regional de dengue. Cuatro dias de enfermedad febril: fiebre 39.6 C, dolor retro-orbitario, mialgia severa, cefalea intensa, sangrado gingival al tercer dia, estado mental encefalopatico al cuarto dia. Sin rigidez de nuca al examen. Sin exposicion a agua dulce (dengue arboviral, no amebica). Examen: temperatura 39.6 C, escala de Glasgow 12, confusa. Plaquetas 65,000 por mm3 (umbral de signos de alarma de dengue OMS 2009 menor de 150,000). Liquido cefalorraquideo mostro leucocitos 85 por mm3 (70 por ciento linfocitos), glucosa 62 mg/dL, proteina 75 mg/dL. NS1 antigeno de DENV positivo y PCR DENV-2 positiva. RM cerebral normal (encefalopatia metabolica o mediada por citoquinas). Anclaje clinico primario en PMID 30540031 (Bastos 2018, infeccion del SNC por dengue en la Amazonia, DENV-2, LCR linfocitico); metodos diagnosticos por PMID 38157877 (Puccioni-Sohler 2023). Subphase 1.3 commit 5.3.2 pilot 6.",
+  "narrative_en": "A 32-year-old woman in Loreto, Peruvian Amazon presented to a regional hospital during regional dengue activity. Four-day febrile illness: fever to 39.6 C, retro-orbital pain, severe myalgia, severe headache, bleeding gums on day 3, encephalopathic mental status by day 4. No neck stiffness on examination. No antecedent freshwater exposure (dengue is mosquito-borne arboviral, not freshwater amoebic). Examination on admission: temperature 39.6 C, Glasgow Coma Scale 12, confused. Platelets 65,000 per cubic millimeter (WHO 2009 dengue with warning signs threshold below 150,000 satisfied). CSF showed white cell count 85 per cubic millimeter (70 percent lymphocytes), glucose 62 mg/dL, protein 75 mg/dL. DENV NS1 antigen positive and DENV-2 PCR positive. Brain MRI normal (dengue encephalopathy in this case is metabolic or cytokine-mediated rather than direct viral invasion). Primary clinical anchor: PMID 30540031 (Bastos 2018), dengue virus CNS infection in the Brazilian Amazonia region with DENV-2 and lymphocytic CSF; diagnostic methods per PMID 38157877 (Puccioni-Sohler 2023). Outcome: survived with full recovery. Subphase 1.3 commit 5.3.2 pilot 6, pre-adjudication hold_for_revision."
 }

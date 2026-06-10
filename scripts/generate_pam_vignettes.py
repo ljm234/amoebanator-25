@@ -1968,46 +1968,78 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
             "website cites 2(8)."
         ),
     },
-    "38300858": {
-        "pmid": "38300858",
-        "doi": "10.15585/mmwr.mm7304a4",
-        "authors_short": "Munayco CV et al.",
+    "30540031": {
+        "pmid": "30540031",
+        "doi": "10.1590/0074-02760180450",
+        "pmc_id": "PMC6319028",
+        "authors_short": "Bastos MS et al.",
         "authors_full": [
-            "Munayco CV", "Valderrama Rosales BY",
-            "Mateo Lizarbe SY", "Yon Fabian CR",
-            "Pena Sanchez R", "Vasquez Sanchez CH",
-            "Garcia MP", "Padilla-Rojas C", "Suarez V",
-            "Sanchez-Gonzalez L", "Jones FK", "Kohatsu L",
-            "Adams LE", "Morgan J", "Paz-Bailey G",
+            "Bastos MS", "Martins VCA", "da Silva NL",
+            "Jezine S", "Pinto S", "Aprigio V",
+            "Monte RL", "Fragoso S", "Puccioni-Sohler M",
         ],
-        "journal": "MMWR Morb Mortal Wkly Rep",
-        "journal_short_code": "MMWR",
-        "year": 2024,
-        "volume": "73",
-        "issue": "4",
-        "pages": "86-88",
-        "title": "Notes from the Field: Dengue Outbreak - Peru, 2023",
-        "anchor_type": "surveillance",
-        "anchor_subtype": "peru_2023_dengue_outbreak_post_cyclone_yaku_denv2_circulating",
-        "verification_confidence": 0.95,
-        "verification_method": "web_pubmed_ui_v4_2026_05_07",
-        "last_verified_date": "2026-05-07",
+        "journal": "Mem Inst Oswaldo Cruz",
+        "journal_short_code": "MIOC",
+        "year": 2018,
+        "volume": "114",
+        "issue": None,
+        "pages": "e180450",
+        "title": "Importance of cerebrospinal fluid investigation during dengue infection in Brazilian Amazonia Region",
+        "anchor_type": "cohort",
+        "anchor_subtype": "amazonia_dengue_cns_infection_denv2_csf",
+        "verification_confidence": 1.0,
+        "verification_method": "user_eyeson_pubmed_pmc_2026_06_10",
+        "last_verified_date": "2026-06-10",
         "caveat": (
-            "Peru 2023 dengue outbreak surveillance. 222,620 dengue "
-            "cases reported in first 30 weeks of 2023 (exceeding "
-            "previous 5-year average by approximately 10x). 381 "
-            "dengue-associated deaths. Lima metropolitan area showed "
-            "substantially higher incidence vs historical baseline "
-            "(where few locally-acquired cases observed). Outbreak "
-            "linked to Cyclone Yaku (March 2023) and coastal El Nino. "
-            "DENV-2 serotype documented as established circulating "
-            "serotype in Peru since 2019. Annual case range 2017-2022 "
-            "was 4,698 to 68,290; 2023 exceeded all prior years "
-            "dramatically. Anchor for Class 3 dengue Peru "
-            "primary-source vignettes (Subphase 1.3 commit 5.3.2). "
-            "Note: exact serotype split (DENV-1 vs DENV-2 vs DENV-3) "
-            "not in MMWR Notes-from-the-Field abstract; full-text "
-            "verification deferred per USER ASSIGNMENT 5."
+            "Primary clinical study of dengue virus (DENV) central nervous "
+            "system infection in the Brazilian Amazonia region (Amazonas "
+            "state, Manaus). 700 CSF samples analysed by RT-PCR for DENV RNA "
+            "and ELISA for DENV-specific IgM; DENV detected in 4.3 percent. "
+            "Serotypes by viral RNA were DENV-2 (three patients) and DENV-1 "
+            "(one patient). Neurologic diagnoses included encephalitis (10), "
+            "meningoencephalitis (10), meningitis (6), acute myelitis (1), "
+            "encephalomyelitis (1); majority with intrathecal inflammation "
+            "(pleocytosis, hyperproteinorrachia, lymphocytic predominance). "
+            "Cohort includes a 32-year-old female DENV-2 meningoencephalitis "
+            "case. Anchor for Class 3 dengue Peruvian-Amazon vignette "
+            "(geographically and serotypically concordant). Three-party "
+            "verified: user direct PMC fulltext + assistant web DOI-anchored."
+        ),
+    },
+    "38157877": {
+        "pmid": "38157877",
+        "doi": "10.1055/s-0043-1777104",
+        "pmc_id": "PMC10756841",
+        "authors_short": "Puccioni-Sohler M et al.",
+        "authors_full": [
+            "Puccioni-Sohler M", "Soares CN",
+            "Christo PP", "de Almeida SM",
+        ],
+        "journal": "Arq Neuropsiquiatr",
+        "journal_short_code": "ANP",
+        "year": 2023,
+        "volume": "81",
+        "issue": "12",
+        "pages": "1112-1124",
+        "title": "Review of dengue, zika and chikungunya infections in nervous system in endemic areas",
+        "anchor_type": "review",
+        "anchor_subtype": "arbovirus_nervous_system_dengue_neuro_review",
+        "verification_confidence": 1.0,
+        "verification_method": "user_eyeson_pubmed_pmc_2026_06_10",
+        "last_verified_date": "2026-06-10",
+        "caveat": (
+            "Narrative review of dengue, zika and chikungunya nervous-system "
+            "infection in endemic areas. Dengue-neuro diagnostics: serum/CSF "
+            "RT-PCR and NS1 antigen as choice methods within first five days; "
+            "CSF dengue IgM sensitivity 0-73 percent and specificity 97-100 "
+            "percent; combined NS1 antigen plus CSF IgM improves sensitivity "
+            "to 92 percent. Dengue encephalitis usually develops three to "
+            "seven days after fever onset; brain imaging may be normal. "
+            "Anchor for Class 3 dengue diagnostic-method citations (NS1, "
+            "RT-PCR). Point sensitivity/specificity for serum NS1 and RT-PCR "
+            "not reported as single estimates, so dengue dx-test sens/spec "
+            "left null rather than imputed. Three-party verified: user direct "
+            "PMC fulltext + assistant web DOI-anchored."
         ),
     },
     # ========================================================================
@@ -4577,7 +4609,7 @@ VIRAL_DISTRIBUTION: list[dict[str, Any]] = [
         "filename": "vir_118_dengue_loreto.json",
         "pathogen": "dengue",
         "cluster": "viral_arboviral_dengue",
-        "pmid": "38300858",
+        "pmid": "30540031",
         "age_years": 32,
         "age_label": "32 years",
         "sex": "female",

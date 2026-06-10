@@ -130,14 +130,14 @@ def test_viral_pilot_2_enterovirus_pmn_predominant_ambiguity():
 
 
 def test_viral_pilot_3_dengue_peru_platelet_mandate():
-    """VIRAL pilot 3 (v118): dengue Loreto 32F, PMID 38300858 (Munayco MMWR 2024)."""
+    """VIRAL pilot 3 (v118): dengue Loreto 32F, PMID 30540031 (Bastos 2018 dengue CNS Amazonia)."""
     v = _load(_VIR_DIR / "vir_118_dengue_loreto.json")
     assert v.demographics.geography_region == "peru_loreto_amazon"
     assert v.demographics.age_years == 32
     assert v.demographics.sex == "female"
     assert v.ground_truth_class == 3
-    assert "38300858" in v.provenance.inclusion_decision_rationale
-    assert v.literature_anchors[0].pmid == "38300858"
+    assert "30540031" in v.provenance.inclusion_decision_rationale
+    assert v.literature_anchors[0].pmid == "30540031"
     # Master prompt 1.3 dengue platelets mandate (below 150,000)
     assert v.labs.platelets_per_uL < 150000
     pcr = _result_for(v, "denv_pcr")
@@ -197,12 +197,12 @@ def test_pmid_registry_contains_all_six_anchor_pmids_and_no_18626302():
 
     Six anchor PMIDs (one per pilot): 27831604 (Davalos), 15509818 (van de
     Beek), 18626301 (Heckenberg, errata fix), 16675036 (Whitley HSE),
-    17668054 (Michos), 38300858 (Munayco). The pre-existing 5.3.1 typo
+    17668054 (Michos), 30540031 (Bastos 2018). The pre-existing 5.3.1 typo
     18626302 must be REMOVED.
     """
     expected = {
         "27831604", "15509818", "18626301",
-        "16675036", "17668054", "38300858",
+        "16675036", "17668054", "30540031",
     }
     for pmid in expected:
         assert pmid in PMID_REGISTRY, f"missing anchor PMID {pmid}"
