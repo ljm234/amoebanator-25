@@ -4216,6 +4216,7 @@ VIRAL_DISTRIBUTION: list[dict[str, Any]] = [
         "pathogen": "HSV1",
         "cluster": "viral_encephalitis_HSV1",
         "pmid": "30089069",
+        "review_label": "Tyler 2018 NEJM viral encephalitis review",
         "age_years": 45,
         "age_label": "45 years",
         "sex": "female",
@@ -4270,6 +4271,7 @@ VIRAL_DISTRIBUTION: list[dict[str, Any]] = [
         "pathogen": "HSV1",
         "cluster": "viral_encephalitis_HSV1",
         "pmid": "30089069",
+        "review_label": "Tyler 2018 NEJM viral encephalitis review",
         "age_years": 38,
         "age_label": "38 years",
         "sex": "male",
@@ -4324,6 +4326,7 @@ VIRAL_DISTRIBUTION: list[dict[str, Any]] = [
         "pathogen": "HSV1",
         "cluster": "viral_encephalitis_HSV1",
         "pmid": "30089069",
+        "review_label": "Tyler 2018 NEJM viral encephalitis review",
         "age_years": 50,
         "age_label": "50 years",
         "sex": "male",
@@ -4399,6 +4402,7 @@ VIRAL_DISTRIBUTION: list[dict[str, Any]] = [
         "pathogen": "enterovirus",
         "cluster": "viral_meningitis_enteroviral",
         "pmid": "30089069",
+        "review_label": "Tyler 2018 NEJM viral encephalitis review",
         "age_years": 7,
         "age_label": "7 years",
         "sex": "female",
@@ -4416,6 +4420,7 @@ VIRAL_DISTRIBUTION: list[dict[str, Any]] = [
         "pathogen": "enterovirus",
         "cluster": "viral_meningitis_enteroviral",
         "pmid": "30089069",
+        "review_label": "Tyler 2018 NEJM viral encephalitis review",
         "age_years": 22,
         "age_label": "22 years",
         "sex": "female",
@@ -4434,6 +4439,7 @@ VIRAL_DISTRIBUTION: list[dict[str, Any]] = [
         "pathogen": "enterovirus",
         "cluster": "viral_meningitis_enteroviral",
         "pmid": "30089069",
+        "review_label": "Tyler 2018 NEJM viral encephalitis review",
         "age_years": 11,
         "age_label": "11 years",
         "sex": "male",
@@ -4451,6 +4457,7 @@ VIRAL_DISTRIBUTION: list[dict[str, Any]] = [
         "pathogen": "enterovirus",
         "cluster": "viral_meningitis_enteroviral",
         "pmid": "30089069",
+        "review_label": "Tyler 2018 NEJM viral encephalitis review",
         "age_years": 3,
         "age_label": "3 years",
         "sex": "female",
@@ -4485,6 +4492,7 @@ VIRAL_DISTRIBUTION: list[dict[str, Any]] = [
         "pathogen": "enterovirus",
         "cluster": "viral_meningitis_enteroviral",
         "pmid": "30089069",
+        "review_label": "Tyler 2018 NEJM viral encephalitis review",
         "age_years": 5,
         "age_label": "5 years",
         "sex": "male",
@@ -4520,6 +4528,7 @@ VIRAL_DISTRIBUTION: list[dict[str, Any]] = [
         "pathogen": "HSV2",
         "cluster": "viral_meningitis_HSV2",
         "pmid": "30089069",
+        "review_label": "Tyler 2018 NEJM viral encephalitis review",
         "age_years": 28,
         "age_label": "28 years",
         "sex": "female",
@@ -4538,6 +4547,7 @@ VIRAL_DISTRIBUTION: list[dict[str, Any]] = [
         "pathogen": "HSV2",
         "cluster": "viral_meningitis_HSV2",
         "pmid": "30089069",
+        "review_label": "Tyler 2018 NEJM viral encephalitis review",
         "age_years": 35,
         "age_label": "35 years",
         "sex": "male",
@@ -4590,7 +4600,8 @@ VIRAL_DISTRIBUTION: list[dict[str, Any]] = [
         "filename": "vir_117_dengue_lima_ambiguity.json",
         "pathogen": "dengue",
         "cluster": "viral_arboviral_dengue",
-        "pmid": "30089069",
+        "pmid": "38157877",
+        "review_label": "Puccioni-Sohler 2023 dengue-neuro review",
         "age_years": 32,
         "age_label": "32 years",
         "sex": "female",
@@ -4628,7 +4639,8 @@ VIRAL_DISTRIBUTION: list[dict[str, Any]] = [
         "filename": "vir_119_dengue_tumbes.json",
         "pathogen": "dengue",
         "cluster": "viral_arboviral_dengue",
-        "pmid": "30089069",
+        "pmid": "38157877",
+        "review_label": "Puccioni-Sohler 2023 dengue-neuro review",
         "age_years": 41,
         "age_label": "41 years",
         "sex": "male",
@@ -4648,6 +4660,7 @@ VIRAL_DISTRIBUTION: list[dict[str, Any]] = [
         "pathogen": "EEE",
         "cluster": "viral_arboviral_EEE",
         "pmid": "30089069",
+        "review_label": "Tyler 2018 NEJM viral encephalitis review",
         "age_years": 58,
         "age_label": "58 years",
         "sex": "male",
@@ -18891,7 +18904,7 @@ def _viral_wave1_imaging_for(spec: dict[str, Any]) -> dict[str, Any]:
             "imaging_text_summary": (
                 "MRI brain with DWI/FLAIR: normal. No focal lesion, no edema. "
                 "Dengue encephalopathy is typically metabolic or cytokine-"
-                "mediated rather than direct viral invasion per Tyler review."
+                "mediated rather than direct viral invasion per Puccioni-Sohler dengue-neuro review."
             ),
         }
     if pathogen == "EEE":
@@ -18972,7 +18985,7 @@ def _viral_wave1_adjudication(
         f"stage=pre_adjudication; status=pending_external_review; "
         f"self_review_disposition=hold_for_revision; "
         f"self_review_notes=wave 5.3.5 VIRAL vignette anchored to PMID {pmid} "
-        f"(Tyler 2018 NEJM viral encephalitis review); external clinical "
+        f"({spec['review_label']}); external clinical "
         f"adjudication pending; classification provisional. "
         f"adjudicator_ids=VIRAL-WAVE1-PRE-ADJ-1, VIRAL-WAVE1-PRE-ADJ-2 (sentinel); "
         f"cohen_kappa=0.0 placeholder; adjudicator_name=null; "
@@ -19092,15 +19105,15 @@ def _viral_wave1_dx_tests_dengue(pmid: str, serotype: str) -> list[dict[str, Any
         {
             "test_name": "denv_ns1_antigen",
             "result": "positive",
-            "sensitivity_pct": 90.0,
-            "specificity_pct": 99.0,
+            "sensitivity_pct": None,
+            "specificity_pct": None,
             "citation_pmid_or_doi": cit,
         },
         {
             "test_name": "denv_pcr",
             "result": f"{serotype}_serotype_positive",
-            "sensitivity_pct": 95.0,
-            "specificity_pct": 99.0,
+            "sensitivity_pct": None,
+            "specificity_pct": None,
             "citation_pmid_or_doi": cit,
         },
         {
@@ -20307,12 +20320,7 @@ def _build_viral_vignette_114() -> dict[str, Any]:
 
 
 def _build_viral_vignette_117() -> dict[str, Any]:
-    """v117 dengue 32F Lima Peru mid survived AMBIGUITY (Tyler NEJM review).
-
-    Dengue with prominent CNS arbo-encephalitis overlap raises differential
-    with other arboviral encephalitides (EEE, JE, WNV); NS1 + DENV-2 PCR
-    confirm dengue.
-    """
+    "v117 dengue 32F Lima Peru mid survived AMBIGUITY (Tyler NEJM review).\n\n    Dengue with prominent CNS arbo-encephalitis overlap raises differential\n    with other co-circulating arboviral CNS infections (zika, chikungunya); NS1 + DENV-2 PCR\n    confirm dengue.\n    "
     return {
         "history": {
             "symptom_onset_to_presentation_days": 4.0,
@@ -20373,65 +20381,16 @@ def _build_viral_vignette_117() -> dict[str, Any]:
             "csf_rbc_decreasing_across_tubes": None,
         },
         "narrative_en": (
-            "A 32-year-old woman in Lima, Peru presented to a tertiary "
-            "urban emergency department during the Peru 2024 dengue "
-            "outbreak with a 4-day febrile illness: fever to 39.4 C, "
-            "retro-orbital pain, severe myalgia, severe headache, and "
-            "encephalopathic mental status by day 3. The prominent CNS "
-            "features raised initial differential for other arboviral "
-            "encephalitides (EEE, JE, WNV). No neck stiffness on "
-            "examination. Examination on admission: temperature 39.4 C, "
-            "Glasgow Coma Scale 12, confused, no neck stiffness, no focal "
-            "deficit, no rash. Platelets 75,000 per cubic millimeter "
-            "(WHO 2009 dengue with warning signs threshold below 150,000 "
-            "satisfied). CSF showed opening pressure 19 cmH2O, white cell "
-            "count 110 per cubic millimeter (70 percent lymphocytes), "
-            "glucose 58 mg/dL, protein 80 mg/dL. DENV NS1 antigen positive "
-            "and DENV-2 PCR positive. Brain MRI normal. Diagnostic_"
-            "ambiguity=true; type=dengue_with_prominent_cns_arbo_"
-            "encephalitis_overlap. Anchored to Tyler 2018 NEJM viral "
-            "encephalitis review (PMID 30089069). Outcome: survived. "
-            "Subphase 1.3 commit 5.3.5 wave 1, pre-adjudication "
-            "hold_for_revision."
+            "A 32-year-old woman in Lima, Peru presented to a tertiary urban emergency department during the Peru 2024 dengue outbreak with a 4-day febrile illness: fever to 39.4 C, retro-orbital pain, severe myalgia, severe headache, and encephalopathic mental status by day 3. The prominent CNS features raised initial differential for other co-circulating arboviral CNS infections (zika, chikungunya). No neck stiffness on examination. Examination on admission: temperature 39.4 C, Glasgow Coma Scale 12, confused, no neck stiffness, no focal deficit, no rash. Platelets 75,000 per cubic millimeter (WHO 2009 dengue with warning signs threshold below 150,000 satisfied). CSF showed opening pressure 19 cmH2O, white cell count 110 per cubic millimeter (70 percent lymphocytes), glucose 58 mg/dL, protein 80 mg/dL. DENV NS1 antigen positive and DENV-2 PCR positive. Brain MRI normal. Diagnostic_ambiguity=true; type=dengue_with_prominent_cns_arbo_encephalitis_overlap. Anchored to Puccioni-Sohler 2023 dengue-neuro review (PMID 38157877). Outcome: survived. Subphase 1.3 commit 5.3.5 wave 1, pre-adjudication hold_for_revision."
         ),
         "narrative_es": (
-            "Mujer de 32 anos en Lima, Peru, ingresada a urgencias "
-            "urbanas terciarias durante el brote de dengue de Peru 2024: "
-            "cuatro dias de fiebre 39.4 C, dolor retro-orbitario, mialgia "
-            "severa, cefalea intensa y estado mental encefalopatico al "
-            "tercer dia. Las manifestaciones CNS prominentes elevaron el "
-            "diagnostico diferencial inicial con otras encefalitides "
-            "arbovirales. Sin rigidez de nuca al examen. Examen: "
-            "temperatura 39.4 C, escala de Glasgow 12, confusa. Plaquetas "
-            "75,000 por mm3 (umbral signos de alarma OMS 2009 menor de "
-            "150,000). Liquido cefalorraquideo mostro presion de apertura "
-            "19 cmH2O, leucocitos 110 por mm3 (70 por ciento linfocitos), "
-            "glucosa 58 mg/dL, proteina 80 mg/dL. NS1 antigeno DENV "
-            "positivo y PCR DENV-2 positiva. RM cerebral normal. "
-            "Ambiguedad diagnostica por superposicion CNS arbo-"
-            "encefalitis. Anclaje en revision Tyler 2018 NEJM (PMID "
-            "30089069). Subphase 1.3 commit 5.3.5 wave 1."
+            "Mujer de 32 anos en Lima, Peru, ingresada a urgencias urbanas terciarias durante el brote de dengue de Peru 2024: cuatro dias de fiebre 39.4 C, dolor retro-orbitario, mialgia severa, cefalea intensa y estado mental encefalopatico al tercer dia. Las manifestaciones CNS prominentes elevaron el diagnostico diferencial inicial con otras encefalitides arbovirales. Sin rigidez de nuca al examen. Examen: temperatura 39.4 C, escala de Glasgow 12, confusa. Plaquetas 75,000 por mm3 (umbral signos de alarma OMS 2009 menor de 150,000). Liquido cefalorraquideo mostro presion de apertura 19 cmH2O, leucocitos 110 por mm3 (70 por ciento linfocitos), glucosa 58 mg/dL, proteina 80 mg/dL. NS1 antigeno DENV positivo y PCR DENV-2 positiva. RM cerebral normal. Ambiguedad diagnostica por superposicion CNS arbo-encefalitis. Anclaje en revision dengue-neuro Puccioni-Sohler 2023 (PMID 38157877). Subphase 1.3 commit 5.3.5 wave 1."
         ),
         "rationale": (
-            "Anchored to PMID 30089069 (Tyler 2018 NEJM viral encephalitis "
-            "review) with prominent CNS-arbo-encephalitis-overlap "
-            "phenotype. Diagnostic_ambiguity=true; type=dengue_with_"
-            "prominent_cns_arbo_encephalitis_overlap (verbatim from spec). "
-            "Demographic anchor (32yo F Lima during 2024 outbreak) sits "
-            "in dengue-with-CNS stratum that overlaps with EEE/JE/WNV DDx. "
-            "Platelets 75k satisfies thrombocytopenia-warning-signs "
-            "threshold. CSF lymphocytic (110 WBC, 70 percent lymphocytes), "
-            "normal glucose 58, mildly elevated protein 80. NS1 + DENV-2 "
-            "PCR confirm organism. Imputation tiers: tier_1_primary={age, "
-            "sex, region, denv_pcr, ns1, platelets, outbreak_context}; "
-            "tier_3_within_review={csf_wbc, neutrophil_pct, glucose, "
-            "protein}; tier_4_priors={temp, gcs, symptom_days}. "
-            "Indeterminate=initial-arbo-DDx-resolved-by-DENV-PCR. Outcome="
-            "survived. Tier: tier_4_imputation_peru_dengue_2024_anchored. "
-            "5.3.5 wave1 dengue-Lima-arbo-overlap."
+            "Anchored to PMID 38157877 (Puccioni-Sohler 2023 dengue-neuro review) with prominent CNS-arbo-encephalitis-overlap phenotype. Diagnostic_ambiguity=true; type=dengue_with_prominent_cns_arbo_encephalitis_overlap (verbatim from spec). Demographic anchor (32yo F Lima during 2024 outbreak) sits in dengue-with-CNS stratum that overlaps with co-circulating zika/chikungunya arbo DDx. Platelets 75k satisfies thrombocytopenia-warning-signs threshold. CSF lymphocytic (110 WBC, 70 percent lymphocytes), normal glucose 58, mildly elevated protein 80. NS1 + DENV-2 PCR confirm organism. Imputation tiers: tier_1_primary={age, sex, region, denv_pcr, ns1, platelets, outbreak_context}; tier_3_within_review={csf_wbc, neutrophil_pct, glucose, protein}; tier_4_priors={temp, gcs, symptom_days}. Indeterminate=initial-arbo-DDx-resolved-by-DENV-PCR. Outcome=survived. Tier: tier_4_imputation_peru_dengue_2024_anchored. 5.3.5 wave1 dengue-Lima-arbo-overlap."
         ),
-        "anchoring_extras": "anchor=Tyler-NEJM-2018 type=dengue_with_prominent_cns_arbo_encephalitis_overlap region=Lima-Peru.",
-        "diagnostic_tests": _viral_wave1_dx_tests_dengue("30089069", "DENV_2"),
+        "anchoring_extras": "anchor=PuccioniSohler-ANP-2023 type=dengue_with_prominent_cns_arbo_encephalitis_overlap region=Lima-Peru.",
+        "diagnostic_tests": _viral_wave1_dx_tests_dengue("38157877", "DENV_2"),
     }
 
 
@@ -20495,60 +20454,16 @@ def _build_viral_vignette_119() -> dict[str, Any]:
             "csf_rbc_decreasing_across_tubes": None,
         },
         "narrative_en": (
-            "A 41-year-old man in Tumbes, Peru coastal community presented "
-            "to a regional hospital during regional dengue activity with "
-            "a 4-day febrile illness: fever to 39.2 C, retro-orbital "
-            "pain, severe myalgia, severe headache, and transient "
-            "encephalopathy on day 3. He had no neck stiffness on "
-            "examination. Examination on admission: temperature 39.2 C, "
-            "Glasgow Coma Scale 13, confused, no neck stiffness, no focal "
-            "deficit, no rash. Platelets 85,000 per cubic millimeter "
-            "(WHO 2009 dengue with warning signs threshold below 150,000). "
-            "CSF showed opening pressure 18 cmH2O, white cell count 95 "
-            "per cubic millimeter (72 percent lymphocytes), glucose 60 "
-            "mg/dL, protein 75 mg/dL. DENV NS1 antigen positive and "
-            "DENV-2 PCR positive. Brain MRI normal (metabolic / cytokine-"
-            "mediated encephalopathy). Anchored to Tyler 2018 NEJM viral "
-            "encephalitis review (PMID 30089069), Peru-coastal-Tumbes "
-            "dengue stratum. Outcome: survived with full recovery. "
-            "Subphase 1.3 commit 5.3.5 wave 1, pre-adjudication "
-            "hold_for_revision."
+            "A 41-year-old man in Tumbes, Peru coastal community presented to a regional hospital during regional dengue activity with a 4-day febrile illness: fever to 39.2 C, retro-orbital pain, severe myalgia, severe headache, and transient encephalopathy on day 3. He had no neck stiffness on examination. Examination on admission: temperature 39.2 C, Glasgow Coma Scale 13, confused, no neck stiffness, no focal deficit, no rash. Platelets 85,000 per cubic millimeter (WHO 2009 dengue with warning signs threshold below 150,000). CSF showed opening pressure 18 cmH2O, white cell count 95 per cubic millimeter (72 percent lymphocytes), glucose 60 mg/dL, protein 75 mg/dL. DENV NS1 antigen positive and DENV-2 PCR positive. Brain MRI normal (metabolic / cytokine-mediated encephalopathy). Anchored to Puccioni-Sohler 2023 dengue-neuro review (PMID 38157877), Peru-coastal-Tumbes dengue stratum. Outcome: survived with full recovery. Subphase 1.3 commit 5.3.5 wave 1, pre-adjudication hold_for_revision."
         ),
         "narrative_es": (
-            "Varon de 41 anos en comunidad costera de Tumbes, Peru, "
-            "ingresado a hospital regional durante actividad regional de "
-            "dengue: cuatro dias de fiebre 39.2 C, dolor retro-orbitario, "
-            "mialgia severa, cefalea intensa y encefalopatia transitoria "
-            "al tercer dia. Sin rigidez de nuca al examen. Examen: "
-            "temperatura 39.2 C, escala de Glasgow 13, confuso. Plaquetas "
-            "85,000 por mm3 (umbral OMS 2009 menor de 150,000). Liquido "
-            "cefalorraquideo mostro presion de apertura 18 cmH2O, "
-            "leucocitos 95 por mm3 (72 por ciento linfocitos), glucosa 60 "
-            "mg/dL, proteina 75 mg/dL. NS1 antigeno DENV positivo y PCR "
-            "DENV-2 positiva. RM cerebral normal. Anclaje en revision "
-            "Tyler 2018 NEJM (PMID 30089069), estrato Tumbes-coastal "
-            "dengue. Subphase 1.3 commit 5.3.5 wave 1, pre-adjudicacion "
-            "hold_for_revision."
+            "Varon de 41 anos en comunidad costera de Tumbes, Peru, ingresado a hospital regional durante actividad regional de dengue: cuatro dias de fiebre 39.2 C, dolor retro-orbitario, mialgia severa, cefalea intensa y encefalopatia transitoria al tercer dia. Sin rigidez de nuca al examen. Examen: temperatura 39.2 C, escala de Glasgow 13, confuso. Plaquetas 85,000 por mm3 (umbral OMS 2009 menor de 150,000). Liquido cefalorraquideo mostro presion de apertura 18 cmH2O, leucocitos 95 por mm3 (72 por ciento linfocitos), glucosa 60 mg/dL, proteina 75 mg/dL. NS1 antigeno DENV positivo y PCR DENV-2 positiva. RM cerebral normal. Anclaje en revision dengue-neuro Puccioni-Sohler 2023 (PMID 38157877), estrato Tumbes-coastal dengue. Subphase 1.3 commit 5.3.5 wave 1, pre-adjudicacion hold_for_revision."
         ),
         "rationale": (
-            "Anchored to PMID 30089069 (Tyler 2018 NEJM viral encephalitis "
-            "review). Dengue with transient encephalopathy in Peru-"
-            "coastal-Tumbes stratum. Demographic anchor (41yo M Tumbes) "
-            "sits in Peru-coastal-dengue stratum. Platelets 85k satisfies "
-            "thrombocytopenia-warning-signs threshold. CSF lymphocytic "
-            "(95 WBC, 72 percent lymphocytes), normal glucose 60, mildly "
-            "elevated protein 75. NS1 + DENV-2 PCR confirm organism. MRI "
-            "normal (metabolic / cytokine encephalopathy not direct "
-            "viral invasion). Imputation tiers: tier_1_primary={age, sex, "
-            "region, denv_pcr, ns1, platelets}; tier_3_within_review="
-            "{csf_wbc, neutrophil_pct, glucose, protein}; tier_4_priors="
-            "{temp, gcs, symptom_days}. Indeterminate=none. Diagnostic_"
-            "ambiguity=false. Outcome=survived_full_recovery. Tier: "
-            "tier_4_imputation_peru_dengue_2024_anchored. 5.3.5 wave1 "
-            "dengue-Tumbes-coastal."
+            "Anchored to PMID 38157877 (Puccioni-Sohler 2023 dengue-neuro review). Dengue with transient encephalopathy in Peru-coastal-Tumbes stratum. Demographic anchor (41yo M Tumbes) sits in Peru-coastal-dengue stratum. Platelets 85k satisfies thrombocytopenia-warning-signs threshold. CSF lymphocytic (95 WBC, 72 percent lymphocytes), normal glucose 60, mildly elevated protein 75. NS1 + DENV-2 PCR confirm organism. MRI normal (metabolic / cytokine encephalopathy not direct viral invasion). Imputation tiers: tier_1_primary={age, sex, region, denv_pcr, ns1, platelets}; tier_3_within_review={csf_wbc, neutrophil_pct, glucose, protein}; tier_4_priors={temp, gcs, symptom_days}. Indeterminate=none. Diagnostic_ambiguity=false. Outcome=survived_full_recovery. Tier: tier_4_imputation_peru_dengue_2024_anchored. 5.3.5 wave1 dengue-Tumbes-coastal."
         ),
-        "anchoring_extras": "anchor=Tyler-NEJM-2018 region=Tumbes-Peru.",
-        "diagnostic_tests": _viral_wave1_dx_tests_dengue("30089069", "DENV_2"),
+        "anchoring_extras": "anchor=PuccioniSohler-ANP-2023 region=Tumbes-Peru.",
+        "diagnostic_tests": _viral_wave1_dx_tests_dengue("38157877", "DENV_2"),
     }
 
 

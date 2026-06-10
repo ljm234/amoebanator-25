@@ -29,6 +29,9 @@ VIRAL_WAVE1_AMBIGUITY_IDS = {113, 117}
 VIRAL_WAVE1_PERU_IDS = {99, 117, 119}
 WAVE1_DIR = _REPO_ROOT / "data" / "vignettes" / "v2" / "class_03_viral"
 TYLER_PMID = "30089069"
+PUCCIONI_PMID = "38157877"
+VIRAL_WAVE1_PUCCIONI_IDS = {117, 119}
+VIRAL_WAVE1_TYLER_IDS = [v for v in VIRAL_WAVE1_IDS if v not in VIRAL_WAVE1_PUCCIONI_IDS]
 
 
 def _wave1_slot(vid: int) -> dict:
@@ -75,7 +78,8 @@ def test_viral_wave1_demographics_match_spec(vid):
 @pytest.mark.parametrize("vid", VIRAL_WAVE1_IDS)
 def test_viral_wave1_anchor_pmid_tyler(vid):
     data = _load(vid)
-    assert data["literature_anchors"][0]["pmid"] == TYLER_PMID, f"v{vid} anchor"
+    expected = PUCCIONI_PMID if vid in VIRAL_WAVE1_PUCCIONI_IDS else TYLER_PMID
+    assert data["literature_anchors"][0]["pmid"] == expected, f"v{vid} anchor"
 
 
 @pytest.mark.parametrize("vid", VIRAL_WAVE1_IDS)
@@ -93,13 +97,21 @@ def test_viral_wave1_anchor_type_review(vid):
 
 def test_viral_wave1_count_13():
     """Empirical count from VIRAL_DISTRIBUTION must match hardcoded list."""
-    empirical = sorted(
+    empirical_tyler = sorted(
         s["vignette_id"]
         for s in VIRAL_DISTRIBUTION
-        if s.get("pmid") == TYLER_PMID
+        if s.get("vignette_id") in VIRAL_WAVE1_IDS and s.get("pmid") == TYLER_PMID
     )
-    assert empirical == VIRAL_WAVE1_IDS, (
-        f"Empirical Tyler-anchored {empirical} != hardcoded {VIRAL_WAVE1_IDS}"
+    empirical_puccioni = sorted(
+        s["vignette_id"]
+        for s in VIRAL_DISTRIBUTION
+        if s.get("vignette_id") in VIRAL_WAVE1_IDS and s.get("pmid") == PUCCIONI_PMID
+    )
+    assert empirical_tyler == sorted(VIRAL_WAVE1_TYLER_IDS), (
+        f"Empirical Tyler {empirical_tyler} != {sorted(VIRAL_WAVE1_TYLER_IDS)}"
+    )
+    assert empirical_puccioni == sorted(VIRAL_WAVE1_PUCCIONI_IDS), (
+        f"Empirical Puccioni {empirical_puccioni} != {sorted(VIRAL_WAVE1_PUCCIONI_IDS)}"
     )
     assert len(VIRAL_WAVE1_IDS) == 13
 
