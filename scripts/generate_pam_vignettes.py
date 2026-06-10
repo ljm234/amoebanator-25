@@ -138,19 +138,20 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "pages": "e01208",
         "title": "A case report of primary amebic meningoencephalitis in North Florida",
         "anchor_type": "case_report",
-        "anchor_subtype": "case_report_us_tap_water_north_florida",
+        "anchor_subtype": "case_report_us_recreational_freshwater_north_florida",
         "pmc_id": "PMC8258632",
         "article_id": "e01208",
         "verification_confidence": 1.00,
-        "last_verified_date": "2026-05-04",
-        "verification_method": "user_pubmed_ui_direct_fetch",
+        "last_verified_date": "2026-06-09",
+        "verification_method": "user_eyeson_pubmed_pmc_2026_06_09",
         "caveat": (
-            "US tap-water-associated PAM 2020s. Pairs with USVI ablution "
-            "case (PMID 24226628) for tap-water transmission cluster "
-            "adjudication. 11 authors confirmed (Saccoccio FM at end). "
-            "DOI is e01208 (NOT e01218). Author 8 'O'Laughlin K' preserves "
-            "apostrophe. Author 6 'Ibne Karim M Ali' renders as Vancouver "
-            "'Ali IKM' (3 initials). Authors: Saad K Anjum, Karna Mangrola, "
+            "US recreational freshwater PAM 2020 (13yo boy; swam in an "
+            "untreated lake at a campground/water park, Madison County "
+            "FL; second PAM on the same property after a 2009 case). 11 "
+            "authors confirmed (Saccoccio FM at end). DOI is e01208 (NOT "
+            "e01218). Author 8 'O'Laughlin K' preserves apostrophe. "
+            "Author 6 'Ibne Karim M Ali' renders as Vancouver 'Ali IKM' "
+            "(3 initials). Authors: Saad K Anjum, Karna Mangrola, "
             "Garrett Fitzpatrick, Kimberly Stockdale, Laura Matthias, "
             "Ibne Karim M Ali, Jennifer R Cope, Kevin O'Laughlin, "
             "Shelley Collins, Stacy G Beal, Frances M Saccoccio."
@@ -771,19 +772,20 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_subtype": "case_series_environmental_groundwater_central_america",
         "pmc_id": "PMC7459727",
         "verification_confidence": 1.00,
-        "last_verified_date": "2026-05-04",
-        "verification_method": "user_pubmed_ui_direct_fetch",
+        "last_verified_date": "2026-06-09",
+        "verification_method": "user_eyeson_pubmed_pmc_2026_06_09",
         "caveat": (
-            "3 Costa Rica cases first trimester 2020. One survivor "
-            "among the three (per Frontiers 2025 PMC12089049). "
-            "Diacritic preservation: 'Sandí' (UTF-8 c3 ad). Author "
-            "surnames are unhyphenated compound surnames in publication "
-            "form (Retana Moreira, Abrahams Sandí). NOT 'Retana-Moreira' "
-            "or 'Abrahams-Sandí'. Some downstream Spanish-language "
-            "reviews re-hyphenate; preserve un-hyphenated PubMed "
-            "canonical form. Authors: Lissette Retana Moreira, Leidy "
-            "Zamora Rojas, Muriel Grijalba Murillo, Silvia Elena Molina "
-            "Castro, Elizabeth Abrahams Sandí."
+            "3 Costa Rica cases first trimester 2020. One survivor among "
+            "the three (case 2, the 5-year-old, fully recovered after "
+            "treatment). Diacritic preservation: 'Sandí' (UTF-8 c3 ad). "
+            "Author surnames are unhyphenated compound surnames in "
+            "publication form (Retana Moreira, Abrahams Sandí). NOT "
+            "'Retana-Moreira' or 'Abrahams-Sandí'. Some downstream "
+            "Spanish-language reviews re-hyphenate; preserve "
+            "un-hyphenated PubMed canonical form. Authors: Lissette "
+            "Retana Moreira, Leidy Zamora Rojas, Muriel Grijalba "
+            "Murillo, Silvia Elena Molina Castro, Elizabeth Abrahams "
+            "Sandí."
         ),
     },
     "35463884": {
@@ -849,8 +851,8 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_subtype": "case_report_pediatric_fatal_mNGS_dual_compartment_china",
         "pmc_id": "PMC8670243",
         "verification_confidence": 1.00,
-        "last_verified_date": "2026-05-04",
-        "verification_method": "user_pubmed_ui_direct_fetch",
+        "last_verified_date": "2026-06-09",
+        "verification_method": "user_eyeson_pubmed_pmc_2026_06_09",
         "caveat": (
             "China pediatric mNGS dual-compartment positivity (CSF + "
             "blood, rare blood positivity). Authors 1+2 contributed "
@@ -1069,8 +1071,8 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_subtype": "europe_italy_first_european_pediatric_genotype1_fatal",
         "pmc_id": "PMC3323261",
         "verification_confidence": 1.00,
-        "last_verified_date": "2026-05-05",
-        "verification_method": "user_pubmed_ui_direct_fetch",
+        "last_verified_date": "2026-06-09",
+        "verification_method": "user_eyeson_pubmed_pmc_2026_06_09",
         "caveat": (
             "9yo immunocompetent boy Italy (Veneto/Padova region, "
             "admitted Este hospital); swam in polluted Po River water "
@@ -1285,18 +1287,17 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_subtype": "americas_usa_third_survivor_secondary_report_subject_of_letter_of_concern",
         "pmc_id": None,
         "verification_confidence": 1.00,
-        "last_verified_date": "2026-05-05",
-        "verification_method": "user_pubmed_ui_direct_fetch",
+        "last_verified_date": "2026-06-09",
+        "verification_method": "user_eyeson_pubmed_fulltext_2026_06_09",
         "caveat": (
-            "2 authors. UTF-8 dual-form (Burki/Burqi pattern, Option "
-            "3): canonical 'Küpper T' with U+00FC ü preserved per "
-            "PubMed XML and ScienceDirect publisher byline. "
-            "Affiliations: Bowling Green State University (Heggie); "
-            "RWTH Aachen Technical University Institute of "
-            "Occupational and Social Medicine (Küpper). Subject of "
-            "Linam-Cope letter of concern PMID 28501613 (already in "
-            "registry); response is Heggie 2017 PMID 29241583 (this "
-            "commit). Authors: Travis W. Heggie, Thomas Küpper."
+            "2 authors. UTF-8 dual-form (Burki/Burqi pattern, Option 3): "
+            "canonical 'Küpper T' with U+00FC ü preserved per PubMed XML "
+            "and ScienceDirect publisher byline. Affiliations: Bowling "
+            "Green State University (Heggie); RWTH Aachen Technical "
+            "University Institute of Occupational and Social Medicine "
+            "(Küpper). Subject of Linam-Cope letter of concern PMID "
+            "28501613; response is Heggie 2017 PMID 29241583. Authors: "
+            "Travis W. Heggie, Thomas Küpper."
         ),
     },
     "29241583": {
@@ -1344,16 +1345,18 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_subtype": "review_survivor_analysis_university_of_cincinnati_2024",
         "pmc_id": None,
         "verification_confidence": 1.00,
-        "last_verified_date": "2026-05-05",
-        "verification_method": "research_mode_4pass_plus_user_pubmed_ui_caveat_reattribution_2026-05-05",
+        "last_verified_date": "2026-06-09",
+        "verification_method": "user_eyeson_pubmed_fulltext_2026_06_09",
         "caveat": (
-            "5-author review (Parasitol Res 123(1):84, 2024) analyzing successfully "
-            "treated PAM cases globally. Focuses on the small subset of confirmed "
-            "survivors and their treatment regimens (miltefosine + amphotericin B + "
-            "hypothermia combinations). NOT a 98-patient demographic cohort - that "
-            "figure originates from Ripa 2025 (PMID 39860533, J Clin Med 14(2):526). "
-            "Authors: Ashton D Hall, Julia E Kumar, Claire E Golba, Keith M Luckett, "
-            "Whitney K Bryant. Caveat re-attributed 2026-05-05 via verification audit."
+            "5-author review (Parasitol Res 123(1):84, 2024) analyzing "
+            "successfully treated PAM cases. Focuses on the small subset "
+            "of confirmed survivors in North America (five survivors, "
+            "1962-2022) and their treatment regimens (miltefosine + "
+            "amphotericin B + hypothermia combinations). NOT a "
+            "98-patient demographic cohort - that figure originates from "
+            "Rîpă 2025 (PMID 39860533, J Clin Med 14(2):526). Authors: "
+            "Ashton D Hall, Julia E Kumar, Claire E Golba, Keith M "
+            "Luckett, Whitney K Bryant."
         ),
     },
     "39860533": {
