@@ -208,9 +208,7 @@ pipeline; every claim is defensible against a current run.
   (PMID 26582886) is the better source; integrating it into
   `ml/case_series.py` is documented as optional user assignment 4.
 * **No neonatal PAM in the corpus.** The 60-vignette PAM corpus does
-  not include extreme-age (neonatal) PAM presentations. Çelik 2021
-  (PMID 33381798, J Trop Pediatr 67(1):fmaa100) anchor is canonized
-  in the registry but not anchored to any vignette in v1-v60 because
+  not include extreme-age (neonatal) PAM presentations, because
   neonatal PAM is a distinct epidemiologic category that does not fit
   the locked Day-2 cluster structure (lake_pond, river, splash_pad,
   nasal_irrigation, hot_springs, pakistan_ablution). Reserved for

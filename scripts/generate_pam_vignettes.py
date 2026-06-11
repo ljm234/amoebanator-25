@@ -862,35 +862,6 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
             "Han, Yanyan Zhang, Xinhui Li, Zhiyong Yang."
         ),
     },
-    "33381798": {
-        "pmid": "33381798",
-        "doi": "10.1093/tropej/fmaa100",
-        "authors_short": "Celik Y, Arslankoylu AE",
-        "authors_full": ["Celik Y", "Arslankoylu AE"],
-        "journal": "Journal of Tropical Pediatrics",
-        "journal_short_code": "J Trop Pediatr",
-        "year": 2021,
-        "volume": "67",
-        "issue": "1",
-        "pages": "fmaa100",
-        "publication_date": "2021-01-29",
-        "title": "A Newborn with Brain-Eating Ameba Infection",
-        "anchor_type": "case_report",
-        "anchor_subtype": "case_report_newborn_fatal_extreme_age_atypical",
-        "pmc_id": None,
-        "verification_confidence": 1.00,
-        "last_verified_date": "2026-05-05",
-        "verification_method": "user_pubmed_ui_direct_fetch_2026-05-05",
-        "caveat": (
-            "NEWBORN with brain-eating amoeba (extreme age "
-            "presentation). Tests differential diagnosis at age "
-            "extremes. Issue corrected 2026-05-05 via PubMed UI direct "
-            "fetch: J Trop Pediatr 2021 Jan 29;67(1):fmaa100 (NOT "
-            "issue 2). Authors: Yalcin Celik, Ali Ertuğ Arslankoylu. "
-            "Diacritic preservation: 'Ertuğ' (UTF-8 c4 9f for ğ) - "
-            "given name only, collapses to initial in Vancouver."
-        ),
-    },
     # ------------------------------------------------------------------------
     # Added 2026-05-05 from Commit 2 of 5 sequential safe path.
     # Methodology mix: 11 research_mode_4pass + 3
