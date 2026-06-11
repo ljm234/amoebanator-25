@@ -704,8 +704,8 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_subtype": "case_report_pediatric_fatal_atypical_myocarditis_indoor_pool",
         "pmc_id": "PMC11599265",
         "verification_confidence": 1.00,
-        "last_verified_date": "2026-05-04",
-        "verification_method": "user_pubmed_ui_direct_fetch",
+        "last_verified_date": "2026-06-11",
+        "verification_method": "user_eyeson_pubmed_pmc_2026_06_11",
         "caveat": (
             "6yo F Sichuan China, indoor heated pool 7d pre-onset April "
             "2024, fulminant myocarditis presentation, ECMO-managed, "
@@ -738,8 +738,8 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_subtype": "epi_field_investigation_pediatric_fatal_indoor_pool",
         "pmc_id": "PMC12440956",
         "verification_confidence": 1.00,
-        "last_verified_date": "2026-05-04",
-        "verification_method": "user_pubmed_ui_direct_fetch",
+        "last_verified_date": "2026-06-11",
+        "verification_method": "user_eyeson_pubmed_pmc_2026_06_11",
         "caveat": (
             "Same April 2024 6yo Chengdu index patient as Lin et al. "
             "2024 Front Microbiol myocarditis paper (PMID 39606118). "
@@ -1373,8 +1373,8 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "anchor_subtype": "asia_china_henan_lushan_pediatric_bathhouse_mNGS_fatal_2024",
         "pmc_id": "PMC12273379",
         "verification_confidence": 1.00,
-        "last_verified_date": "2026-05-05",
-        "verification_method": "user_pubmed_ui_direct_fetch",
+        "last_verified_date": "2026-06-11",
+        "verification_method": "user_eyeson_pubmed_pmc_2026_06_11",
         "caveat": (
             "6yo child Lushan County Henan Province China; symptom "
             "onset 5 Dec 2024; transferred Eastern District Henan "
@@ -1740,9 +1740,9 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "title": "Causes of encephalitis and differences in their clinical presentations in England: a multicentre, population-based prospective study",
         "anchor_type": "cohort",
         "anchor_subtype": "england_encephalitis_etiology_population_based",
-        "verification_confidence": 0.95,
-        "verification_method": "web_pubmed_ncbi_esummary_2026_05_11",
-        "last_verified_date": "2026-05-11",
+        "verification_confidence": 1.00,
+        "verification_method": "user_eyeson_pubmed_fulltext_2026_06_11",
+        "last_verified_date": "2026-06-11",
         "caveat": (
             "England population-based encephalitis etiology study, 203 "
             "cases. HSV 19%, VZV 5%, autoimmune anti-NMDAR 4%, unknown "
