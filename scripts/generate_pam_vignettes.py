@@ -1245,86 +1245,14 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
             "management on TBI principles; THIRD documented North "
             "American PAM survivor. 8 authors; preserve lowercase 'da' "
             "particle in 'da Silva AJ' per PubMed XML. Definitive case "
-            "report subsequently invoked by Linam-Cope letter of "
-            "concern PMID 28501613 against Heggie/Küpper PMID "
-            "28013053. Pairs with Burki 2024 Pakistan SURVIVOR (PMID "
-            "38526236) for outcome-contrast adjudication. Authors: W. "
+            "report subsequently invoked by the Linam-Cope letter of "
+            "concern (PMID 28501613) addressing a competing secondary "
+            "survivor report. Pairs with Burki 2024 Pakistan SURVIVOR "
+            "(PMID 38526236) for outcome-contrast adjudication. Authors: "
+            "W. "
             "Matthew Linam, Mubbasheer Ahmed, Jennifer R. Cope, Craig "
             "Chu, Govinda S. Visvesvara, Alexandre J. da Silva, Yvonne "
             "Qvarnstrom, Jerril Green."
-        ),
-    },
-    "28013053": {
-        "pmid": "28013053",
-        "doi": "10.1016/j.tmaid.2016.12.005",
-        "authors_short": "Heggie TW, Küpper T",
-        "authors_full": ["Heggie TW", "Küpper T"],
-        "author_aliases": {
-            "Küpper T": ["Kupper T"],
-        },
-        "alias_rationale": (
-            "Author 2 surname Küpper preserves UTF-8 ü (U+00FC, c3 bc) "
-            "per PubMed XML and ScienceDirect publisher byline. PubMed "
-            "UI fetch 2026-05-05 confirmed: search URL itself contains "
-            "URL-encoded 'K%C3%BCpper' confirming UTF-8 preservation in "
-            "NLM index. Multiple downstream citations strip diacritic "
-            "to 'Kupper T' (CDC PMC6112607 Linam letter of concern, "
-            "BMC Infect Dis Wang 2018 reference list, ResearchGate "
-            "metadata, Acta Parasitologica). Canonical = 'Küpper T' "
-            "(preserve diacritic verbatim per PubMed XML and Travel "
-            "Med Infect Dis publisher byline); alias = 'Kupper T' for "
-            "downstream search recall. Verified user_pubmed_ui_direct_"
-            "fetch on this entry to lock dual-form decision."
-        ),
-        "journal": "Travel Medicine and Infectious Disease",
-        "journal_short_code": "Travel Med Infect Dis",
-        "year": 2017,
-        "volume": "16",
-        "issue": None,
-        "pages": "49-51",
-        "title": "Surviving Naegleria fowleri infections: A successful case report and novel therapeutic approach",
-        "anchor_type": "case_report",
-        "anchor_subtype": "americas_usa_third_survivor_secondary_report_subject_of_letter_of_concern",
-        "pmc_id": None,
-        "verification_confidence": 1.00,
-        "last_verified_date": "2026-06-09",
-        "verification_method": "user_eyeson_pubmed_fulltext_2026_06_09",
-        "caveat": (
-            "2 authors. UTF-8 dual-form (Burki/Burqi pattern, Option 3): "
-            "canonical 'Küpper T' with U+00FC ü preserved per PubMed XML "
-            "and ScienceDirect publisher byline. Affiliations: Bowling "
-            "Green State University (Heggie); RWTH Aachen Technical "
-            "University Institute of Occupational and Social Medicine "
-            "(Küpper). Subject of Linam-Cope letter of concern PMID "
-            "28501613; response is Heggie 2017 PMID 29241583. Authors: "
-            "Travis W. Heggie, Thomas Küpper."
-        ),
-    },
-    "29241583": {
-        "pmid": "29241583",
-        "doi": "10.1016/j.tmaid.2017.11.010",
-        "authors_short": "Heggie TW",
-        "authors_full": ["Heggie TW"],
-        "journal": "Travel Medicine and Infectious Disease",
-        "journal_short_code": "Travel Med Infect Dis",
-        "year": 2017,
-        "volume": "20",
-        "issue": None,
-        "pages": "66",
-        "title": "Surviving Naegleria fowleri infections: Response",
-        "anchor_type": "case_report",
-        "anchor_subtype": "americas_usa_response_to_letter_of_concern_linam_chain_completion",
-        "pmc_id": None,
-        "verification_confidence": 1.00,
-        "last_verified_date": "2026-06-08",
-        "verification_method": "user_eyeson_pubmed_fulltext_2026_06_08",
-        "caveat": (
-            "Closes the Linam 3-chain: (a) Linam 2015 PMID 25667249 "
-            "-> (b) Heggie & Küpper 2017 PMID 28013053 -> (c) "
-            "Linam-Cope LoC 2017 PMID 28501613 (already in registry) "
-            "-> (d) Heggie 2017 Response PMID 29241583 (this entry). "
-            "Sole author Heggie - Küpper not co-signing the response. "
-            "Authors: Travis W. Heggie."
         ),
     },
     "38182931": {
@@ -2961,9 +2889,7 @@ DAY1_DISTRIBUTION: list[dict[str, Any]] = [
 #   - cryptic exposure: v21 Phung 2025 (PMID 39795618) Mekong Delta
 #   - atypical:        v23 Lin 2024 (PMID 39606118) Sichuan myocarditis
 #   - travel-imported: v24 Hong 2023 (PMID 37727924) Korea-from-Thailand
-#   - Linam 3-chain:   v25 Linam 2015 (PMID 25667249) survivor
-#                      (companion PMIDs 28013053 + 29241583 are commentary
-#                      anchors, not anchored to specific vignettes)
+#   - Linam survivor:  v25 Linam 2015 (PMID 25667249) survivor anchor
 #
 # Imputation policy: any vignette whose demographics are NOT directly read
 # from the anchor PMID's case-report content is marked
