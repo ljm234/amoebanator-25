@@ -1807,9 +1807,9 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "title": "Herpes simplex encephalitis: adolescents and adults",
         "anchor_type": "review",
         "anchor_subtype": "hsv_encephalitis_adolescents_adults_review_acyclovir_protocol",
-        "verification_confidence": 0.95,
-        "verification_method": "web_pubmed_ui_v4_2026_05_07",
-        "last_verified_date": "2026-05-07",
+        "verification_confidence": 1.00,
+        "verification_method": "user_eyeson_pubmed_fulltext_2026_06_11",
+        "last_verified_date": "2026-06-11",
         "caveat": (
             "Comprehensive HSE review for adolescents and adults. "
             "Acyclovir 10 mg/kg every 8 hours for 21 days protocol. "
@@ -1847,9 +1847,10 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "title": "Aseptic meningitis in children: analysis of 506 cases",
         "anchor_type": "cohort",
         "anchor_subtype": "pediatric_aseptic_meningitis_pmn_predominant_enterovirus_cohort",
-        "verification_confidence": 0.95,
-        "verification_method": "web_pubmed_ui_v4_2026_05_07",
-        "last_verified_date": "2026-05-07",
+        "pmc_id": "PMC1933255",
+        "verification_confidence": 1.00,
+        "verification_method": "user_eyeson_pubmed_pmc_2026_06_11",
+        "last_verified_date": "2026-06-11",
         "caveat": (
             "506-child aseptic meningitis cohort Athens Greece (Aghia "
             "Sophia Children's Hospital tertiary center serving "
@@ -1862,8 +1863,8 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
             "lethargy or irritation 46 percent, seizures 2.3 percent. "
             "Median CSF cell count 201 per mm3. CRITICAL ANCHOR: "
             "polymorphonuclear predominance greater than 50 percent in "
-            "58.3 percent of EV PCR-positive cases (47/96 tested EV "
-            "PCR-positive = 48.9 percent). Contradicts textbook "
+            "58.3 percent of cases. Enterovirus RNA detected in 47 of "
+            "96 tested (48.9 percent). Contradicts textbook "
             "viral-CSF-lymphocytic simplification. Anchor for Class 3 "
             "enterovirus pediatric PMN-predominant ambiguity case "
             "(Subphase 1.3 commit 5.3.2). PubMed canonical 2(7); PLOS "
@@ -1974,15 +1975,14 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "title": "Dexamethasone for the treatment of tuberculous meningitis in adolescents and adults",
         "anchor_type": "rct",
         "anchor_subtype": "hcmc_vietnam_dexamethasone_tbm_rct_adults",
-        "verification_confidence": 0.85,
-        "verification_method": "web_pubmed_ui_v5_2026_05_11",
-        "last_verified_date": "2026-05-11",
+        "verification_confidence": 1.00,
+        "verification_method": "user_eyeson_pubmed_fulltext_2026_06_11",
+        "last_verified_date": "2026-06-11",
         "caveat": (
             "Subphase 1.4 commit 5.4.0 anchor for Class 4 TBM. HCMC "
             "Vietnam dexamethasone RCT in adolescents and adults with TBM; "
             "mortality reduction with adjunctive dexamethasone. 21-author "
-            "Vancouver list confirmed via PubMed UI. verification_confidence"
-            "=0.85 pre-direct-fetch."
+            "Vancouver list confirmed via PubMed UI."
         ),
     },
     "20822958": {
@@ -2003,16 +2003,15 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "title": "Tuberculous meningitis: a uniform case definition for use in clinical research",
         "anchor_type": "guideline",
         "anchor_subtype": "tbm_uniform_case_definition_clinical_research",
-        "verification_confidence": 0.85,
-        "verification_method": "web_pubmed_ui_v5_2026_05_11",
-        "last_verified_date": "2026-05-11",
+        "verification_confidence": 1.00,
+        "verification_method": "user_eyeson_pubmed_fulltext_2026_06_11",
+        "last_verified_date": "2026-06-11",
         "caveat": (
             "Subphase 1.4 commit 5.4.0 anchor for Class 4 TBM. Marais "
             "2010 uniform case definition is the canonical clinical "
             "research framework cited in ml/schemas/labels.py docstring. "
             "Torok ME diacritic O-with-umlaut rendered as plain O for "
-            "ASCII safety; original is Torok with diacritic. "
-            "verification_confidence=0.85 pre-direct-fetch."
+            "ASCII safety; original is Torok with diacritic."
         ),
     },
     "24655399": {
@@ -2060,15 +2059,14 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "title": "Intensified Antituberculosis Therapy in Adults with Tuberculous Meningitis",
         "anchor_type": "rct",
         "anchor_subtype": "intensified_tbm_rct_hcmc_vietnam_2016",
-        "verification_confidence": 0.85,
-        "verification_method": "web_pubmed_ui_v5_2026_05_11",
-        "last_verified_date": "2026-05-11",
+        "verification_confidence": 1.00,
+        "verification_method": "user_eyeson_pubmed_fulltext_2026_06_11",
+        "last_verified_date": "2026-06-11",
         "caveat": (
             "Subphase 1.4 commit 5.4.0 anchor for Class 4 TBM. HCMC "
             "intensified anti-TB therapy RCT; no mortality benefit at "
             "9 months. Anchor for HIV-coinfected and adult HIV-negative "
-            "strata. 24-author Vancouver list confirmed via PubMed UI. "
-            "verification_confidence=0.85 pre-direct-fetch."
+            "strata. 24-author Vancouver list confirmed via PubMed UI."
         ),
     },
     "35429482": {
