@@ -1767,9 +1767,9 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "title": "Acute Viral Encephalitis",
         "anchor_type": "review",
         "anchor_subtype": "viral_encephalitis_clinical_review",
-        "verification_confidence": 0.95,
-        "verification_method": "web_pubmed_ncbi_esummary_2026_05_11",
-        "last_verified_date": "2026-05-11",
+        "verification_confidence": 1.00,
+        "verification_method": "user_eyeson_pubmed_fulltext_2026_06_11",
+        "last_verified_date": "2026-06-11",
         "caveat": (
             "NEJM clinical review of acute viral encephalitis. Anchor "
             "for Class 3 enterovirus + arboviral + HSV-2/VZV vignettes; "
