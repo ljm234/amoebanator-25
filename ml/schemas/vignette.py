@@ -15,7 +15,7 @@ Citations summary:
     PAM: CDC PAM 2017 case definition; MMWR 2025 (PMID 40146665)
     TB meningitis: Marais Lancet ID 2010; Ye TM&IH 2023 (doi:10.1111/tmi.13849)
     Cryptococcal: Ford CID 2018 (PMC5850628); NIH OI guidelines
-    GAE/Balamuthia: Bravo PMC8760460; Gotuzzo OFID 2026 (doi:10.1093/ofid/ofaf695.345)
+    GAE/Balamuthia: Bravo PMC8760460
     NCC: Del Brutto 2017 (PMID 28017213); Allen Pathogens 2023
     Inter-rater: Cohen 1960; Landis & Koch 1977; McHugh 2012 (PMC3900052)
 """

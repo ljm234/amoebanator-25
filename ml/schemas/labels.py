@@ -6,7 +6,7 @@ Citations per class:
 - Viral: IDSA Tunkel et al. 2008 (doi:10.1086/589747)
 - Tuberculous: Marais et al. Lancet Infect Dis 2010 (doi:10.1016/S1473-3099(10)70138-9)
 - Cryptococcal/Fungal: NIH OI guidelines; AMBITION-cm trial
-- GAE (Acanthamoeba/Balamuthia): Bravo PMC8760460; Gotuzzo et al. OFID 2026 (doi:10.1093/ofid/ofaf695.345)
+- GAE (Acanthamoeba/Balamuthia): Bravo PMC8760460
 - Neurocysticercosis: Del Brutto et al. J Neurol Sci 2017 (PMID 28017213); Allen et al. Pathogens 2023 (doi:10.3390/pathogens12111313)
 - Cerebral malaria/severe arboviral: WHO 2023 Malaria Guidelines; Guzman & Martinez Viruses 2024
 - Non-infectious mimics: Hinchey NEJM 1996 (PRES original); Graus et al. Lancet Neurol 2016 (NMDAR)

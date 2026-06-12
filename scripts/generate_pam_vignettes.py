@@ -1950,9 +1950,9 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
     # Subphase 1.4 commit 5.4.0 ADDs - Class 4 (TBM) + Class 5 (Cryptococcal)
     # + Class 6 (GAE) anchor PMIDs. 18 total: 6 TBM + 6 Crypto + 6 GAE.
     # PubMed-verified via web search 2026-05-11 (verification_method=
-    # web_pubmed_ui_v5_2026_05_11). DOI-only entries (Gotuzzo OFID
-    # 2026 supplement abstract) carry verification_confidence < 0.90 with
-    # explicit caveat disclosure of pre-PubMed-indexing status.
+    # web_pubmed_ui_v5_2026_05_11). All Subphase 1.4 anchors are
+    # PubMed-indexed at registration with explicit caveat disclosure of
+    # verification provenance.
     # Zero modifications to pre-existing PMID_REGISTRY entries.
     # ========================================================================
     # ---- Class 4 (Tuberculous meningitis) anchors ----
@@ -2328,41 +2328,6 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         ),
     },
     # ---- Class 6 (Granulomatous amebic encephalitis) anchors ----
-    "DOI_10_1093_ofid_ofaf695_345": {
-        "pmid": "",
-        "doi": "10.1093/ofid/ofaf695.345",
-        "authors_short": "Gotuzzo E et al.",
-        "authors_full": [
-            "Gotuzzo E", "Martinez D", "Cornejo-Esparza BM",
-            "Guillen D", "Seas C", "Bravo FG",
-        ],
-        "journal": "Open Forum Infect Dis",
-        "journal_short_code": "OFID",
-        "year": 2026,
-        "volume": "13",
-        "issue": "Supplement_1",
-        "pages": "ofaf695.345",
-        "title": "P-117. Clinical and Epidemiological Characteristics of Balamuthia mandrillaris Infection in Peru: A Retrospective Case Series",
-        "anchor_type": "case_series",
-        "anchor_subtype": "gotuzzo_peru_balamuthia_68_case_series_ofid_2026_supplement",
-        "verification_confidence": 0.75,
-        "verification_method": "web_doi_resolve_oxford_academic_2026_05_11",
-        "last_verified_date": "2026-05-11",
-        "caveat": (
-            "Subphase 1.4 commit 5.4.0 anchor for Class 6 GAE. "
-            "DOI-only entry: this is an Open Forum Infectious Diseases "
-            "2026 supplement / conference abstract (IDWeek-style) and is "
-            "NOT PubMed-indexed at registration time 2026-05-11. Registry "
-            "key prefixed DOI_ to disambiguate from numeric PMIDs. "
-            "Vignettes anchored to this entry must resolve via doi field "
-            "in LiteratureAnchor (not pmid). Master prompt 1.4.6 cites "
-            "this as the 68-case Peru Balamuthia primary anchor; 91.7 "
-            "percent mortality and centro-facial skin lesion preceding "
-            "CNS by median 15 months. verification_confidence=0.75 "
-            "reflects supplement-abstract (not full peer-reviewed paper) "
-            "honest disclosure. doi-only registration."
-        ),
-    },
     "35059659": {
         "pmid": "35059659",
         "doi": "10.1016/j.jdin.2021.11.005",
@@ -5475,20 +5440,20 @@ CRYPTO_DISTRIBUTION: list[dict[str, Any]] = [
 # Subphase 1.4 - GAE_DISTRIBUTION (Class 6, n=30, vignette_id 181-210)
 # ----------------------------------------------------------------------------
 # Master prompt L1504: 15 Balamuthia + 15 Acanthamoeba. Balamuthia: 12/15
-# Peruvian or Hispanic ethnicity (Gotuzzo 7 + Alvarez/Bravo 3 + Cabello-
+# Peruvian or Hispanic ethnicity (Alvarez/Bravo 10 + Cabello-
 # Vilchez 2) + 3/15 non-Peru (Cope US surveillance with Hispanic subset).
 # Acanthamoeba: 10/15 immunocompromised (Damhorst + Visvesvara) + 5/15
 # corneal-with-CNS-spread (Visvesvara FEMS review subset).
 #
 # Anchors (6, all from PMID_REGISTRY at HEAD 23f1e8a commit 5.4.0):
-#   DOI_10_1093_ofid_ofaf695_345 Gotuzzo 2026 OFID Peru 68-case (7 slots)
+#   35059659 Alvarez/Bravo JAAD Int 2022 cutaneous balamuthiasis (7 slots)
 #   35059659 Alvarez/Bravo JAAD Int 2022 cutaneous balamuthiasis (3)
 #   31758593 Cabello-Vilchez Neuropathology 2020 Lima pediatric (2)
 #   30239654 Cope CID 2019 Balamuthia US 1974-2016 (3)
 #   17428307 Visvesvara FEMS 2007 free-living amoebae review (7)
 #   34461057 Damhorst Lancet ID 2022 Acanthamoeba AIDS (8)
 #
-# Wave: pilot 2 (181 Gotuzzo + 182 Visvesvara) + wave_1 14 Balamuthia-
+# Wave: pilot 2 (181 Alvarez + 182 Visvesvara) + wave_1 14 Balamuthia-
 # heavy (183-196) + wave_2 14 Acanthamoeba-heavy (197-210).
 #
 # Cross-class invariants:
@@ -5509,8 +5474,8 @@ GAE_DISTRIBUTION: list[dict[str, Any]] = [
     # ------------------------------------------------------------
     {
         "vignette_id": 181,
-        "filename": "gae_181_gotuzzo_peru_balamuthia_pilot.json",
-        "anchor_pmid": "DOI_10_1093_ofid_ofaf695_345",
+        "filename": "gae_181_alvarez_peru_balamuthia_pilot.json",
+        "anchor_pmid": "35059659",
         "pathogen_subtype": "balamuthia_mandrillaris",
         "demographic_stratum": "balamuthia_peruvian_with_skin_lesion",
         "age_years": 42, "age_label": "42 years", "sex": "male",
@@ -5526,7 +5491,7 @@ GAE_DISTRIBUTION: list[dict[str, Any]] = [
         "methodology_tier": "tier_3_case_series_anchored",
         "diagnostic_ambiguity": False, "freshwater_exposure_within_14d": False,
         "wave_assignment": "pilot", "pilot": True,
-        "notes": "Gotuzzo 2026 OFID Peru 68-case Balamuthia pilot; centrofacial skin lesion 15mo preceding CNS; 91.7% mortality.",
+        "notes": "Alvarez/Bravo JAAD Int 2022 cutaneous balamuthiasis pilot; centrofacial skin lesion 15mo preceding CNS; fatal.",
     },
     {
         "vignette_id": 182,
@@ -5551,10 +5516,10 @@ GAE_DISTRIBUTION: list[dict[str, Any]] = [
     },
     # ------------------------------------------------------------
     # WAVE 1 Balamuthia-heavy (14 slots, ids 183-196)
-    # Gotuzzo x6 + Alvarez/Bravo x3 + Cabello-Vilchez x2 + Cope x3 = 14
+    # Alvarez/Bravo x9 + Cabello-Vilchez x2 + Cope x3 = 14
     # ------------------------------------------------------------
-    {"vignette_id": 183, "filename": "gae_183_gotuzzo_lima_balamuthia_male.json",
-     "anchor_pmid": "DOI_10_1093_ofid_ofaf695_345", "pathogen_subtype": "balamuthia_mandrillaris",
+    {"vignette_id": 183, "filename": "gae_183_alvarez_lima_balamuthia_male.json",
+     "anchor_pmid": "35059659", "pathogen_subtype": "balamuthia_mandrillaris",
      "demographic_stratum": "balamuthia_peruvian_with_skin_lesion",
      "age_years": 38, "age_label": "38 years", "sex": "male",
      "geography_label": "Lima coast, Peru", "geography_region": "peru_lima_coast",
@@ -5566,10 +5531,10 @@ GAE_DISTRIBUTION: list[dict[str, Any]] = [
      "csf_profile_tier": "gae_granulomatous_lymphocytic_modest_protein",
      "methodology_tier": "tier_3_case_series_anchored", "diagnostic_ambiguity": False,
      "freshwater_exposure_within_14d": False, "wave_assignment": "wave_1", "pilot": False,
-     "notes": "Gotuzzo Peru Balamuthia centrofacial skin lesion 15mo preceding CNS; fatal."},
+     "notes": "Alvarez/Bravo Peru Balamuthia centrofacial skin lesion 15mo preceding CNS; fatal."},
     # Resolution #1 applied: slot 184 (Lambayeque) geography_region=peru_lima_coast
-    {"vignette_id": 184, "filename": "gae_184_gotuzzo_lambayeque_balamuthia_female.json",
-     "anchor_pmid": "DOI_10_1093_ofid_ofaf695_345", "pathogen_subtype": "balamuthia_mandrillaris",
+    {"vignette_id": 184, "filename": "gae_184_alvarez_lambayeque_balamuthia_female.json",
+     "anchor_pmid": "35059659", "pathogen_subtype": "balamuthia_mandrillaris",
      "demographic_stratum": "balamuthia_peruvian_with_skin_lesion",
      "age_years": 51, "age_label": "51 years", "sex": "female",
      "geography_label": "Lambayeque, Peru", "geography_region": "peru_lima_coast",
@@ -5581,11 +5546,11 @@ GAE_DISTRIBUTION: list[dict[str, Any]] = [
      "csf_profile_tier": "gae_granulomatous_lymphocytic_modest_protein",
      "methodology_tier": "tier_3_case_series_anchored", "diagnostic_ambiguity": False,
      "freshwater_exposure_within_14d": False, "wave_assignment": "wave_1", "pilot": False,
-     "notes": "Gotuzzo Peru Lambayeque coastal Balamuthia female; centrofacial skin lesion 18mo preceding CNS. Resolution #1: geography_region=peru_lima_coast (no peru_lambayeque schema enum); city in geography_label.",
+     "notes": "Alvarez/Bravo Peru Lambayeque coastal Balamuthia female; centrofacial skin lesion 18mo preceding CNS. Resolution #1: geography_region=peru_lima_coast (no peru_lambayeque schema enum); city in geography_label.",
      "resolution_applied": "5_4_1_resolution_1_lambayeque_to_peru_lima_coast"},
     # Resolution #1 applied: slot 185 (La Libertad) geography_region=peru_lima_coast
-    {"vignette_id": 185, "filename": "gae_185_gotuzzo_laliber_balamuthia_young.json",
-     "anchor_pmid": "DOI_10_1093_ofid_ofaf695_345", "pathogen_subtype": "balamuthia_mandrillaris",
+    {"vignette_id": 185, "filename": "gae_185_alvarez_laliber_balamuthia_young.json",
+     "anchor_pmid": "35059659", "pathogen_subtype": "balamuthia_mandrillaris",
      "demographic_stratum": "balamuthia_peruvian_with_skin_lesion",
      "age_years": 19, "age_label": "19 years", "sex": "male",
      "geography_label": "La Libertad, Peru", "geography_region": "peru_lima_coast",
@@ -5597,10 +5562,10 @@ GAE_DISTRIBUTION: list[dict[str, Any]] = [
      "csf_profile_tier": "gae_granulomatous_lymphocytic_modest_protein",
      "methodology_tier": "tier_3_case_series_anchored", "diagnostic_ambiguity": False,
      "freshwater_exposure_within_14d": False, "wave_assignment": "wave_1", "pilot": False,
-     "notes": "Gotuzzo Peru La Libertad young adult Balamuthia; 12mo preceding interval. Resolution #1: geography_region=peru_lima_coast (no peru_la_libertad schema enum); city in geography_label.",
+     "notes": "Alvarez/Bravo Peru La Libertad young adult Balamuthia; 12mo preceding interval. Resolution #1: geography_region=peru_lima_coast (no peru_la_libertad schema enum); city in geography_label.",
      "resolution_applied": "5_4_1_resolution_1_la_libertad_to_peru_lima_coast"},
-    {"vignette_id": 186, "filename": "gae_186_gotuzzo_lima_balamuthia_survived.json",
-     "anchor_pmid": "DOI_10_1093_ofid_ofaf695_345", "pathogen_subtype": "balamuthia_mandrillaris",
+    {"vignette_id": 186, "filename": "gae_186_alvarez_lima_balamuthia_survived.json",
+     "anchor_pmid": "35059659", "pathogen_subtype": "balamuthia_mandrillaris",
      "demographic_stratum": "balamuthia_peruvian_with_skin_lesion",
      "age_years": 34, "age_label": "34 years", "sex": "male",
      "geography_label": "Lima coast, Peru", "geography_region": "peru_lima_coast",
@@ -5612,9 +5577,9 @@ GAE_DISTRIBUTION: list[dict[str, Any]] = [
      "csf_profile_tier": "gae_granulomatous_lymphocytic_modest_protein",
      "methodology_tier": "tier_3_case_series_anchored", "diagnostic_ambiguity": False,
      "freshwater_exposure_within_14d": False, "wave_assignment": "wave_1", "pilot": False,
-     "notes": "Gotuzzo Peru rare survivor (~8.3%) on miltefosine + albendazole + sulfadiazine; sequelae."},
-    {"vignette_id": 187, "filename": "gae_187_gotuzzo_lima_balamuthia_elderly.json",
-     "anchor_pmid": "DOI_10_1093_ofid_ofaf695_345", "pathogen_subtype": "balamuthia_mandrillaris",
+     "notes": "Alvarez/Bravo Peru rare survivor on miltefosine + albendazole + sulfadiazine; sequelae."},
+    {"vignette_id": 187, "filename": "gae_187_alvarez_lima_balamuthia_elderly.json",
+     "anchor_pmid": "35059659", "pathogen_subtype": "balamuthia_mandrillaris",
      "demographic_stratum": "balamuthia_peruvian_with_skin_lesion",
      "age_years": 64, "age_label": "64 years", "sex": "male",
      "geography_label": "Lima coast, Peru", "geography_region": "peru_lima_coast",
@@ -5626,9 +5591,9 @@ GAE_DISTRIBUTION: list[dict[str, Any]] = [
      "csf_profile_tier": "gae_granulomatous_lymphocytic_modest_protein",
      "methodology_tier": "tier_3_case_series_anchored", "diagnostic_ambiguity": False,
      "freshwater_exposure_within_14d": False, "wave_assignment": "wave_1", "pilot": False,
-     "notes": "Gotuzzo Peru elderly diabetic Balamuthia; centrofacial skin lesion 20mo preceding CNS."},
-    {"vignette_id": 188, "filename": "gae_188_gotuzzo_lima_balamuthia_female_30s.json",
-     "anchor_pmid": "DOI_10_1093_ofid_ofaf695_345", "pathogen_subtype": "balamuthia_mandrillaris",
+     "notes": "Alvarez/Bravo Peru elderly diabetic Balamuthia; centrofacial skin lesion 20mo preceding CNS."},
+    {"vignette_id": 188, "filename": "gae_188_alvarez_lima_balamuthia_female_30s.json",
+     "anchor_pmid": "35059659", "pathogen_subtype": "balamuthia_mandrillaris",
      "demographic_stratum": "balamuthia_peruvian_with_skin_lesion",
      "age_years": 31, "age_label": "31 years", "sex": "female",
      "geography_label": "Lima coast, Peru", "geography_region": "peru_lima_coast",
@@ -5640,7 +5605,7 @@ GAE_DISTRIBUTION: list[dict[str, Any]] = [
      "csf_profile_tier": "gae_granulomatous_lymphocytic_modest_protein",
      "methodology_tier": "tier_3_case_series_anchored", "diagnostic_ambiguity": False,
      "freshwater_exposure_within_14d": False, "wave_assignment": "wave_1", "pilot": False,
-     "notes": "Gotuzzo Peru Lima female 31yo Balamuthia; median 15mo preceding interval."},
+     "notes": "Alvarez/Bravo Peru Lima female 31yo Balamuthia; median 15mo preceding interval."},
     {"vignette_id": 189, "filename": "gae_189_alvarezbravo_cutaneous_balamuthia_1.json",
      "anchor_pmid": "35059659", "pathogen_subtype": "balamuthia_mandrillaris",
      "demographic_stratum": "balamuthia_peruvian_with_skin_lesion",
@@ -22765,7 +22730,7 @@ SUBPHASE_1_4_PILOT_FILENAME: dict[int, str] = {
     122: "tbm_122_vantoorn_cape_town_pediatric_pilot.json",
     151: "crypto_151_perfect_idsa_hiv_pilot.json",
     152: "crypto_152_singh_transplant_pilot.json",
-    181: "gae_181_gotuzzo_peru_balamuthia_pilot.json",
+    181: "gae_181_alvarez_peru_balamuthia_pilot.json",
     182: "gae_182_visvesvara_acanthamoeba_aids_pilot.json",
 }
 
@@ -22890,8 +22855,8 @@ _SUBPHASE_1_4_ANCHOR_TYPE_MAP: dict[str, str] = {
 def _subphase_1_4_literature_anchor(pmid_meta: dict[str, Any]) -> dict[str, Any]:
     """Variant of _build_literature_anchor with two adaptations.
 
-    1. Converts empty-string pmid to None. GAE 181 anchor (Gotuzzo OFID 2026
-       supplement) is DOI-only with pmid='' in the registry; the
+    1. Converts empty-string pmid to None (retained for robustness; all
+       current Subphase 1.4 anchors carry a numeric PubMed pmid). The
        VignetteSchema LiteratureAnchor regex requires pmid to match
        ^\\d{7,9}$ if non-None, so empty string must become None.
     2. Maps registry anchor_type='case_series' to schema anchor_type=
@@ -23203,27 +23168,27 @@ def _gae_dx_tests_balamuthia_ifa_pcr_biopsy(
     doi: str, ifa_titer: str = "1:512",
 ) -> list[dict[str, Any]]:
     """Balamuthia: skin biopsy + brain biopsy + IFA + mNGS.
-    Gotuzzo 2026 OFID + Alvarez/Bravo 2022 JAAD Int."""
+    Alvarez/Bravo 2022 JAAD Int (cutaneous balamuthiasis clinicopathology)."""
     cite = f"doi:{doi}"
     return [
         {"test_name": "Skin biopsy histology (centrofacial plaque)",
          "result": ("Granulomatous dermatitis with multinucleated giant cells; "
                     "Balamuthia mandrillaris trophozoites identified on PAS and "
                     "immunohistochemistry."),
-         "sensitivity_pct": 70.0, "specificity_pct": 99.0,
+         "sensitivity_pct": None, "specificity_pct": None,
          "citation_pmid_or_doi": cite},
         {"test_name": "Brain biopsy histology (right parietal lesion)",
          "result": ("Granulomatous inflammation with trophozoites and cysts "
                     "consistent with B. mandrillaris; positive IHC."),
-         "sensitivity_pct": 80.0, "specificity_pct": 99.0,
+         "sensitivity_pct": None, "specificity_pct": None,
          "citation_pmid_or_doi": cite},
         {"test_name": "Serum Balamuthia indirect immunofluorescence (IFA)",
          "result": f"Positive, titer {ifa_titer}.",
-         "sensitivity_pct": 75.0, "specificity_pct": 95.0,
+         "sensitivity_pct": None, "specificity_pct": None,
          "citation_pmid_or_doi": cite},
         {"test_name": "Metagenomic next-generation sequencing (CSF)",
          "result": "Balamuthia mandrillaris reads detected above contamination threshold.",
-         "sensitivity_pct": 80.0, "specificity_pct": 99.0,
+         "sensitivity_pct": None, "specificity_pct": None,
          "citation_pmid_or_doi": cite},
     ]
 
@@ -23263,7 +23228,7 @@ def _gae_dx_tests_acanthamoeba_aids(
 def _gae_imaging_multifocal_ring_enhancing(
     n_lesions: int, locations: str,
 ) -> dict[str, Any]:
-    """multiple_ring_enhancing_lesions imaging pattern. Gotuzzo + Visvesvara."""
+    """multiple_ring_enhancing_lesions imaging pattern. Alvarez/Bravo + Visvesvara."""
     summary = (
         f"{n_lesions} ring-enhancing lesions: {locations}, each with surrounding "
         "vasogenic edema. No basal meningeal enhancement. Pattern characteristic "
@@ -23670,7 +23635,7 @@ def _build_crypto_vignette_152() -> dict[str, Any]:
 
 
 def _build_gae_vignette_181() -> dict[str, Any]:
-    """GAE 181 Gotuzzo Peru Balamuthia pilot: 42yo mestizo Lima coast male,
+    """GAE 181 Alvarez Peru Balamuthia pilot: 42yo mestizo Lima coast male,
     centrofacial skin lesion 15 months preceding CNS, three ring-enhancing
     brain lesions, IFA 1:512 + brain biopsy + mNGS positive."""
     return {
@@ -23717,7 +23682,7 @@ def _build_gae_vignette_181() -> dict[str, Any]:
             locations="right parietal cortex 1.8 cm, left temporal lobe 1.2 cm, and right cerebellar hemisphere 0.9 cm",
         ),
         "diagnostic_tests": {"results": _gae_dx_tests_balamuthia_ifa_pcr_biopsy(
-            doi="10.1093/ofid/ofaf695.345", ifa_titer="1:512",
+            doi="10.1016/j.jdin.2021.11.005", ifa_titer="1:512",
         )},
         "narrative_en": (
             "A 42-year-old mestizo man from coastal Lima, Peru, presented to "
@@ -23737,8 +23702,7 @@ def _build_gae_vignette_181() -> dict[str, Any]:
             "contrast showed three ring-enhancing lesions in the right "
             "parietal cortex, left temporal lobe, and right cerebellar "
             "hemisphere. Skin and brain biopsies showed Balamuthia "
-            "mandrillaris trophozoites on histology and immunohistochemistry. "
-            "Anchored to Gotuzzo OFID 2026. Pilot, hold_for_revision."
+            "mandrillaris trophozoites on histology and immunohistochemistry."
         ),
         "narrative_es": (
             "Varon mestizo de 42 anos de Lima costera, Peru, ingresado al "
@@ -23758,20 +23722,10 @@ def _build_gae_vignette_181() -> dict[str, Any]:
             "Balamuthia mandrillaris en histologia e IHC."
         ),
         "rationale": (
-            "Subphase 1.4 commit 5.4.2 pilot 5 of 6 for Class 6 GAE Balamuthia "
-            "Peru stratum (master prompt 1.4.6 12/15 Peru-Hispanic with skin "
-            "lesion 15-month preceding interval). Anchored via DOI to Gotuzzo "
-            "2026 OFID supplement (DOI-only entry per PMID_REGISTRY commit "
-            "5.4.0 caveat). Three ring-enhancing lesions match multifocal "
-            "imaging mandate. Pre-adjudication hold_for_revision."
+            "Subphase 1.4 commit 5.4.2 pilot 5 of 6 for Class 6 GAE Balamuthia Peru stratum (master prompt 1.4.6: 12 of 15 Peru-Hispanic Balamuthia slots present with a centrofacial skin lesion preceding CNS disease). Anchored to Alvarez P et al. (Bravo F senior author), Cutaneous balamuthiasis: a clinicopathological study, JAAD Int 2022 (PMID 35059659, PMC8760460), which reports centrofacial lesions in 73 percent of patients and a mean cutaneous-lesion duration of 15 months (range 2 months to 5 years). Three ring-enhancing lesions match multifocal imaging mandate. Pre-adjudication hold_for_revision."
         ),
         "anchoring_extras": (
-            "Anchored to Gotuzzo E et al. OFID 2026 supplement (doi:"
-            "10.1093/ofid/ofaf695.345), Peru 68-case Balamuthia retrospective "
-            "series. 42-year-old Lima mestizo male, centrofacial skin lesion "
-            "15 months preceding CNS, modest lymphocytic CSF, three ring-"
-            "enhancing brain lesions, Balamuthia IFA 1:512, brain biopsy and "
-            "mNGS positive. Pre-adjudication kappa 0.70."
+            "Anchored to Alvarez P et al. (Bravo F senior author), Cutaneous balamuthiasis: a clinicopathological study, JAAD Int 2022;6:51-58 (PMID 35059659, PMC8760460, doi:10.1016/j.jdin.2021.11.005), a Peruvian cutaneous-balamuthiasis case series of centrofacial skin lesions preceding CNS disease. 42-year-old Lima mestizo male, centrofacial skin lesion 15 months preceding CNS, modest lymphocytic CSF, three ring-enhancing brain lesions, Balamuthia IFA 1:512, skin and brain biopsy positive, CSF mNGS positive. Pre-adjudication kappa 0.70."
         ),
     }
 

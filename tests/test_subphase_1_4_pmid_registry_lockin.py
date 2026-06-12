@@ -1,13 +1,9 @@
 """Subphase 1.4 Commit 5.4.0 PMID_REGISTRY lock-in tests.
 
-Empirical verification that all 18 Class 4 (TBM) + Class 5 (Cryptococcal) +
+Empirical verification that the Class 4 (TBM) + Class 5 (Cryptococcal) +
 Class 6 (GAE) anchor PMIDs added in commit 5.4.0 resolve in PMID_REGISTRY
-with complete Vancouver metadata.
-
-DOI-only entries (Gotuzzo OFID 2026 conference abstract supplement) are
-registered with synthetic registry keys prefixed `DOI_` and disclosed via
-verification_confidence < 0.90 with a notes/caveat field explaining the
-pre-PubMed-indexing status at commit time.
+with complete Vancouver metadata. All Subphase 1.4 anchors are now
+PubMed-indexed numeric PMIDs.
 """
 from __future__ import annotations
 
@@ -42,7 +38,6 @@ SUBPHASE_1_4_CRYPTO_PMIDS: list[str] = [
 ]
 
 SUBPHASE_1_4_GAE_PMIDS: list[str] = [
-    "DOI_10_1093_ofid_ofaf695_345",  # Gotuzzo E et al. OFID 2026 Peru Balamuthia 68-case series (DOI-only)
     "35059659",  # Alvarez P, Bravo F et al. JAAD Int 2022 cutaneous balamuthiasis clinicopathology
     "31758593",  # Cabello-Vilchez AM et al. Neuropathology 2020 fatal GAE Lima Peru pediatric
     "17428307",  # Visvesvara GS et al. FEMS Immunol Med Microbiol 2007 free-living amoebae review
@@ -53,10 +48,6 @@ SUBPHASE_1_4_GAE_PMIDS: list[str] = [
 SUBPHASE_1_4_ALL = (
     SUBPHASE_1_4_TBM_PMIDS + SUBPHASE_1_4_CRYPTO_PMIDS + SUBPHASE_1_4_GAE_PMIDS
 )
-
-DOI_ONLY_EXPECTED: list[str] = [
-    "DOI_10_1093_ofid_ofaf695_345",  # Gotuzzo OFID 2026 supplement abstract
-]
 
 REQUIRED_FIELDS = [
     "authors_full",
@@ -147,23 +138,6 @@ def test_subphase_1_4_per_class_count_in_target_range():
     assert 5 <= len(SUBPHASE_1_4_GAE_PMIDS) <= 7, (
         f"GAE count {len(SUBPHASE_1_4_GAE_PMIDS)} outside [5,7]"
     )
-
-
-def test_subphase_1_4_doi_only_disclosed():
-    """DOI-only registry keys must carry verification_confidence < 0.90 with
-    explicit caveat/notes disclosure of pre-PubMed-indexing status."""
-    for key in DOI_ONLY_EXPECTED:
-        assert key in PMID_REGISTRY, f"DOI-only key {key!r} not registered"
-        entry = PMID_REGISTRY[key]
-        vc = float(entry["verification_confidence"])
-        assert vc < 0.90, (
-            f"DOI-only {key} verification_confidence={vc} should be < 0.90"
-        )
-        caveat = entry.get("caveat", "") or entry.get("notes", "")
-        assert caveat, f"DOI-only {key} missing caveat/notes disclosure"
-        assert "doi-only" in caveat.lower() or "not pubmed" in caveat.lower() or "supplement" in caveat.lower(), (
-            f"DOI-only {key} caveat does not disclose pre-PubMed-indexing status: {caveat!r}"
-        )
 
 
 def test_subphase_1_4_no_key_collision_with_existing_registry():

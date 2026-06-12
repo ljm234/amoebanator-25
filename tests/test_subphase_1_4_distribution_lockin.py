@@ -228,7 +228,7 @@ def test_subphase_1_4_class_6_strata():
 
 def test_gae_balamuthia_peru_or_hispanic_ge_12_of_15():
     """Master prompt 1.4.6 + 1.4.10: >=10/15 Balamuthia Hispanic; proposal commits to 12/15
-    Peruvian/Hispanic (Gotuzzo 7 + Alvarez/Bravo 3 + Cabello-Vilchez 2)."""
+    Peruvian/Hispanic (Alvarez/Bravo 10 + Cabello-Vilchez 2)."""
     n = 0
     for s in GAE_DISTRIBUTION:
         if not s["pathogen_subtype"].startswith("balamuthia"):
@@ -261,7 +261,7 @@ def test_gae_acanthamoeba_corneal_cns_5_of_15():
 
 def test_gae_skin_lesion_centrofacial_balamuthia_ge_12_of_15():
     """Master prompt 1.4.6: 12/15 Balamuthia with centrofacial skin lesion preceding CNS
-    by median 15 months (Gotuzzo 2026 OFID + Alvarez/Bravo 2022 JAAD Int)."""
+    by a mean of 15 months (Alvarez/Bravo 2022 JAAD Int)."""
     n = sum(
         1 for s in GAE_DISTRIBUTION
         if s["pathogen_subtype"].startswith("balamuthia")
@@ -281,7 +281,7 @@ def test_gae_all_30_chronic_ge_14_days():
 
 def test_gae_skin_lesion_interval_window_when_present():
     """When skin_lesion_centrofacial_chronic=True, interval to CNS must be 6-30 months
-    (Gotuzzo median ~15 months per OFID 2026)."""
+    (Alvarez/Bravo mean ~15 months per JAAD Int 2022)."""
     for s in GAE_DISTRIBUTION:
         if s.get("skin_lesion_centrofacial_chronic") is True:
             interval = s.get("skin_lesion_to_cns_interval_months")

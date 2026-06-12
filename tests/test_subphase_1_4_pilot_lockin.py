@@ -3,7 +3,7 @@
 6 pilot vignettes: TBM 121, 122 + CRYPTO 151, 152 + GAE 181, 182.
 
 Anchored to the 6 PMID_REGISTRY entries verified in commit 5.4.0
-(Thwaites, van Toorn, Perfect, Singh, Gotuzzo OFID DOI-only, Visvesvara).
+(Thwaites, van Toorn, Perfect, Singh, Alvarez/Bravo, Visvesvara).
 
 Resolution #3 applied: TBM 122 Cape Town altitude corrected from 1591m
 (empirical error in proposal) to 50m (Cape Town Atlantic coastal city).
@@ -35,7 +35,7 @@ PILOT_PATHS: dict[int, Path] = {
     122: _REPO_ROOT / "data/vignettes/v2/class_04_tb/tbm_122_vantoorn_cape_town_pediatric_pilot.json",
     151: _REPO_ROOT / "data/vignettes/v2/class_05_fungal/crypto_151_perfect_idsa_hiv_pilot.json",
     152: _REPO_ROOT / "data/vignettes/v2/class_05_fungal/crypto_152_singh_transplant_pilot.json",
-    181: _REPO_ROOT / "data/vignettes/v2/class_06_gae/gae_181_gotuzzo_peru_balamuthia_pilot.json",
+    181: _REPO_ROOT / "data/vignettes/v2/class_06_gae/gae_181_alvarez_peru_balamuthia_pilot.json",
     182: _REPO_ROOT / "data/vignettes/v2/class_06_gae/gae_182_visvesvara_acanthamoeba_aids_pilot.json",
 }
 
