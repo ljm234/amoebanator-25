@@ -2149,15 +2149,15 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "title": "Clinical practice guidelines for the management of cryptococcal disease: 2010 update by the Infectious Diseases Society of America",
         "anchor_type": "guideline",
         "anchor_subtype": "idsa_cryptococcal_2010_guidelines",
-        "verification_confidence": 0.85,
-        "verification_method": "web_pubmed_ui_v5_2026_05_11",
-        "last_verified_date": "2026-05-11",
+        "pmc_id": "PMC5826644",
+        "verification_confidence": 1.00,
+        "verification_method": "user_eyeson_pubmed_pmc_2026_06_11",
+        "last_verified_date": "2026-06-11",
         "caveat": (
             "Subphase 1.4 commit 5.4.0 anchor for Class 5 Cryptococcal. "
             "IDSA 2010 cryptococcal disease management guidelines; "
             "anchor for HIV+CD4<100, transplant, and non-HIV strata. "
-            "15 authors verified via secondary PubMed fetch. "
-            "verification_confidence=0.85 pre-direct-fetch."
+            "15 authors verified."
         ),
     },
     "19182676": {
@@ -2177,15 +2177,15 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "title": "Estimation of the current global burden of cryptococcal meningitis among persons living with HIV/AIDS",
         "anchor_type": "meta_analysis",
         "anchor_subtype": "global_hiv_cryptococcal_burden_estimate",
-        "verification_confidence": 0.85,
-        "verification_method": "web_pubmed_ui_v5_2026_05_11",
-        "last_verified_date": "2026-05-11",
+        "pmc_id": None,
+        "verification_confidence": 1.00,
+        "verification_method": "user_eyeson_pubmed_2026_06_11",
+        "last_verified_date": "2026-06-11",
         "caveat": (
             "Subphase 1.4 commit 5.4.0 anchor for Class 5 Cryptococcal. "
-            "Park 2009 AIDS global burden estimate (approximately 1 "
-            "million cases, 625,000 deaths annually pre-ART scale-up). "
-            "Anchor for HIV+CD4<100 22-slot bulk stratum per master "
-            "prompt 1.4.5. verification_confidence=0.85 pre-direct-fetch."
+            "Park 2009 AIDS global burden estimate (approximately 957,900 "
+            "cases and 624,700 deaths annually). Anchor for HIV+CD4<100 "
+            "22-slot bulk stratum per master prompt 1.4.5."
         ),
     },
     "17262720": {
@@ -2210,16 +2210,16 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "title": "Cryptococcus neoformans in organ transplant recipients: impact of calcineurin-inhibitor agents on mortality",
         "anchor_type": "cohort",
         "anchor_subtype": "transplant_cryptococcus_calcineurin_mortality",
-        "verification_confidence": 0.85,
-        "verification_method": "web_pubmed_ui_v5_2026_05_11",
-        "last_verified_date": "2026-05-11",
+        "pmc_id": "PMC2746485",
+        "verification_confidence": 1.00,
+        "verification_method": "user_eyeson_pubmed_pmc_2026_06_11",
+        "last_verified_date": "2026-06-11",
         "caveat": (
             "Subphase 1.4 commit 5.4.0 anchor for Class 5 Cryptococcal. "
             "Singh 2007 JID multicenter cohort substituted at "
             "verification time for non-resolving 'Pappas CID 2009 "
             "transplant cryptococcus' from master plan. Same role: "
-            "anchor for 4-slot transplant stratum per master prompt 1.4.5. "
-            "verification_confidence=0.85 pre-direct-fetch."
+            "anchor for 4-slot transplant stratum per master prompt 1.4.5."
         ),
     },
     "24963568": {
@@ -2242,16 +2242,17 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "pages": "2487-2498",
         "title": "Timing of antiretroviral therapy after diagnosis of cryptococcal meningitis",
         "anchor_type": "rct",
-        "anchor_subtype": "art_timing_crypto_iris_rct_cost_trial",
-        "verification_confidence": 0.85,
-        "verification_method": "web_pubmed_ui_v5_2026_05_11",
-        "last_verified_date": "2026-05-11",
+        "anchor_subtype": "art_timing_crypto_iris_rct_coat_trial",
+        "pmc_id": "PMC4127879",
+        "verification_confidence": 1.00,
+        "verification_method": "user_eyeson_pubmed_pmc_2026_06_11",
+        "last_verified_date": "2026-06-11",
         "caveat": (
             "Subphase 1.4 commit 5.4.0 anchor for Class 5 Cryptococcal. "
-            "Boulware 2014 COST trial: early ART (within 1-2 wk) vs "
-            "deferred (5 wk) post-crypto-meningitis-diagnosis; early ART "
-            "harm via IRIS. Anchor for HIV+ ART-naive presentation slots. "
-            "verification_confidence=0.85 pre-direct-fetch."
+            "Boulware 2014 COAT trial (Cryptococcal Optimal ART Timing): "
+            "earlier ART (1-2 wk) vs deferred (5 wk) post-cryptococcal-"
+            "meningitis-diagnosis; earlier ART associated with higher "
+            "mortality. Anchor for HIV+ ART-naive presentation slots."
         ),
     },
     "35320642": {
@@ -2267,7 +2268,9 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
             "Comins K", "Singh A", "Muzoora C", "Jjunju S",
             "Nuwagira E", "Mosepele M", "Leeme T", "Siamisang K",
             "Ndhlovu CE", "Hlupeni A", "Mutata C", "van Widenfelt E",
-            "Chen T", "Lortholary O",
+            "Chen T", "Wang D", "Hope W", "Boyer-Chammard T",
+            "Loyse A", "Molloy SF", "Youssouf N", "Lortholary O",
+            "Lalloo DG", "Jaffar S", "Harrison TS",
         ],
         "journal": "N Engl J Med",
         "journal_short_code": "NEJM",
@@ -2278,18 +2281,17 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "title": "Single-Dose Liposomal Amphotericin B Treatment for Cryptococcal Meningitis",
         "anchor_type": "rct",
         "anchor_subtype": "ambition_cm_single_dose_lipo_ampb_2022",
-        "verification_confidence": 0.80,
-        "verification_method": "web_pubmed_ui_v5_2026_05_11",
-        "last_verified_date": "2026-05-11",
+        "pmc_id": "PMC7612678",
+        "verification_confidence": 1.00,
+        "verification_method": "user_eyeson_pubmed_pmc_2026_06_11",
+        "last_verified_date": "2026-06-11",
         "caveat": (
             "Subphase 1.4 commit 5.4.0 anchor for Class 5 Cryptococcal. "
-            "AMBITION-cm RCT (Jarvis 2022). Author list TRUNCATED in "
-            "PubMed UI display past Chen T; full author roster of the "
-            "AMBITION-cm Consortium not enumerable from single PubMed "
-            "fetch. 33 named authors captured plus Lortholary O at end "
-            "from secondary PubMed fetch. verification_confidence=0.80 "
-            "reflects truncated-author-list honest disclosure (lower "
-            "than default 0.85)."
+            "AMBITION-cm RCT (Jarvis 2022); single high-dose liposomal "
+            "amphotericin B vs WHO standard induction for HIV-associated "
+            "cryptococcal meningitis. Full 42-author roster and Ambition "
+            "Study Group attribution confirmed from PMC fulltext. Anchor "
+            "for HIV+ CD4<100 induction-therapy slots."
         ),
     },
     "19757550": {
@@ -2310,9 +2312,10 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "title": "Spread of Cryptococcus gattii into Pacific Northwest region of the United States",
         "anchor_type": "surveillance",
         "anchor_subtype": "cryptococcus_gattii_pacific_nw_spread_2009",
-        "verification_confidence": 0.85,
-        "verification_method": "web_pubmed_ui_v5_2026_05_11",
-        "last_verified_date": "2026-05-11",
+        "pmc_id": "PMC2815957",
+        "verification_confidence": 1.00,
+        "verification_method": "user_eyeson_pubmed_pmc_2026_06_11",
+        "last_verified_date": "2026-06-11",
         "caveat": (
             "Subphase 1.4 commit 5.4.0 anchor for Class 5 Cryptococcal. "
             "Datta 2009 EID Pacific Northwest C. gattii expansion; "
@@ -2320,7 +2323,7 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
             "master prompt 1.4.5. Group attribution 'Cryptococcus gattii "
             "Working Group of the Pacific Northwest' present in PubMed; "
             "12-author Vancouver list captured plus working-group "
-            "attribution. verification_confidence=0.85 pre-direct-fetch."
+            "attribution."
         ),
     },
     # ---- Class 6 (Granulomatous amebic encephalitis) anchors ----
