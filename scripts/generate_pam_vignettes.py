@@ -22975,7 +22975,7 @@ def _tbm_dx_tests_xpert_mtb_rif(
 
 
 def _tbm_imaging_basal_meningeal(pediatric: bool = False) -> dict[str, Any]:
-    """basal_meningeal_enhancement_with_hydrocephalus per Huynh 2022 Lancet Neurol.
+    """basal_meningeal_enhancement_with_hydrocephalus.
 
     Pediatric variant emphasizes communicating hydrocephalus requiring VP shunt
     per van Toorn 2014 phenotype.
@@ -23323,8 +23323,8 @@ def _build_tbm_vignette_121() -> dict[str, Any]:
             "Subphase 1.4 commit 5.4.2 pilot 1 of 6 for Class 4 TBM. Anchored "
             "to Thwaites NEJM 2004 dexamethasone RCT (HCMC adult HIV-negative, "
             "drug-sensitive TBM). CSF and imaging within published case ranges; "
-            "ADA 14 U/L above Ye TM&IH 2023 cutoff of 10. CN VI palsy per "
-            "Huynh 2022 Lancet Neurol 30 percent subset. Pre-adjudication "
+            "ADA 14 U/L above Ye TM&IH 2023 cutoff of 10. CN VI palsy "
+            "present. Pre-adjudication "
             "hold_for_revision."
         ),
         "anchoring_extras": (
@@ -23332,7 +23332,7 @@ def _build_tbm_vignette_121() -> dict[str, Any]:
             "dexamethasone TBM RCT. 35-year-old Vietnamese adult, drug-sensitive "
             "TBM with classical lymphocytic CSF (lymph 78 percent, protein 280, "
             "glucose 28), ADA 14 U/L, Xpert MTB/RIF Ultra positive, AFB smear "
-            "positive, CN VI palsy positive (Huynh 30 percent subset). "
+            "positive, CN VI palsy positive. "
             "Pre-adjudication kappa 0.70."
         ),
     }
@@ -23925,8 +23925,8 @@ def write_subphase_1_4_pilot_corpus() -> list[Path]:
 # ----------------------------------------------------------------------------
 # Thwaites 5 (123-127) + Marais 3 (128-130) + Heemskerk 6 (131-136).
 # All Class 4 TBM adult HIV-negative (HIV-coinfected atypical land in wave_2).
-# CN VI palsy True in 5/14 (123, 126, 129, 131, 133) per Huynh 2022 Lancet
-# Neurol ~30 percent. Xpert MTB/RIF Ultra positive in 12/14; slots 130 (Marais
+# CN VI palsy True in 5/14 (123, 126, 129, 131, 133).
+# Xpert MTB/RIF Ultra positive in 12/14; slots 130 (Marais
 # possible, dx_ambig) and 134 (Heemskerk young early-stage) are Xpert NEG with
 # culture-positive confirmation.
 #
@@ -24045,7 +24045,7 @@ def _build_tbm_vignette_123() -> dict[str, Any]:
         "rationale": (
             "Subphase 1.4 commit 5.4.3 wave 1 vignette 123 of 14 for Class 4 "
             "TBM. Anchored to Thwaites 2004 NEJM HCMC dexamethasone RCT. CN VI "
-            "palsy positive (Huynh 30 percent subset). Pre-adjudication "
+            "palsy positive. Pre-adjudication "
             "hold_for_revision."
         ),
         "anchoring_extras": (
@@ -24284,7 +24284,7 @@ def _build_tbm_vignette_126() -> dict[str, Any]:
         "rationale": (
             "Subphase 1.4 commit 5.4.3 wave 1 vignette 126 of 14 for Class 4 "
             "TBM. Anchored to Thwaites 2004 NEJM. Early-stage TBM with CN VI "
-            "palsy positive (Huynh 30 percent subset). Pre-adjudication "
+            "palsy positive. Pre-adjudication "
             "hold_for_revision."
         ),
         "anchoring_extras": (
@@ -24516,7 +24516,7 @@ def _build_tbm_vignette_129() -> dict[str, Any]:
         "rationale": (
             "Subphase 1.4 commit 5.4.3 wave 1 vignette 129 of 14 for Class 4 "
             "TBM. Anchored to Marais 2010 probable category (score 14). CN VI "
-            "palsy positive (Huynh 30 percent subset). Pre-adjudication "
+            "palsy positive. Pre-adjudication "
             "hold_for_revision."
         ),
         "anchoring_extras": (
