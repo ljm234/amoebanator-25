@@ -98,7 +98,6 @@ class History(BaseModel):
 
     Citations:
         - PAM time course: MMWR 2025 (PMID 40146665) - 1-12 days, median 5
-        - TB time course: Huynh Lancet Neurol 2022
         - Cryptococcal subacute: NIH OI cryptococcosis
     """
     model_config = ConfigDict(extra="forbid")
@@ -301,7 +300,6 @@ class PhysicalExam(BaseModel):
         - IDSA encephalitis 2008
         - Bravo PMC8760460 (centrofacial Balamuthia 73%)
         - StatPearls Meningococcal NBK549849 (petechiae 62-81%)
-        - Lancet Neurol Huynh 2022 (CN VI in TB ~30%)
     """
     model_config = ConfigDict(extra="forbid")
 
@@ -329,7 +327,7 @@ class PhysicalExam(BaseModel):
     focal_neurological_deficit: bool = Field(
         ...,
         description="Focal neurological deficit. Raises probability of HSV-1, TB "
-                    "(CN palsy 30%), NCC, GAE, SAH; rare in pure aseptic meningitis.",
+                    "(CN palsy), NCC, GAE, SAH; rare in pure aseptic meningitis.",
     )
     cranial_nerve_palsy: Literal[
         "none",
@@ -340,8 +338,8 @@ class PhysicalExam(BaseModel):
         "other",
     ] = Field(
         "none",
-        description="Cranial nerve palsy. CN VI palsy in ~30% of TB meningitis "
-                    "(basilar exudate, Lancet Neurol Huynh 2022).",
+        description="Cranial nerve palsy. CN VI palsy occurs in TB meningitis "
+                    "from basilar exudate.",
     )
     skin_lesion_centrofacial_chronic: Optional[bool] = Field(
         None,
@@ -415,7 +413,6 @@ class CSFProfile(BaseModel):
 
     Citations:
         - IDSA Tunkel 2004 (bacterial cutoffs from van de Beek 422-pt analysis)
-        - Huynh Lancet Neurol 2022 (TB CSF patterns)
         - NIH OI cryptococcosis (OP>=25 in 60-80%)
         - Ye TM&IH 2023 doi:10.1111/tmi.13849 (ADA cutoff 10 U/L)
         - Prasad Cureus 2023 doi:10.7759/cureus.39896 (ADA confirmation)
@@ -537,7 +534,6 @@ class Imaging(BaseModel):
         - IDSA Tunkel 2008 (MRI preferred for encephalitis)
         - Del Brutto 2017 NCC (scolex within cyst absolute criterion)
         - StatPearls NBK557643 (HSV-1 mesial temporal FLAIR >90% MRI)
-        - Lancet Neurol Huynh 2022 (TB basal meningeal enhancement)
         - Hinchey NEJM 1996 (PRES parieto-occipital)
         - Hackett HAH 1998 (HACE microhemorrhages)
     """

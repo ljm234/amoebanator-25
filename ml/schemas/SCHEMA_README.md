@@ -124,7 +124,7 @@ Examination findings.
 | `neck_stiffness` | `bool` | required (van de Beek triad) |
 | `kernig_or_brudzinski_positive` | `Optional[bool]` | low sensitivity but high specificity (Thomas CID 2002) |
 | `focal_neurological_deficit` | `bool` | required |
-| `cranial_nerve_palsy` | `Literal[6 values]` | CN VI in ~30% TB (Huynh 2022) |
+| `cranial_nerve_palsy` | `Literal[6 values]` | CN VI palsy in TB meningitis |
 | `skin_lesion_centrofacial_chronic` | `Optional[bool]` | 73% Peruvian Balamuthia (Bravo) |
 | `petechial_or_purpuric_rash` | `bool` | 62-81% meningococcal (van de Beek 2008) |
 | `papilledema_on_fundoscopy` | `Optional[bool]` | elevated ICP marker |
