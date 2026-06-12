@@ -2028,15 +2028,15 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "title": "Update on the diagnosis and management of tuberculous meningitis in children",
         "anchor_type": "review",
         "anchor_subtype": "pediatric_tbm_review_diagnosis_management",
-        "verification_confidence": 0.85,
-        "verification_method": "web_pubmed_ui_v5_2026_05_11",
-        "last_verified_date": "2026-05-11",
+        "pmc_id": None,
+        "verification_confidence": 1.00,
+        "verification_method": "user_eyeson_pubmed_2026_06_11",
+        "last_verified_date": "2026-06-11",
         "caveat": (
             "Subphase 1.4 commit 5.4.0 anchor for Class 4 pediatric TBM "
             "stratum (8 slots median 6mo-2y per master prompt 1.4.4). "
             "Master plan referenced J Child Neurol; actual journal is "
-            "Semin Pediatr Neurol per PubMed. Corrected at registration. "
-            "verification_confidence=0.85 pre-direct-fetch."
+            "Semin Pediatr Neurol per PubMed. Corrected at registration."
         ),
     },
     "26760084": {
@@ -2117,16 +2117,16 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "title": "Global morbidity and mortality of central nervous system tuberculosis: a systematic review and meta-analysis",
         "anchor_type": "meta_analysis",
         "anchor_subtype": "cns_tb_global_meta_analysis_2022_latam_authors",
-        "verification_confidence": 0.85,
-        "verification_method": "web_pubmed_ui_v5_2026_05_11",
-        "last_verified_date": "2026-05-11",
+        "pmc_id": "PMC8920747",
+        "verification_confidence": 1.00,
+        "verification_method": "user_eyeson_pubmed_pmc_2026_06_11",
+        "last_verified_date": "2026-06-11",
         "caveat": (
             "Subphase 1.4 commit 5.4.0 anchor for Class 4 TBM. "
             "Navarro-Flores 2022 systematic review and meta-analysis "
             "of CNS-TB morbidity and mortality; LATAM-author team "
             "(Pacheco-Barrios K Peru) supports LMIC geographic anchor "
-            "per master prompt 1.4.10 (>=20/30 LMIC). "
-            "verification_confidence=0.85 pre-direct-fetch."
+            "per master prompt 1.4.10 (>=20/30 LMIC)."
         ),
     },
     # ---- Class 5 (Cryptococcal / fungal meningitis) anchors ----
@@ -2378,9 +2378,10 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "title": "Cutaneous balamuthiasis: A clinicopathological study",
         "anchor_type": "case_series",
         "anchor_subtype": "bravo_alvarez_cutaneous_balamuthiasis_clinpath_peru",
-        "verification_confidence": 0.85,
-        "verification_method": "web_pubmed_ui_v5_2026_05_11",
-        "last_verified_date": "2026-05-11",
+        "pmc_id": "PMC8760460",
+        "verification_confidence": 1.00,
+        "verification_method": "user_eyeson_pubmed_pmc_2026_06_11",
+        "last_verified_date": "2026-06-11",
         "caveat": (
             "Subphase 1.4 commit 5.4.0 anchor for Class 6 GAE. Master "
             "plan referenced 'Bravo PMC8760460'; actual primary "
@@ -2388,8 +2389,7 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
             "PMC ID PMC8760460 confirmed. Anchor for centro-facial skin "
             "lesion phenotype preceding CNS in Balamuthia per master "
             "prompt 1.4.6 (12/15 Balamuthia slots with skin lesion). "
-            "Gotuzzo E listed as 3rd author. verification_confidence=0.85 "
-            "pre-direct-fetch."
+            "Gotuzzo E listed as 3rd author."
         ),
     },
     "31758593": {
@@ -2475,9 +2475,10 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "title": "The Epidemiology and Clinical Features of Balamuthia mandrillaris Disease in the United States, 1974-2016",
         "anchor_type": "surveillance",
         "anchor_subtype": "cope_balamuthia_us_1974_2016_epidemiology",
-        "verification_confidence": 0.85,
-        "verification_method": "web_pubmed_ui_v5_2026_05_11",
-        "last_verified_date": "2026-05-11",
+        "pmc_id": "PMC7453664",
+        "verification_confidence": 1.00,
+        "verification_method": "user_eyeson_pubmed_pmc_2026_06_11",
+        "last_verified_date": "2026-06-11",
         "caveat": (
             "Subphase 1.4 commit 5.4.0 anchor for Class 6 GAE. Cope 2019 "
             "CID US Balamuthia surveillance 1974-2016 (109 cases; 90 "
@@ -2486,8 +2487,7 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
             "slots per master prompt 1.4.6) and for the Hispanic-"
             "overrepresentation signal in US-published series. Cope JR "
             "already appears in registry as Naegleria co-author; this "
-            "anchor is the Balamuthia role distinct from those. "
-            "verification_confidence=0.85 pre-direct-fetch."
+            "anchor is the Balamuthia role distinct from those."
         ),
     },
     "34461057": {
@@ -2508,9 +2508,10 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "title": "Acanthamoeba castellanii encephalitis in a patient with AIDS: a case report and literature review",
         "anchor_type": "case_report",
         "anchor_subtype": "damhorst_acanthamoeba_aids_case_lit_review_2022",
-        "verification_confidence": 0.85,
-        "verification_method": "web_pubmed_ui_v5_2026_05_11",
-        "last_verified_date": "2026-05-11",
+        "pmc_id": "PMC10910629",
+        "verification_confidence": 1.00,
+        "verification_method": "user_eyeson_pubmed_pmc_2026_06_11",
+        "last_verified_date": "2026-06-11",
         "caveat": (
             "Subphase 1.4 commit 5.4.0 anchor for Class 6 GAE. Damhorst "
             "2022 (NOT 2020 as master plan stated) Lancet Infect Dis "
@@ -2518,7 +2519,7 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
             "encephalitis in an AIDS patient. Anchor for Acanthamoeba "
             "immunocompromised stratum (10 of 15 Acanthamoeba slots per "
             "master prompt 1.4.6). Year corrected from 2020 to 2022 at "
-            "verification. verification_confidence=0.85 pre-direct-fetch."
+            "verification."
         ),
     },
 }
