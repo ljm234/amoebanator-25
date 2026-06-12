@@ -1681,15 +1681,15 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "title": "The management of encephalitis: clinical practice guidelines by the Infectious Diseases Society of America",
         "anchor_type": "guideline",
         "anchor_subtype": "idsa_encephalitis_guidelines_2008",
-        "verification_confidence": 0.85,
-        "verification_method": "consensus_anchor_subphase_1_3_initial",
-        "last_verified_date": "2026-05-06",
+        "pmc_id": None,
+        "verification_confidence": 1.00,
+        "verification_method": "user_eyeson_pubmed_fulltext_2026_06_11",
+        "last_verified_date": "2026-06-11",
         "caveat": (
             "IDSA encephalitis management guidelines (Tunkel 2008). "
             "Canonical reference for empiric acyclovir, MRI/EEG/CSF "
             "diagnostic protocol, and pathogen-specific therapy in "
-            "Class 3 vignettes. verification_confidence=0.85 "
-            "pre-direct-fetch."
+            "Class 3 vignettes."
         ),
     },
     "20952256": {
@@ -1779,9 +1779,10 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "title": "Caracteristicas epidemiologicas, clinicas y bacteriologicas de meningitis neumococica en pacientes pediatricos de Lima, Peru",
         "anchor_type": "cohort",
         "anchor_subtype": "peru_lima_pediatric_pneumococcal_meningitis_2006_2011",
-        "verification_confidence": 0.95,
-        "verification_method": "web_pubmed_ui_v4_2026_05_07",
-        "last_verified_date": "2026-05-07",
+        "pmc_id": None,
+        "verification_confidence": 1.00,
+        "verification_method": "user_eyeson_pubmed_fulltext_2026_06_11",
+        "last_verified_date": "2026-06-11",
         "caveat": (
             "44-episode pediatric pneumococcal meningitis multicenter "
             "Lima cohort 2006-2011 (UPCH + HNCH + INSN + HEP + HNERM + "
