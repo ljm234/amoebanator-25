@@ -79,22 +79,22 @@
       {
         "test_name": "csf_hsv1_pcr",
         "result": "negative_at_72h",
-        "sensitivity_pct": 95.0,
-        "specificity_pct": 99.0,
+        "sensitivity_pct": null,
+        "specificity_pct": null,
         "citation_pmid_or_doi": "PMID:20952256"
       },
       {
         "test_name": "csf_hsv1_pcr_repeat_at_72h",
         "result": "negative",
-        "sensitivity_pct": 95.0,
-        "specificity_pct": 99.0,
+        "sensitivity_pct": null,
+        "specificity_pct": null,
         "citation_pmid_or_doi": "PMID:20952256"
       },
       {
         "test_name": "eeg_temporal_lateralization",
         "result": "left_temporal_periodic_lateralized_epileptiform_discharges",
-        "sensitivity_pct": 70.0,
-        "specificity_pct": 80.0,
+        "sensitivity_pct": null,
+        "specificity_pct": null,
         "citation_pmid_or_doi": "PMID:20952256"
       },
       {

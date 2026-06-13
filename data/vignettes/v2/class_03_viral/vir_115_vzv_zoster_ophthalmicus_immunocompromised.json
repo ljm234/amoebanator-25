@@ -81,22 +81,22 @@
       {
         "test_name": "csf_vzv_pcr",
         "result": "positive",
-        "sensitivity_pct": 90.0,
-        "specificity_pct": 99.0,
+        "sensitivity_pct": null,
+        "specificity_pct": null,
         "citation_pmid_or_doi": "PMID:20952256"
       },
       {
         "test_name": "vzv_igm_serology",
         "result": "positive",
-        "sensitivity_pct": 85.0,
-        "specificity_pct": 95.0,
+        "sensitivity_pct": null,
+        "specificity_pct": null,
         "citation_pmid_or_doi": "PMID:20952256"
       },
       {
         "test_name": "vesicle_swab_tzanck_smear",
         "result": "multinucleated_giant_cells_seen",
-        "sensitivity_pct": 60.0,
-        "specificity_pct": 90.0,
+        "sensitivity_pct": null,
+        "specificity_pct": null,
         "citation_pmid_or_doi": "PMID:20952256"
       },
       {

@@ -18837,8 +18837,8 @@ def _viral_wave1_dx_tests_hsv1_pcr(pmid: str) -> list[dict[str, Any]]:
         {
             "test_name": "csf_hsv1_pcr",
             "result": "positive",
-            "sensitivity_pct": 95.0,
-            "specificity_pct": 99.0,
+            "sensitivity_pct": None,
+            "specificity_pct": None,
             "citation_pmid_or_doi": cit,
         },
         {
@@ -18864,8 +18864,8 @@ def _viral_wave1_dx_tests_ev_pcr(pmid: str) -> list[dict[str, Any]]:
         {
             "test_name": "csf_enterovirus_pcr",
             "result": "positive",
-            "sensitivity_pct": 96.0,
-            "specificity_pct": 99.0,
+            "sensitivity_pct": None,
+            "specificity_pct": None,
             "citation_pmid_or_doi": cit,
         },
         {
@@ -18891,8 +18891,8 @@ def _viral_wave1_dx_tests_hsv2_pcr(pmid: str) -> list[dict[str, Any]]:
         {
             "test_name": "csf_hsv2_pcr",
             "result": "positive",
-            "sensitivity_pct": 92.0,
-            "specificity_pct": 99.0,
+            "sensitivity_pct": None,
+            "specificity_pct": None,
             "citation_pmid_or_doi": cit,
         },
         {
@@ -18952,15 +18952,15 @@ def _viral_wave1_dx_tests_eee(pmid: str) -> list[dict[str, Any]]:
         {
             "test_name": "csf_eee_igm_serology",
             "result": "positive",
-            "sensitivity_pct": 88.0,
-            "specificity_pct": 95.0,
+            "sensitivity_pct": None,
+            "specificity_pct": None,
             "citation_pmid_or_doi": cit,
         },
         {
             "test_name": "csf_eee_pcr",
             "result": "positive",
-            "sensitivity_pct": 70.0,
-            "specificity_pct": 99.0,
+            "sensitivity_pct": None,
+            "specificity_pct": None,
             "citation_pmid_or_doi": cit,
         },
         {
@@ -20601,22 +20601,22 @@ def _viral_wave2_dx_tests_hsv_pcr_negative_72h(pmid: str) -> list[dict[str, Any]
         {
             "test_name": "csf_hsv1_pcr",
             "result": "negative_at_72h",
-            "sensitivity_pct": 95.0,
-            "specificity_pct": 99.0,
+            "sensitivity_pct": None,
+            "specificity_pct": None,
             "citation_pmid_or_doi": cit,
         },
         {
             "test_name": "csf_hsv1_pcr_repeat_at_72h",
             "result": "negative",
-            "sensitivity_pct": 95.0,
-            "specificity_pct": 99.0,
+            "sensitivity_pct": None,
+            "specificity_pct": None,
             "citation_pmid_or_doi": cit,
         },
         {
             "test_name": "eeg_temporal_lateralization",
             "result": "left_temporal_periodic_lateralized_epileptiform_discharges",
-            "sensitivity_pct": 70.0,
-            "specificity_pct": 80.0,
+            "sensitivity_pct": None,
+            "specificity_pct": None,
             "citation_pmid_or_doi": cit,
         },
         {
@@ -20643,22 +20643,22 @@ def _viral_wave2_dx_tests_vzv(pmid: str) -> list[dict[str, Any]]:
         {
             "test_name": "csf_vzv_pcr",
             "result": "positive",
-            "sensitivity_pct": 90.0,
-            "specificity_pct": 99.0,
+            "sensitivity_pct": None,
+            "specificity_pct": None,
             "citation_pmid_or_doi": cit,
         },
         {
             "test_name": "vzv_igm_serology",
             "result": "positive",
-            "sensitivity_pct": 85.0,
-            "specificity_pct": 95.0,
+            "sensitivity_pct": None,
+            "specificity_pct": None,
             "citation_pmid_or_doi": cit,
         },
         {
             "test_name": "vesicle_swab_tzanck_smear",
             "result": "multinucleated_giant_cells_seen",
-            "sensitivity_pct": 60.0,
-            "specificity_pct": 90.0,
+            "sensitivity_pct": None,
+            "specificity_pct": None,
             "citation_pmid_or_doi": cit,
         },
         {

@@ -79,15 +79,15 @@
       {
         "test_name": "csf_eee_igm_serology",
         "result": "positive",
-        "sensitivity_pct": 88.0,
-        "specificity_pct": 95.0,
+        "sensitivity_pct": null,
+        "specificity_pct": null,
         "citation_pmid_or_doi": "PMID:30089069"
       },
       {
         "test_name": "csf_eee_pcr",
         "result": "positive",
-        "sensitivity_pct": 70.0,
-        "specificity_pct": 99.0,
+        "sensitivity_pct": null,
+        "specificity_pct": null,
         "citation_pmid_or_doi": "PMID:30089069"
       },
       {
