@@ -23014,19 +23014,19 @@ def _crypto_dx_tests_india_ink_crag_lfa(
     results: list[dict[str, Any]] = [
         {"test_name": "CSF cryptococcal antigen LFA (CrAg LFA)",
          "result": f"Positive, titer {csf_crag_titer}.",
-         "sensitivity_pct": 99.0, "specificity_pct": 99.0,
+         "sensitivity_pct": None, "specificity_pct": None,
          "citation_pmid_or_doi": f"PMID:{pmid}"},
         {"test_name": "CSF India ink microscopy",
          "result": "Encapsulated yeast forms with characteristic refractile halos.",
-         "sensitivity_pct": 80.0, "specificity_pct": 99.0,
+         "sensitivity_pct": None, "specificity_pct": None,
          "citation_pmid_or_doi": f"PMID:{pmid}"},
         {"test_name": "Serum cryptococcal antigen",
          "result": f"Positive, titer {serum_crag_titer}.",
-         "sensitivity_pct": 95.0, "specificity_pct": 99.0,
+         "sensitivity_pct": None, "specificity_pct": None,
          "citation_pmid_or_doi": f"PMID:{pmid}"},
         {"test_name": "CSF fungal culture",
          "result": "Pending; reported Cryptococcus neoformans var. grubii at day 4.",
-         "sensitivity_pct": 90.0, "specificity_pct": 100.0,
+         "sensitivity_pct": None, "specificity_pct": None,
          "citation_pmid_or_doi": f"PMID:{pmid}"},
     ]
     if therapeutic_lp:
