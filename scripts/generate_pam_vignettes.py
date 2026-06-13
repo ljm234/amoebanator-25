@@ -22881,33 +22881,33 @@ def _tbm_dx_tests_xpert_mtb_rif(
     results: list[dict[str, Any]] = [
         {"test_name": f"CSF Xpert MTB/RIF {label}".strip(),
          "result": xpert_result,
-         "sensitivity_pct": 85.0, "specificity_pct": 98.0,
+         "sensitivity_pct": None, "specificity_pct": None,
          "citation_pmid_or_doi": f"PMID:{pmid}"},
     ]
     if smear_positive:
         results.append({
             "test_name": "CSF AFB smear (Ziehl-Neelsen)",
             "result": "Positive, scant acid-fast bacilli on concentrated specimen.",
-            "sensitivity_pct": 30.0, "specificity_pct": 99.0,
+            "sensitivity_pct": None, "specificity_pct": None,
             "citation_pmid_or_doi": f"PMID:{pmid}",
         })
     results.append({
         "test_name": "CSF mycobacterial culture",
         "result": culture_result,
-        "sensitivity_pct": 60.0, "specificity_pct": 100.0,
+        "sensitivity_pct": None, "specificity_pct": None,
         "citation_pmid_or_doi": f"PMID:{pmid}",
     })
     if pediatric:
         results.append({
             "test_name": "Gastric aspirate mycobacterial culture",
             "result": "Positive at 5 weeks, M. tuberculosis drug-sensitive.",
-            "sensitivity_pct": 40.0, "specificity_pct": 100.0,
+            "sensitivity_pct": None, "specificity_pct": None,
             "citation_pmid_or_doi": f"PMID:{pmid}",
         })
         results.append({
             "test_name": "Tuberculin skin test",
             "result": "Induration 14 mm at 48 hours.",
-            "sensitivity_pct": 50.0, "specificity_pct": 70.0,
+            "sensitivity_pct": None, "specificity_pct": None,
             "citation_pmid_or_doi": f"PMID:{pmid}",
         })
     results.append({

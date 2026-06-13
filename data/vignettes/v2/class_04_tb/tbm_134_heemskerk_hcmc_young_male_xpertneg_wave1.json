@@ -79,15 +79,15 @@
       {
         "test_name": "CSF Xpert MTB/RIF Ultra",
         "result": "Negative on initial CSF specimen. Sensitivity 70-85 percent in TBM per Hernandez TM&IH 2021; culture remains the confirmation modality.",
-        "sensitivity_pct": 85.0,
-        "specificity_pct": 98.0,
+        "sensitivity_pct": null,
+        "specificity_pct": null,
         "citation_pmid_or_doi": "PMID:26760084"
       },
       {
         "test_name": "CSF mycobacterial culture",
         "result": "Positive at 4 weeks (M. tuberculosis drug-sensitive); Xpert-negative-culture-confirmed case per RCT inclusion.",
-        "sensitivity_pct": 60.0,
-        "specificity_pct": 100.0,
+        "sensitivity_pct": null,
+        "specificity_pct": null,
         "citation_pmid_or_doi": "PMID:26760084"
       },
       {

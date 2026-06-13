@@ -79,29 +79,29 @@
       {
         "test_name": "CSF Xpert MTB/RIF Ultra",
         "result": "Positive, rifampicin susceptible. Cycle threshold consistent with TBM.",
-        "sensitivity_pct": 85.0,
-        "specificity_pct": 98.0,
+        "sensitivity_pct": null,
+        "specificity_pct": null,
         "citation_pmid_or_doi": "PMID:24655399"
       },
       {
         "test_name": "CSF mycobacterial culture",
         "result": "Pending at LP; reported positive at 4 weeks (M. tuberculosis drug-sensitive).",
-        "sensitivity_pct": 60.0,
-        "specificity_pct": 100.0,
+        "sensitivity_pct": null,
+        "specificity_pct": null,
         "citation_pmid_or_doi": "PMID:24655399"
       },
       {
         "test_name": "Gastric aspirate mycobacterial culture",
         "result": "Positive at 5 weeks, M. tuberculosis drug-sensitive.",
-        "sensitivity_pct": 40.0,
-        "specificity_pct": 100.0,
+        "sensitivity_pct": null,
+        "specificity_pct": null,
         "citation_pmid_or_doi": "PMID:24655399"
       },
       {
         "test_name": "Tuberculin skin test",
         "result": "Induration 14 mm at 48 hours.",
-        "sensitivity_pct": 50.0,
-        "specificity_pct": 70.0,
+        "sensitivity_pct": null,
+        "specificity_pct": null,
         "citation_pmid_or_doi": "PMID:24655399"
       },
       {
