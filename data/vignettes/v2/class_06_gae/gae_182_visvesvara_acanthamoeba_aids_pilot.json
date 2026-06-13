@@ -81,15 +81,15 @@
       {
         "test_name": "Brain biopsy histology (left frontal lesion)",
         "result": "Granulomatous inflammation with trophozoites and double-walled cysts; immunohistochemistry positive for Acanthamoeba castellanii.",
-        "sensitivity_pct": 80.0,
-        "specificity_pct": 99.0,
+        "sensitivity_pct": null,
+        "specificity_pct": null,
         "citation_pmid_or_doi": "PMID:17428307"
       },
       {
         "test_name": "CSF metagenomic next-generation sequencing",
         "result": "Acanthamoeba castellanii reads detected.",
-        "sensitivity_pct": 70.0,
-        "specificity_pct": 99.0,
+        "sensitivity_pct": null,
+        "specificity_pct": null,
         "citation_pmid_or_doi": "PMID:17428307"
       },
       {

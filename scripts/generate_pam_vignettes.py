@@ -23142,18 +23142,18 @@ def _gae_dx_tests_acanthamoeba_aids(
     pmid: str, cd4: int, viral_load: int,
 ) -> list[dict[str, Any]]:
     """Acanthamoeba in AIDS: brain biopsy + mNGS + HIV markers + corneal screen.
-    Visvesvara FEMS 2007 + Damhorst Lancet ID 2022."""
+    Visvesvara FEMS 2007."""
     cite = f"PMID:{pmid}"
     return [
         {"test_name": "Brain biopsy histology (left frontal lesion)",
          "result": ("Granulomatous inflammation with trophozoites and double-"
                     "walled cysts; immunohistochemistry positive for "
                     "Acanthamoeba castellanii."),
-         "sensitivity_pct": 80.0, "specificity_pct": 99.0,
+         "sensitivity_pct": None, "specificity_pct": None,
          "citation_pmid_or_doi": cite},
         {"test_name": "CSF metagenomic next-generation sequencing",
          "result": "Acanthamoeba castellanii reads detected.",
-         "sensitivity_pct": 70.0, "specificity_pct": 99.0,
+         "sensitivity_pct": None, "specificity_pct": None,
          "citation_pmid_or_doi": cite},
         {"test_name": "Serum HIV viral load",
          "result": f"{viral_load} copies/mL (ART-naive).",
