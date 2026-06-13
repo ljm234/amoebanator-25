@@ -24,7 +24,6 @@ SUBPHASE_1_4_TBM_PMIDS: list[str] = [
     "20822958",  # Marais S et al. Lancet ID 2010 TBM uniform case definition
     "24655399",  # van Toorn R, Solomons R Semin Pediatr Neurol 2014 pediatric TBM
     "26760084",  # Heemskerk AD et al. NEJM 2016 intensified TBM treatment RCT
-    "35429482",  # Huynh J et al. Lancet Neurol 2022 TBM progress review
     "35288778",  # Navarro-Flores A et al. J Neurol 2022 CNS-TB meta-analysis
 ]
 

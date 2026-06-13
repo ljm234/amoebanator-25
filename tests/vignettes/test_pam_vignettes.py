@@ -84,8 +84,8 @@ _VALID_VERIFICATION_DATES = {
     # Subphase 1.4 commit 5.4.0 added 18 Class 4 (TBM) + Class 5
     # (Cryptococcal) + Class 6 (GAE) anchor PMIDs via the assistant web PubMed UI
     # verification v5 (Thwaites NEJM 2004, Marais Lancet ID 2010, van Toorn
-    # Semin Pediatr Neurol 2014, Heemskerk NEJM 2016, Huynh Lancet Neurol
-    # 2022, Navarro-Flores J Neurol 2022; Perfect CID 2010, Park AIDS 2009,
+    # Semin Pediatr Neurol 2014, Heemskerk NEJM 2016, Navarro-Flores J
+    # Neurol 2022; Perfect CID 2010, Park AIDS 2009,
     # Singh JID 2007, Boulware NEJM 2014, Jarvis NEJM 2022 AMBITION-cm,
     # Datta EID 2009; Alvarez/Bravo JAAD Int
     # 2022, Cabello-Vilchez Neuropathology 2020, Visvesvara FEMS 2007,

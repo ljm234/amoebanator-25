@@ -2070,36 +2070,6 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
             "strata. 24-author Vancouver list confirmed via PubMed UI."
         ),
     },
-    "35429482": {
-        "pmid": "35429482",
-        "doi": "10.1016/S1474-4422(21)00435-X",
-        "authors_short": "Huynh J et al.",
-        "authors_full": [
-            "Huynh J", "Donovan J", "Phu NH", "Nghia HDT",
-            "Thuong NTT", "Thwaites GE",
-        ],
-        "journal": "Lancet Neurol",
-        "journal_short_code": "Lancet-Neurol",
-        "year": 2022,
-        "volume": "21",
-        "issue": "5",
-        "pages": "450-464",
-        "title": "Tuberculous meningitis: progress and remaining questions",
-        "anchor_type": "review",
-        "anchor_subtype": "tbm_progress_review_2022_cn_palsy_30pct",
-        "verification_confidence": 0.85,
-        "verification_method": "web_pubmed_ui_v5_2026_05_11",
-        "last_verified_date": "2026-05-11",
-        "caveat": (
-            "Subphase 1.4 commit 5.4.0 anchor for Class 4 TBM. Huynh "
-            "2022 Lancet Neurology progress review (already cited in "
-            "ml/schemas/vignette.py PhysicalExam.cranial_nerve_palsy "
-            "docstring re: CN VI 30 percent in TBM). Anchor for adult "
-            "non-HIV TBM phenotype, CN VI palsy subset, basal "
-            "meningeal enhancement imaging. verification_confidence=0.85 "
-            "pre-direct-fetch."
-        ),
-    },
     "35288778": {
         "pmid": "35288778",
         "doi": "10.1007/s00415-022-11052-8",
@@ -4544,27 +4514,26 @@ VIRAL_DISTRIBUTION: list[dict[str, Any]] = [
 
 
 # ============================================================================
-# Subphase 1.4 - TBM_DISTRIBUTION (Class 4, n=30, vignette_id 121-150)
+# Subphase 1.4 - TBM_DISTRIBUTION (Class 4, n=28, vignette_id 121-150 less 144-145)
 # ----------------------------------------------------------------------------
-# Master prompt L1502: 18 adult HIV-negative + 8 pediatric (median 6mo-2y) +
-# 4 HIV-coinfected atypical = 30. CN VI palsy ~30% (Huynh 2022 Lancet Neurol).
+# Master prompt L1502: 16 adult HIV-negative + 8 pediatric (median 6mo-2y) +
+# 4 HIV-coinfected atypical = 28.
 # >=20/30 LMIC geography (master prompt 1.4.10).
 #
-# Anchors (6, all from PMID_REGISTRY at HEAD 23f1e8a commit 5.4.0):
+# Anchors (5, all from PMID_REGISTRY at HEAD 23f1e8a commit 5.4.0):
 #   15496623 Thwaites HCMC dexamethasone RCT (6 slots adult HIV-neg)
 #   20822958 Marais uniform case definition (3 adult HIV-neg)
 #   26760084 Heemskerk intensified-anti-TB RCT (9: 6 HIV-neg + 3 HIV-coinf)
-#   35429482 Huynh Lancet Neurol 2022 progress review (2 adult HIV-neg)
 #   35288778 Navarro-Flores J Neurol 2022 meta (2: 1 HIV-neg + 1 HIV-coinf)
 #   24655399 van Toorn Semin Pediatr Neurol 2014 pediatric review (8 ped)
 #
 # Wave assignment: pilot 2 (121 Thwaites adult + 122 vanToorn ped) +
-# wave_1 14 adult-anchored (123-136) + wave_2 14 mixed (137-150).
+# wave_1 14 adult-anchored (123-136) + wave_2 12 mixed (137-150 less 144-145).
 #
-# All 30 entries: freshwater_exposure_within_14d=False (PAM differential
+# All 28 entries: freshwater_exposure_within_14d=False (PAM differential
 # guard carry-forward per Subphase 1.3.10).
 #
-# cn_vi_palsy True in 9/30 (30%) per Huynh 2022 (target 6-9/30).
+# cn_vi_palsy True in 8/28 (target 6-9/30).
 # ============================================================================
 
 TBM_DISTRIBUTION: list[dict[str, Any]] = [
@@ -4784,8 +4753,8 @@ TBM_DISTRIBUTION: list[dict[str, Any]] = [
      "freshwater_exposure_within_14d": False, "wave_assignment": "wave_1", "pilot": False,
      "notes": "Heemskerk RCT HIV-neg Xpert MTB/RIF Ultra-positive CSF (microbiologically definite)."},
     # ------------------------------------------------------------
-    # WAVE 2 mixed (14 slots, ids 137-150)
-    # vanToorn ped x7 + Huynh x2 + NavarroFlores x2 + Heemskerk-HIV-coinf x3 = 14
+    # WAVE 2 mixed (12 slots, ids 137-150 less 144-145)
+    # vanToorn ped x7 + NavarroFlores x2 + Heemskerk-HIV-coinf x3 = 12
     # ------------------------------------------------------------
     {"vignette_id": 137, "filename": "tbm_137_vantoorn_capetown_ped_infant.json",
      "anchor_pmid": "24655399", "pathogen_subtype": "mycobacterium_tuberculosis_drug_sensitive",
@@ -4810,7 +4779,7 @@ TBM_DISTRIBUTION: list[dict[str, Any]] = [
      "csf_profile_tier": "tbm_classical_lymphocytic_high_protein_low_glucose_ada_positive",
      "methodology_tier": "tier_3_imputation_within_review", "diagnostic_ambiguity": False,
      "freshwater_exposure_within_14d": False, "wave_assignment": "wave_2", "pilot": False,
-     "notes": "van Toorn pediatric 2yo toddler; CN VI palsy positive (~30% pediatric per Huynh)."},
+     "notes": "van Toorn pediatric 2yo toddler; CN VI palsy positive."},
     {"vignette_id": 139, "filename": "tbm_139_vantoorn_capetown_ped_severe.json",
      "anchor_pmid": "24655399", "pathogen_subtype": "mycobacterium_tuberculosis_drug_sensitive",
      "demographic_stratum": "pediatric_median_6mo_2y",
@@ -4871,30 +4840,6 @@ TBM_DISTRIBUTION: list[dict[str, Any]] = [
      "methodology_tier": "tier_3_imputation_within_review", "diagnostic_ambiguity": False,
      "freshwater_exposure_within_14d": False, "wave_assignment": "wave_2", "pilot": False,
      "notes": "van Toorn pediatric 10mo infant with focal seizures and basal ganglia infarcts."},
-    {"vignette_id": 144, "filename": "tbm_144_huynh_india_adult_review.json",
-     "anchor_pmid": "35429482", "pathogen_subtype": "mycobacterium_tuberculosis_drug_sensitive",
-     "demographic_stratum": "adult_hiv_negative",
-     "age_years": 42, "age_label": "42 years", "sex": "male",
-     "geography_label": "Chennai, India", "geography_region": "other_global",
-     "ethnicity": "asian", "immunocompromise_status": "none", "hiv_status": "negative",
-     "stage": "mid", "outcome": "survived", "cn_vi_palsy": True,
-     "expected_imaging_pattern": "basal_meningeal_enhancement_with_hydrocephalus",
-     "csf_profile_tier": "tbm_classical_lymphocytic_high_protein_low_glucose_ada_positive",
-     "methodology_tier": "tier_3_imputation_within_review", "diagnostic_ambiguity": False,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_2", "pilot": False,
-     "notes": "Huynh 2022 Lancet Neurol review India TBM cohort surrogate; CN VI palsy positive."},
-    {"vignette_id": 145, "filename": "tbm_145_huynh_uk_adult_review.json",
-     "anchor_pmid": "35429482", "pathogen_subtype": "mycobacterium_tuberculosis_drug_sensitive",
-     "demographic_stratum": "adult_hiv_negative",
-     "age_years": 56, "age_label": "56 years", "sex": "male",
-     "geography_label": "London, United Kingdom", "geography_region": "other_global",
-     "ethnicity": "asian", "immunocompromise_status": "none", "hiv_status": "negative",
-     "stage": "mid", "outcome": "survived", "cn_vi_palsy": False,
-     "expected_imaging_pattern": "basal_meningeal_enhancement_with_hydrocephalus",
-     "csf_profile_tier": "tbm_classical_lymphocytic_high_protein_low_glucose_ada_positive",
-     "methodology_tier": "tier_3_imputation_within_review", "diagnostic_ambiguity": False,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_2", "pilot": False,
-     "notes": "Huynh review UK adult migrant TBM (UK literature subset; non-LMIC for diversity)."},
     {"vignette_id": 146, "filename": "tbm_146_navarroflores_peru_adult_meta.json",
      "anchor_pmid": "35288778", "pathogen_subtype": "mycobacterium_tuberculosis_drug_sensitive",
      "demographic_stratum": "adult_hiv_negative",

@@ -35,7 +35,7 @@ from scripts.generate_pam_vignettes import (  # noqa: E402
 )
 
 
-TBM_ID_RANGE = range(121, 151)
+TBM_ID_RANGE = sorted(set(range(121, 151)) - {144, 145})  # 144/145 retired
 CRYPTO_ID_RANGE = range(151, 181)
 GAE_ID_RANGE = range(181, 211)
 
@@ -47,13 +47,13 @@ GAE_ID_RANGE = range(181, 211)
 
 def test_subphase_1_4_total_slot_count_90():
     total = len(TBM_DISTRIBUTION) + len(CRYPTO_DISTRIBUTION) + len(GAE_DISTRIBUTION)
-    assert total == 90, f"Expected 90, got {total}"
+    assert total == 88, f"Expected 88, got {total}"
 
 
 @pytest.mark.parametrize(
     ("dist_name", "dist", "expected_n"),
     [
-        ("TBM_DISTRIBUTION", TBM_DISTRIBUTION, 30),
+        ("TBM_DISTRIBUTION", TBM_DISTRIBUTION, 28),
         ("CRYPTO_DISTRIBUTION", CRYPTO_DISTRIBUTION, 30),
         ("GAE_DISTRIBUTION", GAE_DISTRIBUTION, 30),
     ],
@@ -139,7 +139,7 @@ def test_subphase_1_4_wave_assignment_counts():
             waves[wa] += 1
     assert waves["pilot"] == 6, f"pilot total = {waves['pilot']}, expected 6"
     assert waves["wave_1"] == 42, f"wave_1 total = {waves['wave_1']}, expected 42"
-    assert waves["wave_2"] == 42, f"wave_2 total = {waves['wave_2']}, expected 42"
+    assert waves["wave_2"] == 40, f"wave_2 total = {waves['wave_2']}, expected 40"
 
 
 # ----------------------------------------------------------------------
@@ -151,10 +151,10 @@ def test_subphase_1_4_class_4_strata():
     counts: dict[str, int] = {}
     for slot in TBM_DISTRIBUTION:
         counts[slot["demographic_stratum"]] = counts.get(slot["demographic_stratum"], 0) + 1
-    assert counts.get("adult_hiv_negative") == 18, counts
+    assert counts.get("adult_hiv_negative") == 16, counts
     assert counts.get("pediatric_median_6mo_2y") == 8, counts
     assert counts.get("hiv_coinfected_atypical") == 4, counts
-    assert sum(counts.values()) == 30
+    assert sum(counts.values()) == 28
 
 
 def test_tbm_lmic_geography_ge_20_of_30():
@@ -178,7 +178,7 @@ def test_tbm_lmic_geography_ge_20_of_30():
 
 
 def test_tbm_cn_vi_palsy_in_target_range():
-    """Huynh 2022 Lancet Neurol ~30% CN VI palsy in TBM; master prompt target 6-9/30."""
+    """Master prompt target 6-9/30 for cn_vi_palsy=True in TBM."""
     n = sum(1 for s in TBM_DISTRIBUTION if s.get("cn_vi_palsy") is True)
     assert 6 <= n <= 9, f"TBM cn_vi_palsy=True count = {n}, target 6-9/30"
 
