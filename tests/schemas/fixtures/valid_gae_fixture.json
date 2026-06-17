@@ -1,0 +1,126 @@
+{
+  "schema_version": "2.0",
+  "case_id": "GAE-001-CID-2010-MartinezBalamuthia",
+  "ground_truth_class": 6,
+  "demographics": {
+    "age_years": 28,
+    "sex": "male",
+    "ethnicity": "mestizo",
+    "geography_region": "peru_lima_coast",
+    "altitude_residence_m": 154
+  },
+  "history": {
+    "symptom_onset_to_presentation_days": 60.0,
+    "chief_complaint": "fever_with_headache",
+    "prodrome_description": "Indurated centrofacial nasal-bridge skin lesion present for approximately 15 months prior to neurological onset. Subacute progressive headache, low-grade fevers, and new focal weakness over the past 8 weeks.",
+    "red_flags_present": []
+  },
+  "exposure": {
+    "freshwater_exposure_within_14d": false,
+    "freshwater_exposure_type": null,
+    "altitude_exposure_within_7d_m": null,
+    "pork_consumption_or_taenia_contact": false,
+    "mosquito_endemic_area_exposure": false,
+    "immunocompromise_status": "none",
+    "hiv_status": "negative",
+    "cd4_count_cells_per_uL": null
+  },
+  "vitals": {
+    "temperature_celsius": 37.6,
+    "heart_rate_bpm": 88,
+    "systolic_bp_mmHg": 122,
+    "diastolic_bp_mmHg": 76,
+    "glasgow_coma_scale": 14,
+    "oxygen_saturation_pct": 98,
+    "respiratory_rate_breaths_per_min": 18
+  },
+  "exam": {
+    "mental_status_grade": "alert",
+    "neck_stiffness": false,
+    "kernig_or_brudzinski_positive": false,
+    "focal_neurological_deficit": true,
+    "cranial_nerve_palsy": "none",
+    "skin_lesion_centrofacial_chronic": true,
+    "petechial_or_purpuric_rash": false,
+    "papilledema_on_fundoscopy": false
+  },
+  "labs": {
+    "wbc_blood_per_uL": 8200,
+    "platelets_per_uL": 248000,
+    "alt_ast_U_per_L": 26,
+    "crp_mg_per_L": 14.0,
+    "procalcitonin_ng_per_mL": 0.15,
+    "serum_sodium_mEq_per_L": 138
+  },
+  "csf": {
+    "opening_pressure_cmH2O": 22.0,
+    "csf_wbc_per_mm3": 140,
+    "csf_neutrophil_pct": 12,
+    "csf_lymphocyte_pct": 86,
+    "csf_eosinophil_pct": 2,
+    "csf_glucose_mg_per_dL": 38,
+    "csf_protein_mg_per_dL": 180,
+    "csf_lactate_mmol_per_L": 3.4,
+    "csf_ada_U_per_L": 6.0,
+    "csf_crag_lfa_result": "negative",
+    "csf_wet_mount_motile_amoebae": "negative",
+    "csf_xanthochromia_present": false,
+    "csf_rbc_per_mm3": 12,
+    "csf_rbc_decreasing_across_tubes": null
+  },
+  "imaging": {
+    "imaging_modality": "mri_contrast",
+    "imaging_pattern": "multiple_ring_enhancing_lesions",
+    "imaging_finding_count": 4,
+    "imaging_text_summary": "MRI with gadolinium showing four ring-enhancing lesions in cortical and subcortical regions with surrounding vasogenic edema; pattern with the centrofacial skin lesion strongly suggestive of Balamuthia mandrillaris granulomatous amebic encephalitis."
+  },
+  "diagnostic_tests": {
+    "results": [
+      {
+        "test_name": "Brain biopsy histopathology",
+        "result": "Granulomatous inflammation with amebic trophozoites and cysts; Balamuthia mandrillaris confirmed by IFA",
+        "sensitivity_pct": null,
+        "specificity_pct": null,
+        "citation_pmid_or_doi": "PMID:20550438"
+      },
+      {
+        "test_name": "Skin lesion biopsy histopathology",
+        "result": "Granulomatous dermatitis with amebic trophozoites",
+        "sensitivity_pct": null,
+        "specificity_pct": null,
+        "citation_pmid_or_doi": "DOI:10.1016/j.jdin.2021.11.005"
+      }
+    ]
+  },
+  "adjudication": {
+    "adjudicator_ids": [
+      "ADJ-001",
+      "ADJ-002"
+    ],
+    "cohen_kappa": 0.96,
+    "disagreement_resolution": null,
+    "anchoring_documentation": "Anchored to Martinez et al. CID 2010 (PMID 20550438) Peru single-patient Balamuthia mandrillaris GAE case (UPCH/HCH Lima). Centrofacial skin lesion preceding CNS disease by ~15 months matches Bravo PMC8760460 series (median 15-month skin-to-CNS latency, 73% centrofacial in Peruvian cohort).",
+    "inclusion_decision": "include"
+  },
+  "literature_anchors": [
+    {
+      "anchor_type": "case_report",
+      "pmid": "20550438",
+      "doi": "10.1086/653609"
+    },
+    {
+      "anchor_type": "case_report",
+      "pmid": "35059659",
+      "doi": "10.1016/j.jdin.2021.11.005"
+    }
+  ],
+  "provenance": {
+    "generation_timestamp_utc": "2026-05-02T18:00:00Z",
+    "generator_model_identifier": "manual-fixture-2026-05-02",
+    "prompt_hash_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "schema_version": "2.0",
+    "inclusion_decision_rationale": "Fixture canonical Balamuthia mandrillaris GAE case (Peruvian male, mestizo). Centrofacial skin lesion + multiple ring-enhancing lesions + Hispanic ethnicity directly anchored to Martinez 2010 + Bravo Peruvian cohort. Vital signs and lab values IMPUTED_FROM_LITERATURE consistent with subacute Balamuthia presentation."
+  },
+  "narrative_es": "Varon mestizo de 28 anos, residente en Lima, con lesion cutanea indurada en dorso nasal (centrofacial) presente hace ~15 meses, ahora con cuadro de 8 semanas de cefalea progresiva, fiebres bajas y debilidad focal. RM con cuatro lesiones realzantes en anillo en regiones cortico-subcorticales con edema vasogenico. Biopsia cerebral confirma trofozoitos y quistes amebicos (Balamuthia mandrillaris por IFA).",
+  "narrative_en": "28-year-old mestizo male, Lima resident, with indurated centrofacial nasal-bridge skin lesion present for ~15 months, now with 8 weeks of progressive headache, low-grade fevers, and focal weakness. MRI with four ring-enhancing cortico-subcortical lesions with vasogenic edema. Brain biopsy confirms amebic trophozoites and cysts (Balamuthia mandrillaris by IFA)."
+}
