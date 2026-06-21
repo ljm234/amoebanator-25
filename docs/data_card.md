@@ -143,9 +143,10 @@ traceable.
 * **How will it be distributed?** Same channel as the code (Git
   repository).
 * **When?** Now, included in the V1.0 release.
-* **License.** Released under the same license as the code: research and
-  educational use only, no commercial / clinical redistribution (see
-  `README.md`, License and disclaimer section).
+* **License.** Released under the same MIT License as the code (see
+  `LICENSE`). The dataset is provided for research and education and is not
+  intended or validated for clinical or commercial use (see `README.md`,
+  License and disclaimer section).
 * **Third-party IP restrictions.** None; all rows are synthetic.
 * **Export / regulatory restrictions.** None applicable to synthetic data.
 

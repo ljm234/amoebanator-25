@@ -31,8 +31,10 @@ pipeline; every claim is defensible against a current run.
 * **Citation / paper / resource.** This repository
   (github.com/ljm234/amoebanator25); methods documentation in
   `docs/rare_class_design.md`.
-* **License.** Research and educational use only; no commercial or clinical
-  redistribution. See the "License and disclaimer" section of `README.md`.
+* **License.** Released under the MIT License (see `LICENSE`). The model and
+  code are provided for research and education and are not intended or
+  validated for clinical or commercial use. See the "License and disclaimer"
+  section of `README.md`.
 * **Where to send questions.** Single-author project; contact the developer
   through the repository.
 
