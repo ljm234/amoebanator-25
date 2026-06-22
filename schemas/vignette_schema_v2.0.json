@@ -67,7 +67,7 @@
     },
     "CSFProfile": {
       "additionalProperties": false,
-      "description": "CSF analysis results - the primary diagnostic discriminator across 9 classes.\n\nCitations:\n    - IDSA Tunkel 2004 (bacterial cutoffs from van de Beek 422-pt analysis)\n    - Huynh Lancet Neurol 2022 (TB CSF patterns)\n    - NIH OI cryptococcosis (OP>=25 in 60-80%)\n    - Ye TM&IH 2023 doi:10.1111/tmi.13849 (ADA cutoff 10 U/L)\n    - Prasad Cureus 2023 doi:10.7759/cureus.39896 (ADA confirmation)\n    - Williams CID 2015 (CrAg LFA near-100% sensitivity)\n    - StatPearls NBK535447 (PAM wet mount diagnosis)\n    - Perry BMJ 2015 PMID 25739953 (xanthochromia + RBC for SAH)\n    - Sakushima J Infect 2011 (lactate>3.5 favors bacterial)\n    - Del Brutto 2017 (eosinophilic CSF in racemose NCC)",
+      "description": "CSF analysis results - the primary diagnostic discriminator across 9 classes.\n\nCitations:\n    - IDSA Tunkel 2004 (bacterial cutoffs from van de Beek 422-pt analysis)\n    - NIH OI cryptococcosis (OP>=25 in 60-80%)\n    - Ye TM&IH 2023 doi:10.1111/tmi.13849 (ADA cutoff 10 U/L)\n    - Prasad Cureus 2023 doi:10.7759/cureus.39896 (ADA confirmation)\n    - Williams CID 2015 (CrAg LFA near-100% sensitivity)\n    - StatPearls NBK535447 (PAM wet mount diagnosis)\n    - Perry BMJ 2015 PMID 25739953 (xanthochromia + RBC for SAH)\n    - Sakushima J Infect 2011 (lactate>3.5 favors bacterial)\n    - Del Brutto 2017 (eosinophilic CSF in racemose NCC)",
       "properties": {
         "opening_pressure_cmH2O": {
           "description": "Opening pressure cmH2O. >=25 cmH2O in 60-80% of HIV-cryptococcal (NIH OI guidelines, AMBITION-cm); >=30 = therapeutic LP trigger.",
@@ -540,7 +540,7 @@
     },
     "History": {
       "additionalProperties": false,
-      "description": "History of present illness.\n\nCitations:\n    - PAM time course: MMWR 2025 (PMID 40146665) - 1-12 days, median 5\n    - TB time course: Huynh Lancet Neurol 2022\n    - Cryptococcal subacute: NIH OI cryptococcosis",
+      "description": "History of present illness.\n\nCitations:\n    - PAM time course: MMWR 2025 (PMID 40146665) - 1-12 days, median 5\n    - Cryptococcal subacute: NIH OI cryptococcosis",
       "properties": {
         "symptom_onset_to_presentation_days": {
           "description": "Days from symptom onset to presentation. PAM 1-12 d; bacterial 1-3 d; viral days-week; TB 14-56 d; cryptococcal 7-84 d (subacute).",
@@ -608,7 +608,7 @@
     },
     "Imaging": {
       "additionalProperties": false,
-      "description": "Neuroimaging findings.\n\nCitations:\n    - IDSA Tunkel 2008 (MRI preferred for encephalitis)\n    - Del Brutto 2017 NCC (scolex within cyst absolute criterion)\n    - StatPearls NBK557643 (HSV-1 mesial temporal FLAIR >90% MRI)\n    - Lancet Neurol Huynh 2022 (TB basal meningeal enhancement)\n    - Hinchey NEJM 1996 (PRES parieto-occipital)\n    - Hackett HAH 1998 (HACE microhemorrhages)",
+      "description": "Neuroimaging findings.\n\nCitations:\n    - IDSA Tunkel 2008 (MRI preferred for encephalitis)\n    - Del Brutto 2017 NCC (scolex within cyst absolute criterion)\n    - StatPearls NBK557643 (HSV-1 mesial temporal FLAIR >90% MRI)\n    - Hinchey NEJM 1996 (PRES parieto-occipital)\n    - Hackett HAH 1998 (HACE microhemorrhages)",
       "properties": {
         "imaging_modality": {
           "description": "Imaging modality. MRI with FLAIR/DWI preferred per IDSA 2008 encephalitis; CT first-line for SAH (~99% sensitivity <6h).",
@@ -823,7 +823,7 @@
     },
     "PhysicalExam": {
       "additionalProperties": false,
-      "description": "Physical examination findings.\n\nCitations:\n    - IDSA bacterial meningitis 2004 (van de Beek triad)\n    - IDSA encephalitis 2008\n    - Bravo PMC8760460 (centrofacial Balamuthia 73%)\n    - StatPearls Meningococcal NBK549849 (petechiae 62-81%)\n    - Lancet Neurol Huynh 2022 (CN VI in TB ~30%)",
+      "description": "Physical examination findings.\n\nCitations:\n    - IDSA bacterial meningitis 2004 (van de Beek triad)\n    - IDSA encephalitis 2008\n    - Bravo PMC8760460 (centrofacial Balamuthia 73%)\n    - StatPearls Meningococcal NBK549849 (petechiae 62-81%)",
       "properties": {
         "mental_status_grade": {
           "description": "Categorical mental status. Required for IDSA encephalitis case definition (Tunkel 2008): altered MS, behavioral change, seizure, focal.",
@@ -856,13 +856,13 @@
           "title": "Kernig Or Brudzinski Positive"
         },
         "focal_neurological_deficit": {
-          "description": "Focal neurological deficit. Raises probability of HSV-1, TB (CN palsy 30%), NCC, GAE, SAH; rare in pure aseptic meningitis.",
+          "description": "Focal neurological deficit. Raises probability of HSV-1, TB (CN palsy), NCC, GAE, SAH; rare in pure aseptic meningitis.",
           "title": "Focal Neurological Deficit",
           "type": "boolean"
         },
         "cranial_nerve_palsy": {
           "default": "none",
-          "description": "Cranial nerve palsy. CN VI palsy in ~30% of TB meningitis (basilar exudate, Lancet Neurol Huynh 2022).",
+          "description": "Cranial nerve palsy. CN VI palsy occurs in TB meningitis from basilar exudate.",
           "enum": [
             "none",
             "CN_VI",
