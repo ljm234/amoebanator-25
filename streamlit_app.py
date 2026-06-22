@@ -1,17 +1,17 @@
-"""Phase 4.5 multi-page Streamlit entry, Mini-2 T2.4.
+"""Multi-page Streamlit entry point.
 
-Registers the 4 sprint pages with ``st.navigation`` (Streamlit 1.36+).
+Registers the four pages with ``st.navigation`` (Streamlit 1.36+).
 
 Run via:
 
     streamlit run streamlit_app.py
 
 This entry lives at the repo root (HF Spaces docker-app convention).
-Earlier Mini-2 placed it at ``app/app.py``, but that made Python register
+An earlier layout placed it at ``app/app.py``, but that made Python register
 "app" as the script module name when Streamlit booted, shadowing the
 ``app/`` package directory and breaking ``from app.disclaimer import ...``
-on the Hugging Face Space (spec-gap #10). The legacy single-file entry
-lives at ``legacy_app.py``; this is the canonical Phase 4.5 entry.
+on the Hugging Face Space. The legacy single-file entry lives at
+``legacy_app.py``; this is the canonical entry point.
 """
 from __future__ import annotations
 
