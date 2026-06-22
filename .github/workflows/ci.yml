@@ -21,6 +21,17 @@ jobs:
       - run: pip install ruff==0.14.10
       - run: ruff check .
 
+  cleanliness:
+    name: cleanliness
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python scripts/check_cleanliness.py
+
   dua-guard:
     name: dua-guard
     runs-on: ubuntu-latest
@@ -31,3 +42,17 @@ jobs:
         with:
           python-version: "3.12"
       - run: python scripts/check_dua.py
+
+  types-and-tests:
+    name: types-and-tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install --upgrade pip
+      - run: pip install -r requirements.txt
+      - run: mypy ml scripts app streamlit_app.py outputs/model
+      - run: pytest
