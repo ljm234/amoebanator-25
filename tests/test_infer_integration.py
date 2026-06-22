@@ -1,5 +1,5 @@
 """
-Phase 1.1 / 1.2 - wired-inference test suite.
+Wired-inference test suite.
 
 Guards against ml.infer returning a constant regardless of input:
 infer_one must load outputs/model/model.pt, apply the fitted temperature,
@@ -70,7 +70,7 @@ _SEVERE: dict[str, Any] = _row(
 
 
 # -----------------------------------------------------------------------------
-# Phase 1.2 - end-to-end integration
+# End-to-end integration
 # -----------------------------------------------------------------------------
 
 
