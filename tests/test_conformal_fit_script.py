@@ -1,5 +1,5 @@
 """
-Q4.B regression test - `scripts.conformal.conformal_fit_from_probs` must route through
+Regression test - `scripts.conformal.conformal_fit_from_probs` must route through
 `ml.conformal_advanced.compute_qhat` and therefore emit `SmallCalibrationWarning`
 on small calibration sets, so the script never writes a qhat fit on n < 100
 without a warning on stderr.

@@ -1,5 +1,5 @@
 """
-Phase 7.3 - IRB gate integration tests.
+IRB gate integration tests.
 """
 from __future__ import annotations
 
@@ -145,7 +145,7 @@ def test_evaluate_returns_decision_object(tmp_path: Path) -> None:
     assert decision.record["irb_protocol_id"] == "WSU-2026-0042"
 
 
-# --- Q7.B - assert AuditEventType emission on the IRB gate path --------------
+# --- Assert AuditEventType emission on the IRB gate path --------------
 # ml/irb_gate.py emits ACCESS_DENIED and IRB_STATUS_CHANGE audit events.
 # The tests above cover the gate decisions; these two check the emitted
 # event_type and metadata for an approved and a blocked record.
