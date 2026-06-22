@@ -1,8 +1,8 @@
-"""Disclaimer + accessibility CSS injection for the Phase 4.5 web layer.
+"""Disclaimer + accessibility CSS injection for the web layer.
 
 Three responsibilities, one module:
 
-1. ``DISCLAIMER_TEXT``       - the locked Q19.A variant (ii) banner that
+1. ``DISCLAIMER_TEXT``       - the disclaimer banner that
                                 appears on every page. Tested for 5
                                 mandatory tokens via the parametrized
                                 ``test_disclaimer_on_every_page``.
@@ -15,7 +15,7 @@ Three responsibilities, one module:
 3. ``wcag_contrast_ratio()``  - hand-rolled relative-luminance ratio
                                 math (WCAG 2.0). No axe-core dep. Used
                                 by ``test_app_disclaimer.py`` to assert
-                                each locked color combo achieves the
+                                each color combo achieves the
                                 AA threshold of 4.5:1.
 
 The render function emits via ``st.markdown`` (NOT ``st.info`` /
@@ -28,14 +28,14 @@ from __future__ import annotations
 import streamlit as st
 
 
-# Q19.A locked variant (ii) with "limited to" micro-correction. The 5
+# Disclaimer banner text. The 5
 # mandatory tokens enforced by tests/test_app_disclaimer.py:
 #   - "NOT a medical device"
 #   - "n=30"
 #   - "limited to"
 #   - "ORCID"
 #   - "jordanmontenegroc.99@gmail.com"
-# Source URL post Q19.D rename: github.com/ljm234/amoebanator25
+# Source URL: github.com/ljm234/amoebanator25
 DISCLAIMER_TEXT: str = (
     "Research prototype, NOT a medical device. Trained on n=30 "
     "synthetic patient vignettes (n_train=24, n_val=6); contains zero "
@@ -47,14 +47,14 @@ DISCLAIMER_TEXT: str = (
 )
 
 
-# Locked WCAG-AA color combos (Q15.5.D). Each combo achieves >=7.18:1
+# WCAG-AA color combos. Each combo achieves >=7.18:1
 # contrast (well above the AA threshold of 4.5:1). The wash+border+
 # deep-text pattern preserves visual hierarchy without alarmist tone:
 # light wash background + 4px deep-saturation accent border + deep
 # saturation text on the wash.
 _INJECTED_CSS: str = """
 <style>
-/* -- Q15.5.D: WCAG-AA contrast pattern ------------------------------ */
+/* -- WCAG-AA contrast pattern ------------------------------ */
 .stAlert[kind="error"] {
     background: #FFEBEE;            /* light red wash */
     border-left: 4px solid #B71C1C; /* deep red accent */
@@ -76,7 +76,7 @@ _INJECTED_CSS: str = """
     color: #1B5E20;                 /* deep green text - contrast 7.59:1 */
 }
 
-/* -- Q15.5.E: prefers-reduced-motion -------------------------------- */
+/* -- prefers-reduced-motion -------------------------------- */
 @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
         animation-duration: 0.01ms !important;

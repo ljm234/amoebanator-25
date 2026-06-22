@@ -1,6 +1,6 @@
 """CSV export + chain-integrity verification for the audit log.
 
-Q13.A locked feature: in-UI ``st.download_button`` lets a reviewer
+The in-UI ``st.download_button`` lets a reviewer
 export the current session's audit chain as CSV and verify integrity
 post-download against a cloned repo. This converts HF Space's ephemeral
 filesystem (audit log wipes on container restart) into an explicit
@@ -22,7 +22,7 @@ Two public functions:
                                                  the canonical hash
                                                  recomputation.
 
-The Mini-1 closure gate criterion #4 round-trip test:
+The round-trip test:
 write 10 events -> ``export_audit_to_csv`` -> re-parse -> byte-equal hash
 chain.
 """
@@ -39,7 +39,7 @@ from ml.data.audit_trail import AuditEventType, _compute_entry_hash
 
 # CSV format version; bump when columns / serialisation changes.
 # Independent of the JSONL log's schema (the JSONL has no version field
-# yet - that's a separate cleanup tracked as Mini-1 spec-gap-4).
+# yet - that's a separate cleanup).
 CSV_SCHEMA_VERSION: str = "1"
 
 

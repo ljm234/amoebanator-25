@@ -1,4 +1,4 @@
-"""Utility functions for the Phase 4.5 Streamlit web layer.
+"""Utility functions for the Streamlit web layer.
 
 Three public helpers consumed by `pages/01_predict.py` and the test
 suite:
@@ -8,26 +8,26 @@ suite:
 - ``decision_badge`` - render a Streamlit-markdown badge for the
                        prediction state. Icon + bold weight + color
                        tag; meaning preserved when color is stripped
-                       (Q15.5.A color-blind safety).
+                       (color-blind safety).
 - ``_fmt_metric``    - tolerant numeric formatter; returns ``"-"`` for
                        missing / None / non-numeric values so partial
                        inference output dicts never crash the page.
 
 Plus the module-level constant ``KNOWN_SYMPTOMS`` - the exact 3 symptoms
-the n=30 model was trained on (Q11.B). The 4 currently-dropped symptoms
+the n=30 model was trained on. The 4 currently-dropped symptoms
 (altered_mental_status, photophobia, nausea_vomiting, seizure) are
-deferred to Phase 6 with the MIMIC-IV retrain.
+deferred to the MIMIC-IV retrain.
 """
 from __future__ import annotations
 
 from typing import Any
 
-# Q11.B locked: only the 3 symptoms the model scores. Surfacing more in
+# Only the 3 symptoms the model scores. Surfacing more in
 # the UI than the model handles would be a defensible-feature mismatch.
 KNOWN_SYMPTOMS: tuple[str, str, str] = ("fever", "headache", "nuchal_rigidity")
 
 
-# Q15.5.A locked bold-label + color mapping. Stripping the color
+# Bold-label + color mapping. Stripping the color
 # tags MUST leave the bold label legible (achromatopsia + low-vision
 # accessibility). The mapping is the single source of truth for badge
 # rendering across pages.
@@ -80,7 +80,7 @@ def decision_badge(prediction: str, reason: str | None = None) -> str:
     unrecognised prediction returns the literal ``"unknown"``.
 
     The bold label conveys the prediction state
-    without relying on color, satisfying the Q15.5.A color-blind safety
+    without relying on color, satisfying the color-blind safety
     contract: stripping the ``:<color>[...]`` wrapper still leaves the
     semantic content intact.
     """
