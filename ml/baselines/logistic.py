@@ -1,5 +1,5 @@
 """
-Logistic regression + Platt scaling baseline (Phase 3.1).
+Logistic regression + Platt scaling baseline.
 
 Platt's sigmoid calibration was originally proposed for SVMs but scikit-learn's
 CalibratedClassifierCV(method="sigmoid") implements the same fit on top of any

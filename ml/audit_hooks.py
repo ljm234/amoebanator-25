@@ -1,5 +1,5 @@
 """
-Phase 7.1 - production wiring of ml.data.audit_trail into the training pipeline.
+Production wiring of ml.data.audit_trail into the training pipeline.
 
 ml.data.audit_trail provides AuditLog (hash-chained, Merkle-checkpointed,
 tamper-evident) but is in-memory only. This module adds:

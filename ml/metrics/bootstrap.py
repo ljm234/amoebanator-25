@@ -1,7 +1,7 @@
 """
 Bootstrap confidence intervals for any metric over (y_true, y_score) pairs.
 
-Phase 3.5. Used by every baseline + ablation report so headline numbers always
+Used by every baseline + ablation report so headline numbers always
 ship with a 95% CI rather than a point estimate.
 
 Implementation notes:

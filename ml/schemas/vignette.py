@@ -3,7 +3,7 @@ diagnosis (Amoebanator V1.0).
 
 Schema version: 2.0
 Date frozen: 2026-05-02
-Target: 270-vignette corpus for Phase 1 sprint, UPCH-aligned, bilingual ES/EN.
+Target: 270-vignette corpus, UPCH-aligned, bilingual ES/EN.
 
 Every numeric range and every enum is justified by at least one peer-reviewed
 citation in the field docstring. Cross-field validators enforce class-conditional
@@ -737,7 +737,7 @@ class Provenance(BaseModel):
     )
     schema_version: Literal["2.0"] = Field(
         ...,
-        description="Schema version for migration management. Locked to '2.0'.",
+        description="Schema version for migration management. Pinned to '2.0'.",
     )
     inclusion_decision_rationale: str = Field(
         ..., max_length=1000,
@@ -762,14 +762,14 @@ class VignetteSchema(BaseModel):
        If ground_truth_class == ClassLabel.CRYPTOCOCCAL_FUNGAL and HIV+,
        then cd4_count_cells_per_uL MUST be set.
 
-    3. Schema version lock: schema_version is Literal['2.0'] at top level
+    3. Schema version pin: schema_version is Literal['2.0'] at top level
        (mirrors provenance.schema_version for redundant safety).
     """
     model_config = ConfigDict(extra="forbid")
 
     schema_version: Literal["2.0"] = Field(
         "2.0",
-        description="Schema version locked to '2.0'. Top-level lock mirrors "
+        description="Schema version pinned to '2.0'. Top-level pin mirrors "
                     "provenance.schema_version for migration safety.",
     )
     case_id: str = Field(

@@ -104,13 +104,13 @@ CHECKPOINT_INTERVAL: Final[int] = 100
 class AuditEventType(Enum):
     """Classification of audit events.
 
-    Cleanup history - Q7.A (Phase 4.5 sprint): 10 dead values removed
+    Cleanup history: 10 dead values removed
     (no production callers, no behavior coverage in tests). The 5
     test-fixture references in tests/test_phase1_1_audit_trail.py were
     substituted with kept values (the tests verify audit-trail
     infrastructure on arbitrary event types, not production emission).
-    INTEGRITY_VIOLATION kept - Q15.A correlation-ID error path uses it.
-    3 new WEB_* values added for the Phase 4.5 web layer.
+    INTEGRITY_VIOLATION kept - correlation-ID error path uses it.
+    3 new WEB_* values added for the web layer.
     """
 
     # Data lifecycle events
@@ -126,19 +126,19 @@ class AuditEventType(Enum):
     IRB_STATUS_CHANGE = "irb_status_change"
 
     # Security events
-    INTEGRITY_VIOLATION = "integrity_violation"  # Q15.A correlation-ID error path
+    INTEGRITY_VIOLATION = "integrity_violation"  # correlation-ID error path
 
     # System events
     SESSION_START = "session_start"
     SESSION_END = "session_end"
     CONFIGURATION_CHANGE = "configuration_change"
 
-    # Web layer events (Phase 4.5 Q7.C)
+    # Web layer events
     WEB_PREDICT_RECEIVED = "web_predict_received"
     WEB_PREDICT_RETURNED = "web_predict_returned"
     WEB_RATE_LIMIT_HIT = "web_rate_limit_hit"
-    WEB_PRESET_LOADED = "web_preset_loaded"           # Q12.A preset-button click
-    AUDIT_EXPORT_REQUESTED = "audit_export_requested"  # Q13.A CSV download click
+    WEB_PRESET_LOADED = "web_preset_loaded"           # preset-button click
+    AUDIT_EXPORT_REQUESTED = "audit_export_requested"  # CSV download click
 
 
 class IntegrityStatus(Enum):

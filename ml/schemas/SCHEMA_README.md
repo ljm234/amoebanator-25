@@ -1,8 +1,8 @@
 # Amoebanator V1.0 - Vignette Schema v2.0
 
 Comprehensive reference for the Pydantic v2 schema underlying the 9-class
-meningoencephalitis differential ML system. Schema locked at v2.0 as of
-Subphase 1.1 closure (May 2026).
+meningoencephalitis differential ML system. Schema pinned at v2.0 as of
+May 2026.
 
 ---
 
@@ -19,7 +19,7 @@ clinical rules.
 - 14 sub-models, ~75 leaf fields
 - 5 cross-field `model_validator` rules
 - 9 `ClassLabel` enum values, 1 = PAM, 9 = NON_INFECTIOUS_MIMIC
-- `schema_version` Literal-locked at "2.0"
+- `schema_version` Literal-pinned at "2.0"
 - `extra="forbid"` at every model (no rogue fields permitted)
 - Validation performance: P99 0.0265 ms per vignette (188x under 5 ms target)
 
@@ -236,7 +236,7 @@ Vignette generation provenance for audit trail and reproducibility.
 | `generation_timestamp_utc` | `datetime` | ISO-8601 UTC |
 | `generator_model_identifier` | `str` | 1-200 chars |
 | `prompt_hash_sha256` | `str` | regex `^[a-f0-9]{64}$` (NIST FIPS 180-4) |
-| `schema_version` | `Literal["2.0"]` | locked |
+| `schema_version` | `Literal["2.0"]` | fixed |
 | `inclusion_decision_rationale` | `str` | max 1000 chars (carries `IMPUTED_FROM_LITERATURE` markers) |
 
 ### 2.14 VignetteSchema (top-level, 17 fields + 2 validators)
@@ -245,7 +245,7 @@ Top-level container.
 
 | Field | Type | Constraint |
 |---|---|---|
-| `schema_version` | `Literal["2.0"]` | locked |
+| `schema_version` | `Literal["2.0"]` | fixed |
 | `case_id` | `str` | 1-200 chars |
 | `ground_truth_class` | `ClassLabel` | 1-9 |
 | `demographics` | `Demographics` | required |
@@ -293,7 +293,7 @@ geographic relevance score for Peru deployment, adjudicator notes.
   - **D.1 Fix 4 applied:** Bijlsma MW now included in author string
 - **Peru relevance:** high (universal disease); but no Peru ADULT cohort exists
 - **Adjudicator notes:** confirm acceptability of pediatric Peru companion ONLY;
-  flag if HNDM/HCH/Almenara local extraction should be commissioned in Phase 2
+  flag if HNDM/HCH/Almenara local extraction should be commissioned in a future expansion
 
 ### 3.3 ClassLabel.VIRAL (3) - Viral meningoencephalitis
 
@@ -303,7 +303,7 @@ geographic relevance score for Peru deployment, adjudicator notes.
   - **D.1 Fix 3 applied:** corrected from "Becerra" to Montano SM first author
 - **Peru relevance:** high - Lima cohort directly Peruvian
 - **Adjudicator notes:** confirm HSV-1 representativeness; consider HSV-2,
-  enterovirus, arboviral subclasses for Phase 2 expansion
+  enterovirus, arboviral subclasses for a future expansion
 
 ### 3.4 ClassLabel.TUBERCULOUS (4) - TB meningitis
 
@@ -384,7 +384,7 @@ hyponatremia <125, PRES/RCVS, SAH.
 - **Other mimic references:** Hinchey J, et al. NEJM 1996;334(8):494-500 (PRES)
 - **Peru relevance:** medium - HACE highly relevant for Cusco/Puno deployment
 - **Adjudicator notes:** confirm subtype enumeration is sufficient or whether
-  Phase 2 should split into NMDAR/HACE/PRES/SAH/HYPONATREMIA distinct labels
+  a future expansion should split into NMDAR/HACE/PRES/SAH/HYPONATREMIA distinct labels
 
 ---
 
@@ -456,7 +456,7 @@ Peru evidence is pediatric (Castillo 2016 PMID 27831604; Marin-Portocarrero
 - **Peru pediatric companion:** Castillo ME et al. RPMESP 2016;33(3):425-431
 - **Modern epidemiology backup:** Koelman 2022 PMID 34036322 (Netherlands)
 - **Adjudicator action:** confirm acceptability OR commission HNDM/HCH/Almenara
-  local data extraction in Phase 2 supplement
+  local data extraction in a future supplement
 
 ### 5.2 Class 5 (Cryptococcal) - no Peru AMBITION-equivalent
 
@@ -518,7 +518,7 @@ network for clinical-fidelity review. Specific questions per class:
 - **Class 1 (PAM):** Confirm freshwater always-flag rule is appropriate clinical
   safety policy. Acceptable to enforce as schema-level validator?
 - **Class 2 (Bacterial):** Confirm Castillo 2016 Peru pediatric companion is
-  acceptable given absence of adult cohort. Should Phase 2 commission HNDM
+  acceptable given absence of adult cohort. Should a future expansion commission HNDM
   local extraction?
 - **Class 3 (Viral HSV-1):** Confirm Montano 2016 Peru cohort is appropriate
   representative anchor.
@@ -537,11 +537,11 @@ network for clinical-fidelity review. Specific questions per class:
   (Paredes-Obando) replaces African P. falciparum (Idro). Comparative-only
   use of Idro acceptable?
 - **Class 9 (Anti-NMDAR):** Confirm Graus 2016 criteria + Keller 2014 case
-  pairing. Should Phase 2 split NON_INFECTIOUS_MIMIC into NMDAR / HACE / PRES /
+  pairing. Should a future expansion split NON_INFECTIOUS_MIMIC into NMDAR / HACE / PRES /
   SAH / HYPONATREMIA distinct labels?
 
 **Expected reviewer turnaround:** 2 weeks. Does NOT block code progression to
-Subphase 1.2 (data ingestion pipeline). Reviewer feedback can be incorporated
+the data ingestion pipeline. Reviewer feedback can be incorporated
 in a subsequent schema patch (v2.1) without breaking v2.0 contracts.
 
 ---
@@ -552,7 +552,7 @@ in a subsequent schema patch (v2.1) without breaking v2.0 contracts.
 - **Generator script:** `scripts/vignettes/generate_subphase11_fixtures.py` (~750 lines)
 - **JSON Schema export:** `schemas/vignette_schema_v2.0.json` (41 KB, Draft 2020-12 compatible)
 - **Test suite:** `tests/schemas/` (24 PASSED + 1 SKIPPED)
-- **Baseline:** 1,371 project tests passing as of `v2.0-schema-locked` tag
+- **Baseline:** 1,371 project tests passing.
 
 **To regenerate fixtures from scratch:**
 
@@ -578,5 +578,4 @@ validations per training run) total validation overhead is ~215 ms.
 
 ---
 
-**Schema status:** locked at v2.0. Subphase 1.1 closure as of May 2026.
-Tag: `v2.0-schema-locked`.
+**Schema status:** pinned at v2.0 as of May 2026.

@@ -3,7 +3,7 @@ ml.data - wired data-pipeline modules.
 
 Six modules are imported and re-exported at the package level. These have
 unit-test coverage and at least one production caller (training, inference,
-dashboard, or the Phase 7 governance wiring).
+dashboard, or the governance wiring).
 
   * audit_trail        - hash-chained, Merkle-checkpointed audit log
                          (wired via ml.audit_hooks)

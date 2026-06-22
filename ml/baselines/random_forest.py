@@ -1,5 +1,5 @@
 """
-Calibrated random forest baseline (Phase 3.2).
+Calibrated random forest baseline.
 
 Random forests systematically push probabilities toward 0.5 (Niculescu-Mizil
 & Caruana 2005). We wrap sklearn's RandomForestClassifier in
