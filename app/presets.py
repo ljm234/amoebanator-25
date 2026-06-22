@@ -1,4 +1,4 @@
-"""Locked clinical presets for the Phase 4.5 predict page.
+"""Clinical presets for the predict page.
 
 Three presets cover the demo's discrimination story:
 
@@ -14,12 +14,12 @@ Three presets cover the demo's discrimination story:
 
 The page-load NEUTRAL state functions as a fourth implicit scenario.
 
-Per Q12.B: the field name ``current_behavior`` (NOT ``expected``) is
+The field name ``current_behavior`` (NOT ``expected``) is
 mandatory. ``current_behavior`` is descriptive - it logs what
 ``infer_one`` returns at ``snapshot_date``. ``expected`` would carry
-normative ML connotation that conflicts with the D18 trajectory (Phase
-6 will flip the bacterial preset's behavior; we don't *expect* the
-current behavior to persist).
+normative ML connotation that conflicts with the D18 trajectory (a
+future MIMIC-IV cohort will flip the bacterial preset's behavior; we
+don't *expect* the current behavior to persist).
 
 The ``limitation_banner`` flag is explicit (not omitted) on every
 preset so the UI's render logic doesn't have to handle missing-key
@@ -65,9 +65,9 @@ PRESETS: dict[str, dict[str, Any]] = {
     # -- Preset 2: D18 honesty demo (bacterial NOT PAM) ------------------
     # The model returns prediction="High" because the n=30 training set
     # has zero non-PAM bacterial cases. We surface this preset
-    # deliberately as an honesty signal (Q12.C). The corresponding test
+    # deliberately as an honesty signal. The corresponding test
     # in tests/test_app_presets.py uses @pytest.mark.xfail(strict=False)
-    # so Phase 6 (MIMIC-IV) success -> XPASS as a "fix this" signal
+    # so a MIMIC-IV success -> XPASS as a "fix this" signal
     # without breaking CI.
     "bacterial_meningitis_limitation": {
         "label": "Load bacterial meningitis (limitation demo)",
@@ -75,7 +75,7 @@ PRESETS: dict[str, dict[str, Any]] = {
             "This preset is a known model limitation. Training data "
             "(n=30) contains zero non-PAM bacterial meningitis cases, so "
             "the model cannot distinguish bacterial-NOT-PAM from PAM. "
-            "The Phase 6 MIMIC-IV cohort (target n >= 200, includes "
+            "The MIMIC-IV cohort (target n >= 200, includes "
             "bacterial vs viral meningitis labels) will fix this. We "
             "surface this preset deliberately as an honesty signal - "
             "every model has limits, and showing them where they bite is "
@@ -98,7 +98,7 @@ PRESETS: dict[str, dict[str, Any]] = {
             "snapshot_date": _SNAPSHOT_DATE,
         },
         # UI renders description as red banner adjacent to result panel
-        # (Q12.C lock: NOT before "Run inference" - co-located).
+        # (NOT before "Run inference" - co-located).
         "limitation_banner": True,
     },
 
