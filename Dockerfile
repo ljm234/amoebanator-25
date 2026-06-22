@@ -1,15 +1,15 @@
-# Amoebanator - reproducible runtime container.
+# Amoebanator V1.0 - reproducible runtime container.
 #
 # Two-stage build keeps the final image small:
 #   Stage 1 (deps): install pip dependencies into a venv.
 #   Stage 2 (runtime): copy the venv + source, expose Streamlit on 8501.
 #
 # Build:
-#   docker build -t amoebanator:latest .
+#   docker build -t amoebanator:v1.0 .
 # Run dashboard:
-#   docker run --rm -p 8501:8501 amoebanator:latest
+#   docker run --rm -p 8501:8501 amoebanator:v1.0
 # Run a single CLI inference:
-#   docker run --rm amoebanator:latest \
+#   docker run --rm amoebanator:v1.0 \
 #       python scripts/inference/infer_cli.py --json '{"age":12,"csf_glucose":18,...}'
 
 # --- Stage 1: builder -----------------------------------------------------
