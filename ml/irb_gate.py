@@ -1,5 +1,5 @@
 """
-Phase 7.3 - IRB compliance gate for the training pipeline.
+IRB compliance gate for the training pipeline.
 
 Behaviour:
   * If the dataset declares itself synthetic (column `source` exclusively

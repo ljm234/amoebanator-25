@@ -1,5 +1,5 @@
 """
-Phase 5.3 - Combined OOD gate decision rule.
+Combined OOD gate decision rule.
 
 The Amoebanator pipeline now has three independent OOD/uncertainty signals:
 

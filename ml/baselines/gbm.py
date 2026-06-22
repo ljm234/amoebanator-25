@@ -1,5 +1,5 @@
 """
-Gradient boosted trees + isotonic calibration baseline (Phase 3.3).
+Gradient boosted trees + isotonic calibration baseline.
 
 Prefers LightGBM (faster, better small-leaf handling) but falls back to
 sklearn's GradientBoostingClassifier if LightGBM is not installed. The

@@ -1,7 +1,7 @@
 """
 Stratified train/val/test split with optional group-disjoint constraint.
 
-Phase 2.5. Used by every downstream pipeline (baselines, conformal calibration,
+Used by every downstream pipeline (baselines, conformal calibration,
 OOD fits) so that no row in the test set ever appears in the training or
 calibration sets - including across grouping variables like site or year when
 those are available.

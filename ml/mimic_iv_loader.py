@@ -1,5 +1,5 @@
 """
-Phase 2.2 - MIMIC-IV CSF lab + diagnosis loader (scaffold).
+MIMIC-IV CSF lab + diagnosis loader (scaffold).
 
 Running it on real MIMIC-IV data requires PhysioNet credentialed access
 and the MIMIC-IV Data Use Agreement; no MIMIC-IV data ships with this

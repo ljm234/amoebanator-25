@@ -1,7 +1,7 @@
 """
 Advanced split-conformal predictor: marginal + label-conditional + coverage tools.
 
-Phase 4.2 / 4.3 / 4.4. Builds on ml/conformal.py (which only exposes the
+Builds on ml/conformal.py (which only exposes the
 threshold-band decision rule) by adding:
 
   * compute_qhat            - finite-sample-corrected split conformal threshold

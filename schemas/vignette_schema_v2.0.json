@@ -940,7 +940,7 @@
         },
         "schema_version": {
           "const": "2.0",
-          "description": "Schema version for migration management. Locked to '2.0'.",
+          "description": "Schema version for migration management. Pinned to '2.0'.",
           "title": "Schema Version",
           "type": "string"
         },
@@ -1036,12 +1036,12 @@
     }
   },
   "additionalProperties": false,
-  "description": "Top-level vignette container for 9-class meningitis/encephalitis differential.\n\nAll sub-models are required except where Optional is annotated. Cross-field\nvalidators enforce class-conditional clinical rules:\n\n1. PAM always-flag rule (CDC PAM 2017 case definition):\n   If ground_truth_class == ClassLabel.PAM, then\n   exposure.freshwater_exposure_within_14d MUST be True.\n\n2. Cryptococcal CD4 consistency (Ford CID 2018 PMC5850628):\n   If ground_truth_class == ClassLabel.CRYPTOCOCCAL_FUNGAL and HIV+,\n   then cd4_count_cells_per_uL MUST be set.\n\n3. Schema version lock: schema_version is Literal['2.0'] at top level\n   (mirrors provenance.schema_version for redundant safety).",
+  "description": "Top-level vignette container for 9-class meningitis/encephalitis differential.\n\nAll sub-models are required except where Optional is annotated. Cross-field\nvalidators enforce class-conditional clinical rules:\n\n1. PAM always-flag rule (CDC PAM 2017 case definition):\n   If ground_truth_class == ClassLabel.PAM, then\n   exposure.freshwater_exposure_within_14d MUST be True.\n\n2. Cryptococcal CD4 consistency (Ford CID 2018 PMC5850628):\n   If ground_truth_class == ClassLabel.CRYPTOCOCCAL_FUNGAL and HIV+,\n   then cd4_count_cells_per_uL MUST be set.\n\n3. Schema version pin: schema_version is Literal['2.0'] at top level\n   (mirrors provenance.schema_version for redundant safety).",
   "properties": {
     "schema_version": {
       "const": "2.0",
       "default": "2.0",
-      "description": "Schema version locked to '2.0'. Top-level lock mirrors provenance.schema_version for migration safety.",
+      "description": "Schema version pinned to '2.0'. Top-level pin mirrors provenance.schema_version for migration safety.",
       "title": "Schema Version",
       "type": "string"
     },

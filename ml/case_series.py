@@ -1,5 +1,5 @@
 """
-Phase 2.3 - Published PAM case-series summary statistics.
+Published PAM case-series summary statistics.
 
 This module encodes *only* what is published in peer-reviewed sources, with
 explicit citations. It does not invent any case-level data. The summary
