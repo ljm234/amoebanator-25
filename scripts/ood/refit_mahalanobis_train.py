@@ -1,5 +1,5 @@
 """
-Phase 5.1 - Refit Mahalanobis OOD on the TRAIN split only.
+Refit Mahalanobis OOD on the TRAIN split only.
 
 Fitting the gate on all 30 rows would let the validation rows shape it. This
 script rederives the training indices the same way ml/training_calib_dca.py

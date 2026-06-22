@@ -1,5 +1,5 @@
 """
-Phase 4.1 - proper held-out split-conformal calibration framework.
+Proper held-out split-conformal calibration framework.
 
 Meant for a cohort large enough to keep the conformal calibration rows apart
 from the rows that fit the temperature. The shipped conformal.json does not
@@ -16,7 +16,7 @@ the temperature. The framework here:
      alpha, calibration set size, and a `provenance` field naming the file
      the calibration came from.
 
-When Phase 2 supplies a real held-out set with n >= 200, this script runs
+When a future cohort supplies a real held-out set with n >= 200, this script runs
 unchanged against the new artifact and produces the conformal numbers the
 preprint will quote.
 """
