@@ -1,7 +1,7 @@
 """Tests for pages/01_predict.py.
 
 18 spec-enumerated tests covering form, presets, error paths, badges,
-debounce, and D18 banner. Plus 2 IRB_BYPASS branch tests and 1 visual
+debounce, and D18 banner. Plus 2 research-mode branch tests and 1 visual
 snapshot baseline test - total 21 tests.
 
 AppTest is the load-bearing fixture. We mock ``infer_one`` for tests
@@ -390,14 +390,14 @@ def test_d18_limitation_banner_only_on_bacterial_preset() -> None:
 
 
 # ---------------------------------------------------------------------
-# 19. IRB_BYPASS=1 -> red banner + IRB_STATUS_CHANGE audit emit
+# 19. RESEARCH_MODE=1 -> red banner + IRB_STATUS_CHANGE audit emit
 # ---------------------------------------------------------------------
-def test_irb_bypass_active_renders_banner_and_emits_event() -> None:
-    """IRB_BYPASS=1 branch."""
+def test_research_mode_active_renders_banner_and_emits_event() -> None:
+    """RESEARCH_MODE=1 branch."""
     with tempfile.NamedTemporaryFile(mode="w", suffix=".jsonl", delete=False) as f:
         tmp_path = Path(f.name)
     os.environ["AMOEBANATOR_AUDIT_PATH"] = str(tmp_path)
-    os.environ["AMOEBANATOR_IRB_BYPASS"] = "1"
+    os.environ["AMOEBANATOR_RESEARCH_MODE"] = "1"
     try:
         at = _fresh_app_test()
         at.run(timeout=30)
@@ -409,19 +409,19 @@ def test_irb_bypass_active_renders_banner_and_emits_event() -> None:
         assert irb_events[-1]["actor"] == "env_var"
     finally:
         os.environ.pop("AMOEBANATOR_AUDIT_PATH", None)
-        os.environ.pop("AMOEBANATOR_IRB_BYPASS", None)
+        os.environ.pop("AMOEBANATOR_RESEARCH_MODE", None)
         tmp_path.unlink(missing_ok=True)
 
 
 # ---------------------------------------------------------------------
-# 20. IRB_BYPASS unset -> NO banner + NO event
+# 20. RESEARCH_MODE unset -> NO banner + NO event
 # ---------------------------------------------------------------------
-def test_irb_bypass_inactive_no_banner_no_event() -> None:
-    """IRB_BYPASS=0/unset branch."""
+def test_research_mode_inactive_no_banner_no_event() -> None:
+    """RESEARCH_MODE=0/unset branch."""
     with tempfile.NamedTemporaryFile(mode="w", suffix=".jsonl", delete=False) as f:
         tmp_path = Path(f.name)
     os.environ["AMOEBANATOR_AUDIT_PATH"] = str(tmp_path)
-    os.environ.pop("AMOEBANATOR_IRB_BYPASS", None)
+    os.environ.pop("AMOEBANATOR_RESEARCH_MODE", None)
     try:
         at = _fresh_app_test()
         at.run(timeout=30)

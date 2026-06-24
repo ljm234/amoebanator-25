@@ -5,8 +5,10 @@ This guard keeps the public repository free of two classes of artifact:
 
 1. Authoring and formatting tells - checked in EVERY tracked text file:
    emoji, typographic dashes / smart quotes / box-drawing / ellipsis, the
-   phrase "master prompt", named AI tools, and the superseded non-hyphenated
-   repository slug "amoebanator25" (the repo is canonically amoebanator-25).
+   phrase "master prompt", named AI tools, the superseded non-hyphenated
+   repository slug "amoebanator25" (the repo is canonically amoebanator-25),
+   and the IRB-bypass phrasing (research mode is activated by
+   AMOEBANATOR_RESEARCH_MODE, audit-logged - never an "IRB bypass").
 
 2. Internal process language - checked in every tracked text file EXCEPT the
    vignette data lineage: phase / mini / sprint / closure-gate / spec-gap
@@ -45,6 +47,7 @@ GLOBAL_PATTERNS = {
     ),
     "ai-tool": re.compile(r"\b(claude|copilot|cursor|chatgpt|gemini)\b", re.IGNORECASE),
     "old-repo-slug": re.compile(r"amoebanator25"),
+    "irb-bypass-wording": re.compile(r"IRB[ _-]?bypass", re.IGNORECASE),
 }
 
 # Internal process language - applied to every text file EXCEPT the carve-out.

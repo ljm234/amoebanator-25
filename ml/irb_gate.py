@@ -25,9 +25,9 @@ fields:
 
 Configuration:
   * AMOEBANATOR_IRB_PATH - override path to current_irb.json
-  * AMOEBANATOR_IRB_BYPASS - when set to "1"/"true"/"yes", skip the check
-    entirely (CI / smoke tests). The bypass is recorded in the audit log
-    so it is never invisible.
+  * AMOEBANATOR_RESEARCH_MODE - when set to "1"/"true"/"yes", skip the check
+    entirely (synthetic-data research mode; CI / smoke tests). The override is
+    recorded in the audit log so it is never invisible.
 """
 from __future__ import annotations
 
@@ -44,7 +44,7 @@ from ml.data.audit_trail import AuditEventType
 from ml.data.compliance import IRBStatus
 
 IRB_PATH_ENV: str = "AMOEBANATOR_IRB_PATH"
-IRB_BYPASS_ENV: str = "AMOEBANATOR_IRB_BYPASS"
+RESEARCH_MODE_ENV: str = "AMOEBANATOR_RESEARCH_MODE"
 
 _REPO_ROOT: Path = Path(__file__).resolve().parent.parent
 DEFAULT_IRB_PATH: Path = _REPO_ROOT / "outputs" / "irb" / "current_irb.json"
@@ -97,7 +97,7 @@ def evaluate_irb_record(path: Path | None = None) -> IRBDecision:
             reason=(
                 f"No IRB record found at {target}. "
                 f"Place an IRB exemption letter or approval JSON at this path "
-                f"or set AMOEBANATOR_IRB_BYPASS=1 to bypass (audit-logged)."
+                f"or set AMOEBANATOR_RESEARCH_MODE=1 for synthetic-data research mode (audit-logged)."
             ),
             status=None,
             record={},
@@ -142,16 +142,16 @@ def check_irb_or_raise(
     Top-level gate. Call from the training entry point. Raises `IRBGateBlocked`
     on failure with a clear remediation message; returns the decision on success.
     """
-    bypass = os.environ.get(IRB_BYPASS_ENV, "").strip() in {"1", "true", "TRUE", "yes"}
-    if bypass:
-        decision = IRBDecision(permitted=True, reason="bypass via AMOEBANATOR_IRB_BYPASS env var", status="bypassed")
+    research_mode = os.environ.get(RESEARCH_MODE_ENV, "").strip() in {"1", "true", "TRUE", "yes"}
+    if research_mode:
+        decision = IRBDecision(permitted=True, reason="research mode via AMOEBANATOR_RESEARCH_MODE env var", status="research_mode")
         if emit_audit:
             _emit(
                 AuditEventType.COMPLIANCE_CHECK,
                 actor="ml.irb_gate.check_irb_or_raise",
                 resource=str(path or default_irb_path()),
-                action_detail="IRB bypass via env var",
-                metadata={"bypassed": True},
+                action_detail="research mode via env var (no IRB required)",
+                metadata={"research_mode": True},
             )
         return decision
 

@@ -51,23 +51,23 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     STREAMLIT_SERVER_PORT=8501 \
     STREAMLIT_SERVER_ADDRESS=0.0.0.0
 
-# AMOEBANATOR_IRB_BYPASS - IRB gate bypass switch
+# AMOEBANATOR_RESEARCH_MODE - IRB gate research-mode switch
 #
 # WHY THIS EXISTS:
 #   The app trains on n=30 synthetic patient vignettes derived from
 #   published case-series marginals (Yoder 2010, Cope 2016, CDC 2025). No real
 #   PHI, no human subjects. Hence no IRB review is required - but the IRB gate
 #   in ml/irb_gate.py refuses to boot the app without an IRB JSON record. This
-#   bypass env var short-circuits the gate WITH a mandatory audit log emission
-#   (AuditEventType.IRB_STATUS_CHANGE -> actor="env_var") so the bypass is
-#   never silent.
+#   research-mode env var short-circuits the gate WITH a mandatory audit log
+#   emission (AuditEventType.IRB_STATUS_CHANGE -> actor="env_var") so the
+#   override is never silent.
 #
-#   This bypass is appropriate while the app runs on synthetic data only. The
+#   This research mode is appropriate while the app runs on synthetic data only. The
 #   planned MIMIC-IV proxy evaluation uses de-identified, IRB-exempt records
 #   (PhysioNet credentialed access obtained); it runs outside this container,
 #   and the repository ships no MIMIC data.
 #
-ENV AMOEBANATOR_IRB_BYPASS=1
+ENV AMOEBANATOR_RESEARCH_MODE=1
 
 # Runtime needs libomp for LightGBM (if installed) and tini for clean signal handling.
 RUN apt-get update && apt-get install -y --no-install-recommends \

@@ -16,8 +16,8 @@ Wires the existing ml.infer.infer_one path (frozen - do not modify) through:
 - 4 result badges: decision, T=0.27 calibration tooltip
   SmallCalibrationWarning if n_cal<30, 3-state conformal regime
   badge green/yellow/red.
-- IRB_BYPASS env-var branch:
-  AMOEBANATOR_IRB_BYPASS=1 -> red banner + IRB_STATUS_CHANGE emit.
+- Research-mode env-var branch:
+  AMOEBANATOR_RESEARCH_MODE=1 -> red banner + IRB_STATUS_CHANGE emit.
 """
 from __future__ import annotations
 
@@ -41,19 +41,19 @@ st.set_page_config(page_title="Predict - Amoebanator 25")
 render_disclaimer()
 
 
-# -- IRB_BYPASS branch -------------
-_irb_bypass_active = os.environ.get("AMOEBANATOR_IRB_BYPASS") == "1"
-if _irb_bypass_active and not st.session_state.get("_irb_bypass_emitted"):
+# -- research-mode branch -------------
+_research_mode_active = os.environ.get("AMOEBANATOR_RESEARCH_MODE") == "1"
+if _research_mode_active and not st.session_state.get("_research_mode_emitted"):
     _emit(
         AuditEventType.IRB_STATUS_CHANGE,
         actor="env_var",
-        resource="AMOEBANATOR_IRB_BYPASS",
-        action_detail="bypass active - synthetic-data research mode",
-        metadata={"bypass": True},
+        resource="AMOEBANATOR_RESEARCH_MODE",
+        action_detail="synthetic-data research mode, no IRB required",
+        metadata={"research_mode": True},
     )
-    st.session_state["_irb_bypass_emitted"] = True
+    st.session_state["_research_mode_emitted"] = True
 
-if _irb_bypass_active:
+if _research_mode_active:
     st.error(
         "No IRB required: fully synthetic data, no human subjects, and no "
         "PHI. Any future use of real clinical data will require appropriate "
