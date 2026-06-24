@@ -13,8 +13,8 @@ import pytest
 
 from ml.audit_hooks import AUDIT_PATH_ENV, reset_audit_log
 from ml.irb_gate import (
-    IRB_BYPASS_ENV,
     IRB_PATH_ENV,
+    RESEARCH_MODE_ENV,
     IRBDecision,
     IRBGateBlocked,
     check_irb_or_raise,
@@ -128,12 +128,12 @@ def test_conditionally_approved_passes(tmp_path: Path, tmp_audit: Path) -> None:
     assert decision.permitted is True
 
 
-def test_bypass_env_var_short_circuits(tmp_path: Path, tmp_audit: Path) -> None:
+def test_research_mode_env_var_short_circuits(tmp_path: Path, tmp_audit: Path) -> None:
     df = pd.DataFrame({"source": ["real_ehr"] * 3})
-    with patch.dict(os.environ, {IRB_BYPASS_ENV: "1", IRB_PATH_ENV: str(tmp_path / "no.json")}):
+    with patch.dict(os.environ, {RESEARCH_MODE_ENV: "1", IRB_PATH_ENV: str(tmp_path / "no.json")}):
         decision = check_irb_or_raise(df=df)
     assert decision.permitted is True
-    assert decision.status == "bypassed"
+    assert decision.status == "research_mode"
 
 
 def test_evaluate_returns_decision_object(tmp_path: Path) -> None:

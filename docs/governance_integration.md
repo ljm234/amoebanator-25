@@ -59,9 +59,9 @@ hold at the current research stage.
   the record's status is approved or conditionally approved; any other
   status, including a missing file or malformed JSON, raises `IRBGateBlocked`
   with an actionable remediation message.
-* **Bypass is visible.** An `AMOEBANATOR_IRB_BYPASS` environment variable
+* **Research mode is visible.** An `AMOEBANATOR_RESEARCH_MODE` environment variable
   skips the check for continuous integration and smoke tests, and every
-  bypass is written to the audit log so it is never invisible.
+  use is written to the audit log so it is never invisible.
 * **Real-data path.** The planned MIMIC-IV extension is additionally gated by
   PhysioNet credentialing and the MIMIC-IV data use agreement, outside the
   repository (`data_card.md` Sections 3 and 6).
