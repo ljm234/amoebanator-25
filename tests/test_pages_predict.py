@@ -402,7 +402,7 @@ def test_irb_bypass_active_renders_banner_and_emits_event() -> None:
         at = _fresh_app_test()
         at.run(timeout=30)
         errors = [e.value for e in at.error]
-        assert any("IRB bypass active" in e for e in errors)
+        assert any("No IRB required" in e for e in errors)
         events = [json.loads(line) for line in tmp_path.read_text().splitlines() if line]
         irb_events = [e for e in events if e["event_type"] == "irb_status_change"]
         assert len(irb_events) >= 1
@@ -426,7 +426,7 @@ def test_irb_bypass_inactive_no_banner_no_event() -> None:
         at = _fresh_app_test()
         at.run(timeout=30)
         errors = [e.value for e in at.error]
-        assert not any("IRB bypass active" in e for e in errors)
+        assert not any("No IRB required" in e for e in errors)
         events = [json.loads(line) for line in tmp_path.read_text().splitlines() if line]
         irb_events = [e for e in events if e["event_type"] == "irb_status_change"]
         # The page never emitted IRB_STATUS_CHANGE because the env var was unset.

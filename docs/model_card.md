@@ -28,7 +28,7 @@ pipeline; every claim is defensible against a current run.
   `exposure`, `sym_fever`, `sym_headache`, `sym_nuchal_rigidity`. Schema
   pinned in `outputs/model/features.json`.
 * **Citation / paper / resource.** This repository
-  (github.com/ljm234/amoebanator25); methods documentation in
+  (github.com/ljm234/amoebanator-25); methods documentation in
   `docs/rare_class_design.md`.
 * **License.** Released under the MIT License (see `LICENSE`). The model and
   code are provided for research and education and are not intended or

@@ -55,9 +55,9 @@ if _irb_bypass_active and not st.session_state.get("_irb_bypass_emitted"):
 
 if _irb_bypass_active:
     st.error(
-        "IRB bypass active - research mode only. "
-        "Synthetic n=30 data; no PHI. A future MIMIC-IV cohort will require "
-        "AMOEBANATOR_IRB_BYPASS=0 + a real IRB record."
+        "No IRB required: fully synthetic data, no human subjects, and no "
+        "PHI. Any future use of real clinical data will require appropriate "
+        "IRB and data-use approval before activation."
     )
 
 st.title("PAM Risk Prediction")

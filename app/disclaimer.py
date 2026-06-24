@@ -35,14 +35,14 @@ import streamlit as st
 #   - "limited to"
 #   - "ORCID"
 #   - "jordanmontenegroc.99@gmail.com"
-# Source URL: github.com/ljm234/amoebanator25
+# Source URL: github.com/ljm234/amoebanator-25
 DISCLAIMER_TEXT: str = (
     "Research prototype, NOT a medical device. Trained on n=30 "
     "synthetic patient vignettes (n_train=24, n_val=6); contains zero "
     "real PHI. Outputs are calibrated probabilities, **limited to** "
     "the n=30 training distribution - not diagnoses. Not for clinical "
     "decision support, not validated. Source + caveats: "
-    "github.com/ljm234/amoebanator25 - Contact: "
+    "github.com/ljm234/amoebanator-25 - Contact: "
     "jordanmontenegroc.99@gmail.com (ORCID 0009-0000-7851-7139)"
 )
 

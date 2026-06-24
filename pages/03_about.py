@@ -14,7 +14,7 @@ alpha in {0.05, 0.10, 0.20} live and watch q-hat + the regime badge
 respond. Pedagogical, not load-bearing for the landing-page render.
 
 The authorship section names the repository (github.com/ljm234/
-amoebanator25) and notes the companion HuggingFace Space is by the
+amoebanator-25) and notes the companion HuggingFace Space is by the
 same author.
 """
 from __future__ import annotations
@@ -176,6 +176,6 @@ st.markdown(
     "jordanmontenegroc.99@gmail.com"
 )
 st.caption(
-    "Repo: github.com/ljm234/amoebanator25. The companion "
+    "Repo: github.com/ljm234/amoebanator-25. The companion "
     "HuggingFace Space is by the same author."
 )
