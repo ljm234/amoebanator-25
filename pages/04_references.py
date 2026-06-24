@@ -100,6 +100,6 @@ st.markdown(
 # Footer pointer
 st.caption(
     "Full BibTeX source: `docs/references.bib` in the repo "
-    "(github.com/ljm234/amoebanator25). Reviewers wanting machine-"
+    "(github.com/ljm234/amoebanator-25). Reviewers wanting machine-"
     "readable citations should pull the .bib file directly."
 )
