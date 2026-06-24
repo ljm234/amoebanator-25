@@ -16,11 +16,11 @@ dashboard, or the governance wiring).
                          (wired via ml.data_loader)
   * microscopy         - image loading and preprocessing primitives
 
-Ten additional WIP scaffolds (synthetic, literature, who_database,
+Ten future-work data-source placeholders (synthetic, literature, who_database,
 pathology_atlas, labeling, dvc_versioning, versioning, quality_assurance,
-negative_collection, annotation_protocol) live under ml/data/_wip/. They
-are intentionally not re-exported here - see ml/data/_wip/README.md for the
-roadmap unblock checklist.
+negative_collection, annotation_protocol) live under ml/data/_wip/. They are
+scaffolds for planned data sources and are not used by this release - see
+ml/data/_wip/README.md for the planned-source checklist.
 """
 from __future__ import annotations
 

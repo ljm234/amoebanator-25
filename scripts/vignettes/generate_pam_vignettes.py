@@ -1,12 +1,12 @@
-"""Subphase 1.2 PAM vignette generator scaffolding.
+"""PAM vignette generator.
 
 Builds 20 PAM (Naegleria fowleri primary amebic meningoencephalitis) vignettes
-for Day 1 of Subphase 1.2. All vignettes anchored to peer-reviewed PMIDs
+for Day 1 of the PAM corpus. All vignettes anchored to peer-reviewed PMIDs
 verified via 4-pass plus browser confirmation per the Day 1 distribution spec.
 
 Output: data/vignettes/pam/pam_d1_NNN_*.json (20 files)
 
-Schema target: ml/schemas/vignette.py VignetteSchema v2.0 (Subphase 1.1 lock).
+Schema target: ml/schemas/vignette.py VignetteSchema v2.0.
 Each generated vignette validates against this schema before write.
 
 Day 1 scope: 20 vignettes across 7 clusters with 15 distinct PMID anchors.
@@ -1363,15 +1363,15 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         ),
     },
     # ========================================================================
-    # Subphase 1.3 Bacterial + Viral consensus anchors (added 2026-05-06)
+    # Bacterial + Viral consensus anchors (added 2026-05-06)
     # ------------------------------------------------------------------------
     # Ten landmark anchor PMIDs for Class 2 (Bacterial) and Class 3 (Viral)
     # vignette generation. Held at verification_confidence=0.85 because
     # they are consensus anchors not confirmed via PubMed UI direct fetch
     # in this commit; primary-source-direct verification will be done in
-    # Subphase 1.3 commits 5.3.2 onward when individual vignettes use these
+    # a later pass, when individual vignettes use these
     # anchors as their primary source. Honest disclosure preserves the
-    # camino largo Subphase 1.2 pattern.
+    # camino largo verification pattern.
     # ========================================================================
     "15509818": {
         "pmid": "15509818",
@@ -1752,7 +1752,7 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         ),
     },
     # ========================================================================
-    # Subphase 1.3 commit 5.3.2 pilot anchors (added 2026-05-07)
+    # pilot anchors (added 2026-05-07)
     # ------------------------------------------------------------------------
     # Five new primary-source-direct anchors verified by the assistant web research
     # v4 against PubMed UI on 2026-05-07. Used as direct primary sources for
@@ -1947,10 +1947,10 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         ),
     },
     # ========================================================================
-    # Subphase 1.4 commit 5.4.0 ADDs - Class 4 (TBM) + Class 5 (Cryptococcal)
+    # Class 4 (TBM) + Class 5 (Cryptococcal) anchor ADDs
     # + Class 6 (GAE) anchor PMIDs. 18 total: 6 TBM + 6 Crypto + 6 GAE.
     # PubMed-verified via web search 2026-05-11 (verification_method=
-    # web_pubmed_ui_v5_2026_05_11). All Subphase 1.4 anchors are
+    # web_pubmed_ui_v5_2026_05_11). All these anchors are
     # PubMed-indexed at registration with explicit caveat disclosure of
     # verification provenance.
     # Zero modifications to pre-existing PMID_REGISTRY entries.
@@ -2781,7 +2781,7 @@ DAY1_DISTRIBUTION: list[dict[str, Any]] = [
 # ============================================================================
 # DAY2_DISTRIBUTION
 # ----------------------------------------------------------------------------
-# 40 vignette specifications for Day 2 of Subphase 1.2 (v21-v60). Locked at
+# 40 vignette specifications for Day 2 of the PAM corpus (v21-v60). Locked at
 # v2.1.7-day2-distribution-locked. Vignette JSON generation is deferred to
 # Commits 4-5; this list is the input contract.
 #
@@ -3375,7 +3375,7 @@ DAY2_DISTRIBUTION: list[dict[str, Any]] = [
 
 
 # ============================================================================
-# Subphase 1.3 - BACTERIAL_DISTRIBUTION (Class 2, n=30, vignette_id 61-90)
+# BACTERIAL_DISTRIBUTION (Class 2, n=30, vignette_id 61-90)
 # ----------------------------------------------------------------------------
 # Per spec L1413: 21 S. pneumoniae / 4 N. meningitidis /
 # 2 H. influenzae / 2 Listeria / 1 gram-negative.
@@ -3389,7 +3389,7 @@ DAY2_DISTRIBUTION: list[dict[str, Any]] = [
 # All 30 entries: freshwater_exposure_within_14d=False (sanity per
 # spec 1.3.10); pathogen field new for Class 2/3 specs.
 #
-# methodology field carries the canonical Subphase 1.2 classification
+# methodology field carries the canonical classification
 # (primary_source_direct / tier_3_imputation_within_review) per Commit
 # 5.2.2 forensic-audit lesson.
 # ============================================================================
@@ -3936,7 +3936,7 @@ BACTERIAL_DISTRIBUTION: list[dict[str, Any]] = [
 
 
 # ============================================================================
-# Subphase 1.3 - VIRAL_DISTRIBUTION (Class 3, n=30, vignette_id 91-120)
+# VIRAL_DISTRIBUTION (Class 3, n=30, vignette_id 91-120)
 # ----------------------------------------------------------------------------
 # Per spec L1414: 12 HSV-1 / 8 enterovirus / 4 HSV-2/VZV (2+2) /
 # 4 arboviral (3 dengue + 1 EEE) / 2 HSV-1-PCR-negative-at-72h.
@@ -4514,7 +4514,7 @@ VIRAL_DISTRIBUTION: list[dict[str, Any]] = [
 
 
 # ============================================================================
-# Subphase 1.4 - TBM_DISTRIBUTION (Class 4, n=28, vignette_id 121-150 less 144-145)
+# TBM_DISTRIBUTION (Class 4, n=28, vignette_id 121-150 less 144-145)
 # ----------------------------------------------------------------------------
 # Spec L1502: 16 adult HIV-negative + 8 pediatric (median 6mo-2y) +
 # 4 HIV-coinfected atypical = 28.
@@ -4531,7 +4531,7 @@ VIRAL_DISTRIBUTION: list[dict[str, Any]] = [
 # wave_1 14 adult-anchored (123-136) + wave_2 12 mixed (137-150 less 144-145).
 #
 # All 28 entries: freshwater_exposure_within_14d=False (PAM differential
-# guard carry-forward per Subphase 1.3.10).
+# guard carry-forward per spec 1.3.10).
 #
 # cn_vi_palsy True in 8/28 (target 6-9/30).
 # ============================================================================
@@ -4908,7 +4908,7 @@ TBM_DISTRIBUTION: list[dict[str, Any]] = [
 
 
 # ============================================================================
-# Subphase 1.4 - CRYPTO_DISTRIBUTION (Class 5, n=30, vignette_id 151-180)
+# CRYPTO_DISTRIBUTION (Class 5, n=30, vignette_id 151-180)
 # ----------------------------------------------------------------------------
 # Spec L1503: 22 HIV+CD4<100 + 4 transplant + 2 idiopathic CD4
 # lymphopenia + 2 C. gattii immunocompetent = 30. OP>=25 in >=24/30. CSF
@@ -5382,7 +5382,7 @@ CRYPTO_DISTRIBUTION: list[dict[str, Any]] = [
 
 
 # ============================================================================
-# Subphase 1.4 - GAE_DISTRIBUTION (Class 6, n=30, vignette_id 181-210)
+# GAE_DISTRIBUTION (Class 6, n=30, vignette_id 181-210)
 # ----------------------------------------------------------------------------
 # Spec L1504: 15 Balamuthia + 15 Acanthamoeba. Balamuthia: 12/15
 # Peruvian or Hispanic ethnicity (Alvarez/Bravo 10 + Cabello-
@@ -5961,7 +5961,7 @@ _DAY2_WAVE2_METHODOLOGY: dict[int, str] = {
 
 
 def _build_case_id(spec: dict[str, Any], pmid_meta: dict[str, Any]) -> str:
-    """Synthesize case_id following the Subphase 1.1 convention.
+    """Synthesize case_id following the schema convention.
 
     Format: PAM-D{1,2}-NNN-<journal_short_code>-<year>-<state>-<cluster-tag>
     Example: PAM-D1-001-MMWR-2025-Arkansas-Splash-Pad
@@ -15203,7 +15203,7 @@ def _build_vignette_060() -> dict[str, Any]:
 
 
 # ============================================================================
-# Subphase 1.3 commit 5.3.3 - Wave 1 BACTERIAL vignette builders (n=14)
+# Wave 1 BACTERIAL vignette builders (n=14)
 # ----------------------------------------------------------------------------
 # Slot IDs: 65, 66, 67, 69, 71, 73, 75, 76, 77, 78, 79, 80, 81, 90.
 # Anchors: 10 Tunkel IDSA 2004 (PMID 15494903, anchor_type=guideline) +
@@ -17078,7 +17078,7 @@ def write_bact_wave1_corpus(
 
 
 # ============================================================================
-# Subphase 1.3 commit 5.3.4 - Wave 2 BACTERIAL vignette builders (n=11)
+# Wave 2 BACTERIAL vignette builders (n=11)
 # ----------------------------------------------------------------------------
 # Slot IDs: 61, 63, 68, 70, 72, 74, 83, 84, 85, 86, 87.
 # Anchors: 6 Bijlsma 2016 Lancet ID (PMID 26652862, anchor_type=cohort) +
@@ -18604,7 +18604,7 @@ def write_bact_wave2_corpus(
 
 
 # ============================================================================
-# Subphase 1.3 commit 5.3.5 - Wave 1 VIRAL vignette builders (n=13)
+# Wave 1 VIRAL vignette builders (n=13)
 # ----------------------------------------------------------------------------
 # Slot IDs: 96, 99, 102, 106, 107, 108, 109, 111, 113, 114, 117, 119, 120.
 # All 13 anchored to PMID 30089069 (Tyler KL 2018 NEJM viral encephalitis
@@ -20491,7 +20491,7 @@ def write_viral_wave1_corpus(
 
 
 # ============================================================================
-# Subphase 1.3 commit 5.3.6 - Wave 2 VIRAL vignette builders (n=14, FINAL)
+# Wave 2 VIRAL vignette builders (n=14, FINAL)
 # ----------------------------------------------------------------------------
 # Slot IDs: 91, 93, 94, 95, 97, 98, 100, 101, 103, 104, 110, 112, 115, 116.
 # 9 anchored to Granerod 2010 Lancet Infect Dis (PMID 20952256, anchor_type=
@@ -22424,7 +22424,7 @@ def write_viral_wave2_vignette(
 def write_viral_wave2_corpus(
     output_dir: Path = VIRAL_WAVE2_OUTPUT_DIR,
 ) -> list[Path]:
-    """Build, validate, and write all 14 VIRAL Wave-2 vignettes (FINAL Subphase 1.3)."""
+    """Build, validate, and write all 14 VIRAL Wave-2 vignettes (FINAL viral wave)."""
     paths: list[Path] = []
     for vid in VIRAL_WAVE2_IDS:
         paths.append(write_viral_wave2_vignette(vid, output_dir=output_dir))
@@ -22630,7 +22630,7 @@ def write_vignette(vignette: dict[str, Any], filepath: Path) -> None:
 
 
 # ============================================================================
-# Subphase 1.4 Commit 5.4.2 - PILOT VIGNETTE ARCHITECTURE (n=6)
+# PILOT VIGNETTE ARCHITECTURE (n=6)
 # ----------------------------------------------------------------------------
 # 6 pilots, 2 per class: TBM 121, 122 + CRYPTO 151, 152 + GAE 181, 182.
 # Architecture mirrors BACT Wave 1 at L17050: clinical builder returns the
@@ -22693,7 +22693,7 @@ _SUBPHASE_1_4_ALTITUDE_M: dict[str, int] = {
 
 
 # ----------------------------------------------------------------------------
-# Shared Subphase 1.4 helpers (5 functions, mirror BACT wave 1 pattern)
+# Shared Class 4-6 helpers (5 functions, mirror BACT wave 1 pattern)
 # ----------------------------------------------------------------------------
 
 
@@ -22729,7 +22729,7 @@ def _subphase_1_4_case_id(
 
 
 def _subphase_1_4_exposure(spec: dict[str, Any]) -> dict[str, Any]:
-    """Build ExposureHistory dict. All Subphase 1.4 slots: freshwater=False.
+    """Build ExposureHistory dict. All Class 4-6 slots: freshwater=False.
 
     Picks up immunocompromise_status, hiv_status, and cd4_count_cells_per_uL
     from the distribution slot. For HIV+ CRYPTO 151 the cd4_count is required
@@ -22755,8 +22755,8 @@ def _subphase_1_4_adjudication(
     """Build AdjudicationMetadata. Sentinel adjudicator IDs + kappa placeholder.
 
     Generalized in 5.4.3 via case_prefix parameter. inclusion_decision is
-    hold_for_revision for all Subphase 1.4 vignettes pending physician
-    review (Subphase 1.3 precedent). cohen_kappa placeholder 0.70 to satisfy
+    hold_for_revision for all Class 4-6 vignettes pending physician
+    review (pending real adjudication). cohen_kappa placeholder 0.70 to satisfy
     >=0.61 Landis-Koch substantial-agreement threshold.
     """
     vid = spec["vignette_id"]
@@ -23795,7 +23795,7 @@ _SUBPHASE_1_4_PILOT_BUILDERS: dict[int, Any] = {
 
 
 def generate_subphase_1_4_pilot_vignette(vignette_id: int) -> dict[str, Any]:
-    """Build one Subphase 1.4 pilot vignette dict from a vignette_id.
+    """Build one pilot vignette dict from a vignette_id.
 
     Looks up the distribution spec, PMID_REGISTRY metadata, and clinical
     builder, then composes the full VignetteSchema-compliant dict.
@@ -23844,7 +23844,7 @@ def generate_subphase_1_4_pilot_vignette(vignette_id: int) -> dict[str, Any]:
 
 
 def write_subphase_1_4_pilot_vignette(vignette_id: int) -> Path:
-    """Build, validate, and write one Subphase 1.4 pilot vignette to disk."""
+    """Build, validate, and write one pilot vignette to disk."""
     vignette = generate_subphase_1_4_pilot_vignette(vignette_id)
     VignetteSchema.model_validate(vignette)
     output_dir = SUBPHASE_1_4_PILOT_OUTPUT_DIR[vignette_id]
@@ -23859,7 +23859,7 @@ def write_subphase_1_4_pilot_vignette(vignette_id: int) -> Path:
 
 
 def write_subphase_1_4_pilot_corpus() -> list[Path]:
-    """Build, validate, and write all 6 Subphase 1.4 pilot vignettes."""
+    """Build, validate, and write all 6 pilot vignettes."""
     paths: list[Path] = []
     for vid in SUBPHASE_1_4_PILOT_IDS:
         paths.append(write_subphase_1_4_pilot_vignette(vid))
@@ -23867,7 +23867,7 @@ def write_subphase_1_4_pilot_corpus() -> list[Path]:
 
 
 # ============================================================================
-# Subphase 1.4 Commit 5.4.3 - TBM WAVE 1 BUILDERS (n=14, ids 123-136)
+# TBM WAVE 1 BUILDERS (n=14, ids 123-136)
 # ----------------------------------------------------------------------------
 # Thwaites 5 (123-127) + Marais 3 (128-130) + Heemskerk 6 (131-136).
 # All Class 4 TBM adult HIV-negative (HIV-coinfected atypical land in wave_2).
@@ -25059,7 +25059,7 @@ _SUBPHASE_1_4_WAVE1_BUILDERS: dict[int, Any] = {
 
 
 def generate_subphase_1_4_wave1_vignette(vignette_id: int) -> dict[str, Any]:
-    """Build one Subphase 1.4 TBM Wave 1 vignette dict from a vignette_id.
+    """Build one TBM Wave 1 vignette dict from a vignette_id.
 
     Looks up the TBM_DISTRIBUTION spec, PMID_REGISTRY metadata, and the
     wave_1 clinical builder, then composes the full VignetteSchema-compliant
@@ -25109,7 +25109,7 @@ def generate_subphase_1_4_wave1_vignette(vignette_id: int) -> dict[str, Any]:
 
 
 def write_subphase_1_4_wave1_vignette(vignette_id: int) -> Path:
-    """Build, validate, and write one Subphase 1.4 TBM Wave 1 vignette to disk."""
+    """Build, validate, and write one TBM Wave 1 vignette to disk."""
     vignette = generate_subphase_1_4_wave1_vignette(vignette_id)
     VignetteSchema.model_validate(vignette)
     output_dir = SUBPHASE_1_4_WAVE1_OUTPUT_DIR[vignette_id]
@@ -25124,7 +25124,7 @@ def write_subphase_1_4_wave1_vignette(vignette_id: int) -> Path:
 
 
 def write_subphase_1_4_wave1_corpus() -> list[Path]:
-    """Build, validate, and write all 14 Subphase 1.4 TBM Wave 1 vignettes."""
+    """Build, validate, and write all 14 TBM Wave 1 vignettes."""
     paths: list[Path] = []
     for vid in SUBPHASE_1_4_WAVE1_IDS:
         paths.append(write_subphase_1_4_wave1_vignette(vid))
@@ -25144,7 +25144,7 @@ def main() -> None:
             DAY1_DISTRIBUTION entry.
     """
     parser = argparse.ArgumentParser(
-        description="Generate Day 1 PAM vignettes for Subphase 1.2.",
+        description="Generate Day 1 PAM vignettes.",
     )
     parser.add_argument(
         "--output-dir",

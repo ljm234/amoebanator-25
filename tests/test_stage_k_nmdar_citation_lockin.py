@@ -18,7 +18,7 @@ if str(_REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(_REPO_ROOT))
 
 _NMDAR_FIX = _REPO_ROOT / "tests" / "schemas" / "fixtures" / "valid_nmdar_fixture.json"
-_BUILDER_SRC = _REPO_ROOT / "scripts" / "vignettes" / "generate_subphase11_fixtures.py"
+_BUILDER_SRC = _REPO_ROOT / "scripts" / "vignettes" / "generate_fixtures.py"
 _WRONG_JOURNAL = ("Case Rep Neurol Med", "CaseRepNeurolMed")
 
 
@@ -33,7 +33,7 @@ def test_nmdar_fixture_citation_corrected():
 
 
 def test_nmdar_builder_citation_corrected():
-    import scripts.vignettes.generate_subphase11_fixtures as g
+    import scripts.vignettes.generate_fixtures as g
 
     nmdar = dict(g.FIXTURES)["valid_nmdar_fixture.json"]
     assert nmdar["case_id"] == "NMIM-001-CaseRepPsychiatry-2014-Keller"

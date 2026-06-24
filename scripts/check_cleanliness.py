@@ -8,7 +8,8 @@ This guard keeps the public repository free of two classes of artifact:
    phrase "master prompt", named AI tools, the superseded non-hyphenated
    repository slug "amoebanator25" (the repo is canonically amoebanator-25),
    and the IRB-bypass phrasing (research mode is activated by
-   AMOEBANATOR_RESEARCH_MODE, audit-logged - never an "IRB bypass").
+   AMOEBANATOR_RESEARCH_MODE, audit-logged - never an "IRB bypass"), and
+   "under construction" notices (the public release is a finished tag).
 
 2. Internal process language - checked in every tracked text file EXCEPT the
    vignette data lineage: phase / mini / sprint / closure-gate / spec-gap
@@ -48,6 +49,7 @@ GLOBAL_PATTERNS = {
     "ai-tool": re.compile(r"\b(claude|copilot|cursor|chatgpt|gemini)\b", re.IGNORECASE),
     "old-repo-slug": re.compile(r"amoebanator25"),
     "irb-bypass-wording": re.compile(r"IRB[ _-]?bypass", re.IGNORECASE),
+    "under-construction": re.compile(r"under (active )?construction", re.IGNORECASE),
 }
 
 # Internal process language - applied to every text file EXCEPT the carve-out.
