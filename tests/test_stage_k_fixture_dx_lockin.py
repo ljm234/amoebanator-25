@@ -7,7 +7,7 @@ so those numbers were templated/misattributed. Stage K nulls all of them except 
 single verified figure: van de Beek 2004 (PMID 15509818) CSF Gram stain at 80/97
 (the same figure pinned by the Stage H corpus lock-in). valid_pam_fixture.json is a
 hand-authored orphan (no builder generates it); the other 7 are emitted by
-scripts/vignettes/generate_subphase11_fixtures.py. This pins both the committed JSON and the
+scripts/vignettes/generate_fixtures.py. This pins both the committed JSON and the
 builder dicts so a future regen or manual edit cannot silently restore the numbers.
 """
 from __future__ import annotations
@@ -75,7 +75,7 @@ def test_stage_k_gae_fixture_all_null():
 
 
 def test_stage_k_builder_dicts_in_sync():
-    import scripts.vignettes.generate_subphase11_fixtures as g
+    import scripts.vignettes.generate_fixtures as g
 
     builder_backed = {fn: data for fn, data in g.FIXTURES}
     for fn, expected in _EXPECTED.items():

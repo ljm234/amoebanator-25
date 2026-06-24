@@ -5,7 +5,7 @@ Values directly extracted from anchor papers where available; otherwise clinical
 imputed and tagged in provenance.inclusion_decision_rationale with
 IMPUTED_FROM_LITERATURE marker.
 
-Run: python -m scripts.vignettes.generate_subphase11_fixtures
+Run: python -m scripts.vignettes.generate_fixtures
 """
 from __future__ import annotations
 import json

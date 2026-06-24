@@ -42,5 +42,3 @@ License (see `LICENSE`). The software is provided for research and educational
 purposes. It is not a cleared medical device, not a substitute for clinical
 judgment, and has not been validated for clinical or unsupervised use; nothing
 here should be used to make clinical decisions.
-
-*Repository under active construction.*

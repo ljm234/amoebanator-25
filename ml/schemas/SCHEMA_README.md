@@ -45,7 +45,7 @@ from ml.schemas import (
 | `ml/schemas/export_json_schema.py` | JSON Schema export utility |
 | `ml/schemas/SCHEMA_README.md` | This document |
 | `schemas/vignette_schema_v2.0.json` | Exported JSON Schema (41 KB) |
-| `scripts/vignettes/generate_subphase11_fixtures.py` | Reproducible fixture generator |
+| `scripts/vignettes/generate_fixtures.py` | Reproducible fixture generator |
 | `tests/schemas/` | 25 tests (24 PASSED, 1 SKIPPED for V1.5 migration) |
 | `tests/schemas/fixtures/` | 9 canonical vignettes (1 per ClassLabel) |
 
@@ -549,7 +549,7 @@ in a subsequent schema patch (v2.1) without breaking v2.0 contracts.
 ## Section 8: Reproducibility
 
 - **Schema source:** `ml/schemas/vignette.py` (~860 lines, 14 classes, 5 validators)
-- **Generator script:** `scripts/vignettes/generate_subphase11_fixtures.py` (~750 lines)
+- **Generator script:** `scripts/vignettes/generate_fixtures.py` (~750 lines)
 - **JSON Schema export:** `schemas/vignette_schema_v2.0.json` (41 KB, Draft 2020-12 compatible)
 - **Test suite:** `tests/schemas/` (24 PASSED + 1 SKIPPED)
 - **Baseline:** 1,371 project tests passing.
@@ -557,7 +557,7 @@ in a subsequent schema patch (v2.1) without breaking v2.0 contracts.
 **To regenerate fixtures from scratch:**
 
 ```bash
-python -m scripts.vignettes.generate_subphase11_fixtures
+python -m scripts.vignettes.generate_fixtures
 ```
 
 **To re-export JSON Schema:**
