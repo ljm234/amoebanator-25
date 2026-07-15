@@ -87,9 +87,11 @@ WORKDIR /app
 # artefacts that should be regenerated inside the container instead of shipped.
 COPY --chown=amoeba:amoeba . /app
 
-# Health check: pytest must collect the full test suite without errors.
-HEALTHCHECK --interval=5m --timeout=2m --retries=3 \
-  CMD python -m pytest --collect-only -q tests/ | tail -1 | grep -E "[0-9]+ tests collected"
+# Health check: probe Streamlit's own health endpoint. start-period covers the
+# cold torch import at boot so the container is never marked unhealthy while
+# it is still legitimately starting up.
+HEALTHCHECK --interval=30s --timeout=5s --start-period=90s --retries=3 \
+  CMD python -c "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://localhost:8501/_stcore/health', timeout=4).status==200 else 1)"
 
 EXPOSE 8501
 
