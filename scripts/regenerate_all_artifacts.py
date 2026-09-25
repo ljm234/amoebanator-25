@@ -80,11 +80,6 @@ PIPELINE: list[tuple[str, list[str], list[str]]] = [
         ["outputs/metrics/conformal_eval.json"],
     ),
     (
-        "Fit entropy gate",
-        [sys.executable, str(REPO_ROOT / "scripts" / "ood" / "ood_fit_entropy.py")],
-        ["outputs/metrics/ood_gate.json"],
-    ),
-    (
         "Bootstrap confidence intervals",
         [sys.executable, str(REPO_ROOT / "scripts" / "calibration" / "bootstrap_metrics.py")],
         ["outputs/metrics/ci.json"],
@@ -170,7 +165,7 @@ def _run_step(step: Step, dry_run: bool) -> None:
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--dry-run", action="store_true",
-                        help="Skip subprocess execution; only check artefact presence.")
+                        help="Skip subprocess execution; only check artifact presence.")
     args = parser.parse_args(argv)
 
     METRICS_DIR.mkdir(parents=True, exist_ok=True)
@@ -212,7 +207,7 @@ def main(argv: list[str] | None = None) -> int:
     print()
     print("=" * 72)
     print(f"  Steps:     {n_ok}/{n_total} OK  ({n_fail} failed)")
-    print(f"  Artefacts: {n_present}/{n_artifacts} present")
+    print(f"  Artifacts: {n_present}/{n_artifacts} present")
     print(f"  Summary written to: {SUMMARY_JSON.relative_to(REPO_ROOT)}")
     print("=" * 72)
 

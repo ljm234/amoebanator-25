@@ -1,6 +1,6 @@
-"""Generate 8 fixture vignettes for Subphase 1.1 closure (Task 1.1.10).
+"""Generate the 8 schema fixture vignettes in tests/schemas/fixtures/.
 
-Each fixture is anchored to a peer-reviewed PMID/DOI from Subphase 1.1 anchor table.
+Each fixture is anchored to a peer-reviewed PMID/DOI.
 Values directly extracted from anchor papers where available; otherwise clinically
 imputed and tagged in provenance.inclusion_decision_rationale with
 IMPUTED_FROM_LITERATURE marker.

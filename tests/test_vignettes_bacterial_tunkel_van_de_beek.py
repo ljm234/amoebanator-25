@@ -1,4 +1,4 @@
-"""Subphase 1.3 Commit 5.3.3 Wave 1 BACT lock-in tests (TDD).
+"""Bacterial vignettes anchored to Tunkel 2004 and van de Beek 2004.
 
 14 vignettes: vignette_id 65, 66, 67, 69, 71, 73, 75, 76, 77, 78, 79, 80, 81, 90.
 10 Tunkel anchor (PMID 15494903) + 4 van de Beek anchor (PMID 15509818).
@@ -49,12 +49,12 @@ def _load(vid: int) -> dict:
 
 
 # ----------------------------------------------------------------------
-# Tests 1-4: parametrized over 14 vignettes
+# Parametrized over the 14 vignettes
 # ----------------------------------------------------------------------
 
 
 @pytest.mark.parametrize("vid", BACT_WAVE1_IDS)
-def test_bact_wave1_files_exist(vid):
+def test_bact_files_exist(vid):
     matches = list(WAVE1_DIR.glob(f"bact_{vid:03d}_*.json"))
     assert len(matches) == 1, (
         f"v{vid} JSON missing or duplicate at {WAVE1_DIR}: {matches}"
@@ -62,12 +62,12 @@ def test_bact_wave1_files_exist(vid):
 
 
 @pytest.mark.parametrize("vid", BACT_WAVE1_IDS)
-def test_bact_wave1_schema_validates(vid):
+def test_bact_schema_validates(vid):
     VignetteSchema.model_validate(_load(vid))
 
 
 @pytest.mark.parametrize("vid", BACT_WAVE1_IDS)
-def test_bact_wave1_demographics_match_spec(vid):
+def test_bact_demographics_match_spec(vid):
     data = _load(vid)
     spec = _wave1_slot(vid)
     assert data["demographics"]["age_years"] == spec["age_years"], (
@@ -80,7 +80,7 @@ def test_bact_wave1_demographics_match_spec(vid):
 
 
 @pytest.mark.parametrize("vid", BACT_WAVE1_IDS)
-def test_bact_wave1_anchor_pmid_matches(vid):
+def test_bact_anchor_pmid_matches(vid):
     data = _load(vid)
     spec = _wave1_slot(vid)
     assert data["literature_anchors"][0]["pmid"] == spec["pmid"], (
@@ -89,12 +89,12 @@ def test_bact_wave1_anchor_pmid_matches(vid):
 
 
 # ----------------------------------------------------------------------
-# Tests 5-10: per-corpus invariants
+# Invariants across the set
 # ----------------------------------------------------------------------
 
 
-def test_bact_wave1_freshwater_false():
-    """Spec 1.3.10 sanity: zero freshwater exposure for Class 2."""
+def test_bact_freshwater_false():
+    """No freshwater exposure in any Class 2 vignette."""
     for vid in BACT_WAVE1_IDS:
         data = _load(vid)
         assert (
@@ -102,38 +102,38 @@ def test_bact_wave1_freshwater_false():
         ), f"v{vid} freshwater not False"
 
 
-def test_bact_wave1_class_id_2():
+def test_bact_class_id_2():
     for vid in BACT_WAVE1_IDS:
         data = _load(vid)
         assert data["ground_truth_class"] == 2, f"v{vid} not class 2"
 
 
-def test_bact_wave1_csf_neutrophilic():
-    """Spec 1.3.3: CSF neutrophilic (>=50 percent)."""
+def test_bact_csf_neutrophilic():
+    """CSF is neutrophilic (>=50 percent)."""
     for vid in BACT_WAVE1_IDS:
         data = _load(vid)
         pct = data["csf"]["csf_neutrophil_pct"]
         assert pct >= 50, f"v{vid} csf_neutrophil_pct={pct}"
 
 
-def test_bact_wave1_csf_glucose_low():
-    """Spec 1.3.3: CSF glucose <40."""
+def test_bact_csf_glucose_low():
+    """CSF glucose is low (<=40 mg/dL)."""
     for vid in BACT_WAVE1_IDS:
         data = _load(vid)
         glucose = data["csf"]["csf_glucose_mg_per_dL"]
         assert glucose <= 40, f"v{vid} csf_glucose_mg_per_dL={glucose}"
 
 
-def test_bact_wave1_csf_protein_high():
-    """Spec 1.3.3: CSF protein >100."""
+def test_bact_csf_protein_high():
+    """CSF protein is high (>=100 mg/dL)."""
     for vid in BACT_WAVE1_IDS:
         data = _load(vid)
         protein = data["csf"]["csf_protein_mg_per_dL"]
         assert protein >= 100, f"v{vid} csf_protein_mg_per_dL={protein}"
 
 
-def test_bact_wave1_pre_adjudication_hold():
-    """Q7 5.3.1 lock: hold_for_revision verbatim."""
+def test_bact_pre_adjudication_hold():
+    """Every vignette is on hold_for_revision, stated verbatim in anchoring_documentation."""
     for vid in BACT_WAVE1_IDS:
         data = _load(vid)
         assert (
@@ -146,11 +146,11 @@ def test_bact_wave1_pre_adjudication_hold():
 
 
 # ----------------------------------------------------------------------
-# Tests 11-12: corpus-level
+# Set-level checks
 # ----------------------------------------------------------------------
 
 
-def test_bact_wave1_ambiguity_count():
+def test_bact_ambiguity_count():
     """Exactly 4 of 14 (v75, v76, v79, v80) carry ambiguity markers in rationale."""
     ambiguous = []
     for vid in BACT_WAVE1_IDS:
@@ -166,8 +166,8 @@ def test_bact_wave1_ambiguity_count():
     )
 
 
-def test_bact_wave1_no_em_dashes():
-    """No em-dashes (\\u2014) or en-dashes (\\u2013) in any Wave 1 JSON."""
+def test_bact_no_em_dashes():
+    """No em-dashes (\\u2014) or en-dashes (\\u2013) in any of these JSON files."""
     for vid in BACT_WAVE1_IDS:
         text = _wave1_json_path(vid).read_text(encoding="utf-8")
         assert chr(0x2014) not in text, f"v{vid} contains em-dash"

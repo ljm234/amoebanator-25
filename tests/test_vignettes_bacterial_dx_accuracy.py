@@ -1,4 +1,4 @@
-"""Stage H lock-in: bacterial dx-test builders must emit nulled/verified sens/spec.
+"""Bacterial dx-test builders emit only null or verified sensitivity/specificity.
 
 The 6 bacterial dx-test builders carry no unsupported sens/spec numbers. The
 single verified figure is van de Beek 2004 (PMID 15509818) CSF gram-stain at
@@ -17,7 +17,7 @@ if str(_REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(_REPO_ROOT))
 
 
-def test_bacterial_dx_builders_match_stage_h():
+def test_bacterial_dx_builders_null_except_van_de_beek_gram_stain():
     from scripts.vignettes.generate_pam_vignettes import (
         _bact_wave1_dx_tests_sp_culture_positive as sp,
         _bact_wave1_dx_tests_sp_pretreated as spt,

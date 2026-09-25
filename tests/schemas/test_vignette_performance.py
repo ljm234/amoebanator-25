@@ -1,7 +1,7 @@
 """Performance benchmark for VignetteSchema validation.
 
 Asserts P99 < 5ms per validation on canonical fixture.
-Critical for production: ML training loops validate thousands of vignettes per epoch.
+Validation speed matters because ML training loops validate thousands of vignettes per epoch.
 """
 from __future__ import annotations
 

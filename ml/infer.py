@@ -17,9 +17,7 @@ _REPO_ROOT: Path = Path(__file__).resolve().parent.parent
 METRICS_DIR: Path = Path("outputs/metrics")
 CONF_JSON: Path = METRICS_DIR / "conformal.json"
 CONF_G_JSON: Path = METRICS_DIR / "conformal_grouped.json"
-THRESH_PICK_JSON: Path = METRICS_DIR / "threshold_pick.json"
 NEG_ENERGY_JSON: Path = METRICS_DIR / "ood_energy.json"
-DEFAULT_THRESHOLD: float = 0.15
 
 MODEL_DIR: Path = _REPO_ROOT / "outputs" / "model"
 MODEL_PATH: Path = MODEL_DIR / "model.pt"
@@ -39,7 +37,7 @@ def _read_json(p: Path) -> dict:
 def _missing_artifact(path: Path, kind: str) -> FileNotFoundError:
     return FileNotFoundError(
         f"Required {kind} not found at {path}. "
-        f"Train the model first: `python -m ml.training`."
+        f"Regenerate it with `PYTHONPATH=. python scripts/regenerate_all_artifacts.py`."
     )
 
 
@@ -93,7 +91,7 @@ def _load_model_artifacts() -> tuple[MLP, tuple[str, ...], float]:
         missing = sorted(expected_keys - saved_keys)
         extra = sorted(saved_keys - expected_keys)
         raise ValueError(
-            f"{MODEL_PATH} state_dict does not match ml.training.MLP architecture. "
+            f"{MODEL_PATH} state_dict does not match the ml.model.MLP architecture. "
             f"Missing keys: {missing} | Unexpected keys: {extra}. "
             f"Re-train so the saved weights match the live class definition."
         )
@@ -110,7 +108,7 @@ def _build_feature_vector(row: pd.Series, feats: tuple[str, ...]) -> np.ndarray:
     Symptom indicators (sym_<token>) prefer an explicit column when present;
     otherwise they fall back to parsing row["symptoms"] as a semicolon-
     separated token string. Missing features default to 0.0, matching the
-    fillna(0) policy used during training (ml/training.py).
+    fillna(0) policy used during training (ml/training_calib_dca.py).
     """
     sym_tokens: set[str] = set()
     if "symptoms" in row.index:
@@ -224,17 +222,16 @@ def infer_one(row_in: dict | pd.Series) -> dict:
     Pipeline order: Mahalanobis OOD gate -> trained MLP -> temperature scaling
     -> energy gate -> split-conformal band assignment -> label.
 
-    Returns a dict with `prediction` (one of "Low", "High", "ABSTAIN"),
-    calibrated `p_high` in [0, 1], conformal band membership, Mahalanobis
-    distance, and energy-gate readout. A label is returned only when the
-    conformal prediction set holds exactly one class. ABSTAIN always carries
-    a `reason` field: "OOD", "LogitEnergyAboveOODShift", "ConformalAmbiguity"
+    Returns a dict with `prediction` (one of "Low", "High", "ABSTAIN"), the
+    calibrated `p_high` in [0, 1] (None when the Mahalanobis gate abstains,
+    because the model never scores that input), conformal band membership,
+    Mahalanobis distance, and energy-gate readout. A label is returned only
+    when the conformal prediction set holds exactly one class. ABSTAIN always
+    carries a `reason` field: "OOD", "LogitEnergyAboveOODShift" (the energy of
+    the temperature-scaled logits is above the gate threshold, following the
+    high-energy-is-OOD convention of Liu et al. 2020), "ConformalAmbiguity"
     (both classes in the set), or "ConformalEmptySet" (neither class in the
-    set). The energy-gate reason name is precise on three
-    dimensions: (1) signal = logit energy, (2) direction = above OOD shift,
-    (3) reference = above the in-distribution validation 95th percentile -
-    Liu 2020 canonical semantics (high energy -> OOD). See git log for
-    refactor history.
+    set).
     """
     row = pd.Series(row_in) if not isinstance(row_in, pd.Series) else row_in
     stats = load_stats()
@@ -245,7 +242,7 @@ def infer_one(row_in: dict | pd.Series) -> dict:
         return {
             "prediction": "ABSTAIN",
             "reason": "OOD",
-            "p_high": 0.0,
+            "p_high": None,
             "mahalanobis_d2": float(d2),
             "d2_tau": float(tau_d2),
             "energy": None,
@@ -303,13 +300,10 @@ def infer_one(row_in: dict | pd.Series) -> dict:
             "group": group,
             "contrib": ood.get("contrib")
         }
-    thresh_pick = _read_json(THRESH_PICK_JSON)
-    threshold = float(thresh_pick.get("threshold", DEFAULT_THRESHOLD))
     label = "High" if include_high else "Low"
     out = {
         "prediction": label,
         "p_high": p_high,
-        "threshold": threshold,
         "qhat": float(qhat),
         "alpha": float(alpha),
         "include_low": include_low,

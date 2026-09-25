@@ -1,6 +1,6 @@
 # Amoebanator V1.0 - Vignette Schema v2.0
 
-Comprehensive reference for the Pydantic v2 schema underlying the 9-class
+Reference for the Pydantic v2 schema underlying the 9-class
 meningoencephalitis differential ML system. Schema pinned at v2.0 as of
 May 2026.
 
@@ -14,14 +14,13 @@ schema is defined in `ml/schemas/vignette.py` as a hierarchy of 14 Pydantic v2
 `BaseModel` classes, with cross-field validators enforcing class-conditional
 clinical rules.
 
-**Headline numbers**
+**Summary**
 
 - 14 sub-models, ~75 leaf fields
 - 5 cross-field `model_validator` rules
 - 9 `ClassLabel` enum values, 1 = PAM, 9 = NON_INFECTIOUS_MIMIC
 - `schema_version` Literal-pinned at "2.0"
 - `extra="forbid"` at every model (no rogue fields permitted)
-- Validation performance: P99 0.0265 ms per vignette (188x under 5 ms target)
 
 **Public API**
 
@@ -46,7 +45,7 @@ from ml.schemas import (
 | `ml/schemas/SCHEMA_README.md` | This document |
 | `schemas/vignette_schema_v2.0.json` | Exported JSON Schema (41 KB) |
 | `scripts/vignettes/generate_fixtures.py` | Reproducible fixture generator |
-| `tests/schemas/` | 25 tests (24 PASSED, 1 SKIPPED for V1.5 migration) |
+| `tests/schemas/` | Schema, fixture, migration and performance tests |
 | `tests/schemas/fixtures/` | 9 canonical vignettes (1 per ClassLabel) |
 
 ---
@@ -88,7 +87,7 @@ Exposure history including the PAM always-flag fields.
 
 | Field | Type | Constraint |
 |---|---|---|
-| `freshwater_exposure_within_14d` | `bool` | **CRITICAL - required** for PAM always-flag rule |
+| `freshwater_exposure_within_14d` | `bool` | Required, for the PAM always-flag rule |
 | `freshwater_exposure_type` | `Optional[Literal[8 values]]` | optional |
 | `altitude_exposure_within_7d_m` | `Optional[int]` | 0-6000 |
 | `pork_consumption_or_taenia_contact` | `Optional[bool]` | NCC criterion (Del Brutto 2017) |
@@ -290,7 +289,7 @@ geographic relevance score for Peru deployment, adjudicator notes.
 - **Modern epidemiology backup:** PMID 34036322
   - Koelman DLH, Brouwer MC, Ter Horst L, **Bijlsma MW**, van der Ende A,
     van de Beek D. Pneumococcal Meningitis in Adults. CID 2022;74(4):657-667
-  - **D.1 Fix 4 applied:** Bijlsma MW now included in author string
+  - The author string includes Bijlsma MW.
 - **Peru relevance:** high (universal disease); but no Peru ADULT cohort exists
 - **Adjudicator notes:** confirm acceptability of pediatric Peru companion ONLY;
   flag if HNDM/HCH/Almenara local extraction should be commissioned in a future expansion
@@ -300,7 +299,7 @@ geographic relevance score for Peru deployment, adjudicator notes.
 - **Canonical Peru anchor:** PMID 26733400, DOI 10.1017/S0950268815003222
   - **Montano SM, Mori N, Nelson CA, Ton TGN, Celis V**, et al.
     Epidemiol Infect 2016;144(8):1673-1678. HSV encephalitis 5 Peru cities
-  - **D.1 Fix 3 applied:** corrected from "Becerra" to Montano SM first author
+  - The first author is Montano SM (not "Becerra").
 - **Peru relevance:** high - Lima cohort directly Peruvian
 - **Adjudicator notes:** confirm HSV-1 representativeness; consider HSV-2,
   enterovirus, arboviral subclasses for a future expansion
@@ -334,12 +333,12 @@ geographic relevance score for Peru deployment, adjudicator notes.
   - **Martínez DY, Seas C, Bravo F, Legua P, Ramos C, Cabello AM, Gotuzzo E.**
     Successful Treatment of Balamuthia mandrillaris Amoebic Infection with
     Extensive Neurological and Cutaneous Involvement. CID 2010;51(2):e7-e11
-  - **D.1 Fix 1 applied:** corrected from PMID 20550458 (off-by-one) to 20550438
+  - The PMID is 20550438 (not 20550458).
 - **Master Peru series:** PMID 35059659, DOI 10.1016/j.jdin.2021.11.005
   - Alvarez P, Torres-Cabala C, Gotuzzo E, Bravo F. **JAAD International**
     2022;6:51-58 (NOT JAAD Case Reports)
-  - **D.1 Fix 2 applied:** corrected from DOI 10.1016/j.jdcr.2021.11.022 (JAAD
-    Case Reports) to DOI 10.1016/j.jdin.2021.11.005 (JAAD International)
+  - The DOI is 10.1016/j.jdin.2021.11.005 (JAAD International), not
+    10.1016/j.jdcr.2021.11.022 (JAAD Case Reports).
 - **Peru relevance:** highest - Peru is global Balamuthia hotspot per UPCH/HCH
 - **Adjudicator notes:** verify centrofacial skin lesion preceding CNS by
   median 15 months (Bravo PMC8760460 cohort); confirm Hispanic ethnicity
@@ -500,8 +499,8 @@ in brackets.
 8. **DOI 10.1016/S1473-3099(10)70138-9** [4: TUBERCULOUS pathophysiology]. Marais S, et al. Lancet Infect Dis 2010;10(11):803-812
 9. **PMID 35320642** [5: CRYPTOCOCCAL]. Jarvis JN, et al. AMBITION-cm. NEJM 2022;386(12):1109-1120. DOI 10.1056/NEJMoa2111904
 10. **PMID 28355252** [5: CRYPTOCOCCAL Peru companion]. Concha-Velasco F, et al. PLoS One 2017;12(3):e0174459. DOI 10.1371/journal.pone.0174459
-11. **PMID 20550438** [6: GAE Peru single-patient]. Martínez DY, Seas C, Bravo F, Legua P, Ramos C, Cabello AM, Gotuzzo E. CID 2010;51(2):e7-e11. DOI 10.1086/653609 (D.1 Fix 1: corrected from PMID 20550458)
-12. **PMID 35059659** [6: GAE master Peru series]. Alvarez P, Torres-Cabala C, Gotuzzo E, Bravo F. **JAAD International** 2022;6:51-58. DOI 10.1016/j.jdin.2021.11.005 (D.1 Fix 2: corrected from JAAD Case Reports DOI)
+11. **PMID 20550438** [6: GAE Peru single-patient]. Martínez DY, Seas C, Bravo F, Legua P, Ramos C, Cabello AM, Gotuzzo E. CID 2010;51(2):e7-e11. DOI 10.1086/653609 (not PMID 20550458)
+12. **PMID 35059659** [6: GAE master Peru series]. Alvarez P, Torres-Cabala C, Gotuzzo E, Bravo F. **JAAD International** 2022;6:51-58. DOI 10.1016/j.jdin.2021.11.005 (not the JAAD Case Reports DOI)
 13. **PMID 38003778** [7: NCC Peru]. Allen et al. Pathogens 2023;12(11):1313. DOI 10.3390/pathogens12111313
 14. **PMID 28017213** [7: NCC criteria]. Del Brutto OH, et al. J Neurol Sci 2017;372:202-210
 15. **PMID 36477327** [8: CEREBRAL_MALARIA Peru]. Paredes-Obando M, et al. RPMESP 2022;39(2):241-244. DOI 10.17843/rpmesp.2022.392.10739
@@ -540,9 +539,8 @@ network for clinical-fidelity review. Specific questions per class:
   pairing. Should a future expansion split NON_INFECTIOUS_MIMIC into NMDAR / HACE / PRES /
   SAH / HYPONATREMIA distinct labels?
 
-**Expected reviewer turnaround:** 2 weeks. Does NOT block code progression to
-the data ingestion pipeline. Reviewer feedback can be incorporated
-in a subsequent schema patch (v2.1) without breaking v2.0 contracts.
+Reviewer feedback can be incorporated in a later schema patch (v2.1) without
+breaking v2.0 contracts.
 
 ---
 
@@ -551,8 +549,7 @@ in a subsequent schema patch (v2.1) without breaking v2.0 contracts.
 - **Schema source:** `ml/schemas/vignette.py` (~860 lines, 14 classes, 5 validators)
 - **Generator script:** `scripts/vignettes/generate_fixtures.py` (~750 lines)
 - **JSON Schema export:** `schemas/vignette_schema_v2.0.json` (41 KB, Draft 2020-12 compatible)
-- **Test suite:** `tests/schemas/` (24 PASSED + 1 SKIPPED)
-- **Baseline:** 1,371 project tests passing.
+- **Test suite:** `tests/schemas/`
 
 **To regenerate fixtures from scratch:**
 
@@ -572,9 +569,8 @@ python -m ml.schemas.export_json_schema
 python -m pytest tests/schemas/ -v
 ```
 
-**Performance benchmark (P99 validation latency):** 0.0265 ms (188x under 5 ms
-target). At training-loop scale (e.g., 270 vignettes x 30 epochs = 8,100
-validations per training run) total validation overhead is ~215 ms.
+**Performance:** `tests/schemas/test_vignette_performance.py` checks that the
+P99 validation latency of one vignette stays under 5 ms.
 
 ---
 

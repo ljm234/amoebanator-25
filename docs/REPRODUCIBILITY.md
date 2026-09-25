@@ -1,10 +1,9 @@
 # Reproducibility, Amoebanator
 
 This document describes how to reproduce the V1.0 results from a clean
-checkout, and states plainly what is and is not reproducible. The model and
-data cards (`docs/model_card.md`, `docs/data_card.md`) carry the artifact and
-dataset detail; this document is the operational recipe and its honest
-limits.
+checkout, and states what is and is not reproducible. The model and data
+cards (`docs/model_card.md`, `docs/data_card.md`) carry the artifact and
+dataset detail; this document is the operational recipe and its limits.
 
 ---
 
@@ -74,17 +73,17 @@ instead of MPS changes some weights by up to 0.025.
   PYTHONPATH=. python scripts/regenerate_all_artifacts.py
   ```
 
-  It runs thirteen steps in order and writes
+  It runs twelve steps in order and writes
   `outputs/metrics/regeneration_summary.json` with each step's command, exit
   code, duration, any warnings it printed, and whether each artifact the step
-  is expected to write exists afterwards. The conformal fit, grouped fit, and
+  is expected to write exists afterwards, with its size and SHA-256. The
+  conformal fit, grouped fit, and
   ablation steps read the miscoverage level from `[conformal] alpha` in
   `config/amoebanator.toml`. Apart from the per-step durations in the summary,
   two runs on the same machine give byte-identical artifacts. The ablation's
   gradient-boosting baseline is scikit-learn's `GradientBoostingClassifier`,
   and `ablation_table.json` records the estimator and calibration method
-  each model used. `threshold_pick.json` and `threshold_sweep.csv` are not
-  produced by this command.
+  each model used.
 * **The previous model did not reproduce.** The `model.pt` shipped before
   this release (SHA-256
   `f92f540188a869c580365409be65e2eada1bd880a773764a0ca9da18b2409924`,
@@ -146,7 +145,6 @@ because it also records per-step durations, which change on every run.
 | `outputs/metrics/conformal.json` | `76ae94eab684e23729d2900320c4dbdfb0ca6f5d12c19114d1f4bba4b247a7f2` |
 | `outputs/metrics/conformal_grouped.json` | `1f0f0f6cf8afe7549d2d421b68c48efc8b39fd0407279b98ef6417646063a8d7` |
 | `outputs/metrics/conformal_eval.json` | `2224eff53712f66a56a6acecf446a4723e8c3a03b6d334be3cfa90460fa86b7e` |
-| `outputs/metrics/ood_gate.json` | `b96805eb1f05820f7e6d139e75246787fa73f44c5291055d91e3781b832330d7` |
 | `outputs/metrics/ci.json` | `8617631375196f71fb975402085c0e2b6616e500af0541f29937e3d7a9102955` |
 | `outputs/metrics/calibration_curve.png` | `fcc4fe0d46af0c28d2d3e75189ce070ab46c6d763c92024c2610bf559915b42a` |
 | `outputs/metrics/dca_curve.png` | `c3d15537768348ccbd87977dbd570018bd05a7bcaa8899081d9b5da433b6adba` |
@@ -158,15 +156,14 @@ because it also records per-step durations, which change on every run.
 | `outputs/metrics/abstain_pareto.png` | `ade187ba83b73e02b3137e47ffe295811f38101a65d6df963135440426b3bd79` |
 | `outputs/metrics/synthetic_ood_benchmark.json` | `c83177a9a0f4a8476493e7ad5ff6bc76200d21f2dafddb348013079be2ea271f` |
 
-## Honesty signal
+## What a reproduction shows
 
-The synthetic-data results are fully and deterministically reproducible, but
-reproducing them reproduces an infrastructure proof on a 6-row validation
-split, not clinical performance. No performance metrics are reported, because
-on six validation rows they would not be meaningful; the real-data study that
-would produce clinically meaningful numbers is the planned MIMIC-IV proxy
-study, not yet run. Reproducibility here means the pipeline is honest and
-re-runnable, not that the numbers are clinically validated.
+In the environment of Section 2 the synthetic-data results reproduce
+deterministically, but what they reproduce is an infrastructure check on a
+6-row validation split, not clinical performance. No performance metrics are
+reported, because on six validation rows they would not be meaningful; the
+real-data study that would produce clinically meaningful numbers is the
+planned MIMIC-IV proxy study, not yet run.
 
 ## References
 

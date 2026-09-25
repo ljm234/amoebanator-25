@@ -1,6 +1,6 @@
-"""Pytest config for Subphase 1.2 PAM vignette generator tests.
+"""Pytest config for the PAM vignette generator tests.
 
-Registers the ``subphase_1_2`` marker, ensures the project root is on
+Registers the ``pam_vignettes`` marker, ensures the project root is on
 ``sys.path`` so ``scripts.vignettes.generate_pam_vignettes`` is importable, and
 exposes session-scoped fixtures for the 20 generated vignettes so the
 generator runs once instead of once per test.
@@ -29,7 +29,7 @@ from scripts.vignettes.generate_pam_vignettes import (  # noqa: E402
 def pytest_configure(config: pytest.Config) -> None:
     config.addinivalue_line(
         "markers",
-        "subphase_1_2: tests for the Subphase 1.2 PAM vignette generator",
+        "pam_vignettes: tests for the PAM vignette generator and vignette distributions",
     )
 
 

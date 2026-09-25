@@ -49,8 +49,8 @@ files under `outputs/model/` and `outputs/metrics/` that
   OOD gates, decision curve analysis) on a clinically relevant target. The
   model output is a calibrated probability of "high-risk" tier given a
   sparse set of presenting features.
-* **Primary intended users.** Methods researchers and PhD-program reviewers
-  evaluating the calibration / OOD / DCA pipeline. Educators teaching
+* **Primary intended users.** Methods researchers evaluating the
+  calibration / OOD / DCA pipeline. Educators teaching
   rare-disease ML. The Streamlit live-patient widget exists to make the
   end-to-end pipeline inspectable, not to support any clinical decision.
 * **Out-of-scope use cases.**
@@ -117,11 +117,10 @@ files under `outputs/model/` and `outputs/metrics/` that
   Mahalanobis gate is fit on the 24 training rows. This is the n = 6 caveat
   documented in Limitations and called out by `SmallCalibrationWarning` at
   every conformal fit.
-* **Motivation.** The project's V1.0 goal was to ship a defensible
-  *infrastructure* (calibration, conformal, OOD, DCA) end-to-end, not a
-  clinically valid model. Planned work swaps the evaluation set for a
-  MIMIC-IV bacterial-vs-viral meningitis cohort, now that PhysioNet
-  credentialed access is in place.
+* **Motivation.** The V1.0 goal was an end-to-end *infrastructure*
+  (calibration, conformal, OOD, DCA), not a clinically valid model. Planned
+  work swaps the evaluation set for a MIMIC-IV bacterial-vs-viral meningitis
+  cohort; PhysioNet credentialed access is in place.
 * **Preprocessing.** `pd.read_csv` -> one-hot expansion of `symptoms` ->
   `df.fillna(0)` -> split (`ml.training_calib_dca.load_tabular`). The Safe
   Harbor scrub in `ml/data_loader.load_tabular_safe_harbor` (caps ages at 89,

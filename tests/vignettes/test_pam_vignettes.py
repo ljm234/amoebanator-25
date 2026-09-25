@@ -22,7 +22,7 @@ from ml.schemas.vignette import VignetteSchema
 from scripts.vignettes.generate_pam_vignettes import PMID_REGISTRY
 
 
-pytestmark = pytest.mark.subphase_1_2
+pytestmark = pytest.mark.pam_vignettes
 
 
 # ----------------------------------------------------------------------
@@ -110,9 +110,8 @@ _VALID_VERIFICATION_DATES = {
 }
 
 
-# Subphase 1.4: non-numeric registry keys (none at present) would be tested
-# by the dedicated lock-in suite in
-# tests/test_subphase_1_4_pmid_registry_lockin.py rather than here, since
+# Non-numeric registry keys (none at present) would be tested in
+# tests/test_pmid_registry_tbm_crypto_gae.py rather than here, since
 # this completeness test enforces a 7-8 digit pmid field via _PMID_DIGIT_RE.
 def _numeric_pmid_keys() -> list[str]:
     return sorted(k for k in PMID_REGISTRY.keys() if k.isdigit())
@@ -171,7 +170,7 @@ def test_cluster_distribution_matches_spec(distribution):
 # 4. Demographic distribution
 # ----------------------------------------------------------------------
 #
-# Spec doc (amoebanator_subphase_1_2_day1_distribution.md) listed
+# The Day 1 spec doc listed
 # Female=9 / Male=11 / Pediatric=13 / Adult=7. The final per-vignette
 # table in the same doc resolves to Female={2,5,11,12,14}=5 and
 # Adult={10,11,12,14,16,19}=6. The data is the source of truth here;
@@ -355,7 +354,6 @@ def test_case_id_format(generated_vignettes):
 # Tests below validate the Day-2 distribution data structure only.
 # Vignette JSON generation for v21-v60 is deferred to Commits 4-5.
 # Source of truth: DAY2_DISTRIBUTION in scripts/vignettes/generate_pam_vignettes.py.
-# Rationale doc: docs/DAY2_DISTRIBUTION_RATIONALE.md.
 # ======================================================================
 
 
@@ -375,20 +373,20 @@ _DAY2_FILENAME_RE = re.compile(
 _REUSE_CAP = 6
 
 
-def test_day2_distribution_length(day2_distribution):
+def test_v21_v60_distribution_length(day2_distribution):
     assert len(day2_distribution) == 40, (
         f"DAY2_DISTRIBUTION has {len(day2_distribution)} entries, expected 40"
     )
 
 
-def test_day2_vignette_ids_contiguous(day2_distribution):
+def test_v21_v60_vignette_ids_contiguous(day2_distribution):
     ids = sorted(s["vignette_id"] for s in day2_distribution)
     assert ids == list(range(21, 61)), (
         f"Day-2 vignette_ids not contiguous 21-60: {ids}"
     )
 
 
-def test_day2_cluster_distribution_matches_spec(day2_distribution):
+def test_v21_v60_cluster_distribution_matches_spec(day2_distribution):
     actual: dict[str, set[int]] = {}
     for spec in day2_distribution:
         actual.setdefault(spec["cluster"], set()).add(spec["vignette_id"])
@@ -399,7 +397,7 @@ def test_day2_cluster_distribution_matches_spec(day2_distribution):
     )
 
 
-def test_day2_pmids_in_registry(day2_distribution, pmid_registry):
+def test_v21_v60_pmids_in_registry(day2_distribution, pmid_registry):
     for spec in day2_distribution:
         assert spec["pmid"] in pmid_registry, (
             f"Day-2 vignette {spec['vignette_id']} pmid {spec['pmid']!r} "
@@ -432,7 +430,7 @@ def test_no_filename_collisions(distribution, day2_distribution):
     )
 
 
-def test_day2_filename_format(day2_distribution):
+def test_v21_v60_filename_format(day2_distribution):
     for spec in day2_distribution:
         fname = spec["filename"]
         m = _DAY2_FILENAME_RE.match(fname)
@@ -458,7 +456,7 @@ def test_pmid_reuse_cap(distribution, day2_distribution):
     )
 
 
-def test_day2_sex_enum(day2_distribution):
+def test_v21_v60_sex_enum(day2_distribution):
     for spec in day2_distribution:
         assert spec["sex"] in {"male", "female"}, (
             f"Day-2 vignette {spec['vignette_id']} has invalid sex "
@@ -466,7 +464,7 @@ def test_day2_sex_enum(day2_distribution):
         )
 
 
-def test_day2_outcome_enum(day2_distribution):
+def test_v21_v60_outcome_enum(day2_distribution):
     for spec in day2_distribution:
         assert spec["outcome"] in {"fatal", "survived"}, (
             f"Day-2 vignette {spec['vignette_id']} has invalid outcome "
@@ -474,7 +472,7 @@ def test_day2_outcome_enum(day2_distribution):
         )
 
 
-def test_day2_stage_enum(day2_distribution):
+def test_v21_v60_stage_enum(day2_distribution):
     for spec in day2_distribution:
         assert spec["stage"] in {"early", "mid", "late"}, (
             f"Day-2 vignette {spec['vignette_id']} has invalid stage "
@@ -523,7 +521,7 @@ def test_combined_geographic_balance(distribution, day2_distribution):
     )
 
 
-def test_day2_special_cases_present(day2_distribution):
+def test_v21_v60_special_cases_present(day2_distribution):
     by_pmid = {s["pmid"]: s for s in day2_distribution}
     assert "39795618" in by_pmid, "Phung 2025 cryptic-exposure anchor missing"
     assert "39606118" in by_pmid, "Lin 2024 atypical-myocarditis anchor missing"
@@ -662,7 +660,7 @@ def test_pilot_no_em_dashes(pilot_vignettes):
 # ----------------------------------------------------------------------
 # These tests validate the 15 wave-1 JSON files generated by Commit
 # 5.1 of 5. Each wave-1 vignette uses imputation_within_anchor_
-# epidemiology per docs/DAY2_DISTRIBUTION_RATIONALE.md section 9.1.
+# epidemiology.
 # ======================================================================
 
 _WAVE1_IDS = list(range(26, 41))
@@ -1202,7 +1200,7 @@ def test_viral_dengue_peru_anchor():
     assert dengue_peru == 3
 
 
-def test_subphase_1_3_freshwater_false():
+def test_bacterial_viral_specs_freshwater_false():
     """Spec 1.3.10 sanity: ALL 60 Class-2/3 specs must have
     freshwater_exposure_within_14d=False."""
     for spec in BACTERIAL_DISTRIBUTION + VIRAL_DISTRIBUTION:
@@ -1243,7 +1241,7 @@ def test_dengue_platelet_mandate_present_in_specs():
         ]
 
 
-def test_subphase_1_3_vignette_ids_contiguous():
+def test_bacterial_viral_vignette_ids_contiguous():
     """Class 2 occupies 61-90 minus 88/89 (the 2 Listeria slots removed in
     errata 5.4.3.3); Class 3 occupies 91-120; specs are disjoint from Day-1
     (1-20) and Day-2 (21-60)."""
@@ -1316,8 +1314,7 @@ def test_pmid_29462145_excluded_from_registry():
     2026-05-07 confirmed it is unrelated.
     """
     assert "29462145" not in PMID_REGISTRY, (
-        "PMID 29462145 (Jiang YH urology paper) must not be present. "
-        "See docs/PMID_CORRECTIONS_2026-05-04.md Day 2 Corrections."
+        "PMID 29462145 (Jiang YH urology paper) must not be present."
     )
 
 
@@ -1326,7 +1323,7 @@ def test_pmid_29462145_excluded_from_registry():
 # -------------------------------------------------------------------------
 # Subphase 1.2.x metadata lock + Commit 5.3.2 errata fix removed PMID
 # 18626302 (typo) from PMID_REGISTRY but slot v83 in BACTERIAL_DISTRIBUTION
-# still referenced it. test_day2_pmids_in_registry parametrizes over PAM
+# still referenced it. test_v21_v60_pmids_in_registry parametrizes over PAM
 # corpus only (DAY2_DISTRIBUTION, IDs 21-60) and missed the leak. This
 # lock-in extends coverage to all 60 BACT + VIRAL slots (IDs 61-120) and
 # any future ADD slots in those distributions.
@@ -1353,6 +1350,5 @@ def test_bacterial_viral_distribution_pmids_in_registry():
             broken.append((vid, pmid))
     assert not broken, (
         f"BACT/VIRAL distribution slots reference PMIDs not in registry: "
-        f"{broken}. See docs/PMID_CORRECTIONS_2026-05-04.md Subphase 1.3.x "
-        f"errata section."
+        f"{broken}."
     )

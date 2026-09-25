@@ -8,9 +8,9 @@ CSV download button emits a fresh export-bytes blob each
 click, preserving every row + the hash chain pointers, so reviewers
 can verify integrity post-download against a cloned repo.
 
-The page is the load-bearing audit-portability feature: it converts
-HF Space's ephemeral filesystem (audit log wipes on container
-restart) into an explicit "download before stepping away" UX.
+The download matters because the Hugging Face Space's filesystem is
+ephemeral: the audit log is wiped when the container restarts, so the
+page asks the user to download it before stepping away.
 """
 from __future__ import annotations
 

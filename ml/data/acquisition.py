@@ -23,7 +23,7 @@ The acquisition layer follows a three-stage pipeline:
 
 Resilience Patterns
 -------------------
-The client implements production-grade resilience:
+The client implements these resilience patterns:
 
     Circuit Breaker State Machine:
     +------------+  failures >= threshold  +------------+
@@ -1627,10 +1627,10 @@ class TransferMetrics:
 
 
 class ResilientCDCClient(CDCDataClient):
-    """Enhanced CDC client with resilience patterns.
+    """CDC client with resilience patterns.
 
-    Extends CDCDataClient with circuit breaker, retry logic, and
-    comprehensive telemetry for production-grade reliability.
+    Extends CDCDataClient with a circuit breaker, retry logic, and
+    telemetry.
 
     Parameters
     ----------
@@ -1711,8 +1711,8 @@ class ResilientCDCClient(CDCDataClient):
     ) -> TransferResult:
         """Transfer file with resilience patterns applied.
 
-        Wraps parent implementation with circuit breaker and retry
-        logic for production-grade reliability.
+        Wraps the parent implementation with the circuit breaker and
+        retry logic.
         """
         self._telemetry.emit(
             "transfer_started",

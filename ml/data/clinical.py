@@ -2,7 +2,7 @@
 Clinical Records Parser and Validator.
 
 Provides parsers for structured clinical data in CSV and JSON formats,
-with comprehensive validation for medical record integrity. Implements
+with validation for medical record integrity. Implements
 schema enforcement, missing value handling, and type coercion for
 downstream machine learning consumption.
 
@@ -1157,7 +1157,7 @@ CSF_REFERENCE_RANGES: Final[dict[str, CSFReferenceRange]] = {
 
 @dataclass(frozen=True, slots=True)
 class CSFInterpretation:
-    """Comprehensive CSF analysis interpretation."""
+    """CSF analysis interpretation."""
 
     glucose_flag: LaboratoryFlag
     protein_flag: LaboratoryFlag
@@ -1200,7 +1200,7 @@ class CSFAnalyzer:
         return LaboratoryFlag.NORMAL
 
     def analyze(self, record: ClinicalRecord) -> CSFInterpretation:
-        """Perform comprehensive CSF analysis."""
+        """Perform the CSF analysis."""
         glucose_flag = self._evaluate_parameter(record.csf_glucose, "glucose")
         protein_flag = self._evaluate_parameter(record.csf_protein, "protein")
         wbc_flag = self._evaluate_parameter(float(record.csf_wbc), "wbc")
@@ -1986,7 +1986,7 @@ class ClinicalDecisionSupport:
     )
 
     def evaluate_patient(self, record: ClinicalRecord) -> dict[str, Any]:
-        """Comprehensive patient evaluation."""
+        """Patient evaluation."""
         csf_interpretation = self.csf_analyzer.analyze(record)
         risk_score = self.score_calculator.calculate_score(record)
         outcome_prediction = self.outcome_predictor.predict_outcome_probability(record)

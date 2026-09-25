@@ -1,14 +1,10 @@
-"""Cumulative visual regression.
+"""Visual regression across all 4 pages.
 
-Single canonical parametrized test covering all 4 pages. Each page's
+One parametrized test covers all 4 pages. Each page's
 captured AppTest markdown blob is compared against its committed
 baseline at ``tests/_snapshots/<name>.md.snap``. Test fails if drift
 exceeds 5% character delta - catches nav/disclaimer/banner
 regressions that unit tests miss.
-
-An earlier version had a single non-parametrized snapshot test for the
-predict page; that test is preserved as the original. This file is
-the cumulative version covering all 4 pages.
 """
 from __future__ import annotations
 

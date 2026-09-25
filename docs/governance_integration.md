@@ -7,8 +7,8 @@ governance. It is a map of what is enforced in code, not a claim of
 clinical-deployment readiness. The model and data cards
 (`docs/model_card.md`, `docs/data_card.md`) and the proxy-task design
 (`docs/rare_class_design.md`) carry the per-control detail; this document
-shows how the controls fit together and states, plainly, what posture they
-hold at the current research stage.
+shows how the controls fit together and states what posture they hold at
+the current research stage.
 
 ---
 
@@ -19,7 +19,7 @@ hold at the current research stage.
   planned real-data study is governed from the first commit, not so that the
   system can be called governed for any clinical use. On the bundled
   synthetic dataset several controls (de-identification, the IRB gate) are
-  no-op safeguards; they become load-bearing only when real data arrives.
+  no-op safeguards; they do real work only once real data arrives.
 * **Frameworks.** No formal external AI-governance or quality-management
   framework (for example, a regulatory software-as-a-medical-device system)
   is adopted. The data-privacy controls map to the HIPAA Privacy Rule
@@ -40,7 +40,7 @@ hold at the current research stage.
   expert-determination path (45 CFR 164.514(b)(1)) is also represented.
 * **On the bundled data.** The shipped 30-row dataset is synthetic and
   carries no identifiers, so the de-identification pass is a no-op safeguard
-  today. It is load-bearing for any future MIMIC-IV-shaped CSV, where the age
+  today. It matters for any future MIMIC-IV-shaped CSV, where the age
   cap, date generalization, and identifier removal do real work
   (`data_card.md` Section 4).
 * **Provenance.** Every row carries `source`, `physician`, `timestamp_tz`,
@@ -129,15 +129,14 @@ code, covering de-identification, the audit trail, the IRB gate, and the
 safety stack, is open-sourced under the license stated in `README.md`
 (`model_card.md` Section 1; `data_card.md` Section 7).
 
-## Honesty signal
+## Limits of these controls
 
 These controls are real and tested, but their posture is research governance,
 not deployment governance. On synthetic data the de-identification pass and
 the IRB gate are mostly no-op safeguards, and the audit chain governs a
 pipeline that has never processed a real patient. They exist so that the
 transition to the planned real-data study is governed from the first commit,
-not to assert that the system is cleared for any clinical setting. Naming that
-posture plainly is the point.
+not to assert that the system is cleared for any clinical setting.
 
 ## References
 

@@ -97,18 +97,23 @@ def fit_clamped_temperature(model: MLP, logits_val: np.ndarray, yva: np.ndarray)
     return float(np.clip(T, 0.1, 10.0))
 
 
-def main() -> None:
+def main(model_dir: str = "outputs/model", metrics_dir: str = "outputs/metrics") -> dict[str, float]:
+    """
+    Train the MLP, fit the temperature, and write the model artifacts to
+    model_dir and the validation predictions and metrics to metrics_dir.
+    Returns the values also written to metrics.json, plus the split sizes.
+    """
     from ml.seeds import set_global_seeds
     set_global_seeds()
-    os.makedirs("outputs/model", exist_ok=True)
-    os.makedirs("outputs/metrics", exist_ok=True)
+    os.makedirs(model_dir, exist_ok=True)
+    os.makedirs(metrics_dir, exist_ok=True)
 
     X, y, feats = load_tabular()
     record_data_loaded(resource="outputs/diagnosis_log_pro.csv", n_rows=int(X.shape[0]), n_features=int(X.shape[1]))
     Xtr, Xva, ytr, yva = train_test_split(
         X, y, test_size=0.2, stratify=y, random_state=42
     )
-    record_train_started(resource="outputs/model", n_train=int(len(ytr)), n_val=int(len(yva)))
+    record_train_started(resource=model_dir, n_train=int(len(ytr)), n_val=int(len(yva)))
 
     device = select_device()
     torch.set_default_dtype(torch.float32)  # type: ignore[no-untyped-call]
@@ -123,7 +128,7 @@ def main() -> None:
     p_uncal = stable_softmax(logits_val)[:, 1]
 
     T = fit_clamped_temperature(model, logits_val, yva)
-    record_calibration_fit(resource="outputs/model", temperature=float(T), n_val=int(len(yva)))
+    record_calibration_fit(resource=model_dir, temperature=float(T), n_val=int(len(yva)))
     logits_scaled = logits_val / T
     p_cal = stable_softmax(logits_scaled)[:, 1]
 
@@ -139,11 +144,11 @@ def main() -> None:
     print("T (temperature, clamped [0.1,10.0]):", round(float(T), 4))
 
     # Artifacts
-    torch.save(model.state_dict(), os.path.join("outputs/model", "model.pt"))
-    record_model_saved(resource="outputs/model", save_path=os.path.join("outputs/model", "model.pt"))
-    with open(os.path.join("outputs/model", "features.json"), "w") as f:
+    torch.save(model.state_dict(), os.path.join(model_dir, "model.pt"))
+    record_model_saved(resource=model_dir, save_path=os.path.join(model_dir, "model.pt"))
+    with open(os.path.join(model_dir, "features.json"), "w") as f:
         json.dump(feats, f, indent=2)
-    with open(os.path.join("outputs/model", "temperature_scale.json"), "w") as f:
+    with open(os.path.join(model_dir, "temperature_scale.json"), "w") as f:
         json.dump({"T": float(T)}, f, indent=2)
 
     # Validation predictions for plots + downstream gate fits
@@ -154,18 +159,17 @@ def main() -> None:
         "logit_low": logits_val[:, 0].astype(float),
         "logit_high": logits_val[:, 1].astype(float),
     })
-    dfv.to_csv(os.path.join("outputs/metrics", "val_preds.csv"), index=False)
-    with open(os.path.join("outputs/metrics", "metrics.json"), "w") as f:
+    dfv.to_csv(os.path.join(metrics_dir, "val_preds.csv"), index=False)
+    with open(os.path.join(metrics_dir, "metrics.json"), "w") as f:
         json.dump(
             {"auc_calibrated": float(auc), "recall_high@0.5": float(rec_high), "T": float(T)},
             f, indent=2
         )
-    record_train_completed(
-        resource="outputs/model",
-        metrics={"auc_calibrated": float(auc), "recall_high@0.5": float(rec_high), "T": float(T),
-                 "n_train": int(len(ytr)), "n_val": int(len(yva))},
-    )
-    print("Saved outputs/metrics/val_preds.csv and metrics.json, plus model artifacts.")
+    summary = {"auc_calibrated": float(auc), "recall_high@0.5": float(rec_high), "T": float(T),
+               "n_train": int(len(ytr)), "n_val": int(len(yva))}
+    record_train_completed(resource=model_dir, metrics=summary)
+    print(f"Saved {metrics_dir}/val_preds.csv and metrics.json, plus model artifacts in {model_dir}.")
+    return summary
 
 if __name__ == "__main__":
     main()

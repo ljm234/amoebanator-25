@@ -3,10 +3,10 @@ Integration tests for de-identification wiring.
 
 Verifies that:
   * Ages > 89 are capped at 89 per Safe Harbor
-  * Dates are generalised to the year
+  * Dates are generalized to the year
   * Physician (actor) field is blanked
   * AMOEBANATOR_SKIP_DEIDENT=1 bypass flag works (with summary.bypassed=True)
-  * load_tabular_safe_harbor returns the same (X, y) shape as ml.training.load_tabular
+  * load_tabular_safe_harbor returns the same (X, y) shape as ml.training_calib_dca.load_tabular
   * The audit log records a DATA_VERIFIED entry for each load
 """
 from __future__ import annotations
@@ -79,7 +79,7 @@ def test_physician_is_blanked() -> None:
     assert summary.n_actor_blanked == 2  # 2 non-empty physician rows
 
 
-def test_dates_generalised_to_year() -> None:
+def test_dates_generalized_to_year() -> None:
     df = _sample_df()
     out, summary = deidentify_dataframe(df)
     assert summary.n_dates_truncated >= 2  # 2 non-null dates
@@ -109,12 +109,12 @@ def test_bypass_via_env_var() -> None:
 
 
 def test_load_tabular_safe_harbor_matches_existing_shape(tmp_path: Path, isolated_audit_path: Path) -> None:
-    """The drop-in loader must produce the same (X, y) shape as ml.training.load_tabular."""
+    """The drop-in loader must produce the same (X, y) shape as ml.training_calib_dca.load_tabular."""
     df = _sample_df()
     csv = tmp_path / "log.csv"
     df.to_csv(csv, index=False)
 
-    from ml.training import load_tabular
+    from ml.training_calib_dca import load_tabular
     Xa, ya, fa = load_tabular(str(csv))
     Xb, yb, fb, summary = load_tabular_safe_harbor(str(csv))
 

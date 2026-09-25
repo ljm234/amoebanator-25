@@ -1,14 +1,16 @@
-"""Stage K lock-in: schema-fixture diagnostic sens/spec are nulled/verified.
+"""Schema-fixture diagnostic sens/spec values are null or verified.
 
-The 8 subphase-1.1 schema validation fixtures (tests/schemas/fixtures/valid_*_fixture.json)
-carried diagnostic sensitivity/specificity attributed to real PMIDs that are NOT
+The 8 schema validation fixtures (tests/schemas/fixtures/valid_*_fixture.json)
+carried diagnostic sensitivity/specificity attributed to real PMIDs that are not
 diagnostic-accuracy studies (case reports, cohorts, surveillance, treatment RCTs),
-so those numbers were templated/misattributed. Stage K nulls all of them except the
+so those numbers were templated/misattributed. All of them are null except the
 single verified figure: van de Beek 2004 (PMID 15509818) CSF Gram stain at 80/97
-(the same figure pinned by the Stage H corpus lock-in). valid_pam_fixture.json is a
+(the same figure pinned for the bacterial corpus builders in
+test_vignettes_bacterial_dx_accuracy.py). valid_pam_fixture.json is a
 hand-authored orphan (no builder generates it); the other 7 are emitted by
 scripts/vignettes/generate_fixtures.py. This pins both the committed JSON and the
-builder dicts so a future regen or manual edit cannot silently restore the numbers.
+builder dicts so a future regeneration or manual edit cannot silently restore the
+numbers.
 """
 from __future__ import annotations
 
@@ -55,7 +57,7 @@ def _results(path):
     return obj["diagnostic_tests"]["results"]
 
 
-def test_stage_k_committed_json_fixtures():
+def test_committed_fixture_dx_values_null_or_verified():
     for fn, expected in _EXPECTED.items():
         by_name = {t["test_name"]: t for t in _results(_FIX / fn)}
         for tname, (s, sp) in expected.items():
@@ -67,14 +69,14 @@ def test_stage_k_committed_json_fixtures():
             )
 
 
-def test_stage_k_gae_fixture_all_null():
+def test_gae_fixture_dx_values_all_null():
     for t in _results(_FIX / "valid_gae_fixture.json"):
         assert t["sensitivity_pct"] is None and t["specificity_pct"] is None, (
             f"gae {t['test_name']!r}: {t['sensitivity_pct']}/{t['specificity_pct']}"
         )
 
 
-def test_stage_k_builder_dicts_in_sync():
+def test_fixture_builder_dx_values_null_or_verified():
     import scripts.vignettes.generate_fixtures as g
 
     builder_backed = {fn: data for fn, data in g.FIXTURES}

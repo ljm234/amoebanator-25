@@ -165,7 +165,7 @@ class ComplianceGateResult(Enum):
 # ===========================================================================
 
 class CITICompletion(NamedTuple):
-    """Record of CITI programme module completion."""
+    """Record of CITI program module completion."""
 
     module_id: str
     module_name: str
@@ -249,7 +249,7 @@ class ResearcherValidator:
     """Validates researcher identity and training completeness.
 
     Ensures ORCID format + checksum validity, institutional email
-    domain, and CITI programme training currency.
+    domain, and CITI program training currency.
     """
 
     __slots__ = ("_required_modules", "_max_citi_age_days")
@@ -559,7 +559,7 @@ class IRBApplication:
         return max(0, delta.days)
 
     def to_dict(self) -> dict[str, Any]:
-        """Serialise application state for persistence or reporting."""
+        """Serialize application state for persistence or reporting."""
         return {
             "application_id": self.application_id,
             "protocol_title": self.protocol_title,
@@ -651,7 +651,7 @@ class CDCDataRequestForm:
             self.status = CDCFormStatus.IN_PROGRESS
 
     def validate(self) -> list[ValidationIssue]:
-        """Run comprehensive validation on the form.
+        """Run every validation check on the form.
 
         Returns
         -------
@@ -753,7 +753,7 @@ class CDCDataRequestForm:
                 )
 
     def to_dict(self) -> dict[str, Any]:
-        """Serialise form state."""
+        """Serialize form state."""
         return {
             "form_id": self.form_id,
             "form_version": CDC_FORM_VERSION,
@@ -905,7 +905,7 @@ class SecurityAttestation:
 
     Tracks acknowledgement of each safeguard check by the attesting
     researcher, records a digital signature (HMAC-SHA256 over the
-    serialised state), and enforces annual renewal.
+    serialized state), and enforces annual renewal.
 
     Attributes
     ----------
@@ -920,7 +920,7 @@ class SecurityAttestation:
     signed_at : datetime | None
         Timestamp of digital signature.
     signature : str
-        HMAC-SHA256 signature over serialised state.
+        HMAC-SHA256 signature over serialized state.
     expires_at : datetime | None
         Attestation expiration (1 year from signing).
     """
@@ -1056,7 +1056,7 @@ class SecurityAttestation:
         return result
 
     def to_dict(self) -> dict[str, Any]:
-        """Serialise attestation state."""
+        """Serialize attestation state."""
         return {
             "attestation_id": self.attestation_id,
             "status": self.status.value,
@@ -1163,7 +1163,7 @@ class ComplianceGate:
         return ComplianceGateResult.PASSED, []
 
     def generate_report(self) -> dict[str, Any]:
-        """Generate comprehensive compliance report.
+        """Generate the compliance report.
 
         Returns
         -------
@@ -1404,7 +1404,7 @@ class JurisdictionCompliance:
         )
         if requirement not in required and requirement not in self.waived_requirements:
             msg = (
-                f"'{requirement}' is not a recognised requirement for "
+                f"'{requirement}' is not a recognized requirement for "
                 f"{self.jurisdiction.value}"
             )
             raise ValueError(msg)
@@ -1671,7 +1671,7 @@ _DPIA_REQUIRED_SECTIONS: Final[tuple[DPIASection, ...]] = (
         title="Necessity and Proportionality Assessment",
         description="Justify processing relative to stated purposes",
         risk_level=DPIARiskLevel.MEDIUM,
-        mitigations=("data_minimisation", "purpose_limitation"),
+        mitigations=("data_minimization", "purpose_limitation"),
         gdpr_article="Article 35(7)(b)",
     ),
     DPIASection(
@@ -1683,7 +1683,7 @@ _DPIA_REQUIRED_SECTIONS: Final[tuple[DPIASection, ...]] = (
             "pseudonymisation",
             "encryption",
             "access_controls",
-            "data_minimisation",
+            "data_minimization",
         ),
         gdpr_article="Article 35(7)(c)",
     ),
@@ -1717,7 +1717,7 @@ class DataProtectionImpactAssessment:
     project_name : str
         Name of the data processing project.
     controller : str
-        Data controller organisation.
+        Data controller organization.
     dpo_consulted : bool
         Whether the Data Protection Officer has been consulted.
     status : DPIAStatus
@@ -1766,7 +1766,7 @@ class DataProtectionImpactAssessment:
         Raises
         ------
         ValueError
-            If the section_id is not recognised.
+            If the section_id is not recognized.
         """
         valid_ids = {s.section_id for s in _DPIA_REQUIRED_SECTIONS}
         if section_id not in valid_ids:
@@ -1872,7 +1872,7 @@ class DataProtectionImpactAssessment:
         self.overall_risk = max_risk
 
     def to_dict(self) -> dict[str, Any]:
-        """Serialise the DPIA."""
+        """Serialize the DPIA."""
         return {
             "dpia_id": self.dpia_id,
             "project_name": self.project_name,

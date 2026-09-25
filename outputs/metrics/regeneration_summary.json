@@ -1,9 +1,9 @@
 {
-  "n_steps": 13,
-  "n_ok": 13,
+  "n_steps": 12,
+  "n_ok": 12,
   "n_fail": 0,
-  "n_artifacts_expected": 23,
-  "n_artifacts_present": 23,
+  "n_artifacts_expected": 22,
+  "n_artifacts_present": 22,
   "steps": [
     {
       "name": "Train MLP + temperature + val_preds",
@@ -19,9 +19,9 @@
         "outputs/metrics/val_preds.csv",
         "outputs/metrics/metrics.json"
       ],
-      "duration_s": 3.1,
+      "duration_s": 3.95,
       "exit_code": 0,
-      "stdout_tail": "Validation AUC (calibrated): 1.0\nRecall(High) @0.5: 1.0\nT (temperature, clamped [0.1,10.0]): 0.2662\nSaved outputs/metrics/val_preds.csv and metrics.json, plus model artifacts.",
+      "stdout_tail": "Validation AUC (calibrated): 1.0\nRecall(High) @0.5: 1.0\nT (temperature, clamped [0.1,10.0]): 0.2662\nSaved outputs/metrics/val_preds.csv and metrics.json, plus model artifacts in outputs/model.",
       "warnings": [],
       "artifacts_present": {
         "outputs/model/model.pt": true,
@@ -56,7 +56,7 @@
         "outputs/metrics/feature_stats.json",
         "outputs/metrics/feature_stats_train.json"
       ],
-      "duration_s": 1.25,
+      "duration_s": 1.19,
       "exit_code": 0,
       "stdout_tail": "  ]\n}\n{\n  \"replaced\": \"outputs/metrics/feature_stats.json\"\n}",
       "warnings": [],
@@ -83,7 +83,7 @@
         "outputs/metrics/energy_threshold.json",
         "outputs/metrics/ood_energy.json"
       ],
-      "duration_s": 1.92,
+      "duration_s": 2.01,
       "exit_code": 0,
       "stdout_tail": "    \"tau\": -1.0000000049999991e-08,\n    \"q\": 0.95,\n    \"n\": 6\n  }\n}",
       "warnings": [],
@@ -113,7 +113,7 @@
       "exit_code": 0,
       "stdout_tail": "  \"alpha_fraction\": \"1/7\",\n  \"qhat\": 0.016170106828212738,\n  \"n\": 6,\n  \"source\": \"val_preds.csv\"\n}",
       "warnings": [
-        "scripts/conformal/conformal_fit_from_probs.py:52: SmallCalibrationWarning: Conformal calibration set size n=6 is below the recommended floor of 100. Split conformal coverage still holds on average under exchangeability, but with n = 6 the realized coverage varies widely, and a valid threshold cannot target more than 6/7 coverage, about 86 percent, without abstaining on every input."
+        "scripts/conformal/conformal_fit_from_probs.py:48: SmallCalibrationWarning: Conformal calibration set size n=6 is below the recommended floor of 100. Split conformal coverage still holds on average under exchangeability, but with n = 6 the realized coverage varies widely, and a valid threshold cannot target more than 6/7 coverage, about 86 percent, without abstaining on every input."
       ],
       "artifacts_present": {
         "outputs/metrics/conformal.json": true
@@ -157,7 +157,7 @@
       "artifacts": [
         "outputs/metrics/conformal_eval.json"
       ],
-      "duration_s": 0.36,
+      "duration_s": 0.38,
       "exit_code": 0,
       "stdout_tail": "  \"singleton_rate\": 1.0,\n  \"empty_rate\": 0.0,\n  \"two_class_rate\": 0.0,\n  \"n\": 6\n}",
       "warnings": [],
@@ -172,29 +172,6 @@
       }
     },
     {
-      "name": "Fit entropy gate",
-      "command": [
-        "python",
-        "scripts/ood/ood_fit_entropy.py"
-      ],
-      "artifacts": [
-        "outputs/metrics/ood_gate.json"
-      ],
-      "duration_s": 0.36,
-      "exit_code": 0,
-      "stdout_tail": "  \"method\": \"entropy\",\n  \"tau\": 0.07460534968725295,\n  \"q\": 0.98,\n  \"n\": 6\n}",
-      "warnings": [],
-      "artifacts_present": {
-        "outputs/metrics/ood_gate.json": true
-      },
-      "artifacts_size_bytes": {
-        "outputs/metrics/ood_gate.json": 78
-      },
-      "artifacts_sha256": {
-        "outputs/metrics/ood_gate.json": "b96805eb1f05820f7e6d139e75246787fa73f44c5291055d91e3781b832330d7"
-      }
-    },
-    {
       "name": "Bootstrap confidence intervals",
       "command": [
         "python",
@@ -203,7 +180,7 @@
       "artifacts": [
         "outputs/metrics/ci.json"
       ],
-      "duration_s": 2.93,
+      "duration_s": 2.98,
       "exit_code": 0,
       "stdout_tail": "Saved outputs/metrics/ci.json",
       "warnings": [
@@ -230,7 +207,7 @@
         "outputs/metrics/calibration_curve.png",
         "outputs/metrics/dca_curve.png"
       ],
-      "duration_s": 1.84,
+      "duration_s": 2.21,
       "exit_code": 0,
       "stdout_tail": "Saved calibration_curve.png and dca_curve.png in outputs/metrics/",
       "warnings": [],
@@ -257,7 +234,7 @@
         "outputs/metrics/ablation_table.json",
         "outputs/metrics/ablation_table.csv"
       ],
-      "duration_s": 30.44,
+      "duration_s": 31.47,
       "exit_code": 0,
       "stdout_tail": "  \"wrote\": [\n    \"outputs/metrics/ablation_table.json\",\n    \"outputs/metrics/ablation_table.csv\"\n  ]\n}",
       "warnings": [
@@ -286,7 +263,7 @@
         "outputs/metrics/coverage_sweep.json",
         "outputs/metrics/coverage_sweep.png"
       ],
-      "duration_s": 0.67,
+      "duration_s": 0.68,
       "exit_code": 0,
       "stdout_tail": "      \"abstain_rate\": 1.0,\n      \"n\": 3\n    }\n  ]\n}",
       "warnings": [
@@ -318,7 +295,7 @@
         "outputs/metrics/abstain_pareto.json",
         "outputs/metrics/abstain_pareto.png"
       ],
-      "duration_s": 0.66,
+      "duration_s": 0.61,
       "exit_code": 0,
       "stdout_tail": "    \"outputs/metrics/abstain_pareto.json\",\n    \"outputs/metrics/abstain_pareto.png\"\n  ],\n  \"n_points\": 51\n}",
       "warnings": [],
@@ -344,7 +321,7 @@
       "artifacts": [
         "outputs/metrics/synthetic_ood_benchmark.json"
       ],
-      "duration_s": 1.9,
+      "duration_s": 2.02,
       "exit_code": 0,
       "stdout_tail": "      \"median_in_dist\": -0.020409310664630136,\n      \"median_ood\": -0.020409310664630136\n    }\n  }\n}",
       "warnings": [],

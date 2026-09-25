@@ -22,19 +22,18 @@ from __future__ import annotations
 
 from typing import Any
 
-# Only the 3 symptoms the model scores. Surfacing more in
-# the UI than the model handles would be a defensible-feature mismatch.
+# Only the 3 symptoms the model scores. Offering more in the UI would
+# collect inputs the model ignores.
 KNOWN_SYMPTOMS: tuple[str, str, str] = ("fever", "headache", "nuchal_rigidity")
 
 
 # Bold-label + color mapping. Stripping the color
-# tags MUST leave the bold label legible (achromatopsia + low-vision
+# tags must leave the bold label legible (achromatopsia + low-vision
 # accessibility). The mapping is the single source of truth for badge
 # rendering across pages.
 _BADGE_MAP: dict[str, tuple[str, str]] = {
     "High":     ("HIGH",     "red"),
     "Low":      ("LOW",      "green"),
-    "Moderate": ("MODERATE", "blue"),
     "ABSTAIN":  ("ABSTAIN",  "orange"),
 }
 
@@ -75,9 +74,9 @@ def build_row(
 def decision_badge(prediction: str, reason: str | None = None) -> str:
     """Return a Streamlit-markdown badge for the prediction state.
 
-    Format: ``:<color>[**<LABEL>**]`` for High/Low/Moderate;
+    Format: ``:<color>[**<LABEL>**]`` for High/Low;
     ``:<color>[**ABSTAIN - <reason>**]`` for ABSTAIN. Empty or
-    unrecognised prediction returns the literal ``"unknown"``.
+    unrecognized prediction returns the literal ``"unknown"``.
 
     The bold label conveys the prediction state
     without relying on color, satisfying the color-blind safety

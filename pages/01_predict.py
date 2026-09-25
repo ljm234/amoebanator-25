@@ -1,13 +1,13 @@
 """Predict page.
 
 Form-based PAM risk prediction using the n=30 MLP at outputs/model/model.pt.
-Wires the existing ml.infer.infer_one path (frozen - do not modify) through:
+Wires ml.infer.infer_one into:
 
 - 8 form widgets with NEUTRAL clinical defaults.
 - 3 preset buttons (high_risk_pam / bacterial_meningitis_limitation /
   normal_csf).
-- D18 limitation banner adjacent to result when bacterial preset
-  active (post-result, NOT pre-inference).
+- Limitation banner next to the result when the bacterial preset is
+  active (after inference, not before).
 - Correlation-ID error path: uuid4 full server-side, 12-char
   display + INTEGRITY_VIOLATION audit emit.
 - Graceful FileNotFoundError banner when Mahalanobis stats
@@ -222,20 +222,21 @@ if submitted:
         )
         out = infer_one(row)
         _render_result(out)
-        # D18 banner ONLY when bacterial preset is active, AND
-        # adjacent to result (post-inference, not pre-inference).
+        # Limitation banner only when the bacterial preset is active,
+        # shown next to the result (after inference, not before).
         if (
             st.session_state.get("active_preset")
             == "bacterial_meningitis_limitation"
         ):
             st.error(PRESETS["bacterial_meningitis_limitation"]["description"])
+        p_high = out.get("p_high")
         _emit(
             AuditEventType.WEB_PREDICT_RETURNED,
             actor="streamlit_user",
             resource="pages/01_predict.py",
             action_detail=f"prediction={out.get('prediction', '?')}",
             metadata={
-                "p_high": float(out.get("p_high", float("nan"))),
+                "p_high": None if p_high is None else float(p_high),
                 "reason": out.get("reason"),
             },
         )
@@ -243,12 +244,12 @@ if submitted:
         # Mahalanobis stats / model.pt missing -> graceful banner,
         # NOT crash. Disable submit on next render via session_state flag.
         st.warning(
-            "OOD gate is unconfigured (required artefact missing: "
+            "OOD gate is unconfigured (required artifact missing: "
             f"{e.filename or e}). All predictions return ABSTAIN/OOD until "
             "re-fit. See docs/REPRODUCIBILITY.md section 4 for the command "
             "that regenerates every artifact."
         )
-        st.session_state["_artefact_missing"] = True
+        st.session_state["_artifact_missing"] = True
     except Exception as e:  # noqa: BLE001 - correlation-ID catch-all
         # uuid4 full server-side, 12-char display, audit emit.
         error_id_full = uuid.uuid4().hex

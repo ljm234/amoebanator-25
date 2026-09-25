@@ -1,7 +1,7 @@
 """
 IRB compliance gate for the training pipeline.
 
-Behaviour:
+Behavior:
   * If the dataset declares itself synthetic (column `source` exclusively
     contains values starting with `simulated`, `synthetic`, or `bridge`),
     the gate is a no-op. Synthetic data does not require IRB approval.
@@ -82,7 +82,7 @@ def is_dataset_synthetic(df: pd.DataFrame) -> bool:
     return bool(sources.apply(lambda s: any(s.startswith(p) for p in _SYNTHETIC_PREFIXES)).all())
 
 
-def _normalise_status(raw: object) -> str:
+def _normalize_status(raw: object) -> str:
     if raw is None:
         return ""
     return str(raw).strip().lower().replace("-", "_").replace(" ", "_")
@@ -118,7 +118,7 @@ def evaluate_irb_record(path: Path | None = None) -> IRBDecision:
             status=None,
             record={},
         )
-    status = _normalise_status(record.get("irb_status"))
+    status = _normalize_status(record.get("irb_status"))
     if status in _PERMITTED_STATUSES:
         return IRBDecision(permitted=True, reason="IRB status is approved", status=status, record=record)
     return IRBDecision(

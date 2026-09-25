@@ -1,9 +1,9 @@
 """
-Production wiring of ml.data.deidentification into the data load path.
+Wires ml.data.deidentification into the data load path.
 
 `ml.data.deidentification.SafeHarborProcessor` implements 45 CFR section 164.514(b)(2)
 (removal of the 18 HIPAA identifier categories, age cap at 89, ZIP truncation
-to 3 digits, date generalisation to year). This module wraps it so that every
+to 3 digits, date generalization to year). This module wraps it so that every
 training run that touches a real-data CSV first passes through the Safe Harbor
 scrubber.
 
@@ -29,8 +29,8 @@ Field mapping for the bundled simulated dataset
                      pass through.
 
 The bundled CSV has `source="simulated"` on every row, so this scrub is a
-no-op data-shape verification today; once a real-data CSV (e.g., MIMIC-IV
-extracts) is dropped in, the scrub becomes load-bearing.
+no-op data-shape verification today; it does real work once a real-data CSV
+(e.g., MIMIC-IV extracts) is loaded.
 """
 from __future__ import annotations
 
@@ -165,8 +165,8 @@ def load_tabular_safe_harbor(
     emit_audit: bool = True,
 ) -> tuple[np.ndarray, np.ndarray, list[str], DeidentSummary]:
     """
-    Drop-in replacement for ml.training.load_tabular that scrubs the dataframe
-    before vectorising. Returns (X, y, feature_names, summary) so callers can
+    Drop-in replacement for ml.training_calib_dca.load_tabular that scrubs the dataframe
+    before vectorizing. Returns (X, y, feature_names, summary) so callers can
     log the de-identification report.
     """
     df = pd.read_csv(csv_path)

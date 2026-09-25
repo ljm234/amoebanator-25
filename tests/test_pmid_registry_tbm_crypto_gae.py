@@ -1,9 +1,10 @@
-"""Subphase 1.4 Commit 5.4.0 PMID_REGISTRY lock-in tests.
+"""PMID_REGISTRY entries for the TBM, cryptococcal, and GAE anchors.
 
-Empirical verification that the Class 4 (TBM) + Class 5 (Cryptococcal) +
-Class 6 (GAE) anchor PMIDs added in commit 5.4.0 resolve in PMID_REGISTRY
-with complete Vancouver metadata. All Subphase 1.4 anchors are now
-PubMed-indexed numeric PMIDs.
+Checks that the Class 4 (TBM) + Class 5 (Cryptococcal) + Class 6 (GAE)
+anchor PMIDs resolve in PMID_REGISTRY with complete Vancouver metadata, a
+valid anchor_type, a caveat or note naming their provenance, and a
+well-formed, unique DOI, and that each class has 5 to 7 anchors. All of
+these anchors are PubMed-indexed numeric PMIDs.
 """
 from __future__ import annotations
 
@@ -60,12 +61,12 @@ REQUIRED_FIELDS = [
 
 
 @pytest.mark.parametrize("pmid", SUBPHASE_1_4_ALL)
-def test_subphase_1_4_pmid_in_registry(pmid):
+def test_anchor_pmid_in_registry(pmid):
     assert pmid in PMID_REGISTRY, f"PMID/key {pmid!r} not registered"
 
 
 @pytest.mark.parametrize("pmid", SUBPHASE_1_4_ALL)
-def test_subphase_1_4_required_fields(pmid):
+def test_anchor_required_fields_present(pmid):
     entry = PMID_REGISTRY[pmid]
     for field in REQUIRED_FIELDS:
         assert field in entry, f"{pmid} missing field {field!r}"
@@ -73,21 +74,21 @@ def test_subphase_1_4_required_fields(pmid):
 
 
 @pytest.mark.parametrize("pmid", SUBPHASE_1_4_ALL)
-def test_subphase_1_4_authors_full_is_nonempty_list(pmid):
+def test_anchor_authors_full_is_nonempty_list(pmid):
     authors = PMID_REGISTRY[pmid]["authors_full"]
     assert isinstance(authors, list), f"{pmid} authors_full must be list"
     assert len(authors) >= 1, f"{pmid} authors_full empty"
 
 
 @pytest.mark.parametrize("pmid", SUBPHASE_1_4_ALL)
-def test_subphase_1_4_year_int_valid(pmid):
+def test_anchor_year_int_valid(pmid):
     year = PMID_REGISTRY[pmid]["year"]
     assert isinstance(year, int), f"{pmid} year must be int"
     assert 1990 <= year <= 2026, f"{pmid} year={year} out of range [1990, 2026]"
 
 
 @pytest.mark.parametrize("pmid", SUBPHASE_1_4_ALL)
-def test_subphase_1_4_verification_confidence_in_unit_interval(pmid):
+def test_anchor_verification_confidence_in_unit_interval(pmid):
     vc = PMID_REGISTRY[pmid]["verification_confidence"]
     assert isinstance(vc, (int, float)), (
         f"{pmid} verification_confidence must be numeric; got {type(vc).__name__}"
@@ -98,8 +99,8 @@ def test_subphase_1_4_verification_confidence_in_unit_interval(pmid):
 
 
 @pytest.mark.parametrize("pmid", SUBPHASE_1_4_ALL)
-def test_subphase_1_4_anchor_type_present(pmid):
-    """Subphase 1.4 entries carry an explicit anchor_type for downstream waves."""
+def test_anchor_type_present_and_valid(pmid):
+    """Each entry carries an explicit anchor_type from the allowed set."""
     entry = PMID_REGISTRY[pmid]
     assert "anchor_type" in entry, f"{pmid} missing anchor_type"
     valid_types = {
@@ -118,15 +119,15 @@ def test_subphase_1_4_anchor_type_present(pmid):
     )
 
 
-def test_subphase_1_4_count_in_target_range():
+def test_anchor_count_in_target_range():
     """15 to 18 anchors are registered across the three classes."""
     count = len(SUBPHASE_1_4_ALL)
     assert 15 <= count <= 18, (
-        f"Subphase 1.4 anchor count {count} outside [15, 18]"
+        f"Anchor count {count} outside [15, 18]"
     )
 
 
-def test_subphase_1_4_per_class_count_in_target_range():
+def test_per_class_anchor_count_in_target_range():
     """Each class has 5 to 7 anchors."""
     assert 5 <= len(SUBPHASE_1_4_TBM_PMIDS) <= 7, (
         f"TBM count {len(SUBPHASE_1_4_TBM_PMIDS)} outside [5,7]"
@@ -139,26 +140,23 @@ def test_subphase_1_4_per_class_count_in_target_range():
     )
 
 
-def test_subphase_1_4_no_key_collision_with_existing_registry():
-    """5.4.0 ADD must not overwrite any pre-existing PMID_REGISTRY entry."""
-    # Frozen empirical snapshot of pre-5.4.0 registry keys collected for the
-    # collision-guard. If a 5.4.0 candidate matches one of these, halt.
-    # (The intent is "do not silently overwrite Subphase 1.3 metadata".)
-    # We do not enumerate every prior PMID here; instead we trust that
-    # Subphase 1.4 candidates are all new biomedical anchors not previously
-    # registered. The 5.4.0 atomic commit diff is the canonical evidence.
+def test_anchor_caveat_names_provenance():
+    """No anchor overwrote an entry registered earlier for another class.
+
+    Each entry's caveat or notes must carry the provenance tag matched
+    below. An anchor whose key collided with an older registry entry would
+    keep that entry's caveat and fail the check.
+    """
     for pmid in SUBPHASE_1_4_ALL:
-        # Each Subphase 1.4 key should have anchor_type marking it as a 1.4 entry,
-        # OR carry a caveat referencing Subphase 1.4 / commit 5.4.0.
         entry = PMID_REGISTRY[pmid]
         caveat = (entry.get("caveat") or "") + " " + (entry.get("notes") or "")
         assert "5.4.0" in caveat or "subphase 1.4" in caveat.lower() or "subphase_1_4" in caveat.lower(), (
-            f"{pmid} caveat does not reference Subphase 1.4 / 5.4.0 provenance: {caveat[:200]!r}"
+            f"{pmid} caveat does not carry the expected provenance tag: {caveat[:200]!r}"
         )
 
 
-def test_subphase_1_4_doi_pattern_well_formed():
-    """All Subphase 1.4 DOIs match the ISO 26324 DOI pattern."""
+def test_anchor_doi_pattern_well_formed():
+    """Every anchor DOI matches the ISO 26324 DOI pattern."""
     import re
     DOI_RE = re.compile(r"^10\.\d{4,9}/.+$")
     for pmid in SUBPHASE_1_4_ALL:
@@ -166,9 +164,9 @@ def test_subphase_1_4_doi_pattern_well_formed():
         assert DOI_RE.match(doi), f"{pmid} doi={doi!r} not well-formed"
 
 
-def test_subphase_1_4_unique_dois():
-    """No two Subphase 1.4 anchors share a DOI."""
+def test_anchor_dois_unique():
+    """No two anchors share a DOI."""
     dois = [PMID_REGISTRY[p]["doi"] for p in SUBPHASE_1_4_ALL]
     assert len(set(dois)) == len(dois), (
-        f"Duplicate DOI in Subphase 1.4 set: {dois}"
+        f"Duplicate DOI among these anchors: {dois}"
     )

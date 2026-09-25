@@ -1,13 +1,13 @@
 """Tests for pages/01_predict.py.
 
-18 spec-enumerated tests covering form, presets, error paths, badges,
-debounce, and D18 banner. Plus 2 research-mode branch tests and 1 visual
-snapshot baseline test - total 21 tests.
+Covers the input form and its neutral defaults, the preset buttons, error
+paths, the decision and calibration badges, submit debounce, the
+known-limitation banner on the bacterial preset, both research-mode
+branches, and a text-snapshot drift check.
 
-AppTest is the load-bearing fixture. We mock ``infer_one`` for tests
-that don't need real inference (most of them) and let the real model
-fire only for the NEUTRAL-defaults sanity gate (test #4) where the
-The spec requires a live ``p_high < 0.001`` proof.
+Every page test runs the script through Streamlit's AppTest. Most tests
+mock ``infer_one``; only the neutral-defaults test calls the real model,
+because it checks that the defaults predict Low with ``p_high < 0.001``.
 """
 from __future__ import annotations
 
@@ -17,7 +17,7 @@ import re
 import tempfile
 from pathlib import Path
 from typing import Any
-from unittest.mock import patch  # noqa: F401 - used by patch() in tests #9, 10, 15-18
+from unittest.mock import patch  # noqa: F401 - used by the tests that patch ml.infer.infer_one
 
 import pytest
 from streamlit.testing.v1 import AppTest
@@ -70,7 +70,7 @@ def _fresh_app_test(env: dict[str, str] | None = None) -> AppTest:
 
 
 # ---------------------------------------------------------------------
-# 1. Module imports cleanly
+# Module imports cleanly
 # ---------------------------------------------------------------------
 def test_module_imports_cleanly() -> None:
     """`import pages.predict` would succeed if pages were a package; here we
@@ -81,7 +81,7 @@ def test_module_imports_cleanly() -> None:
 
 
 # ---------------------------------------------------------------------
-# 2. Form renders 8 widgets
+# Form renders 8 widgets
 # ---------------------------------------------------------------------
 def test_form_renders_8_widgets() -> None:
     at = _fresh_app_test()
@@ -93,7 +93,7 @@ def test_form_renders_8_widgets() -> None:
 
 
 # ---------------------------------------------------------------------
-# 3. Form uses neutral defaults
+# Form uses neutral defaults
 # ---------------------------------------------------------------------
 def test_form_uses_neutral_defaults() -> None:
     at = _fresh_app_test()
@@ -109,7 +109,7 @@ def test_form_uses_neutral_defaults() -> None:
 
 
 # ---------------------------------------------------------------------
-# 4. Sanity gate: neutral defaults predict Low with p_high < 0.001
+# Neutral defaults predict Low with p_high < 0.001 (real model)
 # ---------------------------------------------------------------------
 def test_neutral_defaults_predict_low_p_high_lt_001() -> None:
     """Calls real infer_one on the fixed NEUTRAL defaults. No mock -
@@ -128,7 +128,7 @@ def test_neutral_defaults_predict_low_p_high_lt_001() -> None:
 
 
 # ---------------------------------------------------------------------
-# 5. Three preset buttons render
+# Three preset buttons render
 # ---------------------------------------------------------------------
 def test_three_preset_buttons_render() -> None:
     from app.presets import PRESETS
@@ -141,7 +141,7 @@ def test_three_preset_buttons_render() -> None:
 
 
 # ---------------------------------------------------------------------
-# 6. Loading high_risk_pam preset populates session_state
+# Loading the high_risk_pam preset populates session_state
 # ---------------------------------------------------------------------
 def test_loading_high_risk_pam_preset_populates_form() -> None:
     from app.presets import PRESETS
@@ -156,15 +156,16 @@ def test_loading_high_risk_pam_preset_populates_form() -> None:
 
 
 # ---------------------------------------------------------------------
-# 7. Submit calls infer_one with the dict shape build_row produces
+# Submit calls infer_one with the dict shape build_row produces
 # ---------------------------------------------------------------------
 def test_submit_calls_infer_one_with_built_row() -> None:
     """AppTest can't patch script-level imports across runs (the page
     is loaded as a script, not a module - `pages.predict` is not
     importable). We verify the *contract* instead: ``build_row`` emits
     the dict shape ``infer_one`` accepts. Patch-based call-arg
-    verification is covered indirectly by tests #15-#17 (they patch
-    ``ml.infer.infer_one`` and observe the page's downstream rendering).
+    verification is covered indirectly by the tooltip, small-calibration,
+    and regime-badge tests below (they patch ``ml.infer.infer_one`` and
+    observe the page's downstream rendering).
     """
     from app.utils import build_row
     row = build_row(
@@ -182,7 +183,7 @@ def test_submit_calls_infer_one_with_built_row() -> None:
 
 
 # ---------------------------------------------------------------------
-# 8. No submit -> no infer_one call
+# No submit -> no infer_one call
 # ---------------------------------------------------------------------
 def test_no_submit_returns_early() -> None:
     """First render with no interaction must not invoke inference."""
@@ -194,10 +195,10 @@ def test_no_submit_returns_early() -> None:
 
 
 # ---------------------------------------------------------------------
-# 9. FileNotFoundError -> graceful yellow banner, NOT crash
+# FileNotFoundError -> warning banner instead of a crash
 # ---------------------------------------------------------------------
 def test_filenotfounderror_renders_graceful_banner() -> None:
-    """Missing artefact must surface as warning banner, not raise."""
+    """Missing artifact must surface as warning banner, not raise."""
     err = FileNotFoundError("Mahalanobis stats not found")
     err.filename = "outputs/metrics/feature_stats_train.json"
     at = _fresh_app_test()
@@ -212,7 +213,7 @@ def test_filenotfounderror_renders_graceful_banner() -> None:
 
 
 # ---------------------------------------------------------------------
-# 10. Generic exception -> correlation-ID error + INTEGRITY_VIOLATION audit
+# Generic exception -> correlation-ID error + INTEGRITY_VIOLATION audit
 # ---------------------------------------------------------------------
 def test_uncaught_exception_emits_correlation_id_audit() -> None:
     """Uncaught exception -> uuid4 12-char display + INTEGRITY_VIOLATION emit."""
@@ -242,7 +243,7 @@ def test_uncaught_exception_emits_correlation_id_audit() -> None:
 
 
 # ---------------------------------------------------------------------
-# 11. Double-submit within 30s blocked by debounce
+# Double-submit within 30s blocked by debounce
 # ---------------------------------------------------------------------
 def test_double_submit_within_30s_blocked() -> None:
     """Predicting=True with fresh timestamp -> second submit aborts."""
@@ -258,7 +259,7 @@ def test_double_submit_within_30s_blocked() -> None:
 
 
 # ---------------------------------------------------------------------
-# 12. Stale lock (>30s old) recovers and allows submission
+# Stale lock (>30s old) recovers and allows submission
 # ---------------------------------------------------------------------
 def test_stale_lock_recovers_after_30s() -> None:
     """Predicting=True with timestamp >30s ago -> fall through, re-acquire."""
@@ -275,7 +276,7 @@ def test_stale_lock_recovers_after_30s() -> None:
 
 
 # ---------------------------------------------------------------------
-# 13. decision_badge: icon + bold preserved when color tags stripped
+# decision_badge: icon + bold preserved when color tags stripped
 # ---------------------------------------------------------------------
 def test_decision_badge_renders_with_bold() -> None:
     from app.utils import decision_badge
@@ -287,14 +288,13 @@ def test_decision_badge_renders_with_bold() -> None:
 
 
 # ---------------------------------------------------------------------
-# 14. decision_badge: color-blind safe across all 4 prediction states
+# decision_badge: color-blind safe across prediction states
 # ---------------------------------------------------------------------
 @pytest.mark.parametrize(
     "prediction, label",
     [
         ("High",     "HIGH"),
         ("Low",      "LOW"),
-        ("Moderate", "MODERATE"),
         ("ABSTAIN",  "ABSTAIN"),
     ],
 )
@@ -311,7 +311,7 @@ def test_decision_badge_color_blind_safe(
 
 
 # ---------------------------------------------------------------------
-# 15. T=0.27 calibration tooltip rendered with full text
+# T=0.27 calibration tooltip rendered with full text
 # ---------------------------------------------------------------------
 def test_t_027_badge_renders_with_tooltip() -> None:
     """Tooltip must explain the T<1 amplification, n=6 fit."""
@@ -327,7 +327,7 @@ def test_t_027_badge_renders_with_tooltip() -> None:
 
 
 # ---------------------------------------------------------------------
-# 16. SmallCalibrationWarning fires when n_cal < 30
+# SmallCalibrationWarning fires when n_cal < 30
 # ---------------------------------------------------------------------
 def test_smallcalibrationwarning_fires_for_n_below_30() -> None:
     fake = _fake_infer_output(n_cal=6)
@@ -341,7 +341,7 @@ def test_smallcalibrationwarning_fires_for_n_below_30() -> None:
 
 
 # ---------------------------------------------------------------------
-# 17. 3-state regime badge: at n=6 alpha=0.10 -> INVALID
+# 3-state regime badge: at n=6 alpha=0.10 -> INVALID
 # ---------------------------------------------------------------------
 def test_three_state_regime_badge_invalid_at_n6_alpha010() -> None:
     """k = ceil((n+1)(1-alpha)) = 7 > n=6 -> INVALID."""
@@ -356,9 +356,9 @@ def test_three_state_regime_badge_invalid_at_n6_alpha010() -> None:
 
 
 # ---------------------------------------------------------------------
-# 18. D18 banner renders ONLY when bacterial preset active
+# Limitation banner renders only when the bacterial preset is active
 # ---------------------------------------------------------------------
-def test_d18_limitation_banner_only_on_bacterial_preset() -> None:
+def test_limitation_banner_only_on_bacterial_preset() -> None:
     """Banner is post-result + bacterial-preset-gated."""
     from app.presets import PRESETS
 
@@ -372,10 +372,10 @@ def test_d18_limitation_banner_only_on_bacterial_preset() -> None:
     errors = [e.value for e in at.error]
     bacterial_desc = PRESETS["bacterial_meningitis_limitation"]["description"]
     assert any(bacterial_desc[:60] in e for e in errors), (
-        "D18 limitation banner missing on bacterial preset"
+        "limitation banner missing on bacterial preset"
     )
 
-    # Now non-bacterial preset -> no D18 banner
+    # Now non-bacterial preset -> no limitation banner
     at2 = _fresh_app_test()
     at2.session_state["active_preset"] = "high_risk_pam"
     at2.run(timeout=30)
@@ -383,14 +383,14 @@ def test_d18_limitation_banner_only_on_bacterial_preset() -> None:
         at2.button[3].click()
         at2.run(timeout=30)
     errors2 = [e.value for e in at2.error]
-    # The INVALID conformal-regime error is allowed; D18 description is not.
+    # The INVALID conformal-regime error is allowed; the limitation description is not.
     assert not any(bacterial_desc[:60] in e for e in errors2), (
-        "D18 limitation banner spuriously rendered on non-bacterial preset"
+        "limitation banner spuriously rendered on non-bacterial preset"
     )
 
 
 # ---------------------------------------------------------------------
-# 19. RESEARCH_MODE=1 -> red banner + IRB_STATUS_CHANGE audit emit
+# RESEARCH_MODE=1 -> red banner + IRB_STATUS_CHANGE audit emit
 # ---------------------------------------------------------------------
 def test_research_mode_active_renders_banner_and_emits_event() -> None:
     """RESEARCH_MODE=1 branch."""
@@ -414,7 +414,7 @@ def test_research_mode_active_renders_banner_and_emits_event() -> None:
 
 
 # ---------------------------------------------------------------------
-# 20. RESEARCH_MODE unset -> NO banner + NO event
+# RESEARCH_MODE unset -> no banner and no event
 # ---------------------------------------------------------------------
 def test_research_mode_inactive_no_banner_no_event() -> None:
     """RESEARCH_MODE=0/unset branch."""
@@ -437,7 +437,7 @@ def test_research_mode_inactive_no_banner_no_event() -> None:
 
 
 # ---------------------------------------------------------------------
-# 21. Visual regression text-snapshot drift <5% chars
+# Visual regression text-snapshot drift <5% chars
 # ---------------------------------------------------------------------
 def test_visual_snapshot_baseline() -> None:
     """Capture markdown blob from page render; compare to committed baseline.

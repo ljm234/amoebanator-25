@@ -1,14 +1,18 @@
 """
-De-identification Module - Comprehensive Test Suite.
+Tests for ml.data.deidentification.
 
 Tests cover:
   - Safe Harbor processing (18 identifiers, age cap, ZIP truncation,
-    date generalisation, free-text scrubbing, pseudonymization)
-  - k-Anonymity enforcement (equivalence classes, generalisation,
+    date generalization, free-text scrubbing, pseudonymization)
+  - k-Anonymity enforcement (equivalence classes, generalization,
     suppression, information loss metric)
-  - Differential privacy mechanisms (Laplace, Gaussian, Exponential)
+  - l-diversity (distinct and entropy) and t-closeness
+  - Differential privacy mechanisms (Laplace, truncated Laplace, Gaussian,
+    Exponential) and the Renyi DP accountant
   - Privacy budget tracking and allocation
   - Full pipeline orchestration across all three layers
+  - Re-identification risk, the privacy risk scorecard, and synthetic data
+    evaluation
   - Factory functions and report generation
 """
 
@@ -247,7 +251,7 @@ class TestSafeHarborProcessor:
 
     def test_date_non_string_non_datetime_returns_none(self) -> None:
         proc = SafeHarborProcessor()
-        result = proc._generalise_date(12345)
+        result = proc._generalize_date(12345)
         assert result is None
 
 
@@ -300,11 +304,11 @@ class TestKAnonymityProcessor:
         proc = KAnonymityProcessor()
         assert proc.get_information_loss([], []) == 0.0
 
-    def test_generalisation_applies(self) -> None:
+    def test_generalization_applies(self) -> None:
         config = KAnonymityConfig(
             k=5,
             quasi_identifiers=("age",),
-            generalisation_hierarchies={
+            generalization_hierarchies={
                 "age": [
                     lambda v: (v // 10) * 10,
                     lambda _: "*",
@@ -323,7 +327,7 @@ class TestKAnonymityProcessor:
         config = KAnonymityConfig(
             k=5,
             quasi_identifiers=("age",),
-            generalisation_hierarchies={"age": []},
+            generalization_hierarchies={"age": []},
         )
         proc = KAnonymityProcessor(config)
         # Only 1 record per age -> all must be suppressed
@@ -339,20 +343,20 @@ class TestKAnonymityProcessor:
         result = proc.enforce(records)
         assert len(result) == 10
 
-    def test_generalisation_error_handling(self) -> None:
-        def _bad_generaliser(_: object) -> str:
-            raise TypeError("deliberate generalisation failure")
+    def test_generalization_error_handling(self) -> None:
+        def _bad_generalizer(_: object) -> str:
+            raise TypeError("deliberate generalization failure")
 
         config = KAnonymityConfig(
             k=2,
             quasi_identifiers=("age",),
-            generalisation_hierarchies={
-                "age": [_bad_generaliser],
+            generalization_hierarchies={
+                "age": [_bad_generalizer],
             },
         )
         proc = KAnonymityProcessor(config)
         # Unique ages -> each equivalence class has size 1, which is < k=2.
-        # The generaliser raises TypeError (caught by the handler),
+        # The generalizer raises TypeError (caught by the handler),
         # collapsing every value to "*", which makes a single equivalence
         # class of size 5 >= k=2.
         records = [{"age": i} for i in range(5)]
@@ -600,19 +604,19 @@ class TestDeidentificationPipeline:
 
 
 # ===========================================================================
-# Coverage Gap Tests - previously uncovered lines
+# k-anonymity suppression count and pipeline budget exhaustion
 # ===========================================================================
 
 
-class TestCoverageGaps:
-    """Tests targeting previously uncovered code paths."""
+class TestSuppressionCountAndBudgetExhaustion:
+    """Suppressed-record counting and the pipeline loop exit when the budget runs out."""
 
     def test_k_anon_suppress_violations_count(self) -> None:
         """Line 492: suppressed_count incremented per violating record."""
         config = KAnonymityConfig(
             k=5,
             quasi_identifiers=("age",),
-            generalisation_hierarchies={"age": []},
+            generalization_hierarchies={"age": []},
         )
         proc = KAnonymityProcessor(config)
         # 3 records per age group, k=5 -> all suppressed
@@ -988,19 +992,19 @@ class TestRenyiDPAccountant:
 
 
 # ===========================================================================
-# Final k-Anonymity Suppression Coverage
+# k-anonymity suppression keeps valid groups; budget exhaustion with many fields
 # ===========================================================================
 
 
-class TestFinalCoverage:
-    """Final tests for remaining uncovered lines."""
+class TestSuppressionRetentionAndBudgetExhaustion:
+    """Records in groups that meet k are kept; the pipeline stops when the budget runs out."""
 
     def test_k_anon_suppress_keeps_valid_groups(self) -> None:
         """Line 502: Non-violating records are kept via result.append(record)."""
         config = KAnonymityConfig(
             k=3,
             quasi_identifiers=("age",),
-            generalisation_hierarchies={"age": []},
+            generalization_hierarchies={"age": []},
         )
         proc = KAnonymityProcessor(config)
         # 4 records with age=30 (meets k=3) and 2 with age=99 (violates k=3)
@@ -1343,7 +1347,7 @@ class TestPrivacyRiskScorecard:
 
 
 class TestComputePrivacyScorecard:
-    """Full coverage of the NIST SP 800-188 classification cascade."""
+    """Each branch of the NIST SP 800-188 classification cascade."""
 
     def test_negligible_classification(self) -> None:
         from ml.data.deidentification import (
@@ -1520,7 +1524,7 @@ class TestSyntheticEvaluationReport:
 
 
 class TestSyntheticDataEvaluator:
-    """Comprehensive tests for synthetic data evaluation."""
+    """SyntheticDataEvaluator input validation and metrics."""
 
     def test_empty_columns_raises(self) -> None:
         from ml.data.deidentification import SyntheticDataEvaluator

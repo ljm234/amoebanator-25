@@ -1,4 +1,4 @@
-"""Tests for pages/02_audit.py (1 of 4)."""
+"""Tests for pages/02_audit.py."""
 from __future__ import annotations
 
 import os

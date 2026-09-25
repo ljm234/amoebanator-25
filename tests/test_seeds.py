@@ -68,15 +68,13 @@ def test_invalid_env_var_raises() -> None:
 def test_training_is_deterministic_under_pinned_seed(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    """Two training runs with set_global_seeds() must produce the same val AUC."""
-    from ml.training import train_and_save
+    """Two runs of the pipeline's trainer write bit-identical model.pt files."""
+    from ml.training_calib_dca import main as train
 
     # Write to temporary paths so the test never replaces the shipped model
     # or appends to the repository's audit log.
     monkeypatch.setenv("AMOEBANATOR_AUDIT_PATH", str(tmp_path / "audit.jsonl"))
-    set_global_seeds(42)
-    out_a = train_and_save(model_dir=str(tmp_path / "a"))
-    set_global_seeds(42)
-    out_b = train_and_save(model_dir=str(tmp_path / "b"))
-    assert out_a["auc"] == out_b["auc"]
-    assert out_a["T"] == pytest.approx(out_b["T"], rel=1e-5)
+    out_a = train(model_dir=str(tmp_path / "a"), metrics_dir=str(tmp_path / "a_metrics"))
+    out_b = train(model_dir=str(tmp_path / "b"), metrics_dir=str(tmp_path / "b_metrics"))
+    assert (tmp_path / "a" / "model.pt").read_bytes() == (tmp_path / "b" / "model.pt").read_bytes()
+    assert out_a["T"] == out_b["T"]

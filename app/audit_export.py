@@ -37,7 +37,7 @@ from ml.audit_hooks import _emit, _load_existing_entries
 from ml.data.audit_trail import AuditEventType, _compute_entry_hash
 
 
-# CSV format version; bump when columns / serialisation changes.
+# CSV format version; bump when columns / serialization changes.
 # Independent of the JSONL log's schema (the JSONL has no version field
 # yet - that's a separate cleanup).
 CSV_SCHEMA_VERSION: str = "1"

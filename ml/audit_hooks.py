@@ -1,5 +1,5 @@
 """
-Production wiring of ml.data.audit_trail into the training pipeline.
+Wires ml.data.audit_trail into the training pipeline.
 
 ml.data.audit_trail provides AuditLog (hash-chained, Merkle-checkpointed,
 tamper-evident) but is in-memory only. This module adds:
@@ -59,7 +59,7 @@ def default_audit_path() -> Path:
 
 
 def _entry_to_jsonl_dict(entry: AuditEntry) -> dict[str, Any]:
-    """Serialise an AuditEntry to a JSON-safe dict for JSONL persistence."""
+    """Serialize an AuditEntry to a JSON-safe dict for JSONL persistence."""
     return {
         "entry_id": entry.entry_id,
         "sequence_number": entry.sequence_number,
@@ -170,8 +170,8 @@ def _emit(
 
 @dataclass(frozen=True)
 class TrainingActor:
-    """Identifies the process emitting events. Free-form; serialised verbatim."""
-    name: str = "ml.training"
+    """Identifies the process emitting events. Free-form; serialized verbatim."""
+    name: str = "ml.training_calib_dca"
     user: str = ""
 
     def render(self) -> str:

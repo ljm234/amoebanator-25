@@ -22,10 +22,9 @@ ENV PIP_DISABLE_PIP_VERSION_CHECK=1 \
 
 WORKDIR /build
 
-# System deps for sklearn, scipy, lightgbm libomp, etc.
+# Build tools and certificates for the pip install below.
 RUN apt-get update && apt-get install -y --no-install-recommends \
         build-essential \
-        libomp-dev \
         ca-certificates \
         curl \
     && rm -rf /var/lib/apt/lists/*
@@ -51,27 +50,23 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     STREAMLIT_SERVER_PORT=8501 \
     STREAMLIT_SERVER_ADDRESS=0.0.0.0
 
-# AMOEBANATOR_RESEARCH_MODE - IRB gate research-mode switch
+# AMOEBANATOR_RESEARCH_MODE - research-mode switch
 #
-# WHY THIS EXISTS:
-#   The app trains on n=30 synthetic patient vignettes derived from
-#   published case-series marginals (Yoder 2010, Cope 2016, CDC 2025). No real
-#   PHI, no human subjects. Hence no IRB review is required - but the IRB gate
-#   in ml/irb_gate.py refuses to boot the app without an IRB JSON record. This
-#   research-mode env var short-circuits the gate WITH a mandatory audit log
-#   emission (AuditEventType.IRB_STATUS_CHANGE -> actor="env_var") so the
-#   override is never silent.
+#   The model is trained on 30 synthetic rows created for this demo: no real
+#   PHI and no human subjects, so no IRB review is required. With this
+#   variable set, the predict page shows a research-mode banner and writes an
+#   audit event (AuditEventType.IRB_STATUS_CHANGE, actor="env_var"), and
+#   ml/irb_gate.py, if called, skips the IRB record check.
 #
-#   This research mode is appropriate while the app runs on synthetic data only. The
-#   planned MIMIC-IV proxy evaluation uses de-identified, IRB-exempt records
-#   (PhysioNet credentialed access obtained); it runs outside this container,
-#   and the repository ships no MIMIC data.
+#   This research mode is appropriate while the app runs on synthetic data
+#   only. The planned MIMIC-IV proxy evaluation uses de-identified, IRB-exempt
+#   records (PhysioNet credentialed access obtained); it runs outside this
+#   container, and the repository ships no MIMIC data.
 #
 ENV AMOEBANATOR_RESEARCH_MODE=1
 
-# Runtime needs libomp for LightGBM (if installed) and tini for clean signal handling.
+# tini for clean signal handling.
 RUN apt-get update && apt-get install -y --no-install-recommends \
-        libomp-dev \
         tini \
     && rm -rf /var/lib/apt/lists/*
 
@@ -83,8 +78,8 @@ RUN useradd --create-home --shell /bin/bash amoeba
 USER amoeba
 WORKDIR /app
 
-# Copy source. .dockerignore strips test caches, IDE metadata, and large model
-# artefacts that should be regenerated inside the container instead of shipped.
+# Copy source. .dockerignore leaves out caches, IDE metadata, the local audit
+# log and the metrics figures (outputs/metrics/*.png).
 COPY --chown=amoeba:amoeba . /app
 
 # Health check: probe Streamlit's own health endpoint. start-period covers the

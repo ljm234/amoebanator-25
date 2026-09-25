@@ -4,22 +4,19 @@ Three presets cover the demo's discrimination story:
 
 1. ``high_risk_pam``                    - positive control (PAM-likely
                                           pediatric patient).
-2. ``bacterial_meningitis_limitation``  - D18 honesty demo: model
-                                          cannot distinguish bacterial-
-                                          NOT-PAM from PAM at n=30.
-                                          UI renders red banner adjacent
-                                          to result.
+2. ``bacterial_meningitis_limitation``  - known limitation: the model
+                                          cannot tell bacterial
+                                          meningitis from PAM at n=30.
+                                          The UI shows a red banner next
+                                          to the result.
 3. ``normal_csf``                       - negative control (adult, no
                                           PAM risk factors).
 
 The page-load NEUTRAL state functions as a fourth implicit scenario.
 
-The field name ``current_behavior`` (NOT ``expected``) is
-mandatory. ``current_behavior`` is descriptive - it logs what
-``infer_one`` returns at ``snapshot_date``. ``expected`` would carry
-normative ML connotation that conflicts with the D18 trajectory (a
-future MIMIC-IV cohort will flip the bacterial preset's behavior; we
-don't *expect* the current behavior to persist).
+The field is named ``current_behavior``, not ``expected``: it records
+what ``infer_one`` returned on ``snapshot_date``, and a model trained on
+a real cohort should change the bacterial preset's result.
 
 The ``limitation_banner`` flag is explicit (not omitted) on every
 preset so the UI's render logic doesn't have to handle missing-key
@@ -62,25 +59,21 @@ PRESETS: dict[str, dict[str, Any]] = {
         "limitation_banner": False,
     },
 
-    # -- Preset 2: D18 honesty demo (bacterial NOT PAM) ------------------
-    # The model returns prediction="High" because the n=30 training set
-    # has zero non-PAM bacterial cases. We surface this preset
-    # deliberately as an honesty signal. The corresponding test
-    # in tests/test_app_presets.py uses @pytest.mark.xfail(strict=False)
-    # so a MIMIC-IV success -> XPASS as a "fix this" signal
-    # without breaking CI.
+    # -- Preset 2: known limitation (bacterial meningitis, not PAM) -----
+    # The model returns prediction="High" because the 30 synthetic rows
+    # contain no bacterial meningitis that is not PAM. The matching test in
+    # tests/test_app_presets.py is marked xfail(strict=False), so a model
+    # that predicts Low shows up as XPASS without failing CI.
     "bacterial_meningitis_limitation": {
         "label": "Load bacterial meningitis (limitation demo)",
         "description": (
-            "This preset is a known model limitation. Training data "
-            "(n=30) contains zero non-PAM bacterial meningitis cases, so "
-            "the model cannot distinguish bacterial-NOT-PAM from PAM. "
-            "The MIMIC-IV cohort (target n >= 200, includes "
-            "bacterial vs viral meningitis labels) will fix this. We "
-            "surface this preset deliberately as an honesty signal - "
-            "every model has limits, and showing them where they bite is "
-            "more useful than hiding them. Try the other 2 presets to "
-            "see the model's working regime."
+            "This preset shows a known model limitation. The 30 synthetic "
+            "training rows contain no bacterial meningitis that is not "
+            "PAM, so the model cannot tell bacterial meningitis from PAM "
+            "and predicts High. Fixing this needs a real cohort with "
+            "bacterial and viral meningitis labels, such as the planned "
+            "MIMIC-IV study (target n >= 200). Try the other 2 presets to "
+            "see where the model works."
         ),
         "inputs": {
             "age": 45,
@@ -97,8 +90,8 @@ PRESETS: dict[str, dict[str, Any]] = {
             "p_high_approx": 1.0,
             "snapshot_date": _SNAPSHOT_DATE,
         },
-        # UI renders description as red banner adjacent to result panel
-        # (NOT before "Run inference" - co-located).
+        # The UI shows the description as a red banner next to the
+        # result, after inference, not before.
         "limitation_banner": True,
     },
 

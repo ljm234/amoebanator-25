@@ -1,13 +1,14 @@
 """
-Refit Mahalanobis OOD on the TRAIN split only.
+Fit the Mahalanobis OOD gate on the training split only.
 
 Fitting the gate on all 30 rows would let the validation rows shape it. This
 script rederives the training indices the same way ml/training_calib_dca.py
 does (random_state=42, test_size=0.2, stratify=y) and fits the gate
 statistics only on those rows.
 
-Output: outputs/metrics/feature_stats_train.json - same schema as
-feature_stats.json but provably train-only.
+Output: outputs/metrics/feature_stats_train.json, same schema as
+feature_stats.json; --replace also copies it to feature_stats.json, the file
+inference reads.
 
 Usage:
   PYTHONPATH=. python scripts/ood/refit_mahalanobis_train.py

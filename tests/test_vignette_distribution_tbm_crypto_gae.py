@@ -43,7 +43,7 @@ GAE_ID_RANGE = range(181, 211)
 # ----------------------------------------------------------------------
 
 
-def test_subphase_1_4_total_slot_count_90():
+def test_total_slot_count_88():
     total = len(TBM_DISTRIBUTION) + len(CRYPTO_DISTRIBUTION) + len(GAE_DISTRIBUTION)
     assert total == 88, f"Expected 88, got {total}"
 
@@ -56,11 +56,11 @@ def test_subphase_1_4_total_slot_count_90():
         ("GAE_DISTRIBUTION", GAE_DISTRIBUTION, 30),
     ],
 )
-def test_subphase_1_4_per_class_count_30(dist_name, dist, expected_n):
+def test_per_class_slot_count(dist_name, dist, expected_n):
     assert len(dist) == expected_n, f"{dist_name} has {len(dist)}, expected {expected_n}"
 
 
-def test_subphase_1_4_vignette_id_ranges():
+def test_vignette_id_ranges():
     tbm_ids = {s["vignette_id"] for s in TBM_DISTRIBUTION}
     crypto_ids = {s["vignette_id"] for s in CRYPTO_DISTRIBUTION}
     gae_ids = {s["vignette_id"] for s in GAE_DISTRIBUTION}
@@ -69,7 +69,7 @@ def test_subphase_1_4_vignette_id_ranges():
     assert gae_ids == set(GAE_ID_RANGE), f"GAE ids mismatch: {sorted(gae_ids)}"
 
 
-def test_subphase_1_4_vignette_id_non_overlapping():
+def test_vignette_ids_non_overlapping():
     tbm_ids = {s["vignette_id"] for s in TBM_DISTRIBUTION}
     crypto_ids = {s["vignette_id"] for s in CRYPTO_DISTRIBUTION}
     gae_ids = {s["vignette_id"] for s in GAE_DISTRIBUTION}
@@ -91,7 +91,7 @@ def test_subphase_1_4_vignette_id_non_overlapping():
         ("GAE_DISTRIBUTION", GAE_DISTRIBUTION),
     ],
 )
-def test_subphase_1_4_anchor_pmid_in_registry(dist_name, dist):
+def test_anchor_pmid_in_registry(dist_name, dist):
     for slot in dist:
         anchor = slot["anchor_pmid"]
         assert anchor in PMID_REGISTRY, (
@@ -104,7 +104,7 @@ def test_subphase_1_4_anchor_pmid_in_registry(dist_name, dist):
 # ----------------------------------------------------------------------
 
 
-def test_subphase_1_4_freshwater_exposure_within_14d_false_all_90():
+def test_freshwater_exposure_within_14d_false_all_slots():
     for dist in (TBM_DISTRIBUTION, CRYPTO_DISTRIBUTION, GAE_DISTRIBUTION):
         for slot in dist:
             assert slot["freshwater_exposure_within_14d"] is False, (
@@ -112,7 +112,7 @@ def test_subphase_1_4_freshwater_exposure_within_14d_false_all_90():
             )
 
 
-def test_subphase_1_4_pilot_count_6():
+def test_pilot_flag_on_six_slots_two_per_class():
     pilots = [
         s for dist in (TBM_DISTRIBUTION, CRYPTO_DISTRIBUTION, GAE_DISTRIBUTION)
         for s in dist if s.get("pilot") is True
@@ -128,7 +128,7 @@ def test_subphase_1_4_pilot_count_6():
         assert n == 2, f"{name} pilots={n}, expected 2"
 
 
-def test_subphase_1_4_wave_assignment_counts():
+def test_wave_assignment_counts():
     waves = {"pilot": 0, "wave_1": 0, "wave_2": 0}
     for dist in (TBM_DISTRIBUTION, CRYPTO_DISTRIBUTION, GAE_DISTRIBUTION):
         for slot in dist:
@@ -145,7 +145,7 @@ def test_subphase_1_4_wave_assignment_counts():
 # ----------------------------------------------------------------------
 
 
-def test_subphase_1_4_class_4_strata():
+def test_tbm_demographic_strata():
     counts: dict[str, int] = {}
     for slot in TBM_DISTRIBUTION:
         counts[slot["demographic_stratum"]] = counts.get(slot["demographic_stratum"], 0) + 1
@@ -156,7 +156,7 @@ def test_subphase_1_4_class_4_strata():
 
 
 def test_tbm_lmic_geography_ge_20_of_30():
-    """Spec 1.4.10: >=20/30 LMIC geography for TBM."""
+    """At least 20 TBM slots have LMIC geography."""
     lmic_regions = {"peru_lima_coast", "peru_loreto_amazon", "peru_cusco_altitude",
                     "peru_puno_altitude", "peru_tumbes", "peru_madre_de_dios",
                     "other_latam"}
@@ -176,7 +176,7 @@ def test_tbm_lmic_geography_ge_20_of_30():
 
 
 def test_tbm_cn_vi_palsy_in_target_range():
-    """Spec target 6-9/30 for cn_vi_palsy=True in TBM."""
+    """Between 6 and 9 TBM slots have cn_vi_palsy=True."""
     n = sum(1 for s in TBM_DISTRIBUTION if s.get("cn_vi_palsy") is True)
     assert 6 <= n <= 9, f"TBM cn_vi_palsy=True count = {n}, target 6-9/30"
 
@@ -186,7 +186,7 @@ def test_tbm_cn_vi_palsy_in_target_range():
 # ----------------------------------------------------------------------
 
 
-def test_subphase_1_4_class_5_strata():
+def test_crypto_demographic_strata():
     counts: dict[str, int] = {}
     for slot in CRYPTO_DISTRIBUTION:
         counts[slot["demographic_stratum"]] = counts.get(slot["demographic_stratum"], 0) + 1
@@ -198,13 +198,13 @@ def test_subphase_1_4_class_5_strata():
 
 
 def test_crypto_op_ge_25_ge_24_of_30():
-    """Spec 1.4.5: OP>=25 cmH2O in >=24/30 cryptococcal."""
+    """OP>=25 cmH2O in at least 24 of 30 cryptococcal slots."""
     n = sum(1 for s in CRYPTO_DISTRIBUTION if s.get("op_geq_25") is True)
     assert n >= 24, f"CRYPTO op_geq_25=True count = {n}, target >=24/30"
 
 
 def test_crypto_csf_crag_lfa_positive_ge_28_of_30():
-    """Spec 1.4.5: csf_crag_lfa positive in >=28/30 cryptococcal."""
+    """csf_crag_lfa positive in at least 28 of 30 cryptococcal slots."""
     n = sum(1 for s in CRYPTO_DISTRIBUTION if s.get("csf_crag_lfa_positive") is True)
     assert n >= 28, f"CRYPTO csf_crag_lfa_positive=True count = {n}, target >=28/30"
 
@@ -214,7 +214,7 @@ def test_crypto_csf_crag_lfa_positive_ge_28_of_30():
 # ----------------------------------------------------------------------
 
 
-def test_subphase_1_4_class_6_strata():
+def test_gae_balamuthia_acanthamoeba_split():
     bal = sum(1 for s in GAE_DISTRIBUTION
               if s["pathogen_subtype"].startswith("balamuthia"))
     aca = sum(1 for s in GAE_DISTRIBUTION
@@ -258,8 +258,8 @@ def test_gae_acanthamoeba_corneal_cns_5_of_15():
 
 
 def test_gae_skin_lesion_centrofacial_balamuthia_ge_12_of_15():
-    """Spec 1.4.6: 12/15 Balamuthia with centrofacial skin lesion preceding CNS
-    by a mean of 15 months (Alvarez/Bravo 2022 JAAD Int)."""
+    """At least 12 of 15 Balamuthia slots have a centrofacial skin lesion preceding
+    CNS disease by a mean of 15 months (Alvarez/Bravo 2022 JAAD Int)."""
     n = sum(
         1 for s in GAE_DISTRIBUTION
         if s["pathogen_subtype"].startswith("balamuthia")
@@ -269,7 +269,7 @@ def test_gae_skin_lesion_centrofacial_balamuthia_ge_12_of_15():
 
 
 def test_gae_all_30_chronic_ge_14_days():
-    """Spec 1.4.6: chronic >=14 days symptom-to-presentation for all GAE."""
+    """Every GAE slot is chronic: >=14 days from symptom onset to presentation."""
     for s in GAE_DISTRIBUTION:
         assert s.get("symptom_to_presentation_days", 0) >= 14, (
             f"vid={s['vignette_id']} symptom_to_presentation_days="
@@ -291,18 +291,18 @@ def test_gae_skin_lesion_interval_window_when_present():
 
 
 # ----------------------------------------------------------------------
-# Resolution-specific tests
+# Schema encoding workarounds
 # ----------------------------------------------------------------------
 
 
-def test_resolution_1_gae_184_185_geography_region_peru_lima_coast():
-    """Resolution #1: slots 184, 185 (Lambayeque + La Libertad) collapsed to
-    peru_lima_coast since schema enum lacks peru_lambayeque / peru_la_libertad keys."""
+def test_gae_184_185_geography_region_peru_lima_coast():
+    """Slots 184, 185 (Lambayeque + La Libertad) collapsed to peru_lima_coast
+    since schema enum lacks peru_lambayeque / peru_la_libertad keys."""
     for vid in (184, 185):
         slot = next(s for s in GAE_DISTRIBUTION if s["vignette_id"] == vid)
         assert slot["geography_region"] == "peru_lima_coast", (
             f"vid={vid} geography_region={slot['geography_region']!r}, "
-            "expected peru_lima_coast (Resolution #1)"
+            "expected peru_lima_coast"
         )
         label = slot["geography_label"]
         assert ("Lambayeque" in label) or ("La Libertad" in label), (
@@ -310,8 +310,8 @@ def test_resolution_1_gae_184_185_geography_region_peru_lima_coast():
         )
 
 
-def test_resolution_2_crypto_177_178_idiopathic_cd4_encoding():
-    """Resolution #2: slots 177, 178 (idiopathic CD4 lymphopenia HIV-neg) encoded
+def test_crypto_177_178_idiopathic_cd4_encoding():
+    """Slots 177, 178 (idiopathic CD4 lymphopenia HIV-neg) encoded
     as immunocompromise_status='none' with cd4_count_cells_per_uL<200 at build time.
     Schema lacks HIV-neutral T-cell-immunodeficiency enum (only HIV-prefixed CD4 tiers)."""
     for vid in (177, 178):
@@ -323,7 +323,7 @@ def test_resolution_2_crypto_177_178_idiopathic_cd4_encoding():
             f"vid={vid} hiv_status must be negative for idiopathic CD4 lymphopenia"
         )
         assert slot["immunocompromise_status"] == "none", (
-            f"vid={vid} immunocompromise_status must be 'none' per Resolution #2 "
+            f"vid={vid} immunocompromise_status must be 'none' "
             "(schema lacks HIV-neutral T-cell-immunodeficiency enum; "
             f"got {slot['immunocompromise_status']!r})"
         )

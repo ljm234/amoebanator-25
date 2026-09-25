@@ -1,8 +1,8 @@
 """V1.5 -> V2.0 migration test skeleton.
 
-Full migration script implementation deferred to Subphase 1.4 (data pipeline phase).
-This file documents expected migration semantics and provides a skip marker
-so the test scaffolding exists when 1.4 lands.
+The migration script is not implemented yet. This file documents the
+expected migration semantics in a skipped test and checks that the
+ClassLabel enum order is stable.
 """
 from __future__ import annotations
 
@@ -11,7 +11,7 @@ import pytest
 from ml.schemas.labels import ClassLabel
 
 
-@pytest.mark.skip(reason="V1.5 migration script implemented in Subphase 1.4")
+@pytest.mark.skip(reason="V1.5 migration script not implemented yet")
 def test_v1_5_binary_to_v2_0_nine_class_migration() -> None:
     """V1.5 binary PAM/non-PAM -> V2.0 9-class differential.
 
@@ -23,9 +23,9 @@ def test_v1_5_binary_to_v2_0_nine_class_migration() -> None:
     - Schema version field migrates "1.5" -> "2.0".
     - All V1.5 fields preserved; new V2.0-only fields populated as None.
 
-    Implementation in Subphase 1.4: ml/schemas/migrations/v1_5_to_v2_0.py
+    Planned location: ml/schemas/migrations/v1_5_to_v2_0.py
     """
-    raise NotImplementedError("Migration script lands in Subphase 1.4")
+    raise NotImplementedError("Migration script not implemented yet")
 
 
 def test_class_label_enum_stable() -> None:

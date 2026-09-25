@@ -1,7 +1,7 @@
-"""Errata 5.4.3.1 tests: 3 catastrophic PMID corrections.
+"""Three corrected viral-encephalitis anchor PMIDs.
 
-Pre-medRxiv NCBI E-utilities verification on 2026-05-11 revealed 3 PMIDs in
-PMID_REGISTRY pointed to completely unrelated papers. Fixed in this errata:
+NCBI E-utilities verification on 2026-05-11 revealed 3 PMIDs in
+PMID_REGISTRY pointed to completely unrelated papers. They were corrected:
 
 - 29490180 -> 30089069  Tyler 'Acute Viral Encephalitis' NEJM 2018
   (was a NEJM Letter on breast cancer recurrence, Pan H 2017)
@@ -10,10 +10,16 @@ PMID_REGISTRY pointed to completely unrelated papers. Fixed in this errata:
 - 16517432 -> 16675036  Whitley 'Herpes simplex encephalitis' Antiviral Res 2006
   (was J Asthma 2006 Danish skin test reactivity)
 
+These tests check that the wrong PMIDs appear in no vignette JSON and not in
+PMID_REGISTRY, that each corrected PMID is registered with its NCBI-verified
+metadata, and that every vignette citing a corrected PMID validates against
+VignetteSchema.
+
 Clinical content invariance: the per-vignette hash of clinical-data fields
 (history + vitals + exam + labs + csf + imaging + normalized diagnostic_tests
-results stripped of citation strings) MUST be identical pre vs post errata.
-Only PMID strings change.
+results stripped of citation strings) must be identical before and after the
+correction; only PMID strings change. That check compares the working tree
+against git HEAD and skips once HEAD no longer contains any wrong PMID.
 """
 from __future__ import annotations
 
@@ -216,13 +222,13 @@ def _affected_files_post_correction() -> list[Path]:
 
 def test_corrected_vignettes_schema_validate_all():
     affected = _affected_files_post_correction()
-    assert affected, "no vignettes found with corrected PMIDs (errata not applied?)"
+    assert affected, "no vignettes found with corrected PMIDs (correction not applied?)"
     for p in affected:
         VignetteSchema.model_validate(json.loads(p.read_text(encoding="utf-8")))
 
 
 def _affected_files_pre_correction() -> list[Path]:
-    """Files that contained any of the 3 WRONG PMIDs at HEAD (pre-errata commit)."""
+    """Files that contain any of the 3 wrong PMIDs at git HEAD."""
     wrong_pmids = set(WRONG_TO_RIGHT.keys())
     affected = set()
     for wp in wrong_pmids:
@@ -247,9 +253,8 @@ def test_corrected_vignettes_clinical_content_unchanged():
     affected = _affected_files_pre_correction()
     if not affected:
         pytest.skip(
-            "errata 5.4.3.1 already committed to HEAD; no pre-correction "
-            "files remain to diff; this migration check is obsolete once "
-            "the corrected PMIDs are in HEAD"
+            "the corrected PMIDs are already in HEAD; no pre-correction "
+            "files remain to diff"
         )
     drift = []
     for p in affected:

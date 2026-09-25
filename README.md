@@ -15,7 +15,7 @@ license: mit
 
 Research codebase for a calibrated, abstention-aware triage signal for primary amoebic
 meningoencephalitis (PAM), the rare and near-uniformly fatal CNS infection caused by
-*Naegleria fowleri*. The classifier is small and honest by design, with calibration,
+*Naegleria fowleri*. The classifier is small by design, with calibration,
 split conformal prediction and an out-of-distribution gate, and it abstains instead of
 predicting when either one flags the input. Out-of-distribution detection is
 dual-gated: Mahalanobis distance in feature space and an energy score on the
@@ -39,7 +39,5 @@ on real clinical data is not part of this release. Not for clinical use.
 ## License and disclaimer
 
 The code and documentation in this repository are released under the MIT
-License (see `LICENSE`). The software is provided for research and educational
-purposes. It is not a cleared medical device, not a substitute for clinical
-judgment, and has not been validated for clinical or unsupervised use; nothing
-here should be used to make clinical decisions.
+License (see `LICENSE`). They are provided for research and education only;
+nothing here should be used to make clinical decisions.

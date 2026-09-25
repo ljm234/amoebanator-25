@@ -92,7 +92,7 @@ per the Lei et al. 2018 bound (the upper bound assumes no ties among the
 scores). The PAM OOD AUC target is >= 0.85, well above
 chance, distinctly below the perfect 1.0 that would suggest data leakage.
 
-## 5. Why this is honest
+## 5. Safeguards in the design
 
 * **No PAM-specific training.** The PAM rows are only ever seen at OOD
   evaluation time; the supervised loss never touches them. The headline

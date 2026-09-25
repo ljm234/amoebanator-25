@@ -106,8 +106,8 @@ traceable.
 * **Raw data preserved?** Yes, `outputs/diagnosis_log_pro.csv` is the raw
   form. Preprocessed `(X, y, feats)` is computed in-memory and not
   persisted as a separate artifact.
-* **Preprocessing software.** All in `ml/training.py`,
-  `ml/training_calib_dca.py`, and `ml/data_loader.py`. Open-sourced as part
+* **Preprocessing software.** All in `ml/training_calib_dca.py` and
+  `ml/data_loader.py`. Open-sourced as part
   of this repository.
 
 ## 5. Uses
@@ -126,8 +126,8 @@ traceable.
 * **Composition / collection issues that impact future use?** The most
   important issue: **n = 30 is too small to fit anything reliably.** Any
   quoted metric must be paired with the n caveat. The dataset is not
-  intended as a benchmark for model performance; it is a load-bearing
-  fixture for the surrounding safety machinery.
+  intended as a benchmark for model performance; it is a fixture for
+  testing the surrounding safety machinery.
 * **Tasks for which the dataset should not be used.**
   - Quoting AUC / recall / sensitivity / specificity as if they were
     population estimates.
@@ -157,7 +157,7 @@ traceable.
   repository's release notes.
 * **Will the dataset be updated?** Yes, the V1.1 milestone replaces the
   bundled 30-row synthetic CSV with a MIMIC-IV-derived bacterial-vs-viral
-  meningitis cohort, now that PhysioNet credentialed access is in place. The bundled
+  meningitis cohort; PhysioNet credentialed access is in place. The bundled
   synthetic CSV will remain in the repository as a fixture for the test
   suite, but headline metrics will switch to the real-data cohort.
 * **Retention limits?** Not applicable (synthetic).
@@ -173,9 +173,8 @@ traceable.
 
 ## Planned dataset (V1.1, de-identified MIMIC-IV)
 
-With PhysioNet credentialed access in place, the V1.1 dataset
-will be a MIMIC-IV cohort with the schema below. Documenting it here so the
-lineage of any future figure is traceable from this card.
+The V1.1 dataset will be a MIMIC-IV cohort with the schema below, documented
+here so the lineage of any future figure is traceable from this card.
 
 | Field | Source | Notes |
 |-------|--------|-------|
@@ -191,12 +190,3 @@ lineage of any future figure is traceable from this card.
 
 Loader: `ml/mimic_iv_loader.assemble_cohort`. Smoke-tested end-to-end
 against synthetic MIMIC-shaped CSVs in `tests/test_mimic_iv_loader.py`.
-
----
-
-## Honesty signal
-
-This data card devotes roughly a third of its length to limitations,
-intended-not-uses, and the "do not quote AUC without the n caveat" warning.
-That ratio is intentional: at n = 30 the only defensible scientific
-contribution is honest disclosure of what the dataset is and is not.

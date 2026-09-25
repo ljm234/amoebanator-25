@@ -1,11 +1,12 @@
-"""Subphase 1.3 commit 5.3.2 pilot lock-in tests.
+"""Six bacterial and viral vignettes checked case by case.
 
-Eleven tests asserting structural correctness of the 6 pilot vignettes
-shipped at v2.3.0.1-subphase1.3-pilot-validated. Six per-pilot tests
-assert the pilot-specific clinical anchor invariant; five cross-pilot
-tests assert global invariants (spec sanity, HSV-1 imaging
-mandate, dengue platelets mandate, pre-adjudication hold_for_revision,
-PMID_REGISTRY integrity post-errata-fix).
+The cases are bact_064, bact_062, and bact_082 (bacterial) and vir_092,
+vir_105, and vir_118 (viral). One test per case checks its demographics,
+anchor PMID, and the clinical anchor feature of that case. The cross-case
+tests check that none of the six has freshwater exposure, the HSV-1
+imaging pattern, dengue platelets below 150,000, the pre-adjudication
+hold_for_revision state, and that PMID_REGISTRY holds all six anchor PMIDs
+and not the 18626302 typo.
 """
 from __future__ import annotations
 
@@ -47,12 +48,12 @@ def _result_for(v: VignetteSchema, test_name: str) -> str | None:
 
 
 # ----------------------------------------------------------------------
-# Per-pilot tests (6) - clinical anchor invariants
+# Per-case tests (6) - clinical anchor invariants
 # ----------------------------------------------------------------------
 
 
-def test_bact_pilot_1_lima_pediatric_anchor():
-    """BACT pilot 1 (v64): SP Lima ped 18mo M, PMID 27831604 (Davalos 2016)."""
+def test_bact_064_lima_pediatric_anchor():
+    """bact_064 (v64): SP Lima ped 18mo M, PMID 27831604 (Davalos 2016)."""
     v = _load(_BACT_DIR / "bact_064_sp_lima_pediatric.json")
     assert v.demographics.geography_region == "peru_lima_coast"
     assert v.demographics.age_years == 1
@@ -64,8 +65,8 @@ def test_bact_pilot_1_lima_pediatric_anchor():
     assert culture is not None and "streptococcus_pneumoniae" in culture
 
 
-def test_bact_pilot_2_netherlands_adult_anchor():
-    """BACT pilot 2 (v62): SP Netherlands adult 55F, PMID 15509818 (van de Beek 2004)."""
+def test_bact_062_netherlands_adult_anchor():
+    """bact_062 (v62): SP Netherlands adult 55F, PMID 15509818 (van de Beek 2004)."""
     v = _load(_BACT_DIR / "bact_062_sp_netherlands_adult.json")
     assert v.demographics.geography_region == "other_global"
     assert v.demographics.age_years == 55
@@ -77,8 +78,8 @@ def test_bact_pilot_2_netherlands_adult_anchor():
     assert culture is not None and "streptococcus_pneumoniae" in culture
 
 
-def test_bact_pilot_3_nm_adult_anchor_with_errata():
-    """BACT pilot 3 (v82): NM Netherlands adult 24M, PMID 18626301 (Heckenberg 2008)."""
+def test_bact_082_nm_adult_anchor_notes_pmid_typo():
+    """bact_082 (v82): NM Netherlands adult 24M, PMID 18626301 (Heckenberg 2008)."""
     v = _load(_BACT_DIR / "bact_082_nm_college_outbreak.json")
     assert v.demographics.geography_region == "other_global"
     assert v.demographics.age_years == 24
@@ -89,27 +90,27 @@ def test_bact_pilot_3_nm_adult_anchor_with_errata():
     assert v.exam.petechial_or_purpuric_rash is True
     culture = _result_for(v, "csf_culture")
     assert culture is not None and "neisseria_meningitidis" in culture
-    # Errata note in narrative
+    # The narrative notes the 18626302 PMID typo
     narrative_en = v.narrative_en or ""
-    assert "18626302" in narrative_en, "errata note about 18626302 typo missing"
+    assert "18626302" in narrative_en, "note about 18626302 typo missing"
 
 
-def test_viral_pilot_1_hsv1_anchor_with_imaging_mandate():
-    """VIRAL pilot 1 (v92): HSV-1 adult 42M, PMID 16675036 (Whitley 2006 Antiviral Res)."""
+def test_vir_092_hsv1_anchor_with_temporal_imaging():
+    """vir_092 (v92): HSV-1 adult 42M, PMID 16675036 (Whitley 2006 Antiviral Res)."""
     v = _load(_VIR_DIR / "vir_092_hsv1_adult.json")
     assert v.demographics.age_years == 42
     assert v.demographics.sex == "male"
     assert v.ground_truth_class == 3
     assert "16675036" in v.provenance.inclusion_decision_rationale
     assert v.literature_anchors[0].pmid == "16675036"
-    # Spec 1.3 HSV-1 imaging mandate
+    # HSV-1 imaging requirement
     assert v.imaging.imaging_pattern == "mesial_temporal_t2_flair_hyperintensity"
     pcr = _result_for(v, "csf_hsv1_pcr")
     assert pcr == "positive"
 
 
-def test_viral_pilot_2_enterovirus_pmn_predominant_ambiguity():
-    """VIRAL pilot 2 (v105): EV ped 5M Greece, PMID 17668054 (Michos 2007 PMN-cohort)."""
+def test_vir_105_enterovirus_pmn_predominant_ambiguity():
+    """vir_105 (v105): EV ped 5M Greece, PMID 17668054 (Michos 2007 PMN-cohort)."""
     v = _load(_VIR_DIR / "vir_105_enterovirus_pediatric.json")
     assert v.demographics.age_years == 5
     assert v.demographics.sex == "male"
@@ -126,8 +127,8 @@ def test_viral_pilot_2_enterovirus_pmn_predominant_ambiguity():
     assert "csf_neutrophil_predominant_in_confirmed_viral" in rat
 
 
-def test_viral_pilot_3_dengue_peru_platelet_mandate():
-    """VIRAL pilot 3 (v118): dengue Loreto 32F, PMID 30540031 (Bastos 2018 dengue CNS Amazonia)."""
+def test_vir_118_dengue_peru_low_platelets():
+    """vir_118 (v118): dengue Loreto 32F, PMID 30540031 (Bastos 2018 dengue CNS Amazonia)."""
     v = _load(_VIR_DIR / "vir_118_dengue_loreto.json")
     assert v.demographics.geography_region == "peru_loreto_amazon"
     assert v.demographics.age_years == 32
@@ -135,45 +136,45 @@ def test_viral_pilot_3_dengue_peru_platelet_mandate():
     assert v.ground_truth_class == 3
     assert "30540031" in v.provenance.inclusion_decision_rationale
     assert v.literature_anchors[0].pmid == "30540031"
-    # Spec 1.3 dengue platelets mandate (below 150,000)
+    # Dengue requirement: platelets below 150,000
     assert v.labs.platelets_per_uL < 150000
     pcr = _result_for(v, "denv_pcr")
     assert pcr is not None and "DENV_2" in pcr
 
 
 # ----------------------------------------------------------------------
-# Cross-pilot invariant tests (5)
+# Cross-case invariant tests (5)
 # ----------------------------------------------------------------------
 
 
-def test_all_six_pilots_freshwater_exposure_false():
-    """Spec 1.3.10 sanity: no pilot has freshwater exposure."""
+def test_all_six_cases_freshwater_exposure_false():
+    """None of the six cases has freshwater exposure."""
     for path in _PILOT_PATHS:
         v = _load(path)
         assert v.exposure.freshwater_exposure_within_14d is False, str(path)
         assert v.exposure.freshwater_exposure_type is None, str(path)
 
 
-def test_viral_pilot_1_canonical_hsv1_imaging():
-    """Spec 1.3 HSV-1 mandate: mesial_temporal_t2_flair_hyperintensity."""
+def test_vir_092_canonical_hsv1_imaging():
+    """HSV-1 imaging pattern is mesial_temporal_t2_flair_hyperintensity."""
     v = _load(_VIR_DIR / "vir_092_hsv1_adult.json")
     assert v.imaging.imaging_pattern == "mesial_temporal_t2_flair_hyperintensity"
 
 
-def test_viral_pilot_3_dengue_platelets_below_150k():
-    """Spec 1.3 dengue mandate: platelets below 150,000 per microliter."""
+def test_vir_118_dengue_platelets_below_150k():
+    """Dengue case has platelets below 150,000 per microliter."""
     v = _load(_VIR_DIR / "vir_118_dengue_loreto.json")
     assert v.labs.platelets_per_uL < 150000
 
 
-def test_all_six_pilots_pre_adjudication_hold_for_revision():
-    """Q7 5.3.1 lock: all pilots in pre-adjudication hold_for_revision state.
+def test_all_six_cases_pre_adjudication_hold_for_revision():
+    """All six cases are in the pre-adjudication hold_for_revision state.
 
-    Schema's AdjudicationMetadata has rigid 5-field structure. Per D8, the
-    structured pre-adjudication disclosure was embedded into anchoring_
-    documentation, preserving the hold_for_revision verbatim phrase
-    semantically. This test verifies BOTH: the inclusion_decision enum value
-    AND the verbatim-phrase disclosure inside anchoring_documentation.
+    The schema's AdjudicationMetadata has a fixed 5-field structure, so the
+    structured pre-adjudication disclosure was embedded into
+    anchoring_documentation, preserving the hold_for_revision phrase
+    verbatim. This test checks both the inclusion_decision enum value and
+    the verbatim-phrase disclosure inside anchoring_documentation.
     """
     for path in _PILOT_PATHS:
         v = _load(path)
@@ -190,12 +191,12 @@ def test_all_six_pilots_pre_adjudication_hold_for_revision():
 
 
 def test_pmid_registry_contains_all_six_anchor_pmids_and_no_18626302():
-    """Registry integrity post-commit: 6 anchor PMIDs present, typo removed.
+    """Registry integrity: the 6 anchor PMIDs are present and the typo is not.
 
-    Six anchor PMIDs (one per pilot): 27831604 (Davalos), 15509818 (van de
-    Beek), 18626301 (Heckenberg, errata fix), 16675036 (Whitley HSE),
-    17668054 (Michos), 30540031 (Bastos 2018). The pre-existing 5.3.1 typo
-    18626302 must be REMOVED.
+    Six anchor PMIDs (one per case): 27831604 (Davalos), 15509818 (van de
+    Beek), 18626301 (Heckenberg, corrected from the typo 18626302), 16675036
+    (Whitley HSE), 17668054 (Michos), 30540031 (Bastos 2018). The typo
+    18626302 must not be in the registry.
     """
     expected = {
         "27831604", "15509818", "18626301",
@@ -204,5 +205,5 @@ def test_pmid_registry_contains_all_six_anchor_pmids_and_no_18626302():
     for pmid in expected:
         assert pmid in PMID_REGISTRY, f"missing anchor PMID {pmid}"
     assert "18626302" not in PMID_REGISTRY, (
-        "typo PMID 18626302 was not removed by errata fix"
+        "typo PMID 18626302 is still in PMID_REGISTRY"
     )

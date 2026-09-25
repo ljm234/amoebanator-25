@@ -122,10 +122,9 @@ def test_singleton_resumes_existing_chain(isolated_audit_path: Path) -> None:
 
 
 def test_full_training_run_emits_all_five_event_types(isolated_audit_path: Path, tmp_path: Path) -> None:
-    """End-to-end: invoking ml.training.train_and_save must produce the five canonical events."""
-    from ml.training import train_and_save
-    out_model = tmp_path / "model"
-    train_and_save(model_dir=str(out_model))
+    """End-to-end: a training run must produce the five canonical events."""
+    from ml.training_calib_dca import main as train
+    train(model_dir=str(tmp_path / "model"), metrics_dir=str(tmp_path / "metrics"))
     assert isolated_audit_path.exists()
     parsed = [json.loads(line) for line in isolated_audit_path.read_text().splitlines() if line.strip()]
     event_types = {p["event_type"] for p in parsed}
@@ -133,8 +132,8 @@ def test_full_training_run_emits_all_five_event_types(isolated_audit_path: Path,
 
 
 def test_chain_remains_valid_after_full_training_run(isolated_audit_path: Path, tmp_path: Path) -> None:
-    from ml.training import train_and_save
-    train_and_save(model_dir=str(tmp_path / "model"))
+    from ml.training_calib_dca import main as train
+    train(model_dir=str(tmp_path / "model"), metrics_dir=str(tmp_path / "metrics"))
     status, tampered = verify_persisted_chain(isolated_audit_path)
     assert status == IntegrityStatus.VALID
     assert tampered == []

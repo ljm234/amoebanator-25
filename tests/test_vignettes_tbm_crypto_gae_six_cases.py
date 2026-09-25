@@ -1,12 +1,16 @@
-"""Subphase 1.4 Commit 5.4.2 pilot vignette lock-in tests.
+"""Six TBM, cryptococcal, and GAE vignettes checked case by case.
 
-6 pilot vignettes: TBM 121, 122 + CRYPTO 151, 152 + GAE 181, 182.
+6 vignettes flagged pilot in the distributions: TBM 121, 122 + CRYPTO 151,
+152 + GAE 181, 182.
 
-Anchored to the 6 PMID_REGISTRY entries verified in commit 5.4.0
-(Thwaites, van Toorn, Perfect, Singh, Alvarez/Bravo, Visvesvara).
+Anchored to 6 PMID_REGISTRY entries (Thwaites, van Toorn, Perfect, Singh,
+Alvarez/Bravo, Visvesvara).
 
-Resolution #3 applied: TBM 122 Cape Town altitude corrected from 1591m
-(empirical error in proposal) to 50m (Cape Town Atlantic coastal city).
+The tests check that each JSON exists and validates, its class and anchor
+PMID, the adjudication fields, narrative lengths and dashes, the CSF
+differential, the class-specific imaging pattern, and the TBM 122 Cape Town
+altitude, corrected from an erroneous 1591m to 50m (Cape Town Atlantic
+coastal city).
 """
 from __future__ import annotations
 
@@ -58,7 +62,7 @@ def _all_dists() -> list[dict]:
 # ----------------------------------------------------------------------
 
 
-def test_subphase_1_4_pilot_count_6():
+def test_all_six_vignette_files_present():
     existing = [p for p in PILOT_PATHS.values() if p.exists()]
     assert len(existing) == 6, (
         f"Expected 6 pilot JSONs, found {len(existing)}: missing="
@@ -67,7 +71,7 @@ def test_subphase_1_4_pilot_count_6():
 
 
 @pytest.mark.parametrize("vid", PILOT_IDS)
-def test_pilot_files_exist(vid):
+def test_vignette_file_exists(vid):
     assert PILOT_PATHS[vid].exists(), f"Pilot {vid} missing at {PILOT_PATHS[vid]}"
 
 
@@ -77,17 +81,17 @@ def test_pilot_files_exist(vid):
 
 
 @pytest.mark.parametrize("vid", PILOT_IDS)
-def test_pilot_schema_validates(vid):
+def test_vignette_schema_validates(vid):
     VignetteSchema.model_validate(_load(vid))
 
 
 @pytest.mark.parametrize("vid", PILOT_IDS)
-def test_pilot_ground_truth_class(vid):
+def test_vignette_ground_truth_class(vid):
     assert _load(vid)["ground_truth_class"] == PILOT_TO_CLASS[vid]
 
 
 @pytest.mark.parametrize("vid", PILOT_IDS)
-def test_pilot_anchor_pmid_matches_registry(vid):
+def test_vignette_anchor_pmid_matches_registry(vid):
     spec = next(s for s in _all_dists() if s["vignette_id"] == vid)
     expected_key = spec["anchor_pmid"]
     assert expected_key in PMID_REGISTRY, f"registry key {expected_key!r} missing"
@@ -111,17 +115,17 @@ def test_pilot_anchor_pmid_matches_registry(vid):
 
 
 @pytest.mark.parametrize("vid", PILOT_IDS)
-def test_pilot_freshwater_false_all_6(vid):
+def test_vignette_freshwater_false(vid):
     assert _load(vid)["exposure"]["freshwater_exposure_within_14d"] is False
 
 
 @pytest.mark.parametrize("vid", PILOT_IDS)
-def test_pilot_inclusion_decision_hold_for_revision(vid):
+def test_vignette_inclusion_decision_hold_for_revision(vid):
     assert _load(vid)["adjudication"]["inclusion_decision"] == "hold_for_revision"
 
 
 @pytest.mark.parametrize("vid", PILOT_IDS)
-def test_pilot_adjudicator_ids_sentinel_format(vid):
+def test_vignette_adjudicator_ids_sentinel_format(vid):
     ids = _load(vid)["adjudication"]["adjudicator_ids"]
     assert len(ids) == 2, f"vid {vid} adjudicator_ids len {len(ids)}"
     pat = re.compile(r"^PILOT-(TBM|CRYPTO|GAE)-\d+-ADJ-[12]$")
@@ -139,7 +143,7 @@ def test_pilot_adjudicator_ids_sentinel_format(vid):
 
 
 @pytest.mark.parametrize("vid", PILOT_IDS)
-def test_pilot_narrative_en_in_band_800_1200(vid):
+def test_vignette_narrative_en_in_band_800_1200(vid):
     text = _load(vid).get("narrative_en") or ""
     assert 800 <= len(text) <= 1200, (
         f"vid {vid} EN narrative len {len(text)} not in [800,1200]"
@@ -147,7 +151,7 @@ def test_pilot_narrative_en_in_band_800_1200(vid):
 
 
 @pytest.mark.parametrize("vid", PILOT_IDS)
-def test_pilot_narrative_es_in_band_700_900(vid):
+def test_vignette_narrative_es_in_band_700_900(vid):
     text = _load(vid).get("narrative_es") or ""
     assert 700 <= len(text) <= 900, (
         f"vid {vid} ES narrative len {len(text)} not in [700,900]"
@@ -160,13 +164,13 @@ def _full_text(data: dict) -> str:
 
 
 @pytest.mark.parametrize("vid", PILOT_IDS)
-def test_pilot_no_em_dashes(vid):
+def test_vignette_no_em_dashes(vid):
     text = _full_text(_load(vid))
     assert chr(0x2014) not in text, f"vid {vid} narrative contains em-dash (U+2014)"
 
 
 @pytest.mark.parametrize("vid", PILOT_IDS)
-def test_pilot_no_en_dashes(vid):
+def test_vignette_no_en_dashes(vid):
     text = _full_text(_load(vid))
     assert chr(0x2013) not in text, f"vid {vid} narrative contains en-dash (U+2013)"
 
@@ -177,7 +181,7 @@ def test_pilot_no_en_dashes(vid):
 
 
 @pytest.mark.parametrize("vid", PILOT_IDS)
-def test_pilot_csf_differential_sums_100(vid):
+def test_vignette_csf_differential_sums_100(vid):
     csf = _load(vid)["csf"]
     if csf["csf_wbc_per_mm3"] > 5:
         total = (
@@ -189,7 +193,7 @@ def test_pilot_csf_differential_sums_100(vid):
 
 
 @pytest.mark.parametrize("vid", [121, 122])
-def test_tbm_pilots_basal_meningeal_imaging(vid):
+def test_tbm_basal_meningeal_imaging(vid):
     assert (
         _load(vid)["imaging"]["imaging_pattern"]
         == "basal_meningeal_enhancement_with_hydrocephalus"
@@ -197,7 +201,7 @@ def test_tbm_pilots_basal_meningeal_imaging(vid):
 
 
 @pytest.mark.parametrize("vid", [151, 152])
-def test_crypto_pilots_dilated_vr_imaging(vid):
+def test_crypto_dilated_vr_imaging(vid):
     assert (
         _load(vid)["imaging"]["imaging_pattern"]
         == "dilated_virchow_robin_with_pseudocysts"
@@ -205,7 +209,7 @@ def test_crypto_pilots_dilated_vr_imaging(vid):
 
 
 @pytest.mark.parametrize("vid", [181, 182])
-def test_gae_pilots_multifocal_ring_enhancing_imaging(vid):
+def test_gae_multifocal_ring_enhancing_imaging(vid):
     assert (
         _load(vid)["imaging"]["imaging_pattern"]
         == "multiple_ring_enhancing_lesions"
@@ -213,13 +217,13 @@ def test_gae_pilots_multifocal_ring_enhancing_imaging(vid):
 
 
 # ----------------------------------------------------------------------
-# Resolution #3
+# TBM 122 altitude
 # ----------------------------------------------------------------------
 
 
-def test_resolution_3_tbm_122_altitude_50m_not_1591m():
+def test_tbm_122_altitude_50m_not_1591m():
     alt = _load(122)["demographics"]["altitude_residence_m"]
     assert alt == 50, (
-        f"Resolution #3: TBM 122 altitude must be 50m (Cape Town Atlantic "
+        f"TBM 122 altitude must be 50m (Cape Town Atlantic "
         f"coastal city, sea level), got {alt}m"
     )

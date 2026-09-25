@@ -80,7 +80,7 @@ class MimicCohortConfig:
 
 
 def _normalize_icd_code(code: object) -> str:
-    """MIMIC-IV stores ICD-10 codes without dots; normalise comparisons."""
+    """MIMIC-IV stores ICD-10 codes without dots; normalize comparisons."""
     if code is None:
         return ""
     s = str(code).strip().upper().replace(".", "")

@@ -1,16 +1,18 @@
 """
-Audit Trail Module - Comprehensive Test Suite.
+Tests for ml.data.audit_trail.
 
 Tests cover:
   - Hash-chained audit entry recording
   - Chain integrity verification and tamper detection
-  - Merkle tree construction, proofs, and verification
+  - Merkle tree construction, proofs, consistency proofs, and verification
   - Merkle checkpoint creation and validation
   - AuditLog filtering (by type, resource, actor, time range)
   - JSON export/import with integrity verification
   - DataProvenance custody chain and transformation tracking
   - Factory functions
-  - Summary generation
+  - Summary generation and audit statistics
+  - Anomaly detection, search, archiving, compliance reports, and export
+    to JSON, CSV, and NDJSON
 """
 
 from __future__ import annotations
@@ -385,7 +387,7 @@ class TestAuditLog:
 
 
 class TestAuditLogPersistence:
-    """JSON serialisation and integrity-verified import tests."""
+    """JSON serialization and integrity-verified import tests."""
 
     def test_export_import_roundtrip(self) -> None:
         log = create_audit_log(checkpoint_interval=5)
@@ -601,12 +603,12 @@ class TestMerkleCheckpoint:
 
 
 # ===========================================================================
-# Coverage Gap Tests - previously uncovered lines
+# Merkle proof, chain-link, and checkpoint edge cases
 # ===========================================================================
 
 
-class TestCoverageGaps:
-    """Tests targeting previously uncovered code paths."""
+class TestMerkleChainCheckpointEdgeCases:
+    """Odd-leaf Merkle proofs, previous_hash tampering, and checkpoint ranges."""
 
     def test_merkle_proof_single_leaf_self_sibling(self) -> None:
         """Line 302: sibling_idx == idx when odd leaf count, last leaf."""
@@ -932,12 +934,12 @@ class TestAuditStatistics:
 
 
 # ===========================================================================
-# Final Coverage Completeness - targeting remaining uncovered lines
+# Timestamp parsing and consistency-proof edge cases
 # ===========================================================================
 
 
-class TestFinalCoverage:
-    """Tests targeting the last uncovered lines."""
+class TestTimestampAndConsistencyProofEdgeCases:
+    """Timezone-naive and unparseable timestamps, and a corrupted consistency-proof root."""
 
     def test_anomaly_detector_tz_naive_timestamp(self) -> None:
         """Line 1055: observe() with tz-naive timestamp entry."""
@@ -1494,7 +1496,7 @@ def _build_populated_log() -> AuditLog:
 
 
 class TestAuditExporter:
-    """Comprehensive tests for AuditExporter - JSON, CSV, NDJSON."""
+    """AuditExporter output in JSON, CSV, and NDJSON."""
 
     def test_export_json_default(self) -> None:
         log = _build_populated_log()

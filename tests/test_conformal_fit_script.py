@@ -1,5 +1,5 @@
 """
-Regression test - `scripts.conformal.conformal_fit_from_probs` must route through
+`scripts.conformal.conformal_fit_from_probs` must route through
 `ml.conformal_advanced.compute_qhat` and therefore emit `SmallCalibrationWarning`
 on small calibration sets, so the script never writes a qhat fit on n < 100
 without a warning on stderr.
@@ -36,7 +36,7 @@ def test_script_emits_smallcalibrationwarning_at_n6(tmp_path: Path) -> None:
         rc = conformal_main(["--val_preds", str(val), "--out", str(out)])
 
     assert rc == 0
-    assert out.exists(), "script must write the conformal.json artefact"
+    assert out.exists(), "script must write the conformal.json artifact"
     written = json.loads(out.read_text())
     assert written["n"] == 6
     # Default alpha comes from config/amoebanator.toml: 1/7, the highest

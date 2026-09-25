@@ -6,12 +6,10 @@ Run via:
 
     streamlit run streamlit_app.py
 
-This entry lives at the repo root (HF Spaces docker-app convention).
-An earlier layout placed it at ``app/app.py``, but that made Python register
-"app" as the script module name when Streamlit booted, shadowing the
-``app/`` package directory and breaking ``from app.disclaimer import ...``
-on the Hugging Face Space. The legacy single-file entry lives at
-``legacy_app.py``; this is the canonical entry point.
+This entry lives at the repo root (HF Spaces docker-app convention). It must
+not live inside ``app/``: Streamlit would then register "app" as the script
+module name, shadowing the ``app/`` package and breaking
+``from app.disclaimer import ...``.
 """
 from __future__ import annotations
 

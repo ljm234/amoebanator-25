@@ -10,9 +10,9 @@ distinguishes what the current V1.0 release reports, a calibration /
 conformal / out-of-distribution / decision-curve infrastructure exercised on
 a 30-row synthetic dataset with a 6-row validation split, from the planned
 clinical prediction study, a MIMIC-IV bacterial-vs-viral meningitis proxy
-with Naegleria fowleri (PAM) held out for out-of-distribution evaluation,
-with PhysioNet credentialed access now in place. Items that only the planned study can
-satisfy are marked **Planned**. The pre-specified analysis protocol for that
+with Naegleria fowleri (PAM) held out for out-of-distribution evaluation;
+PhysioNet credentialed access is in place. Items that only the planned study
+can satisfy are marked **Planned**. The pre-specified analysis protocol for that
 study is `docs/rare_class_design.md`; model and dataset specifics are in
 `docs/model_card.md` and `docs/data_card.md` and are not duplicated here.
 Performance metrics are not reported (Section 6); the few fitted values
@@ -89,7 +89,7 @@ cited below carry their sample size in the same sentence.
   predictor-assessment blinding applies.
 * **Sample size.** V1.0 is n = 30 (n_train = 24, n_val = 6). There is no
   formal power calculation; the size is a deliberately small fixture to
-  exercise the infrastructure and is the single load-bearing limitation
+  exercise the infrastructure and is the main limitation
   (`model_card.md` Section 9; `data_card.md` Section 5). Section 7
   (Limitations) states what six rows mean for conformal coverage.
   **Planned:** the proxy cohort size is reported with the real extraction.
@@ -189,12 +189,12 @@ reporting of this work.
 
 ## 7. Discussion
 
-* **Interpretation.** The V1.0 contribution is an honest, reproducible
+* **Interpretation.** The V1.0 contribution is a reproducible
   trustworthy-ML pipeline for a low-prevalence, high-asymmetric-cost triage
   problem, not a validated PAM classifier, and it reports no performance
   metrics (Section 6; `model_card.md` Sections 7 and 9;
   `rare_class_design.md` Section 5).
-* **Limitations.** The load-bearing limitations are the 6-row validation set,
+* **Limitations.** The main limitations are the 6-row validation set,
   the 30-row synthetic training data, the absence of real bacterial, viral,
   and fungal labels (pending the planned MIMIC-IV proxy study), and undefined
   performance on neonatal PAM (`model_card.md` Section 9; `data_card.md`
@@ -215,14 +215,12 @@ models. The model card, the data card, and the proxy-task design document
 together constitute the supplementary reporting. Full BibTeX entries are in
 `docs/references.bib`.
 
-## Honesty signal
+## Coverage of the checklist
 
-Like the model and data cards, this checklist is explicit that the current
-release satisfies the development and infrastructure half of TRIPOD+AI on
-synthetic data, and that the participant, real-outcome, real-performance, and
-fairness items are deferred to the planned proxy study. Marking those items
-Planned rather than quietly omitting them is the point: the reporting is
-complete about what is, and is not, yet done.
+The current release covers the development and infrastructure items of
+TRIPOD+AI on synthetic data. The participant, real-outcome, real-performance,
+and fairness items are deferred to the planned proxy study and are marked
+Planned above.
 
 ## References
 

@@ -1,10 +1,11 @@
-"""Subphase 1.3 Commit 5.3.5 Wave 1 VIRAL lock-in tests.
+"""Viral vignettes anchored to Tyler 2018 and Puccioni-Sohler 2023.
 
-13 vignettes all anchored to Tyler KL 2018 NEJM viral encephalitis review
-(PMID 30089069). Pathogens: 3 HSV1 + 5 enterovirus + 2 HSV2 + 2 dengue +
-1 EEE per VIRAL_DISTRIBUTION spec. 2 ambiguity slots (v113 HSV2 first-
-episode with prominent meningismus, v117 dengue with prominent CNS arbo
-overlap).
+13 vignettes: 11 anchored to the Tyler KL 2018 NEJM viral encephalitis review
+(PMID 30089069) and 2 dengue vignettes (v117, v119) anchored to the
+Puccioni-Sohler dengue-neuro review (PMID 38157877). Pathogens: 3 HSV1 + 5
+enterovirus + 2 HSV2 + 2 dengue + 1 EEE per VIRAL_DISTRIBUTION spec. 2
+ambiguity slots (v113 HSV2 first-episode with prominent meningismus, v117
+dengue with prominent CNS arbo overlap).
 
 Filename convention: vir_NNN_*.json (not viral_NNN_*.json).
 """
@@ -49,23 +50,23 @@ def _load(vid: int) -> dict:
 
 
 # ----------------------------------------------------------------------
-# Tests 1-5: parametrized over 13 vignettes
+# Parametrized over the 13 vignettes
 # ----------------------------------------------------------------------
 
 
 @pytest.mark.parametrize("vid", VIRAL_WAVE1_IDS)
-def test_viral_wave1_files_exist(vid):
+def test_viral_files_exist(vid):
     matches = list(WAVE1_DIR.glob(f"vir_{vid:03d}_*.json"))
     assert len(matches) == 1, f"v{vid} JSON missing or duplicate: {matches}"
 
 
 @pytest.mark.parametrize("vid", VIRAL_WAVE1_IDS)
-def test_viral_wave1_schema_validates(vid):
+def test_viral_schema_validates(vid):
     VignetteSchema.model_validate(_load(vid))
 
 
 @pytest.mark.parametrize("vid", VIRAL_WAVE1_IDS)
-def test_viral_wave1_demographics_match_spec(vid):
+def test_viral_demographics_match_spec(vid):
     data = _load(vid)
     spec = _wave1_slot(vid)
     assert data["demographics"]["age_years"] == spec["age_years"], f"v{vid} age"
@@ -76,14 +77,14 @@ def test_viral_wave1_demographics_match_spec(vid):
 
 
 @pytest.mark.parametrize("vid", VIRAL_WAVE1_IDS)
-def test_viral_wave1_anchor_pmid_tyler(vid):
+def test_viral_anchor_pmid_tyler_or_puccioni(vid):
     data = _load(vid)
     expected = PUCCIONI_PMID if vid in VIRAL_WAVE1_PUCCIONI_IDS else TYLER_PMID
     assert data["literature_anchors"][0]["pmid"] == expected, f"v{vid} anchor"
 
 
 @pytest.mark.parametrize("vid", VIRAL_WAVE1_IDS)
-def test_viral_wave1_anchor_type_review(vid):
+def test_viral_anchor_type_review(vid):
     data = _load(vid)
     assert data["literature_anchors"][0]["anchor_type"] == "review", (
         f"v{vid} anchor_type must be review"
@@ -91,11 +92,11 @@ def test_viral_wave1_anchor_type_review(vid):
 
 
 # ----------------------------------------------------------------------
-# Tests 6-13: corpus-level invariants
+# Invariants across the set
 # ----------------------------------------------------------------------
 
 
-def test_viral_wave1_count_13():
+def test_viral_count_13():
     """Empirical count from VIRAL_DISTRIBUTION must match hardcoded list."""
     empirical_tyler = sorted(
         s["vignette_id"]
@@ -116,41 +117,41 @@ def test_viral_wave1_count_13():
     assert len(VIRAL_WAVE1_IDS) == 13
 
 
-def test_viral_wave1_freshwater_false():
-    """Spec 1.3.10 sanity: viral non-amoebic = no freshwater."""
+def test_viral_freshwater_false():
+    """Viral, non-amoebic cases have no freshwater exposure."""
     for vid in VIRAL_WAVE1_IDS:
         assert (
             _load(vid)["exposure"]["freshwater_exposure_within_14d"] is False
         ), f"v{vid}"
 
 
-def test_viral_wave1_class_id_3():
+def test_viral_class_id_3():
     for vid in VIRAL_WAVE1_IDS:
         assert _load(vid)["ground_truth_class"] == 3, f"v{vid}"
 
 
-def test_viral_wave1_csf_lymphocytic():
-    """Spec 1.3.4 Class 3 viral mandate: csf_lymphocyte_pct >= 50."""
+def test_viral_csf_lymphocytic():
+    """Class 3 viral CSF is lymphocytic: csf_lymphocyte_pct >= 50."""
     for vid in VIRAL_WAVE1_IDS:
         pct = _load(vid)["csf"]["csf_lymphocyte_pct"]
         assert pct >= 50, f"v{vid} csf_lymphocyte_pct={pct} (must be lymphocytic)"
 
 
-def test_viral_wave1_csf_neutrophil_low():
+def test_viral_csf_neutrophil_low():
     """Viral CSF must NOT be neutrophilic (<50 percent)."""
     for vid in VIRAL_WAVE1_IDS:
         pct = _load(vid)["csf"]["csf_neutrophil_pct"]
         assert pct < 50, f"v{vid} csf_neutrophil_pct={pct} (must NOT be neutrophilic)"
 
 
-def test_viral_wave1_csf_glucose_normal_or_near():
+def test_viral_csf_glucose_normal_or_near():
     """Viral CSF: glucose typically normal or slightly low (>=40)."""
     for vid in VIRAL_WAVE1_IDS:
         glucose = _load(vid)["csf"]["csf_glucose_mg_per_dL"]
         assert glucose >= 40, f"v{vid} csf_glucose={glucose} (viral typically >=40)"
 
 
-def test_viral_wave1_pre_adjudication_hold():
+def test_viral_pre_adjudication_hold():
     for vid in VIRAL_WAVE1_IDS:
         data = _load(vid)
         assert (
@@ -162,7 +163,7 @@ def test_viral_wave1_pre_adjudication_hold():
         ), f"v{vid}"
 
 
-def test_viral_wave1_no_em_dashes():
+def test_viral_no_em_dashes():
     """No em-dashes (\\u2014) or en-dashes (\\u2013)."""
     for vid in VIRAL_WAVE1_IDS:
         text = _wave1_json_path(vid).read_text(encoding="utf-8")
@@ -175,7 +176,7 @@ def test_viral_wave1_no_em_dashes():
 # ----------------------------------------------------------------------
 
 
-def test_viral_wave1_hsv1_temporal_lobe_focal():
+def test_viral_hsv1_temporal_lobe_focal():
     """HSV1 temporal lobe encephalitis: at least 50 percent of HSV1 cases
     have focal_neurological_deficit=True or cranial_nerve_palsy != none."""
     hsv1_ids = [
@@ -195,7 +196,7 @@ def test_viral_wave1_hsv1_temporal_lobe_focal():
     )
 
 
-def test_viral_wave1_dengue_thrombocytopenia():
+def test_viral_dengue_thrombocytopenia():
     """Dengue cases must demonstrate platelets <150,000 (WHO 2009 threshold)."""
     dengue_ids = [
         vid
@@ -210,7 +211,7 @@ def test_viral_wave1_dengue_thrombocytopenia():
         )
 
 
-def test_viral_wave1_eee_severe_outcome():
+def test_viral_eee_severe_outcome():
     """EEE per Tyler review: severe outcome (fatal or severe sequelae)."""
     eee_ids = [
         vid
@@ -227,7 +228,7 @@ def test_viral_wave1_eee_severe_outcome():
         )
 
 
-def test_viral_wave1_pathogen_distribution():
+def test_viral_pathogen_distribution():
     """3 HSV1 + 5 enterovirus + 2 HSV2 + 2 dengue + 1 EEE."""
     counts: dict[str, int] = {}
     for vid in VIRAL_WAVE1_IDS:
@@ -239,10 +240,10 @@ def test_viral_wave1_pathogen_distribution():
         "HSV2": 2,
         "dengue": 2,
         "EEE": 1,
-    }, f"Wave 5.3.5 pathogen distribution: {counts}"
+    }, f"pathogen distribution: {counts}"
 
 
-def test_viral_wave1_ambiguity_count():
+def test_viral_ambiguity_count():
     """Exactly 2 of 13 (v113 HSV2 first-episode, v117 dengue arbo overlap)."""
     ambiguous = []
     for vid in VIRAL_WAVE1_IDS:
@@ -256,7 +257,7 @@ def test_viral_wave1_ambiguity_count():
     )
 
 
-def test_viral_wave1_peru_anchors():
+def test_viral_peru_anchors():
     """Exactly 3 of 13 Peru-anchored (v99 Lima HSV1, v117 Lima dengue, v119 Tumbes dengue)."""
     peru = [
         vid

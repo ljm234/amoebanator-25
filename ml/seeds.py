@@ -12,8 +12,8 @@ It also disables PyTorch's cuDNN benchmark mode and enables deterministic
 algorithms where supported, so two runs on the same hardware produce
 bit-identical model.pt files.
 
-The default seed is 42 (the same value used throughout `ml.training` and
-`ml.training_calib_dca` for `train_test_split(..., random_state=42)`).
+The default seed is 42 (the same value `ml.training_calib_dca` uses for
+`train_test_split(..., random_state=42)`).
 """
 from __future__ import annotations
 

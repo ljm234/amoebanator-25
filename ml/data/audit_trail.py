@@ -106,7 +106,7 @@ class AuditEventType(Enum):
 
     Cleanup history: 10 dead values removed
     (no production callers, no behavior coverage in tests). The 5
-    test-fixture references in tests/test_phase1_1_audit_trail.py were
+    test-fixture references in tests/test_audit_trail.py were
     substituted with kept values (the tests verify audit-trail
     infrastructure on arbitrary event types, not production emission).
     INTEGRITY_VIOLATION kept - correlation-ID error path uses it.
@@ -906,7 +906,7 @@ class DataProvenance:
         self.integrity_hash = output_hash
 
     def to_dict(self) -> dict[str, Any]:
-        """Serialise provenance record."""
+        """Serialize provenance record."""
         return {
             "asset_id": self.asset_id,
             "source": self.source,
@@ -1578,7 +1578,7 @@ class AuditExportFormat(Enum):
 
 @dataclass(frozen=True, slots=True)
 class AuditComplianceReport:
-    """Summarised compliance report for regulatory submission.
+    """Summarized compliance report for regulatory submission.
 
     Covers HIPAA section 164.312(b) audit control requirements and
     FDA 21 CFR Part 11 section 11.10(e) electronic-record audit trails.
@@ -1639,7 +1639,7 @@ class AuditExporter:
         Returns
         -------
         str
-            Serialised export payload.
+            Serialized export payload.
         """
         allowed = frozenset(fields) if fields else None
         rows = [self._entry_dict(e, allowed) for e in self._log.entries]

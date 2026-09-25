@@ -11,25 +11,9 @@ NUMERIC_COLS = [
     "pcr", "microscopy", "exposure", "risk_score",
 ]
 
-LOG_CSV = Path("outputs/diagnosis_log_pro.csv")
 METRICS_DIR = Path("outputs/metrics")
 STATS_JSON = METRICS_DIR / "feature_stats.json"
 ENERGY_JSON = METRICS_DIR / "energy_threshold.json"
-
-def _load_log(path: Path = LOG_CSV) -> pd.DataFrame:
-    if not path.exists():
-        return pd.DataFrame()
-    df = pd.read_csv(path)
-    for c in NUMERIC_COLS:
-        if c in df.columns:
-            df[c] = pd.to_numeric(df[c], errors="coerce")
-    return df
-
-def _pick_cols(df: pd.DataFrame, drop_cols: list[str] | None) -> list[str]:
-    cols = [c for c in NUMERIC_COLS if c in df.columns]
-    if drop_cols:
-        cols = [c for c in cols if c not in drop_cols]
-    return cols
 
 def _robust_z(x: np.ndarray, median: np.ndarray, mad: np.ndarray) -> np.ndarray:
     z = (x - median) / mad
@@ -87,48 +71,9 @@ def fit_gate_stats(
         "quantile": float(quantile),
     }
 
-def fit_tabular_stats(
-    csv: Path = LOG_CSV,
-    drop_cols: list[str] | None = None,
-    quantile: float = 0.999,
-    use_diagonal: bool = True,
-) -> dict:
-    df = _load_log(csv)
-    if df.empty:
-        METRICS_DIR.mkdir(parents=True, exist_ok=True)
-        out = {
-            "cols": [],
-            "median": [],
-            "mad": [],
-            "mu": [],
-            "S": [],
-            "use_diagonal": use_diagonal,
-            "tau": float("inf"),
-            "quantile": float(quantile),
-        }
-        STATS_JSON.write_text(json.dumps(out, indent=2))
-        return out
-
-    cols = _pick_cols(df, drop_cols)
-    out = fit_gate_stats(df[cols].to_numpy(dtype=float), cols, quantile, use_diagonal)
-    METRICS_DIR.mkdir(parents=True, exist_ok=True)
-    STATS_JSON.write_text(json.dumps(out, indent=2))
-    return out
-
 def score_energy(logits: np.ndarray) -> float:
     # Energy = -logsumexp(logits)
     return -float(np.logaddexp.reduce(logits))
-
-def fit_energy_threshold(val_logits: np.ndarray | None) -> dict:
-    # If no validation logits, default to ~0 cutoff (conservative)
-    if val_logits is None or len(val_logits) == 0:
-        tau = -0.0
-    else:
-        E = np.array([score_energy(v) for v in val_logits], dtype=float)
-        tau = float(np.quantile(E, 0.01))
-    METRICS_DIR.mkdir(parents=True, exist_ok=True)
-    ENERGY_JSON.write_text(json.dumps({"tau": tau}, indent=2))
-    return {"tau": tau}
 
 def load_stats(path: Path = STATS_JSON) -> dict:
     # Minimal loader used by ml.infer

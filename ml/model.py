@@ -1,13 +1,9 @@
 """
 Canonical model architecture for Amoebanator V1.0.
 
-Single source of truth for the trained MLP. Moved here in an earlier
-refactor to:
-  * de-duplicate the class definition that previously lived in both
-    ml/training.py and ml/training_calib_dca.py
-  * decouple inference from the training module - ml/infer.py now imports
-    from ml.model, not from ml.training, so loading model.pt does not
-    pull in sklearn / training-only dependencies.
+Single source of truth for the trained MLP, shared by the trainer
+(ml/training_calib_dca.py) and inference (ml/infer.py), so loading model.pt
+does not pull in sklearn or other training-only dependencies.
 
 Architecture (matches the saved state_dict in outputs/model/model.pt):
 

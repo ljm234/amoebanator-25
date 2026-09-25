@@ -1,4 +1,4 @@
-"""Subphase 1.3 Commit 5.3.6 Wave 2 VIRAL lock-in tests (FINAL 1.3 wave).
+"""Viral vignettes anchored to Granerod 2010 and Whitley 2006.
 
 14 vignettes split: 9 anchored to Granerod 2010 Lancet ID UK encephalitis
 cohort (PMID 20952256, anchor_type=cohort) + 5 anchored to Whitley 2006
@@ -7,7 +7,8 @@ Lancet ID HSE pathogenesis review (PMID 16675036, anchor_type=review).
 Pathogens: 8 HSV1 (3 Granerod + 5 Whitley) + 2 HSV-PCR-negative-72h
 (Granerod, ambiguity) + 2 enterovirus (Granerod) + 2 VZV (Granerod).
 
-This commit closes BACT 30/30 + VIRAL 30/30 = 60/60 Subphase 1.3 corpus.
+The last test checks the whole bacterial and viral corpus: 28 bacterial and
+30 viral vignette JSONs are present and all validate against VignetteSchema.
 """
 from __future__ import annotations
 
@@ -27,7 +28,7 @@ from scripts.vignettes.generate_pam_vignettes import VIRAL_DISTRIBUTION  # noqa:
 
 VIRAL_WAVE2_IDS = [91, 93, 94, 95, 97, 98, 100, 101, 103, 104, 110, 112, 115, 116]
 VIRAL_WAVE2_AMBIGUITY_IDS = {103, 104}
-VIRAL_WAVE2_PERU_IDS: set[int] = set()  # All Wave 5.3.6 slots are NL or US South
+VIRAL_WAVE2_PERU_IDS: set[int] = set()  # All of these slots are NL or US South
 VIRAL_WAVE2_GRANEROD_IDS = {94, 97, 100, 103, 104, 110, 112, 115, 116}
 VIRAL_WAVE2_WHITLEY_IDS = {91, 93, 95, 98, 101}
 WAVE2_DIR = _REPO_ROOT / "data" / "vignettes" / "v2" / "class_03_viral"
@@ -50,23 +51,23 @@ def _load(vid: int) -> dict:
 
 
 # ----------------------------------------------------------------------
-# Tests 1-5: parametrized over 14 vignettes
+# Parametrized over the 14 vignettes
 # ----------------------------------------------------------------------
 
 
 @pytest.mark.parametrize("vid", VIRAL_WAVE2_IDS)
-def test_viral_wave2_files_exist(vid):
+def test_viral_files_exist(vid):
     matches = list(WAVE2_DIR.glob(f"vir_{vid:03d}_*.json"))
     assert len(matches) == 1, f"v{vid} JSON missing or duplicate: {matches}"
 
 
 @pytest.mark.parametrize("vid", VIRAL_WAVE2_IDS)
-def test_viral_wave2_schema_validates(vid):
+def test_viral_schema_validates(vid):
     VignetteSchema.model_validate(_load(vid))
 
 
 @pytest.mark.parametrize("vid", VIRAL_WAVE2_IDS)
-def test_viral_wave2_demographics_match_spec(vid):
+def test_viral_demographics_match_spec(vid):
     data = _load(vid)
     spec = _wave2_slot(vid)
     assert data["demographics"]["age_years"] == spec["age_years"], f"v{vid} age"
@@ -77,7 +78,7 @@ def test_viral_wave2_demographics_match_spec(vid):
 
 
 @pytest.mark.parametrize("vid", VIRAL_WAVE2_IDS)
-def test_viral_wave2_anchor_pmid_in_set(vid):
+def test_viral_anchor_pmid_in_set(vid):
     data = _load(vid)
     pmid = data["literature_anchors"][0]["pmid"]
     assert pmid in (GRANEROD_PMID, WHITLEY_PMID), (
@@ -86,7 +87,7 @@ def test_viral_wave2_anchor_pmid_in_set(vid):
 
 
 @pytest.mark.parametrize("vid", VIRAL_WAVE2_IDS)
-def test_viral_wave2_anchor_type_correct(vid):
+def test_viral_anchor_type_correct(vid):
     """Granerod cohort, Whitley review."""
     data = _load(vid)
     a = data["literature_anchors"][0]
@@ -101,15 +102,15 @@ def test_viral_wave2_anchor_type_correct(vid):
 
 
 # ----------------------------------------------------------------------
-# Tests 6-14: corpus invariants
+# Invariants across the set
 # ----------------------------------------------------------------------
 
 
-def test_viral_wave2_count_14():
-    """Empirical extraction must match hardcoded list. Wave 2 filter required
-    on the Whitley side because errata 5.4.3.1 unified the wave 2 Whitley
-    anchor with the existing 5.3.2 pilot anchor under PMID 16675036; vir_092
-    (pilot) shares the same PMID but is NOT a wave 2 vignette."""
+def test_viral_count_14():
+    """Empirical extraction must match the hardcoded list. The extraction is
+    restricted to this set's ids on the Whitley side because the PMID
+    correction unified this set's Whitley anchor with the vir_092 anchor under
+    PMID 16675036; vir_092 shares the same PMID but is not in this set."""
     wave2_set = set(VIRAL_WAVE2_IDS)
     granerod = sorted(
         s["vignette_id"] for s in VIRAL_DISTRIBUTION
@@ -125,7 +126,7 @@ def test_viral_wave2_count_14():
     assert len(VIRAL_WAVE2_IDS) == 14
 
 
-def test_viral_wave2_anchor_distribution_9_5():
+def test_viral_anchor_distribution_9_5():
     granerod_count = sum(
         1 for vid in VIRAL_WAVE2_IDS
         if _load(vid)["literature_anchors"][0]["pmid"] == GRANEROD_PMID
@@ -138,38 +139,38 @@ def test_viral_wave2_anchor_distribution_9_5():
     assert whitley_count == 5, f"Whitley count {whitley_count} != 5"
 
 
-def test_viral_wave2_freshwater_false():
+def test_viral_freshwater_false():
     for vid in VIRAL_WAVE2_IDS:
         assert (
             _load(vid)["exposure"]["freshwater_exposure_within_14d"] is False
         ), f"v{vid}"
 
 
-def test_viral_wave2_class_id_3():
+def test_viral_class_id_3():
     for vid in VIRAL_WAVE2_IDS:
         assert _load(vid)["ground_truth_class"] == 3, f"v{vid}"
 
 
-def test_viral_wave2_csf_lymphocytic():
-    """Spec 1.3.4: csf_lymphocyte_pct >= 50."""
+def test_viral_csf_lymphocytic():
+    """CSF is lymphocytic: csf_lymphocyte_pct >= 50."""
     for vid in VIRAL_WAVE2_IDS:
         pct = _load(vid)["csf"]["csf_lymphocyte_pct"]
         assert pct >= 50, f"v{vid} csf_lymphocyte_pct={pct}"
 
 
-def test_viral_wave2_csf_neutrophil_low():
+def test_viral_csf_neutrophil_low():
     for vid in VIRAL_WAVE2_IDS:
         pct = _load(vid)["csf"]["csf_neutrophil_pct"]
         assert pct < 50, f"v{vid} csf_neutrophil_pct={pct}"
 
 
-def test_viral_wave2_csf_glucose_normal_or_near():
+def test_viral_csf_glucose_normal_or_near():
     for vid in VIRAL_WAVE2_IDS:
         glucose = _load(vid)["csf"]["csf_glucose_mg_per_dL"]
         assert glucose >= 40, f"v{vid} csf_glucose={glucose}"
 
 
-def test_viral_wave2_pre_adjudication_hold():
+def test_viral_pre_adjudication_hold():
     for vid in VIRAL_WAVE2_IDS:
         data = _load(vid)
         assert (
@@ -181,7 +182,7 @@ def test_viral_wave2_pre_adjudication_hold():
         ), f"v{vid}"
 
 
-def test_viral_wave2_no_em_dashes():
+def test_viral_no_em_dashes():
     for vid in VIRAL_WAVE2_IDS:
         text = _wave2_json_path(vid).read_text(encoding="utf-8")
         assert chr(0x2014) not in text, f"v{vid} contains em-dash"
@@ -193,7 +194,7 @@ def test_viral_wave2_no_em_dashes():
 # ----------------------------------------------------------------------
 
 
-def test_viral_wave2_ambiguity_count():
+def test_viral_ambiguity_count():
     """Exactly 2 of 14 (v103, v104 HSV-PCR-negative-72h)."""
     ambiguous = []
     for vid in VIRAL_WAVE2_IDS:
@@ -207,7 +208,7 @@ def test_viral_wave2_ambiguity_count():
     )
 
 
-def test_viral_wave2_hsv_pcr_negative_empiric_acyclovir():
+def test_viral_hsv_pcr_negative_empiric_acyclovir():
     """HSV-PCR-negative-72h cases must disclose empiric acyclovir continuation
     despite negative early PCR."""
     pcr_neg_ids = [
@@ -225,7 +226,7 @@ def test_viral_wave2_hsv_pcr_negative_empiric_acyclovir():
         assert "negative" in combined, f"v{vid} no negative-PCR disclosure"
 
 
-def test_viral_wave2_vzv_dermatomal_or_cerebellitis():
+def test_viral_vzv_dermatomal_or_cerebellitis():
     """VZV cases must show dermatomal rash OR cerebellitis OR vasculopathy
     pattern documented in narrative_en."""
     vzv_ids = [
@@ -243,7 +244,7 @@ def test_viral_wave2_vzv_dermatomal_or_cerebellitis():
         )
 
 
-def test_viral_wave2_pathogen_distribution():
+def test_viral_pathogen_distribution():
     """8 HSV1 + 2 HSV-PCR-neg + 2 enterovirus + 2 VZV."""
     counts: dict[str, int] = {}
     for vid in VIRAL_WAVE2_IDS:
@@ -254,16 +255,16 @@ def test_viral_wave2_pathogen_distribution():
         "HSV_PCR_negative_72h": 2,
         "enterovirus": 2,
         "VZV": 2,
-    }, f"Wave 5.3.6 pathogen distribution: {counts}"
+    }, f"pathogen distribution: {counts}"
 
 
 # ----------------------------------------------------------------------
-# Subphase 1.3 60/60 closure
+# Whole bacterial and viral corpus
 # ----------------------------------------------------------------------
 
 
-def test_subphase_1_3_complete_60_60():
-    """Closure: BACT 30/30 + VIRAL 30/30 = 60 vignette JSONs validate."""
+def test_bacterial_viral_corpus_complete_and_valid():
+    """All 28 bacterial and 30 viral vignette JSONs are present and validate."""
     bact = sorted(
         p
         for p in (_REPO_ROOT / "data/vignettes/v2/class_02_bacterial").glob("bact_*.json")

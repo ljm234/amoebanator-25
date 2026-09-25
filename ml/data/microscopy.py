@@ -878,7 +878,7 @@ class FocusAnalyzer:
         Returns
         -------
         FocusResult
-            Comprehensive focus analysis result.
+            Focus analysis result.
         """
         gray = self._ensure_grayscale(image)
 
@@ -1036,7 +1036,7 @@ class ArtifactDetector:
         Returns
         -------
         ArtifactDetectionResult
-            Comprehensive artifact detection result.
+            Artifact detection result.
         """
         artifacts_found: list[ArtifactType] = []
         artifact_masks: dict[ArtifactType, np.ndarray] = {}
@@ -1232,7 +1232,7 @@ class CellSegmenter:
         Returns
         -------
         CellSegmentationResult
-            Comprehensive segmentation result.
+            Segmentation result.
         """
         gray = self._to_grayscale(image)
 
@@ -1562,7 +1562,7 @@ class TileManager:
     """Manage tiling of large microscopy images.
 
     Splits large images into overlapping tiles for efficient
-    processing and seamless reconstruction.
+    processing and reassembly without seams.
 
     Parameters
     ----------

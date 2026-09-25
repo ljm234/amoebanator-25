@@ -1,24 +1,17 @@
 """PAM vignette generator.
 
-Builds 20 PAM (Naegleria fowleri primary amebic meningoencephalitis) vignettes
-for Day 1 of the PAM corpus. All vignettes anchored to peer-reviewed PMIDs
-verified per the Day 1 distribution spec.
-
-Output: data/vignettes/pam/pam_d1_NNN_*.json (20 files)
+Builds the vignette corpus under data/vignettes/: 60 PAM (Naegleria fowleri
+primary amebic meningoencephalitis) vignettes in data/vignettes/pam/ and 78
+vignettes of the differential classes in data/vignettes/v2/. All vignettes
+are anchored to peer-reviewed PMIDs verified per the Day 1 distribution spec.
 
 Schema target: ml/schemas/vignette.py VignetteSchema v2.0.
 Each generated vignette validates against this schema before write.
-
-Day 1 scope: 20 vignettes across 7 clusters with 15 distinct PMID anchors.
-Day 2 (May 5) will add 40 more to hit 60-vignette spec ratios per spec.
 
 Run:
     python -m scripts.vignettes.generate_pam_vignettes
     python -m scripts.vignettes.generate_pam_vignettes --dry-run
     python -m scripts.vignettes.generate_pam_vignettes --vignette-id 1
-
-Step C delivers scaffolding only (constants and stubs). Step D fills in the
-generation logic. Step E adds tests. Step F commits.
 """
 from __future__ import annotations
 
@@ -2461,7 +2454,6 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
 #   deferred to the same later change that will handle the 8 author
 #   corrections for vignettes 21-60 (PMIDs not yet in registry as of
 #   2026-05-08).
-#   See docs/PMID_CORRECTIONS_2026-05-04.md Day 2 Corrections section.
 # ============================================================================
 
 

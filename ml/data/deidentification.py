@@ -31,7 +31,7 @@ The pipeline applies a layered de-identification strategy:
     |  +-- Composition accounting (Rényi DP, Balle et al. 2020)  |
     |  +-- Privacy budget tracking per field and per dataset       |
     |                                                              |
-    |  LAYER 4 - Enhanced Anonymity (beyond k-Anonymity)          |
+    |  LAYER 4 - Beyond k-Anonymity                                |
     |  +-- l-Diversity: at least l distinct sensitive values/class |
     |  +-- t-Closeness: QI-group distribution <= t from global     |
     |  +-- Truncated Laplace for bounded-range outputs            |
@@ -173,7 +173,7 @@ class SafeHarborConfig:
 class SafeHarborProcessor:
     """Applies HIPAA Safe Harbor de-identification rules.
 
-    Removes or generalises all 18 categories of protected health
+    Removes or generalizes all 18 categories of protected health
     information (PHI) as specified in 45 CFR 164.514(b)(2)(i)(A-R).
 
     Parameters
@@ -222,7 +222,7 @@ class SafeHarborProcessor:
                     )
                 )
 
-        # Age generalisation (cap at 89)
+        # Age generalization (cap at 89)
         if "age" in result:
             age = result["age"]
             if isinstance(age, (int, float)) and age >= self._config.age_cap:
@@ -236,10 +236,10 @@ class SafeHarborProcessor:
                     )
                 )
 
-        # Date generalisation
+        # Date generalization
         for key in list(result.keys()):
             if "date" in key.lower() and key.lower() not in SAFE_HARBOR_IDENTIFIERS:
-                result[key] = self._generalise_date(result[key])
+                result[key] = self._generalize_date(result[key])
                 self._actions.append(
                     DeidentificationAction(
                         field_name=key,
@@ -293,7 +293,7 @@ class SafeHarborProcessor:
 
     # -- Helpers -----------------------------------------------------------
 
-    def _generalise_date(self, value: Any) -> str | None:
+    def _generalize_date(self, value: Any) -> str | None:
         """Truncate date to configured precision."""
         if value is None:
             return None
@@ -362,15 +362,15 @@ class KAnonymityConfig:
         Minimum equivalence class size. Must be >= 2.
     quasi_identifiers : tuple[str, ...]
         Fields considered quasi-identifiers.
-    generalisation_hierarchies : dict[str, list[Any]]
-        Ordered generalisation steps per quasi-identifier.
+    generalization_hierarchies : dict[str, list[Any]]
+        Ordered generalization steps per quasi-identifier.
     suppress_threshold : float
-        Fraction of records to suppress before generalising.
+        Fraction of records to suppress before generalizing.
     """
 
     k: int = 5
     quasi_identifiers: tuple[str, ...] = ("age", "sex", "geographic_region")
-    generalisation_hierarchies: dict[str, list[Any]] = field(
+    generalization_hierarchies: dict[str, list[Any]] = field(
         default_factory=lambda: {
             "age": [
                 lambda v: (v // 5) * 5,       # 5-year bins
@@ -395,9 +395,9 @@ class KAnonymityConfig:
 class KAnonymityProcessor:
     """Enforces k-anonymity on de-identified datasets.
 
-    Uses a greedy bottom-up generalisation algorithm with minimal
+    Uses a greedy bottom-up generalization algorithm with minimal
     information loss. Records that cannot be k-anonymised within
-    the generalisation hierarchy are suppressed entirely.
+    the generalization hierarchy are suppressed entirely.
 
     Parameters
     ----------
@@ -434,14 +434,14 @@ class KAnonymityProcessor:
         self._suppressed_count = 0
         working = [dict(r) for r in records]
 
-        # Iteratively generalise until k-anonymity is achieved
+        # Iteratively generalize until k-anonymity is achieved
         for qi_field in self._config.quasi_identifiers:
-            hierarchy = self._config.generalisation_hierarchies.get(qi_field, [])
-            for level, generaliser in enumerate(hierarchy):
+            hierarchy = self._config.generalization_hierarchies.get(qi_field, [])
+            for level, generalizer in enumerate(hierarchy):
                 if self._check_k_anonymity(working):
                     break
-                working = self._apply_generalisation(
-                    working, qi_field, generaliser
+                working = self._apply_generalization(
+                    working, qi_field, generalizer
                 )
 
         # Suppress remaining violations
@@ -467,17 +467,17 @@ class KAnonymityProcessor:
             classes[key] = classes.get(key, 0) + 1
         return classes
 
-    def _apply_generalisation(
+    def _apply_generalization(
         self,
         records: list[RecordDict],
         field_name: str,
-        generaliser: Any,
+        generalizer: Any,
     ) -> list[RecordDict]:
-        """Apply generalisation function to a single field."""
+        """Apply generalization function to a single field."""
         for record in records:
             if field_name in record and record[field_name] != "*":
                 try:
-                    record[field_name] = generaliser(record[field_name])
+                    record[field_name] = generalizer(record[field_name])
                 except (TypeError, ValueError, AttributeError):
                     record[field_name] = "*"
         return records
@@ -508,16 +508,16 @@ class KAnonymityProcessor:
         original: Sequence[RecordDict],
         anonymised: Sequence[RecordDict],
     ) -> float:
-        """Calculate normalised information loss from generalisation.
+        """Calculate normalized information loss from generalization.
 
         Uses the Discernability Metric (DM) as the loss function:
         DM = sum |E_i|^2 for each equivalence class E_i.
-        Normalised by n^2 where n is the original dataset size.
+        Normalized by n^2 where n is the original dataset size.
 
         Returns
         -------
         float
-            Normalised information loss in [0, 1].
+            Normalized information loss in [0, 1].
         """
         n = len(original)
         if n == 0:
@@ -847,7 +847,7 @@ class DeidentificationReport:
     epsilon_spent : float
         Total differential privacy budget consumed.
     information_loss : float
-        Normalised information loss metric.
+        Normalized information loss metric.
     privacy_level : str
         Applied privacy level.
     timestamp : str
@@ -864,7 +864,7 @@ class DeidentificationReport:
     timestamp: str = ""
 
     def to_dict(self) -> dict[str, Any]:
-        """Serialise report to dictionary."""
+        """Serialize report to dictionary."""
         return {
             "input_count": self.input_count,
             "output_count": self.output_count,
@@ -1167,9 +1167,9 @@ def earth_movers_distance_categorical(
     Parameters
     ----------
     group_dist : dict[str, float]
-        Normalised distribution of values in the equivalence class.
+        Normalized distribution of values in the equivalence class.
     global_dist : dict[str, float]
-        Normalised distribution of values in the entire dataset.
+        Normalized distribution of values in the entire dataset.
 
     Returns
     -------
@@ -1619,7 +1619,7 @@ class ReidentificationRiskEstimator:
 
 
 # ===========================================================================
-# Privacy Risk Scorecard - Comprehensive Risk Summary
+# Privacy Risk Scorecard
 # ===========================================================================
 
 
@@ -1682,7 +1682,7 @@ def compute_privacy_scorecard(
     epsilon_total: float = 1.0,
     risk_report: ReidentificationRiskReport | None = None,
 ) -> PrivacyRiskScorecard:
-    """Build a comprehensive privacy scorecard.
+    """Build the privacy scorecard.
 
     Classification rules (aligned with NIST SP 800-188):
     - NEGLIGIBLE: k >= 10, l >= 5, epsilon < 0.5, prosecutor < 0.05

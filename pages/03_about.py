@@ -1,17 +1,18 @@
 """About page.
 
-Reviewer-grade landing page for the model card excerpt + feature
-importance panel + interactive conformal regime explorer + authorship
-disclosure. The panels follow a standard reporting order: architecture, training, calibration, explainability, uncertainty, authorship.
+Landing page with a model card excerpt, a feature-importance panel, an
+interactive conformal explorer and the authorship note. The panels follow a
+standard reporting order: architecture, training, calibration,
+explainability, uncertainty, authorship.
 
 The |w_i| panel renders ONLY here (NOT on the predict
 page) because |w_i| is model-level, not per-prediction; rendering
 adjacent to a result would falsely imply input-specificity. The
 caption is fixed, model-level text.
 
-The Advanced expander hosts the alpha slider so PIs can move
-alpha in {1/20, 1/10, 1/7, 1/5} live and watch q-hat + the regime badge
-respond. Pedagogical, not load-bearing for the landing-page render.
+The Advanced expander hosts the alpha slider, so a reader can move
+alpha in {1/20, 1/10, 1/7, 1/5} and watch q-hat and the regime badge
+respond. It is illustrative; the rest of the page does not depend on it.
 
 The authorship section names the repository (github.com/ljm234/
 amoebanator-25) and notes the companion HuggingFace Space is by the
@@ -83,27 +84,26 @@ st.markdown(
 # -- section 2. Training summary ----------------------------------------------
 st.subheader("Training data")
 st.markdown(
-    "**n=30 synthetic patient vignettes** drawn from published case-series "
-    "marginals (Yoder 2010, Cope 2016, CDC 2025). Train/val split: "
-    "n_train=24, n_val=6, `random_state=42`, `test_size=0.2`, "
-    "`stratify=y`. Zero real PHI; vignettes are reproducibility-friendly "
-    "but not externally calibrated - a future MIMIC-IV cohort (target "
-    "n >= 200) will provide the first contact with real-world clinical data. "
-    "See `docs/data_card.md` (Gebru et al. 2021 datasheet format) for "
-    "the full lineage."
+    "**n=30 synthetic rows created for this demo**; their age and sex "
+    "distribution does not match the published PAM case series. "
+    "Train/val split: n_train=24, n_val=6, `random_state=42`, "
+    "`test_size=0.2`, `stratify=y`. No real PHI. Any clinical evaluation "
+    "needs a real cohort, such as the planned MIMIC-IV study (target "
+    "n >= 200). See `docs/data_card.md` (Gebru et al. 2021 datasheet "
+    "format) for the full lineage."
 )
 
 
 # -- section 3. Calibration summary -------------------------------------------
 st.subheader("Calibration")
 st.markdown(
-    "Temperature scaling (Guo et al. 2017) optimised via L-BFGS on the "
+    "Temperature scaling (Guo et al. 2017) optimized via L-BFGS on the "
     "n=6 validation set. Current `T = 0.27`. **T < 1 means the calibrator "
     "amplifies the model's raw confidence** - the opposite of typical "
-    "Guo 2017 behaviour (T > 1 attenuates overconfidence). On n=6 the "
-    "L-BFGS landscape lacks curvature to constrain T meaningfully; "
-    "different random subsets of n=6 would produce T values in the "
-    "range 0.1-2.0. Treat the reported T as a sample-specific point "
+    "Guo 2017 behavior (T > 1 attenuates overconfidence). On n=6 the "
+    "L-BFGS landscape lacks curvature to constrain T meaningfully, and a "
+    "different set of six rows could give a very different T. Treat the "
+    "reported T as a sample-specific point "
     "estimate, not as evidence of structural under-/over-confidence. "
     "See `docs/model_card.md` section Caveats for the full discussion."
 )
@@ -123,9 +123,9 @@ st.caption(
     f"{imp_df['|w_i|'].max():.1%}, max/min ratio "
     f"{imp_df['|w_i|'].max() / imp_df['|w_i|'].min():.2f}x. "
     "Interpretation: the model treats all 10 features near-equally, "
-    "consistent with the n=30 training set limitation. SHAP on n=30 "
-    "background data is mathematically vacuous; this panel is the "
-    "honest substitute at current scale. See `docs/model_card.md` "
+    "consistent with the n=30 training set limitation. SHAP with 30 "
+    "background rows would not be informative, so this panel shows "
+    "model-level weights instead. See `docs/model_card.md` "
     "section Caveats for full discussion."
 )
 

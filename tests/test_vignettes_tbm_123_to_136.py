@@ -1,14 +1,14 @@
-"""Subphase 1.4 Commit 5.4.3 TBM Wave 1 vignette lock-in tests.
+"""TBM vignettes 123-136.
 
-14 TBM Wave 1 vignettes (vignette_id 123-136) anchored to Thwaites NEJM 2004
+14 TBM vignettes (vignette_id 123-136) anchored to Thwaites NEJM 2004
 (5 slots), Marais Lancet ID 2010 (3 slots), and Heemskerk NEJM 2016 (6 slots).
 
-Resolution #4 applied: TBM 125 (41yo F, 14wk pregnancy) red_flags_present
-updated from [] to ['pregnancy_postpartum'] per schema enum availability.
+TBM 125 (41yo F, 14wk pregnancy) red_flags_present was updated from [] to
+['pregnancy_postpartum'] per schema enum availability.
 
 Slots 130 (Marais 'possible') and 134 (Heemskerk young early-stage) are
-Xpert MTB/RIF Ultra NEGATIVE with culture-positive confirmation;
-all other 12 slots are Xpert MTB/RIF Ultra POSITIVE.
+Xpert MTB/RIF Ultra negative with culture-positive confirmation;
+all other 12 slots are Xpert MTB/RIF Ultra positive.
 """
 from __future__ import annotations
 
@@ -74,7 +74,7 @@ def _spec(vid: int) -> dict:
 # ----------------------------------------------------------------------
 
 
-def test_wave1_count_14():
+def test_tbm_json_count_14():
     existing = [p for p in WAVE1_PATHS.values() if p.exists()]
     assert len(existing) == 14, (
         f"Expected 14 wave_1 JSONs, found {len(existing)}: missing="
@@ -83,7 +83,7 @@ def test_wave1_count_14():
 
 
 @pytest.mark.parametrize("vid", WAVE1_IDS)
-def test_wave1_files_exist(vid):
+def test_tbm_files_exist(vid):
     assert WAVE1_PATHS[vid].exists(), f"vid {vid} missing at {WAVE1_PATHS[vid]}"
 
 
@@ -93,17 +93,17 @@ def test_wave1_files_exist(vid):
 
 
 @pytest.mark.parametrize("vid", WAVE1_IDS)
-def test_wave1_schema_validates(vid):
+def test_tbm_schema_validates(vid):
     VignetteSchema.model_validate(_load(vid))
 
 
 @pytest.mark.parametrize("vid", WAVE1_IDS)
-def test_wave1_ground_truth_class_4(vid):
+def test_tbm_ground_truth_class_4(vid):
     assert _load(vid)["ground_truth_class"] == 4
 
 
 @pytest.mark.parametrize("vid", WAVE1_IDS)
-def test_wave1_anchor_pmid_matches_registry(vid):
+def test_tbm_anchor_pmid_matches_registry(vid):
     spec = _spec(vid)
     expected = spec["anchor_pmid"]
     assert expected in PMID_REGISTRY, f"PMID {expected!r} not registered"
@@ -120,17 +120,17 @@ def test_wave1_anchor_pmid_matches_registry(vid):
 
 
 @pytest.mark.parametrize("vid", WAVE1_IDS)
-def test_wave1_freshwater_false_all_14(vid):
+def test_tbm_freshwater_false_all_14(vid):
     assert _load(vid)["exposure"]["freshwater_exposure_within_14d"] is False
 
 
 @pytest.mark.parametrize("vid", WAVE1_IDS)
-def test_wave1_wave_assignment_wave_1(vid):
+def test_tbm_wave_assignment_is_wave_1(vid):
     assert _spec(vid)["wave_assignment"] == "wave_1"
 
 
 @pytest.mark.parametrize("vid", WAVE1_IDS)
-def test_wave1_inclusion_decision_hold_for_revision(vid):
+def test_tbm_inclusion_decision_hold_for_revision(vid):
     assert _load(vid)["adjudication"]["inclusion_decision"] == "hold_for_revision"
 
 
@@ -138,7 +138,7 @@ _WAVE1_ADJ_PAT = re.compile(r"^WAVE1-TBM-\d+-ADJ-[12]$")
 
 
 @pytest.mark.parametrize("vid", WAVE1_IDS)
-def test_wave1_adjudicator_ids_wave1_format(vid):
+def test_tbm_adjudicator_ids_sentinel_format(vid):
     ids = _load(vid)["adjudication"]["adjudicator_ids"]
     assert len(ids) == 2
     for aid in ids:
@@ -151,7 +151,7 @@ def test_wave1_adjudicator_ids_wave1_format(vid):
 
 
 @pytest.mark.parametrize("vid", WAVE1_IDS)
-def test_wave1_narrative_en_in_band_800_1200(vid):
+def test_tbm_narrative_en_in_band_800_1200(vid):
     text = _load(vid).get("narrative_en") or ""
     assert 800 <= len(text) <= 1200, (
         f"vid {vid} EN narrative len {len(text)} not in [800, 1200]"
@@ -159,7 +159,7 @@ def test_wave1_narrative_en_in_band_800_1200(vid):
 
 
 @pytest.mark.parametrize("vid", WAVE1_IDS)
-def test_wave1_narrative_es_in_band_700_900(vid):
+def test_tbm_narrative_es_in_band_700_900(vid):
     text = _load(vid).get("narrative_es") or ""
     assert 700 <= len(text) <= 900, (
         f"vid {vid} ES narrative len {len(text)} not in [700, 900]"
@@ -171,12 +171,12 @@ def _full_text(data: dict) -> str:
 
 
 @pytest.mark.parametrize("vid", WAVE1_IDS)
-def test_wave1_no_em_dashes(vid):
+def test_tbm_no_em_dashes(vid):
     assert chr(0x2014) not in _full_text(_load(vid)), f"vid {vid} em-dash"
 
 
 @pytest.mark.parametrize("vid", WAVE1_IDS)
-def test_wave1_no_en_dashes(vid):
+def test_tbm_no_en_dashes(vid):
     assert chr(0x2013) not in _full_text(_load(vid)), f"vid {vid} en-dash"
 
 
@@ -186,7 +186,7 @@ def test_wave1_no_en_dashes(vid):
 
 
 @pytest.mark.parametrize("vid", WAVE1_IDS)
-def test_wave1_csf_differential_sums_100(vid):
+def test_tbm_csf_differential_sums_100(vid):
     csf = _load(vid)["csf"]
     if csf["csf_wbc_per_mm3"] > 5:
         total = (csf["csf_neutrophil_pct"] + csf["csf_lymphocyte_pct"]
@@ -195,7 +195,7 @@ def test_wave1_csf_differential_sums_100(vid):
 
 
 @pytest.mark.parametrize("vid", WAVE1_IDS)
-def test_wave1_basal_meningeal_imaging_all_14(vid):
+def test_tbm_basal_meningeal_imaging_all_14(vid):
     assert (
         _load(vid)["imaging"]["imaging_pattern"]
         == "basal_meningeal_enhancement_with_hydrocephalus"
@@ -203,12 +203,12 @@ def test_wave1_basal_meningeal_imaging_all_14(vid):
 
 
 @pytest.mark.parametrize("vid", WAVE1_IDS)
-def test_wave1_ada_at_least_10_all_14(vid):
+def test_tbm_ada_at_least_10_all_14(vid):
     ada = _load(vid)["csf"].get("csf_ada_U_per_L")
     assert ada is not None and ada >= 10, f"vid {vid} ADA {ada}"
 
 
-def test_wave1_xpert_positive_count_12():
+def test_tbm_xpert_positive_count_12():
     """12 of 14 Xpert MTB/RIF positive; 2 (slots 130, 134) Xpert NEG culture+."""
     pos = 0
     neg = 0
@@ -227,8 +227,8 @@ def test_wave1_xpert_positive_count_12():
     assert neg == 2, f"Xpert negative count {neg}, expected 2"
 
 
-def test_wave1_cn_vi_palsy_count_5():
-    """5 of 14 wave_1 slots have CN VI palsy per locked TBM_DISTRIBUTION
+def test_tbm_cn_vi_palsy_count_5():
+    """5 of the 14 vignettes have CN VI palsy, matching TBM_DISTRIBUTION
     (vids 123, 126, 129, 131, 133)."""
     cnvi_true = set()
     for vid in WAVE1_IDS:
@@ -244,7 +244,7 @@ def test_wave1_cn_vi_palsy_count_5():
 # ----------------------------------------------------------------------
 
 
-def test_wave1_thwaites_anchor_count_5():
+def test_tbm_thwaites_anchor_count_5():
     matches = [
         vid for vid in WAVE1_IDS
         if _load(vid)["literature_anchors"][0]["pmid"] == "15496623"
@@ -254,7 +254,7 @@ def test_wave1_thwaites_anchor_count_5():
     )
 
 
-def test_wave1_marais_anchor_count_3():
+def test_tbm_marais_anchor_count_3():
     matches = [
         vid for vid in WAVE1_IDS
         if _load(vid)["literature_anchors"][0]["pmid"] == "20822958"
@@ -264,7 +264,7 @@ def test_wave1_marais_anchor_count_3():
     )
 
 
-def test_wave1_heemskerk_anchor_count_6():
+def test_tbm_heemskerk_anchor_count_6():
     matches = [
         vid for vid in WAVE1_IDS
         if _load(vid)["literature_anchors"][0]["pmid"] == "26760084"
@@ -275,13 +275,13 @@ def test_wave1_heemskerk_anchor_count_6():
 
 
 # ----------------------------------------------------------------------
-# Resolution #4
+# TBM 125 pregnancy red flag
 # ----------------------------------------------------------------------
 
 
-def test_resolution_4_tbm_125_pregnancy_postpartum_red_flag():
+def test_tbm_125_pregnancy_postpartum_red_flag():
     red_flags = _load(125)["history"]["red_flags_present"]
     assert "pregnancy_postpartum" in red_flags, (
-        f"Resolution #4: TBM 125 must include 'pregnancy_postpartum' in "
+        f"TBM 125 must include 'pregnancy_postpartum' in "
         f"red_flags_present (got {red_flags!r})"
     )

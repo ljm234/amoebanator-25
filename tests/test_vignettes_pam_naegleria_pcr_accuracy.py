@@ -1,10 +1,10 @@
-"""Stage I lock-in: every PAM (Naegleria) builder emits a NULL Naegleria-fowleri PCR.
+"""Every PAM (Naegleria) builder emits a null Naegleria-fowleri PCR sens/spec.
 
 The Naegleria-fowleri PCR sens/spec was templated 95/99 across all 30 PAM
 case-report anchors (none of which is a diagnostic-accuracy study), so it was
-nulled in Stage I. This pins the builder outputs - including the 3 reused
-imputation helpers (anjum/capewell/kemble), exercised transitively through the
-60 per-vignette builders via generate_vignette - so a future regen cannot
+nulled. This pins the builder outputs - including the 3 reused imputation
+helpers (anjum/capewell/kemble), exercised transitively through the 60
+per-vignette builders via generate_vignette - so a future regeneration cannot
 restore the unsupported 95/99.
 """
 from __future__ import annotations

@@ -8,7 +8,7 @@ those are available.
 
 The function returns a dict of index arrays so that callers can apply the same
 split to multiple feature matrices (raw features, scaled features, embeddings)
-without re-randomising.
+without re-randomizing.
 """
 from __future__ import annotations
 

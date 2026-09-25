@@ -1,9 +1,11 @@
 """
-ml.data - wired data-pipeline modules.
+ml.data - data-pipeline modules.
 
-Six modules are imported and re-exported at the package level. These have
-unit-test coverage and at least one production caller (training, inference,
-dashboard, or the governance wiring).
+Six modules are imported and re-exported at the package level, each with unit
+tests. Three are used by the rest of the codebase: audit_trail (ml.audit_hooks,
+ml.data_loader, ml.irb_gate, the audit export and the predict page),
+deidentification (ml.data_loader) and compliance (ml.irb_gate). acquisition,
+clinical and microscopy are not used by this release.
 
   * audit_trail        - hash-chained, Merkle-checkpointed audit log
                          (wired via ml.audit_hooks)
@@ -15,12 +17,6 @@ dashboard, or the governance wiring).
   * deidentification   - HIPAA Safe Harbor processor
                          (wired via ml.data_loader)
   * microscopy         - image loading and preprocessing primitives
-
-Ten future-work data-source placeholders (synthetic, literature, who_database,
-pathology_atlas, labeling, dvc_versioning, versioning, quality_assurance,
-negative_collection, annotation_protocol) live under ml/data/_wip/. They are
-scaffolds for planned data sources and are not used by this release - see
-ml/data/_wip/README.md for the planned-source checklist.
 """
 from __future__ import annotations
 

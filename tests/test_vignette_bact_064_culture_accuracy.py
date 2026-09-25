@@ -1,11 +1,12 @@
-"""Stage J lock-in: bact_064 (Davalos 2016, PMID 27831604) csf_culture is nulled.
+"""bact_064 (Davalos 2016, PMID 27831604) csf_culture sens/spec is null.
 
 The csf_culture sens/spec was 80/100 cited to Davalos 2016 RPMESP -- a pediatric
-pneumococcal-meningitis epidemiology/outcomes cohort, NOT a diagnostic-accuracy
+pneumococcal-meningitis epidemiology/outcomes cohort, not a diagnostic-accuracy
 study; 80/100 was the templated bacterial-culture default (the same value nulled
-for gn_pseudomonas / hib in Stage H), not a Davalos-measured figure. bact_064 is
-a frozen pilot JSON (no builder/writer regenerates it), so this pins the
-committed JSON directly and guards that no generator literal can restore 80/100.
+for gn_pseudomonas / hib in the bacterial dx builders), not a Davalos-measured
+figure. bact_064 is a frozen JSON (no builder/writer regenerates it), so this
+pins the committed JSON directly and guards that no generator literal can
+restore 80/100.
 """
 from __future__ import annotations
 
@@ -34,6 +35,6 @@ def test_davalos_csf_culture_nulled_in_bact_064():
 
 
 def test_no_culture_80_literal_in_generator():
-    # bact_064 is a frozen pilot JSON; ensure no builder JSON-literal could re-emit 80/100.
+    # bact_064 is a frozen JSON; ensure no builder JSON-literal could re-emit 80/100.
     src = (_REPO_ROOT / "scripts/vignettes/generate_pam_vignettes.py").read_text(encoding="utf-8")
     assert '"sensitivity_pct": 80.0' not in src

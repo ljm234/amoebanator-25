@@ -1,4 +1,4 @@
-"""Tests for app/presets.py (1 of 3).
+"""Tests for app/presets.py.
 
 20 tests: 5 parametrized x 3 presets + 1 xfail-decorated bacterial
 regression + 4 cross-preset invariants. The xfail decorator uses

@@ -1,10 +1,11 @@
-"""Stage K addendum lock-in: anti-NMDAR fixture citation metadata is corrected.
+"""The anti-NMDAR fixture cites the correct journal and first author.
 
 The anti-NMDAR fixture anchor cited the wrong journal ("Case Rep Neurol Med") and
 wrong first-author initial ("Keller A") for PMID 25400967, whose correct NLM citation
 is Keller S, Roitman P, Ben-Hur T, Bonne O, Lotan A. Case Rep Psychiatry 2014;2014:868325
 (DOI 10.1155/2014/868325). This pins the corrected journal and case_id across the
-committed fixture and the builder dict so a regen or manual edit cannot restore it.
+committed fixture and the builder dict so a regeneration or manual edit cannot
+restore it.
 """
 from __future__ import annotations
 
