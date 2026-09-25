@@ -21,7 +21,6 @@ Wires the existing ml.infer.infer_one path (frozen - do not modify) through:
 """
 from __future__ import annotations
 
-import math
 import os
 import time
 import uuid
@@ -34,6 +33,8 @@ from app.presets import PRESETS
 from app.utils import KNOWN_SYMPTOMS, _fmt_metric, build_row, decision_badge
 from ml.audit_hooks import _emit
 from ml.data.audit_trail import AuditEventType
+from ml.config import conformal_alpha
+from ml.conformal_advanced import finite_sample_rank
 from ml.infer import infer_one
 
 
@@ -139,8 +140,7 @@ def _render_result(out: dict[str, Any]) -> None:
         "L-BFGS, n=6 validation). T=0.27 means the calibrator amplifies "
         "the model's raw confidence - typical temperature scaling has "
         "T>1 (attenuation); T<1 here is unusual and reflects fitting "
-        "on only 6 samples. ECE and coverage estimates are empirical-"
-        'only, not asymptotic. See docs/model_card.md section 9.">'
+        'on only 6 samples. See docs/model_card.md section 9.">'
         "<sub>T=0.27 (n=6)</sub></span>",
         unsafe_allow_html=True,
     )
@@ -154,9 +154,9 @@ def _render_result(out: dict[str, Any]) -> None:
         )
 
     # 3-state conformal regime badge from (n, alpha, k).
-    alpha = float(out.get("alpha", 0.10))
+    alpha = float(out.get("alpha", conformal_alpha()))
     n = int(out.get("n_cal", 6))
-    k = math.ceil((n + 1) * (1 - alpha))
+    k = finite_sample_rank(n, alpha)
     if n >= k and n >= 100:
         st.success(
             "ASYMPTOTIC: Guarantee holds; "
@@ -164,15 +164,15 @@ def _render_result(out: dict[str, Any]) -> None:
         )
     elif n >= k:
         st.info(
-            "FINITE-SAMPLE: bound holds but loose; "
-            "treat reported coverage as empirical."
+            "FINITE-SAMPLE: split conformal coverage still holds on average "
+            f"under exchangeability, but with n = {n} the realized coverage "
+            "varies widely."
         )
     else:
         st.error(
-            f"INVALID: Order-statistic clamped (k clipped from {k} to "
-            f"n={n}); the formal guarantee 1-alpha is mathematically inapplicable. "
-            "Reported coverage is the empirical hit-rate on the validation set "
-            "only. A future MIMIC-IV cohort (target n>=200) will fix this."
+            f"INVALID: k = {k} > n = {n}, so no finite threshold guarantees "
+            "1-alpha coverage; qhat is +inf and every input abstains. "
+            "A future MIMIC-IV cohort (target n>=200) will fix this."
         )
 
     # Key numeric metrics - _fmt_metric tolerates missing/None/garbage.
@@ -245,7 +245,8 @@ if submitted:
         st.warning(
             "OOD gate is unconfigured (required artefact missing: "
             f"{e.filename or e}). All predictions return ABSTAIN/OOD until "
-            "re-fit. See README section Quickstart for refit instructions."
+            "re-fit. See docs/REPRODUCIBILITY.md section 4 for the command "
+            "that regenerates every artifact."
         )
         st.session_state["_artefact_missing"] = True
     except Exception as e:  # noqa: BLE001 - correlation-ID catch-all

@@ -45,6 +45,48 @@ def mahalanobis_d2(z: np.ndarray, mu: np.ndarray, S: np.ndarray, use_diagonal: b
     inv = np.linalg.inv(S + 1e-6 * np.eye(S.shape[0]))
     return float(d @ inv @ d), None
 
+def fit_gate_stats(
+    X: np.ndarray,
+    cols: list[str],
+    quantile: float = 0.999,
+    use_diagonal: bool = True,
+) -> dict:
+    """
+    Fit the Mahalanobis gate on the rows of X, whose columns are named by cols:
+    robust z-scores (median and MAD), their mean and covariance (diagonal by
+    default), and tau, the given quantile of the fitted rows' own distances.
+    """
+    X = np.where(np.isfinite(X), X, np.nan)
+
+    col_median = np.nanmedian(X, axis=0)
+    col_mad = np.nanmedian(np.abs(X - col_median), axis=0)
+    col_mad = np.where(col_mad > 0, col_mad, 1.0)
+
+    X_filled = np.where(np.isnan(X), col_median, X)
+    Z = _robust_z(X_filled, col_median, col_mad)
+
+    mu = Z.mean(axis=0)
+    S: np.ndarray = np.cov(Z, rowvar=False)
+    if use_diagonal:
+        S = np.diag(np.clip(np.diag(S), 1e-6, None))
+
+    d2 = []
+    for i in range(Z.shape[0]):
+        val, _ = mahalanobis_d2(Z[i], mu, S, use_diagonal)
+        d2.append(val)
+    tau = float(np.quantile(d2, quantile))
+
+    return {
+        "cols": cols,
+        "median": col_median.tolist(),
+        "mad": col_mad.tolist(),
+        "mu": mu.tolist(),
+        "S": S.tolist(),
+        "use_diagonal": bool(use_diagonal),
+        "tau": tau,
+        "quantile": float(quantile),
+    }
+
 def fit_tabular_stats(
     csv: Path = LOG_CSV,
     drop_cols: list[str] | None = None,
@@ -68,38 +110,8 @@ def fit_tabular_stats(
         return out
 
     cols = _pick_cols(df, drop_cols)
-    X: np.ndarray = df[cols].to_numpy(dtype=float)
-    X = np.where(np.isfinite(X), X, np.nan)
-
-    col_median = np.nanmedian(X, axis=0)
-    col_mad = np.nanmedian(np.abs(X - col_median), axis=0)
-    col_mad = np.where(col_mad > 0, col_mad, 1.0)
-
-    X_filled = np.where(np.isnan(X), col_median, X)
-    Z = _robust_z(X_filled, col_median, col_mad)
-
-    mu = Z.mean(axis=0)
-    S: np.ndarray = np.cov(Z, rowvar=False)
-    if use_diagonal:
-        S = np.diag(np.clip(np.diag(S), 1e-6, None))
-
-    d2 = []
-    for i in range(Z.shape[0]):
-        val, _ = mahalanobis_d2(Z[i], mu, S, use_diagonal)
-        d2.append(val)
-    tau = float(np.quantile(d2, quantile))
-
+    out = fit_gate_stats(df[cols].to_numpy(dtype=float), cols, quantile, use_diagonal)
     METRICS_DIR.mkdir(parents=True, exist_ok=True)
-    out = {
-        "cols": cols,
-        "median": col_median.tolist(),
-        "mad": col_mad.tolist(),
-        "mu": mu.tolist(),
-        "S": S.tolist(),
-        "use_diagonal": bool(use_diagonal),
-        "tau": tau,
-        "quantile": float(quantile),
-    }
     STATS_JSON.write_text(json.dumps(out, indent=2))
     return out
 

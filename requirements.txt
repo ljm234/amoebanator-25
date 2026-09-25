@@ -1,7 +1,8 @@
 # Amoebanator V1.0 - runtime dependencies, exact pins.
-# Versions match the ones V1.0 was tested against on macOS 14
-# (Apple Silicon, Python 3.12.11). CPU-only PyTorch by default - uncomment
-# the torch index URL block at the bottom for explicit CPU wheels in CI.
+# The shipped artifacts were produced with these versions in the
+# environment recorded in docs/REPRODUCIBILITY.md Section 2. CPU-only
+# PyTorch by default - uncomment the torch index URL block at the bottom for
+# explicit CPU wheels in CI.
 
 # ML core
 torch==2.9.1
@@ -13,11 +14,6 @@ scipy==1.16.3
 # Plotting + dashboard
 matplotlib==3.10.6
 streamlit==1.52.0
-
-# Optional baselines - uncomment if you want the LightGBM
-# backend; the GBM baseline auto-falls-back to sklearn.GradientBoostingClassifier
-# when LightGBM is absent.
-# lightgbm==4.6.0
 
 # --- Dev / test / lint (CI-only; production image can omit these) ---------
 pytest==9.0.2

@@ -5,7 +5,7 @@ import numpy as np
 import pytest
 from sklearn.datasets import make_classification
 
-from ml.baselines import GBMIsotonic, LogisticPlatt, RFCalibrated, build_all_baselines, lightgbm_available
+from ml.baselines import GBMIsotonic, LogisticPlatt, RFCalibrated, build_all_baselines
 
 
 @pytest.fixture
@@ -42,7 +42,6 @@ def test_gbm_isotonic_fits_and_predicts(synthetic_classification: tuple[np.ndarr
     clf = GBMIsotonic(n_estimators=50).fit(X[:200], y[:200])
     p = clf.predict_proba_high(X[200:])
     _check_proba_basic(p, n=100)
-    assert clf.backend_ in {"lightgbm", "sklearn_gbm"}
 
 
 def test_calling_predict_before_fit_raises() -> None:
@@ -69,8 +68,11 @@ def test_build_all_baselines_returns_three_pairs() -> None:
     assert names == {"logistic_platt", "rf_calibrated", "gbm_isotonic"}
 
 
-def test_lightgbm_available_is_bool() -> None:
-    assert isinstance(lightgbm_available(), bool)
+def test_uncalibrated_estimators_fit_and_predict(synthetic_classification: tuple[np.ndarray, np.ndarray]) -> None:
+    X, y = synthetic_classification
+    for cls in (LogisticPlatt, RFCalibrated, GBMIsotonic):
+        raw = cls().uncalibrated().fit(X[:200], y[:200])
+        _check_proba_basic(raw.predict_proba(X[200:])[:, 1], n=100)
 
 
 def test_logistic_outperforms_random_on_separable(synthetic_classification: tuple[np.ndarray, np.ndarray]) -> None:

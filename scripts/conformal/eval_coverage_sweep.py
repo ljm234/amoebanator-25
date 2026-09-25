@@ -33,6 +33,7 @@ from ml.conformal_advanced import (  # noqa: E402
     SmallCalibrationWarning,
     coverage_sweep,
     nonconformity_from_p,
+    qhat_to_json,
 )
 
 VAL_PREDS = REPO_ROOT / "outputs" / "metrics" / "val_preds.csv"
@@ -69,7 +70,8 @@ def main() -> int:
         )
 
     OUT_JSON.parent.mkdir(parents=True, exist_ok=True)
-    OUT_JSON.write_text(json.dumps({"n_cal": int(len(cal_idx)), "n_test": int(len(test_idx)), "rows": results}, indent=2, default=float))
+    rows = [{**r, "qhat": qhat_to_json(r["qhat"])} for r in results]
+    OUT_JSON.write_text(json.dumps({"n_cal": int(len(cal_idx)), "n_test": int(len(test_idx)), "rows": rows}, indent=2, allow_nan=False))
 
     fig, ax = plt.subplots(1, 1, figsize=(6, 4))
     target = [1.0 - r["alpha"] for r in results]
@@ -88,7 +90,7 @@ def main() -> int:
     fig.savefig(OUT_PNG, dpi=150)
     plt.close(fig)
 
-    print(json.dumps({"wrote": [str(OUT_JSON), str(OUT_PNG)], "rows": results}, indent=2, default=float))
+    print(json.dumps({"wrote": [str(OUT_JSON), str(OUT_PNG)], "rows": rows}, indent=2, allow_nan=False))
     return 0
 
 

@@ -3,9 +3,8 @@ Calibrated random forest baseline.
 
 Random forests systematically push probabilities toward 0.5 (Niculescu-Mizil
 & Caruana 2005). We wrap sklearn's RandomForestClassifier in
-CalibratedClassifierCV with isotonic regression by default - isotonic is the
-right choice for RF because the calibration curve is non-monotone-S-shaped,
-not just temperature-shifted.
+CalibratedClassifierCV with isotonic regression by default, which fits any
+monotone distortion instead of assuming a sigmoid shape.
 
 References:
   Niculescu-Mizil A, Caruana R. "Predicting Good Probabilities With
@@ -36,14 +35,18 @@ class RFCalibrated:
         self.class_weight = class_weight
         self.model_: CalibratedClassifierCV | None = None
 
-    def fit(self, X_train: np.ndarray, y_train: np.ndarray) -> "RFCalibrated":
-        base = RandomForestClassifier(
+    def uncalibrated(self) -> RandomForestClassifier:
+        """The unfitted forest, with the same settings and no calibration."""
+        return RandomForestClassifier(
             n_estimators=self.n_estimators,
             max_depth=self.max_depth,
             class_weight=self.class_weight,
             random_state=self.random_state,
             n_jobs=1,
         )
+
+    def fit(self, X_train: np.ndarray, y_train: np.ndarray) -> "RFCalibrated":
+        base = self.uncalibrated()
         n_per_class_min = int(min(np.bincount(y_train)))
         cv = max(2, min(5, n_per_class_min))
         # Isotonic needs ~50+ samples per class to avoid overfit; fall back to

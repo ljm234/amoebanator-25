@@ -28,9 +28,10 @@ def main() -> None:
         "alpha": alpha,
         "target_coverage": 1.0 - alpha,
         "empirical_coverage": float(contained.mean()),
-        "abstain_rate": float((set_size == 2).mean()),
+        "abstain_rate": float((set_size != 1).mean()),
         "singleton_rate": float((set_size == 1).mean()),
         "empty_rate": float((set_size == 0).mean()),
+        "two_class_rate": float((set_size == 2).mean()),
         "n": int(len(y))
     }
     (MET/"conformal_eval.json").write_text(json.dumps(out, indent=2))

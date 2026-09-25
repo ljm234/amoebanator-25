@@ -54,25 +54,19 @@ def stable_softmax(logits: np.ndarray) -> np.ndarray:
     return cast(np.ndarray, (z / z_sum).astype(np.float32))
 
 # ---------- Main ----------
-def main() -> None:
-    from ml.seeds import set_global_seeds
-    set_global_seeds()
-    os.makedirs("outputs/model", exist_ok=True)
-    os.makedirs("outputs/metrics", exist_ok=True)
-
-    X, y, feats = load_tabular()
-    record_data_loaded(resource="outputs/diagnosis_log_pro.csv", n_rows=int(X.shape[0]), n_features=int(X.shape[1]))
-    Xtr, Xva, ytr, yva = train_test_split(
-        X, y, test_size=0.2, stratify=y, random_state=42
-    )
-    record_train_started(resource="outputs/model", n_train=int(len(ytr)), n_val=int(len(yva)))
-
-    device = "mps" if torch.backends.mps.is_available() else (
+def select_device() -> str:
+    """Apple MPS when present, else CUDA, else CPU."""
+    return "mps" if torch.backends.mps.is_available() else (
         "cuda" if torch.cuda.is_available() else "cpu"
     )
-    torch.set_default_dtype(torch.float32)  # type: ignore[no-untyped-call]
 
-    model = MLP(X.shape[1]).to(device)
+
+def train_mlp(Xtr: np.ndarray, ytr: np.ndarray, device: str) -> MLP:
+    """
+    Train the MLP with the pipeline's settings: Adam (lr 1e-3), 60 full-batch
+    epochs, and a positive-class weight clamped to [1, 10].
+    """
+    model = MLP(Xtr.shape[1]).to(device)
     opt = torch.optim.Adam(model.parameters(), lr=1e-3)
 
     # Class weight (clamped so tiny datasets don't explode loss)
@@ -93,17 +87,42 @@ def main() -> None:
         loss = crit(logits, yb)
         loss.backward()
         opt.step()
+    model.eval()
+    return model
+
+
+def fit_clamped_temperature(model: MLP, logits_val: np.ndarray, yva: np.ndarray) -> float:
+    """L-BFGS temperature on validation logits, clamped to [0.1, 10]."""
+    T = fit_temperature(model, logits_val, yva, device="cpu")
+    return float(np.clip(T, 0.1, 10.0))
+
+
+def main() -> None:
+    from ml.seeds import set_global_seeds
+    set_global_seeds()
+    os.makedirs("outputs/model", exist_ok=True)
+    os.makedirs("outputs/metrics", exist_ok=True)
+
+    X, y, feats = load_tabular()
+    record_data_loaded(resource="outputs/diagnosis_log_pro.csv", n_rows=int(X.shape[0]), n_features=int(X.shape[1]))
+    Xtr, Xva, ytr, yva = train_test_split(
+        X, y, test_size=0.2, stratify=y, random_state=42
+    )
+    record_train_started(resource="outputs/model", n_train=int(len(ytr)), n_val=int(len(yva)))
+
+    device = select_device()
+    torch.set_default_dtype(torch.float32)  # type: ignore[no-untyped-call]
+
+    model = train_mlp(Xtr, ytr, device)
 
     # Validation logits -> CPU numpy
-    model.eval()
     with torch.no_grad():
         logits_val = model(torch.tensor(Xva, dtype=torch.float32, device=device)).cpu().numpy()
 
     # Uncalibrated & temperature-scaled probabilities (stable softmax)
     p_uncal = stable_softmax(logits_val)[:, 1]
 
-    T = fit_temperature(model, logits_val, yva, device="cpu")
-    T = float(np.clip(T, 0.1, 10.0))   # clamp temperature to sensible range
+    T = fit_clamped_temperature(model, logits_val, yva)
     record_calibration_fit(resource="outputs/model", temperature=float(T), n_val=int(len(yva)))
     logits_scaled = logits_val / T
     p_cal = stable_softmax(logits_scaled)[:, 1]

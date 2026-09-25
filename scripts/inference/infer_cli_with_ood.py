@@ -9,6 +9,7 @@ from typing import cast
 
 import pandas as pd
 
+from ml.conformal_advanced import qhat_to_json
 from ml.infer import infer_one
 from ml.ood import ood_abstain_from_p
 from ml.ood_energy import ood_abstain_energy
@@ -41,14 +42,14 @@ def main() -> None:
     ent  = ood_abstain_from_p(base["p_high"])       # entropy gate
     eng  = ood_abstain_energy(base["p_high"])       # energy gate
 
-    abstain_conformal = bool(base.get("include_low", False) and base.get("include_high", False))
+    abstain_conformal = base.get("reason") in {"ConformalAmbiguity", "ConformalEmptySet"}
     abstain_final = bool(abstain_conformal or ent["ood_abstain"] or eng["ood_abstain_energy"])
 
     out = {
         "prediction": base.get("prediction"),
         "p_high": float(base.get("p_high", 0.0)),
         "threshold": float(base.get("threshold", 0.0)),
-        "qhat": float(base.get("qhat", 0.0)),
+        "qhat": None if base.get("qhat") is None else qhat_to_json(float(base["qhat"])),
         "conformal_include_low": bool(base.get("include_low", False)),
         "conformal_include_high": bool(base.get("include_high", False)),
         "entropy": float(cast(float, ent["entropy"])), "tau_entropy": ent["tau"],

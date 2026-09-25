@@ -1,5 +1,5 @@
 """
-Proper held-out split-conformal calibration framework.
+Held-out split-conformal calibration framework.
 
 Meant for a cohort large enough to keep the conformal calibration rows apart
 from the rows that fit the temperature. The shipped conformal.json does not
@@ -17,8 +17,8 @@ the temperature. The framework here:
      the calibration came from.
 
 When a future cohort supplies a real held-out set with n >= 200, this script runs
-unchanged against the new artifact and produces the conformal numbers the
-preprint will quote.
+unchanged against the new artifact and produces the conformal numbers for that
+cohort.
 """
 from __future__ import annotations
 
@@ -34,7 +34,9 @@ import pandas as pd
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(REPO_ROOT))
 
+from ml.config import conformal_alpha, parse_alpha  # noqa: E402
 from ml.conformal_advanced import (  # noqa: E402
+    qhat_to_json,
     SMALL_CAL_FLOOR,
     SmallCalibrationWarning,
     compute_qhat,
@@ -58,13 +60,15 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--cal", type=Path, default=DEFAULT_CAL,
                         help="Calibration CSV with columns y_true,p_high_cal.")
-    parser.add_argument("--alpha", type=float, default=0.10)
+    parser.add_argument("--alpha", type=parse_alpha, default=None,
+                        help="Miscoverage level, e.g. 1/7 or 0.1 (default: config/amoebanator.toml).")
     parser.add_argument("--label-conditional", action="store_true",
                         help="Also fit per-class qhats (Vovk Mondrian conformal).")
     parser.add_argument("--force-small", action="store_true",
                         help="Allow writing a qhat fit on n < SMALL_CAL_FLOOR.")
     parser.add_argument("--out", type=Path, default=OUT_JSON)
     args = parser.parse_args(argv)
+    alpha = args.alpha if args.alpha is not None else conformal_alpha()
 
     if not args.cal.exists():
         raise SystemExit(f"missing calibration file: {args.cal}")
@@ -73,7 +77,8 @@ def main(argv: list[str] | None = None) -> int:
     scores = nonconformity_from_p(p, y)
 
     payload: dict[str, object] = {
-        "alpha": float(args.alpha),
+        "alpha": float(alpha),
+        "alpha_fraction": str(alpha),
         "n": int(n),
         "provenance": str(args.cal.relative_to(REPO_ROOT)) if args.cal.is_relative_to(REPO_ROOT) else str(args.cal),
         "small_cal_floor": SMALL_CAL_FLOOR,
@@ -82,15 +87,19 @@ def main(argv: list[str] | None = None) -> int:
 
     with warnings.catch_warnings(record=True) as caught:
         warnings.simplefilter("always", category=SmallCalibrationWarning)
-        qhat = compute_qhat(scores, alpha=args.alpha)
+        qhat = compute_qhat(scores, alpha=alpha)
         small_warning_fired = any(issubclass(w.category, SmallCalibrationWarning) for w in caught)
+    # Only the small-calibration warning is handled here; show every other one.
+    for w in caught:
+        if not issubclass(w.category, SmallCalibrationWarning):
+            warnings.warn_explicit(w.message, w.category, w.filename, w.lineno)
 
-    payload["qhat"] = qhat
+    payload["qhat"] = qhat_to_json(qhat)
     payload["small_calibration_warning"] = small_warning_fired
 
     if args.label_conditional:
-        per_class = label_conditional_qhats(scores, y, alpha=args.alpha)
-        payload["qhats_per_class"] = {str(k): float(v) for k, v in per_class.items()}
+        per_class = label_conditional_qhats(scores, y, alpha=alpha)
+        payload["qhats_per_class"] = {str(k): qhat_to_json(v) for k, v in per_class.items()}
 
     if small_warning_fired and not args.force_small:
         print(json.dumps({

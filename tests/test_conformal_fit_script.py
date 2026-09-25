@@ -39,8 +39,11 @@ def test_script_emits_smallcalibrationwarning_at_n6(tmp_path: Path) -> None:
     assert out.exists(), "script must write the conformal.json artefact"
     written = json.loads(out.read_text())
     assert written["n"] == 6
-    assert 0.0 <= written["qhat"] <= 1.0
-    assert written["alpha"] == pytest.approx(0.10)
+    # Default alpha comes from config/amoebanator.toml: 1/7, the highest
+    # target six points support, so qhat is the largest calibration score.
+    assert written["alpha"] == pytest.approx(1 / 7)
+    assert written["alpha_fraction"] == "1/7"
+    assert written["qhat"] == pytest.approx(0.35)
 
     fired = [w for w in caught if issubclass(w.category, SmallCalibrationWarning)]
     assert fired, (

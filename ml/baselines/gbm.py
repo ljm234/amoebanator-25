@@ -1,28 +1,20 @@
 """
 Gradient boosted trees + isotonic calibration baseline.
 
-Prefers LightGBM (faster, better small-leaf handling) but falls back to
-sklearn's GradientBoostingClassifier if LightGBM is not installed. The
-fallback path is functionally equivalent for ablation purposes - both produce
-miscalibrated trees that benefit from isotonic post-hoc calibration.
+scikit-learn's GradientBoostingClassifier, wrapped in CalibratedClassifierCV
+with isotonic regression (sigmoid when a class has fewer than five training
+rows). Boosted trees tend to be miscalibrated, so the probabilities are
+recalibrated post hoc.
 
 References:
-  Ke G et al. "LightGBM: A Highly Efficient Gradient Boosting Decision Tree."
-  NeurIPS 2017.
   Friedman JH. "Greedy Function Approximation: A Gradient Boosting Machine."
   Annals of Statistics 2001.
 """
 from __future__ import annotations
 
-import importlib.util
-
 import numpy as np
 from sklearn.calibration import CalibratedClassifierCV
 from sklearn.ensemble import GradientBoostingClassifier
-
-
-def lightgbm_available() -> bool:
-    return importlib.util.find_spec("lightgbm") is not None
 
 
 class GBMIsotonic:
@@ -40,21 +32,9 @@ class GBMIsotonic:
         self.max_depth = max_depth
         self.random_state = random_state
         self.model_: CalibratedClassifierCV | None = None
-        self.backend_: str = ""
 
-    def _make_base(self) -> object:
-        if lightgbm_available():
-            import lightgbm as lgb  # type: ignore[import-not-found]
-            self.backend_ = "lightgbm"
-            return lgb.LGBMClassifier(
-                n_estimators=self.n_estimators,
-                learning_rate=self.learning_rate,
-                max_depth=self.max_depth,
-                random_state=self.random_state,
-                verbose=-1,
-                num_leaves=max(2, 2 ** self.max_depth - 1),
-            )
-        self.backend_ = "sklearn_gbm"
+    def uncalibrated(self) -> GradientBoostingClassifier:
+        """The unfitted classifier, with the same settings and no calibration."""
         return GradientBoostingClassifier(
             n_estimators=self.n_estimators,
             learning_rate=self.learning_rate,
@@ -63,11 +43,10 @@ class GBMIsotonic:
         )
 
     def fit(self, X_train: np.ndarray, y_train: np.ndarray) -> "GBMIsotonic":
-        base = self._make_base()
         n_per_class_min = int(min(np.bincount(y_train)))
         cv = max(2, min(5, n_per_class_min))
         method = "isotonic" if n_per_class_min >= 5 else "sigmoid"
-        self.model_ = CalibratedClassifierCV(base, method=method, cv=cv)
+        self.model_ = CalibratedClassifierCV(self.uncalibrated(), method=method, cv=cv)
         self.model_.fit(X_train, y_train)
         return self
 

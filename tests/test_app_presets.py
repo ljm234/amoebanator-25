@@ -78,10 +78,9 @@ def test_preset_live_snapshot_matches(preset_key: str) -> None:
     """Live snapshot: actual infer_one output matches current_behavior.
 
     For ``bacterial_meningitis_limitation`` this currently passes
-    because the model returns 'High' (the D18 limitation). When a
-    future fix lands the model will return 'Low'/'Moderate' and
-    this test will fail - the standalone xfail-decorated test below
-    catches that transition cleanly.
+    because the model returns 'High' (the known limitation). A model
+    that returns 'Low' for it fails this test, and the xfail-decorated
+    test below then reports XPASS.
     """
     from ml.infer import infer_one
     p = PRESETS[preset_key]
@@ -105,18 +104,16 @@ def test_preset_live_snapshot_matches(preset_key: str) -> None:
 @pytest.mark.xfail(
     strict=False,
     reason=(
-        "D18 limitation: bacterial_meningitis_limitation preset returns "
-        "prediction='High' because n=30 training set has zero non-PAM "
-        "bacterial cases. A future MIMIC-IV cohort (target n>=200) will "
-        "flip this to 'High' for confirmed PAM only and 'Low' or "
-        "'Moderate' for bacterial-NOT-PAM. When that lands, this test "
-        "will start passing as 'XPASS' and someone in a future cohort should "
-        "remove the xfail decorator and update the current_behavior dict."
+        "Known limitation: the bacterial_meningitis_limitation preset is "
+        "predicted 'High' because the 30-row synthetic dataset contains no "
+        "bacterial meningitis that is not PAM. A model trained on a real "
+        "cohort should predict 'Low' here; the test then reports XPASS, and "
+        "the xfail marker and the preset's current_behavior should be updated."
     ),
 )
-def test_preset_bacterial_limitation_returns_high() -> None:
-    """Snapshot test of D18 limitation. xfail with strict=False so the
-    A future fix triggers XPASS without breaking CI."""
+def test_bacterial_preset_predicts_low() -> None:
+    """The limitation above, as a test. strict=False, so a model that
+    predicts 'Low' shows up as XPASS without failing CI."""
     from ml.infer import infer_one
     p = PRESETS["bacterial_meningitis_limitation"]
     inputs = p["inputs"]
@@ -131,9 +128,8 @@ def test_preset_bacterial_limitation_returns_high() -> None:
         symptoms=inputs["symptoms"],
     )
     out = infer_one(row)
-    # A future cohort will flip this to Low/Moderate; until then the model
-    # incorrectly says High. xfail catches the transition.
-    assert out["prediction"] == "Low"  # future-cohort expectation
+    # The current model predicts 'High' for this preset; see the xfail reason.
+    assert out["prediction"] == "Low"
 
 
 # --- Cross-preset invariants (4 tests) -------------------------------

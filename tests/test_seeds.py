@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import os
 import random
+from pathlib import Path
 from unittest.mock import patch
 
 import numpy as np
@@ -64,13 +65,18 @@ def test_invalid_env_var_raises() -> None:
         set_global_seeds()
 
 
-def test_training_is_deterministic_under_pinned_seed() -> None:
+def test_training_is_deterministic_under_pinned_seed(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
     """Two training runs with set_global_seeds() must produce the same val AUC."""
     from ml.training import train_and_save
 
+    # Write to temporary paths so the test never replaces the shipped model
+    # or appends to the repository's audit log.
+    monkeypatch.setenv("AMOEBANATOR_AUDIT_PATH", str(tmp_path / "audit.jsonl"))
     set_global_seeds(42)
-    out_a = train_and_save()
+    out_a = train_and_save(model_dir=str(tmp_path / "a"))
     set_global_seeds(42)
-    out_b = train_and_save()
+    out_b = train_and_save(model_dir=str(tmp_path / "b"))
     assert out_a["auc"] == out_b["auc"]
     assert out_a["T"] == pytest.approx(out_b["T"], rel=1e-5)

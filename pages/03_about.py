@@ -10,7 +10,7 @@ adjacent to a result would falsely imply input-specificity. The
 caption is fixed, model-level text.
 
 The Advanced expander hosts the alpha slider so PIs can move
-alpha in {0.05, 0.10, 0.20} live and watch q-hat + the regime badge
+alpha in {1/20, 1/10, 1/7, 1/5} live and watch q-hat + the regime badge
 respond. Pedagogical, not load-bearing for the landing-page render.
 
 The authorship section names the repository (github.com/ljm234/
@@ -19,7 +19,6 @@ same author.
 """
 from __future__ import annotations
 
-import math
 from pathlib import Path
 
 import pandas as pd
@@ -27,6 +26,8 @@ import streamlit as st
 import torch
 
 from app.disclaimer import render_disclaimer
+from ml.config import conformal_alpha, parse_alpha
+from ml.conformal_advanced import finite_sample_rank
 
 
 _MODEL_PATH = Path("outputs/model/model.pt")
@@ -138,15 +139,18 @@ with st.expander("Advanced: explore conformal coverage"):
         "computed from `(n_cal, alpha, k)` where "
         "`k = ceil((n_cal + 1)(1 - alpha))`."
     )
-    alpha = st.slider(
+    demo_alpha = float(conformal_alpha())
+    alpha = st.select_slider(
         "alpha (significance level)",
-        min_value=0.05, max_value=0.20, value=0.10, step=0.05,
+        options=sorted({0.05, 0.10, demo_alpha, 0.20}),
+        value=demo_alpha,
+        format_func=lambda a: str(parse_alpha(a)),
         key="conformal_alpha_slider",
     )
     n_cal = 6  # current n
-    k = math.ceil((n_cal + 1) * (1 - alpha))
+    k = finite_sample_rank(n_cal, alpha)
     st.markdown(
-        f"With `n_cal = {n_cal}`, `alpha = {alpha:.2f}` -> "
+        f"With `n_cal = {n_cal}`, `alpha = {parse_alpha(alpha)}` -> "
         f"`k = ceil((n+1)(1-alpha)) = {k}`."
     )
     if n_cal >= k and n_cal >= 100:
@@ -156,16 +160,15 @@ with st.expander("Advanced: explore conformal coverage"):
         )
     elif n_cal >= k:
         st.info(
-            "FINITE-SAMPLE: bound holds but loose; "
-            "treat reported coverage as empirical."
+            "FINITE-SAMPLE: split conformal coverage still holds on average "
+            f"under exchangeability, but with n = {n_cal} the realized "
+            "coverage varies widely."
         )
     else:
         st.error(
-            f"INVALID: Order-statistic clamped (k clipped from {k} "
-            f"to n={n_cal}); the formal guarantee 1-alpha is mathematically "
-            "inapplicable. Reported coverage is the empirical hit-rate "
-            "on the validation set only. A future MIMIC-IV cohort (target "
-            "n >= 200) will fix this."
+            f"INVALID: k = {k} > n = {n_cal}, so no finite threshold "
+            "guarantees 1-alpha coverage; qhat is +inf and every input "
+            "abstains. A future MIMIC-IV cohort (target n >= 200) will fix this."
         )
 
 

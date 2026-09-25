@@ -8,6 +8,7 @@ import numpy as np
 import pandas as pd
 import torch
 
+from ml.config import conformal_alpha
 from ml.robust import score_tabular, load_stats, score_energy, ENERGY_JSON
 from ml.model import MLP
 
@@ -39,6 +40,13 @@ def _missing_artifact(path: Path, kind: str) -> FileNotFoundError:
     return FileNotFoundError(
         f"Required {kind} not found at {path}. "
         f"Train the model first: `python -m ml.training`."
+    )
+
+
+def _missing_threshold(path: Path, kind: str) -> FileNotFoundError:
+    return FileNotFoundError(
+        f"Required {kind} not found at {path}. Regenerate the artifacts: "
+        f"`PYTHONPATH=. python scripts/regenerate_all_artifacts.py`."
     )
 
 
@@ -149,21 +157,36 @@ def _softmax_high(lo: float, hi: float) -> float:
 
 
 def _choose_qhat(age_val: float | None) -> tuple[float, float, str]:
-    g = None
+    """Group-specific threshold when one was fit for the patient's age group, else the global one."""
     if CONF_G_JSON.exists() and age_val is not None:
         data = _read_json(CONF_G_JSON)
-        alpha = float(data.get("alpha", 0.10))
         groups = data.get("groups", {})
         g = "child" if age_val < 18 else "adult"
-        if g in groups:
-            return float(groups[g].get("qhat", 0.10)), alpha, g
+        if g in groups and "qhat" in groups[g]:
+            alpha = float(data.get("alpha", conformal_alpha()))
+            return float(groups[g]["qhat"]), alpha, g
     data = _read_json(CONF_JSON)
-    return float(data.get("qhat", 0.10)), float(data.get("alpha", 0.10)), g or "global"
+    if "qhat" not in data:
+        raise _missing_threshold(CONF_JSON, "conformal threshold")
+    return float(data["qhat"]), float(data.get("alpha", conformal_alpha())), "global"
 
 
 def _energy_tau() -> float:
+    """
+    Energy threshold, accepted only when it was fit on logits scaled by the
+    loaded model's temperature, the same scale _real_logits returns.
+    """
     d = _read_json(ENERGY_JSON)
-    return float(d.get("tau", -2.0))
+    if "tau" not in d:
+        raise _missing_threshold(Path(ENERGY_JSON), "energy threshold")
+    _, _, T = _load_model_artifacts()
+    fit_T = d.get("T")
+    if d.get("logits") != "temperature_scaled" or fit_T is None or not math.isclose(float(fit_T), T, rel_tol=1e-9):
+        raise ValueError(
+            f"{ENERGY_JSON} was not fit on logits scaled by the model's T={T}; "
+            f"rerun `PYTHONPATH=. python scripts/ood/fit_gates.py`."
+        )
+    return float(d["tau"])
 
 
 def _neg_energy_from_p(p: float) -> float:
@@ -201,11 +224,13 @@ def infer_one(row_in: dict | pd.Series) -> dict:
     Pipeline order: Mahalanobis OOD gate -> trained MLP -> temperature scaling
     -> energy gate -> split-conformal band assignment -> label.
 
-    Returns a dict with `prediction` (one of "Low", "High", "Moderate",
-    "ABSTAIN"), calibrated `p_high` in [0, 1], conformal band membership,
-    Mahalanobis distance, and energy-gate readout. ABSTAIN always carries
-    a `reason` field: "OOD", "LogitEnergyAboveOODShift", or
-    "ConformalAmbiguity". The energy-gate reason name is precise on three
+    Returns a dict with `prediction` (one of "Low", "High", "ABSTAIN"),
+    calibrated `p_high` in [0, 1], conformal band membership, Mahalanobis
+    distance, and energy-gate readout. A label is returned only when the
+    conformal prediction set holds exactly one class. ABSTAIN always carries
+    a `reason` field: "OOD", "LogitEnergyAboveOODShift", "ConformalAmbiguity"
+    (both classes in the set), or "ConformalEmptySet" (neither class in the
+    set). The energy-gate reason name is precise on three
     dimensions: (1) signal = logit energy, (2) direction = above OOD shift,
     (3) reference = above the in-distribution validation 95th percentile -
     Liu 2020 canonical semantics (high energy -> OOD). See git log for
@@ -259,10 +284,10 @@ def infer_one(row_in: dict | pd.Series) -> dict:
     qhat, alpha, group = _choose_qhat(age_val)
     include_high = bool(p_high >= (1.0 - qhat))
     include_low = bool(p_high <= qhat)
-    if include_high and include_low:
+    if include_high == include_low:
         return {
             "prediction": "ABSTAIN",
-            "reason": "ConformalAmbiguity",
+            "reason": "ConformalAmbiguity" if include_high else "ConformalEmptySet",
             "p_high": p_high,
             "mahalanobis_d2": float(d2),
             "d2_tau": float(tau_d2),
@@ -271,8 +296,8 @@ def infer_one(row_in: dict | pd.Series) -> dict:
             "energy_neg": float(neg_e),
             "energy_neg_tau": neg_e_tau,
             "ood_abstain_energy_neg": ood_neg,
-            "include_low": True,
-            "include_high": True,
+            "include_low": include_low,
+            "include_high": include_high,
             "qhat": float(qhat),
             "alpha": float(alpha),
             "group": group,
@@ -280,12 +305,7 @@ def infer_one(row_in: dict | pd.Series) -> dict:
         }
     thresh_pick = _read_json(THRESH_PICK_JSON)
     threshold = float(thresh_pick.get("threshold", DEFAULT_THRESHOLD))
-    if include_high and not include_low:
-        label = "High"
-    elif include_low and not include_high:
-        label = "Low"
-    else:
-        label = "Moderate"
+    label = "High" if include_high else "Low"
     out = {
         "prediction": label,
         "p_high": p_high,

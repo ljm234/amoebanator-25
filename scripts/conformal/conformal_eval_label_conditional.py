@@ -22,7 +22,7 @@ def main() -> None:
 
     include_high = p >= (1.0 - q_pos)           # class-conditional rule
     include_low  = p <= q_neg
-    abstain      = include_high & include_low
+    abstain      = include_high == include_low
     singletons   = include_high ^ include_low
     empty        = (~include_high) & (~include_low)
 

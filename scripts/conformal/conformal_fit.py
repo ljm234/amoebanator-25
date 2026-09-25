@@ -7,6 +7,9 @@ from pathlib import Path
 import numpy as np
 import numpy.typing as npt
 
+from ml.config import conformal_alpha, parse_alpha
+from ml.conformal_advanced import compute_qhat, qhat_to_json
+
 MET = Path("outputs/metrics")
 MOD = Path("outputs/model")
 
@@ -26,8 +29,9 @@ def _softmax(z: npt.NDArray[np.floating[object]]) -> npt.NDArray[np.floating[obj
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--alpha", type=float, default=0.10)
+    ap.add_argument("--alpha", type=parse_alpha, default=None)
     args = ap.parse_args()
+    alpha = args.alpha if args.alpha is not None else conformal_alpha()
 
     logits_p = MET / "val_logits.npy"
     y_p      = MET / "val_y.npy"
@@ -41,12 +45,9 @@ def main() -> None:
 
     s = 1.0 - p[np.arange(len(y)), y]  # nonconformity
     n = len(s)
-    k = int(np.ceil((n + 1) * (1 - args.alpha)))
-    s_sorted = np.sort(s)
-    k = min(max(k, 1), n)
-    qhat = float(s_sorted[k - 1])
+    qhat = compute_qhat(s, alpha=alpha)
 
-    out = {"alpha": float(args.alpha), "qhat": qhat, "n_calib": int(n)}
+    out = {"alpha": float(alpha), "qhat": qhat_to_json(qhat), "n_calib": int(n)}
     (MET / "conformal.json").write_text(json.dumps(out, indent=2))
     print(json.dumps(out, indent=2))
 

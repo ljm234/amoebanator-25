@@ -2,7 +2,7 @@
 ABSTAIN-rate vs accuracy Pareto frontier.
 
 Sweeps qhat across the unit interval, computes the conformal abstain rate
-at each setting, and plots the resulting trade-off between abstain rate
+at each setting (a row abstains unless its set holds exactly one class), and plots the resulting trade-off between abstain rate
 (x) and accuracy on the kept rows (y). Higher and to the left is better.
 
 Output:
@@ -45,7 +45,7 @@ def main() -> int:
     for q in qhats:
         include_high = p >= (1.0 - q)
         include_low = p <= q
-        abstain = include_high & include_low
+        abstain = include_high == include_low
         keep = ~abstain
         if keep.sum() == 0:
             rows.append({"qhat": float(q), "abstain_rate": 1.0, "accuracy": float("nan"), "n_kept": 0})

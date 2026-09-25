@@ -7,6 +7,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
+from ml.conformal_advanced import compute_qhat, nonconformity_from_p
+
 METRICS_DIR = Path("outputs/metrics")
 VAL_PREDS = METRICS_DIR / "val_preds.csv"
 OUT_PNG = METRICS_DIR / "coverage_abstain_vs_alpha.png"
@@ -15,19 +17,15 @@ OUT_PNG = METRICS_DIR / "coverage_abstain_vs_alpha.png"
 def coverage_abstain_at_alpha(
     y: np.ndarray, p: np.ndarray, alpha: float
 ) -> tuple[float, float]:
-    p_true = np.where(y == 1, p, 1.0 - p)
-    scores = 1.0 - p_true
-    n = len(scores)
-    k = int(np.ceil((n + 1) * (1 - alpha)))
-    k = min(max(k, 1), n)
-    qhat = float(np.partition(scores, k - 1)[k - 1])
+    n = len(y)
+    qhat = compute_qhat(nonconformity_from_p(p, y), alpha=alpha)
     include_high = p >= (1.0 - qhat)
     include_low = p <= qhat
-    both = include_high & include_low
+    abstained = include_high == include_low
     true_is_high = (y == 1)
     contained = (true_is_high & include_high) | (~true_is_high & include_low)
     coverage = contained.mean() if n else np.nan
-    abstain = both.mean() if n else np.nan
+    abstain = abstained.mean() if n else np.nan
     return coverage, abstain
 
 def main() -> None:

@@ -28,7 +28,7 @@ from sklearn.model_selection import train_test_split
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(REPO_ROOT))
 
-from ml.robust import NUMERIC_COLS, mahalanobis_d2  # noqa: E402
+from ml.robust import NUMERIC_COLS, fit_gate_stats  # noqa: E402
 
 LOG_CSV = REPO_ROOT / "outputs" / "diagnosis_log_pro.csv"
 OUT_JSON = REPO_ROOT / "outputs" / "metrics" / "feature_stats_train.json"
@@ -60,39 +60,13 @@ def main(argv: list[str] | None = None) -> int:
 
     df_train = df.iloc[train_idx]
     cols = [c for c in NUMERIC_COLS if c in df_train.columns]
-    X = df_train[cols].to_numpy(dtype=float)
-    X = np.where(np.isfinite(X), X, np.nan)
-
-    col_median = np.nanmedian(X, axis=0)
-    col_mad = np.nanmedian(np.abs(X - col_median), axis=0)
-    col_mad = np.where(col_mad > 0, col_mad, 1.0)
-    X_filled = np.where(np.isnan(X), col_median, X)
-    z = (X_filled - col_median) / col_mad
-    z = np.where(np.isfinite(z), z, 0.0)
-    mu = z.mean(axis=0)
-    S = np.cov(z, rowvar=False)
-    if args.use_diagonal:
-        S = np.diag(np.clip(np.diag(S), 1e-6, None))
-
-    d2 = []
-    for i in range(z.shape[0]):
-        val, _ = mahalanobis_d2(z[i], mu, S, args.use_diagonal)
-        d2.append(val)
-    tau = float(np.quantile(d2, args.quantile))
-
-    out = {
-        "cols": cols,
-        "median": col_median.tolist(),
-        "mad": col_mad.tolist(),
-        "mu": mu.tolist(),
-        "S": S.tolist(),
-        "use_diagonal": bool(args.use_diagonal),
-        "tau": tau,
-        "quantile": float(args.quantile),
+    out = fit_gate_stats(df_train[cols].to_numpy(dtype=float), cols, args.quantile, args.use_diagonal)
+    out.update({
         "n_train": int(len(train_idx)),
         "n_total": int(len(df)),
         "provenance": "fit on train split only (random_state=42, test_size=0.2, stratify=risk_label==High)",
-    }
+    })
+    tau = out["tau"]
     OUT_JSON.parent.mkdir(parents=True, exist_ok=True)
     OUT_JSON.write_text(json.dumps(out, indent=2))
     print(json.dumps({"wrote": str(OUT_JSON), "tau": tau, "n_train": len(train_idx), "cols": cols}, indent=2))

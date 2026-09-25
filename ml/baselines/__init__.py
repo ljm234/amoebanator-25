@@ -4,19 +4,19 @@ Calibrated baselines for ablation comparisons against the Amoebanator MLP.
 Every baseline exposes the same interface so the ablation runner treats them
 uniformly:
 
-    fit(X_train, y_train, X_cal, y_cal) -> object
-    predict_proba(model, X) -> np.ndarray of shape (n,)   # P(High)
+    fit(X_train, y_train) -> self          # calibrated by internal cross-validation
+    predict_proba_high(X) -> np.ndarray    # calibrated P(High), shape (n,)
+    uncalibrated() -> unfitted scikit-learn estimator with the same settings
 
 Baselines:
-  * logistic.LogisticPlatt    - sklearn LogisticRegression + Platt scaling
-  * random_forest.RFCalibrated - sklearn RandomForestClassifier + sigmoid/isotonic
-  * gbm.GBMIsotonic           - LightGBM if available, else GradientBoostingClassifier,
-                                 with isotonic calibration
+  * logistic.LogisticPlatt     - sklearn LogisticRegression + Platt scaling
+  * random_forest.RFCalibrated - sklearn RandomForestClassifier + isotonic
+  * gbm.GBMIsotonic            - sklearn GradientBoostingClassifier + isotonic
 
-`build_all_baselines()` returns a list of named (factory, hyperparams) tuples
-so the ablation script can sweep without naming each one explicitly.
+Isotonic calibration falls back to sigmoid when a class has fewer than five
+training rows. `build_all_baselines()` returns (name, class) pairs.
 """
-from ml.baselines.gbm import GBMIsotonic, lightgbm_available
+from ml.baselines.gbm import GBMIsotonic
 from ml.baselines.logistic import LogisticPlatt
 from ml.baselines.random_forest import RFCalibrated
 
@@ -24,7 +24,6 @@ __all__ = [
     "LogisticPlatt",
     "RFCalibrated",
     "GBMIsotonic",
-    "lightgbm_available",
     "build_all_baselines",
 ]
 

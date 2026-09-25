@@ -1,0 +1,11 @@
+# Settings read at run time by ml/config.py. The conformal fit scripts use
+# [conformal] alpha as the default for --alpha; conformal_fit_grouped.py and
+# run_ablation.py always use it, and the app falls back to it when a
+# threshold file does not record alpha.
+
+[conformal]
+# Target miscoverage for the split-conformal step, written as an exact
+# fraction so no decimal rounding can change the threshold rank. With six
+# calibration rows a finite threshold can reach at most 6/7 coverage, so the
+# demo targets alpha = 1/7.
+alpha = "1/7"

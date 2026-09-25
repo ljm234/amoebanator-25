@@ -2,7 +2,8 @@
 Fit both energy-based OOD/uncertainty gates from validation predictions.
 
 Writes:
-  outputs/metrics/energy_threshold.json - Liu et al. 2020 energy on raw logits
+  outputs/metrics/energy_threshold.json - Liu et al. 2020 energy on temperature-scaled
+                                          logits (raw / T), the scale ml/infer.py scores
   outputs/metrics/ood_energy.json       - neg-energy-from-probability gate
 
 If outputs/metrics/val_preds.csv lacks logit_low/logit_high columns (older
@@ -61,11 +62,23 @@ def _recompute_val_logits() -> np.ndarray:
     return logits.astype(float)
 
 
-def fit_logit_energy(logits: np.ndarray, q: float) -> dict[str, float | int]:
-    """Liu et al. 2020 energy on raw logits: E = -logsumexp(logits)."""
-    e = np.asarray([-float(np.logaddexp.reduce(row)) for row in logits], dtype=float)
+def _load_temperature() -> float:
+    T = float(json.loads((MODEL_DIR / "temperature_scale.json").read_text())["T"])
+    if not np.isfinite(T) or T <= 0.0:
+        raise SystemExit(f"temperature_scale.json must hold a positive T; got {T!r}")
+    return T
+
+
+def fit_logit_energy(logits: np.ndarray, q: float, T: float) -> dict[str, float | int | str]:
+    """
+    Liu et al. 2020 energy E = -logsumexp(logits / T) on temperature-scaled
+    logits. ml/infer.py scores the same scaled logits, so fit and gate share
+    one scale and tau is the q-quantile of the energies the gate compares.
+    """
+    scaled = np.asarray(logits, dtype=float) / T
+    e = np.asarray([-float(np.logaddexp.reduce(row)) for row in scaled], dtype=float)
     tau = float(np.quantile(e, q))
-    return {"tau": tau, "q": float(q), "n": int(len(e))}
+    return {"tau": tau, "q": float(q), "n": int(len(e)), "T": float(T), "logits": "temperature_scaled"}
 
 
 def fit_neg_energy_from_p(p_high: np.ndarray, q: float) -> dict[str, float | int | str]:
@@ -103,7 +116,7 @@ def main(argv: list[str] | None = None) -> int:
         raise SystemExit(f"{VAL_PREDS} must contain p_high_cal")
     p_high = df["p_high_cal"].astype(float).to_numpy()
 
-    gate_logit = fit_logit_energy(logits, args.quantile)
+    gate_logit = fit_logit_energy(logits, args.quantile, _load_temperature())
     (METRICS_DIR / "energy_threshold.json").write_text(json.dumps(gate_logit, indent=2))
 
     gate_prob = fit_neg_energy_from_p(p_high, args.quantile)

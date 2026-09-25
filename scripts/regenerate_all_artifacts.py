@@ -1,11 +1,12 @@
 """
-Python orchestrator that re-emits every JSON / CSV / PNG under
-outputs/. Cleaner error reporting than the bash equivalent: every step
-records its name, command, exit code, duration, and a short message.
+Regenerates the model and every threshold, metrics file and figure the
+pipeline ships under outputs/. Every step records its name, command, exit
+code, duration and any warnings it printed.
 
-The script returns 0 only if all expected artefacts are produced. A
-structured summary JSON is written to outputs/metrics/regeneration_summary.json
-so CI can post a digest.
+The script returns 0 only if all expected artifacts are produced. A
+structured summary JSON is written to outputs/metrics/regeneration_summary.json,
+with the size and SHA-256 of each artifact; docs/REPRODUCIBILITY.md lists the
+same checksums.
 
 Usage:
   PYTHONPATH=. python scripts/regenerate_all_artifacts.py
@@ -14,7 +15,9 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
+import re
 import subprocess
 import sys
 import time
@@ -35,8 +38,10 @@ class Step:
     duration_s: float = 0.0
     exit_code: int | None = None
     stdout_tail: str = ""
+    warnings: list[str] = field(default_factory=list)
     artifacts_present: dict[str, bool] = field(default_factory=dict)
     artifacts_size_bytes: dict[str, int] = field(default_factory=dict)
+    artifacts_sha256: dict[str, str] = field(default_factory=dict)
 
 
 PIPELINE: list[tuple[str, list[str], list[str]]] = [
@@ -63,6 +68,32 @@ PIPELINE: list[tuple[str, list[str], list[str]]] = [
         "Fit conformal qhat from probabilities",
         [sys.executable, str(REPO_ROOT / "scripts" / "conformal" / "conformal_fit_from_probs.py")],
         ["outputs/metrics/conformal.json"],
+    ),
+    (
+        "Fit age-grouped conformal qhat",
+        [sys.executable, str(REPO_ROOT / "scripts" / "conformal" / "conformal_fit_grouped.py")],
+        ["outputs/metrics/conformal_grouped.json"],
+    ),
+    (
+        "Conformal set statistics on the validation rows",
+        [sys.executable, str(REPO_ROOT / "scripts" / "conformal" / "conformal_eval_from_probs.py")],
+        ["outputs/metrics/conformal_eval.json"],
+    ),
+    (
+        "Fit entropy gate",
+        [sys.executable, str(REPO_ROOT / "scripts" / "ood" / "ood_fit_entropy.py")],
+        ["outputs/metrics/ood_gate.json"],
+    ),
+    (
+        "Bootstrap confidence intervals",
+        [sys.executable, str(REPO_ROOT / "scripts" / "calibration" / "bootstrap_metrics.py")],
+        ["outputs/metrics/ci.json"],
+    ),
+    (
+        "Calibration and decision curves",
+        [sys.executable, str(REPO_ROOT / "scripts" / "calibration" / "plot_calibration_and_dca.py")],
+        ["outputs/metrics/calibration_curve.png",
+         "outputs/metrics/dca_curve.png"],
     ),
     (
         "Four-cell ablation across baselines",
@@ -96,6 +127,13 @@ def _check_artifacts(step: Step) -> None:
         present = p.exists()
         step.artifacts_present[artifact] = present
         step.artifacts_size_bytes[artifact] = int(p.stat().st_size) if present else 0
+        step.artifacts_sha256[artifact] = hashlib.sha256(p.read_bytes()).hexdigest() if present else ""
+
+
+def _short_paths(line: str) -> str:
+    """Drop machine-specific path prefixes from a warning line."""
+    line = re.sub(r"\S*/site-packages/", "", line)
+    return line.replace(str(REPO_ROOT) + "/", "")
 
 
 def _run_step(step: Step, dry_run: bool) -> None:
@@ -118,11 +156,14 @@ def _run_step(step: Step, dry_run: bool) -> None:
     step.exit_code = proc.returncode
     tail_lines = proc.stdout.strip().splitlines()[-5:] if proc.stdout else []
     step.stdout_tail = "\n".join(tail_lines)
+    step.warnings = sorted({_short_paths(ln.strip()) for ln in proc.stderr.splitlines() if "Warning:" in ln})
     if proc.returncode != 0:
         print(f"  FAIL exit={proc.returncode}")
         print(proc.stderr[-2000:])
     else:
         print(f"  OK   exit=0 in {step.duration_s}s")
+    for w in step.warnings:
+        print(f"  warning: {w}")
     _check_artifacts(step)
 
 

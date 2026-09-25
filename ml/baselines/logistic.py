@@ -16,6 +16,7 @@ from __future__ import annotations
 import numpy as np
 from sklearn.calibration import CalibratedClassifierCV
 from sklearn.linear_model import LogisticRegression
+from sklearn.pipeline import Pipeline, make_pipeline
 from sklearn.preprocessing import StandardScaler
 
 
@@ -28,17 +29,24 @@ class LogisticPlatt:
         self.scaler_: StandardScaler | None = None
         self.model_: CalibratedClassifierCV | None = None
 
-    def fit(self, X_train: np.ndarray, y_train: np.ndarray) -> "LogisticPlatt":
-        self.scaler_ = StandardScaler()
-        X_s = self.scaler_.fit_transform(X_train)
-        base = LogisticRegression(
+    def _logistic(self) -> LogisticRegression:
+        return LogisticRegression(
             C=self.C,
             class_weight=self.class_weight,
             solver="lbfgs",
             max_iter=2000,
         )
-        # cv="prefit" requires a separate calibration set; we use 3-fold internal
-        # calibration when the dataset is too small for a held-out cal split.
+
+    def uncalibrated(self) -> Pipeline:
+        """The unfitted scaler and regression, with no Platt step."""
+        return make_pipeline(StandardScaler(), self._logistic())
+
+    def fit(self, X_train: np.ndarray, y_train: np.ndarray) -> "LogisticPlatt":
+        self.scaler_ = StandardScaler()
+        X_s = self.scaler_.fit_transform(X_train)
+        base = self._logistic()
+        # cv="prefit" requires a separate calibration set; we use k-fold internal
+        # calibration, k = min(5, smallest class count), instead.
         n_per_class_min = int(min(np.bincount(y_train)))
         cv = max(2, min(5, n_per_class_min))
         self.model_ = CalibratedClassifierCV(base, method="sigmoid", cv=cv)
