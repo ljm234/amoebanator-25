@@ -1,13 +1,13 @@
 """Schema-fixture diagnostic sens/spec values are null or verified.
 
-The 8 schema validation fixtures (tests/schemas/fixtures/valid_*_fixture.json)
+The 9 schema validation fixtures (tests/schemas/fixtures/valid_*_fixture.json)
 carried diagnostic sensitivity/specificity attributed to real PMIDs that are not
 diagnostic-accuracy studies (case reports, cohorts, surveillance, treatment RCTs),
 so those numbers were templated/misattributed. All of them are null except the
 single verified figure: van de Beek 2004 (PMID 15509818) CSF Gram stain at 80/97
 (the same figure pinned for the bacterial corpus builders in
 test_vignettes_bacterial_dx_accuracy.py). valid_pam_fixture.json is a
-hand-authored orphan (no builder generates it); the other 7 are emitted by
+hand-authored orphan (no builder generates it); the other 8 are emitted by
 scripts/vignettes/generate_fixtures.py. This pins both the committed JSON and the
 builder dicts so a future regeneration or manual edit cannot silently restore the
 numbers.

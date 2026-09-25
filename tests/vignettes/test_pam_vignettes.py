@@ -170,9 +170,9 @@ def test_cluster_distribution_matches_spec(distribution):
 # 4. Demographic distribution
 # ----------------------------------------------------------------------
 #
-# The Day 1 spec doc listed
+# An earlier target listed
 # Female=9 / Male=11 / Pediatric=13 / Adult=7. The final per-vignette
-# table in the same doc resolves to Female={2,5,11,12,14}=5 and
+# table resolves to Female={2,5,11,12,14}=5 and
 # Adult={10,11,12,14,16,19}=6. The data is the source of truth here;
 # the summary block in the spec was drafted earlier and is stale.
 

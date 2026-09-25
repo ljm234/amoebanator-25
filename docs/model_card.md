@@ -101,8 +101,8 @@ files under `outputs/model/` and `outputs/metrics/` that
   inference scores.
 * **Decision rule.** No probability cut-off decides the label. The conformal
   step predicts High when `p_high >= 1 - qhat` and Low when `p_high <= qhat`,
-  and abstains otherwise; with the shipped `qhat` that is High at 0.9838 or
-  above and Low at 0.0162 or below.
+  and abstains otherwise; with the shipped `qhat` that is High from about
+  0.98383 (1 - qhat) and Low up to about 0.01617 (qhat).
 * **Uncertainty estimation.** Bootstrap percentile 95 % CI with
   `n_resamples = 2000` available via `ml.metrics.bootstrap.bootstrap_ci`.
   The conformal step abstains when the prediction set is empty or contains
@@ -112,11 +112,10 @@ files under `outputs/model/` and `outputs/metrics/` that
 
 * **Datasets used.** A single 6-row stratified validation split from the
   bundled `outputs/diagnosis_log_pro.csv` (30 simulated rows, 80/20
-  train/val split at `random_state = 42`). The same six rows fit the
-  calibration temperature, the conformal threshold and the energy gate; the
-  Mahalanobis gate is fit on the 24 training rows. This is the n = 6 caveat
-  documented in Limitations and called out by `SmallCalibrationWarning` at
-  every conformal fit.
+  train/val split at `random_state = 42`). Section 4 lists which rows fit
+  each threshold; the six validation rows are the n = 6 caveat documented in
+  Limitations and called out by `SmallCalibrationWarning` at every conformal
+  fit.
 * **Motivation.** The V1.0 goal was an end-to-end *infrastructure*
   (calibration, conformal, OOD, DCA), not a clinically valid model. Planned
   work swaps the evaluation set for a MIMIC-IV bacterial-vs-viral meningitis
@@ -190,17 +189,16 @@ files under `outputs/model/` and `outputs/metrics/` that
   research-only disclaimer above the form and the raw safety-signal
   breakdown below the prediction.
 * **Risks and harms (residual).** A reviewer or trainee could read a number
-  computed on the six validation rows as a performance estimate; for that
-  reason no performance metrics are reported. The `SmallCalibrationWarning`
+  computed on the six validation rows as a performance estimate, which is
+  why Section 4 reports none. The `SmallCalibrationWarning`
   fires at every conformal fit until n >= 100.
 
 ## 9. Caveats and recommendations
 
-* **n = 6 validation set.** The main limitation. It is why no performance
-  metrics are reported (Section 4), and the calibration temperature, the
-  conformal qhat and the energy threshold are fitted on those six rows until
-  a real held-out set is available (a MIMIC-IV bacterial-vs-viral
-  meningitis cohort through PhysioNet).
+* **n = 6 validation set.** The main limitation (Section 4). The calibration
+  temperature, the conformal qhat and the energy threshold are fitted on
+  those six rows until a real held-out set is available (a MIMIC-IV
+  bacterial-vs-viral meningitis cohort through PhysioNet).
 * **Synthetic training data.** All 30 rows carry `source = "simulated"`. The
   model has never seen a real patient. The synthesis function
   (`ml/case_series.synthesize_yoder_cohort`) draws from Yoder 2010

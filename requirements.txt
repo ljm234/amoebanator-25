@@ -1,8 +1,8 @@
 # Amoebanator V1.0 - runtime dependencies, exact pins.
 # The shipped artifacts were produced with these versions in the
-# environment recorded in docs/REPRODUCIBILITY.md Section 2. CPU-only
-# PyTorch by default - uncomment the torch index URL block at the bottom for
-# explicit CPU wheels in CI.
+# environment recorded in docs/REPRODUCIBILITY.md Section 2. On Linux x86_64
+# the default torch wheel pulls in CUDA libraries; see the notes at the bottom
+# for CPU-only wheels.
 
 # ML core
 torch==2.9.1

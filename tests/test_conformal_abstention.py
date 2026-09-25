@@ -28,6 +28,7 @@ from ml.conformal_advanced import (
     compute_qhat,
     empirical_coverage,
     finite_sample_rank,
+    qhat_to_json,
 )
 from ml.robust import score_energy
 from scripts.ood.fit_gates import fit_logit_energy
@@ -79,6 +80,14 @@ def test_float_alpha_near_one_seventh_keeps_its_exact_value() -> None:
         parse_alpha("1/0")
 
 
+def test_threshold_json_form() -> None:
+    assert qhat_to_json(0.35) == 0.35
+    assert qhat_to_json(math.inf) == "inf"
+    for bad in (math.nan, -math.inf):
+        with pytest.raises(ValueError):
+            qhat_to_json(bad)
+
+
 def test_decision_rule_abstains_on_empty_and_two_class_sets() -> None:
     assert decision_from_p_high(0.5, qhat=0.10) == "ABSTAIN"  # neither class
     assert decision_from_p_high(0.5, qhat=0.60) == "ABSTAIN"  # both classes
@@ -107,7 +116,7 @@ def test_infer_one_abstains_on_empty_and_two_class_sets(
     # Equal logits give p_high = 0.5 and energy -5.69, below the shipped gate,
     # so the row reaches the conformal step.
     monkeypatch.setattr(infer, "_real_logits", lambda _row: (5.0, 5.0))
-    monkeypatch.setattr(infer, "_choose_qhat", lambda _age: (qhat, 1 / 7, "global"))
+    monkeypatch.setattr(infer, "_conformal_threshold", lambda: (qhat, 1 / 7))
     out = infer.infer_one(_BENIGN)
     assert out["prediction"] == "ABSTAIN"
     assert out["reason"] == reason

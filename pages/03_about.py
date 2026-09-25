@@ -11,7 +11,7 @@ adjacent to a result would falsely imply input-specificity. The
 caption is fixed, model-level text.
 
 The Advanced expander hosts the alpha slider, so a reader can move
-alpha in {1/20, 1/10, 1/7, 1/5} and watch q-hat and the regime badge
+alpha in {1/20, 1/10, 1/7, 1/5} and watch the rank k and the regime badge
 respond. It is illustrative; the rest of the page does not depend on it.
 
 The authorship section names the repository (github.com/ljm234/
@@ -133,7 +133,7 @@ st.caption(
 # -- section 5. Conformal advanced expander (alpha slider) -------------------
 with st.expander("Advanced: explore conformal coverage"):
     st.markdown(
-        "Move the slider to see how `q-hat` and the regime badge "
+        "Move the slider to see how the rank `k` and the regime badge "
         "respond to different significance levels. The 3-state regime "
         "badge (ASYMPTOTIC / FINITE-SAMPLE / INVALID) is "
         "computed from `(n_cal, alpha, k)` where "

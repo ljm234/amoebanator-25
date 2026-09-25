@@ -46,7 +46,7 @@ class LogisticPlatt:
         X_s = self.scaler_.fit_transform(X_train)
         base = self._logistic()
         # cv="prefit" requires a separate calibration set; we use k-fold internal
-        # calibration, k = min(5, smallest class count), instead.
+        # calibration, k = max(2, min(5, smallest class count)), instead.
         n_per_class_min = int(min(np.bincount(y_train)))
         cv = max(2, min(5, n_per_class_min))
         self.model_ = CalibratedClassifierCV(base, method="sigmoid", cv=cv)

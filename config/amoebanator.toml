@@ -1,7 +1,7 @@
 # Settings read at run time by ml/config.py. The conformal fit scripts use
-# [conformal] alpha as the default for --alpha; conformal_fit_grouped.py and
-# run_ablation.py always use it, and the app falls back to it when a
-# threshold file does not record alpha.
+# [conformal] alpha as the default for --alpha; run_ablation.py always uses
+# it, and the app falls back to it when a threshold file does not record
+# alpha.
 
 [conformal]
 # Target miscoverage for the split-conformal step, written as an exact

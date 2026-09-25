@@ -102,10 +102,10 @@ cited below carry their sample size in the same sentence.
   `Linear(d, 32) -> ReLU -> Linear(32, 16) -> ReLU -> Linear(16, 2)`, trained
   with cross-entropy and class weighting using Adam (lr = 1e-3) for 60 epochs,
   full-batch, with random seed 42 (`model_card.md` Section 1). Three
-  calibrated reference baselines are reported for comparison: logistic
-  regression with Platt scaling, random forest with isotonic calibration, and
-  gradient-boosted trees with isotonic calibration (`model_card.md`
-  Section 7). Internal validation is a stratified hold-out, with a
+  calibrated reference baselines run in the ablation: logistic regression
+  with Platt scaling, random forest with isotonic calibration, and
+  gradient-boosted trees with isotonic calibration; on six test rows their
+  metrics are not meaningful (`model_card.md` Section 7). Internal validation is a stratified hold-out, with a
   group-disjoint splitter reserved for the planned proxy. Hyperparameters are
   fixed rather than tuned given the fixture size, and this is documented as
   such.

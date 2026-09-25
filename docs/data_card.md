@@ -70,8 +70,8 @@ traceable.
 
 ## 3. Collection process
 
-* **How was the data acquired?** The 30 rows are synthetic rows created for
-  this demo.
+* **How was the data acquired?** Not acquired from any source; see Section
+  1.
 * **Mechanisms / procedures.** Not applicable to the bundled rows. The
   separate `ml.case_series.synthesize_yoder_cohort` function draws rows from
   Yoder 2010 marginals; rows it produces carry
@@ -173,8 +173,7 @@ traceable.
 
 ## Planned dataset (V1.1, de-identified MIMIC-IV)
 
-The V1.1 dataset will be a MIMIC-IV cohort with the schema below, documented
-here so the lineage of any future figure is traceable from this card.
+The V1.1 dataset will be a MIMIC-IV cohort with the schema below.
 
 | Field | Source | Notes |
 |-------|--------|-------|

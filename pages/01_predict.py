@@ -64,6 +64,19 @@ if _research_mode_active:
 st.title("PAM Risk Prediction")
 
 
+# -- Form defaults ----------------------------------------------
+# Streamlit keeps each widget's value in session_state under the widget key
+# and ignores a widget's default once that key exists, so the defaults are
+# seeded here once and a preset overwrites the same keys.
+_FORM_DEFAULTS: dict[str, Any] = {
+    "age": 12, "csf_glucose": 65.0, "csf_protein": 30.0, "csf_wbc": 3,
+    "pcr": False, "microscopy": False, "exposure": False, "symptoms": [],
+}
+for _field, _default in _FORM_DEFAULTS.items():
+    if _field not in st.session_state:
+        st.session_state[_field] = _default
+
+
 # -- Preset buttons (3 buttons + neutral default state) --------
 _preset_cols = st.columns(3)
 for _col, _key in zip(
@@ -71,10 +84,13 @@ for _col, _key in zip(
     ("high_risk_pam", "bacterial_meningitis_limitation", "normal_csf"),
 ):
     if _col.button(PRESETS[_key]["label"], key=f"preset_{_key}"):
-        # Update session_state with preset inputs (form widgets read from
-        # session_state so this populates the form on next render).
+        # The buttons render above the form, so the widget keys can still be
+        # written in this run; the form shows the preset when it renders.
         for _field, _value in PRESETS[_key]["inputs"].items():
-            st.session_state[f"input_{_field}"] = _value
+            _default = _FORM_DEFAULTS[_field]
+            st.session_state[_field] = (
+                list(_value) if isinstance(_default, list) else type(_default)(_value)
+            )
         st.session_state["active_preset"] = _key
         _emit(
             AuditEventType.WEB_PRESET_LOADED,
@@ -89,42 +105,25 @@ for _col, _key in zip(
 with st.form("predict_form"):
     col1, col2 = st.columns(2)
     age = col1.number_input(
-        "Age (years)", min_value=0, max_value=120,
-        value=int(st.session_state.get("input_age", 12)), key="age",
+        "Age (years)", min_value=0, max_value=120, key="age",
     )
     csf_glucose = col1.number_input(
         "CSF glucose (mg/dL)", min_value=0.0, max_value=500.0,
-        value=float(st.session_state.get("input_csf_glucose", 65.0)),
         step=1.0, key="csf_glucose",
     )
     csf_protein = col1.number_input(
         "CSF protein (mg/dL)", min_value=0.0, max_value=1000.0,
-        value=float(st.session_state.get("input_csf_protein", 30.0)),
         step=1.0, key="csf_protein",
     )
     csf_wbc = col1.number_input(
         "CSF WBC (cells/uL)", min_value=0, max_value=50000,
-        value=int(st.session_state.get("input_csf_wbc", 3)),
         step=1, key="csf_wbc",
     )
-    pcr = col2.checkbox(
-        "PCR positive",
-        value=bool(st.session_state.get("input_pcr", False)), key="pcr",
-    )
-    microscopy = col2.checkbox(
-        "Microscopy positive",
-        value=bool(st.session_state.get("input_microscopy", False)),
-        key="microscopy",
-    )
-    exposure = col2.checkbox(
-        "Recent freshwater exposure",
-        value=bool(st.session_state.get("input_exposure", False)),
-        key="exposure",
-    )
+    pcr = col2.checkbox("PCR positive", key="pcr")
+    microscopy = col2.checkbox("Microscopy positive", key="microscopy")
+    exposure = col2.checkbox("Recent freshwater exposure", key="exposure")
     symptoms = col2.multiselect(
-        "Symptoms", options=list(KNOWN_SYMPTOMS),
-        default=list(st.session_state.get("input_symptoms", [])),
-        key="symptoms",
+        "Symptoms", options=list(KNOWN_SYMPTOMS), key="symptoms",
     )
     submitted = st.form_submit_button("Run inference")
 
@@ -244,10 +243,9 @@ if submitted:
         # Mahalanobis stats / model.pt missing -> graceful banner,
         # NOT crash. Disable submit on next render via session_state flag.
         st.warning(
-            "OOD gate is unconfigured (required artifact missing: "
-            f"{e.filename or e}). All predictions return ABSTAIN/OOD until "
-            "re-fit. See docs/REPRODUCIBILITY.md section 4 for the command "
-            "that regenerates every artifact."
+            f"A required artifact is missing ({e.filename or e}), so no "
+            "prediction can be made. See docs/REPRODUCIBILITY.md section 4 "
+            "for the command that regenerates every artifact."
         )
         st.session_state["_artifact_missing"] = True
     except Exception as e:  # noqa: BLE001 - correlation-ID catch-all

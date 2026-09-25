@@ -70,11 +70,6 @@ PIPELINE: list[tuple[str, list[str], list[str]]] = [
         ["outputs/metrics/conformal.json"],
     ),
     (
-        "Fit age-grouped conformal qhat",
-        [sys.executable, str(REPO_ROOT / "scripts" / "conformal" / "conformal_fit_grouped.py")],
-        ["outputs/metrics/conformal_grouped.json"],
-    ),
-    (
         "Conformal set statistics on the validation rows",
         [sys.executable, str(REPO_ROOT / "scripts" / "conformal" / "conformal_eval_from_probs.py")],
         ["outputs/metrics/conformal_eval.json"],
@@ -165,7 +160,8 @@ def _run_step(step: Step, dry_run: bool) -> None:
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--dry-run", action="store_true",
-                        help="Skip subprocess execution; only check artifact presence.")
+                        help="Skip the steps and only report which artifacts exist; "
+                             "the summary file is left unchanged.")
     args = parser.parse_args(argv)
 
     METRICS_DIR.mkdir(parents=True, exist_ok=True)
@@ -202,13 +198,15 @@ def main(argv: list[str] | None = None) -> int:
         return obj
 
     summary = _sanitize_paths(summary)
-    SUMMARY_JSON.write_text(json.dumps(summary, indent=2, default=str))
+    if not args.dry_run:
+        SUMMARY_JSON.write_text(json.dumps(summary, indent=2, default=str))
 
     print()
     print("=" * 72)
     print(f"  Steps:     {n_ok}/{n_total} OK  ({n_fail} failed)")
     print(f"  Artifacts: {n_present}/{n_artifacts} present")
-    print(f"  Summary written to: {SUMMARY_JSON.relative_to(REPO_ROOT)}")
+    if not args.dry_run:
+        print(f"  Summary written to: {SUMMARY_JSON.relative_to(REPO_ROOT)}")
     print("=" * 72)
 
     return 0 if (n_fail == 0 and n_present == n_artifacts) else 1

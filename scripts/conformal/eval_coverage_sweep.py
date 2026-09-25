@@ -8,9 +8,9 @@ reports the qhat, empirical coverage, and abstain rate.
 
 Output: outputs/metrics/coverage_sweep.json (table) + coverage_sweep.png (figure).
 
-Note: with the bundled n=6 val_preds the per-alpha numbers are noisy by
-construction; the SmallCalibrationWarning is intentional and documented.
-The script is the framework a future run will populate with n>=200.
+Note: with the bundled n=6 val_preds the calibration half has three rows, so
+no finite threshold reaches the coverage of any alpha in the sweep; each
+threshold is infinite (InfiniteThresholdWarning) and every test row abstains.
 """
 from __future__ import annotations
 

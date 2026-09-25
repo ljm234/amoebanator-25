@@ -19,7 +19,7 @@ the current research stage.
   planned real-data study is governed from the first commit, not so that the
   system can be called governed for any clinical use. On the bundled
   synthetic dataset several controls (de-identification, the IRB gate) are
-  no-op safeguards; they do real work only once real data arrives.
+  no-op safeguards, and no training entry point calls them yet (Section 3).
 * **Frameworks.** No formal external AI-governance or quality-management
   framework (for example, a regulatory software-as-a-medical-device system)
   is adopted. The data-privacy controls map to the HIPAA Privacy Rule
@@ -40,8 +40,8 @@ the current research stage.
   expert-determination path (45 CFR 164.514(b)(1)) is also represented.
 * **On the bundled data.** The shipped 30-row dataset is synthetic and
   carries no identifiers, so the de-identification pass is a no-op safeguard
-  today. It matters for any future MIMIC-IV-shaped CSV, where the age
-  cap, date generalization, and identifier removal do real work
+  today, and the trainer does not call it. The age cap, date generalization,
+  and identifier removal would matter for a MIMIC-IV-shaped CSV
   (`data_card.md` Section 4).
 * **Provenance.** Every row carries `source`, `physician`, `timestamp_tz`,
   and a `case_id`. Synthetic rows are tagged with a `source` value such as
@@ -89,9 +89,12 @@ the current research stage.
 ## 5. Model governance: versioning and change control
 
 * **Versioning.** The model is V1.0. Its state_dict is regenerable from a
-  pinned random seed via the documented training entry point, and a git tag
-  marks the release commit so the V1.0 artifacts remain retrievable from
-  history (`model_card.md` Section 1; `data_card.md` Section 7).
+  pinned random seed via the documented training entry point, bit for bit in
+  the environment recorded in `docs/REPRODUCIBILITY.md`. The tag `v1.0.0`
+  marks the original release commit; its `model.pt` did not reproduce in that
+  environment, so the shipped model was retrained, and the tagged artifacts
+  remain retrievable from history (`model_card.md` Section 1;
+  `data_card.md` Section 7).
 * **Change control.** Re-fitting the model requires re-running the audit
   chain and re-fitting every downstream metric so that the model card stays
   synchronized with the artifacts it describes. Adding synthetic rows

@@ -141,12 +141,7 @@ def test_per_class_anchor_count_in_target_range():
 
 
 def test_anchor_caveat_names_provenance():
-    """No anchor overwrote an entry registered earlier for another class.
-
-    Each entry's caveat or notes must carry the provenance tag matched
-    below. An anchor whose key collided with an older registry entry would
-    keep that entry's caveat and fail the check.
-    """
+    """Each anchor's caveat or notes carries the provenance tag matched below."""
     for pmid in SUBPHASE_1_4_ALL:
         entry = PMID_REGISTRY[pmid]
         caveat = (entry.get("caveat") or "") + " " + (entry.get("notes") or "")

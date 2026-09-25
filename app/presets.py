@@ -4,11 +4,9 @@ Three presets cover the demo's discrimination story:
 
 1. ``high_risk_pam``                    - positive control (PAM-likely
                                           pediatric patient).
-2. ``bacterial_meningitis_limitation``  - known limitation: the model
-                                          cannot tell bacterial
-                                          meningitis from PAM at n=30.
-                                          The UI shows a red banner next
-                                          to the result.
+2. ``bacterial_meningitis_limitation``  - known limitation (see its
+                                          description). The UI shows a
+                                          red banner next to the result.
 3. ``normal_csf``                       - negative control (adult, no
                                           PAM risk factors).
 
@@ -60,10 +58,10 @@ PRESETS: dict[str, dict[str, Any]] = {
     },
 
     # -- Preset 2: known limitation (bacterial meningitis, not PAM) -----
-    # The model returns prediction="High" because the 30 synthetic rows
-    # contain no bacterial meningitis that is not PAM. The matching test in
-    # tests/test_app_presets.py is marked xfail(strict=False), so a model
-    # that predicts Low shows up as XPASS without failing CI.
+    # The model returns prediction="High" for this preset; the description
+    # below says why. The matching test in tests/test_app_presets.py is
+    # marked xfail(strict=False), so a model that predicts Low shows up as
+    # XPASS without failing CI.
     "bacterial_meningitis_limitation": {
         "label": "Load bacterial meningitis (limitation demo)",
         "description": (

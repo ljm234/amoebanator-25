@@ -1,8 +1,9 @@
 """
 ml.data - data-pipeline modules.
 
-Six modules are imported and re-exported at the package level, each with unit
-tests. Three are used by the rest of the codebase: audit_trail (ml.audit_hooks,
+Six modules are imported and re-exported at the package level; audit_trail and
+deidentification have their own unit tests. Three are used by the rest of the
+codebase: audit_trail (ml.audit_hooks,
 ml.data_loader, ml.irb_gate, the audit export and the predict page),
 deidentification (ml.data_loader) and compliance (ml.irb_gate). acquisition,
 clinical and microscopy are not used by this release.

@@ -104,13 +104,8 @@ CHECKPOINT_INTERVAL: Final[int] = 100
 class AuditEventType(Enum):
     """Classification of audit events.
 
-    Cleanup history: 10 dead values removed
-    (no production callers, no behavior coverage in tests). The 5
-    test-fixture references in tests/test_audit_trail.py were
-    substituted with kept values (the tests verify audit-trail
-    infrastructure on arbitrary event types, not production emission).
-    INTEGRITY_VIOLATION kept - correlation-ID error path uses it.
-    3 new WEB_* values added for the web layer.
+    INTEGRITY_VIOLATION is used by the correlation-ID error path; the WEB_*
+    values are emitted by the web layer.
     """
 
     # Data lifecycle events

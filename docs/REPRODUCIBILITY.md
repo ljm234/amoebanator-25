@@ -49,7 +49,7 @@ bit-identical `model.pt`. The train and validation split uses
 `random_state=42`. Bit-level reproducibility holds only on the same hardware,
 device and library build. A different device can change the weights well
 beyond the last bits: on the machine in Section 2, training on the CPU
-instead of MPS changes some weights by up to 0.025.
+instead of MPS gives different weights.
 
 ## 4. Reproducing the model and metrics
 
@@ -73,13 +73,12 @@ instead of MPS changes some weights by up to 0.025.
   PYTHONPATH=. python scripts/regenerate_all_artifacts.py
   ```
 
-  It runs twelve steps in order and writes
+  It runs eleven steps in order and writes
   `outputs/metrics/regeneration_summary.json` with each step's command, exit
   code, duration, any warnings it printed, and whether each artifact the step
   is expected to write exists afterwards, with its size and SHA-256. The
-  conformal fit, grouped fit, and
-  ablation steps read the miscoverage level from `[conformal] alpha` in
-  `config/amoebanator.toml`. Apart from the per-step durations in the summary,
+  conformal fit and ablation steps read the miscoverage level from
+  `[conformal] alpha` in `config/amoebanator.toml`. Apart from the per-step durations in the summary,
   two runs on the same machine give byte-identical artifacts. The ablation's
   gradient-boosting baseline is scikit-learn's `GradientBoostingClassifier`,
   and `ablation_table.json` records the estimator and calibration method
@@ -103,7 +102,7 @@ a known limitation of the synthetic training data: the bacterial-meningitis
 preset is predicted High. `tests/test_reproducibility_checksums.py` checks
 that Section 8 matches the shipped artifacts. `ruff check .` reports no
 issues, and `mypy` reports no issues on `ml`, `scripts`, `app`,
-`streamlit_app.py` and `outputs/model`. ruff, mypy, and pytest run in
+and `streamlit_app.py`. ruff, mypy, and pytest run in
 continuous integration on every push (Python 3.12), with every tool version
 pinned in `requirements.txt`.
 
@@ -143,7 +142,6 @@ because it also records per-step durations, which change on every run.
 | `outputs/metrics/energy_threshold.json` | `b7d856f0dcdb2dabe202d6bf5ff02d33b89ee3bb8885a7648ed8eb87ba74dd66` |
 | `outputs/metrics/ood_energy.json` | `cff3bda4ae968a95c7e7e245e1bd2c4a37a8bf653cd263a9f2ffe5e9366dd0a2` |
 | `outputs/metrics/conformal.json` | `76ae94eab684e23729d2900320c4dbdfb0ca6f5d12c19114d1f4bba4b247a7f2` |
-| `outputs/metrics/conformal_grouped.json` | `1f0f0f6cf8afe7549d2d421b68c48efc8b39fd0407279b98ef6417646063a8d7` |
 | `outputs/metrics/conformal_eval.json` | `2224eff53712f66a56a6acecf446a4723e8c3a03b6d334be3cfa90460fa86b7e` |
 | `outputs/metrics/ci.json` | `8617631375196f71fb975402085c0e2b6616e500af0541f29937e3d7a9102955` |
 | `outputs/metrics/calibration_curve.png` | `fcc4fe0d46af0c28d2d3e75189ce070ab46c6d763c92024c2610bf559915b42a` |

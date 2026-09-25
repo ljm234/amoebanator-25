@@ -7,9 +7,9 @@ Run via:
     streamlit run streamlit_app.py
 
 This entry lives at the repo root (HF Spaces docker-app convention). It must
-not live inside ``app/``: Streamlit would then register "app" as the script
-module name, shadowing the ``app/`` package and breaking
-``from app.disclaimer import ...``.
+not be ``app/app.py``: Streamlit puts the script's folder first on sys.path,
+so ``import app`` would then load ``app/app.py`` instead of the ``app/``
+package and break ``from app.disclaimer import ...``.
 """
 from __future__ import annotations
 

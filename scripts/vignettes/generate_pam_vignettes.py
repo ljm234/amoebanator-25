@@ -1,9 +1,11 @@
 """PAM vignette generator.
 
-Builds the vignette corpus under data/vignettes/: 60 PAM (Naegleria fowleri
-primary amebic meningoencephalitis) vignettes in data/vignettes/pam/ and 78
-vignettes of the differential classes in data/vignettes/v2/. All vignettes
-are anchored to peer-reviewed PMIDs verified per the Day 1 distribution spec.
+Builders for the vignette corpus under data/vignettes/. `main()` writes one
+PAM (Naegleria fowleri primary amebic meningoencephalitis) vignette, ids 1-60,
+per call; the module also holds the PMID registry the vignettes are anchored
+to and the builders and writers for most of the differential-class vignettes
+in data/vignettes/v2/. The 20 Day 1 PAM vignettes are anchored to
+peer-reviewed PMIDs verified per the Day 1 distribution spec.
 
 Schema target: ml/schemas/vignette.py VignetteSchema v2.0.
 Each generated vignette validates against this schema before write.

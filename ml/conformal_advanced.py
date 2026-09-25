@@ -212,7 +212,11 @@ def coverage_sweep(
 
 def qhat_to_json(qhat: float) -> float | str:
     """A threshold as JSON: finite values as numbers, +inf as the string "inf"."""
-    return float(qhat) if math.isfinite(qhat) else "inf"
+    if math.isfinite(qhat):
+        return float(qhat)
+    if qhat == math.inf:
+        return "inf"
+    raise ValueError(f"a conformal threshold is finite or +inf; got {qhat!r}.")
 
 
 def nonconformity_from_p(p_high: np.ndarray, y_true: np.ndarray) -> np.ndarray:

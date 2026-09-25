@@ -5,9 +5,9 @@ paths, the decision and calibration badges, submit debounce, the
 known-limitation banner on the bacterial preset, both research-mode
 branches, and a text-snapshot drift check.
 
-Every page test runs the script through Streamlit's AppTest. Most tests
-mock ``infer_one``; only the neutral-defaults test calls the real model,
-because it checks that the defaults predict Low with ``p_high < 0.001``.
+Tests of the page run it through Streamlit's AppTest; tests of the helpers
+call app.utils directly. Some tests patch ``infer_one`` to control the
+result; the others run the shipped model.
 """
 from __future__ import annotations
 
@@ -141,18 +141,28 @@ def test_three_preset_buttons_render() -> None:
 
 
 # ---------------------------------------------------------------------
-# Loading the high_risk_pam preset populates session_state
+# Loading a preset fills the form widgets, also after another preset
 # ---------------------------------------------------------------------
-def test_loading_high_risk_pam_preset_populates_form() -> None:
+@pytest.mark.parametrize("first, second", [
+    ("high_risk_pam", None),
+    ("high_risk_pam", "normal_csf"),
+])
+def test_loading_a_preset_populates_form(first: str, second: str | None) -> None:
     from app.presets import PRESETS
 
     at = _fresh_app_test()
     at.run(timeout=30)
-    at.button(key="preset_high_risk_pam").click().run(timeout=30)
-    expected = PRESETS["high_risk_pam"]["inputs"]
-    for field, value in expected.items():
-        assert at.session_state[f"input_{field}"] == value
-    assert at.session_state["active_preset"] == "high_risk_pam"
+    at.button(key=f"preset_{first}").click().run(timeout=30)
+    if second is not None:
+        at.button(key=f"preset_{second}").click().run(timeout=30)
+    key = second or first
+    expected = PRESETS[key]["inputs"]
+    for field in ("age", "csf_glucose", "csf_protein", "csf_wbc"):
+        assert at.number_input(key=field).value == expected[field]
+    for field in ("pcr", "microscopy", "exposure"):
+        assert at.checkbox(key=field).value == expected[field]
+    assert at.multiselect(key="symptoms").value == expected["symptoms"]
+    assert at.session_state["active_preset"] == key
 
 
 # ---------------------------------------------------------------------
@@ -208,7 +218,7 @@ def test_filenotfounderror_renders_graceful_banner() -> None:
         at.button[3].click()  # form_submit_button is the 4th button
         at.run(timeout=30)
     warnings = [w.value for w in at.warning]
-    assert any("OOD gate is unconfigured" in w for w in warnings)
+    assert any("A required artifact is missing" in w for w in warnings)
     assert len(at.exception) == 0  # no crash
 
 

@@ -16,7 +16,6 @@ _REPO_ROOT: Path = Path(__file__).resolve().parent.parent
 
 METRICS_DIR: Path = Path("outputs/metrics")
 CONF_JSON: Path = METRICS_DIR / "conformal.json"
-CONF_G_JSON: Path = METRICS_DIR / "conformal_grouped.json"
 NEG_ENERGY_JSON: Path = METRICS_DIR / "ood_energy.json"
 
 MODEL_DIR: Path = _REPO_ROOT / "outputs" / "model"
@@ -154,19 +153,12 @@ def _softmax_high(lo: float, hi: float) -> float:
     return e_hi / (e_lo + e_hi)
 
 
-def _choose_qhat(age_val: float | None) -> tuple[float, float, str]:
-    """Group-specific threshold when one was fit for the patient's age group, else the global one."""
-    if CONF_G_JSON.exists() and age_val is not None:
-        data = _read_json(CONF_G_JSON)
-        groups = data.get("groups", {})
-        g = "child" if age_val < 18 else "adult"
-        if g in groups and "qhat" in groups[g]:
-            alpha = float(data.get("alpha", conformal_alpha()))
-            return float(groups[g]["qhat"]), alpha, g
+def _conformal_threshold() -> tuple[float, float]:
+    """The split-conformal threshold and its alpha, from conformal.json."""
     data = _read_json(CONF_JSON)
     if "qhat" not in data:
         raise _missing_threshold(CONF_JSON, "conformal threshold")
-    return float(data["qhat"]), float(data.get("alpha", conformal_alpha())), "global"
+    return float(data["qhat"]), float(data.get("alpha", conformal_alpha()))
 
 
 def _energy_tau() -> float:
@@ -272,13 +264,7 @@ def infer_one(row_in: dict | pd.Series) -> dict:
             "include_high": False,
             "contrib": ood.get("contrib")
         }
-    age_val = None
-    if "age" in row.index:
-        try:
-            age_val = float(row["age"])
-        except Exception:
-            age_val = None
-    qhat, alpha, group = _choose_qhat(age_val)
+    qhat, alpha = _conformal_threshold()
     include_high = bool(p_high >= (1.0 - qhat))
     include_low = bool(p_high <= qhat)
     if include_high == include_low:
@@ -297,7 +283,6 @@ def infer_one(row_in: dict | pd.Series) -> dict:
             "include_high": include_high,
             "qhat": float(qhat),
             "alpha": float(alpha),
-            "group": group,
             "contrib": ood.get("contrib")
         }
     label = "High" if include_high else "Low"
@@ -317,6 +302,4 @@ def infer_one(row_in: dict | pd.Series) -> dict:
         "ood_abstain_energy_neg": ood_neg,
         "contrib": ood.get("contrib")
     }
-    if group is not None:
-        out["group"] = group
     return out
