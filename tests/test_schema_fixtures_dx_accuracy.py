@@ -8,9 +8,10 @@ single verified figure: van de Beek 2004 (PMID 15509818) CSF Gram stain at 80/97
 (the same figure pinned for the bacterial corpus builders in
 test_vignettes_bacterial_dx_accuracy.py). valid_pam_fixture.json is a
 hand-authored orphan (no builder generates it); the other 8 are emitted by
-scripts/vignettes/generate_fixtures.py. This pins both the committed JSON and the
-builder dicts so a future regeneration or manual edit cannot silently restore the
-numbers.
+scripts/vignettes/generate_fixtures.py. The tests check the committed JSON of the
+fixtures and results listed in _EXPECTED, the GAE fixture, and the builder dicts
+of the fixtures in _EXPECTED, so a regeneration or manual edit that restores the
+numbers there fails.
 """
 from __future__ import annotations
 

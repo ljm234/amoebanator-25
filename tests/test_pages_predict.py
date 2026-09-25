@@ -6,8 +6,10 @@ known-limitation banner on the bacterial preset, both research-mode
 branches, and a text-snapshot drift check.
 
 Tests of the page run it through Streamlit's AppTest; tests of the helpers
-call app.utils directly. Some tests patch ``infer_one`` to control the
-result; the others run the shipped model.
+call app.utils directly. Tests that submit the form patch ``infer_one``,
+except test_stale_lock_recovers_after_30s; that test and
+test_neutral_defaults_predict_low_p_high_lt_001, which calls ml.infer
+directly, run the shipped model.
 """
 from __future__ import annotations
 
@@ -163,6 +165,21 @@ def test_loading_a_preset_populates_form(first: str, second: str | None) -> None
         assert at.checkbox(key=field).value == expected[field]
     assert at.multiselect(key="symptoms").value == expected["symptoms"]
     assert at.session_state["active_preset"] == key
+
+
+def test_preset_survives_a_page_change() -> None:
+    """A loaded preset is still in the form after visiting another page."""
+    from app.presets import PRESETS
+
+    at = AppTest.from_file("streamlit_app.py")
+    at.run(timeout=60)
+    at.button(key="preset_bacterial_meningitis_limitation").click().run(timeout=60)
+    at.switch_page("pages/03_about.py").run(timeout=60)
+    at.switch_page("pages/01_predict.py").run(timeout=60)
+    expected = PRESETS["bacterial_meningitis_limitation"]["inputs"]
+    for field in ("age", "csf_glucose", "csf_protein", "csf_wbc"):
+        assert at.number_input(key=field).value == expected[field]
+    assert at.multiselect(key="symptoms").value == expected["symptoms"]
 
 
 # ---------------------------------------------------------------------

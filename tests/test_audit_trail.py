@@ -141,9 +141,8 @@ class TestAuditEventType:
         assert AuditEventType.INTEGRITY_VIOLATION.value == "integrity_violation"
 
     def test_total_event_types(self) -> None:
-        # Cleanup: 3 data-lifecycle + 1 access + 2 compliance + 1 security
-        # + 3 system + 5 web (3 + 2 audit_export) = 15
-        # (was 20 pre-cleanup)
+        # 3 data-lifecycle + 1 access + 2 compliance + 1 security
+        # + 3 system + 4 web + 1 audit export = 15
         assert len(AuditEventType) == 15
 
 

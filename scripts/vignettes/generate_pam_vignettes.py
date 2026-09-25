@@ -11,9 +11,8 @@ Schema target: ml/schemas/vignette.py VignetteSchema v2.0.
 Each generated vignette validates against this schema before write.
 
 Run:
-    python -m scripts.vignettes.generate_pam_vignettes
-    python -m scripts.vignettes.generate_pam_vignettes --dry-run
     python -m scripts.vignettes.generate_pam_vignettes --vignette-id 1
+    python -m scripts.vignettes.generate_pam_vignettes --vignette-id 1 --dry-run
 """
 from __future__ import annotations
 
@@ -42,9 +41,9 @@ OUTPUT_DIR = Path("data/vignettes/pam")
 # The Day 1 vignettes use 15 distinct PMIDs, matching the per-vignette
 # assignments.
 #
-# Each entry holds the metadata Step D needs to populate
-# LiteratureAnchor + DxResult + provenance fields. Fields marked "" or None
-# are intentionally empty in scaffolding; Step D fills them via PubMed lookup.
+# Each entry holds the metadata needed to populate the LiteratureAnchor,
+# DxResult and provenance fields of a vignette. Fields left "" or None are
+# unknown.
 # ============================================================================
 
 PMID_REGISTRY: dict[str, dict[str, Any]] = {
@@ -22532,8 +22531,8 @@ def generate_vignette(
     else:
         raise NotImplementedError(
             f"Vignette {vignette_id} ({spec['cluster']} / {spec['stage']} / "
-            f"{spec['outcome']}) not yet implemented. Step D iteration: add "
-            f"the cluster-specific builder before generating this vignette."
+            f"{spec['outcome']}) has no builder; add the cluster-specific "
+            f"builder before generating this vignette."
         )
 
     region = _GEOGRAPHY_TO_SCHEMA_REGION.get(spec["geography_label"], "other_global")
@@ -25114,19 +25113,16 @@ def write_subphase_1_4_wave1_corpus() -> list[Path]:
 
 
 def main() -> None:
-    """CLI entry point.
-
-    Step D testing phase: requires --vignette-id (no all-vignettes loop until
-    each per-vignette builder has been reviewed and approved).
+    """CLI entry point. Builds one PAM vignette per call.
 
     Args (via argparse):
         --output-dir: override default OUTPUT_DIR.
         --dry-run: validate and print JSON to stdout instead of writing.
-        --vignette-id: required during Step D; integer 1-20 selecting one
-            DAY1_DISTRIBUTION entry.
+        --vignette-id: required; integer 1-60 selecting one entry of
+            DAY1_DISTRIBUTION (1-20) or DAY2_DISTRIBUTION (21-60).
     """
     parser = argparse.ArgumentParser(
-        description="Generate Day 1 PAM vignettes.",
+        description="Generate one PAM vignette.",
     )
     parser.add_argument(
         "--output-dir",
@@ -25143,7 +25139,7 @@ def main() -> None:
         "--vignette-id",
         type=int,
         default=None,
-        help="Required during Step D testing: integer 1-20 selecting one vignette.",
+        help="Required: integer 1-60 selecting one vignette.",
     )
     args = parser.parse_args()
 
@@ -25154,7 +25150,7 @@ def main() -> None:
 
     if args.vignette_id is None:
         logger.error(
-            "Use --vignette-id to generate one at a time during Step D testing phase"
+            "Use --vignette-id to select the vignette to generate (1-60)"
         )
         sys.exit(1)
 
@@ -25166,8 +25162,7 @@ def main() -> None:
     if spec is None:
         logger.error(
             "vignette_id %d not found in DAY1+DAY2 distributions "
-            "(valid Day-1 range 1-20; Day-2 range 21-60; pilot v21-v25 "
-            "implemented in commit 4 of 5).",
+            "(valid range 1-60).",
             args.vignette_id,
         )
         sys.exit(1)

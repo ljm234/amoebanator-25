@@ -104,8 +104,9 @@ CHECKPOINT_INTERVAL: Final[int] = 100
 class AuditEventType(Enum):
     """Classification of audit events.
 
-    INTEGRITY_VIOLATION is used by the correlation-ID error path; the WEB_*
-    values are emitted by the web layer.
+    INTEGRITY_VIOLATION is used by the correlation-ID error path. The web
+    layer emits the WEB_* values except WEB_RATE_LIMIT_HIT, which nothing
+    emits because the web layer does not use the rate limiter.
     """
 
     # Data lifecycle events

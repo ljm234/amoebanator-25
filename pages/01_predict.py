@@ -65,16 +65,20 @@ st.title("PAM Risk Prediction")
 
 
 # -- Form defaults ----------------------------------------------
-# Streamlit keeps each widget's value in session_state under the widget key
-# and ignores a widget's default once that key exists, so the defaults are
-# seeded here once and a preset overwrites the same keys.
+# Streamlit keeps each widget's value in session_state under the widget key,
+# ignores a widget's default once that key exists, and drops the key when the
+# page is not shown. The last loaded values (defaults or a preset) are kept
+# in form_values, which survives page changes, and any widget key that is
+# missing is seeded from it before the form renders.
 _FORM_DEFAULTS: dict[str, Any] = {
     "age": 12, "csf_glucose": 65.0, "csf_protein": 30.0, "csf_wbc": 3,
     "pcr": False, "microscopy": False, "exposure": False, "symptoms": [],
 }
-for _field, _default in _FORM_DEFAULTS.items():
+if "form_values" not in st.session_state:
+    st.session_state["form_values"] = dict(_FORM_DEFAULTS)
+for _field, _value in st.session_state["form_values"].items():
     if _field not in st.session_state:
-        st.session_state[_field] = _default
+        st.session_state[_field] = _value
 
 
 # -- Preset buttons (3 buttons + neutral default state) --------
@@ -86,11 +90,15 @@ for _col, _key in zip(
     if _col.button(PRESETS[_key]["label"], key=f"preset_{_key}"):
         # The buttons render above the form, so the widget keys can still be
         # written in this run; the form shows the preset when it renders.
+        _values = dict(_FORM_DEFAULTS)
         for _field, _value in PRESETS[_key]["inputs"].items():
             _default = _FORM_DEFAULTS[_field]
-            st.session_state[_field] = (
+            _values[_field] = (
                 list(_value) if isinstance(_default, list) else type(_default)(_value)
             )
+        st.session_state["form_values"] = _values
+        for _field, _value in _values.items():
+            st.session_state[_field] = _value
         st.session_state["active_preset"] = _key
         _emit(
             AuditEventType.WEB_PRESET_LOADED,
@@ -240,14 +248,13 @@ if submitted:
             },
         )
     except FileNotFoundError as e:
-        # Mahalanobis stats / model.pt missing -> graceful banner,
-        # NOT crash. Disable submit on next render via session_state flag.
+        # A model or threshold file is missing: show a banner instead of a
+        # traceback.
         st.warning(
             f"A required artifact is missing ({e.filename or e}), so no "
             "prediction can be made. See docs/REPRODUCIBILITY.md section 4 "
             "for the command that regenerates every artifact."
         )
-        st.session_state["_artifact_missing"] = True
     except Exception as e:  # noqa: BLE001 - correlation-ID catch-all
         # uuid4 full server-side, 12-char display, audit emit.
         error_id_full = uuid.uuid4().hex

@@ -3,9 +3,9 @@ Wires ml.data.deidentification into the data load path.
 
 `ml.data.deidentification.SafeHarborProcessor` implements 45 CFR section 164.514(b)(2)
 (removal of the 18 HIPAA identifier categories, age cap at 89, ZIP truncation
-to 3 digits, date generalization to year). This module wraps it so that every
-training run that touches a real-data CSV first passes through the Safe Harbor
-scrubber.
+to 3 digits, date generalization to year). This module wraps it in a loader
+that scrubs a CSV before vectorizing it. No training entry point calls the
+loader yet; the shipped trainer reads the synthetic CSV directly.
 
 Decision: scrub at load time (not write time). Scrubbing at write time would
 leave a brief window where unscrubbed PHI sits in memory inside the trainer;
@@ -28,9 +28,8 @@ Field mapping for the bundled simulated dataset
   * `risk_score`, `risk_label`, `pcr`, `microscopy`, `exposure` - clinical;
                      pass through.
 
-The bundled CSV has `source="simulated"` on every row, so this scrub is a
-no-op data-shape verification today; it does real work once a real-data CSV
-(e.g., MIMIC-IV extracts) is loaded.
+The bundled CSV has `source="simulated"` on every row, so on it the scrub is a
+no-op data-shape verification.
 """
 from __future__ import annotations
 

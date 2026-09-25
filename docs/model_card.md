@@ -114,7 +114,7 @@ files under `outputs/model/` and `outputs/metrics/` that
   bundled `outputs/diagnosis_log_pro.csv` (30 simulated rows, 80/20
   train/val split at `random_state = 42`). Section 4 lists which rows fit
   each threshold; the six validation rows are the n = 6 caveat documented in
-  Limitations and called out by `SmallCalibrationWarning` at every conformal
+  Section 9 and called out by `SmallCalibrationWarning` at every conformal
   fit.
 * **Motivation.** The V1.0 goal was an end-to-end *infrastructure*
   (calibration, conformal, OOD, DCA), not a clinically valid model. Planned
@@ -169,8 +169,8 @@ files under `outputs/model/` and `outputs/metrics/` that
 ## 8. Ethical considerations
 
 * **Sensitive data.** None in the shipped dataset (synthetic, no
-  identifiers). Real-data extension via MIMIC-IV uses de-identified records under the
-  signed PhysioNet DUA; secondary analysis is IRB-exempt.
+  identifiers). The planned MIMIC-IV extension would use de-identified
+  records (`data_card.md` Section 3).
 * **Model effects on human life / rights / safety.** *Potential* effects in
   the deployment scenario the model targets are catastrophic; PAM is
   near-uniformly fatal. The model card's *Out-of-scope use cases*

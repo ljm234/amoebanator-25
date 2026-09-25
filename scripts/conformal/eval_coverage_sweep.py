@@ -2,8 +2,7 @@
 Empirical conformal coverage across alpha in {0.05, 0.10, 0.20}.
 
 Uses ml/conformal_advanced.coverage_sweep. Splits val_preds.csv into a
-calibration half and a held-out half (proper conformal protocol; current
-val_preds is small but the framework is correct), then for each alpha
+calibration half and a held-out half, then for each alpha
 reports the qhat, empirical coverage, and abstain rate.
 
 Output: outputs/metrics/coverage_sweep.json (table) + coverage_sweep.png (figure).
