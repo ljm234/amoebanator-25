@@ -6,7 +6,7 @@ Per Gebru T et al., *Datasheets for Datasets*, Communications of the ACM
 This card documents `outputs/diagnosis_log_pro.csv`, the only dataset that
 ships with the V1.0 release. It is **30 simulated patient vignettes**, not
 real patient data. The card also documents the *planned* MIMIC-IV cohort
-(V1.1 roadmap) so that the data lineage of any future preprint figure is
+(V1.1 roadmap) so that the data lineage of any future figure is
 traceable.
 
 ---
@@ -16,16 +16,16 @@ traceable.
 * **For what purpose was the dataset created?** To demonstrate the
   Amoebanator calibration / conformal / OOD / DCA pipeline end-to-end on a
   tractable synthetic problem. The dataset exists to prove that the
-  *infrastructure* runs, not to produce population-level performance
-  estimates. Replacing it with a real clinical cohort is the explicit V1.1
-  goal.
+  *infrastructure* runs. No performance metrics are reported, because on six
+  validation rows they would not be meaningful; replacing the dataset with a
+  real clinical cohort is the explicit V1.1 goal.
 * **Who created the dataset?** Luis Jordan Montenegro-Calla (single-author
   research). No institutional dataset commission.
 * **Funding.** Unfunded.
-* **Other comments.** The synthetic vignettes are clinically *plausible*:
-  feature distributions mimic published PAM presentations (Yoder JS et al.,
-  *Epidemiol Infect* 2010;138:968-975; Cope JR & Ali IK, *Curr Infect Dis
-  Rep* 2016;18:31). They are *not* drawn from any patient population.
+* **Other comments.** The 30 rows are synthetic rows created for this demo.
+  They are *not* drawn from any patient population, and their age and sex
+  distribution does not match the published PAM case series (Yoder JS et
+  al., *Epidemiol Infect* 2010;138:968-975).
 
 ## 2. Composition
 
@@ -34,7 +34,7 @@ traceable.
   (`csf_glucose`, `csf_protein`, `csf_wbc`), three binary clinical findings
   (`pcr`, `microscopy`, `exposure`), a semicolon-separated symptom string
   (`symptoms`), an integer `risk_score`, and an outcome label
-  (`risk_label` in {"Low", "High"}). Provenance metadata (`case_id`,
+  (`risk_label` in {"Low", "Moderate", "High"}). Provenance metadata (`case_id`,
   `source`, `physician`, `timestamp_tz`, `comments`) is also included for
   audit-chain attribution.
 * **How many instances?** **30 rows.** Stratified 80/20 train/val split
@@ -44,9 +44,9 @@ traceable.
 * **What does each instance consist of?** Raw tabular features (16
   columns). Labels (`risk_label`, `risk_score`). Provenance fields
   (`case_id`, `source`, `physician`, `timestamp_tz`, `comments`).
-* **Is there a label/target?** Yes, binary `risk_label` in {"Low", "High"}
-  (encoded as `y = 1` for High in the trainer). 11 of 30 rows are High in
-  the bundled CSV.
+* **Is there a label/target?** Yes, `risk_label` in {"Low", "Moderate",
+  "High"}. The trainer makes it binary: `y = 1` for High, `y = 0` otherwise.
+  The bundled CSV has 11 High, 16 Low and 3 Moderate rows.
 * **Is any information missing?** Every row is complete (no missing cells in
   the bundled CSV).
 * **Are relationships between instances explicit?** No. Each row is
@@ -61,24 +61,22 @@ traceable.
 * **Confidential data?** None. Synthetic.
 * **Offensive / sensitive content?** None.
 * **Data relate to people?** Hypothetical people only. No real individuals.
-* **Identifies subpopulations?** Sex distribution is intentional: in the
-  bundled rows, the male/female balance is biased toward male, consistent
-  with Yoder 2010's 79.3 % male PAM cohort. Other demographics (race,
-  ethnicity, geography) are not encoded.
+* **Identifies subpopulations?** The bundled rows are 16 male and 14
+  female, so they do not reproduce the 79.3 % male PAM cohort of Yoder 2010.
+  Other demographics (race, ethnicity, geography) are not encoded.
 * **Possible to identify individuals?** No. There are no real individuals
   in the dataset.
 * **Sensitive attributes?** None.
 
 ## 3. Collection process
 
-* **How was the data acquired?** Synthetic generation. The 30 rows were
-  hand-curated to span the clinical feature region of published PAM
-  case-series.
-* **Mechanisms / procedures.** A synthetic cohort, manually authored (not software-generated).
-  The `ml.case_series.synthesize_yoder_cohort` function provides a
-  programmatic synthesis path that draws from Yoder 2010 marginals; rows it
-  produces carry `source = "synthetic_from_yoder2010"` and are not part of
-  the bundled 30-row CSV today.
+* **How was the data acquired?** The 30 rows are synthetic rows created for
+  this demo.
+* **Mechanisms / procedures.** Not applicable to the bundled rows. The
+  separate `ml.case_series.synthesize_yoder_cohort` function draws rows from
+  Yoder 2010 marginals; rows it produces carry
+  `source = "synthetic_from_yoder2010"` and are not part of the bundled
+  30-row CSV.
 * **Sampling strategy.** Not applicable (no underlying population).
 * **Who was involved?** Single author. No crowdworkers, contractors, or
   annotators.
@@ -92,22 +90,22 @@ traceable.
 
 ## 4. Preprocessing / cleaning / labeling
 
-* **Preprocessing applied?** Three transformations are applied at load time
-  (`ml/data_loader.load_tabular_safe_harbor`):
-  1. **Safe Harbor de-identification** (HIPAA 45 CFR 164.514(b)(2)): ages
-     > 89 capped to 89, `physician` field blanked, dates generalised to
-     year, free-text > 20 chars passed through the `SafeHarborProcessor`
-     scrubber.
-  2. **One-hot symptom expansion**: `symptoms` string -> `sym_<token>`
+* **Preprocessing applied?** The trainer
+  (`ml.training_calib_dca.load_tabular`) applies two transformations at load
+  time:
+  1. **One-hot symptom expansion**: `symptoms` string -> `sym_<token>`
      binary indicators.
-  3. **Vectorisation**: `feats = ["age", "csf_glucose", "csf_protein",
+  2. **Vectorization**: `feats = ["age", "csf_glucose", "csf_protein",
      "csf_wbc", "pcr", "microscopy", "exposure", "sym_*"]` ->
      `df[feats].fillna(0).astype(float).values`.
-  Bundled rows do not contain any age > 89, so the cap is a no-op today; it
-  is load-bearing for any future MIMIC-IV-shaped CSV.
+  `ml/data_loader.load_tabular_safe_harbor` runs the same two steps after
+  **Safe Harbor de-identification** (HIPAA 45 CFR 164.514(b)(2)): ages > 89
+  capped to 89, `physician` field blanked, dates generalized to year,
+  free-text > 20 chars passed through the `SafeHarborProcessor` scrubber. It
+  is meant for real-data CSVs; the trainer does not call it.
 * **Raw data preserved?** Yes, `outputs/diagnosis_log_pro.csv` is the raw
   form. Preprocessed `(X, y, feats)` is computed in-memory and not
-  persisted as a separate artefact.
+  persisted as a separate artifact.
 * **Preprocessing software.** All in `ml/training.py`,
   `ml/training_calib_dca.py`, and `ml/data_loader.py`. Open-sourced as part
   of this repository.
@@ -116,12 +114,11 @@ traceable.
 
 * **Used for any tasks already?** Yes, the bundled MLP in
   `outputs/model/model.pt` was trained on this dataset. Calibration,
-  conformal qhat, energy thresholds, DCA threshold, ablation table, and
+  conformal qhat, energy thresholds, decision curves, ablation table, and
   coverage sweep figures all derive from it. Every figure under
   `outputs/metrics/` is downstream of the bundled CSV.
 * **Repository linking to papers / systems using the dataset.** This
-  repository is the only known consumer. The forthcoming preprint will cite
-  this data card.
+  repository is the only known consumer.
 * **What other tasks could the dataset be used for?** Synthetic-data
   benchmarking of small-sample calibration and conformal prediction
   techniques. Pedagogical examples of decision curve analysis at low
@@ -164,13 +161,13 @@ traceable.
   synthetic CSV will remain in the repository as a fixture for the test
   suite, but headline metrics will switch to the real-data cohort.
 * **Retention limits?** Not applicable (synthetic).
-* **Older versions supported?** Yes, a `git tag` will mark the V1.0 release
-  commit; the V1.0 CSV remains accessible through the repository history.
+* **Older versions supported?** Yes, the V1.0 release commit is tagged
+  `v1.0.0`; the V1.0 CSV remains accessible through the repository history.
 * **Mechanism for contributions.** Pull requests via the project
   repository. Adding new synthetic rows requires (a) explicit
   `source = "synthetic_*"` provenance, (b) re-running the audit chain to
   record the addition, (c) re-fitting all downstream metrics so the model
-  card stays synchronised.
+  card stays synchronized.
 
 ---
 
@@ -178,7 +175,7 @@ traceable.
 
 With PhysioNet credentialed access in place, the V1.1 dataset
 will be a MIMIC-IV cohort with the schema below. Documenting it here so the
-lineage of any future preprint figure is traceable from this card.
+lineage of any future figure is traceable from this card.
 
 | Field | Source | Notes |
 |-------|--------|-------|

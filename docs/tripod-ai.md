@@ -15,23 +15,20 @@ with PhysioNet credentialed access now in place. Items that only the planned stu
 satisfy are marked **Planned**. The pre-specified analysis protocol for that
 study is `docs/rare_class_design.md`; model and dataset specifics are in
 `docs/model_card.md` and `docs/data_card.md` and are not duplicated here.
-Every quantitative figure cited below carries its sample-size caveat in the
-same sentence, per the model card's standing rule.
+Performance metrics are not reported (Section 6); the few fitted values
+cited below carry their sample size in the same sentence.
 
 ---
 
 ## 1. Title and abstract
 
-* **Title.** The repository and the forthcoming preprint identify the work as
-  the development of a multivariable prediction model, a binary triage
+* **Title.** The repository identifies the work as the development of a
+  multivariable prediction model, a binary triage
   classifier, for a low-prevalence neurological-infection target (PAM)
-  operationalised through a bacterial-vs-viral meningitis proxy. Target
+  operationalized through a bacterial-vs-viral meningitis proxy. Target
   population and predicted outcome are stated in `model_card.md` Section 2.
-* **Abstract. Planned.** The V1.0 repository carries no standalone manuscript
-  abstract. The forthcoming preprint will include a structured abstract
-  compliant with the TRIPOD+AI-for-Abstracts checklist (objectives, data
-  sources, outcome, predictors, sample size, model type, performance with
-  uncertainty, and limitations).
+* **Abstract.** The V1.0 repository carries no standalone manuscript
+  abstract.
 
 ## 2. Introduction
 
@@ -40,8 +37,8 @@ same sentence, per the model card's standing rule.
   presents with an acute meningitis-like syndrome and the clinician must
   decide how aggressively to escalate, where the cost of missing PAM is
   catastrophic and the cost of over-triaging benign meningitis is modest. The
-  rationale for a machine-learning treatment is that standard modelling on a
-  single-digit-positive PAM corpus cannot separate model behaviour from
+  rationale for a machine-learning treatment is that standard modeling on a
+  single-digit-positive PAM corpus cannot separate model behavior from
   sampling noise (`rare_class_design.md` Section 2; CDC 2025; Yoder 2010). No
   published calibrated, abstention-aware PAM triage model exists; the
   contribution is the surrounding safety stack, not a new diagnostic test.
@@ -57,27 +54,27 @@ same sentence, per the model card's standing rule.
 
 ## 3. Methods
 
-* **Source of data.** V1.0 uses a 30-row synthetic dataset
-  (`outputs/diagnosis_log_pro.csv`) hand-curated to span published PAM feature
-  distributions (Yoder 2010; Cope 2016); it is not a sample of any patient
-  population, and its timestamps are synthetic dates within 2025-2026
+* **Source of data.** V1.0 uses 30 synthetic rows created for this demo
+  (`outputs/diagnosis_log_pro.csv`); they are not a sample of any patient
+  population, their age and sex distribution does not match the published
+  case series, and their timestamps are synthetic dates within 2025-2026
   (`data_card.md` Sections 1-3). The data were not used in any prior study and
   no blinding applies because there are no real outcomes. **Planned (V1.1):**
   MIMIC-IV (`hosp.labevents`, `hosp.diagnoses_icd`, `hosp.microbiologyevents`),
-  a retrospective, de-identified, single-centre research database, used here
+  a retrospective, de-identified, single-center research database, used here
   for the first time for this task (`rare_class_design.md` Section 3).
 * **Participants.** V1.0 instances are hypothetical patients; eligibility is
   synthetic presentations spanning the PAM-typical feature region plus
   benign-meningitis controls (`data_card.md` Section 2). No treatments are
-  modelled. **Planned:** admissions with at least one CSF analyte and at least
+  modeled. **Planned:** admissions with at least one CSF analyte and at least
   one ICD-10 meningitis code, with G00.x bacterial as the positive class,
   A87.x viral as the negative class, and B60.2 PAM held out for OOD; splits
   are group-disjoint by `subject_id` so no patient appears in more than one
   partition (`rare_class_design.md` Section 3).
-* **Outcome.** V1.0 predicts a binary `risk_label` in {Low, High} (High
-  encoded as `y = 1`), assigned at row authoring, with 11 of 30 rows High
-  (`data_card.md` Section 2); no outcome-assessment blinding applies to
-  synthetic labels. **Planned:** the bacterial (G00.x) versus viral (A87.x)
+* **Outcome.** V1.0 predicts whether `risk_label`, assigned at row
+  authoring, is High (`y = 1`) or not; 11 of 30 rows are High, 16 Low and 3
+  Moderate, and Moderate rows count as not High (`data_card.md` Section 2);
+  no outcome-assessment blinding applies to synthetic labels. **Planned:** the bacterial (G00.x) versus viral (A87.x)
   ICD-10 label, chosen because it maps onto the clinically actionable boundary
   of whether to start empiric antibacterial therapy now; the outcome is
   derived from coded diagnoses, independent of predictor extraction
@@ -93,11 +90,9 @@ same sentence, per the model card's standing rule.
 * **Sample size.** V1.0 is n = 30 (n_train = 24, n_val = 6). There is no
   formal power calculation; the size is a deliberately small fixture to
   exercise the infrastructure and is the single load-bearing limitation
-  (`model_card.md` Section 9; `data_card.md` Section 5). The conformal
-  framework refuses to write a population-level qhat fit on n < 100 unless
-  explicitly forced. **Planned:** the proxy cohort size is reported with the
-  real extraction, and the n >= 100 floor together with the Lei 2018
-  coverage-slack bound govern when population-level claims are permitted.
+  (`model_card.md` Section 9; `data_card.md` Section 5). Section 7
+  (Limitations) states what six rows mean for conformal coverage.
+  **Planned:** the proxy cohort size is reported with the real extraction.
 * **Missing data.** The bundled V1.0 CSV has no missing cells; the loader
   applies `df.fillna(0)` after one-hot expansion (`data_card.md` Sections 2
   and 4). **Planned:** MIMIC-IV missingness is handled in
@@ -118,23 +113,26 @@ same sentence, per the model card's standing rule.
   [1, 10] so that the small positive count does not produce explosive losses
   (`model_card.md` Sections 1 and 6).
 * **Model output.** The model emits a calibrated probability of the High tier
-  via L-BFGS temperature scaling (Guo et al. 2017), a discrete prediction,
-  and, when the conformal prediction set contains both classes, an explicit
-  ABSTAIN carrying a reason field (`model_card.md` Sections 1 and 4). Output
-  is produced at inference time.
-* **Training.** The model is trained on the 24-row fold; the calibration
-  temperature is fit by L-BFGS, and the conformal qhat and OOD gate thresholds
-  are fit on the validation rows (`model_card.md` Sections 1 and 6). A
-  small-calibration warning fires at every fit until n >= 100.
+  via L-BFGS temperature scaling (Guo et al. 2017) and either a prediction,
+  Low or High, or an explicit ABSTAIN carrying a reason field: when the
+  Mahalanobis or energy gate flags the input, or when the conformal
+  prediction set is empty or contains both classes (`model_card.md`
+  Sections 4 and 8). Output is produced at inference time.
+* **Training.** The model is trained on the 24-row fold, which also fits the
+  Mahalanobis gate; the calibration temperature (by L-BFGS), the conformal
+  qhat and the energy threshold are fit on the six validation rows
+  (`model_card.md` Sections 1 and 5). A small-calibration warning fires at
+  every conformal fit until n >= 100.
 * **Evaluation.** Performance measures are the AUC of the calibrated High
   probability, recall at the decision-curve-chosen threshold, conformal
   coverage and ABSTAIN rate at alpha in {0.05, 0.10, 0.20}, decision-curve net
-  benefit, and OOD detection AUC for the Mahalanobis, logit-energy, and
-  neg-energy gates evaluated on in-distribution versus PAM rows, each with
-  bootstrap 95% confidence intervals (n_resamples = 2000) (`model_card.md`
-  Section 4; `rare_class_design.md` Section 4). On the current 6-row
-  validation split the discrimination figures are at ceiling and are
-  infrastructure proofs, not clinical performance.
+  benefit, and OOD detection AUC on in-distribution versus PAM rows, each
+  with bootstrap 95% confidence intervals (n_resamples = 2000)
+  (`model_card.md` Section 4; `rare_class_design.md` Section 4).
+  Out-of-distribution detection is dual-gated: Mahalanobis distance in
+  feature space and an energy score on the logits. These measures apply to
+  the planned proxy study; none is reported for the six validation rows
+  (Section 6).
 * **Fairness.** Relevant factors are age, sex, and exposure source
   (`model_card.md` Section 3). V1.0 evaluation is unstratified because the
   6-row split cannot support subgroup analysis, so no fairness metric is
@@ -168,10 +166,11 @@ reporting of this work.
 
 ## 6. Results
 
-* **Participants.** V1.0 comprises 30 synthetic rows, 11 High and 19 Low, with
-  an 80/20 stratified split (n_train = 24, n_val = 6); the marginals are tuned
-  to Yoder 2010 (median age 12 years, approximately 79% male, freshwater
-  exposure dominant) (`data_card.md` Section 2; `model_card.md` Section 3).
+* **Participants.** V1.0 comprises 30 synthetic rows, 11 High and 19 not
+  High (16 Low, 3 Moderate), with an 80/20 stratified split (n_train = 24,
+  n_val = 6). The rows have a median age of 23.5 years and 16 of 30 are
+  male, unlike the Yoder 2010 cohort (median age 12 years, 79.3% male)
+  (`data_card.md` Section 2; `model_card.md` Section 3).
   **Planned:** a participant-flow diagram, from admissions screened through the
   CSF and ICD filter to the final cohort by class, will accompany the real
   extraction.
@@ -180,16 +179,10 @@ reporting of this work.
   with the feature schema in `features.json` and a calibration temperature of
   approximately 0.27 on the current fit (`model_card.md` Sections 1 and 7);
   that temperature is fit on 6 rows and is therefore provisional.
-* **Model performance.** On the 6-row validation split the calibrated AUC is
-  1.0 and recall for the High class at threshold 0.5 is 1.0, figures that
-  reflect perfect separation on six rows and are not evidence of clinical
-  accuracy (`model_card.md` Sections 4 and 7). The conformal qhat is 0.0162 at
-  alpha = 0.10 with a small-calibration warning on n = 6, and the
-  decision-curve net benefit is 0.298 at threshold 0.05, equal to the
-  treat-all baseline at that prevalence (`model_card.md` Section 4). Every
-  figure carries its n caveat and is reproducible from `outputs/metrics/`.
-* **Model evaluation and updating.** The held-out conformal framework refuses
-  population-level claims until n >= 100. The V1.1 milestone swaps the
+* **Model performance.** No performance metrics are reported, because on
+  six validation rows they would not be meaningful; see `model_card.md`
+  Sections 4, 7 and 9.
+* **Model evaluation and updating.** The V1.1 milestone swaps the
   synthetic fixture for the real proxy cohort and re-fits every downstream
   metric, after which this checklist and the model card are updated together
   (`data_card.md` Section 7; `model_card.md` Section 9).
@@ -198,15 +191,16 @@ reporting of this work.
 
 * **Interpretation.** The V1.0 contribution is an honest, reproducible
   trustworthy-ML pipeline for a low-prevalence, high-asymmetric-cost triage
-  problem, not a validated PAM classifier. The headline discrimination figures
-  are infrastructure proofs on six validation rows (`model_card.md` Sections 7
-  and 9; `rare_class_design.md` Section 5).
+  problem, not a validated PAM classifier, and it reports no performance
+  metrics (Section 6; `model_card.md` Sections 7 and 9;
+  `rare_class_design.md` Section 5).
 * **Limitations.** The load-bearing limitations are the 6-row validation set,
-  the 30-row synthetic training data, the conformal coverage guarantee holding
-  at any n with only the upper slack of 1/(n+1) shrinking as the calibration
-  set grows, the absence of real bacterial, viral, and
-  fungal labels (pending the planned MIMIC-IV proxy study), and undefined performance on neonatal
-  PAM (`model_card.md` Section 9; `data_card.md` Sections 5 and 7).
+  the 30-row synthetic training data, the absence of real bacterial, viral,
+  and fungal labels (pending the planned MIMIC-IV proxy study), and undefined
+  performance on neonatal PAM (`model_card.md` Section 9; `data_card.md`
+  Sections 5 and 7). The six validation rows that fit the calibration, the
+  conformal threshold and the energy gate cap the conformal target at 6/7
+  coverage (`model_card.md` Section 9).
 * **Usability and future research.** Out-of-scope uses, namely no clinical
   triage, no PAM diagnosis or rule-out, and no EHR or clinical-decision-support
   deployment, are enumerated in `model_card.md` Section 2. Future work is the

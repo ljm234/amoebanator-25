@@ -30,8 +30,7 @@ st.caption(
     "22 entries from `docs/references.bib`. Methodology references "
     "(Guo 2017, Vovk 2005/2013, Lei 2018, Liu 2020, Lee 2018, "
     "Mitchell 2019, etc.) are intentionally retained at original "
-    "publication year - post-2022 companion citations will be added "
-    "during the medRxiv preprint prep."
+    "publication year."
 )
 
 
@@ -88,11 +87,11 @@ st.markdown(
 )
 
 
-# -- Tools (1 ref) -----------------------------------------------------
-st.subheader("Tools")
+# -- Baselines (1 ref) -------------------------------------------------
+st.subheader("Baselines")
 st.markdown(
     """
-- **`ke2017lightgbm`** Ke G, Meng Q, Finley T, et al. *LightGBM: A Highly Efficient Gradient Boosting Decision Tree.* **NeurIPS** 2017. Used by `ml/baselines/gbm.py` for the gradient-boosting baseline (with sklearn `GradientBoostingClassifier` fallback when LightGBM unavailable).
+- **`friedman2001greedy`** Friedman JH. *Greedy Function Approximation: A Gradient Boosting Machine.* **Annals of Statistics** 2001. DOI 10.1214/aos/1013203451. Method behind the scikit-learn `GradientBoostingClassifier` used by `ml/baselines/gbm.py` for the gradient-boosting baseline.
 """
 )
 

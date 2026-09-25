@@ -33,7 +33,7 @@ hold at the current research stage.
 * **De-identification pipeline.** `ml/data/deidentification.py` implements a
   layered pipeline. The base layer is HIPAA Safe Harbor (45 CFR
   164.514(b)(2)): removal of the eighteen identifier categories, age capping
-  at 89 and above, ZIP truncation to three digits, and generalisation of
+  at 89 and above, ZIP truncation to three digits, and generalization of
   dates to the year (`SafeHarborConfig`, `SafeHarborProcessor`). Statistical
   layers above it provide k-anonymity (every equivalence class at least size
   k), l-diversity, and t-closeness for quasi-identifier risk; an
@@ -41,7 +41,7 @@ hold at the current research stage.
 * **On the bundled data.** The shipped 30-row dataset is synthetic and
   carries no identifiers, so the de-identification pass is a no-op safeguard
   today. It is load-bearing for any future MIMIC-IV-shaped CSV, where the age
-  cap, date generalisation, and identifier removal do real work
+  cap, date generalization, and identifier removal do real work
   (`data_card.md` Section 4).
 * **Provenance.** Every row carries `source`, `physician`, `timestamp_tz`,
   and a `case_id`. Synthetic rows are tagged with a `source` value such as
@@ -51,7 +51,9 @@ hold at the current research stage.
 
 ## 3. Research governance: the IRB gate
 
-* **The gate.** `ml/irb_gate.py` sits at the training entry point. If the
+* **The gate.** `ml/irb_gate.py` implements the gate
+  (`check_irb_or_raise`), but no training entry point calls it; it runs only
+  in `tests/test_irb_gate.py`. If the
   dataset is synthetic-only, detected when every `source` value matches a
   known prefix (`simulated`, `synthetic`, `bridge`, `mimic_iv`), the gate is
   a no-op, because synthetic data does not require IRB approval. Otherwise the
@@ -71,7 +73,7 @@ hold at the current research stage.
 * **Hash chain.** `ml/data/audit_trail.py` maintains a tamper-evident log.
   Each entry is linked to the previous one through a SHA-256 hash chain (the
   entry hash is computed over the entry fields together with the previous
-  hash), and periodic Merkle-tree checkpoints summarise the chain. Any
+  hash), and periodic Merkle-tree checkpoints summarize the chain. Any
   modification to a past entry breaks the chain, surfaced as an integrity
   status of valid, tampered, incomplete, or unknown.
 * **Event coverage.** Logged event types span the data lifecycle (received,
@@ -88,11 +90,11 @@ hold at the current research stage.
 
 * **Versioning.** The model is V1.0. Its state_dict is regenerable from a
   pinned random seed via the documented training entry point, and a git tag
-  marks the release commit so the V1.0 artefacts remain retrievable from
+  marks the release commit so the V1.0 artifacts remain retrievable from
   history (`model_card.md` Section 1; `data_card.md` Section 7).
 * **Change control.** Re-fitting the model requires re-running the audit
   chain and re-fitting every downstream metric so that the model card stays
-  synchronised with the artefacts it describes. Adding synthetic rows
+  synchronized with the artifacts it describes. Adding synthetic rows
   requires explicit `source` provenance, an audit re-run to record the
   addition, and a downstream re-fit (`data_card.md` Section 7;
   `model_card.md` Section 9).
@@ -110,12 +112,14 @@ hold at the current research stage.
   not-for-clinical-use language, is asserted by the test suite
   (`app/disclaimer.py`; `tests/test_app_disclaimer.py`). The full set of
   out-of-scope uses is in `model_card.md` Section 2.
-* **The safety stack.** Three gates fire on every inference call: a
-  Mahalanobis out-of-distribution gate, a logit-energy gate, and a
-  split-conformal abstain. Each returns an explicit ABSTAIN with a reason
-  field when triggered, and the dashboard shows the raw safety-signal
-  breakdown beneath each prediction (`model_card.md` Section 8). The web
-  layer additionally enforces a rate limit, logged as an audit event.
+* **The safety stack.** Out-of-distribution detection is dual-gated:
+  Mahalanobis distance in feature space and an energy score on the logits.
+  A split-conformal step follows. Each returns an explicit ABSTAIN with a
+  reason field when triggered, and the dashboard shows the raw
+  safety-signal breakdown beneath each prediction (`model_card.md`
+  Section 8). The predict page ignores a new submission while one is still
+  running, with a lock that expires after 30 seconds; the rate limiter in
+  `ml/data/audit_trail.py` is not used by the web layer.
 
 ## 7. Accountability
 

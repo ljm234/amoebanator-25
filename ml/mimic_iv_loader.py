@@ -12,7 +12,7 @@ repository. The module exposes:
     expects.
   * `synthesize_mimic_shaped_csvs()` - produces tiny PhysioNet-shaped CSVs
     in a temp directory so the loader's row-extraction logic is tested
-    end-to-end before real data arrives. The synthesised data is marked
+    end-to-end without real data. The synthesised data is marked
     `subject_id` in a synthetic range so it cannot collide with real IDs.
 
 Verified itemids (from PhysioNet d_labitems, MIMIC-IV demo v2.2 / v3.1):

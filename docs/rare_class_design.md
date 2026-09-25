@@ -1,6 +1,6 @@
 # Rare-class triage as a low-prevalence proxy task
 
-This document defines the supervised task, explains why PAM is operationalised
+This document defines the supervised task, explains why PAM is operationalized
 through a proxy, and pins down the evaluation protocol so the downstream
 experiments can be reproduced from it alone.
 
@@ -26,7 +26,7 @@ cases between 1962 and 2024 (CDC, *About Primary Amebic Meningoencephalitis*,
 2025). Yoder et al. 2010 (Epidemiol Infect 138(7):968-975) document 111
 cases over a 47-year window with a case-fatality rate of 99.1%. A standard
 80/10/10 split on this corpus yields a test set that is single-digit
-positive, incapable of distinguishing model behaviour from sampling noise.
+positive, incapable of distinguishing model behavior from sampling noise.
 
 The proxy task substitutes a *related* high-prevalence supervised problem
 that exercises the same triage decision and the same calibration / OOD
@@ -82,13 +82,14 @@ For each combination of model and ablation cell we report:
   * **Conformal coverage at alpha = 0.05, 0.10, 0.20** on the held-out
     calibration split.
   * **ABSTAIN rate** at the chosen alpha.
-  * **OOD detection AUC**: Mahalanobis, logit-energy, and neg-energy gates
-    each evaluated on (in-distribution = bacterial+viral test rows) vs.
-    (OOD = PAM rows from B60.2). This is the only experiment that uses the
-    PAM rows.
+  * **OOD detection AUC** for each of the two gates, Mahalanobis distance
+    in feature space and the energy score on the logits, evaluated on
+    (in-distribution = bacterial+viral test rows) vs. (OOD = PAM rows from
+    B60.2). This is the only experiment that uses the PAM rows.
 
-The target empirical coverage matches 1 - alpha to within +/- 1 / (n+1) per
-the Lei et al. 2018 bound. The PAM OOD AUC target is >= 0.85, well above
+The target empirical coverage lies between 1 - alpha and 1 - alpha + 1 / (n+1)
+per the Lei et al. 2018 bound (the upper bound assumes no ties among the
+scores). The PAM OOD AUC target is >= 0.85, well above
 chance, distinctly below the perfect 1.0 that would suggest data leakage.
 
 ## 5. Why this is honest
@@ -97,13 +98,12 @@ chance, distinctly below the perfect 1.0 that would suggest data leakage.
   evaluation time; the supervised loss never touches them. The headline
   classifier discriminates bacterial vs viral, which is a real, learnable,
   high-prevalence task.
-* **No fabricated cases.** Every row comes from MIMIC-IV (when access is
-  granted) or from `ml/case_series.synthesize_yoder_cohort` (which carries
+* **No fabricated cases.** Every row comes from MIMIC-IV or from
+  `ml/case_series.synthesize_yoder_cohort` (which carries
   `source="synthetic_from_yoder2010"` and is excluded from quoted metrics).
-* **No claim that the proxy = PAM.** The preprint explicitly states that the
-  bacterial-vs-viral classifier is a *proxy for the calibration and OOD
-  machinery*; the PAM-specific deployment claim requires the prospective
-  validation flagged in the Limitations section.
+* **No claim that the proxy = PAM.** The bacterial-vs-viral classifier is a
+  *proxy for the calibration and OOD machinery*; any PAM-specific deployment
+  claim would require prospective validation.
 
 ## 6. Dependencies
 

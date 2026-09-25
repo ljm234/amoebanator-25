@@ -467,8 +467,8 @@ therapy. Concha-Velasco 2017 explicitly documents 5-FC unavailability at HCH.
 - **Peru companion:** Concha-Velasco F, González-Lagos E, Seas C, Bustamante B.
   PLoS One 2017 PMID 28355252 (Hospital Cayetano Heredia Lima)
 - **Real Peru constraint:** induction therapy options limited by 5-FC supply
-- **Adjudicator action:** acknowledge reality in fixture provenance + preprint
-  limitations section
+- **Adjudicator action:** acknowledge reality in fixture provenance and in the
+  limitations
 
 ### 5.3 Class 8 (Cerebral malaria) - Peru P. vivax paradigm replaces African P. falciparum
 
