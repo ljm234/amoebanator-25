@@ -1108,8 +1108,8 @@ def test_wave2_csf_wbc_range_extremes(wave2_vignettes):
 # ======================================================================
 # Bacterial and viral distribution tests
 # ----------------------------------------------------------------------
-# Eleven of these thirteen tests check fields of the BACTERIAL_DISTRIBUTION
-# (n=28) and VIRAL_DISTRIBUTION (n=30) lists in
+# Eleven of these thirteen tests check the BACTERIAL_DISTRIBUTION (n=28)
+# and VIRAL_DISTRIBUTION (n=30) lists in
 # scripts/vignettes/generate_pam_vignettes.py. The other two check the
 # marginals.json design files at
 # data/vignettes/v2/class_02_bacterial/marginals.json and
