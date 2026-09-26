@@ -137,3 +137,10 @@ def test_chain_remains_valid_after_full_training_run(isolated_audit_path: Path, 
     status, tampered = verify_persisted_chain(isolated_audit_path)
     assert status == IntegrityStatus.VALID
     assert tampered == []
+
+
+def test_suite_fixture_keeps_the_audit_log_out_of_the_repo() -> None:
+    from ml.audit_hooks import default_audit_path
+
+    repo = Path(__file__).resolve().parent.parent
+    assert repo not in default_audit_path().parents
