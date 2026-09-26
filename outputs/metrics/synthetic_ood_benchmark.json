@@ -4,42 +4,60 @@
   "n_label_shift": 30,
   "covariate_shift": {
     "mahalanobis_d2": {
-      "auc": 0.5577777777777778,
+      "auc": 0.5611111111111111,
       "n_finite": 60,
-      "median_in_dist": 5.590444159555178,
-      "median_ood": 7.241187362986991
+      "tau": 21.459508803052834,
+      "detection_rate": 0.13333333333333333,
+      "false_alarm_rate": 0.1,
+      "median_in_dist": 4.5455529521212625,
+      "median_ood": 5.9782397745991105
     },
     "logit_energy": {
-      "auc": 0.4955555555555556,
+      "auc": 0.5677777777777778,
       "n_finite": 60,
-      "median_in_dist": -5.272799642159318,
-      "median_ood": -5.835285467128598
+      "tau": -5.5805829770582,
+      "detection_rate": 0.5333333333333333,
+      "false_alarm_rate": 0.5,
+      "median_in_dist": -5.589522593434445,
+      "median_ood": -5.014625293628323
     },
     "neg_energy": {
-      "auc": 0.4983333333333333,
+      "auc": 0.445,
       "n_finite": 60,
-      "median_in_dist": -0.020409310664630136,
-      "median_ood": -0.009528524075059906
+      "tau": -7.16683734263492e-06,
+      "detection_rate": 0.16666666666666666,
+      "false_alarm_rate": 0.2,
+      "median_in_dist": -0.00048345964672092605,
+      "median_ood": -0.019234312046811714
     }
   },
   "label_shift": {
     "mahalanobis_d2": {
       "auc": 0.5000000000000001,
       "n_finite": 60,
-      "median_in_dist": 5.590444159555178,
-      "median_ood": 5.590444159555178
+      "tau": 21.459508803052834,
+      "detection_rate": 0.1,
+      "false_alarm_rate": 0.1,
+      "median_in_dist": 4.5455529521212625,
+      "median_ood": 4.5455529521212625
     },
     "logit_energy": {
       "auc": 0.5000000000000001,
       "n_finite": 60,
-      "median_in_dist": -5.272799642159318,
-      "median_ood": -5.272799642159318
+      "tau": -5.5805829770582,
+      "detection_rate": 0.5,
+      "false_alarm_rate": 0.5,
+      "median_in_dist": -5.589522593434445,
+      "median_ood": -5.589522593434445
     },
     "neg_energy": {
-      "auc": 0.5,
+      "auc": 0.5000000000000001,
       "n_finite": 60,
-      "median_in_dist": -0.020409310664630136,
-      "median_ood": -0.020409310664630136
+      "tau": -7.16683734263492e-06,
+      "detection_rate": 0.2,
+      "false_alarm_rate": 0.2,
+      "median_in_dist": -0.00048345964672092605,
+      "median_ood": -0.00048345964672092605
     }
   }
 }

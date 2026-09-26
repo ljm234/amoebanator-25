@@ -1,18 +1,31 @@
 """
 Published PAM case-series summary statistics.
 
-This module encodes *only* what is published in peer-reviewed sources, with
-explicit citations. It does not invent any case-level data. The summary
-statistics support two downstream uses:
+The constants below come from two peer-reviewed papers and a CDC web page,
+each cited, except the numeric CSF thresholds in CopeQualitativeCSF, which
+are clinical reference ranges (see that class). The module holds no real
+case-level data. The sampler in synthesize_yoder_cohort() adds choices that
+are not published: the age spread, the numeric CSF distributions, the PCR
+and microscopy positive rates, and the values every row shares
+(exposure = 1, all three symptoms, risk_score 14).
 
-  1. As a sanity-check distribution for the Streamlit live-patient widget
-     (so default form values match the median age and exposure pattern of
-     real US PAM cases).
-  2. As a generator of synthetic case-level rows whose marginals match
-     published distributions, when the bundled simulated data needs to be
-     augmented for unit tests of the OOD pipeline. Generated rows are
-     marked source="synthetic_from_yoder2010" so they cannot be confused
-     with real records downstream.
+Only tests/test_case_series.py imports this module; the Streamlit app and
+the training pipeline do not. It provides:
+
+  1. Published reference values for PAM, collected by
+     published_constants(): the Yoder 2010 case and fatality counts, age,
+     sex, exposure source and Texas and Florida case counts; the CDC
+     cumulative U.S. case and survivor counts and typical annual count;
+     and the Cope 2016 CSF patterns and median incubation and
+     onset-to-death times. The Predict page does not read them: its
+     default age of 12 equals the Yoder 2010 median, but its other
+     defaults are a normal CSF, negative PCR and microscopy, no
+     freshwater exposure and no symptoms.
+  2. A generator of synthetic case-level rows: sex and exposure source
+     are drawn with the Yoder 2010 frequencies, and age around its median
+     of 12, clipped to its range. Generated rows are marked
+     source="synthetic_from_yoder2010" so they cannot be confused with
+     real records downstream.
 
 Sources:
   * Yoder JS, Eddy BA, Visvesvara GS, Capewell L, Beach MJ.
@@ -22,15 +35,18 @@ Sources:
   * Cope JR, Ali IK. "Primary Amebic Meningoencephalitis: What Have We
     Learned in the Last 5 Years?" Curr Infect Dis Rep 2016;18(10):31.
     DOI 10.1007/s11908-016-0539-4 ; PMID 27614893.
-  * CDC. "About Primary Amebic Meningoencephalitis (PAM)."
-    https://www.cdc.gov/naegleria/about/index.html (last verified 2026-04-24).
+  * CDC. "Naegleria fowleri Infections."
+    https://www.cdc.gov/naegleria/about/index.html (last verified 2026-09-26).
 
-Cope 2016 does NOT publish numeric CSF lab summary statistics - the CSF
-distributions below are stated qualitatively in that paper ("predominantly
-neutrophilic pleocytosis, elevated protein, low glucose"). For numeric CSF
-ranges in PAM cases, Capewell LG et al., J Pediatric Infect Dis Soc 2015;
-4(4):e68-e75 (PMID 26582886) is the better source; we encode the
-qualitative ranges here and flag the citation gap explicitly.
+Cope 2016 does NOT publish numeric CSF lab summary statistics - it describes
+the PAM CSF pattern qualitatively ("predominantly neutrophilic pleocytosis,
+elevated protein, low glucose"). For numeric CSF values in PAM cases,
+Capewell LG et al., J Pediatric Infect Dis Soc 2015; 4(4):e68-e75
+(PMID 26582886) is the better source, and this module does not encode them:
+CopeQualitativeCSF holds only the qualitative patterns (its numeric
+thresholds are clinical reference ranges, not Cope 2016 values), and the
+sampler's numeric CSF distributions are its own choices (see above). The
+citation gap is flagged explicitly here and in CopeQualitativeCSF.citation.
 """
 from __future__ import annotations
 
@@ -75,22 +91,26 @@ class YoderEpidemiology:
 
 @dataclass(frozen=True)
 class CDCAggregateStats:
-    """CDC About page (last verified 2026-04-24)."""
+    """
+    CDC "Naegleria fowleri Infections" page (last verified 2026-09-26).
+    """
     cumulative_cases_through_2024: int = 167
     cumulative_survivors_through_2024: int = 4
     case_fatality_rate: float = 163.0 / 167.0
     typical_annual_us_cases: str = "fewer than 10"
-    citation: str = "CDC. https://www.cdc.gov/naegleria/about/index.html (verified 2026-04-24)."
+    citation: str = "CDC. https://www.cdc.gov/naegleria/about/index.html (verified 2026-09-26)."
 
 
 @dataclass(frozen=True)
 class CopeQualitativeCSF:
     """
     Cope 2016 reports CSF abnormalities qualitatively only. The numeric
-    plausibility ranges below are *not* from Cope 2016 - they are clinical
-    reference ranges for bacterial-meningitis-pattern CSF, used to bound
-    synthetic sampling. Real numeric ranges per PAM case should be sourced
-    from Capewell 2015 (PMID 26582886) when that paper is added.
+    thresholds in the pattern strings below are *not* from Cope 2016 - they
+    are clinical reference ranges for bacterial-meningitis-pattern CSF.
+    synthesize_yoder_cohort() does not read them; its CSF distributions and
+    clip bounds are set in its own code. Published numeric PAM CSF values
+    (Capewell 2015, PMID 26582886, reports medians and ranges) should
+    replace them if they are added here.
     """
     glucose_pattern: str = "low (typically <40 mg/dL)"
     protein_pattern: str = "elevated (typically >100 mg/dL)"
@@ -100,7 +120,7 @@ class CopeQualitativeCSF:
     citation: str = (
         "Cope JR, Ali IK. Curr Infect Dis Rep 2016;18(10):31. "
         "PMID 27614893. Note: numeric CSF ranges qualitative only; "
-        "see Capewell 2015 PMID 26582886 for tabulated values."
+        "see Capewell 2015 PMID 26582886 for numeric medians and ranges."
     )
 
 
@@ -124,15 +144,19 @@ def synthesize_yoder_cohort(
     csf_pattern: str = "pam_typical",
 ) -> pd.DataFrame:
     """
-    Generate `n` synthetic PAM-like rows whose marginals match published
-    Yoder 2010 distributions (age, sex, exposure source). Every row carries
+    Generate `n` synthetic PAM-like rows: sex and exposure source follow the
+    Yoder 2010 frequencies, and age is log-normal around the Yoder 2010
+    median (spread chosen here), clipped to its range. Every row carries
     `source="synthetic_from_yoder2010"` and `risk_label="High"` so it cannot
     be mistaken for a real case in downstream analyses.
 
-    CSF labs are sampled from Cope 2016's qualitative ranges (low glucose,
-    high protein, high WBC with neutrophil predominance). When real per-case
-    CSF values from Capewell 2015 are added to this module, swap the sampler
-    to use the empirical distribution instead.
+    CSF labs follow the qualitative pattern Cope 2016 describes (low
+    glucose, high protein, high WBC); the rows carry no WBC differential,
+    so the neutrophil predominance it also describes is not represented.
+    The numeric distributions and the PCR and microscopy positive rates are
+    this module's own choices, not published values. Capewell 2015 reports CSF
+    medians and ranges for U.S. PAM cases; if those are added to this
+    module, the sampler should be anchored on them instead.
     """
     if n <= 0:
         return pd.DataFrame()
@@ -162,7 +186,9 @@ def synthesize_yoder_cohort(
 
     pcr = (rng.random(n) < 0.7).astype(int)
     microscopy = (rng.random(n) < 0.5).astype(int)
-    exposure_flag = np.ones(n, dtype=int)  # exposure is the inclusion criterion
+    # exposure = 1 on every row is a choice made here, not a Yoder 2010 value
+    # (the exposure source is known for 91 of its 111 cases).
+    exposure_flag = np.ones(n, dtype=int)
 
     df = pd.DataFrame({
         "case_id": [f"yoder2010_synth_{i:04d}" for i in range(n)],

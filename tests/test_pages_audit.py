@@ -77,7 +77,43 @@ def test_audit_page_renders_disclaimer(populated_audit_log: Path) -> None:
 def test_audit_page_title(populated_audit_log: Path) -> None:
     at = AppTest.from_file(PAGE_PATH)
     at.run(timeout=30)
-    assert "Audit Log (Current Session)" in [t.value for t in at.title]
+    assert "Audit Log" in [t.value for t in at.title]
+
+
+def test_banner_says_the_log_is_shared(populated_audit_log: Path) -> None:
+    """The page shows every entry in the shared log file, so the banner must
+    not describe it as the current session's."""
+    at = AppTest.from_file(PAGE_PATH)
+    at.run(timeout=30)
+    banner = " ".join(w.value for w in at.warning)
+    assert "all visitors" in banner
+    assert "current session" not in banner.lower()
+
+
+def test_genesis_hash_is_shown_as_stored() -> None:
+    """With a one-entry log, the genesis previous_hash is shown as the stored
+    64-zero string, not as the integer 0 that pandas type inference makes."""
+    from ml import audit_hooks as ah
+    from ml.audit_hooks import _emit
+    from ml.data.audit_trail import GENESIS_HASH, AuditEventType
+
+    with tempfile.NamedTemporaryFile(mode="w", suffix=".jsonl", delete=False) as f:
+        path = Path(f.name)
+    os.environ["AMOEBANATOR_AUDIT_PATH"] = str(path)
+    ah._singleton_log = None
+    ah._singleton_path = None
+    try:
+        _emit(AuditEventType.WEB_PREDICT_RECEIVED, actor="pi", resource="r",
+              action_detail="one event", metadata={})
+        at = AppTest.from_file(PAGE_PATH)
+        at.run(timeout=30)
+        table = at.table[0].value
+        assert str(table["previous_hash"].iloc[0]) == GENESIS_HASH
+    finally:
+        os.environ.pop("AMOEBANATOR_AUDIT_PATH", None)
+        ah._singleton_log = None
+        ah._singleton_path = None
+        path.unlink(missing_ok=True)
 
 
 def test_ephemerality_banner_present(populated_audit_log: Path) -> None:

@@ -1,57 +1,68 @@
 """
-Tamper-Evident Chain-of-Custody Audit Trail.
+Chain-of-Custody Audit Trail.
 
-Provides an immutable, cryptographically verifiable audit log for all
-data acquisition operations. Each entry is linked to its predecessor
-via a SHA-256 hash chain, and periodic Merkle tree checkpoints enable
-efficient integrity verification of any log segment.
+Provides a hash-chained audit log for the training pipeline and the
+Streamlit app; the Safe Harbor loader (ml.data_loader) and the IRB gate
+(ml.irb_gate) also write to it, but no entry point calls them. Each entry
+is linked to its predecessor via a SHA-256 hash chain, and a Merkle tree
+checkpoint every 100 entries allows each checkpointed segment to be
+verified. The checkpoints are held in memory (export_json() can also
+write them to a JSON file); ml.audit_hooks writes only the entries to its
+JSONL file.
 
 Architecture
 ------------
-The audit system implements a two-layer integrity structure:
+The module has four layers. Layers 1 and 2 run on every AuditLog.record()
+call (a checkpoint every 100 entries); layers 3 and 4 are standalone
+helpers that only tests/test_audit_trail.py calls:
 
     +--------------------------------------------------------------+
-    |          TAMPER-EVIDENT AUDIT ARCHITECTURE                   |
+    |          HASH-CHAINED AUDIT ARCHITECTURE                     |
     +--------------------------------------------------------------+
     |                                                              |
-    |  LAYER 1 - Hash-Chained Log Entries                         |
-    |  +-------+   +-------+   +-------+   +-------+            |
-    |  |Entry 0|-->|Entry 1|-->|Entry 2|-->|Entry 3|--> ...      |
-    |  |H(data)|   |H(E0+d)|   |H(E1+d)|   |H(E2+d)|            |
-    |  +-------+   +-------+   +-------+   +-------+            |
+    |  LAYER 1 - Hash-Chained Log Entries                          |
+    |  +-------+   +-------+   +-------+   +-------+               |
+    |  |Entry 0|-->|Entry 1|-->|Entry 2|-->|Entry 3|--> ...        |
+    |  |H(data)|   |H(E0+d)|   |H(E1+d)|   |H(E2+d)|               |
+    |  +-------+   +-------+   +-------+   +-------+               |
     |                                                              |
-    |  LAYER 2 - Merkle Tree Checkpoints                          |
+    |  LAYER 2 - Merkle Tree Checkpoints                           |
     |              +----------+                                    |
     |              |   Root   |                                    |
     |              | H(L + R) |                                    |
     |              +----+-----+                                    |
     |            +------+------+                                   |
-    |       +----+----+  +----+----+                              |
-    |       | H(0+1) |  | H(2+3) |                               |
-    |       +----+----+  +----+----+                              |
-    |        +---+---+    +---+---+                               |
-    |       H(E0) H(E1) H(E2) H(E3)                              |
+    |       +----+----+  +----+----+                               |
+    |       | H(0+1) |  | H(2+3) |                                 |
+    |       +----+----+  +----+----+                               |
+    |        +---+---+    +---+---+                                |
+    |       H(E0) H(E1) H(E2) H(E3)                                |
     |                                                              |
-    |  Verification: O(log n) proof for any single entry          |
-    |  Tampering detection: Any modification breaks the chain     |
-    +--------------------------------------------------------------+
-
+    |  Verification: O(log n) proof for a checkpointed entry       |
+    |  Detected: an entry edited in place breaks the chain         |
+    |  Not detected: a rewrite with recomputed (unkeyed) hashes,   |
+    |  or entries removed from the end of the log                  |
+    |                                                              |
     |  LAYER 3 - Consistency Proofs                                |
-    |  +-- Prove append-only property between two tree states     |
-    |  +-- O(log n) verification for contiguous append integrity  |
-    |  +-- Enables third-party auditors to verify growth          |
+    |  +-- Check that a later tree only appends to an earlier one  |
+    |  +-- Leaf by leaf, O(m log n): needs both full leaf lists    |
     |                                                              |
-    |  LAYER 4 - Rate-Limiting & Anomaly Detection                |
-    |  +-- Actor velocity tracking (events per window)            |
-    |  +-- Resource burst detection                               |
-    |  +-- Configurable alert thresholds per event class          |
+    |  LAYER 4 - Anomaly Detection                                 |
+    |  +-- Per-actor event counts in a sliding window              |
+    |  +-- Per-actor burst detection                               |
+    |  +-- Off-hours access alerts                                 |
+    |  +-- One set of thresholds for all event types; it flags     |
+    |      events and does not limit them                          |
     +--------------------------------------------------------------+
 
-Compliance Coverage
--------------------
+Design References
+-----------------
+Standards the design draws on. This is not a compliance claim: the
+module has no electronic signatures and its SHA-256 hashes are unkeyed,
+so anyone who can write the log file can rewrite it undetected.
+
 - HIPAA section 164.312(b): Audit controls
 - HIPAA section 164.312(c)(1): Integrity mechanism
-- 21 CFR Part 11 section 11.10(e): Electronic records, electronic signatures
 - NIST SP 800-92: Guide to Computer Security Log Management
 - NIST SP 800-53 Rev. 5 AU-2, AU-3, AU-9, AU-10: Audit events, protection,
   non-repudiation
@@ -106,7 +117,8 @@ class AuditEventType(Enum):
 
     INTEGRITY_VIOLATION is used by the correlation-ID error path. The web
     layer emits the WEB_* values except WEB_RATE_LIMIT_HIT, which nothing
-    emits because the web layer does not use the rate limiter.
+    emits: nothing in the repository rate-limits requests (RateLimitConfig
+    only holds AuditAnomalyDetector's thresholds).
     """
 
     # Data lifecycle events
@@ -134,7 +146,7 @@ class AuditEventType(Enum):
     WEB_PREDICT_RETURNED = "web_predict_returned"
     WEB_RATE_LIMIT_HIT = "web_rate_limit_hit"
     WEB_PRESET_LOADED = "web_preset_loaded"           # preset-button click
-    AUDIT_EXPORT_REQUESTED = "audit_export_requested"  # CSV download click
+    AUDIT_EXPORT_REQUESTED = "audit_export_requested"  # CSV built on each audit page run
 
 
 class IntegrityStatus(Enum):
@@ -373,8 +385,10 @@ class MerkleCheckpoint(NamedTuple):
 class AuditLog:
     """Hash-chained, Merkle-checkpointed audit log.
 
-    Provides an immutable record of all data acquisition operations
-    with cryptographic tamper-detection guarantees.
+    Records hash-chained entries whose recomputed hashes reveal an entry
+    edited in place. The hashes and checkpoint roots are unkeyed, so a
+    rewrite that recomputes all of them is not detected, and verify_chain()
+    also passes when entries are removed from the end.
 
     Parameters
     ----------
@@ -967,7 +981,7 @@ def create_provenance_tracker(
 
 
 # ===========================================================================
-# Rate-Limiting & Anomaly Detection
+# Anomaly Detection (flags events; nothing is rate-limited)
 # ===========================================================================
 
 class AnomalyType(Enum):
@@ -991,16 +1005,21 @@ class AuditAnomaly(NamedTuple):
 
 @dataclass
 class RateLimitConfig:
-    """Configuration for actor-level rate limiting.
+    """Detection thresholds for AuditAnomalyDetector.
+
+    Despite the class name, nothing is rate-limited: the detector flags
+    events and does not limit them.
 
     Attributes
     ----------
     max_events_per_window : int
-        Maximum events allowed per actor within the window.
+        Events per actor within the window above which a velocity breach
+        is flagged.
     window_seconds : int
         Sliding window duration in seconds.
     burst_threshold : int
-        Events in a short burst (window_seconds // 10) that trigger alert.
+        Events per actor within max(1, window_seconds // 10) seconds above
+        which a burst is flagged.
     off_hours_start : int
         Hour (UTC, 0-23) when off-hours begin.
     off_hours_end : int
@@ -1148,9 +1167,10 @@ def merkle_consistency_proof(
 ) -> bool:
     """Verify append-only consistency between two Merkle tree states.
 
-    A consistency proof demonstrates that the first *m* leaves of the
-    new tree are identical to the *m* leaves of the old tree, proving
-    the log was only appended to (RFC 6962 section 2.1.2 equivalent).
+    Checks that the first *m* leaves of the new tree are identical to
+    the *m* leaves of the old tree, i.e. that the log was only appended
+    to. Unlike an RFC 6962 section 2.1.2 consistency proof, it needs both
+    trees' full leaf lists and compares them leaf by leaf (O(m log n)).
 
     Parameters
     ----------
@@ -1319,7 +1339,7 @@ class AuditSearchQuery:
 class AuditSearchEngine:
     """Query engine for structured audit log search.
 
-    Indexed search over audit logs supporting multi-field filters,
+    Linear scan over an audit log's entries supporting multi-field filters,
     time-range queries, metadata key-value containment, and regex
     matching on action descriptions.
 
@@ -1389,7 +1409,7 @@ class AuditSearchEngine:
         return results
 
     def count(self, query: AuditSearchQuery) -> int:
-        """Count matching entries without materialising results."""
+        """Count matching entries (runs search() without the query's limit)."""
         unlimited = AuditSearchQuery(
             event_types=query.event_types,
             actors=query.actors,
@@ -1409,9 +1429,10 @@ class AuditSearchEngine:
 
 @dataclass(slots=True)
 class ArchiveSegment:
-    """An archived, integrity-sealed segment of an audit log.
+    """Descriptor of an archived audit log segment, sealed by its Merkle root.
 
-    Compliant with NIST SP 800-92 section 4.2 (log data archival).
+    The design draws on NIST SP 800-92 section 5.4 (Manage Long-Term Log
+    Data Storage); this is not a compliance claim.
 
     Attributes
     ----------
@@ -1426,7 +1447,7 @@ class ArchiveSegment:
     archived_at : str
         ISO 8601 archival timestamp.
     retention_years : int
-        Mandated retention period (HIPAA: 6 years minimum).
+        Retention period in years (the archiver's default is 6).
     """
 
     segment_id: str
@@ -1438,16 +1459,18 @@ class ArchiveSegment:
 
 
 class AuditLogArchiver:
-    """Archives and seals completed audit log segments.
+    """Seals audit log segments by their Merkle roots.
 
-    Implements NIST SP 800-92 recommendations for log archival:
-    segments are sealed with Merkle roots and metadata is
-    preserved for efficient retrieval and integrity audit.
+    Each ArchiveSegment keeps the segment's entry range and Merkle root in
+    memory; the entries themselves are not copied, so verify_archive()
+    recomputes the root from the live log. The design draws on the
+    log-archival guidance of NIST SP 800-92; this is not a compliance
+    claim.
 
     Parameters
     ----------
     retention_years : int
-        Minimum retention period per HIPAA (default 6).
+        Retention period recorded on each segment (default 6).
     """
 
     __slots__ = ("_retention_years", "_archives")
@@ -1486,7 +1509,7 @@ class AuditLogArchiver:
         Raises
         ------
         ValueError
-            If the range is invalid or entries are tampered.
+            If the range is invalid. The entries' hashes are not checked.
         """
         if start < 0 or end > len(log.entries) or start >= end:
             msg = f"Invalid range [{start}, {end}) for log with {len(log.entries)} entries"
@@ -1560,12 +1583,12 @@ class AuditLogArchiver:
 
 
 # ===========================================================================
-# Audit Export - HIPAA section 164.312(b) / FDA 21 CFR Part 11 section 11.10(e)
+# Audit Export (JSON, CSV, NDJSON; see Design References in the module docstring)
 # ===========================================================================
 
 
 class AuditExportFormat(Enum):
-    """Supported export formats for compliance reporting."""
+    """Supported export formats."""
 
     JSON = "json"
     CSV = "csv"
@@ -1574,11 +1597,12 @@ class AuditExportFormat(Enum):
 
 @dataclass(frozen=True, slots=True)
 class AuditComplianceReport:
-    """Summarized compliance report for regulatory submission.
+    """Summary of an audit log: counts, chain status and archive state.
 
-    Covers HIPAA section 164.312(b) audit control requirements and
-    FDA 21 CFR Part 11 section 11.10(e) electronic-record audit trails.
-    Generated by ``AuditExporter.compliance_report()``.
+    Its fields draw on HIPAA section 164.312(b) audit controls and
+    FDA 21 CFR Part 11 section 11.10(e) audit trails; it is not evidence
+    of compliance with either (see Design References in the module
+    docstring). Generated by ``AuditExporter.compliance_report()``.
     """
 
     log_id: str
@@ -1600,10 +1624,11 @@ class AuditComplianceReport:
 
 
 class AuditExporter:
-    """Export audit data in regulatory-compliant formats.
+    """Export audit data as JSON, CSV or NDJSON.
 
-    Supports JSON, CSV, and NDJSON (newline-delimited JSON) for
-    integration with SIEM platforms (Splunk, Elastic, Azure Sentinel).
+    NDJSON (newline-delimited JSON) is a common log-ingestion format;
+    nothing in this repository sends an export to a SIEM platform. The
+    app's CSV download uses app/audit_export.py, not this class.
 
     Parameters
     ----------
@@ -1651,7 +1676,7 @@ class AuditExporter:
         archiver: AuditLogArchiver | None = None,
         anomaly_count: int = 0,
     ) -> AuditComplianceReport:
-        """Generate a HIPAA/FDA compliance summary report.
+        """Generate an AuditComplianceReport summary of the log.
 
         Parameters
         ----------

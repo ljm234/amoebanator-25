@@ -1,26 +1,36 @@
 """
-Wires ml.data.audit_trail into the training pipeline.
+Wires ml.data.audit_trail into the training pipeline, the Streamlit pages and
+app/audit_export.py (ml.data_loader and ml.irb_gate also emit through
+_emit(), but no entry point calls them).
 
-ml.data.audit_trail provides AuditLog (hash-chained, Merkle-checkpointed,
-tamper-evident) but is in-memory only. This module adds:
+ml.data.audit_trail provides AuditLog (an unkeyed SHA-256 hash chain with
+Merkle checkpoints), which holds its entries in memory and writes them to
+disk only as a whole-log JSON snapshot when export_json() is called. This
+module adds:
 
   * JSONL on-disk persistence (one line per event so the file can be
-    appended atomically and inspected with `jq` / `tail -f`)
+    appended atomically and inspected with `jq` / `tail -f`). Only the
+    entries are written; the Merkle checkpoints stay in memory.
   * A process-singleton accessor with optional env-var override
     (AMOEBANATOR_AUDIT_PATH)
   * Five typed event helpers for the training pipeline:
         record_data_loaded, record_train_started, record_train_completed,
         record_calibration_fit, record_model_saved
   * A `verify_persisted_chain()` helper that re-loads a saved log and
-    revalidates the full hash chain (so `pytest tests/test_audit_integration.py`
-    catches any tampering between runs).
+    revalidates the full hash chain. It reports an entry edited in place,
+    but a rewrite that recomputes every hash, or entries removed from the
+    end (a last line that no longer loads as an entry counts as removed),
+    still verify. tests/test_audit_integration.py exercises it on
+    temporary logs, not on the repository's log.
 
 Design notes:
   - We use AuditLog.record() so the upstream chain hashing logic is the source
     of truth. We never compute hashes ourselves.
   - We persist *after* AuditLog.record() returns, so an in-memory entry that
-    fails to land on disk simply means the singleton is ahead of the file -
-    next call rewrites the full log via _flush_log().
+    fails to land on disk (the write error propagates to the caller) leaves
+    the singleton ahead of the file; later calls in the same process append
+    only their own entry, so the file's chain then has a gap that
+    verify_persisted_chain() reports as tampered.
   - The wrapper is intentionally thin. If callers need the raw API
     (e.g. anomaly detection, archival, exports), import ml.data.audit_trail
     directly.
@@ -276,8 +286,14 @@ def verify_persisted_chain(
 ) -> tuple[IntegrityStatus, list[int]]:
     """
     Re-load the audit JSONL from disk and verify its hash chain. Returns
-    (status, tampered_indices). Use this from tests / CI to detect
-    out-of-band edits to the file.
+    (status, tampered sequence numbers): the sequence_number fields of the
+    flagged entries, which are not line positions in the file once an entry
+    is missing. It detects an entry edited in place or removed from the
+    start or middle of the file; a line that does not load as an entry
+    (invalid JSON or a missing field, for example) is skipped and so counts
+    as removed. The hashes are unkeyed, so a rewrite that recomputes them,
+    or entries removed from the end (including a last line edited so that
+    it no longer loads), still return VALID.
     """
     target = (path or default_audit_path()).resolve()
     log = AuditLog()

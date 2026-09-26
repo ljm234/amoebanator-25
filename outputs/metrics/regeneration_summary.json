@@ -2,11 +2,11 @@
   "n_steps": 11,
   "n_ok": 11,
   "n_fail": 0,
-  "n_artifacts_expected": 21,
-  "n_artifacts_present": 21,
+  "n_artifacts_expected": 22,
+  "n_artifacts_present": 22,
   "steps": [
     {
-      "name": "Train MLP + temperature + val_preds",
+      "name": "Standardize inputs, train MLP + temperature + val_preds",
       "command": [
         "python",
         "-m",
@@ -15,17 +15,19 @@
       "artifacts": [
         "outputs/model/model.pt",
         "outputs/model/features.json",
+        "outputs/model/scaler.json",
         "outputs/model/temperature_scale.json",
         "outputs/metrics/val_preds.csv",
         "outputs/metrics/metrics.json"
       ],
-      "duration_s": 2.99,
+      "duration_s": 3.48,
       "exit_code": 0,
-      "stdout_tail": "Validation AUC (calibrated): 1.0\nRecall(High) @0.5: 1.0\nT (temperature, clamped [0.1,10.0]): 0.2662\nSaved outputs/metrics/val_preds.csv and metrics.json, plus model artifacts in outputs/model.",
+      "stdout_tail": "Validation AUC (calibrated): 1.0\nRecall(High) @0.5: 1.0\nT (temperature, clamped [0.1,10.0]): 1.0\nSaved outputs/metrics/val_preds.csv and metrics.json, plus model artifacts in outputs/model.",
       "warnings": [],
       "artifacts_present": {
         "outputs/model/model.pt": true,
         "outputs/model/features.json": true,
+        "outputs/model/scaler.json": true,
         "outputs/model/temperature_scale.json": true,
         "outputs/metrics/val_preds.csv": true,
         "outputs/metrics/metrics.json": true
@@ -33,16 +35,18 @@
       "artifacts_size_bytes": {
         "outputs/model/model.pt": 6397,
         "outputs/model/features.json": 155,
-        "outputs/model/temperature_scale.json": 27,
-        "outputs/metrics/val_preds.csv": 481,
-        "outputs/metrics/metrics.json": 78
+        "outputs/model/scaler.json": 284,
+        "outputs/model/temperature_scale.json": 29,
+        "outputs/metrics/val_preds.csv": 511,
+        "outputs/metrics/metrics.json": 80
       },
       "artifacts_sha256": {
-        "outputs/model/model.pt": "419aed386950f0d3a871680b10a5b089dd292c109c196bec9bccd5f3003b2a4b",
+        "outputs/model/model.pt": "d3cbf1d8a4a6fcc408dd60d5a40f4494394002cce1cdb1f67c1a8e8b1bbcb599",
         "outputs/model/features.json": "c0f534ebe6cb6201ebdc2a1e5189524c8bb78436b77f90f9d43afdb2c35a59eb",
-        "outputs/model/temperature_scale.json": "a0bf462471044adee47b8f66a38e5d545b1a10ec688c9761543d56e44dab07b9",
-        "outputs/metrics/val_preds.csv": "1fbf18c5e66b27e3c75768fe85f457d1d32492fc813f0a9d3ff7e43b00627986",
-        "outputs/metrics/metrics.json": "7884941b0d62e9df7dec35deeb926fb40a23e434d320b38100894024648f931b"
+        "outputs/model/scaler.json": "8f1912b8e95cce659729e534157add813e993204d71839b6c915afea7fb2033d",
+        "outputs/model/temperature_scale.json": "729307c8f794a250cd887fb8e793c5c03e85ed3d2df0ac0026b7a48b07dc58f2",
+        "outputs/metrics/val_preds.csv": "3eb76d2ff8eab57713512c3b3a3819af369095924d38ba6a4f7e84eeaa5ebc41",
+        "outputs/metrics/metrics.json": "19742e22eb8d1715b15a46a76693aa914590ea3758f3c3aad55f424f5ae0e8e1"
       }
     },
     {
@@ -56,7 +60,7 @@
         "outputs/metrics/feature_stats.json",
         "outputs/metrics/feature_stats_train.json"
       ],
-      "duration_s": 1.07,
+      "duration_s": 1.08,
       "exit_code": 0,
       "stdout_tail": "  ]\n}\n{\n  \"replaced\": \"outputs/metrics/feature_stats.json\"\n}",
       "warnings": [],
@@ -65,12 +69,12 @@
         "outputs/metrics/feature_stats_train.json": true
       },
       "artifacts_size_bytes": {
-        "outputs/metrics/feature_stats.json": 1672,
-        "outputs/metrics/feature_stats_train.json": 1672
+        "outputs/metrics/feature_stats.json": 1421,
+        "outputs/metrics/feature_stats_train.json": 1421
       },
       "artifacts_sha256": {
-        "outputs/metrics/feature_stats.json": "ed4c8c3d6fc1bab69aa1eb31d2259a8dbef0dffdba9561481e8f8b85ad9fe703",
-        "outputs/metrics/feature_stats_train.json": "ed4c8c3d6fc1bab69aa1eb31d2259a8dbef0dffdba9561481e8f8b85ad9fe703"
+        "outputs/metrics/feature_stats.json": "a12ed84874863b12fd3024f836b812aa93b661f64a3c2fa47fd99d68b9659f0f",
+        "outputs/metrics/feature_stats_train.json": "a12ed84874863b12fd3024f836b812aa93b661f64a3c2fa47fd99d68b9659f0f"
       }
     },
     {
@@ -83,9 +87,9 @@
         "outputs/metrics/energy_threshold.json",
         "outputs/metrics/ood_energy.json"
       ],
-      "duration_s": 1.73,
+      "duration_s": 1.71,
       "exit_code": 0,
-      "stdout_tail": "    \"tau\": -1.0000000049999991e-08,\n    \"q\": 0.95,\n    \"n\": 6\n  }\n}",
+      "stdout_tail": "    \"tau\": -7.16683734263492e-06,\n    \"q\": 0.95,\n    \"n\": 6\n  }\n}",
       "warnings": [],
       "artifacts_present": {
         "outputs/metrics/energy_threshold.json": true,
@@ -93,11 +97,11 @@
       },
       "artifacts_size_bytes": {
         "outputs/metrics/energy_threshold.json": 113,
-        "outputs/metrics/ood_energy.json": 85
+        "outputs/metrics/ood_energy.json": 83
       },
       "artifacts_sha256": {
-        "outputs/metrics/energy_threshold.json": "b7d856f0dcdb2dabe202d6bf5ff02d33b89ee3bb8885a7648ed8eb87ba74dd66",
-        "outputs/metrics/ood_energy.json": "cff3bda4ae968a95c7e7e245e1bd2c4a37a8bf653cd263a9f2ffe5e9366dd0a2"
+        "outputs/metrics/energy_threshold.json": "b1378d08f990d2d49ac1a491c6caf89551a47c6319cd5126cf6b69f88fe1e6db",
+        "outputs/metrics/ood_energy.json": "b8b34ad17d5d8ea89854099d23f580457e9dd40a3e18a37db04303a529da3ef6"
       }
     },
     {
@@ -109,9 +113,9 @@
       "artifacts": [
         "outputs/metrics/conformal.json"
       ],
-      "duration_s": 0.34,
+      "duration_s": 0.35,
       "exit_code": 0,
-      "stdout_tail": "  \"alpha_fraction\": \"1/7\",\n  \"qhat\": 0.016170106828212738,\n  \"n\": 6,\n  \"source\": \"val_preds.csv\"\n}",
+      "stdout_tail": "  \"alpha_fraction\": \"1/7\",\n  \"qhat\": 6.800965638831258e-05,\n  \"n\": 6,\n  \"source\": \"val_preds.csv\"\n}",
       "warnings": [
         "scripts/conformal/conformal_fit_from_probs.py:48: SmallCalibrationWarning: Conformal calibration set size n=6 is below the recommended floor of 100. Split conformal coverage still holds on average under exchangeability, but with n = 6 the realized coverage varies widely, and a valid threshold cannot target more than 6/7 coverage, about 86 percent, without abstaining on every input."
       ],
@@ -119,10 +123,10 @@
         "outputs/metrics/conformal.json": true
       },
       "artifacts_size_bytes": {
-        "outputs/metrics/conformal.json": 132
+        "outputs/metrics/conformal.json": 133
       },
       "artifacts_sha256": {
-        "outputs/metrics/conformal.json": "76ae94eab684e23729d2900320c4dbdfb0ca6f5d12c19114d1f4bba4b247a7f2"
+        "outputs/metrics/conformal.json": "5797c3b2576cb47459a93c0ded549ce8478f750a314995311a71a73e227c3de7"
       }
     },
     {
@@ -134,7 +138,7 @@
       "artifacts": [
         "outputs/metrics/conformal_eval.json"
       ],
-      "duration_s": 0.34,
+      "duration_s": 0.35,
       "exit_code": 0,
       "stdout_tail": "  \"singleton_rate\": 1.0,\n  \"empty_rate\": 0.0,\n  \"two_class_rate\": 0.0,\n  \"n\": 6\n}",
       "warnings": [],
@@ -157,7 +161,7 @@
       "artifacts": [
         "outputs/metrics/ci.json"
       ],
-      "duration_s": 2.71,
+      "duration_s": 2.72,
       "exit_code": 0,
       "stdout_tail": "Saved outputs/metrics/ci.json",
       "warnings": [
@@ -184,7 +188,7 @@
         "outputs/metrics/calibration_curve.png",
         "outputs/metrics/dca_curve.png"
       ],
-      "duration_s": 1.74,
+      "duration_s": 1.68,
       "exit_code": 0,
       "stdout_tail": "Saved calibration_curve.png and dca_curve.png in outputs/metrics/",
       "warnings": [],
@@ -193,12 +197,12 @@
         "outputs/metrics/dca_curve.png": true
       },
       "artifacts_size_bytes": {
-        "outputs/metrics/calibration_curve.png": 76794,
-        "outputs/metrics/dca_curve.png": 47994
+        "outputs/metrics/calibration_curve.png": 60695,
+        "outputs/metrics/dca_curve.png": 47978
       },
       "artifacts_sha256": {
-        "outputs/metrics/calibration_curve.png": "fcc4fe0d46af0c28d2d3e75189ce070ab46c6d763c92024c2610bf559915b42a",
-        "outputs/metrics/dca_curve.png": "c3d15537768348ccbd87977dbd570018bd05a7bcaa8899081d9b5da433b6adba"
+        "outputs/metrics/calibration_curve.png": "bccfc4c4db31cc85b276b142cc82abffcfdaf3f3d51a091d1b424160f7b998bf",
+        "outputs/metrics/dca_curve.png": "f3edb6404f403e92f9e484c88376aca9e903a69b13d8e7fe1c3507a69e23cfb6"
       }
     },
     {
@@ -211,23 +215,23 @@
         "outputs/metrics/ablation_table.json",
         "outputs/metrics/ablation_table.csv"
       ],
-      "duration_s": 28.12,
+      "duration_s": 27.04,
       "exit_code": 0,
       "stdout_tail": "  \"wrote\": [\n    \"outputs/metrics/ablation_table.json\",\n    \"outputs/metrics/ablation_table.csv\"\n  ]\n}",
       "warnings": [
-        "scripts/experiments/run_ablation.py:172: SmallCalibrationWarning: Conformal calibration set size n=6 is below the recommended floor of 100. Split conformal coverage still holds on average under exchangeability, but with n = 6 the realized coverage varies widely, and a valid threshold cannot target more than 6/7 coverage, about 86 percent, without abstaining on every input."
+        "scripts/experiments/run_ablation.py:174: SmallCalibrationWarning: Conformal calibration set size n=6 is below the recommended floor of 100. Split conformal coverage still holds on average under exchangeability, but with n = 6 the realized coverage varies widely, and a valid threshold cannot target more than 6/7 coverage, about 86 percent, without abstaining on every input."
       ],
       "artifacts_present": {
         "outputs/metrics/ablation_table.json": true,
         "outputs/metrics/ablation_table.csv": true
       },
       "artifacts_size_bytes": {
-        "outputs/metrics/ablation_table.json": 10200,
-        "outputs/metrics/ablation_table.csv": 4417
+        "outputs/metrics/ablation_table.json": 9840,
+        "outputs/metrics/ablation_table.csv": 4183
       },
       "artifacts_sha256": {
-        "outputs/metrics/ablation_table.json": "3cbee434fac81b9acdab18a33a7c8888913d9602e953238c5da546d2db967b81",
-        "outputs/metrics/ablation_table.csv": "3257e5bf0dfec0555a75ce157c3412aa71d75f79460ce48bd4b57bcadebab9a5"
+        "outputs/metrics/ablation_table.json": "2d18bb586d998b580aa683d09f5744faa93198564f226ca5e5bf7c8d3da86202",
+        "outputs/metrics/ablation_table.csv": "ac4f4bccb01c4ca3fd1e3402c14916b913e2ff6c64f8d65d675f50b91eb0e5a0"
       }
     },
     {
@@ -245,9 +249,9 @@
       "stdout_tail": "      \"abstain_rate\": 1.0,\n      \"n\": 3\n    }\n  ]\n}",
       "warnings": [
         "ml/conformal_advanced.py:206: SmallCalibrationWarning: Conformal calibration set size n=3 is below the recommended floor of 100. Split conformal coverage still holds on average under exchangeability, but with n = 3 the realized coverage varies widely, and a valid threshold cannot target more than 3/4 coverage, about 75 percent, without abstaining on every input.",
-        "scripts/conformal/eval_coverage_sweep.py:65: InfiniteThresholdWarning: alpha = 1/10 needs rank k = 4, but there are only n = 3 calibration scores, so no finite threshold guarantees 0.9000 coverage. The threshold is +inf; a marginal band then holds both classes, so every input abstains. With n = 3 the highest coverage a finite threshold guarantees is 3/4 (alpha = 1/4).",
-        "scripts/conformal/eval_coverage_sweep.py:65: InfiniteThresholdWarning: alpha = 1/20 needs rank k = 4, but there are only n = 3 calibration scores, so no finite threshold guarantees 0.9500 coverage. The threshold is +inf; a marginal band then holds both classes, so every input abstains. With n = 3 the highest coverage a finite threshold guarantees is 3/4 (alpha = 1/4).",
-        "scripts/conformal/eval_coverage_sweep.py:65: InfiniteThresholdWarning: alpha = 1/5 needs rank k = 4, but there are only n = 3 calibration scores, so no finite threshold guarantees 0.8000 coverage. The threshold is +inf; a marginal band then holds both classes, so every input abstains. With n = 3 the highest coverage a finite threshold guarantees is 3/4 (alpha = 1/4)."
+        "scripts/conformal/eval_coverage_sweep.py:64: InfiniteThresholdWarning: alpha = 1/10 needs rank k = 4, but there are only n = 3 calibration scores, so no finite threshold guarantees 0.9000 coverage. The threshold is +inf; a marginal band then holds both classes, so every input abstains. With n = 3 the highest coverage a finite threshold guarantees is 3/4 (alpha = 1/4).",
+        "scripts/conformal/eval_coverage_sweep.py:64: InfiniteThresholdWarning: alpha = 1/20 needs rank k = 4, but there are only n = 3 calibration scores, so no finite threshold guarantees 0.9500 coverage. The threshold is +inf; a marginal band then holds both classes, so every input abstains. With n = 3 the highest coverage a finite threshold guarantees is 3/4 (alpha = 1/4).",
+        "scripts/conformal/eval_coverage_sweep.py:64: InfiniteThresholdWarning: alpha = 1/5 needs rank k = 4, but there are only n = 3 calibration scores, so no finite threshold guarantees 0.8000 coverage. The threshold is +inf; a marginal band then holds both classes, so every input abstains. With n = 3 the highest coverage a finite threshold guarantees is 3/4 (alpha = 1/4)."
       ],
       "artifacts_present": {
         "outputs/metrics/coverage_sweep.json": true,
@@ -281,12 +285,12 @@
         "outputs/metrics/abstain_pareto.png": true
       },
       "artifacts_size_bytes": {
-        "outputs/metrics/abstain_pareto.json": 5249,
-        "outputs/metrics/abstain_pareto.png": 28285
+        "outputs/metrics/abstain_pareto.json": 5233,
+        "outputs/metrics/abstain_pareto.png": 28211
       },
       "artifacts_sha256": {
-        "outputs/metrics/abstain_pareto.json": "68bc4cac792a219dfa4df227248f3d4df0fba736fd61c140ca6352a078c339dc",
-        "outputs/metrics/abstain_pareto.png": "ade187ba83b73e02b3137e47ffe295811f38101a65d6df963135440426b3bd79"
+        "outputs/metrics/abstain_pareto.json": "434d45b7a6b56e456d13f25cb3652458a61d54054a59b50919320275366c0b5e",
+        "outputs/metrics/abstain_pareto.png": "8cce301b99f340a39aad5ee1f678b628217deb5b94fd2f868fcbfabbf2df5bbe"
       }
     },
     {
@@ -298,18 +302,18 @@
       "artifacts": [
         "outputs/metrics/synthetic_ood_benchmark.json"
       ],
-      "duration_s": 1.76,
+      "duration_s": 1.74,
       "exit_code": 0,
-      "stdout_tail": "      \"median_in_dist\": -0.020409310664630136,\n      \"median_ood\": -0.020409310664630136\n    }\n  }\n}",
+      "stdout_tail": "      \"median_in_dist\": -0.00048345964672092605,\n      \"median_ood\": -0.00048345964672092605\n    }\n  }\n}",
       "warnings": [],
       "artifacts_present": {
         "outputs/metrics/synthetic_ood_benchmark.json": true
       },
       "artifacts_size_bytes": {
-        "outputs/metrics/synthetic_ood_benchmark.json": 1116
+        "outputs/metrics/synthetic_ood_benchmark.json": 1735
       },
       "artifacts_sha256": {
-        "outputs/metrics/synthetic_ood_benchmark.json": "c83177a9a0f4a8476493e7ad5ff6bc76200d21f2dafddb348013079be2ea271f"
+        "outputs/metrics/synthetic_ood_benchmark.json": "bb89593c4f9ebf429681996283d9ce5dd3e94486e0bcb1aa6b16c92256237fc4"
       }
     }
   ]

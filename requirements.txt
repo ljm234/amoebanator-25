@@ -1,4 +1,5 @@
-# Amoebanator V1.0 - runtime dependencies, exact pins.
+# Amoebanator V1.1 - runtime and dev dependencies, exact pins except
+# pydantic and jsonschema (minimum versions).
 # The shipped artifacts were produced with these versions in the
 # environment recorded in docs/REPRODUCIBILITY.md Section 2. On Linux x86_64
 # the default torch wheel pulls in CUDA libraries; see the notes at the bottom
@@ -15,7 +16,7 @@ scipy==1.16.3
 matplotlib==3.10.6
 streamlit==1.52.0
 
-# --- Dev / test / lint (CI-only; production image can omit these) ---------
+# --- Dev / test / lint (not needed at run time; the Dockerfile installs them too) ---
 pytest==9.0.2
 pytest-cov==7.0.0
 hypothesis==6.149.1
@@ -23,9 +24,10 @@ ruff==0.14.10
 mypy==1.19.1
 
 # --- Notes ----------------------------------------------------------------
-# To install CPU-only torch wheels on Linux (CI), prepend:
+# To install CPU-only torch wheels on Linux, pass
 #   --extra-index-url https://download.pytorch.org/whl/cpu
-# and replace torch==2.9.1 above with the matching CPU wheel name.
+# to pip, as the Dockerfile does; torch==2.9.1 then resolves to 2.9.1+cpu.
+# CI installs the default wheel.
 
 # Vignette schema
 pydantic>=2.5.0

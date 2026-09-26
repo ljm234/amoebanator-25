@@ -1,9 +1,9 @@
 """Tests for app/presets.py.
 
-20 tests: 5 parametrized x 3 presets + 1 xfail-decorated bacterial
-regression + 4 cross-preset invariants. The xfail decorator uses
-``strict=False`` so a future MIMIC-IV cohort success -> XPASS as a
-"fix this" signal rather than CI breakage.
+5 parametrized tests x 3 presets, 1 xfail-decorated bacterial regression,
+and cross-preset invariants. The xfail decorator uses ``strict=False`` so a
+model that predicts Low for the bacterial preset shows up as XPASS, a "fix
+this" signal rather than a CI failure.
 """
 from __future__ import annotations
 
@@ -47,9 +47,9 @@ def test_preset_inputs_has_all_8_features(preset_key: str) -> None:
 @pytest.mark.parametrize("preset_key", _PRESET_KEYS)
 def test_preset_current_behavior_has_snapshot_date(preset_key: str) -> None:
     """Field rename: current_behavior (NOT expected) +
-    snapshot_date pinned to 2026-04-26."""
+    snapshot_date pinned to 2026-09-26, when the model was regenerated."""
     cb = PRESETS[preset_key]["current_behavior"]
-    assert cb["snapshot_date"] == "2026-04-26"
+    assert cb["snapshot_date"] == "2026-09-26"
     assert "prediction" in cb
     assert "p_high_approx" in cb
 
@@ -77,10 +77,11 @@ def test_preset_load_populates_form(preset_key: str) -> None:
 def test_preset_live_snapshot_matches(preset_key: str) -> None:
     """Live snapshot: actual infer_one output matches current_behavior.
 
-    For ``bacterial_meningitis_limitation`` this currently passes
-    because the model returns 'High' (the known limitation). A model
-    that returns 'Low' for it fails this test, and the xfail-decorated
-    test below then reports XPASS.
+    For ``bacterial_meningitis_limitation`` the model returns ABSTAIN with
+    reason LogitEnergyAboveOODShift (a High probability of about 0.9994
+    that the logit-energy gate flags; the known limitation). A model that
+    returns 'Low' for it fails this test, and the xfail-decorated test below
+    then reports XPASS.
     """
     from ml.infer import infer_one
     p = PRESETS[preset_key]
@@ -96,7 +97,10 @@ def test_preset_live_snapshot_matches(preset_key: str) -> None:
         symptoms=inputs["symptoms"],
     )
     out = infer_one(row)
-    assert out["prediction"] == p["current_behavior"]["prediction"]
+    cb = p["current_behavior"]
+    assert out["prediction"] == cb["prediction"]
+    assert out.get("reason") == cb.get("reason")
+    assert out["p_high"] == pytest.approx(cb["p_high_approx"], rel=1e-3, abs=1e-6)
 
 
 # --- Special xfail bacterial regression (1 test) ---------------------
@@ -104,11 +108,14 @@ def test_preset_live_snapshot_matches(preset_key: str) -> None:
 @pytest.mark.xfail(
     strict=False,
     reason=(
-        "Known limitation: the bacterial_meningitis_limitation preset is "
-        "predicted 'High' because the 30-row synthetic dataset contains no "
-        "bacterial meningitis that is not PAM. A model trained on a real "
-        "cohort should predict 'Low' here; the test then reports XPASS, and "
-        "the xfail marker and the preset's current_behavior should be updated."
+        "Known limitation: the model cannot tell bacterial meningitis from "
+        "PAM, because the 30-row synthetic dataset contains no bacterial "
+        "meningitis that is not PAM. It gives the bacterial preset a High "
+        "probability of about 0.9994, and the logit-energy gate then "
+        "abstains, so the result is ABSTAIN, not Low. A model trained on data "
+        "that labels bacterial meningitis should predict 'Low' here; the test "
+        "then reports XPASS, and the xfail marker and the preset's "
+        "current_behavior should be updated."
     ),
 )
 def test_bacterial_preset_predicts_low() -> None:
@@ -128,7 +135,7 @@ def test_bacterial_preset_predicts_low() -> None:
         symptoms=inputs["symptoms"],
     )
     out = infer_one(row)
-    # The current model predicts 'High' for this preset; see the xfail reason.
+    # The current model returns ABSTAIN for this preset; see the xfail reason.
     assert out["prediction"] == "Low"
 
 
@@ -150,8 +157,8 @@ def test_only_bacterial_has_limitation_banner_true() -> None:
     assert flagged == ["bacterial_meningitis_limitation"]
 
 
-def test_all_presets_have_snapshot_date_2026_04_26() -> None:
+def test_all_presets_have_snapshot_date_2026_09_26() -> None:
     for key, p in PRESETS.items():
-        assert p["current_behavior"]["snapshot_date"] == "2026-04-26", (
+        assert p["current_behavior"]["snapshot_date"] == "2026-09-26", (
             f"{key} snapshot_date drifted"
         )

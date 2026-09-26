@@ -1,6 +1,7 @@
-# Amoebanator V1.0 - local-development compose file.
-# Brings up the Streamlit dashboard on http://localhost:8501 backed by the
-# bundled simulated dataset and the bundled model artifacts.
+# Amoebanator V1.1 - local-development compose file.
+# Brings up the Streamlit dashboard on http://localhost:8501, backed by the
+# model and metrics artifacts in ./outputs (bind-mounted below), which were
+# produced from the bundled simulated dataset.
 #
 # Usage:
 #   docker compose up --build
@@ -11,7 +12,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: amoebanator:v1.0
+    image: amoebanator:v1.1
     container_name: amoebanator-dashboard
     ports:
       - "8501:8501"

@@ -1,26 +1,29 @@
 """Predict page.
 
-Form-based PAM risk prediction using the n=30 MLP at outputs/model/model.pt.
-Wires ml.infer.infer_one into:
+Form-based PAM risk prediction using the MLP at outputs/model/model.pt,
+trained on 24 of the 30 synthetic rows. Wires ml.infer.infer_one into:
 
 - 8 form widgets with NEUTRAL clinical defaults.
 - 3 preset buttons (high_risk_pam / bacterial_meningitis_limitation /
   normal_csf).
-- Limitation banner next to the result when the bacterial preset is
-  active (after inference, not before).
+- Limitation banner next to the result when the preset that sets
+  ``limitation_banner`` is loaded and its inputs are submitted unchanged
+  (after inference, not before).
 - Correlation-ID error path: uuid4 full server-side, 12-char
   display + INTEGRITY_VIOLATION audit emit.
-- Graceful FileNotFoundError banner when Mahalanobis stats
-  missing.
+- Graceful FileNotFoundError banner when a model or threshold file is
+  missing (missing Mahalanobis stats make every input ABSTAIN as OOD
+  instead).
 - Session-state debounce with 30s stale-lock recovery.
-- 4 result badges: decision, T=0.27 calibration tooltip
-  SmallCalibrationWarning if n_cal<30, 3-state conformal regime
-  badge green/yellow/red.
+- Result badges: decision, the temperature T read from the model
+  artifacts with a tooltip, a small-calibration-set warning if n_cal<30,
+  and a 3-state conformal regime badge (green/blue/red).
 - Research-mode env-var branch:
   AMOEBANATOR_RESEARCH_MODE=1 -> red banner + IRB_STATUS_CHANGE emit.
 """
 from __future__ import annotations
 
+import html
 import os
 import time
 import uuid
@@ -30,12 +33,19 @@ import streamlit as st
 
 from app.disclaimer import render_disclaimer
 from app.presets import PRESETS
-from app.utils import KNOWN_SYMPTOMS, _fmt_metric, build_row, decision_badge
+from app.utils import (
+    KNOWN_SYMPTOMS,
+    _fmt_metric,
+    build_row,
+    decision_badge,
+    min_calibration_rows,
+    temperature_note,
+)
 from ml.audit_hooks import _emit
 from ml.data.audit_trail import AuditEventType
 from ml.config import conformal_alpha
 from ml.conformal_advanced import finite_sample_rank
-from ml.infer import infer_one
+from ml.infer import calibration_info, infer_one
 
 
 st.set_page_config(page_title="Predict - Amoebanator 25")
@@ -81,6 +91,15 @@ for _field, _value in st.session_state["form_values"].items():
         st.session_state[_field] = _value
 
 
+def _preset_form_values(key: str) -> dict[str, Any]:
+    """The form values a preset loads, typed like the form's defaults."""
+    values = dict(_FORM_DEFAULTS)
+    for field, value in PRESETS[key]["inputs"].items():
+        default = _FORM_DEFAULTS[field]
+        values[field] = list(value) if isinstance(default, list) else type(default)(value)
+    return values
+
+
 # -- Preset buttons (3 buttons + neutral default state) --------
 _preset_cols = st.columns(3)
 for _col, _key in zip(
@@ -90,12 +109,7 @@ for _col, _key in zip(
     if _col.button(PRESETS[_key]["label"], key=f"preset_{_key}"):
         # The buttons render above the form, so the widget keys can still be
         # written in this run; the form shows the preset when it renders.
-        _values = dict(_FORM_DEFAULTS)
-        for _field, _value in PRESETS[_key]["inputs"].items():
-            _default = _FORM_DEFAULTS[_field]
-            _values[_field] = (
-                list(_value) if isinstance(_default, list) else type(_default)(_value)
-            )
+        _values = _preset_form_values(_key)
         st.session_state["form_values"] = _values
         for _field, _value in _values.items():
             st.session_state[_field] = _value
@@ -137,23 +151,31 @@ with st.form("predict_form"):
 
 
 def _render_result(out: dict[str, Any]) -> None:
-    """Render the 4 badges + key metrics."""
+    """Render the decision, temperature and regime badges + key metrics."""
     badge = decision_badge(str(out.get("prediction", "")), out.get("reason"))
     st.markdown(f"### Result: {badge}")
 
-    # T=0.27 amplification badge with hover tooltip.
+    info = calibration_info()
+    T = float(info["T"])  # type: ignore[arg-type]
+    n_cal_raw = out.get("n_cal", info["n_cal"])
+    n_cal = int(n_cal_raw) if n_cal_raw is not None else None
+    separated = info["val_separated"]
+    sep_flag = bool(separated) if separated is not None else None
+
+    # Temperature badge with hover tooltip, both read from the artifacts.
+    tooltip = html.escape(temperature_note(T, n_cal, sep_flag), quote=True)
+    n_label = f" (n={n_cal})" if n_cal else ""
     st.markdown(
-        '<span title="Calibrated by temperature scaling (Guo 2017, '
-        "L-BFGS, n=6 validation). T=0.27 means the calibrator amplifies "
-        "the model's raw confidence - typical temperature scaling has "
-        "T>1 (attenuation); T<1 here is unusual and reflects fitting "
-        'on only 6 samples. See docs/model_card.md section 9.">'
-        "<sub>T=0.27 (n=6)</sub></span>",
+        f'<span title="{tooltip}"><sub>T={T:.2f}{n_label}</sub></span>',
         unsafe_allow_html=True,
     )
 
-    # SmallCalibrationWarning banner when n_cal < 30.
-    n_cal = int(out.get("n_cal", 6))
+    if n_cal is None:
+        _render_metrics(out)
+        return
+
+    # Small-calibration-set banner when n_cal < 30 (not the conformal
+    # SmallCalibrationWarning, whose floor is 100).
     if n_cal < 30:
         st.warning(
             f"Calibration set is small (n={n_cal}). Probability estimates "
@@ -162,12 +184,13 @@ def _render_result(out: dict[str, Any]) -> None:
 
     # 3-state conformal regime badge from (n, alpha, k).
     alpha = float(out.get("alpha", conformal_alpha()))
-    n = int(out.get("n_cal", 6))
+    n = n_cal
     k = finite_sample_rank(n, alpha)
     if n >= k and n >= 100:
         st.success(
-            "ASYMPTOTIC: Guarantee holds; "
-            "finite-sample bound 1-alpha + 1/(n+1) is tight."
+            "ASYMPTOTIC: coverage >= 1-alpha holds on average under "
+            "exchangeability; with untied scores the finite-sample bound "
+            "1-alpha + 1/(n+1) is tight."
         )
     elif n >= k:
         st.info(
@@ -179,10 +202,14 @@ def _render_result(out: dict[str, Any]) -> None:
         st.error(
             f"INVALID: k = {k} > n = {n}, so no finite threshold guarantees "
             "1-alpha coverage; qhat is +inf and every input abstains. "
-            "A future MIMIC-IV cohort (target n>=200) will fix this."
+            f"This alpha needs at least {min_calibration_rows(alpha)} "
+            "calibration rows."
         )
+    _render_metrics(out)
 
-    # Key numeric metrics - _fmt_metric tolerates missing/None/garbage.
+
+def _render_metrics(out: dict[str, Any]) -> None:
+    """Key numeric metrics - _fmt_metric tolerates missing/None/garbage."""
     st.markdown(
         f"**p_high:** {_fmt_metric(out, 'p_high')} &nbsp;&nbsp; "
         f"**Mahalanobis d^2:** {_fmt_metric(out, 'mahalanobis_d2')} "
@@ -229,13 +256,21 @@ if submitted:
         )
         out = infer_one(row)
         _render_result(out)
-        # Limitation banner only when the bacterial preset is active,
-        # shown next to the result (after inference, not before).
+        # Limitation banner next to the result (after inference, not
+        # before), only while the loaded preset's inputs are unchanged: once
+        # the form is edited, the result no longer describes that preset.
+        _active = st.session_state.get("active_preset")
+        _submitted = {
+            "age": age, "csf_glucose": csf_glucose, "csf_protein": csf_protein,
+            "csf_wbc": csf_wbc, "pcr": pcr, "microscopy": microscopy,
+            "exposure": exposure, "symptoms": list(symptoms),
+        }
         if (
-            st.session_state.get("active_preset")
-            == "bacterial_meningitis_limitation"
+            _active in PRESETS
+            and PRESETS[_active]["limitation_banner"]
+            and _submitted == _preset_form_values(_active)
         ):
-            st.error(PRESETS["bacterial_meningitis_limitation"]["description"])
+            st.error(PRESETS[_active]["description"])
         p_high = out.get("p_high")
         _emit(
             AuditEventType.WEB_PREDICT_RETURNED,

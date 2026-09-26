@@ -5,10 +5,10 @@ Three responsibilities, one module:
 1. ``DISCLAIMER_TEXT``       - the disclaimer banner that
                                 appears on every page. Tested for 5
                                 mandatory tokens via the parametrized
-                                ``test_disclaimer_on_every_page``.
+                                ``test_disclaimer_contains_mandatory_token``.
 2. ``_INJECTED_CSS``          - wash + border + deep-text WCAG-AA color
-                                pattern for ``.stAlert[kind="error"]``
-                                / warning / info / success, plus a
+                                pattern for the error / warning / info /
+                                success alert boxes, plus a
                                 ``prefers-reduced-motion`` block. Single
                                 source of truth - NO competing CSS in
                                 other modules.
@@ -39,7 +39,8 @@ import streamlit as st
 DISCLAIMER_TEXT: str = (
     "Research prototype, NOT a medical device. Trained on n=30 "
     "synthetic patient vignettes (n_train=24, n_val=6); contains zero "
-    "real PHI. Outputs are calibrated probabilities, **limited to** "
+    "real PHI. Outputs are temperature-scaled probabilities (T fit on "
+    "n=6 validation rows), **limited to** "
     "the n=30 training distribution - not diagnoses. Not for clinical "
     "decision support, not validated. Source + caveats: "
     "github.com/ljm234/amoebanator-25 - Contact: "
@@ -53,25 +54,42 @@ DISCLAIMER_TEXT: str = (
 # alarmist tone:
 # light wash background + 4px deep-saturation accent border + deep
 # saturation text on the wash.
+#
+# Selectors: in Streamlit 1.52 an alert renders as div.stAlert holding a
+# [data-testid="stAlertContainer"] box, and only the inner content node names
+# the kind, as data-testid="stAlertContent<Kind>". The first rule makes the
+# box transparent and unpadded, with its 0.2 s transition switched off so the
+# change is not animated; each kind rule then puts the wash, border, text
+# color and padding on the content node itself. The rules use plain
+# attribute selectors (no :has()), so they apply on the first render too.
 _INJECTED_CSS: str = """
 <style>
 /* -- WCAG-AA contrast pattern ------------------------------ */
-.stAlert[kind="error"] {
+.stAlert [data-testid="stAlertContainer"] {
+    background: transparent;
+    padding: 0;
+    transition: none;
+}
+.stAlert [data-testid^="stAlertContent"] {
+    padding: 1rem;
+    border-radius: 0.5rem;
+}
+.stAlert [data-testid="stAlertContentError"] {
     background: #FFEBEE;            /* light red wash */
     border-left: 4px solid #B71C1C; /* deep red accent */
     color: #B71C1C;                 /* deep red text - contrast 5.75:1 */
 }
-.stAlert[kind="warning"] {
+.stAlert [data-testid="stAlertContentWarning"] {
     background: #FFF8E1;            /* light amber wash */
     border-left: 4px solid #BF360A; /* deep orange accent */
     color: #BF360A;                 /* deep orange text - contrast 5.27:1 */
 }
-.stAlert[kind="info"] {
+.stAlert [data-testid="stAlertContentInfo"] {
     background: #E3F2FD;            /* light blue wash */
     border-left: 4px solid #0D47A1; /* deep blue accent (theme primary) */
     color: #0D47A1;                 /* deep blue text - contrast 7.56:1 */
 }
-.stAlert[kind="success"] {
+.stAlert [data-testid="stAlertContentSuccess"] {
     background: #E8F5E9;            /* light green wash */
     border-left: 4px solid #1B5E20; /* deep green accent */
     color: #1B5E20;                 /* deep green text - contrast 7.00:1 */

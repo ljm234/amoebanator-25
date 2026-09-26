@@ -40,6 +40,7 @@ from ml.infer import (
     _softmax_high,
     infer_one,
 )
+from ml.scaling import apply_scaler
 
 
 def _row(**overrides: Any) -> dict[str, Any]:
@@ -122,7 +123,9 @@ def test_no_constant_output_across_perturbations() -> None:
 
     Sweeps 10 rows that vary every clinically meaningful feature. If every
     p_high collapses to the same value, the inference path has regressed
-    back to a constant predictor and this test fails loudly.
+    back to a constant predictor and this test fails loudly. The rows are
+    scored through the model directly, because infer_one returns no p_high
+    for a row the Mahalanobis gate flags.
     """
     rows = [
         _row(age=a, csf_glucose=g, csf_protein=p, csf_wbc=w, pcr=pc, microscopy=mi)
@@ -139,7 +142,7 @@ def test_no_constant_output_across_perturbations() -> None:
             (44, 25, 180, 1500, 1, 1),
         ]
     ]
-    p_highs = [float(infer_one(r)["p_high"]) for r in rows]
+    p_highs = [_softmax_high(*_real_logits(pd.Series(r))) for r in rows]
     assert len(set(p_highs)) > 1, (
         f"All {len(rows)} perturbed inputs produced identical p_high={p_highs[0]!r}. "
         f"This is the _toy_logits failure signature; the model is not wired."
@@ -224,10 +227,10 @@ def test_real_logits_distinct_inputs_distinct_outputs() -> None:
 
 
 def test_real_logits_applies_temperature_scaling() -> None:
-    """Verify scaled = raw / T to within float32 precision."""
-    model, feats, T = _load_model_artifacts()
+    """Verify scaled = model(standardized x) / T to within float32 precision."""
+    model, feats, T, scaler = _load_model_artifacts()
     row = pd.Series(_SEVERE)
-    x = _build_feature_vector(row, feats)
+    x = apply_scaler(_build_feature_vector(row, feats), feats, scaler)
     with torch.no_grad():
         raw = model(torch.from_numpy(x).unsqueeze(0)).squeeze(0).numpy()
     expected = (float(raw[0] / T), float(raw[1] / T))
@@ -237,9 +240,23 @@ def test_real_logits_applies_temperature_scaling() -> None:
 
 
 def test_load_model_artifacts_is_cached() -> None:
-    m1, _, _ = _load_model_artifacts()
-    m2, _, _ = _load_model_artifacts()
+    m1, _, _, _ = _load_model_artifacts()
+    m2, _, _, _ = _load_model_artifacts()
     assert m1 is m2
+
+
+def test_scaler_standardizes_only_continuous_inputs() -> None:
+    """The shipped scaler z-scores age and the CSF values and nothing else."""
+    _, feats, _, scaler = _load_model_artifacts()
+    assert scaler["features"] == ["age", "csf_glucose", "csf_protein", "csf_wbc"]
+    x = _build_feature_vector(pd.Series(_SEVERE), feats)
+    z = apply_scaler(x, feats, scaler)
+    for i, f in enumerate(feats):
+        if f in scaler["features"]:
+            j = scaler["features"].index(f)
+            assert z[i] == pytest.approx((x[i] - scaler["mean"][j]) / scaler["std"][j], rel=1e-5)
+        else:
+            assert z[i] == x[i]
 
 
 def test_softmax_high_matches_numpy() -> None:
@@ -278,6 +295,7 @@ def _isolated_model_dir(tmp_path: Path) -> Iterator[Path]:
         patch.object(infer_mod, "MODEL_PATH", md / "model.pt"),
         patch.object(infer_mod, "FEATURES_JSON", md / "features.json"),
         patch.object(infer_mod, "TEMPERATURE_JSON", md / "temperature_scale.json"),
+        patch.object(infer_mod, "SCALER_JSON", md / "scaler.json"),
     ):
         yield md
     _load_model_artifacts.cache_clear()
@@ -328,6 +346,35 @@ def test_state_dict_architecture_mismatch_raises_value_error(_isolated_model_dir
     (_isolated_model_dir / "features.json").write_text(json.dumps(["age", "csf_glucose"]))
     (_isolated_model_dir / "temperature_scale.json").write_text(json.dumps({"T": 1.0}))
     with pytest.raises(ValueError, match="state_dict does not match"):
+        _load_model_artifacts()
+
+
+def _write_loadable_model(md: Path, feats: list[str]) -> None:
+    torch.save(infer_mod.MLP(len(feats)).state_dict(), md / "model.pt")
+    (md / "features.json").write_text(json.dumps(feats))
+    (md / "temperature_scale.json").write_text(json.dumps({"T": 1.0}))
+
+
+def test_missing_scaler_raises_clear_error(_isolated_model_dir: Path) -> None:
+    _write_loadable_model(_isolated_model_dir, ["age", "pcr"])
+    with pytest.raises(FileNotFoundError, match="input scaler"):
+        _load_model_artifacts()
+
+
+@pytest.mark.parametrize(
+    "bad_scaler",
+    [
+        {"features": ["age"], "mean": [1.0], "std": [0.0]},
+        {"features": ["age"], "mean": [float("nan")], "std": [1.0]},
+        {"features": ["csf_wbc"], "mean": [1.0], "std": [1.0]},
+        {"features": ["age"], "mean": [1.0, 2.0], "std": [1.0]},
+        {"mean": [1.0], "std": [1.0]},
+    ],
+)
+def test_bad_scaler_raises_value_error(_isolated_model_dir: Path, bad_scaler: dict[str, Any]) -> None:
+    _write_loadable_model(_isolated_model_dir, ["age", "pcr"])
+    (_isolated_model_dir / "scaler.json").write_text(json.dumps(bad_scaler))
+    with pytest.raises(ValueError, match="scaler"):
         _load_model_artifacts()
 
 

@@ -15,6 +15,7 @@ import pytest
 
 import scripts.experiments.run_ablation as ra
 from ml.robust import NUMERIC_COLS
+from ml.scaling import apply_scaler, fit_scaler
 from ml.splits import stratified_split
 from ml.training_calib_dca import load_tabular
 
@@ -79,8 +80,11 @@ def test_splits_are_disjoint(data: Any) -> None:
 
 
 def test_mlp_is_fit_only_on_the_training_split(ablation_run: dict[str, Any], data: Any) -> None:
-    X, y, _, splits = data
-    assert np.array_equal(ablation_run["mlp_train"], X[splits["train"]])
+    """The MLP sees the training rows, standardized with statistics of those rows only."""
+    X, y, feats, splits = data
+    Xtr = X[splits["train"]]
+    expected = apply_scaler(Xtr, feats, fit_scaler(Xtr, feats))
+    assert np.array_equal(ablation_run["mlp_train"], expected)
     assert np.array_equal(ablation_run["temperature_labels"], y[splits["val"]])
 
 

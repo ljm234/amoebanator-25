@@ -16,16 +16,18 @@ from app.disclaimer import DISCLAIMER_TEXT, _INJECTED_CSS, wcag_contrast_ratio
 
 AA_THRESHOLD = 4.5
 
-# Pull (kind, foreground, background) out of each ``.stAlert[kind="..."]`` block.
+# Pull (kind, foreground, background) out of each alert rule. Streamlit 1.52
+# marks the alert kind only on the inner content node
+# (data-testid="stAlertContent<Kind>"), so each rule styles that node.
 _ALERT_BLOCK = re.compile(
-    r'\.stAlert\[kind="(?P<kind>\w+)"\]\s*\{'
+    r'\.stAlert\s+\[data-testid="stAlertContent(?P<kind>[A-Z]\w+)"\]\s*\{'
     r"[^}]*?background:\s*(?P<bg>#[0-9A-Fa-f]{6})"
     r"[^}]*?color:\s*(?P<fg>#[0-9A-Fa-f]{6})",
     re.DOTALL,
 )
 
 ALERT_COMBOS: list[tuple[str, str, str]] = [
-    (m.group("kind"), m.group("fg"), m.group("bg"))
+    (m.group("kind").lower(), m.group("fg"), m.group("bg"))
     for m in _ALERT_BLOCK.finditer(_INJECTED_CSS)
 ]
 
@@ -42,6 +44,25 @@ def test_four_alert_combos_parsed() -> None:
     """The injected CSS defines exactly the four expected alert kinds."""
     kinds = {kind for kind, _, _ in ALERT_COMBOS}
     assert kinds == {"error", "warning", "info", "success"}
+
+
+def test_alert_selectors_match_streamlit_markup() -> None:
+    """
+    The rules target the test ids the pinned Streamlit frontend renders, not a
+    ``kind`` attribute: Streamlit 1.52 puts no ``kind`` attribute on any alert
+    element, so a ``[kind=...]`` selector would match nothing.
+    """
+    import streamlit
+    from pathlib import Path
+
+    assert "[kind=" not in _INJECTED_CSS
+    assert ":has(" not in _INJECTED_CSS  # :has() rules missed the first render in Chrome
+    bundle = "".join(
+        p.read_text(encoding="utf-8", errors="ignore")
+        for p in (Path(streamlit.__file__).parent / "static" / "static" / "js").glob("index.*.js")
+    )
+    assert '"data-testid":"stAlertContainer"' in bundle
+    assert "stAlertContent${" in bundle
 
 
 @pytest.mark.parametrize("kind, fg, bg", ALERT_COMBOS)

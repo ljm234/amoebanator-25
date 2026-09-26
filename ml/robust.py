@@ -5,10 +5,12 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-# Numeric features we try to use if present
+# Columns the Mahalanobis gate is fit on and scores: the seven non-symptom
+# model inputs. risk_score and risk_label are labels, not inputs, so they stay
+# out of the gate.
 NUMERIC_COLS = [
     "age", "csf_glucose", "csf_protein", "csf_wbc",
-    "pcr", "microscopy", "exposure", "risk_score",
+    "pcr", "microscopy", "exposure",
 ]
 
 METRICS_DIR = Path("outputs/metrics")

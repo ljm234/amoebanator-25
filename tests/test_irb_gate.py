@@ -62,9 +62,15 @@ def test_synthetic_detection_rejects_mixed() -> None:
 
 
 def test_synthetic_detection_accepts_known_prefixes() -> None:
-    for prefix in ("simulated", "synthetic", "bridge", "mimic_iv"):
+    for prefix in ("simulated", "synthetic", "bridge"):
         df = pd.DataFrame({"source": [f"{prefix}_v2"] * 3})
         assert is_dataset_synthetic(df) is True
+
+
+def test_mimic_iv_rows_are_not_synthetic() -> None:
+    """MIMIC-IV rows are real, de-identified data, not synthetic."""
+    df = pd.DataFrame({"source": ["mimic_iv"] * 3})
+    assert is_dataset_synthetic(df) is False
 
 
 def test_real_dataset_with_approved_irb_passes(tmp_path: Path, tmp_audit: Path) -> None:

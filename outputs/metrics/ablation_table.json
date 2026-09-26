@@ -425,37 +425,6 @@
       "model": "amoebanator_mlp",
       "cell": "+conformal",
       "n": 5,
-      "n_pos": 2,
-      "auc": 1.0,
-      "auc_ci": {
-        "point": 1.0,
-        "mean": 1.0,
-        "std": 0.0,
-        "lo": 1.0,
-        "hi": 1.0,
-        "alpha": 0.05,
-        "n_resamples": 2000,
-        "n_skipped": 0
-      },
-      "recall_high@0.5": 1.0,
-      "recall_ci": {
-        "point": 1.0,
-        "mean": 1.0,
-        "std": 0.0,
-        "lo": 1.0,
-        "hi": 1.0,
-        "alpha": 0.05,
-        "n_resamples": 2000,
-        "n_skipped": 0
-      },
-      "abstain_rate": 0.16666666666666666,
-      "qhat": 0.011055714450776577,
-      "alpha": 0.14285714285714285
-    },
-    {
-      "model": "amoebanator_mlp",
-      "cell": "+ood",
-      "n": 4,
       "n_pos": 1,
       "auc": 1.0,
       "auc_ci": {
@@ -479,9 +448,22 @@
         "n_resamples": 2000,
         "n_skipped": 0
       },
+      "abstain_rate": 0.16666666666666666,
+      "qhat": 0.0013749327044934034,
+      "alpha": 0.14285714285714285
+    },
+    {
+      "model": "amoebanator_mlp",
+      "cell": "+ood",
+      "n": 4,
+      "n_pos": 0,
+      "auc": NaN,
+      "auc_ci": null,
+      "recall_high@0.5": NaN,
+      "recall_ci": null,
       "abstain_rate": 0.3333333333333333,
       "ood_abstain_rate": 0.16666666666666666,
-      "qhat": 0.011055714450776577,
+      "qhat": 0.0013749327044934034,
       "alpha": 0.14285714285714285
     }
   ]

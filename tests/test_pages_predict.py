@@ -339,19 +339,46 @@ def test_decision_badge_color_blind_safe(
 
 
 # ---------------------------------------------------------------------
-# T=0.27 calibration tooltip rendered with full text
+# Temperature badge: value and tooltip read from the shipped artifacts
 # ---------------------------------------------------------------------
-def test_t_027_badge_renders_with_tooltip() -> None:
-    """Tooltip must explain the T<1 amplification, n=6 fit."""
+def test_temperature_badge_reads_the_artifacts() -> None:
+    """The badge shows the shipped T and n_cal, and the tooltip states why
+    T is not identifiable when the validation rows are perfectly separated."""
+    from ml.infer import calibration_info
+
+    info = calibration_info()
     fake = _fake_infer_output()
+    fake.pop("n_cal")
     at = _fresh_app_test()
     at.run(timeout=30)
     with patch("ml.infer.infer_one", return_value=fake):
         at.button[3].click()
         at.run(timeout=30)
     md_blob = "\n".join(m.value for m in at.markdown)
-    assert "T=0.27 (n=6)" in md_blob
-    assert "amplifies the model" in md_blob.lower() or "amplifies the model" in md_blob
+    assert f"T={float(info['T']):.2f} (n={info['n_cal']})" in md_blob
+    if info["val_separated"]:
+        assert "not identifiable" in md_blob
+
+
+def test_temperature_note_states_each_case() -> None:
+    """The tooltip text follows the artifact values, not a fixed number."""
+    from app.utils import temperature_note
+
+    assert "starting value of 1.0" in temperature_note(0.9999974, 6, True)
+    assert "where the optimizer stopped" in temperature_note(0.1, 6, True)
+    assert "sharpens" in temperature_note(0.5, 6, False)
+    assert "softens" in temperature_note(1.5, 6, False)
+
+
+def test_min_calibration_rows_matches_the_rank_rule() -> None:
+    from app.utils import min_calibration_rows
+    from ml.conformal_advanced import finite_sample_rank
+
+    for alpha, expected in [(0.10, 9), (0.05, 19), (1 / 7, 6), (0.20, 4)]:
+        n = min_calibration_rows(alpha)
+        assert n == expected
+        assert finite_sample_rank(n, alpha) <= n
+        assert finite_sample_rank(n - 1, alpha) > n - 1
 
 
 # ---------------------------------------------------------------------
@@ -390,9 +417,10 @@ def test_limitation_banner_only_on_bacterial_preset() -> None:
     """Banner is post-result + bacterial-preset-gated."""
     from app.presets import PRESETS
 
-    fake = _fake_infer_output(prediction="High", p_high=1.0)
+    fake = _fake_infer_output(prediction="ABSTAIN", p_high=0.9994, reason="LogitEnergyAboveOODShift")
     at = _fresh_app_test()
-    at.session_state["active_preset"] = "bacterial_meningitis_limitation"
+    at.run(timeout=30)
+    at.button(key="preset_bacterial_meningitis_limitation").click()
     at.run(timeout=30)
     with patch("ml.infer.infer_one", return_value=fake):
         at.button[3].click()
@@ -405,7 +433,8 @@ def test_limitation_banner_only_on_bacterial_preset() -> None:
 
     # Now non-bacterial preset -> no limitation banner
     at2 = _fresh_app_test()
-    at2.session_state["active_preset"] = "high_risk_pam"
+    at2.run(timeout=30)
+    at2.button(key="preset_high_risk_pam").click()
     at2.run(timeout=30)
     with patch("ml.infer.infer_one", return_value=fake):
         at2.button[3].click()
@@ -415,6 +444,24 @@ def test_limitation_banner_only_on_bacterial_preset() -> None:
     assert not any(bacterial_desc[:60] in e for e in errors2), (
         "limitation banner spuriously rendered on non-bacterial preset"
     )
+
+
+def test_limitation_banner_hidden_after_inputs_are_edited() -> None:
+    """Once the loaded bacterial preset's inputs are edited, the result no
+    longer describes that preset, so its banner is not shown."""
+    from app.presets import PRESETS
+
+    fake = _fake_infer_output(prediction="Low", p_high=1e-6)
+    at = _fresh_app_test()
+    at.run(timeout=30)
+    at.button(key="preset_bacterial_meningitis_limitation").click()
+    at.run(timeout=30)
+    at.number_input(key="csf_wbc").set_value(3)
+    with patch("ml.infer.infer_one", return_value=fake):
+        at.button[3].click()
+        at.run(timeout=30)
+    bacterial_desc = PRESETS["bacterial_meningitis_limitation"]["description"]
+    assert not any(bacterial_desc[:60] in e.value for e in at.error)
 
 
 # ---------------------------------------------------------------------

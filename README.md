@@ -7,34 +7,48 @@ app_port: 8501
 tags:
 - streamlit
 pinned: false
-short_description: Calibrated, abstention-aware PAM triage (synthetic data)
+short_description: Abstention-aware PAM triage (synthetic data)
 license: mit
 ---
 
 # Amoebanator
 
-Research codebase for a calibrated, abstention-aware triage signal for primary amoebic
+Research codebase for an abstention-aware triage signal for primary amoebic
 meningoencephalitis (PAM), the rare and near-uniformly fatal CNS infection caused by
-*Naegleria fowleri*. The classifier is small by design, with calibration,
-split conformal prediction and an out-of-distribution gate, and it abstains instead of
-predicting when either one flags the input. Out-of-distribution detection is
-dual-gated: Mahalanobis distance in feature space and an energy score on the
-temperature-scaled logits. The conformal step abstains when the prediction set is
-empty or holds both classes. A literature-anchored registry of meningoencephalitis
-vignettes provides the differential-diagnosis context.
+*Naegleria fowleri*. The classifier is small by design, with temperature scaling,
+split conformal prediction and two out-of-distribution gates, and it abstains instead
+of predicting when a gate or the conformal step flags the input. Out-of-distribution
+detection is dual-gated: Mahalanobis distance on the seven non-symptom inputs and an
+energy score on the temperature-scaled logits. The conformal step abstains when the
+prediction set is empty or holds both classes. The raw logits already separate the six
+validation rows perfectly, so the temperature is not identifiable: the fit leaves T at
+essentially 1.0, and the probabilities shown are the model's own softmax outputs. A
+literature-anchored registry of 138 meningoencephalitis vignettes (60 PAM, 78 across
+five differential-diagnosis classes) is kept under `data/vignettes/`, apart from the 30
+synthetic rows the model is trained and validated on; neither the classifier nor the
+app reads it.
 
 > **For research and educational use.** Not a cleared medical device, not a substitute
-> for clinical judgment, and not validated for unsupervised use.
+> for clinical judgment, and not clinically validated.
 
 ## Scope and status
 
 Amoebanator is a clinical-ML infrastructure project for CNS-infection triage, using
 primary amoebic meningoencephalitis (Naegleria fowleri) as a high-risk must-not-miss
-example. This release demonstrates the engineering stack: conformal prediction,
-calibrated selective abstention, OOD detection, and reproducible training and
-evaluation. The classifier is trained and evaluated on a small synthetic cohort and is
-an infrastructure demonstration, not a clinically validated diagnostic tool. Validation
-on real clinical data is not part of this release. Not for clinical use.
+example. This release, V1.1, demonstrates the engineering stack: temperature scaling,
+split conformal prediction with selective abstention, OOD detection, and reproducible
+training and evaluation. The classifier is trained and evaluated on a small synthetic
+cohort (30 rows: 24 for training, 6 for validation) and is an infrastructure
+demonstration, not a clinically validated diagnostic tool. Metrics on six validation
+rows are not meaningful, and on the repository's synthetic covariate-shift benchmark
+neither OOD gate separates the shifted rows from the bundled ones (AUC 0.56 for
+Mahalanobis, 0.57 for logit energy). Validation on real clinical data is not part of
+this release. Not for clinical use.
+
+Amoebanator is the methodological prototype for the abstention architecture carried
+into a national multicenter network in Peru on opportunistic CNS infection in people
+living with HIV, where a new abstention-aware model is to be trained from scratch on
+the network's own data. That work is separate from this repository.
 
 ## License and disclaimer
 

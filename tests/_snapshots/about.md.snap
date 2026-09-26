@@ -1,21 +1,30 @@
 <style>
 /* -- WCAG-AA contrast pattern ------------------------------ */
-.stAlert[kind="error"] {
+.stAlert [data-testid="stAlertContainer"] {
+    background: transparent;
+    padding: 0;
+    transition: none;
+}
+.stAlert [data-testid^="stAlertContent"] {
+    padding: 1rem;
+    border-radius: 0.5rem;
+}
+.stAlert [data-testid="stAlertContentError"] {
     background: #FFEBEE;            /* light red wash */
     border-left: 4px solid #B71C1C; /* deep red accent */
     color: #B71C1C;                 /* deep red text - contrast 5.75:1 */
 }
-.stAlert[kind="warning"] {
+.stAlert [data-testid="stAlertContentWarning"] {
     background: #FFF8E1;            /* light amber wash */
     border-left: 4px solid #BF360A; /* deep orange accent */
     color: #BF360A;                 /* deep orange text - contrast 5.27:1 */
 }
-.stAlert[kind="info"] {
+.stAlert [data-testid="stAlertContentInfo"] {
     background: #E3F2FD;            /* light blue wash */
     border-left: 4px solid #0D47A1; /* deep blue accent (theme primary) */
     color: #0D47A1;                 /* deep blue text - contrast 7.56:1 */
 }
-.stAlert[kind="success"] {
+.stAlert [data-testid="stAlertContentSuccess"] {
     background: #E8F5E9;            /* light green wash */
     border-left: 4px solid #1B5E20; /* deep green accent */
     color: #1B5E20;                 /* deep green text - contrast 7.00:1 */
@@ -31,10 +40,10 @@
     .stSpinner { display: none !important; }
 }
 </style>
-Research prototype, NOT a medical device. Trained on n=30 synthetic patient vignettes (n_train=24, n_val=6); contains zero real PHI. Outputs are calibrated probabilities, **limited to** the n=30 training distribution - not diagnoses. Not for clinical decision support, not validated. Source + caveats: github.com/ljm234/amoebanator-25 - Contact: jordanmontenegroc.99@gmail.com (ORCID 0009-0000-7851-7139)
-Tabular MLP, 914 parameters, 6.4 KB serialized. `Linear(10, 32) -> ReLU -> Linear(32, 16) -> ReLU -> Linear(16, 2)` - binary classifier (PAM risk: Low / High) with two output logits consumed by softmax + temperature scaling at inference time. Architecture verified against `outputs/model/model.pt` tensor shapes.
-**n=30 synthetic rows created for this demo**; their age and sex distribution does not match the published PAM case series. Train/val split: n_train=24, n_val=6, `random_state=42`, `test_size=0.2`, `stratify=y`. No real PHI. Any clinical evaluation needs a real cohort, such as the planned MIMIC-IV study (target n >= 200). See `docs/data_card.md` (Gebru et al. 2021 datasheet format) for the full lineage.
-Temperature scaling (Guo et al. 2017) optimized via L-BFGS on the n=6 validation set. Current `T = 0.27`. **T < 1 means the calibrator amplifies the model's raw confidence** - the opposite of typical Guo 2017 behavior (T > 1 attenuates overconfidence). On n=6 the L-BFGS landscape lacks curvature to constrain T meaningfully, and a different set of six rows could give a very different T. Treat the reported T as a sample-specific point estimate, not as evidence of structural under-/over-confidence. See `docs/model_card.md` section Caveats for the full discussion.
+Research prototype, NOT a medical device. Trained on n=30 synthetic patient vignettes (n_train=24, n_val=6); contains zero real PHI. Outputs are temperature-scaled probabilities (T fit on n=6 validation rows), **limited to** the n=30 training distribution - not diagnoses. Not for clinical decision support, not validated. Source + caveats: github.com/ljm234/amoebanator-25 - Contact: jordanmontenegroc.99@gmail.com (ORCID 0009-0000-7851-7139)
+Tabular MLP, 914 parameters, 6.4 KB serialized. `Linear(10, 32) -> ReLU -> Linear(32, 16) -> ReLU -> Linear(16, 2)` - binary classifier (PAM risk: Low / High) with two output logits consumed by softmax + temperature scaling at inference time. The four continuous inputs (age, CSF glucose, protein and WBC) are z-scored with the training rows' means and standard deviations (`outputs/model/scaler.json`); the binary inputs stay 0/1. The layer shapes, parameter count and size above are read from `outputs/model/model.pt`.
+**n=30 synthetic rows created for this demo**; their age and sex distribution does not match the published PAM case series. Train/val split: n_train=24, n_val=6, `random_state=42`, `test_size=0.2`, `stratify=y`. Trained with Adam (lr 1e-3) for 500 full-batch steps, the point where the training loss has converged. No real PHI. Any clinical evaluation needs a real cohort, and none is part of this release. See `docs/data_card.md` (Gebru et al. 2021 datasheet format) for the full lineage.
+Temperature scaling (Guo et al. 2017), fitted by L-BFGS on the n=6 validation rows. Current `T = 0.999997`. The raw logits already classify every validation row correctly: the rows are perfectly separated, so the validation loss has no finite minimum in T and the temperature is not identifiable. The fit leaves T essentially at its starting value of 1.0, so the probabilities the Predict page shows are the model's own softmax outputs. Treat T as a property of these six rows, not as evidence about the model's calibration. See `docs/model_card.md` section Caveats for the full discussion.
 Move the slider to see how the rank `k` and the regime badge respond to different significance levels. The 3-state regime badge (ASYMPTOTIC / FINITE-SAMPLE / INVALID) is computed from `(n_cal, alpha, k)` where `k = ceil((n_cal + 1)(1 - alpha))`.
 With `n_cal = 6`, `alpha = 1/7` -> `k = ceil((n+1)(1-alpha)) = 6`.
 Luis Jordan Montenegro-Calla - ORCID 0009-0000-7851-7139 - jordanmontenegroc.99@gmail.com

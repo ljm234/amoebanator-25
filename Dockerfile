@@ -1,15 +1,15 @@
-# Amoebanator V1.0 - reproducible runtime container.
+# Amoebanator V1.1 - runtime container.
 #
 # Two-stage build keeps the final image small:
-#   Stage 1 (deps): install pip dependencies into a venv.
+#   Stage 1 (builder): install pip dependencies into a venv.
 #   Stage 2 (runtime): copy the venv + source, expose Streamlit on 8501.
 #
 # Build:
-#   docker build -t amoebanator:v1.0 .
+#   docker build -t amoebanator:v1.1 .
 # Run dashboard:
-#   docker run --rm -p 8501:8501 amoebanator:v1.0
+#   docker run --rm -p 8501:8501 amoebanator:v1.1
 # Run a single CLI inference:
-#   docker run --rm amoebanator:v1.0 \
+#   docker run --rm amoebanator:v1.1 \
 #       python scripts/inference/infer_cli.py --json '{"age":12,"csf_glucose":18,...}'
 
 # --- Stage 1: builder -----------------------------------------------------
@@ -52,16 +52,19 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 
 # AMOEBANATOR_RESEARCH_MODE - research-mode switch
 #
-#   The model is trained on 30 synthetic rows created for this demo: no real
-#   PHI and no human subjects, so no IRB review is required. With this
+#   The model is trained on 24 of 30 synthetic rows created for this demo: no
+#   real PHI and no human subjects, so no IRB review is required. With this
 #   variable set, the predict page shows a research-mode banner and writes an
 #   audit event (AuditEventType.IRB_STATUS_CHANGE, actor="env_var"), and
-#   ml/irb_gate.py, if called, skips the IRB record check.
+#   ml/irb_gate.py, if called, skips the IRB record check and logs the skip.
 #
-#   This research mode is appropriate while the app runs on synthetic data
-#   only. The planned MIMIC-IV proxy evaluation uses de-identified, IRB-exempt
-#   records (PhysioNet credentialed access obtained); it runs outside this
-#   container, and the repository ships no MIMIC data.
+#   The skip applies to any dataset, so this research mode is appropriate only
+#   while the app runs on synthetic data. Without it, ml/irb_gate.py treats
+#   only simulated, synthetic and bridge sources as synthetic; a MIMIC-IV
+#   cohort (source mimic_iv) needs an IRB record like any real dataset. The
+#   author holds PhysioNet credentialed access to MIMIC-IV, but the MIMIC-IV
+#   proxy study in docs/rare_class_design.md is a pre-specified protocol that
+#   is not scheduled, and the repository ships no MIMIC data.
 #
 ENV AMOEBANATOR_RESEARCH_MODE=1
 
@@ -82,9 +85,10 @@ WORKDIR /app
 # log and the metrics figures (outputs/metrics/*.png).
 COPY --chown=amoeba:amoeba . /app
 
-# Health check: probe Streamlit's own health endpoint. start-period covers the
-# cold torch import at boot so the container is never marked unhealthy while
-# it is still legitimately starting up.
+# Health check: probe Streamlit's own health endpoint, which answers once the
+# server is up; torch is imported later, when a session first opens the
+# Predict or About page. Failed probes during the 90 s start-period do not
+# count toward retries.
 HEALTHCHECK --interval=30s --timeout=5s --start-period=90s --retries=3 \
   CMD python -c "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://localhost:8501/_stcore/health', timeout=4).status==200 else 1)"
 
@@ -92,6 +96,6 @@ EXPOSE 8501
 
 ENTRYPOINT ["/usr/bin/tini", "--"]
 # streamlit_app.py wires st.navigation across the 4 pages (Predict / Audit /
-# About / References). It lives at the repo root per the HF Spaces docker-app
-# convention.
+# About / References). It lives at the repo root, where the CMD below names
+# it; its docstring explains why it cannot be app/app.py.
 CMD ["streamlit", "run", "streamlit_app.py", "--server.port=8501", "--server.address=0.0.0.0"]

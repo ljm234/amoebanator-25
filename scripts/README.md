@@ -20,8 +20,10 @@ Each subdirectory is a Python package, so modules are imported as
 
 ## Top-level scripts
 
-- **`regenerate_all_artifacts.py`** - Retrains the model and regenerates every
-  threshold, metrics file and figure the pipeline ships
-  (`PYTHONPATH=. python scripts/regenerate_all_artifacts.py`); `--dry-run`
-  only reports which artifacts exist and leaves the summary file unchanged.
+- **`regenerate_all_artifacts.py`** - Refits the input scaler, retrains the
+  model and regenerates every threshold, metrics file and figure the pipeline
+  ships (`PYTHONPATH=. python scripts/regenerate_all_artifacts.py`), then
+  writes each artifact's size and SHA-256 to
+  `outputs/metrics/regeneration_summary.json`; `--dry-run` only reports which
+  artifacts exist and leaves the summary file unchanged.
 - **`check_dua.py`** - Data guard run in continuous integration.

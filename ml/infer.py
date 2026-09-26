@@ -11,6 +11,7 @@ import torch
 from ml.config import conformal_alpha
 from ml.robust import score_tabular, load_stats, score_energy, ENERGY_JSON
 from ml.model import MLP
+from ml.scaling import SCALER_FILENAME, apply_scaler, load_scaler
 
 _REPO_ROOT: Path = Path(__file__).resolve().parent.parent
 
@@ -22,6 +23,7 @@ MODEL_DIR: Path = _REPO_ROOT / "outputs" / "model"
 MODEL_PATH: Path = MODEL_DIR / "model.pt"
 FEATURES_JSON: Path = MODEL_DIR / "features.json"
 TEMPERATURE_JSON: Path = MODEL_DIR / "temperature_scale.json"
+SCALER_JSON: Path = MODEL_DIR / SCALER_FILENAME
 
 
 def _read_json(p: Path) -> dict:
@@ -48,7 +50,7 @@ def _missing_threshold(path: Path, kind: str) -> FileNotFoundError:
 
 
 @lru_cache(maxsize=1)
-def _load_model_artifacts() -> tuple[MLP, tuple[str, ...], float]:
+def _load_model_artifacts() -> tuple[MLP, tuple[str, ...], float, dict]:
     if not MODEL_PATH.exists():
         raise _missing_artifact(MODEL_PATH, "model weights")
     if not FEATURES_JSON.exists():
@@ -96,7 +98,10 @@ def _load_model_artifacts() -> tuple[MLP, tuple[str, ...], float]:
         )
     model.load_state_dict(state)
     model.eval()
-    return model, feats, T
+    if not SCALER_JSON.exists():
+        raise _missing_artifact(SCALER_JSON, "input scaler")
+    scaler = load_scaler(SCALER_JSON, feats)
+    return model, feats, T, scaler
 
 
 def _build_feature_vector(row: pd.Series, feats: tuple[str, ...]) -> np.ndarray:
@@ -107,7 +112,9 @@ def _build_feature_vector(row: pd.Series, feats: tuple[str, ...]) -> np.ndarray:
     Symptom indicators (sym_<token>) prefer an explicit column when present;
     otherwise they fall back to parsing row["symptoms"] as a semicolon-
     separated token string. Missing features default to 0.0, matching the
-    fillna(0) policy used during training (ml/training_calib_dca.py).
+    fillna(0) policy used during training (ml/training_calib_dca.py). The
+    vector is in raw units; _real_logits standardizes it before the forward
+    pass.
     """
     sym_tokens: set[str] = set()
     if "symptoms" in row.index:
@@ -133,12 +140,14 @@ def _real_logits(row: pd.Series) -> tuple[float, float]:
     """
     Return temperature-scaled (lo, hi) logits from the trained model.
 
-    Loads outputs/model/model.pt once per process via lru_cache and applies
-    the temperature T fit by L-BFGS during training. Callers compute p_high
-    via softmax over the returned (lo, hi) pair.
+    Loads outputs/model/model.pt once per process via lru_cache, z-scores
+    the continuous inputs with the training-split statistics saved in
+    outputs/model/scaler.json, and applies the temperature T fit by L-BFGS
+    during training. Callers compute p_high via softmax over the returned
+    (lo, hi) pair.
     """
-    model, feats, T = _load_model_artifacts()
-    x = _build_feature_vector(row, feats)
+    model, feats, T, scaler = _load_model_artifacts()
+    x = apply_scaler(_build_feature_vector(row, feats), feats, scaler)
     with torch.no_grad():
         raw = model(torch.from_numpy(x).unsqueeze(0)).squeeze(0).numpy()
     scaled = raw / T
@@ -151,6 +160,33 @@ def _softmax_high(lo: float, hi: float) -> float:
     e_lo = math.exp(lo - m)
     e_hi = math.exp(hi - m)
     return e_hi / (e_lo + e_hi)
+
+
+VAL_PREDS_CSV: Path = METRICS_DIR / "val_preds.csv"
+
+
+def calibration_info() -> dict[str, float | int | bool | None]:
+    """
+    Facts about the calibration step, for display next to a result:
+
+    * ``T`` - the temperature of the loaded model;
+    * ``n_cal`` - the conformal calibration-set size recorded in
+      conformal.json (None when absent);
+    * ``val_separated`` - True when the raw logits classify every
+      validation row correctly (val_preds.csv), in which case the
+      validation loss has no finite minimum in T and the temperature is not
+      identifiable; None when val_preds.csv is missing or malformed.
+    """
+    _, _, T, _ = _load_model_artifacts()
+    n_raw = _read_json(CONF_JSON).get("n")
+    separated: bool | None = None
+    try:
+        dfv = pd.read_csv(VAL_PREDS_CSV)
+        pred_high = dfv["logit_high"].to_numpy(dtype=float) > dfv["logit_low"].to_numpy(dtype=float)
+        separated = bool(np.all(pred_high == (dfv["y_true"].to_numpy(dtype=int) == 1)))
+    except (OSError, KeyError, ValueError):
+        separated = None
+    return {"T": T, "n_cal": int(n_raw) if n_raw is not None else None, "val_separated": separated}
 
 
 def _conformal_threshold() -> tuple[float, float]:
@@ -169,7 +205,7 @@ def _energy_tau() -> float:
     d = _read_json(ENERGY_JSON)
     if "tau" not in d:
         raise _missing_threshold(Path(ENERGY_JSON), "energy threshold")
-    _, _, T = _load_model_artifacts()
+    _, _, T, _ = _load_model_artifacts()
     fit_T = d.get("T")
     if d.get("logits") != "temperature_scaled" or fit_T is None or not math.isclose(float(fit_T), T, rel_tol=1e-9):
         raise ValueError(
@@ -211,8 +247,9 @@ def infer_one(row_in: dict | pd.Series) -> dict:
     """
     Run the full inference pipeline on one patient row.
 
-    Pipeline order: Mahalanobis OOD gate -> trained MLP -> temperature scaling
-    -> energy gate -> split-conformal band assignment -> label.
+    Pipeline order: Mahalanobis OOD gate -> input standardization -> trained
+    MLP -> temperature scaling -> energy gate -> split-conformal band
+    assignment -> label.
 
     Returns a dict with `prediction` (one of "Low", "High", "ABSTAIN"), the
     calibrated `p_high` in [0, 1] (None when the Mahalanobis gate abstains,

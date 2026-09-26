@@ -1,7 +1,7 @@
 """CSV export + chain-integrity verification for the audit log.
 
 The in-UI ``st.download_button`` lets a reviewer
-export the current session's audit chain as CSV and verify integrity
+export the whole shared audit chain (all visitors) as CSV and verify integrity
 post-download against a cloned repo. This converts HF Space's ephemeral
 filesystem (audit log wipes on container restart) into an explicit
 audit-portability feature.
@@ -17,10 +17,14 @@ Two public functions:
                                                  ``AUDIT_EXPORT_REQUESTED``.
 - ``verify_csv_chain_integrity(csv_bytes)``    - re-parse the CSV, walk
                                                  the chain, return True
-                                                 iff every row's
+                                                 iff the header matches,
+                                                 every row's
                                                  ``entry_hash`` matches
                                                  the canonical hash
-                                                 recomputation.
+                                                 recomputation, and each
+                                                 ``previous_hash`` equals
+                                                 the prior row's
+                                                 ``entry_hash``.
 
 The round-trip test:
 write 10 events -> ``export_audit_to_csv`` -> re-parse -> byte-equal hash
@@ -69,7 +73,8 @@ def export_audit_to_csv(jsonl_path: Path) -> bytes:
     flat-table-friendly while preserving all nested structure.
 
     Side effect: emits ``AuditEventType.AUDIT_EXPORT_REQUESTED`` with
-    metadata ``{"export_size_bytes": <int>, "row_count": <int>}`` so
+    metadata ``{"export_size_bytes": <int>, "row_count": <int>,
+    "csv_schema_version": "1"}`` so
     audit-of-audits is itself in the chain.
     """
     entries = _load_existing_entries(jsonl_path)
@@ -114,8 +119,11 @@ def verify_csv_chain_integrity(csv_bytes: bytes) -> bool:
 
     Returns ``True`` iff every row passes AND the ``previous_hash`` of
     each row equals the ``entry_hash`` of the prior row (chain links
-    intact). Returns ``False`` on any mismatch - fail-closed because a
-    silent True on a tampered chain defeats the audit's whole purpose.
+    intact). Returns ``False`` on any mismatch. It does not check the
+    first row against the genesis hash or the sequence numbers, has no
+    record of the expected last row, and the hashes are unkeyed, so rows
+    removed from the start or end of the file, or a chain rewritten with
+    recomputed hashes, still return ``True``.
 
     Empty CSV (header row only, no entries) returns ``True`` -
     vacuously correct.

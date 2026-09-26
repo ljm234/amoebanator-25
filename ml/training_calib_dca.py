@@ -1,6 +1,7 @@
 # training_calib_dca.py
-# Trains an MLP, fits temperature scaling, saves validation predictions,
-# and writes val_preds.csv for plotting (calibration + DCA).
+# Standardizes the continuous inputs, trains an MLP, fits temperature scaling,
+# and writes the model artifacts plus val_preds.csv for plotting
+# (calibration + DCA).
 # Run:  python -m ml.training_calib_dca
 
 import os
@@ -22,6 +23,7 @@ from ml.audit_hooks import (
     record_train_started,
 )
 from ml.model import MLP
+from ml.scaling import apply_scaler, fit_scaler, save_scaler
 
 # ---------- Data ----------
 def load_tabular(csv_path: str = "outputs/diagnosis_log_pro.csv") -> tuple[np.ndarray, np.ndarray, list[str]]:
@@ -61,10 +63,17 @@ def select_device() -> str:
     )
 
 
+# Full-batch Adam steps. 500 is where the training loss has converged on the
+# standardized inputs (about 0.44 after 60 steps, below 0.001 after 500). The
+# number was set from the training loss alone, not from validation results.
+TRAIN_EPOCHS = 500
+
+
 def train_mlp(Xtr: np.ndarray, ytr: np.ndarray, device: str) -> MLP:
     """
-    Train the MLP with the pipeline's settings: Adam (lr 1e-3), 60 full-batch
-    epochs, and a positive-class weight clamped to [1, 10].
+    Train the MLP with the pipeline's settings: Adam (lr 1e-3), TRAIN_EPOCHS
+    full-batch epochs, and a positive-class weight clamped to [1, 10]. Xtr
+    must already be standardized with ml.scaling.
     """
     model = MLP(Xtr.shape[1]).to(device)
     opt = torch.optim.Adam(model.parameters(), lr=1e-3)
@@ -80,7 +89,7 @@ def train_mlp(Xtr: np.ndarray, ytr: np.ndarray, device: str) -> MLP:
     xb = torch.tensor(Xtr, dtype=torch.float32, device=device)
     yb = torch.tensor(ytr, dtype=torch.long, device=device)
 
-    for _ in range(60):
+    for _ in range(TRAIN_EPOCHS):
         model.train()
         opt.zero_grad()
         logits = model(xb)
@@ -110,10 +119,15 @@ def main(model_dir: str = "outputs/model", metrics_dir: str = "outputs/metrics")
 
     X, y, feats = load_tabular()
     record_data_loaded(resource="outputs/diagnosis_log_pro.csv", n_rows=int(X.shape[0]), n_features=int(X.shape[1]))
-    Xtr, Xva, ytr, yva = train_test_split(
+    Xtr_raw, Xva_raw, ytr, yva = train_test_split(
         X, y, test_size=0.2, stratify=y, random_state=42
     )
     record_train_started(resource=model_dir, n_train=int(len(ytr)), n_val=int(len(yva)))
+
+    # z-score the continuous inputs with the training split's statistics only
+    scaler = fit_scaler(Xtr_raw, feats)
+    Xtr = apply_scaler(Xtr_raw, feats, scaler)
+    Xva = apply_scaler(Xva_raw, feats, scaler)
 
     device = select_device()
     torch.set_default_dtype(torch.float32)  # type: ignore[no-untyped-call]
@@ -148,6 +162,7 @@ def main(model_dir: str = "outputs/model", metrics_dir: str = "outputs/metrics")
     record_model_saved(resource=model_dir, save_path=os.path.join(model_dir, "model.pt"))
     with open(os.path.join(model_dir, "features.json"), "w") as f:
         json.dump(feats, f, indent=2)
+    save_scaler(scaler, model_dir)
     with open(os.path.join(model_dir, "temperature_scale.json"), "w") as f:
         json.dump({"T": float(T)}, f, indent=2)
 

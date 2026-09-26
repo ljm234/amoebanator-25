@@ -9,8 +9,9 @@ Writes:
 If outputs/metrics/val_preds.csv lacks logit_low/logit_high columns (older
 trainings did not emit them), this script recomputes the validation logits by
 re-deriving the train/val split deterministically (random_state=42,
-test_size=0.2, stratify=y - matching ml/training_calib_dca.py) and running
-the saved model.pt over the val rows.
+test_size=0.2, stratify=y - matching ml/training_calib_dca.py), standardizing
+them with the saved outputs/model/scaler.json, and running the saved model.pt
+over the val rows.
 
 Usage:
   PYTHONPATH=. python scripts/ood/fit_gates.py
@@ -50,10 +51,12 @@ def _recompute_val_logits() -> np.ndarray:
     if not (MODEL_DIR / "model.pt").exists():
         raise SystemExit(f"Missing {MODEL_DIR / 'model.pt'}. Run training first.")
 
-    X, y, _ = load_tabular(str(LOG_CSV))
-    _, Xva, _, _ = train_test_split(X, y, test_size=0.2, stratify=y, random_state=42)
+    X, y, feats = load_tabular(str(LOG_CSV))
+    _, Xva_raw, _, _ = train_test_split(X, y, test_size=0.2, stratify=y, random_state=42)
 
     from ml.model import MLP  # noqa: E402
+    from ml.scaling import SCALER_FILENAME, apply_scaler, load_scaler  # noqa: E402
+    Xva = apply_scaler(Xva_raw, feats, load_scaler(MODEL_DIR / SCALER_FILENAME, feats))
     model = MLP(X.shape[1])
     model.load_state_dict(torch.load(MODEL_DIR / "model.pt", map_location="cpu"))
     model.eval()

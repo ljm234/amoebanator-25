@@ -1,22 +1,26 @@
-# Amoebanator V1.0 - Vignette Schema v2.0
+# Amoebanator V1.1 - Vignette Schema v2.0
 
 Reference for the Pydantic v2 schema underlying the 9-class
-meningoencephalitis differential ML system. Schema pinned at v2.0 as of
+meningoencephalitis differential vignette corpus. Schema pinned at v2.0 as of
 May 2026.
 
 ---
 
 ## Section 1: Overview
 
-The vignette schema is the contract that every clinical case in the 270-vignette
-corpus must satisfy before it enters training, calibration, or evaluation. The
+The vignette schema is the contract that every clinical case in the vignette
+corpus under `data/vignettes/` must satisfy. The corpus holds 138 vignettes in 6
+of the 9 classes (60 PAM, 28 bacterial, 30 viral, 16 TB, 2 cryptococcal, 2 GAE),
+and all 138 validate against the schema. The corpus is not used to train,
+calibrate or evaluate the bundled binary classifier, which uses a separate
+30-row synthetic dataset (`outputs/diagnosis_log_pro.csv`). The
 schema is defined in `ml/schemas/vignette.py` as a hierarchy of 14 Pydantic v2
 `BaseModel` classes, with cross-field validators enforcing class-conditional
 clinical rules.
 
 **Summary**
 
-- 14 sub-models, ~75 leaf fields
+- 14 sub-models, 79 leaf fields
 - 5 cross-field `model_validator` rules
 - 9 `ClassLabel` enum values, 1 = PAM, 9 = NON_INFECTIOUS_MIMIC
 - `schema_version` Literal-pinned at "2.0"
@@ -44,8 +48,8 @@ from ml.schemas import (
 | `ml/schemas/export_json_schema.py` | JSON Schema export utility |
 | `ml/schemas/SCHEMA_README.md` | This document |
 | `schemas/vignette_schema_v2.0.json` | Exported JSON Schema (41 KB) |
-| `scripts/vignettes/generate_fixtures.py` | Reproducible fixture generator |
-| `tests/schemas/` | Schema, fixture, migration and performance tests |
+| `scripts/vignettes/generate_fixtures.py` | Reproducible generator for the 8 non-PAM fixtures |
+| `tests/schemas/` | Schema, fixture round-trip and performance tests; the migration test is skipped until a migration script exists |
 | `tests/schemas/fixtures/` | 9 canonical vignettes (1 per ClassLabel) |
 
 ---
@@ -58,13 +62,14 @@ and validator (where applicable). Numeric ranges are enforced via Pydantic
 
 ### 2.1 Demographics (5 fields)
 
-Demographic context. Used downstream for stratified evaluation.
+Demographic context, intended for stratified evaluation; no evaluation
+code reads the vignettes.
 
 | Field | Type | Constraint | Justification |
 |---|---|---|---|
 | `age_years` | `int` | 0-110 | PAM bimodal age (Gharpure 2021); HSV-1 bimodal; NCC 20-40 |
 | `sex` | `Literal["male", "female", "intersex"]` | required | PAM ~75% male; NMDAR ~80% female |
-| `ethnicity` | `Optional[Literal[8 values]]` | optional | Hispanic/mestizo overrepresented in Balamuthia (Bravo PMC8760460) |
+| `ethnicity` | `Optional[Literal[8 values]]` | optional | Hispanic Americans overrepresented among US Balamuthia cases (Cope CID 2019, PMID 30239654; Schuster EID 2004, PMID 15503402; cited in Alvarez 2022, PMC8760460) |
 | `geography_region` | `Literal[10 values]` | required | 6 Peru regions + US South + Pakistan-Karachi + 2 fallbacks |
 | `altitude_residence_m` | `Optional[int]` | 0-5000 | HACE risk threshold >2,500 m (WMS 2024 PMID 37833187) |
 
@@ -124,7 +129,7 @@ Examination findings.
 | `kernig_or_brudzinski_positive` | `Optional[bool]` | low sensitivity but high specificity (Thomas CID 2002) |
 | `focal_neurological_deficit` | `bool` | required |
 | `cranial_nerve_palsy` | `Literal[6 values]` | CN VI palsy in TB meningitis |
-| `skin_lesion_centrofacial_chronic` | `Optional[bool]` | 73% Peruvian Balamuthia (Bravo) |
+| `skin_lesion_centrofacial_chronic` | `Optional[bool]` | centrofacial in 73% (22/30) of a Peruvian cutaneous balamuthiasis series (Alvarez 2022) |
 | `petechial_or_purpuric_rash` | `bool` | 62-81% meningococcal (van de Beek 2008) |
 | `papilledema_on_fundoscopy` | `Optional[bool]` | elevated ICP marker |
 
@@ -269,7 +274,7 @@ Validators: see Section 4 (`_pam_always_flag_rule`, `_cryptococcal_cd4_required_
 ## Section 3: ClassLabel reference (per-class anchor)
 
 For each of 9 classes: enum value, canonical anchor, optional Peru companion,
-geographic relevance score for Peru deployment, adjudicator notes.
+geographic relevance score for Peru, adjudicator notes.
 
 ### 3.1 ClassLabel.PAM (1) - Primary Amebic Meningoencephalitis
 
@@ -285,7 +290,7 @@ geographic relevance score for Peru deployment, adjudicator notes.
   - van de Beek D, et al. Clinical features and prognostic factors in adults
     with bacterial meningitis. NEJM 2004;351(18):1849-1859. (Netherlands n=696)
 - **Peru companion (pediatric only):** PMID 27831604
-  - Castillo ME, Solís S, Verne E, et al. RPMESP 2016;33(3):425-431
+  - Davalos L, Terrazas Y, Quintana A, et al. RPMESP 2016;33(3):425-431
 - **Modern epidemiology backup:** PMID 34036322
   - Koelman DLH, Brouwer MC, Ter Horst L, **Bijlsma MW**, van der Ende A,
     van de Beek D. Pneumococcal Meningitis in Adults. CID 2022;74(4):657-667
@@ -300,15 +305,15 @@ geographic relevance score for Peru deployment, adjudicator notes.
   - **Montano SM, Mori N, Nelson CA, Ton TGN, Celis V**, et al.
     Epidemiol Infect 2016;144(8):1673-1678. HSV encephalitis 5 Peru cities
   - The first author is Montano SM (not "Becerra").
-- **Peru relevance:** high - Lima cohort directly Peruvian
+- **Peru relevance:** high - multicenter Peru cohort, directly Peruvian
 - **Adjudicator notes:** confirm HSV-1 representativeness; consider HSV-2,
   enterovirus, arboviral subclasses for a future expansion
 
 ### 3.4 ClassLabel.TUBERCULOUS (4) - TB meningitis
 
 - **Canonical Peru anchor:** PMID 30611205, DOI 10.1186/s12879-018-3633-4
-  - Soria J, et al. BMC Infect Dis 2018. HNDM Lima TB meningitis cohort
-- **Pathophysiology reference:** Marais S, et al. Lancet Infect Dis 2010;10(11):803-812
+  - Soria J, et al. BMC Infect Dis 2019;19(1):9. HNDM Lima TB meningitis cohort
+- **Case-definition reference:** Marais S, et al. Lancet Infect Dis 2010;10(11):803-812
   - DOI 10.1016/S1473-3099(10)70138-9
 - **Peru relevance:** high - directly anchored to Hospital Nacional Dos de Mayo Lima
 - **Adjudicator notes:** confirm CSF ADA cutoff (>=10 U/L per Ye TM&IH 2023)
@@ -320,7 +325,7 @@ geographic relevance score for Peru deployment, adjudicator notes.
   - Jarvis JN, et al. Single-Dose Liposomal Amphotericin B Treatment for
     Cryptococcal Meningitis. AMBITION-cm trial. NEJM 2022;386(12):1109-1120
 - **Peru companion:** PMID 28355252, DOI 10.1371/journal.pone.0174459
-  - Concha-Velasco F, González-Lagos E, Seas C, Bustamante B. Factors
+  - Concha-Velasco F, Gonzalez-Lagos E, Seas C, Bustamante B. Factors
     associated with early mycological clearance in HIV-associated cryptococcal
     meningitis. PLoS One 2017;12(3):e0174459. Hospital Cayetano Heredia Lima
 - **Peru relevance:** high - Peru companion directly relevant
@@ -330,7 +335,7 @@ geographic relevance score for Peru deployment, adjudicator notes.
 ### 3.6 ClassLabel.GAE (6) - Granulomatous amebic encephalitis (Acanthamoeba/Balamuthia)
 
 - **Canonical Peru single-patient:** PMID 20550438, DOI 10.1086/653609
-  - **Martínez DY, Seas C, Bravo F, Legua P, Ramos C, Cabello AM, Gotuzzo E.**
+  - **Martinez DY, Seas C, Bravo F, Legua P, Ramos C, Cabello AM, Gotuzzo E.**
     Successful Treatment of Balamuthia mandrillaris Amoebic Infection with
     Extensive Neurological and Cutaneous Involvement. CID 2010;51(2):e7-e11
   - The PMID is 20550438 (not 20550458).
@@ -340,9 +345,10 @@ geographic relevance score for Peru deployment, adjudicator notes.
   - The DOI is 10.1016/j.jdin.2021.11.005 (JAAD International), not
     10.1016/j.jdcr.2021.11.022 (JAAD Case Reports).
 - **Peru relevance:** highest - Peru is global Balamuthia hotspot per UPCH/HCH
-- **Adjudicator notes:** verify centrofacial skin lesion preceding CNS by
-  median 15 months (Bravo PMC8760460 cohort); confirm Hispanic ethnicity
-  framing as epidemiologic observation, not predictor
+- **Adjudicator notes:** verify centrofacial skin lesion preceding CNS
+  involvement (Alvarez 2022, PMC8760460 cohort: mean skin-lesion duration at
+  diagnosis 15 months); confirm Hispanic ethnicity framing as epidemiologic
+  observation, not predictor
 
 ### 3.7 ClassLabel.NEUROCYSTICERCOSIS (7) - Acute neurocysticercosis
 
@@ -350,7 +356,7 @@ geographic relevance score for Peru deployment, adjudicator notes.
   - Allen et al. Pathogens 2023;12(11):1313. Tumbes community-based NCC + epilepsy
 - **Diagnostic criteria:** Del Brutto OH, et al. J Neurol Sci 2017;372:202-210
   - PMID 28017213 (revised diagnostic criteria, scolex within cyst absolute)
-- **Peru relevance:** highest - 38% community-acquired epilepsy in Tumbes is NCC
+- **Peru relevance:** highest - about 38% of a community-based Tumbes epilepsy cohort (n=1975) met NCC criteria (Allen 2023)
 - **Adjudicator notes:** confirm scolex-within-cyst as the absolute criterion;
   validate Taenia/pork exposure field for endemic-area risk stratification
 
@@ -366,7 +372,7 @@ literature is comparative-only.
     in the Peruvian Amazon: case report. RPMESP 2022;39(2):241-244. Hospital
     Regional de Loreto, Iquitos
 - **Comparative pathophysiology only:** Idro R, et al. Lancet Neurol 2005;4(12):827-840
-  - PMID 15005962 - kept as physiology reference, NOT vignette anchor
+  - PMID 16297841 - kept as physiology reference, NOT vignette anchor
 - **Peru relevance:** highest - Loreto/Madre de Dios endemic
 - **Adjudicator notes:** validate P. vivax vs P. falciparum distinction in
   fixture demographic + parasitemia% representation
@@ -381,7 +387,7 @@ hyponatremia <125, PRES/RCVS, SAH.
 - **Diagnostic criteria:** Graus F, et al. Lancet Neurol 2016;15(4):391-404
   - DOI 10.1016/S1474-4422(15)00401-9 (autoimmune encephalitis criteria)
 - **Other mimic references:** Hinchey J, et al. NEJM 1996;334(8):494-500 (PRES)
-- **Peru relevance:** medium - HACE highly relevant for Cusco/Puno deployment
+- **Peru relevance:** medium - HACE highly relevant for high-altitude Cusco/Puno
 - **Adjudicator notes:** confirm subtype enumeration is sufficient or whether
   a future expansion should split into NMDAR/HACE/PRES/SAH/HYPONATREMIA distinct labels
 
@@ -390,7 +396,8 @@ hyponatremia <125, PRES/RCVS, SAH.
 ## Section 4: Cross-field validators (5)
 
 Implementation: Pydantic v2 `@model_validator(mode="after")` on the relevant
-sub-model. Tests verify each fires correctly with appropriate error messages.
+sub-model. Tests trigger three of the five (4.2, 4.3, 4.4) and check their error
+messages; no test triggers 4.1 or 4.5.
 
 ### 4.1 `_freshwater_type_requires_exposure` (ExposureHistory)
 
@@ -399,12 +406,13 @@ sub-model. Tests verify each fires correctly with appropriate error messages.
 - **Rationale:** CDC PAM 2017 case definition requires the type of freshwater
   exposure to be documented when exposure is reported. Allowing `True` with
   unspecified type would defeat the purpose of the always-flag rule.
-- **Test:** `test_pam_class_requires_freshwater_exposure` (smoke test 4 partially)
+- **Test:** none triggers it. `test_pam_class_requires_freshwater_exposure`
+  (smoke test 4) sets the exposure flag to False, so only 4.4 fires there.
 
 ### 4.2 `_csf_differential_sums_to_100` (CSFProfile)
 
 - **Trigger:** `csf_wbc_per_mm3 > 5` AND `(neutrophil + lymphocyte + eosinophil) not in [98, 102]`
-- **Action:** raise ValueError with explicit cell counts
+- **Action:** raise ValueError that reports the three percentages and their total
 - **Rationale:** IDSA Tunkel 2004 reference. Acellular CSF (WBC<=5) is exempt.
   Allows +/-2 percentage points for rounding artifacts in clinical reporting.
 - **Test:** `test_csf_differential_must_sum_to_100` (smoke test 5)
@@ -423,8 +431,8 @@ sub-model. Tests verify each fires correctly with appropriate error messages.
 - **Action:** raise ValueError
 - **Rationale:** Clinical safety floor. PAM without documented freshwater
   contact within 14 days is implausible per CDC 2017 case definition. Any
-  vignette claiming PAM ground truth without the exposure cannot be a valid
-  training/calibration sample.
+  vignette claiming PAM ground truth without the exposure is rejected as
+  invalid.
 - **Test:** `test_pam_class_requires_freshwater_exposure` (smoke test 4)
 
 ### 4.5 `_cryptococcal_cd4_required_when_hiv` (VignetteSchema)
@@ -436,8 +444,8 @@ sub-model. Tests verify each fires correctly with appropriate error messages.
 - **Rationale:** WHO 2022 Advanced HIV guidelines + Ford CID 2018 PMC5850628.
   CD4 stratification (<100 cells/uL = high CrAg risk) is core to cryptococcal
   triage. A cryptococcal+HIV+ vignette without CD4 is incomplete.
-- **Test:** indirectly validated by `valid_cryptococcal_fixture.json` which
-  populates `cd4_count_cells_per_uL=38`
+- **Test:** none triggers it. `valid_cryptococcal_fixture.json` (HIV-positive,
+  `cd4_count_cells_per_uL=38`) passes it in the round-trip test.
 
 ---
 
@@ -447,12 +455,12 @@ sub-model. Tests verify each fires correctly with appropriate error messages.
 
 No large Peruvian adult community-acquired pyogenic bacterial meningitis cohort
 exists in indexed literature (PubMed, SciELO, RPMESP) as of May 2026. Available
-Peru evidence is pediatric (Castillo 2016 PMID 27831604; Marin-Portocarrero
+Peru evidence is pediatric (Davalos 2016 PMID 27831604; Marin-Portocarrero
 2022 PMID 36888810) or single-case reports.
 
 - **Master anchor used:** van de Beek 2004 PMID 15509818 (Netherlands n=696)
   as gold-standard prognostic-pathophysiology reference
-- **Peru pediatric companion:** Castillo ME et al. RPMESP 2016;33(3):425-431
+- **Peru pediatric companion:** Davalos L et al. RPMESP 2016;33(3):425-431
 - **Modern epidemiology backup:** Koelman 2022 PMID 34036322 (Netherlands)
 - **Adjudicator action:** confirm acceptability OR commission HNDM/HCH/Almenara
   local data extraction in a future supplement
@@ -463,7 +471,7 @@ No Peru randomized controlled trial of liposomal amphotericin B + 5-FC dual
 therapy. Concha-Velasco 2017 explicitly documents 5-FC unavailability at HCH.
 
 - **Master anchor:** Jarvis AMBITION-cm PMID 35320642 (sub-Saharan Africa RCT)
-- **Peru companion:** Concha-Velasco F, González-Lagos E, Seas C, Bustamante B.
+- **Peru companion:** Concha-Velasco F, Gonzalez-Lagos E, Seas C, Bustamante B.
   PLoS One 2017 PMID 28355252 (Hospital Cayetano Heredia Lima)
 - **Real Peru constraint:** induction therapy options limited by 5-FC supply
 - **Adjudicator action:** acknowledge reality in fixture provenance and in the
@@ -477,14 +485,14 @@ biologically and clinically distinct (different rosetting, different sequestrati
 different age distribution, different mortality profile).
 
 - **Primary Peru anchor:** Paredes-Obando 2022 PMID 36477327 (Loreto, Iquitos)
-- **Comparative pathophysiology only:** Idro 2005 PMID 15005962 (Uganda) -
+- **Comparative pathophysiology only:** Idro 2005 PMID 16297841 (Lancet Neurol review) -
   retained as physiology reference, NOT vignette anchor
 - **Implication:** P. vivax cerebral involvement is rarer but documented in
   Peruvian Amazon. Fixture reflects this Peru-relevant paradigm.
 
 ---
 
-## Section 6: Citation list (17 anchors, all corrections applied)
+## Section 6: Citation list (17 anchors)
 
 Numbered list of all anchor citations across the 9 classes. Class assignment
 in brackets.
@@ -492,14 +500,14 @@ in brackets.
 1. **CDC** [1: PAM]. Primary Amebic Meningoencephalitis (PAM): 2017 case definition. ndc.services.cdc.gov
 2. **PMID 40146665** [1: PAM]. MMWR 2025;74(10). Splash pad PAM Pulaski County Arkansas. DOI 10.15585/mmwr.mm7410a2
 3. **PMID 15509818** [2: BACTERIAL]. van de Beek D, et al. NEJM 2004;351(18):1849-1859. DOI 10.1056/NEJMoa040845
-4. **PMID 27831604** [2: BACTERIAL Peru companion]. Castillo ME, et al. RPMESP 2016;33(3):425-431
+4. **PMID 27831604** [2: BACTERIAL Peru companion]. Davalos L, et al. RPMESP 2016;33(3):425-431
 5. **PMID 34036322** [2: BACTERIAL backup]. Koelman DLH, Brouwer MC, Ter Horst L, **Bijlsma MW**, van der Ende A, van de Beek D. CID 2022;74(4):657-667
 6. **PMID 26733400** [3: VIRAL]. **Montano SM, Mori N, Nelson CA, Ton TGN, Celis V**, et al. Epidemiol Infect 2016;144(8):1673-1678. DOI 10.1017/S0950268815003222
-7. **PMID 30611205** [4: TUBERCULOUS]. Soria J, et al. BMC Infect Dis 2018. DOI 10.1186/s12879-018-3633-4
-8. **DOI 10.1016/S1473-3099(10)70138-9** [4: TUBERCULOUS pathophysiology]. Marais S, et al. Lancet Infect Dis 2010;10(11):803-812
+7. **PMID 30611205** [4: TUBERCULOUS]. Soria J, et al. BMC Infect Dis 2019;19(1):9. DOI 10.1186/s12879-018-3633-4
+8. **DOI 10.1016/S1473-3099(10)70138-9** [4: TUBERCULOUS case definition]. Marais S, et al. Lancet Infect Dis 2010;10(11):803-812
 9. **PMID 35320642** [5: CRYPTOCOCCAL]. Jarvis JN, et al. AMBITION-cm. NEJM 2022;386(12):1109-1120. DOI 10.1056/NEJMoa2111904
 10. **PMID 28355252** [5: CRYPTOCOCCAL Peru companion]. Concha-Velasco F, et al. PLoS One 2017;12(3):e0174459. DOI 10.1371/journal.pone.0174459
-11. **PMID 20550438** [6: GAE Peru single-patient]. Martínez DY, Seas C, Bravo F, Legua P, Ramos C, Cabello AM, Gotuzzo E. CID 2010;51(2):e7-e11. DOI 10.1086/653609 (not PMID 20550458)
+11. **PMID 20550438** [6: GAE Peru single-patient]. Martinez DY, Seas C, Bravo F, Legua P, Ramos C, Cabello AM, Gotuzzo E. CID 2010;51(2):e7-e11. DOI 10.1086/653609 (not PMID 20550458)
 12. **PMID 35059659** [6: GAE master Peru series]. Alvarez P, Torres-Cabala C, Gotuzzo E, Bravo F. **JAAD International** 2022;6:51-58. DOI 10.1016/j.jdin.2021.11.005 (not the JAAD Case Reports DOI)
 13. **PMID 38003778** [7: NCC Peru]. Allen et al. Pathogens 2023;12(11):1313. DOI 10.3390/pathogens12111313
 14. **PMID 28017213** [7: NCC criteria]. Del Brutto OH, et al. J Neurol Sci 2017;372:202-210
@@ -516,18 +524,18 @@ network for clinical-fidelity review. Specific questions per class:
 
 - **Class 1 (PAM):** Confirm freshwater always-flag rule is appropriate clinical
   safety policy. Acceptable to enforce as schema-level validator?
-- **Class 2 (Bacterial):** Confirm Castillo 2016 Peru pediatric companion is
+- **Class 2 (Bacterial):** Confirm Davalos 2016 Peru pediatric companion is
   acceptable given absence of adult cohort. Should a future expansion commission HNDM
   local extraction?
 - **Class 3 (Viral HSV-1):** Confirm Montano 2016 Peru cohort is appropriate
   representative anchor.
-- **Class 4 (TBM):** Confirm Soria 2018 HNDM cohort representative case
+- **Class 4 (TBM):** Confirm Soria 2019 HNDM cohort representative case
   construction approach. CN VI palsy + basal meningeal enhancement + ADA>=10
   combination acceptable?
 - **Class 5 (Cryptococcal):** Confirm Concha-Velasco 2017 + AMBITION-cm
   dual-anchor strategy. Acknowledge 5-FC unavailability in fixture provenance
   acceptable?
-- **Class 6 (GAE Balamuthia):** Confirm Martínez 2010 single-patient + Alvarez
+- **Class 6 (GAE Balamuthia):** Confirm Martinez 2010 single-patient + Alvarez
   2022 series pairing. Hispanic ethnicity overrepresentation framed as
   epidemiologic observation rather than predictor - acceptable framing?
 - **Class 7 (NCC):** Confirm Allen 2023 Tumbes cohort representative case.
@@ -547,11 +555,11 @@ breaking v2.0 contracts.
 ## Section 8: Reproducibility
 
 - **Schema source:** `ml/schemas/vignette.py` (~860 lines, 14 classes, 5 validators)
-- **Generator script:** `scripts/vignettes/generate_fixtures.py` (~750 lines)
+- **Generator script:** `scripts/vignettes/generate_fixtures.py` (~940 lines)
 - **JSON Schema export:** `schemas/vignette_schema_v2.0.json` (41 KB, Draft 2020-12 compatible)
 - **Test suite:** `tests/schemas/`
 
-**To regenerate fixtures from scratch:**
+**To regenerate the 8 non-PAM fixtures (`valid_pam_fixture.json` is not generated):**
 
 ```bash
 python -m scripts.vignettes.generate_fixtures

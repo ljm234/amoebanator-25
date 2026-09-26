@@ -22,8 +22,8 @@ Models compared:
   * rf_calibrated    (scikit-learn RandomForestClassifier + isotonic)
   * gbm_isotonic     (scikit-learn GradientBoostingClassifier + isotonic)
   * amoebanator_mlp  (the Amoebanator MLP, refit on the ablation's training split with
-                      the pipeline's training settings; temperature fit on the
-                      calibration split)
+                      the pipeline's input standardization and training
+                      settings; temperature fit on the calibration split)
 
 Output: outputs/metrics/ablation_table.json with one row per (model, cell)
 plus a CSV mirror at outputs/metrics/ablation_table.csv. The JSON also records
@@ -62,6 +62,7 @@ from ml.metrics.bootstrap import bootstrap_ci  # noqa: E402
 from ml.robust import NUMERIC_COLS, fit_gate_stats, score_tabular  # noqa: E402
 from ml.splits import split_summary, stratified_split  # noqa: E402
 from ml.model import MLP  # noqa: E402
+from ml.scaling import apply_scaler, fit_scaler  # noqa: E402
 from ml.seeds import set_global_seeds  # noqa: E402
 from ml.training_calib_dca import (  # noqa: E402
     fit_clamped_temperature,
@@ -118,6 +119,7 @@ def _fit_amoebanator_mlp(
     Refit the MLP on the ablation's training split, like the baselines, so no
     calibration or test row was seen in training. The shipped model.pt was
     trained on a different split of the same 30 rows and would leak here.
+    Xtr and Xca must already be standardized with the ablation's own scaler.
     """
     set_global_seeds()
     model = train_mlp(Xtr, ytr, select_device())
@@ -239,11 +241,15 @@ def main() -> int:
             rows.extend(_evaluate_cells(name, p_base, p_cal, cal_scores, yte, ood_mask_test))
 
         try:
-            mlp, T = _fit_amoebanator_mlp(Xtr, ytr, Xca, yca)
+            # The MLP gets the same input standardization as the shipped
+            # model, fit on this ablation's training split only.
+            scaler = fit_scaler(Xtr, feats)
+            Xtr_s, Xca_s, Xte_s = (apply_scaler(A, feats, scaler) for A in (Xtr, Xca, Xte))
+            mlp, T = _fit_amoebanator_mlp(Xtr_s, ytr, Xca_s, yca)
             models["amoebanator_mlp"] = {"estimator": "MLP", "calibration": "temperature"}
-            p_base = _amoebanator_proba(mlp, 1.0, Xte)
-            p_te = _amoebanator_proba(mlp, T, Xte)
-            p_ca = _amoebanator_proba(mlp, T, Xca)
+            p_base = _amoebanator_proba(mlp, 1.0, Xte_s)
+            p_te = _amoebanator_proba(mlp, T, Xte_s)
+            p_ca = _amoebanator_proba(mlp, T, Xca_s)
             cal_scores = nonconformity_from_p(p_ca, yca)
             rows.extend(_evaluate_cells("amoebanator_mlp", p_base, p_te, cal_scores, yte, ood_mask_test))
         except Exception as e:

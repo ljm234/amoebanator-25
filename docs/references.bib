@@ -1,10 +1,16 @@
-% Amoebanator V1.0 - bibliography
+% Amoebanator V1.1 - bibliography
 %
-% All entries verified against PubMed / DOI / arXiv records. Every claim
-% cited from these references is pinned to a specific fact in README.md,
-% docs/model_card.md,
-% docs/data_card.md, docs/tripod-ai.md, or
-% docs/rare_class_design.md.
+% PMIDs, DOIs and arXiv ids below match the PubMed, Crossref and arXiv
+% records. cdc2025pam and hipaa2012deident are web pages, and
+% vovk2005alrw, platt1999probabilistic and niculescu2005calibration are
+% listed without an identifier. The references are cited in
+% docs/model_card.md, docs/data_card.md, docs/tripod-ai.md,
+% docs/rare_class_design.md and docs/governance_integration.md; in the
+% app's References page (pages/04_references.py, which lists all 22
+% entries), the About page (pages/03_about.py) and the Predict page's
+% temperature-badge tooltip (app/utils.py); and in files under ml/ and
+% scripts/ (docstrings, comments, citation strings and
+% ml/schemas/SCHEMA_README.md).
 
 % --- PAM clinical and epidemiologic baseline --------------------------
 
@@ -18,7 +24,7 @@
   pages   = {31},
   doi     = {10.1007/s11908-016-0539-4},
   pmid    = {27614893},
-  note    = {CSF abnormalities reported qualitatively only; for numeric per-case CSF values see Capewell 2015 (PMID 26582886)}
+  note    = {CSF abnormalities reported qualitatively only; for numeric CSF values see Capewell 2015 (PMID 26582886)}
 }
 
 @article{yoder2010pam,
@@ -35,7 +41,7 @@
 
 @article{capewell2015pam,
   author  = {Capewell, Linda G. and Harris, Aimee M. and Yoder, Jonathan S. and Cope, Jennifer R. and Eddy, Bryan A. and Roy, Sharon L. and Visvesvara, Govinda S. and Fox, LeAnne M. and Beach, Michael J.},
-  title   = {Diagnosis, Clinical Course, and Treatment of Primary Amoebic Meningoencephalitis in the United States, 1937--2013: A Review of the Historical Literature},
+  title   = {Diagnosis, Clinical Course, and Treatment of Primary Amoebic Meningoencephalitis in the United States, 1937--2013},
   journal = {Journal of the Pediatric Infectious Diseases Society},
   year    = {2015},
   volume  = {4},
@@ -43,15 +49,15 @@
   pages   = {e68--e75},
   doi     = {10.1093/jpids/piu103},
   pmid    = {26582886},
-  note    = {Tabulated per-case CSF values for U.S. PAM cohort; cited as the primary source for numeric PAM CSF distributions}
+  note    = {Numeric CSF summaries (median and range of WBC, glucose and protein) for U.S. PAM cases, 1937-2013; cited as the better source for numeric PAM CSF values, which ml/case_series.py does not encode}
 }
 
 @misc{cdc2025pam,
   author       = {{Centers for Disease Control and Prevention}},
-  title        = {About Primary Amebic Meningoencephalitis ({PAM})},
+  title        = {{Naegleria fowleri} Infections},
   howpublished = {\url{https://www.cdc.gov/naegleria/about/index.html}},
   year         = {2025},
-  note         = {Most recent CDC-stated case-fatality > 97\%; cumulative 167 U.S. cases and 4 survivors through 2024 (last verified 2026-04-24)}
+  note         = {Most recent CDC-stated case-fatality > 97\%; cumulative 167 U.S. cases and 4 survivors through 2024 (last verified 2026-09-26)}
 }
 
 @article{tunkel2004idsa,
@@ -123,7 +129,7 @@
   number  = {523},
   pages   = {1094--1111},
   doi     = {10.1080/01621459.2017.1307116},
-  note    = {Distribution-free split-conformal coverage bound: 1-alpha <= coverage <= 1-alpha + 1/(n+1).}
+  note    = {Distribution-free split-conformal bound on marginal coverage (the probability, over calibration and test draws, that the prediction set contains the true outcome) for n calibration scores exchangeable with the test score: 1-alpha <= coverage <= 1-alpha + 1/(n+1) (the upper bound assumes no ties among the scores). The paper's Theorem 2.2 states the upper bound as 1-alpha + 2/(n+2), with n the full sample split into two equal halves.}
 }
 
 @inproceedings{liu2020energy,
@@ -206,7 +212,7 @@
   number  = {1},
   pages   = {55--63},
   doi     = {10.7326/M14-0697},
-  note    = {Original 2015 TRIPOD; superseded for AI/ML models by TRIPOD+AI 2024}
+  note    = {Original 2015 TRIPOD; its checklist is superseded by TRIPOD+AI 2024 for all prediction models, whether they use regression or machine learning}
 }
 
 @article{gebru2021datasheets,
@@ -222,7 +228,7 @@
   archivePrefix = {arXiv}
 }
 
-% --- Calibration of related baselines -----------------------------------
+% --- Baseline models and their calibration ------------------------------
 
 @inproceedings{platt1999probabilistic,
   author    = {Platt, John C.},

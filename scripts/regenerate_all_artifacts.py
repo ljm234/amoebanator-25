@@ -46,11 +46,11 @@ class Step:
 
 PIPELINE: list[tuple[str, list[str], list[str]]] = [
     (
-        "Train MLP + temperature + val_preds",
+        "Standardize inputs, train MLP + temperature + val_preds",
         [sys.executable, "-m", "ml.training_calib_dca"],
         ["outputs/model/model.pt", "outputs/model/features.json",
-         "outputs/model/temperature_scale.json", "outputs/metrics/val_preds.csv",
-         "outputs/metrics/metrics.json"],
+         "outputs/model/scaler.json", "outputs/model/temperature_scale.json",
+         "outputs/metrics/val_preds.csv", "outputs/metrics/metrics.json"],
     ),
     (
         "Refit Mahalanobis on train split only",

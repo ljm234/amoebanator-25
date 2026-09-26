@@ -26,8 +26,8 @@ fields:
 Configuration:
   * AMOEBANATOR_IRB_PATH - override path to current_irb.json
   * AMOEBANATOR_RESEARCH_MODE - when set to "1"/"true"/"yes", skip the check
-    entirely (synthetic-data research mode; CI / smoke tests). The override is
-    recorded in the audit log so it is never invisible.
+    entirely (synthetic-data research mode; the Docker image sets it). The
+    override is recorded in the audit log so it is never invisible.
 """
 from __future__ import annotations
 
@@ -54,7 +54,10 @@ _PERMITTED_STATUSES: frozenset[str] = frozenset({
     IRBStatus.CONDITIONALLY_APPROVED.value,
 })
 
-_SYNTHETIC_PREFIXES: tuple[str, ...] = ("simulated", "synthetic", "bridge", "mimic_iv")
+# Source prefixes of synthetic rows. MIMIC-IV rows (source "mimic_iv", set by
+# ml/mimic_iv_loader.py) are real, de-identified patient data, so they are not
+# synthetic and need an IRB record like any other real dataset.
+_SYNTHETIC_PREFIXES: tuple[str, ...] = ("simulated", "synthetic", "bridge")
 
 
 class IRBGateBlocked(RuntimeError):
