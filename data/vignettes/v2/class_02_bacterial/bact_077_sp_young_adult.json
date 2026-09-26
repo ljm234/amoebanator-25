@@ -1,6 +1,6 @@
 {
   "schema_version": "2.0",
-  "case_id": "BACT-D3-077-NEJM-2004-Netherlands-SP-Mid",
+  "case_id": "BACT-077-NEJM-2004-Netherlands-SP-Mid",
   "ground_truth_class": 2,
   "demographics": {
     "age_years": 18,
@@ -101,12 +101,12 @@
   },
   "adjudication": {
     "adjudicator_ids": [
-      "WAVE1-PRE-ADJ-1",
-      "WAVE1-PRE-ADJ-2"
+      "PRE-ADJ-1",
+      "PRE-ADJ-2"
     ],
     "cohen_kappa": 0.0,
     "disagreement_resolution": null,
-    "anchoring_documentation": "stage=pre_adjudication; status=pending_external_review; self_review_disposition=hold_for_revision; self_review_notes=wave 1 vignette anchored to PMID 15509818 (van de Beek 2004 NEJM); external clinical adjudication pending; classification provisional. adjudicator_ids=WAVE1-PRE-ADJ-1, WAVE1-PRE-ADJ-2 (sentinel); cohen_kappa=0.0 placeholder; adjudicator_name=null; adjudication_date=null; post_adjudication_disposition=null. Subphase 1.3 commit 5.3.3 (2026-05-08). anchor=van-de-Beek-NEJM-2004 stratum=young-adult.",
+    "anchoring_documentation": "stage=pre_adjudication; status=pending_external_review; self_review_disposition=hold_for_revision; self_review_notes=vignette anchored to PMID 15509818 (van de Beek 2004 NEJM); external clinical adjudication pending; classification provisional. adjudicator_ids=PRE-ADJ-1, PRE-ADJ-2 (sentinel); cohen_kappa=0.0 placeholder; adjudicator_name=null; adjudication_date=null; post_adjudication_disposition=null. Generated 2026-05-08. anchor=van-de-Beek-NEJM-2004 stratum=young-adult.",
     "inclusion_decision": "hold_for_revision"
   },
   "literature_anchors": [
@@ -118,11 +118,11 @@
   ],
   "provenance": {
     "generation_timestamp_utc": "2026-05-08T12:00:00Z",
-    "generator_model_identifier": "scripts.generate_pam_vignettes/v1.subphase_1_3_commit_5_3_3",
+    "generator_model_identifier": "scripts.generate_pam_vignettes/v1",
     "prompt_hash_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
     "schema_version": "2.0",
-    "inclusion_decision_rationale": "Anchored to PMID 15509818 (van de Beek 2004 NEJM), 696-episode prospective Netherlands cohort 1998-2002 (SP 51 percent, classic triad 44 percent). Demographic anchor (18yo F young adult) sits in young-adult subgroup. CSF profile bacterial range. Imputation tiers: tier_1_primary={age, sex, csf_culture, csf_gram_stain, triad}; tier_3_within_cohort={csf_wbc, neutrophil_pct, glucose, protein, gcs}; tier_4_priors={temp, symptom_days}. Indeterminate=none. Diagnostic_ambiguity=false. Outcome=survived. Antibiotic_started_hours=1. Tier: tier_3_imputation_within_cohort_review. 5.3.3 wave1 SP-young-adult."
+    "inclusion_decision_rationale": "Anchored to PMID 15509818 (van de Beek 2004 NEJM), 696-episode prospective Netherlands cohort 1998-2002 (SP 51 percent, classic triad 44 percent). Demographic anchor (18yo F young adult) sits in young-adult subgroup. CSF profile bacterial range. Imputation tiers: tier_1_primary={age, sex, csf_culture, csf_gram_stain, triad}; tier_3_within_cohort={csf_wbc, neutrophil_pct, glucose, protein, gcs}; tier_4_priors={temp, symptom_days}. Indeterminate=none. Diagnostic_ambiguity=false. Outcome=survived. Antibiotic_started_hours=1. Tier: tier_3_imputation_within_cohort_review. Stratum: SP-young-adult."
   },
-  "narrative_es": "Mujer de 18 anos en Paises Bajos (Amsterdam), ingresada a urgencias terciarias con inicio subito de fiebre 39.5 C, cefalea intensa, rigidez de nuca y fotofobia en 12 horas. Examen: temperatura 39.5 C, escala de Glasgow 13, rigidez de nuca, signo de Kernig positivo, sin deficit focal, sin exantema. Triada clasica presente (subgrupo de adultos jovenes de la cohorte van de Beek 2004). Liquido cefalorraquideo mostro presion de apertura 28 cmH2O, leucocitos 6,400 por mm3 (88 por ciento neutrofilos), glucosa 24 mg/dL, proteina 210 mg/dL. Tincion de Gram con diplococos grampositivos y cultivo Streptococcus pneumoniae. Anclaje primario en cohorte van de Beek 2004 NEJM (PMID 15509818). Subphase 1.3 commit 5.3.3 wave 1.",
-  "narrative_en": "An 18-year-old woman in the Netherlands presented to a tertiary emergency department in Amsterdam with sudden onset of fever to 39.5 C, severe headache, neck stiffness, and photophobia within 12 hours. Examination on admission: temperature 39.5 C, Glasgow Coma Scale 13, neck stiffness, positive Kernig sign, no focal deficit, no rash. Classic triad present (this case sits in the young-adult subgroup of the van de Beek 2004 cohort). CSF showed opening pressure 28 cmH2O, white cell count 6,400 per cubic millimeter (88 percent neutrophils), glucose 24 mg/dL, protein 210 mg/dL. Gram stain revealed gram-positive diplococci; culture identified Streptococcus pneumoniae. Primary anchor: PMID 15509818 (van de Beek 2004 NEJM), 696-episode prospective Netherlands cohort 1998-2002 (SP 51 percent, classic triad 44 percent). Outcome: survived no sequelae. Subphase 1.3 commit 5.3.3 wave 1, pre-adjudication hold_for_revision."
+  "narrative_es": "Mujer de 18 anos en Paises Bajos (Amsterdam), ingresada a urgencias terciarias con inicio subito de fiebre 39.5 C, cefalea intensa, rigidez de nuca y fotofobia en 12 horas. Examen: temperatura 39.5 C, escala de Glasgow 13, rigidez de nuca, signo de Kernig positivo, sin deficit focal, sin exantema. Triada clasica presente (subgrupo de adultos jovenes de la cohorte van de Beek 2004). Liquido cefalorraquideo mostro presion de apertura 28 cmH2O, leucocitos 6,400 por mm3 (88 por ciento neutrofilos), glucosa 24 mg/dL, proteina 210 mg/dL. Tincion de Gram con diplococos grampositivos y cultivo Streptococcus pneumoniae. Anclaje primario en cohorte van de Beek 2004 NEJM (PMID 15509818).",
+  "narrative_en": "An 18-year-old woman in the Netherlands presented to a tertiary emergency department in Amsterdam with sudden onset of fever to 39.5 C, severe headache, neck stiffness, and photophobia within 12 hours. Examination on admission: temperature 39.5 C, Glasgow Coma Scale 13, neck stiffness, positive Kernig sign, no focal deficit, no rash. Classic triad present (this case sits in the young-adult subgroup of the van de Beek 2004 cohort). CSF showed opening pressure 28 cmH2O, white cell count 6,400 per cubic millimeter (88 percent neutrophils), glucose 24 mg/dL, protein 210 mg/dL. Gram stain revealed gram-positive diplococci; culture identified Streptococcus pneumoniae. Primary anchor: PMID 15509818 (van de Beek 2004 NEJM), 696-episode prospective Netherlands cohort 1998-2002 (SP 51 percent, classic triad 44 percent). Outcome: survived no sequelae. Pre-adjudication status: hold_for_revision."
 }

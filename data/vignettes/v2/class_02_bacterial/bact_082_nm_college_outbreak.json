@@ -1,6 +1,6 @@
 {
   "schema_version": "2.0",
-  "case_id": "BACT-D3-082-Medicine-2008-Netherlands-Adult",
+  "case_id": "BACT-082-Medicine-2008-Netherlands-Adult",
   "ground_truth_class": 2,
   "demographics": {
     "age_years": 24,
@@ -101,12 +101,12 @@
   },
   "adjudication": {
     "adjudicator_ids": [
-      "PILOT-PRE-ADJ-1",
-      "PILOT-PRE-ADJ-2"
+      "PRE-ADJ-1",
+      "PRE-ADJ-2"
     ],
     "cohen_kappa": 0.0,
     "disagreement_resolution": null,
-    "anchoring_documentation": "stage=pre_adjudication; status=pending_external_review; self_review_disposition=hold_for_revision; self_review_notes=pilot vignette anchored to PMID 18626301 (Heckenberg 2008 Medicine NM 258 adults); external clinical adjudication pending; classification provisional. adjudicator_ids=PILOT-PRE-ADJ-1, PILOT-PRE-ADJ-2 (sentinel); cohen_kappa=0.0 placeholder; adjudicator_name=null; adjudication_date=null; post_adjudication_disposition=null. Subphase 1.3 commit 5.3.2 (2026-05-07).",
+    "anchoring_documentation": "stage=pre_adjudication; status=pending_external_review; self_review_disposition=hold_for_revision; self_review_notes=vignette anchored to PMID 18626301 (Heckenberg 2008 Medicine NM 258 adults); external clinical adjudication pending; classification provisional. adjudicator_ids=PRE-ADJ-1, PRE-ADJ-2 (sentinel); cohen_kappa=0.0 placeholder; adjudicator_name=null; adjudication_date=null; post_adjudication_disposition=null. Generated 2026-05-07.",
     "inclusion_decision": "hold_for_revision"
   },
   "literature_anchors": [
@@ -118,11 +118,11 @@
   ],
   "provenance": {
     "generation_timestamp_utc": "2026-05-07T12:00:00Z",
-    "generator_model_identifier": "scripts.generate_pam_vignettes/v1.subphase_1_3_commit_5_3_2",
+    "generator_model_identifier": "scripts.generate_pam_vignettes/v1",
     "prompt_hash_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
     "schema_version": "2.0",
-    "inclusion_decision_rationale": "Anchored to PMID 18626301 (Heckenberg 2008 Medicine 87:185-192), 258-adult NM prospective Netherlands cohort. Anchor (24yo M college dorm contact) is canonical NM epidemiology. Petechial rash on extremities and trunk (cohort 46 percent rash, 81 percent petechial = 37 percent overall). CSF WBC 2,100 within cohort IQR 1,820-12,225. Triad present (21 percent subgroup). Imputation tiers: tier_1_primary={age, sex, csf_culture, csf_gram_stain, rash, triad}; tier_3_within_cohort={csf_wbc, neutrophil_pct, glucose, protein}; tier_4_priors={temp, gcs, symptom_days}. Indeterminate=none. Diagnostic_ambiguity=false. Outcome=survived_no_sequelae per 7 percent NM mortality. Abx_hours=1. ERRATA: PMID 18626302 in 5.3.1 lock was typo; corrected to 18626301. Tier: primary_source_direct. 5.3.2 pilot 3."
+    "inclusion_decision_rationale": "Anchored to PMID 18626301 (Heckenberg 2008 Medicine 87:185-192), 258-adult NM prospective Netherlands cohort. Anchor (24yo M college dorm contact) is canonical NM epidemiology. Petechial rash on extremities and trunk (cohort 46 percent rash, 81 percent petechial = 37 percent overall). CSF WBC 2,100 within cohort IQR 1,820-12,225. Triad present (21 percent subgroup). Imputation tiers: tier_1_primary={age, sex, csf_culture, csf_gram_stain, rash, triad}; tier_3_within_cohort={csf_wbc, neutrophil_pct, glucose, protein}; tier_4_priors={temp, gcs, symptom_days}. Indeterminate=none. Diagnostic_ambiguity=false. Outcome=survived_no_sequelae per 7 percent NM mortality. Abx_hours=1. ERRATA: PMID 18626302 was a typo; corrected to 18626301. Tier: primary_source_direct."
   },
-  "narrative_es": "Varon de 24 anos en Paises Bajos (Utrecht), ingresado a urgencias terciarias con 18 horas de progresion rapida: fiebre 39.8 C, cefalea intensa, rigidez de nuca, exantema petequial distribuido en extremidades y tronco al ingreso. Contacto reciente en dormitorio universitario dos semanas antes con enfermedad febril reportada. Examen: temperatura 39.8 C, escala de Glasgow 13, rigidez de nuca, signo de Kernig positivo, exantema petequial, sin deficit focal. Triada clasica presente (subgrupo del 21 por ciento triada-positiva de la cohorte Heckenberg 2008). Liquido cefalorraquideo mostro presion de apertura 24 cmH2O, leucocitos 2,100 por mm3 (85 por ciento neutrofilos), glucosa 30 mg/dL, proteina 145 mg/dL. Tincion de Gram con diplococos gramnegativos y cultivo Neisseria meningitidis serogrupo B. Anclaje primario en cohorte prospectiva de 258 adultos (PMID 18626301, Heckenberg 2008 Medicine, errata corregida desde 18626302). Subphase 1.3 commit 5.3.2 pilot 3.",
-  "narrative_en": "A 24-year-old man in the Netherlands (Utrecht) presented to a tertiary emergency department with an 18-hour rapid progression of fever to 39.8 C, severe headache, neck stiffness, and petechial rash distributed on extremities and trunk at presentation. Recent college dormitory contact two weeks prior with reported febrile illness. Examination on admission: temperature 39.8 C, Glasgow Coma Scale 13, neck stiffness, positive Kernig sign, petechial rash, no focal deficit. Classic triad present (this case sits in the 21 percent triad-positive subgroup of the Heckenberg 2008 cohort). CSF showed opening pressure 24 cmH2O, white cell count 2,100 per cubic millimeter (85 percent neutrophils), glucose 30 mg/dL, protein 145 mg/dL. Gram stain revealed gram-negative diplococci; culture identified Neisseria meningitidis serogroup B. Primary anchor: PMID 18626301 (Heckenberg 2008 Medicine), 258-adult prospective Netherlands NM cohort 1998-2002 (rash 46 percent, petechial pattern in 81 percent of those, mortality 7 percent). ERRATA: PMID 18626302 in 5.3.1 lock was typo for this same paper; corrected to 18626301. Outcome: survived no sequelae. Subphase 1.3 commit 5.3.2 pilot 3, pre-adjudication hold_for_revision."
+  "narrative_es": "Varon de 24 anos en Paises Bajos (Utrecht), ingresado a urgencias terciarias con 18 horas de progresion rapida: fiebre 39.8 C, cefalea intensa, rigidez de nuca, exantema petequial distribuido en extremidades y tronco al ingreso. Contacto reciente en dormitorio universitario dos semanas antes con enfermedad febril reportada. Examen: temperatura 39.8 C, escala de Glasgow 13, rigidez de nuca, signo de Kernig positivo, exantema petequial, sin deficit focal. Triada clasica presente (subgrupo del 21 por ciento triada-positiva de la cohorte Heckenberg 2008). Liquido cefalorraquideo mostro presion de apertura 24 cmH2O, leucocitos 2,100 por mm3 (85 por ciento neutrofilos), glucosa 30 mg/dL, proteina 145 mg/dL. Tincion de Gram con diplococos gramnegativos y cultivo Neisseria meningitidis serogrupo B. Anclaje primario en cohorte prospectiva de 258 adultos (PMID 18626301, Heckenberg 2008 Medicine, errata corregida desde 18626302).",
+  "narrative_en": "A 24-year-old man in the Netherlands (Utrecht) presented to a tertiary emergency department with an 18-hour rapid progression of fever to 39.8 C, severe headache, neck stiffness, and petechial rash distributed on extremities and trunk at presentation. Recent college dormitory contact two weeks prior with reported febrile illness. Examination on admission: temperature 39.8 C, Glasgow Coma Scale 13, neck stiffness, positive Kernig sign, petechial rash, no focal deficit. Classic triad present (this case sits in the 21 percent triad-positive subgroup of the Heckenberg 2008 cohort). CSF showed opening pressure 24 cmH2O, white cell count 2,100 per cubic millimeter (85 percent neutrophils), glucose 30 mg/dL, protein 145 mg/dL. Gram stain revealed gram-negative diplococci; culture identified Neisseria meningitidis serogroup B. Primary anchor: PMID 18626301 (Heckenberg 2008 Medicine), 258-adult prospective Netherlands NM cohort 1998-2002 (rash 46 percent, petechial pattern in 81 percent of those, mortality 7 percent). ERRATA: PMID 18626302 was a typo for this same paper; corrected to 18626301. Outcome: survived no sequelae. Pre-adjudication status: hold_for_revision."
 }

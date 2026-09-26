@@ -116,7 +116,7 @@
     "generator_model_identifier": "manual-fixture-2026-05-02",
     "prompt_hash_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
     "schema_version": "2.0",
-    "inclusion_decision_rationale": "Fixture canonical HIV-cryptococcal meningitis case (sub-Saharan Africa proxy; no Peru AMBITION-equivalent cohort exists per Subphase 1.1 limitations). cd4_count_cells_per_uL=38 satisfies VignetteSchema cryptococcal+HIV+CD4-required validator. OP and CrAg titer match AMBITION-cm enrollment criteria."
+    "inclusion_decision_rationale": "Fixture canonical HIV-cryptococcal meningitis case (sub-Saharan Africa proxy; no Peru AMBITION-equivalent cohort exists). cd4_count_cells_per_uL=38 satisfies VignetteSchema cryptococcal+HIV+CD4-required validator. OP and CrAg titer match AMBITION-cm enrollment criteria."
   },
   "narrative_es": "Varon de 36 anos con VIH conocido, sin TARV, CD4 38 celulas/uL, con cuadro subagudo de 18 dias de cefalea progresiva, fiebres bajas y somnolencia. Examen: rigidez de cuello, papiledema. LCR: presion de apertura 38 cmH2O, WBC 60/mm3 (92% linfocitos), glucosa 32 mg/dL, proteina 95 mg/dL, antigeno criptococcico positivo titulo 1:2048, tinta china con levaduras encapsuladas.",
   "narrative_en": "36-year-old male with known HIV, ART-naive, CD4 38 cells/uL, with 18 days of subacute progressive headache, low-grade fevers, and increasing somnolence. Exam: neck stiffness, papilledema. CSF: opening pressure 38 cmH2O, WBC 60/mm3 (92% lymphocytes), glucose 32 mg/dL, protein 95 mg/dL, cryptococcal antigen positive titer 1:2048, India ink with encapsulated yeasts."

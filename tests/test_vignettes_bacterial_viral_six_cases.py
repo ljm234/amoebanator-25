@@ -26,7 +26,7 @@ _BACT_DIR = _REPO_ROOT / "data" / "vignettes" / "v2" / "class_02_bacterial"
 _VIR_DIR = _REPO_ROOT / "data" / "vignettes" / "v2" / "class_03_viral"
 
 
-_PILOT_PATHS = [
+_SIX_CASE_PATHS = [
     _BACT_DIR / "bact_064_sp_lima_pediatric.json",
     _BACT_DIR / "bact_062_sp_netherlands_adult.json",
     _BACT_DIR / "bact_082_nm_college_outbreak.json",
@@ -149,7 +149,7 @@ def test_vir_118_dengue_peru_low_platelets():
 
 def test_all_six_cases_freshwater_exposure_false():
     """None of the six cases has freshwater exposure."""
-    for path in _PILOT_PATHS:
+    for path in _SIX_CASE_PATHS:
         v = _load(path)
         assert v.exposure.freshwater_exposure_within_14d is False, str(path)
         assert v.exposure.freshwater_exposure_type is None, str(path)
@@ -176,7 +176,7 @@ def test_all_six_cases_pre_adjudication_hold_for_revision():
     verbatim. This test checks both the inclusion_decision enum value and
     the verbatim-phrase disclosure inside anchoring_documentation.
     """
-    for path in _PILOT_PATHS:
+    for path in _SIX_CASE_PATHS:
         v = _load(path)
         assert v.adjudication.inclusion_decision == "hold_for_revision", str(path)
         assert (

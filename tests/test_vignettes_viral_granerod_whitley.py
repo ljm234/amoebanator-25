@@ -26,28 +26,28 @@ from ml.schemas.vignette import VignetteSchema  # noqa: E402
 from scripts.vignettes.generate_pam_vignettes import VIRAL_DISTRIBUTION  # noqa: E402
 
 
-VIRAL_WAVE2_IDS = [91, 93, 94, 95, 97, 98, 100, 101, 103, 104, 110, 112, 115, 116]
-VIRAL_WAVE2_AMBIGUITY_IDS = {103, 104}
-VIRAL_WAVE2_PERU_IDS: set[int] = set()  # All of these slots are NL or US South
-VIRAL_WAVE2_GRANEROD_IDS = {94, 97, 100, 103, 104, 110, 112, 115, 116}
-VIRAL_WAVE2_WHITLEY_IDS = {91, 93, 95, 98, 101}
-WAVE2_DIR = _REPO_ROOT / "data" / "vignettes" / "v2" / "class_03_viral"
+VIRAL_SET_B_IDS = [91, 93, 94, 95, 97, 98, 100, 101, 103, 104, 110, 112, 115, 116]
+VIRAL_SET_B_AMBIGUITY_IDS = {103, 104}
+VIRAL_SET_B_PERU_IDS: set[int] = set()  # All of these slots are NL or US South
+VIRAL_SET_B_GRANEROD_IDS = {94, 97, 100, 103, 104, 110, 112, 115, 116}
+VIRAL_SET_B_WHITLEY_IDS = {91, 93, 95, 98, 101}
+VIRAL_DIR = _REPO_ROOT / "data" / "vignettes" / "v2" / "class_03_viral"
 GRANEROD_PMID = "20952256"
 WHITLEY_PMID = "16675036"
 
 
-def _wave2_slot(vid: int) -> dict:
+def _slot(vid: int) -> dict:
     return next(s for s in VIRAL_DISTRIBUTION if s["vignette_id"] == vid)
 
 
-def _wave2_json_path(vid: int) -> Path:
-    matches = list(WAVE2_DIR.glob(f"vir_{vid:03d}_*.json"))
+def _json_path(vid: int) -> Path:
+    matches = list(VIRAL_DIR.glob(f"vir_{vid:03d}_*.json"))
     assert len(matches) == 1, f"v{vid}: expected 1 match, got {matches!r}"
     return matches[0]
 
 
 def _load(vid: int) -> dict:
-    return json.loads(_wave2_json_path(vid).read_text(encoding="utf-8"))
+    return json.loads(_json_path(vid).read_text(encoding="utf-8"))
 
 
 # ----------------------------------------------------------------------
@@ -55,21 +55,21 @@ def _load(vid: int) -> dict:
 # ----------------------------------------------------------------------
 
 
-@pytest.mark.parametrize("vid", VIRAL_WAVE2_IDS)
+@pytest.mark.parametrize("vid", VIRAL_SET_B_IDS)
 def test_viral_files_exist(vid):
-    matches = list(WAVE2_DIR.glob(f"vir_{vid:03d}_*.json"))
+    matches = list(VIRAL_DIR.glob(f"vir_{vid:03d}_*.json"))
     assert len(matches) == 1, f"v{vid} JSON missing or duplicate: {matches}"
 
 
-@pytest.mark.parametrize("vid", VIRAL_WAVE2_IDS)
+@pytest.mark.parametrize("vid", VIRAL_SET_B_IDS)
 def test_viral_schema_validates(vid):
     VignetteSchema.model_validate(_load(vid))
 
 
-@pytest.mark.parametrize("vid", VIRAL_WAVE2_IDS)
+@pytest.mark.parametrize("vid", VIRAL_SET_B_IDS)
 def test_viral_demographics_match_spec(vid):
     data = _load(vid)
-    spec = _wave2_slot(vid)
+    spec = _slot(vid)
     assert data["demographics"]["age_years"] == spec["age_years"], f"v{vid} age"
     assert data["demographics"]["sex"] == spec["sex"], f"v{vid} sex"
     assert (
@@ -77,7 +77,7 @@ def test_viral_demographics_match_spec(vid):
     ), f"v{vid} region"
 
 
-@pytest.mark.parametrize("vid", VIRAL_WAVE2_IDS)
+@pytest.mark.parametrize("vid", VIRAL_SET_B_IDS)
 def test_viral_anchor_pmid_in_set(vid):
     data = _load(vid)
     pmid = data["literature_anchors"][0]["pmid"]
@@ -86,7 +86,7 @@ def test_viral_anchor_pmid_in_set(vid):
     )
 
 
-@pytest.mark.parametrize("vid", VIRAL_WAVE2_IDS)
+@pytest.mark.parametrize("vid", VIRAL_SET_B_IDS)
 def test_viral_anchor_type_correct(vid):
     """Granerod cohort, Whitley review."""
     data = _load(vid)
@@ -111,28 +111,28 @@ def test_viral_count_14():
     restricted to this set's ids on the Whitley side because the PMID
     correction unified this set's Whitley anchor with the vir_092 anchor under
     PMID 16675036; vir_092 shares the same PMID but is not in this set."""
-    wave2_set = set(VIRAL_WAVE2_IDS)
+    set_b_ids = set(VIRAL_SET_B_IDS)
     granerod = sorted(
         s["vignette_id"] for s in VIRAL_DISTRIBUTION
-        if s.get("pmid") == GRANEROD_PMID and s["vignette_id"] in wave2_set
+        if s.get("pmid") == GRANEROD_PMID and s["vignette_id"] in set_b_ids
     )
     whitley = sorted(
         s["vignette_id"] for s in VIRAL_DISTRIBUTION
-        if s.get("pmid") == WHITLEY_PMID and s["vignette_id"] in wave2_set
+        if s.get("pmid") == WHITLEY_PMID and s["vignette_id"] in set_b_ids
     )
-    assert sorted(VIRAL_WAVE2_IDS) == sorted(granerod + whitley), (
-        f"Hardcoded {VIRAL_WAVE2_IDS} != empirical Granerod {granerod} + Whitley {whitley}"
+    assert sorted(VIRAL_SET_B_IDS) == sorted(granerod + whitley), (
+        f"Hardcoded {VIRAL_SET_B_IDS} != empirical Granerod {granerod} + Whitley {whitley}"
     )
-    assert len(VIRAL_WAVE2_IDS) == 14
+    assert len(VIRAL_SET_B_IDS) == 14
 
 
 def test_viral_anchor_distribution_9_5():
     granerod_count = sum(
-        1 for vid in VIRAL_WAVE2_IDS
+        1 for vid in VIRAL_SET_B_IDS
         if _load(vid)["literature_anchors"][0]["pmid"] == GRANEROD_PMID
     )
     whitley_count = sum(
-        1 for vid in VIRAL_WAVE2_IDS
+        1 for vid in VIRAL_SET_B_IDS
         if _load(vid)["literature_anchors"][0]["pmid"] == WHITLEY_PMID
     )
     assert granerod_count == 9, f"Granerod count {granerod_count} != 9"
@@ -140,38 +140,38 @@ def test_viral_anchor_distribution_9_5():
 
 
 def test_viral_freshwater_false():
-    for vid in VIRAL_WAVE2_IDS:
+    for vid in VIRAL_SET_B_IDS:
         assert (
             _load(vid)["exposure"]["freshwater_exposure_within_14d"] is False
         ), f"v{vid}"
 
 
 def test_viral_class_id_3():
-    for vid in VIRAL_WAVE2_IDS:
+    for vid in VIRAL_SET_B_IDS:
         assert _load(vid)["ground_truth_class"] == 3, f"v{vid}"
 
 
 def test_viral_csf_lymphocytic():
     """CSF is lymphocytic: csf_lymphocyte_pct >= 50."""
-    for vid in VIRAL_WAVE2_IDS:
+    for vid in VIRAL_SET_B_IDS:
         pct = _load(vid)["csf"]["csf_lymphocyte_pct"]
         assert pct >= 50, f"v{vid} csf_lymphocyte_pct={pct}"
 
 
 def test_viral_csf_neutrophil_low():
-    for vid in VIRAL_WAVE2_IDS:
+    for vid in VIRAL_SET_B_IDS:
         pct = _load(vid)["csf"]["csf_neutrophil_pct"]
         assert pct < 50, f"v{vid} csf_neutrophil_pct={pct}"
 
 
 def test_viral_csf_glucose_normal_or_near():
-    for vid in VIRAL_WAVE2_IDS:
+    for vid in VIRAL_SET_B_IDS:
         glucose = _load(vid)["csf"]["csf_glucose_mg_per_dL"]
         assert glucose >= 40, f"v{vid} csf_glucose={glucose}"
 
 
 def test_viral_pre_adjudication_hold():
-    for vid in VIRAL_WAVE2_IDS:
+    for vid in VIRAL_SET_B_IDS:
         data = _load(vid)
         assert (
             data["adjudication"]["inclusion_decision"] == "hold_for_revision"
@@ -183,8 +183,8 @@ def test_viral_pre_adjudication_hold():
 
 
 def test_viral_no_em_dashes():
-    for vid in VIRAL_WAVE2_IDS:
-        text = _wave2_json_path(vid).read_text(encoding="utf-8")
+    for vid in VIRAL_SET_B_IDS:
+        text = _json_path(vid).read_text(encoding="utf-8")
         assert chr(0x2014) not in text, f"v{vid} contains em-dash"
         assert chr(0x2013) not in text, f"v{vid} contains en-dash"
 
@@ -197,14 +197,14 @@ def test_viral_no_em_dashes():
 def test_viral_ambiguity_count():
     """Exactly 2 of 14 (v103, v104 HSV-PCR-negative-72h)."""
     ambiguous = []
-    for vid in VIRAL_WAVE2_IDS:
+    for vid in VIRAL_SET_B_IDS:
         rationale = (
             _load(vid)["provenance"].get("inclusion_decision_rationale") or ""
         ).lower()
         if "diagnostic_ambiguity=true" in rationale or "type=" in rationale:
             ambiguous.append(vid)
-    assert set(ambiguous) == VIRAL_WAVE2_AMBIGUITY_IDS, (
-        f"Expected {VIRAL_WAVE2_AMBIGUITY_IDS}, got {set(ambiguous)}"
+    assert set(ambiguous) == VIRAL_SET_B_AMBIGUITY_IDS, (
+        f"Expected {VIRAL_SET_B_AMBIGUITY_IDS}, got {set(ambiguous)}"
     )
 
 
@@ -213,8 +213,8 @@ def test_viral_hsv_pcr_negative_empiric_acyclovir():
     despite negative early PCR."""
     pcr_neg_ids = [
         vid
-        for vid in VIRAL_WAVE2_IDS
-        if _wave2_slot(vid).get("pathogen") == "HSV_PCR_negative_72h"
+        for vid in VIRAL_SET_B_IDS
+        if _slot(vid).get("pathogen") == "HSV_PCR_negative_72h"
     ]
     assert pcr_neg_ids, "expected at least one HSV_PCR_negative_72h slot"
     for vid in pcr_neg_ids:
@@ -231,8 +231,8 @@ def test_viral_vzv_dermatomal_or_cerebellitis():
     pattern documented in narrative_en."""
     vzv_ids = [
         vid
-        for vid in VIRAL_WAVE2_IDS
-        if _wave2_slot(vid).get("pathogen") == "VZV"
+        for vid in VIRAL_SET_B_IDS
+        if _slot(vid).get("pathogen") == "VZV"
     ]
     assert vzv_ids, "expected at least one VZV slot"
     for vid in vzv_ids:
@@ -247,8 +247,8 @@ def test_viral_vzv_dermatomal_or_cerebellitis():
 def test_viral_pathogen_distribution():
     """8 HSV1 + 2 HSV-PCR-neg + 2 enterovirus + 2 VZV."""
     counts: dict[str, int] = {}
-    for vid in VIRAL_WAVE2_IDS:
-        p = _wave2_slot(vid)["pathogen"]
+    for vid in VIRAL_SET_B_IDS:
+        p = _slot(vid)["pathogen"]
         counts[p] = counts.get(p, 0) + 1
     assert counts == {
         "HSV1": 8,

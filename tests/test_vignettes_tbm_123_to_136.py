@@ -30,26 +30,26 @@ from scripts.vignettes.generate_pam_vignettes import (  # noqa: E402
 )
 
 
-_W1_DIR = _REPO_ROOT / "data/vignettes/v2/class_04_tb"
+_TB_DIR = _REPO_ROOT / "data/vignettes/v2/class_04_tb"
 
-WAVE1_PATHS: dict[int, Path] = {
-    123: _W1_DIR / "tbm_123_thwaites_hcmc_adult_male_cnpalsy_wave1.json",
-    124: _W1_DIR / "tbm_124_thwaites_hcmc_adult_male_fatal_wave1.json",
-    125: _W1_DIR / "tbm_125_thwaites_hcmc_pregnancy_female_wave1.json",
-    126: _W1_DIR / "tbm_126_thwaites_hcmc_young_male_cnpalsy_wave1.json",
-    127: _W1_DIR / "tbm_127_thwaites_hcmc_adult_male_smearpos_wave1.json",
-    128: _W1_DIR / "tbm_128_marais_cape_town_adult_female_definite_wave1.json",
-    129: _W1_DIR / "tbm_129_marais_cape_town_adult_male_probable_wave1.json",
-    130: _W1_DIR / "tbm_130_marais_cape_town_adult_female_possible_wave1.json",
-    131: _W1_DIR / "tbm_131_heemskerk_hcmc_adult_male_standard_wave1.json",
-    132: _W1_DIR / "tbm_132_heemskerk_hcmc_adult_female_intensified_wave1.json",
-    133: _W1_DIR / "tbm_133_heemskerk_hcmc_adult_male_severe_fatal_wave1.json",
-    134: _W1_DIR / "tbm_134_heemskerk_hcmc_young_male_xpertneg_wave1.json",
-    135: _W1_DIR / "tbm_135_heemskerk_hcmc_elderly_female_sequelae_wave1.json",
-    136: _W1_DIR / "tbm_136_heemskerk_hcmc_adult_male_early_intensified_wave1.json",
+TBM_PATHS: dict[int, Path] = {
+    123: _TB_DIR / "tbm_123_thwaites_hcmc_adult_male_cnpalsy.json",
+    124: _TB_DIR / "tbm_124_thwaites_hcmc_adult_male_fatal.json",
+    125: _TB_DIR / "tbm_125_thwaites_hcmc_pregnancy_female.json",
+    126: _TB_DIR / "tbm_126_thwaites_hcmc_young_male_cnpalsy.json",
+    127: _TB_DIR / "tbm_127_thwaites_hcmc_adult_male_smearpos.json",
+    128: _TB_DIR / "tbm_128_marais_cape_town_adult_female_definite.json",
+    129: _TB_DIR / "tbm_129_marais_cape_town_adult_male_probable.json",
+    130: _TB_DIR / "tbm_130_marais_cape_town_adult_female_possible.json",
+    131: _TB_DIR / "tbm_131_heemskerk_hcmc_adult_male_standard.json",
+    132: _TB_DIR / "tbm_132_heemskerk_hcmc_adult_female_intensified.json",
+    133: _TB_DIR / "tbm_133_heemskerk_hcmc_adult_male_severe_fatal.json",
+    134: _TB_DIR / "tbm_134_heemskerk_hcmc_young_male_xpertneg.json",
+    135: _TB_DIR / "tbm_135_heemskerk_hcmc_elderly_female_sequelae.json",
+    136: _TB_DIR / "tbm_136_heemskerk_hcmc_adult_male_early_intensified.json",
 }
 
-WAVE1_IDS = sorted(WAVE1_PATHS.keys())
+TBM_IDS = sorted(TBM_PATHS.keys())
 
 ANCHOR_TO_IDS: dict[str, list[int]] = {
     "15496623": [123, 124, 125, 126, 127],          # Thwaites NEJM 2004
@@ -62,7 +62,7 @@ CN_VI_PALSY_TRUE_IDS = {123, 126, 129, 131, 133}
 
 
 def _load(vid: int) -> dict:
-    return json.loads(WAVE1_PATHS[vid].read_text(encoding="utf-8"))
+    return json.loads(TBM_PATHS[vid].read_text(encoding="utf-8"))
 
 
 def _spec(vid: int) -> dict:
@@ -75,16 +75,16 @@ def _spec(vid: int) -> dict:
 
 
 def test_tbm_json_count_14():
-    existing = [p for p in WAVE1_PATHS.values() if p.exists()]
+    existing = [p for p in TBM_PATHS.values() if p.exists()]
     assert len(existing) == 14, (
-        f"Expected 14 wave_1 JSONs, found {len(existing)}: missing="
-        f"{[str(p) for p in WAVE1_PATHS.values() if not p.exists()]}"
+        f"Expected 14 TBM JSONs, found {len(existing)}: missing="
+        f"{[str(p) for p in TBM_PATHS.values() if not p.exists()]}"
     )
 
 
-@pytest.mark.parametrize("vid", WAVE1_IDS)
+@pytest.mark.parametrize("vid", TBM_IDS)
 def test_tbm_files_exist(vid):
-    assert WAVE1_PATHS[vid].exists(), f"vid {vid} missing at {WAVE1_PATHS[vid]}"
+    assert TBM_PATHS[vid].exists(), f"vid {vid} missing at {TBM_PATHS[vid]}"
 
 
 # ----------------------------------------------------------------------
@@ -92,17 +92,17 @@ def test_tbm_files_exist(vid):
 # ----------------------------------------------------------------------
 
 
-@pytest.mark.parametrize("vid", WAVE1_IDS)
+@pytest.mark.parametrize("vid", TBM_IDS)
 def test_tbm_schema_validates(vid):
     VignetteSchema.model_validate(_load(vid))
 
 
-@pytest.mark.parametrize("vid", WAVE1_IDS)
+@pytest.mark.parametrize("vid", TBM_IDS)
 def test_tbm_ground_truth_class_4(vid):
     assert _load(vid)["ground_truth_class"] == 4
 
 
-@pytest.mark.parametrize("vid", WAVE1_IDS)
+@pytest.mark.parametrize("vid", TBM_IDS)
 def test_tbm_anchor_pmid_matches_registry(vid):
     spec = _spec(vid)
     expected = spec["anchor_pmid"]
@@ -119,30 +119,30 @@ def test_tbm_anchor_pmid_matches_registry(vid):
 # ----------------------------------------------------------------------
 
 
-@pytest.mark.parametrize("vid", WAVE1_IDS)
+@pytest.mark.parametrize("vid", TBM_IDS)
 def test_tbm_freshwater_false_all_14(vid):
     assert _load(vid)["exposure"]["freshwater_exposure_within_14d"] is False
 
 
-@pytest.mark.parametrize("vid", WAVE1_IDS)
-def test_tbm_wave_assignment_is_wave_1(vid):
-    assert _spec(vid)["wave_assignment"] == "wave_1"
+@pytest.mark.parametrize("vid", TBM_IDS)
+def test_tbm_set_assignment_is_set_a(vid):
+    assert _spec(vid)["set_assignment"] == "set_a"
 
 
-@pytest.mark.parametrize("vid", WAVE1_IDS)
+@pytest.mark.parametrize("vid", TBM_IDS)
 def test_tbm_inclusion_decision_hold_for_revision(vid):
     assert _load(vid)["adjudication"]["inclusion_decision"] == "hold_for_revision"
 
 
-_WAVE1_ADJ_PAT = re.compile(r"^WAVE1-TBM-\d+-ADJ-[12]$")
+_TBM_ADJ_PAT = re.compile(r"^TBM-\d+-ADJ-[12]$")
 
 
-@pytest.mark.parametrize("vid", WAVE1_IDS)
+@pytest.mark.parametrize("vid", TBM_IDS)
 def test_tbm_adjudicator_ids_sentinel_format(vid):
     ids = _load(vid)["adjudication"]["adjudicator_ids"]
     assert len(ids) == 2
     for aid in ids:
-        assert _WAVE1_ADJ_PAT.match(aid), f"vid {vid} bad adjudicator id {aid!r}"
+        assert _TBM_ADJ_PAT.match(aid), f"vid {vid} bad adjudicator id {aid!r}"
 
 
 # ----------------------------------------------------------------------
@@ -150,7 +150,7 @@ def test_tbm_adjudicator_ids_sentinel_format(vid):
 # ----------------------------------------------------------------------
 
 
-@pytest.mark.parametrize("vid", WAVE1_IDS)
+@pytest.mark.parametrize("vid", TBM_IDS)
 def test_tbm_narrative_en_in_band_800_1200(vid):
     text = _load(vid).get("narrative_en") or ""
     assert 800 <= len(text) <= 1200, (
@@ -158,7 +158,7 @@ def test_tbm_narrative_en_in_band_800_1200(vid):
     )
 
 
-@pytest.mark.parametrize("vid", WAVE1_IDS)
+@pytest.mark.parametrize("vid", TBM_IDS)
 def test_tbm_narrative_es_in_band_700_900(vid):
     text = _load(vid).get("narrative_es") or ""
     assert 700 <= len(text) <= 900, (
@@ -170,12 +170,12 @@ def _full_text(data: dict) -> str:
     return "\n".join([data.get("narrative_en") or "", data.get("narrative_es") or ""])
 
 
-@pytest.mark.parametrize("vid", WAVE1_IDS)
+@pytest.mark.parametrize("vid", TBM_IDS)
 def test_tbm_no_em_dashes(vid):
     assert chr(0x2014) not in _full_text(_load(vid)), f"vid {vid} em-dash"
 
 
-@pytest.mark.parametrize("vid", WAVE1_IDS)
+@pytest.mark.parametrize("vid", TBM_IDS)
 def test_tbm_no_en_dashes(vid):
     assert chr(0x2013) not in _full_text(_load(vid)), f"vid {vid} en-dash"
 
@@ -185,7 +185,7 @@ def test_tbm_no_en_dashes(vid):
 # ----------------------------------------------------------------------
 
 
-@pytest.mark.parametrize("vid", WAVE1_IDS)
+@pytest.mark.parametrize("vid", TBM_IDS)
 def test_tbm_csf_differential_sums_100(vid):
     csf = _load(vid)["csf"]
     if csf["csf_wbc_per_mm3"] > 5:
@@ -194,7 +194,7 @@ def test_tbm_csf_differential_sums_100(vid):
         assert 98 <= total <= 102, f"vid {vid} diff sum {total}"
 
 
-@pytest.mark.parametrize("vid", WAVE1_IDS)
+@pytest.mark.parametrize("vid", TBM_IDS)
 def test_tbm_basal_meningeal_imaging_all_14(vid):
     assert (
         _load(vid)["imaging"]["imaging_pattern"]
@@ -202,7 +202,7 @@ def test_tbm_basal_meningeal_imaging_all_14(vid):
     )
 
 
-@pytest.mark.parametrize("vid", WAVE1_IDS)
+@pytest.mark.parametrize("vid", TBM_IDS)
 def test_tbm_ada_at_least_10_all_14(vid):
     ada = _load(vid)["csf"].get("csf_ada_U_per_L")
     assert ada is not None and ada >= 10, f"vid {vid} ADA {ada}"
@@ -212,7 +212,7 @@ def test_tbm_xpert_positive_count_12():
     """12 of 14 Xpert MTB/RIF positive; 2 (slots 130, 134) Xpert NEG culture+."""
     pos = 0
     neg = 0
-    for vid in WAVE1_IDS:
+    for vid in TBM_IDS:
         data = _load(vid)
         xpert_test = next(
             (r for r in data["diagnostic_tests"]["results"]
@@ -231,7 +231,7 @@ def test_tbm_cn_vi_palsy_count_5():
     """5 of the 14 vignettes have CN VI palsy, matching TBM_DISTRIBUTION
     (vids 123, 126, 129, 131, 133)."""
     cnvi_true = set()
-    for vid in WAVE1_IDS:
+    for vid in TBM_IDS:
         if _load(vid)["exam"]["cranial_nerve_palsy"] == "CN_VI":
             cnvi_true.add(vid)
     assert cnvi_true == CN_VI_PALSY_TRUE_IDS, (
@@ -246,7 +246,7 @@ def test_tbm_cn_vi_palsy_count_5():
 
 def test_tbm_thwaites_anchor_count_5():
     matches = [
-        vid for vid in WAVE1_IDS
+        vid for vid in TBM_IDS
         if _load(vid)["literature_anchors"][0]["pmid"] == "15496623"
     ]
     assert sorted(matches) == ANCHOR_TO_IDS["15496623"], (
@@ -256,7 +256,7 @@ def test_tbm_thwaites_anchor_count_5():
 
 def test_tbm_marais_anchor_count_3():
     matches = [
-        vid for vid in WAVE1_IDS
+        vid for vid in TBM_IDS
         if _load(vid)["literature_anchors"][0]["pmid"] == "20822958"
     ]
     assert sorted(matches) == ANCHOR_TO_IDS["20822958"], (
@@ -266,7 +266,7 @@ def test_tbm_marais_anchor_count_3():
 
 def test_tbm_heemskerk_anchor_count_6():
     matches = [
-        vid for vid in WAVE1_IDS
+        vid for vid in TBM_IDS
         if _load(vid)["literature_anchors"][0]["pmid"] == "26760084"
     ]
     assert sorted(matches) == ANCHOR_TO_IDS["26760084"], (

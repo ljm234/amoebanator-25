@@ -61,9 +61,9 @@
     "PMID_18582201_Tunkel_2008_IDSA_encephalitis_guidelines",
     "PMID_20952256_Granerod_2010_Lancet_Infect_Dis_England_etiology",
     "PMID_30089069_Tyler_2018_NEJM_acute_viral_encephalitis_review",
-    "PMID_16675036_Whitley_2006_Antiviral_Res_HSE_adolescents_adults_5_3_2_pilot",
-    "PMID_17668054_Michos_2007_PLoS_One_pediatric_aseptic_pmn_predominant_5_3_2_pilot",
-    "PMID_30540031_Bastos_2018_MIOC_Amazonia_dengue_CNS_DENV2_5_3_2_pilot",
+    "PMID_16675036_Whitley_2006_Antiviral_Res_HSE_adolescents_adults",
+    "PMID_17668054_Michos_2007_PLoS_One_pediatric_aseptic_pmn_predominant",
+    "PMID_30540031_Bastos_2018_MIOC_Amazonia_dengue_CNS_DENV2",
     "PMID_38157877_PuccioniSohler_2023_ANP_dengue_neuro_review"
   ],
   "diagnostic_ambiguity_count": 5,
@@ -75,7 +75,7 @@
   },
   "freshwater_exposure_within_14d_for_all": false,
   "adjudication_state": "pre_adjudication_hold_for_revision",
-  "pilots_validated_5_3_2": 3,
+  "anchor_vignette_count": 3,
   "imaging_mandates": {
     "HSV1": "mesial_temporal_t2_flair_hyperintensity_required_for_all_12"
   },

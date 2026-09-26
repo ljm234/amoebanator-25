@@ -19,12 +19,12 @@ if str(_REPO_ROOT) not in sys.path:
 
 def test_bacterial_dx_builders_null_except_van_de_beek_gram_stain():
     from scripts.vignettes.generate_pam_vignettes import (
-        _bact_wave1_dx_tests_sp_culture_positive as sp,
-        _bact_wave1_dx_tests_sp_pretreated as spt,
-        _bact_wave1_dx_tests_gn_pseudomonas as gn,
-        _bact_wave2_dx_tests_nm_culture_positive as nm,
-        _bact_wave2_dx_tests_nm_pretreated as nmp,
-        _bact_wave2_dx_tests_hib as hib,
+        _bact_set_a_dx_tests_sp_culture_positive as sp,
+        _bact_set_a_dx_tests_sp_pretreated as spt,
+        _bact_set_a_dx_tests_gn_pseudomonas as gn,
+        _bact_set_b_dx_tests_nm_culture_positive as nm,
+        _bact_set_b_dx_tests_nm_pretreated as nmp,
+        _bact_set_b_dx_tests_hib as hib,
     )
     # sp_culture_positive: only van de Beek (15509818) gram-stain keeps 80/97
     for p in ("15494903", "15509818", "26652862"):

@@ -4,8 +4,8 @@ Builders for the vignette corpus under data/vignettes/. `main()` writes one
 PAM (Naegleria fowleri primary amebic meningoencephalitis) vignette, ids 1-60,
 per call; the module also holds the PMID registry the vignettes are anchored
 to and the builders and writers for most of the differential-class vignettes
-in data/vignettes/v2/. The 20 Day 1 PAM vignettes are anchored to
-peer-reviewed PMIDs verified per the Day 1 distribution spec.
+in data/vignettes/v2/. PAM vignettes 1-20 are anchored to peer-reviewed
+PMIDs, as listed in PAM_DISTRIBUTION_1_20.
 
 Schema target: ml/schemas/vignette.py VignetteSchema v2.0.
 Each generated vignette validates against this schema before write.
@@ -36,7 +36,7 @@ OUTPUT_DIR = Path("data/vignettes/pam")
 # ============================================================================
 # PMID_REGISTRY
 # ----------------------------------------------------------------------------
-# The PMID registry (72 entries). The 20 Day 1 PAM vignettes use 15 of them.
+# The PMID registry (72 entries). PAM vignettes 1-20 use 15 of them.
 #
 # Each entry holds the metadata needed to populate the LiteratureAnchor,
 # DxResult and provenance fields of a vignette. A field left "" or None has
@@ -1335,7 +1335,7 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         ),
     },
     # ========================================================================
-    # Bacterial + Viral consensus anchors (added 2026-05-06)
+    # Bacterial + Viral consensus anchors (first added 2026-05-06)
     # ------------------------------------------------------------------------
     # Landmark anchor PMIDs for Class 2 (Bacterial) and Class 3 (Viral)
     # vignette generation. The entries added on 2026-05-06 were first
@@ -1625,7 +1625,7 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
             "were wrongly attached to the removed entry PMID 32935747."
         ),
     },
-    # Errata 5.4.3.1 (2026-05-11): the entry that lived here as PMID
+    # Correction (2026-05-11): the entry that lived here as PMID
     # 16517432 had registry metadata claiming Whitley's HSV-1 review in
     # Lancet Infect Dis with DOI 10.1016/S1473-3099(06)70414-6, but NCBI
     # E-utilities verification revealed PMID 16517432 is actually a J Asthma
@@ -1689,7 +1689,7 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
             "England population-based encephalitis etiology study, 203 "
             "cases. HSV 19%, VZV 5%, autoimmune anti-NMDAR 4%, unknown "
             "37%. Anchor for Class 3 etiology distribution and "
-            "PCR-negative-at-72h ambiguity cases. Errata 5.4.3.1: PMID "
+            "PCR-negative-at-72h ambiguity cases. Correction: PMID "
             "corrected from 21088000 (Thorne 2011 Nucleic Acids Res "
             "epigenetics paper) to 20952256 per NCBI E-utilities "
             "verification 2026-05-11."
@@ -1713,17 +1713,17 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "verification_method": "checked_pubmed_fulltext_2026_06_11",
         "last_verified_date": "2026-06-11",
         "caveat": (
-            "NEJM clinical review of acute viral encephalitis. Anchor "
-            "for Class 3 enterovirus + arboviral + HSV-2/VZV vignettes; "
+            "NEJM clinical review of acute viral encephalitis. Anchor for "
+            "Class 3 enterovirus + arboviral + HSV-2/VZV vignettes; "
             "documents pathogen-specific imaging and CSF profiles. "
-            "Errata 5.4.3.1: PMID corrected from 29490180 (a NEJM Letter "
-            "on breast cancer recurrence) to 30089069 per NCBI E-utilities "
+            "Correction: PMID corrected from 29490180 (a NEJM Letter on "
+            "breast cancer recurrence) to 30089069 per NCBI E-utilities "
             "verification 2026-05-11. Volume/issue/pages corrected to "
             "379(6):557-566 (NEJM 2018-08-09 issue)."
         ),
     },
     # ========================================================================
-    # pilot anchors (added 2026-05-07)
+    # Primary-source anchors for Class 2/3 vignettes
     # ------------------------------------------------------------------------
     # Davalos 2016 (27831604, bact_064), Whitley 2006 (16675036, vir_092) and
     # Michos 2007 (17668054, vir_105) were added on 2026-05-07, checked against
@@ -1766,7 +1766,7 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
             "cases were under 2 years. Malnutrition associated with "
             "fatal outcome. 64.3 percent of fatal cases died within "
             "first 48 hours. Anchor for Class 2 SP-pediatric Lima Peru "
-            "primary-source vignettes (Subphase 1.3 commit 5.3.2)."
+            "primary-source vignettes."
         ),
     },
     "16675036": {
@@ -1788,19 +1788,18 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "last_verified_date": "2026-06-11",
         "caveat": (
             "Comprehensive HSE review for adolescents and adults. "
-            "Acyclovir 10 mg/kg every 8 hours for 21 days protocol. "
-            "Even with early acyclovir, approximately two-thirds of "
-            "survivors have significant residual neurologic deficits. "
-            "Untreated mortality 70 percent. PCR is gold standard for "
-            "diagnosis; false negatives can occur early after disease "
-            "onset. MRI demonstrates temporal lobe edema and hemorrhage. "
-            "EEG shows spike-and-slow-wave activity over temporal "
-            "lobes. Anchor for Class 3 HSV-1 adult primary-source "
-            "vignettes (Subphase 1.3 commit 5.3.2). Errata 5.4.3.1 "
-            "(2026-05-11): the previously-registered companion PMID "
-            "16517432 was removed; NCBI E-utilities verification "
-            "showed 16517432 is a J Asthma 2006 Danish skin-test "
-            "reactivity paper, not a Whitley HSV review. The 6 "
+            "Acyclovir 10 mg/kg every 8 hours for 21 days protocol. Even "
+            "with early acyclovir, approximately two-thirds of survivors "
+            "have significant residual neurologic deficits. Untreated "
+            "mortality 70 percent. PCR is gold standard for diagnosis; "
+            "false negatives can occur early after disease onset. MRI "
+            "demonstrates temporal lobe edema and hemorrhage. EEG shows "
+            "spike-and-slow-wave activity over temporal lobes. Anchor "
+            "for Class 3 HSV-1 adult primary-source vignettes. "
+            "Correction (2026-05-11): the previously-registered "
+            "companion PMID 16517432 was removed; NCBI E-utilities "
+            "verification showed 16517432 is a J Asthma 2006 Danish "
+            "skin-test reactivity paper, not a Whitley HSV review. The 6 "
             "vignettes that anchored to 16517432 now anchor to this "
             "entry (16675036)."
         ),
@@ -1842,9 +1841,8 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
             "58.3 percent of cases. Enterovirus RNA detected in 47 of "
             "96 tested (48.9 percent). Contradicts textbook "
             "viral-CSF-lymphocytic simplification. Anchor for Class 3 "
-            "enterovirus pediatric PMN-predominant ambiguity case "
-            "(Subphase 1.3 commit 5.3.2). PubMed canonical 2(7); PLOS "
-            "website cites 2(8)."
+            "enterovirus pediatric PMN-predominant ambiguity case. "
+            "PubMed canonical 2(7); PLOS website cites 2(8)."
         ),
     },
     "30540031": {
@@ -1882,7 +1880,7 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
             "Cohort includes a 32-year-old female DENV-2 meningoencephalitis "
             "case. Anchor for Class 3 dengue Peruvian-Amazon vignette "
             "(geographically and serotypically concordant). Checked against "
-            "the PMC full text and the DOI record."
+            "the PMC full text and the DOI record on 2026-06-10."
         ),
     },
     "38157877": {
@@ -1918,16 +1916,15 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
             "RT-PCR). Point sensitivity/specificity for serum NS1 and RT-PCR "
             "not reported as single estimates, so dengue dx-test sens/spec "
             "left null rather than imputed. Checked against the PMC full "
-            "text and the DOI record."
+            "text and the DOI record on 2026-06-10."
         ),
     },
     # ========================================================================
     # Class 4 (TBM) + Class 5 (Cryptococcal) anchor ADDs
     # + Class 6 (GAE) anchor PMIDs. 16 total: 5 TBM + 6 Crypto + 5 GAE.
     # Checked against the PubMed record on 2026-05-11. All these anchors are
-    # PubMed-indexed at registration with explicit caveat disclosure of
-    # verification provenance.
-    # Zero modifications to pre-existing PMID_REGISTRY entries.
+    # PubMed-indexed, and each entry's caveat records how it was checked;
+    # verification_method and last_verified_date record the latest check.
     # ========================================================================
     # ---- Class 4 (Tuberculous meningitis) anchors ----
     "15496623": {
@@ -1954,11 +1951,10 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "verification_method": "checked_pubmed_fulltext_2026_06_11",
         "last_verified_date": "2026-06-11",
         "caveat": (
-            "Subphase 1.4 commit 5.4.0 anchor for Class 4 TBM. HCMC "
-            "Vietnam dexamethasone RCT in adolescents and adults with TBM; "
-            "mortality reduction with adjunctive dexamethasone. 21-author "
-            "Vancouver list confirmed against the PubMed record on "
-            "2026-06-11."
+            "Anchor for Class 4 TBM. HCMC Vietnam dexamethasone RCT in "
+            "adolescents and adults with TBM; mortality reduction with "
+            "adjunctive dexamethasone. 21-author Vancouver list confirmed "
+            "against the PubMed record on 2026-06-11."
         ),
     },
     "20822958": {
@@ -1983,11 +1979,11 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "verification_method": "checked_pubmed_fulltext_2026_06_11",
         "last_verified_date": "2026-06-11",
         "caveat": (
-            "Subphase 1.4 commit 5.4.0 anchor for Class 4 TBM. Marais "
-            "2010 uniform case definition is the canonical clinical "
-            "research framework cited in ml/schemas/labels.py docstring. "
-            "Torok ME diacritic O-with-umlaut rendered as plain O for "
-            "ASCII safety; original is Torok with diacritic."
+            "Anchor for Class 4 TBM. Marais 2010 uniform case definition "
+            "is the canonical clinical research framework cited in "
+            "ml/schemas/labels.py docstring. Torok ME diacritic "
+            "O-with-umlaut rendered as plain O for ASCII safety; "
+            "original is Torok with diacritic."
         ),
     },
     "24655399": {
@@ -2009,10 +2005,9 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "verification_method": "checked_pubmed_2026_06_11",
         "last_verified_date": "2026-06-11",
         "caveat": (
-            "Subphase 1.4 commit 5.4.0 anchor for Class 4 pediatric TBM "
-            "stratum (8 slots median 6mo-2y per spec 1.4.4). "
-            "Originally cited as J Child Neurol; actual journal is "
-            "Semin Pediatr Neurol per PubMed. Corrected at registration."
+            "Anchor for Class 4 pediatric TBM stratum (8 slots median "
+            "6mo-2y). A citation to J Child Neurol was corrected: the "
+            "journal is Semin Pediatr Neurol per PubMed."
         ),
     },
     "26760084": {
@@ -2039,11 +2034,11 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "verification_method": "checked_pubmed_fulltext_2026_06_11",
         "last_verified_date": "2026-06-11",
         "caveat": (
-            "Subphase 1.4 commit 5.4.0 anchor for Class 4 TBM. HCMC "
-            "intensified anti-TB therapy RCT; no mortality benefit at "
-            "9 months. Anchor for HIV-coinfected and adult HIV-negative "
-            "strata. 24-author Vancouver list confirmed against the PubMed "
-            "record on 2026-06-11."
+            "Anchor for Class 4 TBM. HCMC intensified anti-TB therapy "
+            "RCT; no mortality benefit at 9 months. Anchor for "
+            "HIV-coinfected and adult HIV-negative strata. 24-author "
+            "Vancouver list confirmed against the PubMed record on "
+            "2026-06-11."
         ),
     },
     "35288778": {
@@ -2069,11 +2064,11 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "verification_method": "checked_pubmed_pmc_2026_06_11",
         "last_verified_date": "2026-06-11",
         "caveat": (
-            "Subphase 1.4 commit 5.4.0 anchor for Class 4 TBM. "
-            "Navarro-Flores 2022 systematic review and meta-analysis "
-            "of CNS-TB morbidity and mortality; LATAM-author team "
-            "(Pacheco-Barrios K Peru) supports LMIC geographic anchor "
-            "per spec 1.4.10 (>=20/30 LMIC)."
+            "Anchor for Class 4 TBM. Navarro-Flores 2022 systematic "
+            "review and meta-analysis of CNS-TB morbidity and "
+            "mortality; LATAM-author team (Pacheco-Barrios K Peru) "
+            "supports the LMIC geographic anchor (>=20/30 slots in "
+            "LMIC settings)."
         ),
     },
     # ---- Class 5 (Cryptococcal / fungal meningitis) anchors ----
@@ -2101,10 +2096,9 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "verification_method": "checked_pubmed_pmc_2026_06_11",
         "last_verified_date": "2026-06-11",
         "caveat": (
-            "Subphase 1.4 commit 5.4.0 anchor for Class 5 Cryptococcal. "
-            "IDSA 2010 cryptococcal disease management guidelines; "
-            "anchor for HIV+CD4<100, transplant, and non-HIV strata. "
-            "15 authors verified."
+            "Anchor for Class 5 Cryptococcal. IDSA 2010 cryptococcal "
+            "disease management guidelines; anchor for HIV+CD4<100, "
+            "transplant, and non-HIV strata. 15 authors verified."
         ),
     },
     "19182676": {
@@ -2129,10 +2123,10 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "verification_method": "checked_pubmed_2026_06_11",
         "last_verified_date": "2026-06-11",
         "caveat": (
-            "Subphase 1.4 commit 5.4.0 anchor for Class 5 Cryptococcal. "
-            "Park 2009 AIDS global burden estimate (approximately 957,900 "
-            "cases and 624,700 deaths annually). Anchor for HIV+CD4<100 "
-            "22-slot bulk stratum per spec 1.4.5."
+            "Anchor for Class 5 Cryptococcal. Park 2009 AIDS global "
+            "burden estimate (approximately 957,900 cases and 624,700 "
+            "deaths annually). Anchor for HIV+CD4<100 22-slot bulk "
+            "stratum."
         ),
     },
     "17262720": {
@@ -2162,11 +2156,10 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "verification_method": "checked_pubmed_pmc_2026_06_11",
         "last_verified_date": "2026-06-11",
         "caveat": (
-            "Subphase 1.4 commit 5.4.0 anchor for Class 5 Cryptococcal. "
-            "Singh 2007 JID multicenter cohort substituted at "
-            "verification time for non-resolving 'Pappas CID 2009 "
-            "transplant cryptococcus' citation. Same role: "
-            "anchor for 4-slot transplant stratum per spec 1.4.5."
+            "Anchor for Class 5 Cryptococcal. Singh 2007 JID "
+            "multicenter cohort, used in place of a 'Pappas CID 2009 "
+            "transplant cryptococcus' citation that did not resolve in "
+            "PubMed. Same role: anchor for 4-slot transplant stratum."
         ),
     },
     "24963568": {
@@ -2195,11 +2188,11 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "verification_method": "checked_pubmed_pmc_2026_06_11",
         "last_verified_date": "2026-06-11",
         "caveat": (
-            "Subphase 1.4 commit 5.4.0 anchor for Class 5 Cryptococcal. "
-            "Boulware 2014 COAT trial (Cryptococcal Optimal ART Timing): "
-            "earlier ART (1-2 wk) vs deferred (5 wk) post-cryptococcal-"
-            "meningitis-diagnosis; earlier ART associated with higher "
-            "mortality. Anchor for HIV+ ART-naive presentation slots."
+            "Anchor for Class 5 Cryptococcal. Boulware 2014 COAT trial "
+            "(Cryptococcal Optimal ART Timing): earlier ART (1-2 wk) vs "
+            "deferred (5 wk) post-cryptococcal-meningitis-diagnosis; "
+            "earlier ART associated with higher mortality. Anchor for "
+            "HIV+ ART-naive presentation slots."
         ),
     },
     "35320642": {
@@ -2233,12 +2226,12 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "verification_method": "checked_pubmed_pmc_2026_06_11",
         "last_verified_date": "2026-06-11",
         "caveat": (
-            "Subphase 1.4 commit 5.4.0 anchor for Class 5 Cryptococcal. "
-            "AMBITION-cm RCT (Jarvis 2022); single high-dose liposomal "
-            "amphotericin B vs WHO standard induction for HIV-associated "
-            "cryptococcal meningitis. Full 42-author roster and Ambition "
-            "Study Group attribution confirmed from PMC fulltext. Anchor "
-            "for HIV+ CD4<100 induction-therapy slots."
+            "Anchor for Class 5 Cryptococcal. AMBITION-cm RCT (Jarvis "
+            "2022); single high-dose liposomal amphotericin B vs WHO "
+            "standard induction for HIV-associated cryptococcal "
+            "meningitis. Full 42-author roster and Ambition Study Group "
+            "attribution confirmed from PMC fulltext. Anchor for HIV+ "
+            "CD4<100 induction-therapy slots."
         ),
     },
     "19757550": {
@@ -2264,13 +2257,12 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "verification_method": "checked_pubmed_pmc_2026_06_11",
         "last_verified_date": "2026-06-11",
         "caveat": (
-            "Subphase 1.4 commit 5.4.0 anchor for Class 5 Cryptococcal. "
-            "Datta 2009 EID Pacific Northwest C. gattii expansion; "
-            "anchor for the 2-slot C. gattii immunocompetent stratum per "
-            "spec 1.4.5. Group attribution 'Cryptococcus gattii "
-            "Working Group of the Pacific Northwest' present in PubMed; "
-            "12-author Vancouver list captured plus working-group "
-            "attribution."
+            "Anchor for Class 5 Cryptococcal. Datta 2009 EID Pacific "
+            "Northwest C. gattii expansion; anchor for the 2-slot C. "
+            "gattii immunocompetent stratum. Group "
+            "attribution 'Cryptococcus gattii Working Group of the "
+            "Pacific Northwest' present in PubMed; 12-author Vancouver "
+            "list captured plus working-group attribution."
         ),
     },
     # ---- Class 6 (Granulomatous amebic encephalitis) anchors ----
@@ -2295,13 +2287,13 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "verification_method": "checked_pubmed_pmc_2026_06_11",
         "last_verified_date": "2026-06-11",
         "caveat": (
-            "Subphase 1.4 commit 5.4.0 anchor for Class 6 GAE. Sometimes "
-            "cited as 'Bravo PMC8760460'; actual primary "
-            "byline is Alvarez P et al. with Bravo F as senior author. "
-            "PMC ID PMC8760460 confirmed. Anchor for centro-facial skin "
-            "lesion phenotype preceding CNS in Balamuthia per spec "
-            "1.4.6 (12/15 Balamuthia slots with skin lesion). "
-            "Gotuzzo E listed as 3rd author."
+            "Anchor for Class 6 GAE. Sometimes cited as 'Bravo "
+            "PMC8760460'; the primary byline is Alvarez P et al. "
+            "with Bravo F as senior author. PMC ID PMC8760460 "
+            "confirmed. Anchor for centro-facial skin lesion phenotype "
+            "preceding CNS in Balamuthia (12/15 "
+            "Balamuthia slots with skin lesion). Gotuzzo E listed as "
+            "3rd author."
         ),
     },
     "31758593": {
@@ -2327,8 +2319,8 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "last_verified_date": "2026-06-07",
         "verification_method": "checked_pubmed_2026_06_07",
         "caveat": (
-            "Subphase 1.4 anchor for Class 6 GAE. Originally cited "
-            "as 'Cabello-Vilchez 2023'; actual canonical Peru "
+            "Anchor for Class 6 GAE. A citation to "
+            "'Cabello-Vilchez 2023' was corrected: the canonical Peru "
             "clinical-phenotype paper is Cabello-Vílchez et al. 2020 "
             "Neuropathology, two fatal pediatric Lima cases, GAE "
             "confirmed on brain biopsy. Full 10-author roster per "
@@ -2358,16 +2350,16 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "last_verified_date": "2026-06-07",
         "verification_method": "checked_pubmed_2026_06_07",
         "caveat": (
-            "Subphase 1.4 anchor for Class 6 GAE. Canonical Visvesvara "
-            "2007 FEMS Immunology & Medical Microbiology review of "
-            "free-living amoebae (Acanthamoeba spp., B. mandrillaris, "
-            "N. fowleri, S. diploidea); 26-page clinical and "
-            "epidemiologic phenotype review, pp. 1-26. Anchor for "
-            "Acanthamoeba GAE majority stratum. Visvesvara GS is a "
-            "co-author on multiple existing PAM registry entries "
-            "(Naegleria role); this anchor is the Acanthamoeba/"
-            "Balamuthia role distinct from those. Checked against a web "
-            "source and the PubMed record on 2026-06-06; confidence 1.00."
+            "Anchor for Class 6 GAE. Canonical Visvesvara 2007 FEMS "
+            "Immunology & Medical Microbiology review of free-living "
+            "amoebae (Acanthamoeba spp., B. mandrillaris, N. fowleri, "
+            "S. diploidea); 26-page clinical and epidemiologic "
+            "phenotype review, pp. 1-26. Anchor for Acanthamoeba GAE "
+            "majority stratum. Visvesvara GS is a co-author on "
+            "multiple existing PAM registry entries (Naegleria role); "
+            "this anchor is the Acanthamoeba/Balamuthia role distinct "
+            "from those. Checked against a web source and the PubMed "
+            "record on 2026-06-06; confidence 1.00."
         ),
     },
     "30239654": {
@@ -2393,14 +2385,13 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "verification_method": "checked_pubmed_pmc_2026_06_11",
         "last_verified_date": "2026-06-11",
         "caveat": (
-            "Subphase 1.4 commit 5.4.0 anchor for Class 6 GAE. Cope 2019 "
-            "CID US Balamuthia surveillance 1974-2016 (109 cases; 90 "
-            "percent case-fatality among those with known outcome). "
-            "Anchor for non-Peru Balamuthia stratum (3 of 15 Balamuthia "
-            "slots per spec 1.4.6) and for the Hispanic-"
-            "overrepresentation signal in US-published series. Cope JR "
-            "already appears in registry as Naegleria co-author; this "
-            "anchor is the Balamuthia role distinct from those."
+            "Anchor for Class 6 GAE. Cope 2019 CID US Balamuthia "
+            "surveillance 1974-2016 (109 cases; 90 percent case-fatality "
+            "among those with known outcome). Anchor for non-Peru "
+            "Balamuthia stratum (3 of 15 Balamuthia slots) and for the Hispanic-overrepresentation signal in "
+            "US-published series. Cope JR already appears in registry as "
+            "Naegleria co-author; this anchor is the Balamuthia role "
+            "distinct from those."
         ),
     },
     "34461057": {
@@ -2426,13 +2417,12 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
         "verification_method": "checked_pubmed_pmc_2026_06_11",
         "last_verified_date": "2026-06-11",
         "caveat": (
-            "Subphase 1.4 commit 5.4.0 anchor for Class 6 GAE. Damhorst "
-            "2022 (NOT 2020 as first cited) Lancet Infect Dis "
-            "case report + literature review of Acanthamoeba castellanii "
-            "encephalitis in an AIDS patient. Anchor for Acanthamoeba "
-            "immunocompromised stratum (10 of 15 Acanthamoeba slots per "
-            "spec 1.4.6). Year corrected from 2020 to 2022 at "
-            "verification."
+            "Anchor for Class 6 GAE. Damhorst 2022 (not 2020) Lancet "
+            "Infect Dis case report + literature "
+            "review of Acanthamoeba castellanii encephalitis in an AIDS "
+            "patient. Anchor for Acanthamoeba immunocompromised stratum "
+            "(10 of 15 Acanthamoeba slots). Year corrected from 2020 "
+            "to 2022 against the PubMed record."
         ),
     },
 }
@@ -2457,9 +2447,9 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
 
 
 # ============================================================================
-# DAY1_DISTRIBUTION
+# PAM_DISTRIBUTION_1_20
 # ----------------------------------------------------------------------------
-# 20 vignette specifications from the per-vignette table in the Day 1 spec.
+# 20 vignette specifications for PAM vignettes 1-20, one per vignette.
 #
 # Field notes:
 # - age_years: rounded down for sub-2y patients (e.g., 16-month-old recorded
@@ -2468,14 +2458,14 @@ PMID_REGISTRY: dict[str, dict[str, Any]] = {
 # - geography_region: matches Demographics.geography_region Literal.
 # - stage: clinical stage at presentation (early / mid / late).
 # - outcome: fatal / survived.
-# - atypical_type: tag for the spec's 5-required atypical case categories,
+# - atypical_type: tag for the 5 required atypical case categories,
 #   None if the vignette is a baseline (non-atypical) case.
 # ============================================================================
 
-DAY1_DISTRIBUTION: list[dict[str, Any]] = [
+PAM_DISTRIBUTION_1_20: list[dict[str, Any]] = [
     {
         "vignette_id": 1,
-        "filename": "pam_d1_001_splash_pad_pediatric.json",
+        "filename": "pam_001_splash_pad_pediatric.json",
         "cluster": "splash_pad",
         "pmid": "40146665",
         "age_years": 1,
@@ -2489,7 +2479,7 @@ DAY1_DISTRIBUTION: list[dict[str, Any]] = [
     },
     {
         "vignette_id": 2,
-        "filename": "pam_d1_002_splash_pad_pediatric.json",
+        "filename": "pam_002_splash_pad_pediatric.json",
         "cluster": "splash_pad",
         "pmid": "40146665",
         "age_years": 3,
@@ -2503,7 +2493,7 @@ DAY1_DISTRIBUTION: list[dict[str, Any]] = [
     },
     {
         "vignette_id": 3,
-        "filename": "pam_d1_003_splash_pad_pediatric.json",
+        "filename": "pam_003_splash_pad_pediatric.json",
         "cluster": "splash_pad",
         "pmid": "37470480",
         "age_years": 3,
@@ -2517,7 +2507,7 @@ DAY1_DISTRIBUTION: list[dict[str, Any]] = [
     },
     {
         "vignette_id": 4,
-        "filename": "pam_d1_004_splash_pad_pediatric.json",
+        "filename": "pam_004_splash_pad_pediatric.json",
         "cluster": "splash_pad",
         "pmid": "37470480",
         "age_years": 4,
@@ -2531,7 +2521,7 @@ DAY1_DISTRIBUTION: list[dict[str, Any]] = [
     },
     {
         "vignette_id": 5,
-        "filename": "pam_d1_005_lake_pediatric.json",
+        "filename": "pam_005_lake_pediatric.json",
         "cluster": "lake_pond",
         "pmid": "22238170",
         "age_years": 7,
@@ -2545,7 +2535,7 @@ DAY1_DISTRIBUTION: list[dict[str, Any]] = [
     },
     {
         "vignette_id": 6,
-        "filename": "pam_d1_006_pond_pediatric.json",
+        "filename": "pam_006_pond_pediatric.json",
         "cluster": "lake_pond",
         "pmid": "34307045",
         "age_years": 13,
@@ -2559,7 +2549,7 @@ DAY1_DISTRIBUTION: list[dict[str, Any]] = [
     },
     {
         "vignette_id": 7,
-        "filename": "pam_d1_007_river_pediatric.json",
+        "filename": "pam_007_river_pediatric.json",
         "cluster": "lake_pond",
         "pmid": "37460088",
         "age_years": 8,
@@ -2573,7 +2563,7 @@ DAY1_DISTRIBUTION: list[dict[str, Any]] = [
     },
     {
         "vignette_id": 8,
-        "filename": "pam_d1_008_lake_pediatric.json",
+        "filename": "pam_008_lake_pediatric.json",
         "cluster": "lake_pond",
         "pmid": "22238170",
         "age_years": 9,
@@ -2587,7 +2577,7 @@ DAY1_DISTRIBUTION: list[dict[str, Any]] = [
     },
     {
         "vignette_id": 9,
-        "filename": "pam_d1_009_lake_adolescent.json",
+        "filename": "pam_009_lake_adolescent.json",
         "cluster": "lake_pond",
         "pmid": "34307045",
         "age_years": 14,
@@ -2601,7 +2591,7 @@ DAY1_DISTRIBUTION: list[dict[str, Any]] = [
     },
     {
         "vignette_id": 10,
-        "filename": "pam_d1_010_neti_pot_adult.json",
+        "filename": "pam_010_neti_pot_adult.json",
         "cluster": "nasal_irrigation",
         "pmid": "22919000",
         "age_years": 28,
@@ -2615,7 +2605,7 @@ DAY1_DISTRIBUTION: list[dict[str, Any]] = [
     },
     {
         "vignette_id": 11,
-        "filename": "pam_d1_011_neti_pot_adult.json",
+        "filename": "pam_011_neti_pot_adult.json",
         "cluster": "nasal_irrigation",
         "pmid": "22919000",
         "age_years": 51,
@@ -2629,7 +2619,7 @@ DAY1_DISTRIBUTION: list[dict[str, Any]] = [
     },
     {
         "vignette_id": 12,
-        "filename": "pam_d1_012_rv_nasal_adult.json",
+        "filename": "pam_012_rv_nasal_adult.json",
         "cluster": "nasal_irrigation",
         "pmid": "40440212",
         "age_years": 71,
@@ -2643,7 +2633,7 @@ DAY1_DISTRIBUTION: list[dict[str, Any]] = [
     },
     {
         "vignette_id": 13,
-        "filename": "pam_d1_013_hot_spring_pediatric.json",
+        "filename": "pam_013_hot_spring_pediatric.json",
         "cluster": "hot_springs",
         "pmid": "31513557",
         "age_years": 12,
@@ -2657,7 +2647,7 @@ DAY1_DISTRIBUTION: list[dict[str, Any]] = [
     },
     {
         "vignette_id": 14,
-        "filename": "pam_d1_014_hot_spring_adult.json",
+        "filename": "pam_014_hot_spring_adult.json",
         "cluster": "hot_springs",
         "pmid": "27123690",
         "age_years": 21,
@@ -2671,7 +2661,7 @@ DAY1_DISTRIBUTION: list[dict[str, Any]] = [
     },
     {
         "vignette_id": 15,
-        "filename": "pam_d1_015_ablution_pediatric.json",
+        "filename": "pam_015_ablution_pediatric.json",
         "cluster": "pakistan_ablution",
         "pmid": "21291600",
         "age_years": 13,
@@ -2685,7 +2675,7 @@ DAY1_DISTRIBUTION: list[dict[str, Any]] = [
     },
     {
         "vignette_id": 16,
-        "filename": "pam_d1_016_ablution_adult.json",
+        "filename": "pam_016_ablution_adult.json",
         "cluster": "pakistan_ablution",
         "pmid": "29016297",
         "age_years": 28,
@@ -2699,7 +2689,7 @@ DAY1_DISTRIBUTION: list[dict[str, Any]] = [
     },
     {
         "vignette_id": 17,
-        "filename": "pam_d1_017_costa_rica_pediatric.json",
+        "filename": "pam_017_costa_rica_pediatric.json",
         "cluster": "latam",
         "pmid": "25625800",
         "age_years": 11,
@@ -2713,7 +2703,7 @@ DAY1_DISTRIBUTION: list[dict[str, Any]] = [
     },
     {
         "vignette_id": 18,
-        "filename": "pam_d1_018_mexicali_pediatric.json",
+        "filename": "pam_018_mexicali_pediatric.json",
         "cluster": "latam",
         "pmid": "8458963",
         "age_years": 9,
@@ -2727,7 +2717,7 @@ DAY1_DISTRIBUTION: list[dict[str, Any]] = [
     },
     {
         "vignette_id": 19,
-        "filename": "pam_d1_019_burki_adult_survivor.json",
+        "filename": "pam_019_burki_adult_survivor.json",
         "cluster": "survivor_adult",
         "pmid": "38526236",
         "age_years": 22,
@@ -2741,7 +2731,7 @@ DAY1_DISTRIBUTION: list[dict[str, Any]] = [
     },
     {
         "vignette_id": 20,
-        "filename": "pam_d1_020_rauf_kerala_pediatric_survivor.json",
+        "filename": "pam_020_rauf_kerala_pediatric_survivor.json",
         "cluster": "survivor_pediatric",
         "pmid": "40009134",
         "age_years": 14,
@@ -2757,20 +2747,20 @@ DAY1_DISTRIBUTION: list[dict[str, Any]] = [
 
 
 # ============================================================================
-# DAY2_DISTRIBUTION
+# PAM_DISTRIBUTION_21_60
 # ----------------------------------------------------------------------------
-# 40 vignette specifications for Day 2 of the PAM corpus (v21-v60). Locked at
-# v2.1.7-day2-distribution-locked. Vignette JSON generation is deferred to
-# Commits 4-5; this list is the input contract.
+# 40 vignette specifications for PAM vignettes 21-60 (v21-v60). This list
+# is the input contract for the builders of vignettes 21-60.
 #
-# Cluster math (Option A proportional trim, locked):
+# Cluster math (proportional trim):
 #   lake_pond +17, river +10, splash_pad +5, nasal_irrigation +6,
 #   hot_springs +1, pakistan_ablution +1. Total +40.
 #
 # Anchor pool: 43 PMIDs (PMID_REGISTRY). Reuse cap: <= 6x per PMID across
-# the full 60-vignette corpus. Day-2 max reuse: 5x (Capewell, Kemble, Anjum).
+# the full 60-vignette corpus. Max reuse within vignettes 21-60: 5x
+# (Capewell, Kemble, Anjum).
 #
-# Demographic notes per locked decisions (additive to Day 1):
+# Demographic notes (added on top of vignettes 1-20):
 #   +8 female / +32 male; +3 survivors / +37 fatal; +13 adult cases.
 #   Combined 60-corpus: 13F/47M (22%/78%), 5 survivors (8.3%), 19 adults
 #   (32%), 20 non-US geographies (33%).
@@ -2782,16 +2772,17 @@ DAY1_DISTRIBUTION: list[dict[str, Any]] = [
 #   - Linam survivor:  v25 Linam 2015 (PMID 25667249) survivor anchor
 #
 # Imputation policy: any vignette whose demographics are NOT directly read
-# from the anchor PMID's case-report content is marked
-# `imputed_within_anchor_epidemiology` in the rationale doc. Tier-4 review
-# imputations and Day-1-PMID reuses are the two main imputation classes.
-# See docs/DAY2_DISTRIBUTION_RATIONALE.md per-vignette rationale table.
+# from the anchor PMID's case-report content is described as a
+# within-cohort imputation in its narrative (narrative_en, with the matching
+# statement in narrative_es).
+# Tier-4 review imputations and reuses of PMIDs from vignettes 1-20 are the
+# two main imputation classes.
 # ============================================================================
 
-DAY2_DISTRIBUTION: list[dict[str, Any]] = [
+PAM_DISTRIBUTION_21_60: list[dict[str, Any]] = [
     {
         "vignette_id": 21,
-        "filename": "pam_d2_021_phung_vietnam_cryptic.json",
+        "filename": "pam_021_phung_vietnam_cryptic.json",
         "cluster": "river",
         "pmid": "39795618",
         "age_years": 0,
@@ -2805,7 +2796,7 @@ DAY2_DISTRIBUTION: list[dict[str, Any]] = [
     },
     {
         "vignette_id": 22,
-        "filename": "pam_d2_022_cogo_italy_first_european.json",
+        "filename": "pam_022_cogo_italy_first_european.json",
         "cluster": "lake_pond",
         "pmid": "15504272",
         "age_years": 9,
@@ -2819,7 +2810,7 @@ DAY2_DISTRIBUTION: list[dict[str, Any]] = [
     },
     {
         "vignette_id": 23,
-        "filename": "pam_d2_023_lin_sichuan_myocarditis.json",
+        "filename": "pam_023_lin_sichuan_myocarditis.json",
         "cluster": "splash_pad",
         "pmid": "39606118",
         "age_years": 6,
@@ -2833,7 +2824,7 @@ DAY2_DISTRIBUTION: list[dict[str, Any]] = [
     },
     {
         "vignette_id": 24,
-        "filename": "pam_d2_024_hong_korea_thailand_travel.json",
+        "filename": "pam_024_hong_korea_thailand_travel.json",
         "cluster": "lake_pond",
         "pmid": "37727924",
         "age_years": 52,
@@ -2847,7 +2838,7 @@ DAY2_DISTRIBUTION: list[dict[str, Any]] = [
     },
     {
         "vignette_id": 25,
-        "filename": "pam_d2_025_linam_kali_hardig_survivor.json",
+        "filename": "pam_025_linam_kali_hardig_survivor.json",
         "cluster": "splash_pad",
         "pmid": "25667249",
         "age_years": 12,
@@ -2861,7 +2852,7 @@ DAY2_DISTRIBUTION: list[dict[str, Any]] = [
     },
     {
         "vignette_id": 26,
-        "filename": "pam_d2_026_wang_shenzhen_first_mainland.json",
+        "filename": "pam_026_wang_shenzhen_first_mainland.json",
         "cluster": "lake_pond",
         "pmid": "30055569",
         "age_years": 10,
@@ -2875,7 +2866,7 @@ DAY2_DISTRIBUTION: list[dict[str, Any]] = [
     },
     {
         "vignette_id": 27,
-        "filename": "pam_d2_027_huang_china_mngs_dual.json",
+        "filename": "pam_027_huang_china_mngs_dual.json",
         "cluster": "lake_pond",
         "pmid": "34906097",
         "age_years": 8,
@@ -2889,7 +2880,7 @@ DAY2_DISTRIBUTION: list[dict[str, Any]] = [
     },
     {
         "vignette_id": 28,
-        "filename": "pam_d2_028_capewell_imputed_pediatric_female.json",
+        "filename": "pam_028_capewell_imputed_pediatric_female.json",
         "cluster": "lake_pond",
         "pmid": "26582886",
         "age_years": 8,
@@ -2903,7 +2894,7 @@ DAY2_DISTRIBUTION: list[dict[str, Any]] = [
     },
     {
         "vignette_id": 29,
-        "filename": "pam_d2_029_capewell_imputed_pediatric_male.json",
+        "filename": "pam_029_capewell_imputed_pediatric_male.json",
         "cluster": "lake_pond",
         "pmid": "26582886",
         "age_years": 11,
@@ -2917,7 +2908,7 @@ DAY2_DISTRIBUTION: list[dict[str, Any]] = [
     },
     {
         "vignette_id": 30,
-        "filename": "pam_d2_030_capewell_imputed_adolescent.json",
+        "filename": "pam_030_capewell_imputed_adolescent.json",
         "cluster": "lake_pond",
         "pmid": "26582886",
         "age_years": 15,
@@ -2931,7 +2922,7 @@ DAY2_DISTRIBUTION: list[dict[str, Any]] = [
     },
     {
         "vignette_id": 31,
-        "filename": "pam_d2_031_capewell_imputed_school_age.json",
+        "filename": "pam_031_capewell_imputed_school_age.json",
         "cluster": "lake_pond",
         "pmid": "26582886",
         "age_years": 9,
@@ -2945,7 +2936,7 @@ DAY2_DISTRIBUTION: list[dict[str, Any]] = [
     },
     {
         "vignette_id": 32,
-        "filename": "pam_d2_032_kemble_minnesota_reuse_a.json",
+        "filename": "pam_032_kemble_minnesota_reuse_a.json",
         "cluster": "lake_pond",
         "pmid": "22238170",
         "age_years": 11,
@@ -2959,7 +2950,7 @@ DAY2_DISTRIBUTION: list[dict[str, Any]] = [
     },
     {
         "vignette_id": 33,
-        "filename": "pam_d2_033_kemble_minnesota_reuse_b.json",
+        "filename": "pam_033_kemble_minnesota_reuse_b.json",
         "cluster": "lake_pond",
         "pmid": "22238170",
         "age_years": 6,
@@ -2973,7 +2964,7 @@ DAY2_DISTRIBUTION: list[dict[str, Any]] = [
     },
     {
         "vignette_id": 34,
-        "filename": "pam_d2_034_kemble_minnesota_reuse_c.json",
+        "filename": "pam_034_kemble_minnesota_reuse_c.json",
         "cluster": "lake_pond",
         "pmid": "22238170",
         "age_years": 14,
@@ -2987,7 +2978,7 @@ DAY2_DISTRIBUTION: list[dict[str, Any]] = [
     },
     {
         "vignette_id": 35,
-        "filename": "pam_d2_035_anjum_florida_reuse_a.json",
+        "filename": "pam_035_anjum_florida_reuse_a.json",
         "cluster": "lake_pond",
         "pmid": "34307045",
         "age_years": 10,
@@ -3001,7 +2992,7 @@ DAY2_DISTRIBUTION: list[dict[str, Any]] = [
     },
     {
         "vignette_id": 36,
-        "filename": "pam_d2_036_anjum_florida_reuse_b.json",
+        "filename": "pam_036_anjum_florida_reuse_b.json",
         "cluster": "lake_pond",
         "pmid": "34307045",
         "age_years": 12,
@@ -3015,7 +3006,7 @@ DAY2_DISTRIBUTION: list[dict[str, Any]] = [
     },
     {
         "vignette_id": 37,
-        "filename": "pam_d2_037_anjum_florida_reuse_c.json",
+        "filename": "pam_037_anjum_florida_reuse_c.json",
         "cluster": "lake_pond",
         "pmid": "34307045",
         "age_years": 15,
@@ -3029,7 +3020,7 @@ DAY2_DISTRIBUTION: list[dict[str, Any]] = [
     },
     {
         "vignette_id": 38,
-        "filename": "pam_d2_038_ripa_global_review_imputed.json",
+        "filename": "pam_038_ripa_global_review_imputed.json",
         "cluster": "lake_pond",
         "pmid": "39860533",
         "age_years": 28,
@@ -3043,7 +3034,7 @@ DAY2_DISTRIBUTION: list[dict[str, Any]] = [
     },
     {
         "vignette_id": 39,
-        "filename": "pam_d2_039_gharpure_cid_imputed_lake.json",
+        "filename": "pam_039_gharpure_cid_imputed_lake.json",
         "cluster": "lake_pond",
         "pmid": "32369575",
         "age_years": 13,
@@ -3057,7 +3048,7 @@ DAY2_DISTRIBUTION: list[dict[str, Any]] = [
     },
     {
         "vignette_id": 40,
-        "filename": "pam_d2_040_yoder2010_us_review_imputed.json",
+        "filename": "pam_040_yoder2010_us_review_imputed.json",
         "cluster": "lake_pond",
         "pmid": "19845995",
         "age_years": 14,
@@ -3071,7 +3062,7 @@ DAY2_DISTRIBUTION: list[dict[str, Any]] = [
     },
     {
         "vignette_id": 41,
-        "filename": "pam_d2_041_zhou_hunan_misdiagnosis.json",
+        "filename": "pam_041_zhou_hunan_misdiagnosis.json",
         "cluster": "river",
         "pmid": "35463884",
         "age_years": 14,
@@ -3085,7 +3076,7 @@ DAY2_DISTRIBUTION: list[dict[str, Any]] = [
     },
     {
         "vignette_id": 42,
-        "filename": "pam_d2_042_sazzad_bangladesh_first.json",
+        "filename": "pam_042_sazzad_bangladesh_first.json",
         "cluster": "river",
         "pmid": "31734864",
         "age_years": 30,
@@ -3099,7 +3090,7 @@ DAY2_DISTRIBUTION: list[dict[str, Any]] = [
     },
     {
         "vignette_id": 43,
-        "filename": "pam_d2_043_retana_costa_rica_groundwater.json",
+        "filename": "pam_043_retana_costa_rica_groundwater.json",
         "cluster": "river",
         "pmid": "32752181",
         "age_years": 7,
@@ -3113,7 +3104,7 @@ DAY2_DISTRIBUTION: list[dict[str, Any]] = [
     },
     {
         "vignette_id": 44,
-        "filename": "pam_d2_044_denapoli_rio_grande_a.json",
+        "filename": "pam_044_denapoli_rio_grande_a.json",
         "cluster": "river",
         "pmid": "8923775",
         "age_years": 8,
@@ -3127,7 +3118,7 @@ DAY2_DISTRIBUTION: list[dict[str, Any]] = [
     },
     {
         "vignette_id": 45,
-        "filename": "pam_d2_045_denapoli_rio_grande_b.json",
+        "filename": "pam_045_denapoli_rio_grande_b.json",
         "cluster": "river",
         "pmid": "8923775",
         "age_years": 10,
@@ -3141,7 +3132,7 @@ DAY2_DISTRIBUTION: list[dict[str, Any]] = [
     },
     {
         "vignette_id": 46,
-        "filename": "pam_d2_046_lares_villa_mexicali_canal.json",
+        "filename": "pam_046_lares_villa_mexicali_canal.json",
         "cluster": "river",
         "pmid": "8458963",
         "age_years": 11,
@@ -3155,7 +3146,7 @@ DAY2_DISTRIBUTION: list[dict[str, Any]] = [
     },
     {
         "vignette_id": 47,
-        "filename": "pam_d2_047_capewell_imputed_river.json",
+        "filename": "pam_047_capewell_imputed_river.json",
         "cluster": "river",
         "pmid": "26582886",
         "age_years": 12,
@@ -3169,7 +3160,7 @@ DAY2_DISTRIBUTION: list[dict[str, Any]] = [
     },
     {
         "vignette_id": 48,
-        "filename": "pam_d2_048_gharpure_eid_imputed_river.json",
+        "filename": "pam_048_gharpure_eid_imputed_river.json",
         "cluster": "river",
         "pmid": "33350926",
         "age_years": 14,
@@ -3183,7 +3174,7 @@ DAY2_DISTRIBUTION: list[dict[str, Any]] = [
     },
     {
         "vignette_id": 49,
-        "filename": "pam_d2_049_rauf_kerala_survivor_reuse.json",
+        "filename": "pam_049_rauf_kerala_survivor_reuse.json",
         "cluster": "river",
         "pmid": "40009134",
         "age_years": 11,
@@ -3197,7 +3188,7 @@ DAY2_DISTRIBUTION: list[dict[str, Any]] = [
     },
     {
         "vignette_id": 50,
-        "filename": "pam_d2_050_dulski_arkansas_reuse.json",
+        "filename": "pam_050_dulski_arkansas_reuse.json",
         "cluster": "splash_pad",
         "pmid": "40146665",
         "age_years": 5,
@@ -3211,7 +3202,7 @@ DAY2_DISTRIBUTION: list[dict[str, Any]] = [
     },
     {
         "vignette_id": 51,
-        "filename": "pam_d2_051_eger_texas_reuse.json",
+        "filename": "pam_051_eger_texas_reuse.json",
         "cluster": "splash_pad",
         "pmid": "37470480",
         "age_years": 6,
@@ -3225,7 +3216,7 @@ DAY2_DISTRIBUTION: list[dict[str, Any]] = [
     },
     {
         "vignette_id": 52,
-        "filename": "pam_d2_052_wei_taiwan_indoor_surf.json",
+        "filename": "pam_052_wei_taiwan_indoor_surf.json",
         "cluster": "splash_pad",
         "pmid": "39174030",
         "age_years": 22,
@@ -3239,7 +3230,7 @@ DAY2_DISTRIBUTION: list[dict[str, Any]] = [
     },
     {
         "vignette_id": 53,
-        "filename": "pam_d2_053_yoder2012_louisiana_reuse_a.json",
+        "filename": "pam_053_yoder2012_louisiana_reuse_a.json",
         "cluster": "nasal_irrigation",
         "pmid": "22919000",
         "age_years": 35,
@@ -3253,7 +3244,7 @@ DAY2_DISTRIBUTION: list[dict[str, Any]] = [
     },
     {
         "vignette_id": 54,
-        "filename": "pam_d2_054_yoder2012_louisiana_reuse_b.json",
+        "filename": "pam_054_yoder2012_louisiana_reuse_b.json",
         "cluster": "nasal_irrigation",
         "pmid": "22919000",
         "age_years": 62,
@@ -3267,7 +3258,7 @@ DAY2_DISTRIBUTION: list[dict[str, Any]] = [
     },
     {
         "vignette_id": 55,
-        "filename": "pam_d2_055_smith_texas_rv_reuse.json",
+        "filename": "pam_055_smith_texas_rv_reuse.json",
         "cluster": "nasal_irrigation",
         "pmid": "40440212",
         "age_years": 45,
@@ -3281,7 +3272,7 @@ DAY2_DISTRIBUTION: list[dict[str, Any]] = [
     },
     {
         "vignette_id": 56,
-        "filename": "pam_d2_056_cope_louisiana_treated_tap.json",
+        "filename": "pam_056_cope_louisiana_treated_tap.json",
         "cluster": "nasal_irrigation",
         "pmid": "25595746",
         "age_years": 40,
@@ -3295,7 +3286,7 @@ DAY2_DISTRIBUTION: list[dict[str, Any]] = [
     },
     {
         "vignette_id": 57,
-        "filename": "pam_d2_057_gharpure_eid_imputed_neti.json",
+        "filename": "pam_057_gharpure_eid_imputed_neti.json",
         "cluster": "nasal_irrigation",
         "pmid": "33350926",
         "age_years": 38,
@@ -3309,7 +3300,7 @@ DAY2_DISTRIBUTION: list[dict[str, Any]] = [
     },
     {
         "vignette_id": 58,
-        "filename": "pam_d2_058_gharpure_cid_imputed_neti.json",
+        "filename": "pam_058_gharpure_cid_imputed_neti.json",
         "cluster": "nasal_irrigation",
         "pmid": "32369575",
         "age_years": 50,
@@ -3323,7 +3314,7 @@ DAY2_DISTRIBUTION: list[dict[str, Any]] = [
     },
     {
         "vignette_id": 59,
-        "filename": "pam_d2_059_sandi_costa_rica_reuse.json",
+        "filename": "pam_059_sandi_costa_rica_reuse.json",
         "cluster": "hot_springs",
         "pmid": "25625800",
         "age_years": 8,
@@ -3337,7 +3328,7 @@ DAY2_DISTRIBUTION: list[dict[str, Any]] = [
     },
     {
         "vignette_id": 60,
-        "filename": "pam_d2_060_burki_pakistan_survivor_reuse.json",
+        "filename": "pam_060_burki_pakistan_survivor_reuse.json",
         "cluster": "pakistan_ablution",
         "pmid": "38526236",
         "age_years": 26,
@@ -3364,10 +3355,10 @@ DAY2_DISTRIBUTION: list[dict[str, Any]] = [
 # US, Europe).
 #
 # Diagnostic ambiguity: 5 cases with partial-treatment / sterile cultures
-# flagged in spec for explicit metadata disclosure at vignette build time.
+# flagged for explicit metadata disclosure at vignette build time.
 #
-# All 28 entries: freshwater_exposure_within_14d=False (sanity per
-# spec 1.3.10); pathogen field new for Class 2/3 specs.
+# All 28 entries: freshwater_exposure_within_14d=False (PAM differential
+# sanity check); the pathogen field is new for Class 2/3 entries.
 #
 # methodology field carries the canonical classification
 # (primary_source_direct, tier_3_imputation_within_cohort_review,
@@ -3413,7 +3404,7 @@ BACTERIAL_DISTRIBUTION: list[dict[str, Any]] = [
         "diagnostic_ambiguity": False,
         "freshwater_exposure_within_14d": False,
         "methodology": "primary_source_direct",
-        "pilot_status": "5_3_2_pilot_validated_2026_05_07",
+        "anchor_checked_date": "2026-05-07",
     },
     {
         "vignette_id": 63,
@@ -3450,7 +3441,7 @@ BACTERIAL_DISTRIBUTION: list[dict[str, Any]] = [
         "diagnostic_ambiguity": False,
         "freshwater_exposure_within_14d": False,
         "methodology": "primary_source_direct",
-        "pilot_status": "5_3_2_pilot_validated_2026_05_07",
+        "anchor_checked_date": "2026-05-07",
     },
     {
         "vignette_id": 65,
@@ -3780,8 +3771,8 @@ BACTERIAL_DISTRIBUTION: list[dict[str, Any]] = [
         "diagnostic_ambiguity": False,
         "freshwater_exposure_within_14d": False,
         "methodology": "primary_source_direct",
-        "pilot_status": "5_3_2_pilot_validated_2026_05_07",
-        "errata_note": "PMID 18626302 in 5.3.1 lock was a typo; corrected to 18626301 in 5.3.2",
+        "anchor_checked_date": "2026-05-07",
+        "pmid_correction": "PMID 18626302 was a typo; corrected to 18626301",
     },
     {
         "vignette_id": 83,
@@ -3973,7 +3964,7 @@ VIRAL_DISTRIBUTION: list[dict[str, Any]] = [
         "freshwater_exposure_within_14d": False,
         "imaging_mandate": "mesial_temporal_t2_flair_hyperintensity",
         "methodology": "primary_source_direct",
-        "pilot_status": "5_3_2_pilot_validated_2026_05_07",
+        "anchor_checked_date": "2026-05-07",
     },
     {
         "vignette_id": 93,
@@ -4213,7 +4204,7 @@ VIRAL_DISTRIBUTION: list[dict[str, Any]] = [
         "ambiguity_type": "csf_neutrophil_predominant_in_confirmed_viral",
         "freshwater_exposure_within_14d": False,
         "methodology": "primary_source_direct",
-        "pilot_status": "5_3_2_pilot_validated_2026_05_07",
+        "anchor_checked_date": "2026-05-07",
     },
     {
         "vignette_id": 106,
@@ -4250,7 +4241,7 @@ VIRAL_DISTRIBUTION: list[dict[str, Any]] = [
         "diagnostic_ambiguity": False,
         "freshwater_exposure_within_14d": False,
         "methodology": "tier_3_imputation_within_review",
-        "ambiguity_swap_note": "5.3.2: PMN-predominant ambiguity moved to v105 (Michos 2007 primary anchor); v107 now standard EV imputation",
+        "ambiguity_swap_note": "PMN-predominant ambiguity moved to v105 (Michos 2007 primary anchor); v107 now standard EV imputation",
     },
     {
         "vignette_id": 108,
@@ -4451,7 +4442,7 @@ VIRAL_DISTRIBUTION: list[dict[str, Any]] = [
         "freshwater_exposure_within_14d": False,
         "platelet_mandate_below_per_uL": 150000,
         "methodology": "primary_source_direct",
-        "pilot_status": "5_3_2_pilot_validated_2026_05_07",
+        "anchor_checked_date": "2026-05-07",
     },
     {
         "vignette_id": 119,
@@ -4499,7 +4490,7 @@ VIRAL_DISTRIBUTION: list[dict[str, Any]] = [
 # ----------------------------------------------------------------------------
 # Target mix: 16 adult HIV-negative + 8 pediatric (median 6mo-2y) +
 # 4 HIV-coinfected atypical = 28.
-# >=20/30 LMIC geography (spec 1.4.10).
+# >=20/30 LMIC geography.
 #
 # Anchors (5, all from PMID_REGISTRY):
 #   15496623 Thwaites HCMC dexamethasone RCT (6 slots adult HIV-neg)
@@ -4508,22 +4499,23 @@ VIRAL_DISTRIBUTION: list[dict[str, Any]] = [
 #   35288778 Navarro-Flores J Neurol 2022 meta (2: 1 HIV-neg + 1 HIV-coinf)
 #   24655399 van Toorn Semin Pediatr Neurol 2014 pediatric review (8 ped)
 #
-# Wave assignment: pilot 2 (121 Thwaites adult + 122 vanToorn ped) +
-# wave_1 14 adult-anchored (123-136) + wave_2 12 mixed (137-150 less 144-145).
+# Groups: 2 Class 4-6 anchor slots (121 Thwaites adult + 122 vanToorn ped),
+# the TBM series of 14 adult-anchored slots (123-136), and 12 mixed slots
+# (137-150 less 144-145).
 #
 # All 28 entries: freshwater_exposure_within_14d=False (PAM differential
-# guard carry-forward per spec 1.3.10).
+# guard, same as Class 2/3).
 #
 # cn_vi_palsy True in 8/28 (target 6-9/30).
 # ============================================================================
 
 TBM_DISTRIBUTION: list[dict[str, Any]] = [
     # ------------------------------------------------------------
-    # PILOTS (2 slots, ids 121-122)
+    # Class 4-6 anchor slots (2 slots, ids 121-122)
     # ------------------------------------------------------------
     {
         "vignette_id": 121,
-        "filename": "tbm_121_thwaites_hcmc_adult_pilot.json",
+        "filename": "tbm_121_thwaites_hcmc_adult.json",
         "anchor_pmid": "15496623",
         "pathogen_subtype": "mycobacterium_tuberculosis_drug_sensitive",
         "demographic_stratum": "adult_hiv_negative",
@@ -4538,12 +4530,12 @@ TBM_DISTRIBUTION: list[dict[str, Any]] = [
         "csf_profile_tier": "tbm_classical_lymphocytic_high_protein_low_glucose_ada_positive",
         "methodology_tier": "tier_1_rct_anchored",
         "diagnostic_ambiguity": False, "freshwater_exposure_within_14d": False,
-        "wave_assignment": "pilot", "pilot": True,
-        "notes": "Thwaites 2004 NEJM HCMC dexamethasone-TBM RCT adult pilot; classical CSF; CN VI palsy positive.",
+        "set_assignment": "anchor", "anchor": True,
+        "notes": "Thwaites 2004 NEJM HCMC dexamethasone-TBM RCT adult anchor; classical CSF; CN VI palsy positive.",
     },
     {
         "vignette_id": 122,
-        "filename": "tbm_122_vantoorn_capetown_pediatric_pilot.json",
+        "filename": "tbm_122_vantoorn_capetown_pediatric.json",
         "anchor_pmid": "24655399",
         "pathogen_subtype": "mycobacterium_tuberculosis_drug_sensitive",
         "demographic_stratum": "pediatric_median_6mo_2y",
@@ -4558,11 +4550,11 @@ TBM_DISTRIBUTION: list[dict[str, Any]] = [
         "csf_profile_tier": "tbm_classical_lymphocytic_high_protein_low_glucose_ada_positive",
         "methodology_tier": "tier_3_imputation_within_review",
         "diagnostic_ambiguity": False, "freshwater_exposure_within_14d": False,
-        "wave_assignment": "pilot", "pilot": True,
-        "notes": "van Toorn 2014 Semin Pediatr Neurol pediatric-TBM-review pilot; Cape Town pediatric stratum.",
+        "set_assignment": "anchor", "anchor": True,
+        "notes": "van Toorn 2014 Semin Pediatr Neurol pediatric-TBM-review anchor; Cape Town pediatric stratum.",
     },
     # ------------------------------------------------------------
-    # WAVE 1 adult-anchored (14 slots, ids 123-136)
+    # TBM series, adult-anchored (14 slots, ids 123-136)
     # Thwaites x5 + Marais x3 + Heemskerk-HIV-neg x6 = 14
     # ------------------------------------------------------------
     {"vignette_id": 123, "filename": "tbm_123_thwaites_hcmc_adult_cnpalsy.json",
@@ -4575,7 +4567,7 @@ TBM_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "basal_meningeal_enhancement_with_hydrocephalus",
      "csf_profile_tier": "tbm_classical_lymphocytic_high_protein_low_glucose_ada_positive",
      "methodology_tier": "tier_1_rct_anchored", "diagnostic_ambiguity": False,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_1", "pilot": False,
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_a", "anchor": False,
      "notes": "Thwaites RCT adult HIV-neg drug-sensitive TBM; CN VI palsy positive."},
     {"vignette_id": 124, "filename": "tbm_124_thwaites_hcmc_adult_fatal.json",
      "anchor_pmid": "15496623", "pathogen_subtype": "mycobacterium_tuberculosis_drug_sensitive",
@@ -4587,7 +4579,7 @@ TBM_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "basal_meningeal_enhancement_with_hydrocephalus",
      "csf_profile_tier": "tbm_classical_lymphocytic_high_protein_low_glucose_ada_positive",
      "methodology_tier": "tier_1_rct_anchored", "diagnostic_ambiguity": False,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_1", "pilot": False,
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_a", "anchor": False,
      "notes": "Thwaites RCT late-stage TBM mortality stratum (no dex benefit on late presenters)."},
     {"vignette_id": 125, "filename": "tbm_125_thwaites_hcmc_adult_female.json",
      "anchor_pmid": "15496623", "pathogen_subtype": "mycobacterium_tuberculosis_drug_sensitive",
@@ -4599,7 +4591,7 @@ TBM_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "basal_meningeal_enhancement_with_hydrocephalus",
      "csf_profile_tier": "tbm_classical_lymphocytic_high_protein_low_glucose_ada_positive",
      "methodology_tier": "tier_1_rct_anchored", "diagnostic_ambiguity": False,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_1", "pilot": False,
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_a", "anchor": False,
      "notes": "Thwaites RCT adult female stratum."},
     {"vignette_id": 126, "filename": "tbm_126_thwaites_hcmc_adult_cnpalsy_2.json",
      "anchor_pmid": "15496623", "pathogen_subtype": "mycobacterium_tuberculosis_drug_sensitive",
@@ -4611,7 +4603,7 @@ TBM_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "basal_meningeal_enhancement_with_hydrocephalus",
      "csf_profile_tier": "tbm_classical_lymphocytic_high_protein_low_glucose_ada_positive",
      "methodology_tier": "tier_1_rct_anchored", "diagnostic_ambiguity": False,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_1", "pilot": False,
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_a", "anchor": False,
      "notes": "Thwaites RCT early-stage with dex benefit; CN VI palsy positive."},
     {"vignette_id": 127, "filename": "tbm_127_thwaites_hcmc_adult_smearpos.json",
      "anchor_pmid": "15496623", "pathogen_subtype": "mycobacterium_tuberculosis_drug_sensitive",
@@ -4623,7 +4615,7 @@ TBM_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "basal_meningeal_enhancement_with_hydrocephalus",
      "csf_profile_tier": "tbm_classical_lymphocytic_high_protein_low_glucose_ada_positive",
      "methodology_tier": "tier_1_rct_anchored", "diagnostic_ambiguity": False,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_1", "pilot": False,
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_a", "anchor": False,
      "notes": "Thwaites RCT adult AFB-smear-positive CSF, Xpert MTB/RIF Ultra positive."},
     {"vignette_id": 128, "filename": "tbm_128_marais_capetown_adult_definite.json",
      "anchor_pmid": "20822958", "pathogen_subtype": "mycobacterium_tuberculosis_drug_sensitive",
@@ -4635,7 +4627,7 @@ TBM_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "basal_meningeal_enhancement_with_hydrocephalus",
      "csf_profile_tier": "tbm_classical_lymphocytic_high_protein_low_glucose_ada_positive",
      "methodology_tier": "tier_2_guideline_anchored", "diagnostic_ambiguity": False,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_1", "pilot": False,
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_a", "anchor": False,
      "notes": "Marais 2010 uniform case definition 'definite TBM' (AFB+ or Xpert+)."},
     {"vignette_id": 129, "filename": "tbm_129_marais_capetown_adult_probable.json",
      "anchor_pmid": "20822958", "pathogen_subtype": "mycobacterium_tuberculosis_drug_sensitive",
@@ -4647,7 +4639,7 @@ TBM_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "basal_meningeal_enhancement_with_hydrocephalus",
      "csf_profile_tier": "tbm_classical_lymphocytic_high_protein_low_glucose_ada_positive",
      "methodology_tier": "tier_2_guideline_anchored", "diagnostic_ambiguity": False,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_1", "pilot": False,
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_a", "anchor": False,
      "notes": "Marais 'probable TBM' (score >=12 with imaging features); CN VI palsy positive."},
     {"vignette_id": 130, "filename": "tbm_130_marais_capetown_adult_possible.json",
      "anchor_pmid": "20822958", "pathogen_subtype": "mycobacterium_tuberculosis_drug_sensitive",
@@ -4659,7 +4651,7 @@ TBM_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "basal_meningeal_enhancement_with_hydrocephalus",
      "csf_profile_tier": "tbm_classical_lymphocytic_high_protein_low_glucose_ada_positive",
      "methodology_tier": "tier_2_guideline_anchored", "diagnostic_ambiguity": True,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_1", "pilot": False,
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_a", "anchor": False,
      "notes": "Marais 'possible TBM' early diagnostic ambiguity (score 6-11, no microbiologic confirmation)."},
     {"vignette_id": 131, "filename": "tbm_131_heemskerk_hcmc_hivneg_standard.json",
      "anchor_pmid": "26760084", "pathogen_subtype": "mycobacterium_tuberculosis_drug_sensitive",
@@ -4671,7 +4663,7 @@ TBM_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "basal_meningeal_enhancement_with_hydrocephalus",
      "csf_profile_tier": "tbm_classical_lymphocytic_high_protein_low_glucose_ada_positive",
      "methodology_tier": "tier_1_rct_anchored", "diagnostic_ambiguity": False,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_1", "pilot": False,
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_a", "anchor": False,
      "notes": "Heemskerk 2016 NEJM intensified-anti-TB RCT standard arm; HIV-neg adult; CN VI palsy positive."},
     {"vignette_id": 132, "filename": "tbm_132_heemskerk_hcmc_hivneg_intensified.json",
      "anchor_pmid": "26760084", "pathogen_subtype": "mycobacterium_tuberculosis_drug_sensitive",
@@ -4683,7 +4675,7 @@ TBM_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "basal_meningeal_enhancement_with_hydrocephalus",
      "csf_profile_tier": "tbm_classical_lymphocytic_high_protein_low_glucose_ada_positive",
      "methodology_tier": "tier_1_rct_anchored", "diagnostic_ambiguity": False,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_1", "pilot": False,
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_a", "anchor": False,
      "notes": "Heemskerk RCT intensified arm (rifampicin 15 mg/kg + levofloxacin); HIV-neg adult."},
     {"vignette_id": 133, "filename": "tbm_133_heemskerk_hcmc_hivneg_severe.json",
      "anchor_pmid": "26760084", "pathogen_subtype": "mycobacterium_tuberculosis_drug_sensitive",
@@ -4695,7 +4687,7 @@ TBM_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "basal_meningeal_enhancement_with_hydrocephalus",
      "csf_profile_tier": "tbm_classical_lymphocytic_high_protein_low_glucose_ada_positive",
      "methodology_tier": "tier_1_rct_anchored", "diagnostic_ambiguity": False,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_1", "pilot": False,
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_a", "anchor": False,
      "notes": "Heemskerk RCT BMRC grade 3 severe TBM fatal outcome; CN VI palsy positive."},
     {"vignette_id": 134, "filename": "tbm_134_heemskerk_hcmc_hivneg_young.json",
      "anchor_pmid": "26760084", "pathogen_subtype": "mycobacterium_tuberculosis_drug_sensitive",
@@ -4707,7 +4699,7 @@ TBM_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "basal_meningeal_enhancement_with_hydrocephalus",
      "csf_profile_tier": "tbm_classical_lymphocytic_high_protein_low_glucose_ada_positive",
      "methodology_tier": "tier_1_rct_anchored", "diagnostic_ambiguity": False,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_1", "pilot": False,
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_a", "anchor": False,
      "notes": "Heemskerk RCT young adult HIV-neg stratum."},
     {"vignette_id": 135, "filename": "tbm_135_heemskerk_hcmc_hivneg_elderly.json",
      "anchor_pmid": "26760084", "pathogen_subtype": "mycobacterium_tuberculosis_drug_sensitive",
@@ -4719,7 +4711,7 @@ TBM_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "basal_meningeal_enhancement_with_hydrocephalus",
      "csf_profile_tier": "tbm_classical_lymphocytic_high_protein_low_glucose_ada_positive",
      "methodology_tier": "tier_1_rct_anchored", "diagnostic_ambiguity": False,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_1", "pilot": False,
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_a", "anchor": False,
      "notes": "Heemskerk RCT elderly female HIV-neg; survived with cognitive sequelae."},
     {"vignette_id": 136, "filename": "tbm_136_heemskerk_hcmc_hivneg_xpertultrapos.json",
      "anchor_pmid": "26760084", "pathogen_subtype": "mycobacterium_tuberculosis_drug_sensitive",
@@ -4731,10 +4723,10 @@ TBM_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "basal_meningeal_enhancement_with_hydrocephalus",
      "csf_profile_tier": "tbm_classical_lymphocytic_high_protein_low_glucose_ada_positive",
      "methodology_tier": "tier_1_rct_anchored", "diagnostic_ambiguity": False,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_1", "pilot": False,
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_a", "anchor": False,
      "notes": "Heemskerk RCT HIV-neg Xpert MTB/RIF Ultra-positive CSF (microbiologically definite)."},
     # ------------------------------------------------------------
-    # WAVE 2 mixed (12 slots, ids 137-150 less 144-145)
+    # Mixed slots (12 slots, ids 137-150 less 144-145)
     # vanToorn ped x7 + NavarroFlores x2 + Heemskerk-HIV-coinf x3 = 12
     # ------------------------------------------------------------
     {"vignette_id": 137, "filename": "tbm_137_vantoorn_capetown_ped_infant.json",
@@ -4747,7 +4739,7 @@ TBM_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "basal_meningeal_enhancement_with_hydrocephalus",
      "csf_profile_tier": "tbm_classical_lymphocytic_high_protein_low_glucose_ada_positive",
      "methodology_tier": "tier_3_imputation_within_review", "diagnostic_ambiguity": False,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_2", "pilot": False,
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_b", "anchor": False,
      "notes": "van Toorn pediatric TBM 8mo with hydrocephalus requiring VP shunt."},
     {"vignette_id": 138, "filename": "tbm_138_vantoorn_capetown_ped_toddler.json",
      "anchor_pmid": "24655399", "pathogen_subtype": "mycobacterium_tuberculosis_drug_sensitive",
@@ -4759,7 +4751,7 @@ TBM_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "basal_meningeal_enhancement_with_hydrocephalus",
      "csf_profile_tier": "tbm_classical_lymphocytic_high_protein_low_glucose_ada_positive",
      "methodology_tier": "tier_3_imputation_within_review", "diagnostic_ambiguity": False,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_2", "pilot": False,
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_b", "anchor": False,
      "notes": "van Toorn pediatric 2yo toddler; CN VI palsy positive."},
     {"vignette_id": 139, "filename": "tbm_139_vantoorn_capetown_ped_severe.json",
      "anchor_pmid": "24655399", "pathogen_subtype": "mycobacterium_tuberculosis_drug_sensitive",
@@ -4771,7 +4763,7 @@ TBM_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "basal_meningeal_enhancement_with_hydrocephalus",
      "csf_profile_tier": "tbm_classical_lymphocytic_high_protein_low_glucose_ada_positive",
      "methodology_tier": "tier_3_imputation_within_review", "diagnostic_ambiguity": False,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_2", "pilot": False,
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_b", "anchor": False,
      "notes": "van Toorn pediatric severe BMRC grade 3 infant with brainstem infarcts; fatal."},
     {"vignette_id": 140, "filename": "tbm_140_vantoorn_capetown_ped_bcgprior.json",
      "anchor_pmid": "24655399", "pathogen_subtype": "mycobacterium_tuberculosis_drug_sensitive",
@@ -4783,7 +4775,7 @@ TBM_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "basal_meningeal_enhancement_with_hydrocephalus",
      "csf_profile_tier": "tbm_classical_lymphocytic_high_protein_low_glucose_ada_positive",
      "methodology_tier": "tier_3_imputation_within_review", "diagnostic_ambiguity": False,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_2", "pilot": False,
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_b", "anchor": False,
      "notes": "van Toorn pediatric BCG-vaccinated 11mo; presented with subacute lethargy."},
     {"vignette_id": 141, "filename": "tbm_141_vantoorn_capetown_ped_household.json",
      "anchor_pmid": "24655399", "pathogen_subtype": "mycobacterium_tuberculosis_drug_sensitive",
@@ -4795,7 +4787,7 @@ TBM_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "basal_meningeal_enhancement_with_hydrocephalus",
      "csf_profile_tier": "tbm_classical_lymphocytic_high_protein_low_glucose_ada_positive",
      "methodology_tier": "tier_3_imputation_within_review", "diagnostic_ambiguity": False,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_2", "pilot": False,
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_b", "anchor": False,
      "notes": "van Toorn pediatric 3yo (upper end of 6mo-2y window) with household TB contact."},
     {"vignette_id": 142, "filename": "tbm_142_vantoorn_capetown_ped_xpertneg.json",
      "anchor_pmid": "24655399", "pathogen_subtype": "mycobacterium_tuberculosis_drug_sensitive",
@@ -4807,7 +4799,7 @@ TBM_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "basal_meningeal_enhancement_with_hydrocephalus",
      "csf_profile_tier": "tbm_classical_lymphocytic_high_protein_low_glucose_ada_positive",
      "methodology_tier": "tier_3_imputation_within_review", "diagnostic_ambiguity": True,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_2", "pilot": False,
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_b", "anchor": False,
      "notes": "van Toorn pediatric Xpert-negative diagnostic ambiguity (Marais 'probable' by imaging+CSF+exposure)."},
     {"vignette_id": 143, "filename": "tbm_143_vantoorn_capetown_ped_seizure.json",
      "anchor_pmid": "24655399", "pathogen_subtype": "mycobacterium_tuberculosis_drug_sensitive",
@@ -4819,7 +4811,7 @@ TBM_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "basal_meningeal_enhancement_with_hydrocephalus",
      "csf_profile_tier": "tbm_classical_lymphocytic_high_protein_low_glucose_ada_positive",
      "methodology_tier": "tier_3_imputation_within_review", "diagnostic_ambiguity": False,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_2", "pilot": False,
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_b", "anchor": False,
      "notes": "van Toorn pediatric 10mo infant with focal seizures and basal ganglia infarcts."},
     {"vignette_id": 146, "filename": "tbm_146_navarroflores_peru_adult_meta.json",
      "anchor_pmid": "35288778", "pathogen_subtype": "mycobacterium_tuberculosis_drug_sensitive",
@@ -4831,7 +4823,7 @@ TBM_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "basal_meningeal_enhancement_with_hydrocephalus",
      "csf_profile_tier": "tbm_classical_lymphocytic_high_protein_low_glucose_ada_positive",
      "methodology_tier": "tier_2_meta_analysis_anchored", "diagnostic_ambiguity": False,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_2", "pilot": False,
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_b", "anchor": False,
      "notes": "Navarro-Flores 2022 J Neurol CNS-TB meta-analysis Peru adult HIV-neg (Pacheco-Barrios LATAM author team)."},
     {"vignette_id": 147, "filename": "tbm_147_navarroflores_latam_hivcoinf_meta.json",
      "anchor_pmid": "35288778", "pathogen_subtype": "mycobacterium_tuberculosis_drug_sensitive",
@@ -4844,7 +4836,7 @@ TBM_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "basal_meningeal_enhancement_with_hydrocephalus",
      "csf_profile_tier": "tbm_atypical_neutrophilic_or_low_ada_hiv_coinfected",
      "methodology_tier": "tier_2_meta_analysis_anchored", "diagnostic_ambiguity": True,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_2", "pilot": False,
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_b", "anchor": False,
      "notes": "Navarro-Flores meta LATAM HIV-coinfected atypical TBM (low-ADA-specificity in HIV; IRIS post-ART risk)."},
     {"vignette_id": 148, "filename": "tbm_148_heemskerk_hcmc_hivcoinf_lymphopenic.json",
      "anchor_pmid": "26760084", "pathogen_subtype": "mycobacterium_tuberculosis_drug_sensitive",
@@ -4857,7 +4849,7 @@ TBM_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "basal_meningeal_enhancement_with_hydrocephalus",
      "csf_profile_tier": "tbm_atypical_neutrophilic_or_low_ada_hiv_coinfected",
      "methodology_tier": "tier_1_rct_anchored", "diagnostic_ambiguity": True,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_2", "pilot": False,
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_b", "anchor": False,
      "notes": "Heemskerk RCT HIV-coinfected lymphopenic paucicellular CSF atypical; high mortality."},
     {"vignette_id": 149, "filename": "tbm_149_heemskerk_hcmc_hivcoinf_lowada.json",
      "anchor_pmid": "26760084", "pathogen_subtype": "mycobacterium_tuberculosis_drug_sensitive",
@@ -4870,7 +4862,7 @@ TBM_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "basal_meningeal_enhancement_with_hydrocephalus",
      "csf_profile_tier": "tbm_atypical_neutrophilic_or_low_ada_hiv_coinfected",
      "methodology_tier": "tier_1_rct_anchored", "diagnostic_ambiguity": True,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_2", "pilot": False,
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_b", "anchor": False,
      "notes": "Heemskerk RCT HIV-coinfected low-ADA-specificity (<10 U/L in HIV) atypical; CN VI palsy positive."},
     {"vignette_id": 150, "filename": "tbm_150_heemskerk_hcmc_hivcoinf_iris.json",
      "anchor_pmid": "26760084", "pathogen_subtype": "mycobacterium_tuberculosis_drug_sensitive",
@@ -4883,7 +4875,7 @@ TBM_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "basal_meningeal_enhancement_with_hydrocephalus",
      "csf_profile_tier": "tbm_atypical_neutrophilic_or_low_ada_hiv_coinfected",
      "methodology_tier": "tier_1_rct_anchored", "diagnostic_ambiguity": True,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_2", "pilot": False,
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_b", "anchor": False,
      "notes": "Heemskerk RCT HIV-coinfected IRIS post-ART (TBM worsens 2-4 wk after ART start); atypical CSF."},
 ]
 
@@ -4896,17 +4888,17 @@ TBM_DISTRIBUTION: list[dict[str, Any]] = [
 # CrAg LFA positive in >=28/30.
 #
 # Anchors (6, all from PMID_REGISTRY):
-#   20047480 Perfect IDSA 2010 (7: 1 pilot HIV + 4 wave_1 HIV + 2 idiopathic CD4)
-#   19182676 Park AIDS 2009 (8: 6 wave_1 HIV + 2 wave_2 HIV)
-#   24963568 Boulware NEJM 2014 COST (4 wave_1 HIV+ART-naive)
-#   35320642 Jarvis NEJM 2022 AMBITION-cm (5 wave_2 HIV)
-#   17262720 Singh JID 2007 transplant (4: 1 pilot + 3 wave_2)
-#   19757550 Datta EID 2009 C. gattii (2 wave_2)
+#   20047480 Perfect IDSA 2010 (7: 1 anchor HIV + 4 bulk HIV + 2 idiopathic CD4)
+#   19182676 Park AIDS 2009 (8: 6 bulk HIV + 2 mixed HIV)
+#   24963568 Boulware NEJM 2014 COST (4 bulk HIV+ART-naive)
+#   35320642 Jarvis NEJM 2022 AMBITION-cm (5 mixed HIV)
+#   17262720 Singh JID 2007 transplant (4: 1 anchor + 3 mixed)
+#   19757550 Datta EID 2009 C. gattii (2 mixed)
 #
-# Wave: pilot 2 (151 Perfect + 152 Singh) + wave_1 14 HIV+CD4<100 bulk
-# (153-166) + wave_2 14 mixed (167-180).
+# Groups: 2 Class 4-6 anchor slots (151 Perfect + 152 Singh), 14 HIV+CD4<100
+# bulk slots (153-166), and 14 mixed slots (167-180).
 #
-# Resolution #2 applied: slots 177, 178 (idiopathic CD4 lymphopenia, HIV-neg)
+# Slots 177, 178 (idiopathic CD4 lymphopenia, HIV-neg) are
 # encoded as immunocompromise_status="none" with cd4_count_cells_per_uL<200
 # at build time. Schema lacks HIV-neutral T-cell-immunodeficiency enum (only
 # HIV-prefixed CD4 tiers in immunocompromise_status Literal at vignette.py
@@ -4917,11 +4909,11 @@ TBM_DISTRIBUTION: list[dict[str, Any]] = [
 
 CRYPTO_DISTRIBUTION: list[dict[str, Any]] = [
     # ------------------------------------------------------------
-    # PILOTS (2 slots, ids 151-152)
+    # Class 4-6 anchor slots (2 slots, ids 151-152)
     # ------------------------------------------------------------
     {
         "vignette_id": 151,
-        "filename": "crypto_151_perfect_idsa_hiv_cd4under100_pilot.json",
+        "filename": "crypto_151_perfect_idsa_hiv_cd4under100.json",
         "anchor_pmid": "20047480",
         "pathogen_subtype": "cryptococcus_neoformans",
         "demographic_stratum": "hiv_positive_cd4_under_100",
@@ -4936,12 +4928,12 @@ CRYPTO_DISTRIBUTION: list[dict[str, Any]] = [
         "csf_profile_tier": "crypto_hiv_mononuclear_high_op_crag_positive",
         "methodology_tier": "tier_2_guideline_anchored",
         "diagnostic_ambiguity": False, "freshwater_exposure_within_14d": False,
-        "wave_assignment": "pilot", "pilot": True,
-        "notes": "Perfect 2010 CID IDSA cryptococcal guidelines pilot; HIV+CD4<50; high OP; CrAg LFA positive.",
+        "set_assignment": "anchor", "anchor": True,
+        "notes": "Perfect 2010 CID IDSA cryptococcal guidelines anchor; HIV+CD4<50; high OP; CrAg LFA positive.",
     },
     {
         "vignette_id": 152,
-        "filename": "crypto_152_singh_transplant_pilot.json",
+        "filename": "crypto_152_singh_transplant.json",
         "anchor_pmid": "17262720",
         "pathogen_subtype": "cryptococcus_neoformans",
         "demographic_stratum": "transplant_solid_organ",
@@ -4955,11 +4947,11 @@ CRYPTO_DISTRIBUTION: list[dict[str, Any]] = [
         "csf_profile_tier": "crypto_transplant_subacute_crag_positive",
         "methodology_tier": "tier_3_cohort_anchored",
         "diagnostic_ambiguity": False, "freshwater_exposure_within_14d": False,
-        "wave_assignment": "pilot", "pilot": True,
-        "notes": "Singh 2007 JID multicenter cohort pilot; renal transplant on tacrolimus; calcineurin-protective.",
+        "set_assignment": "anchor", "anchor": True,
+        "notes": "Singh 2007 JID multicenter cohort anchor; renal transplant on tacrolimus; calcineurin-protective.",
     },
     # ------------------------------------------------------------
-    # WAVE 1 HIV+CD4<100 bulk (14 slots, ids 153-166)
+    # HIV+CD4<100 bulk (14 slots, ids 153-166)
     # Perfect x4 + Park x6 + Boulware x4 = 14
     # ------------------------------------------------------------
     {"vignette_id": 153, "filename": "crypto_153_perfect_hiv_classical.json",
@@ -4974,7 +4966,7 @@ CRYPTO_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "dilated_virchow_robin_with_pseudocysts",
      "csf_profile_tier": "crypto_hiv_mononuclear_high_op_crag_positive",
      "methodology_tier": "tier_2_guideline_anchored", "diagnostic_ambiguity": False,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_1", "pilot": False,
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_a", "anchor": False,
      "notes": "Perfect IDSA classical HIV+CD4<50; AmB-flucytosine induction."},
     {"vignette_id": 154, "filename": "crypto_154_perfect_hiv_female.json",
      "anchor_pmid": "20047480", "pathogen_subtype": "cryptococcus_neoformans",
@@ -4988,7 +4980,7 @@ CRYPTO_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "dilated_virchow_robin_with_pseudocysts",
      "csf_profile_tier": "crypto_hiv_mononuclear_high_op_crag_positive",
      "methodology_tier": "tier_2_guideline_anchored", "diagnostic_ambiguity": False,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_1", "pilot": False,
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_a", "anchor": False,
      "notes": "Perfect IDSA HIV+CD4<100 adult female stratum."},
     {"vignette_id": 155, "filename": "crypto_155_perfect_hiv_serial_lp.json",
      "anchor_pmid": "20047480", "pathogen_subtype": "cryptococcus_neoformans",
@@ -5002,7 +4994,7 @@ CRYPTO_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "dilated_virchow_robin_with_pseudocysts",
      "csf_profile_tier": "crypto_hiv_mononuclear_high_op_crag_positive",
      "methodology_tier": "tier_2_guideline_anchored", "diagnostic_ambiguity": False,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_1", "pilot": False,
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_a", "anchor": False,
      "notes": "Perfect IDSA HIV+CD4<100 with serial LP for OP>35 management per guideline."},
     {"vignette_id": 156, "filename": "crypto_156_perfect_hiv_blindness.json",
      "anchor_pmid": "20047480", "pathogen_subtype": "cryptococcus_neoformans",
@@ -5017,7 +5009,7 @@ CRYPTO_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "dilated_virchow_robin_with_pseudocysts",
      "csf_profile_tier": "crypto_hiv_mononuclear_high_op_crag_positive",
      "methodology_tier": "tier_2_guideline_anchored", "diagnostic_ambiguity": False,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_1", "pilot": False,
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_a", "anchor": False,
      "notes": "Perfect IDSA HIV+CD4<100 persistent OP>35 with bilateral vision loss; survived with sequelae."},
     {"vignette_id": 157, "filename": "crypto_157_park_uganda_hiv.json",
      "anchor_pmid": "19182676", "pathogen_subtype": "cryptococcus_neoformans",
@@ -5031,7 +5023,7 @@ CRYPTO_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "dilated_virchow_robin_with_pseudocysts",
      "csf_profile_tier": "crypto_hiv_mononuclear_high_op_crag_positive",
      "methodology_tier": "tier_2_meta_analysis_anchored", "diagnostic_ambiguity": False,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_1", "pilot": False,
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_a", "anchor": False,
      "notes": "Park 2009 AIDS global burden Uganda subset; ART-naive HIV cryptococcal."},
     {"vignette_id": 158, "filename": "crypto_158_park_southafrica_hiv.json",
      "anchor_pmid": "19182676", "pathogen_subtype": "cryptococcus_neoformans",
@@ -5045,7 +5037,7 @@ CRYPTO_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "dilated_virchow_robin_with_pseudocysts",
      "csf_profile_tier": "crypto_hiv_mononuclear_high_op_crag_positive",
      "methodology_tier": "tier_2_meta_analysis_anchored", "diagnostic_ambiguity": False,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_1", "pilot": False,
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_a", "anchor": False,
      "notes": "Park 2009 South Africa subset HIV+CD4<100 fatal (high pre-ART burden)."},
     {"vignette_id": 159, "filename": "crypto_159_park_malawi_hiv.json",
      "anchor_pmid": "19182676", "pathogen_subtype": "cryptococcus_neoformans",
@@ -5059,7 +5051,7 @@ CRYPTO_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "dilated_virchow_robin_with_pseudocysts",
      "csf_profile_tier": "crypto_hiv_mononuclear_high_op_crag_positive",
      "methodology_tier": "tier_2_meta_analysis_anchored", "diagnostic_ambiguity": False,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_1", "pilot": False,
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_a", "anchor": False,
      "notes": "Park 2009 Malawi subset HIV+CD4<100 ART-naive."},
     {"vignette_id": 160, "filename": "crypto_160_park_zimbabwe_hiv.json",
      "anchor_pmid": "19182676", "pathogen_subtype": "cryptococcus_neoformans",
@@ -5073,7 +5065,7 @@ CRYPTO_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "dilated_virchow_robin_with_pseudocysts",
      "csf_profile_tier": "crypto_hiv_mononuclear_high_op_crag_positive",
      "methodology_tier": "tier_2_meta_analysis_anchored", "diagnostic_ambiguity": False,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_1", "pilot": False,
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_a", "anchor": False,
      "notes": "Park 2009 Zimbabwe subset HIV+CD4<100 female."},
     {"vignette_id": 161, "filename": "crypto_161_park_brazil_hiv.json",
      "anchor_pmid": "19182676", "pathogen_subtype": "cryptococcus_neoformans",
@@ -5087,7 +5079,7 @@ CRYPTO_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "dilated_virchow_robin_with_pseudocysts",
      "csf_profile_tier": "crypto_hiv_mononuclear_high_op_crag_positive",
      "methodology_tier": "tier_2_meta_analysis_anchored", "diagnostic_ambiguity": False,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_1", "pilot": False,
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_a", "anchor": False,
      "notes": "Park 2009 LATAM Brazil subset HIV+CD4<100; LATAM relevance for Peru deployment."},
     {"vignette_id": 162, "filename": "crypto_162_park_thailand_hiv.json",
      "anchor_pmid": "19182676", "pathogen_subtype": "cryptococcus_neoformans",
@@ -5101,7 +5093,7 @@ CRYPTO_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "dilated_virchow_robin_with_pseudocysts",
      "csf_profile_tier": "crypto_hiv_mononuclear_normal_op_crag_positive",
      "methodology_tier": "tier_2_meta_analysis_anchored", "diagnostic_ambiguity": False,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_1", "pilot": False,
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_a", "anchor": False,
      "notes": "Park 2009 SE Asia subset HIV+CD4<100; OP only 22 cmH2O (normal-range subset)."},
     {"vignette_id": 163, "filename": "crypto_163_boulware_uganda_early_art.json",
      "anchor_pmid": "24963568", "pathogen_subtype": "cryptococcus_neoformans",
@@ -5115,7 +5107,7 @@ CRYPTO_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "dilated_virchow_robin_with_pseudocysts",
      "csf_profile_tier": "crypto_hiv_mononuclear_high_op_crag_positive",
      "methodology_tier": "tier_1_rct_anchored", "diagnostic_ambiguity": False,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_1", "pilot": False,
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_a", "anchor": False,
      "notes": "Boulware 2014 COST trial early-ART arm (1-2 wk post-crypto-dx) IRIS harm; fatal."},
     {"vignette_id": 164, "filename": "crypto_164_boulware_uganda_deferred_art.json",
      "anchor_pmid": "24963568", "pathogen_subtype": "cryptococcus_neoformans",
@@ -5129,7 +5121,7 @@ CRYPTO_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "dilated_virchow_robin_with_pseudocysts",
      "csf_profile_tier": "crypto_hiv_mononuclear_high_op_crag_positive",
      "methodology_tier": "tier_1_rct_anchored", "diagnostic_ambiguity": False,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_1", "pilot": False,
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_a", "anchor": False,
      "notes": "Boulware COST deferred-ART arm (5 wk post-crypto-dx) survival benefit."},
     {"vignette_id": 165, "filename": "crypto_165_boulware_southafrica_naive.json",
      "anchor_pmid": "24963568", "pathogen_subtype": "cryptococcus_neoformans",
@@ -5143,7 +5135,7 @@ CRYPTO_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "dilated_virchow_robin_with_pseudocysts",
      "csf_profile_tier": "crypto_hiv_mononuclear_high_op_crag_positive",
      "methodology_tier": "tier_1_rct_anchored", "diagnostic_ambiguity": False,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_1", "pilot": False,
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_a", "anchor": False,
      "notes": "Boulware COST South Africa site HIV-naive female adult."},
     {"vignette_id": 166, "filename": "crypto_166_boulware_uganda_naive_male.json",
      "anchor_pmid": "24963568", "pathogen_subtype": "cryptococcus_neoformans",
@@ -5157,10 +5149,10 @@ CRYPTO_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "dilated_virchow_robin_with_pseudocysts",
      "csf_profile_tier": "crypto_hiv_mononuclear_normal_op_crag_positive",
      "methodology_tier": "tier_1_rct_anchored", "diagnostic_ambiguity": False,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_1", "pilot": False,
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_a", "anchor": False,
      "notes": "Boulware COST early-stage HIV-naive male with OP 21 cmH2O (sub-25 realism)."},
     # ------------------------------------------------------------
-    # WAVE 2 mixed (14 slots, ids 167-180)
+    # Mixed slots (14 slots, ids 167-180)
     # Jarvis x5 + Park x2 + Singh x3 + Perfect-idiopathic-CD4 x2 + Datta x2 = 14
     # ------------------------------------------------------------
     {"vignette_id": 167, "filename": "crypto_167_jarvis_ambition_botswana.json",
@@ -5175,7 +5167,7 @@ CRYPTO_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "dilated_virchow_robin_with_pseudocysts",
      "csf_profile_tier": "crypto_hiv_mononuclear_high_op_crag_positive",
      "methodology_tier": "tier_1_rct_anchored", "diagnostic_ambiguity": False,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_2", "pilot": False,
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_b", "anchor": False,
      "notes": "Jarvis 2022 AMBITION-cm NEJM single-dose liposomal AmB Botswana arm; survival."},
     {"vignette_id": 168, "filename": "crypto_168_jarvis_ambition_uganda.json",
      "anchor_pmid": "35320642", "pathogen_subtype": "cryptococcus_neoformans",
@@ -5189,7 +5181,7 @@ CRYPTO_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "dilated_virchow_robin_with_pseudocysts",
      "csf_profile_tier": "crypto_hiv_mononuclear_high_op_crag_positive",
      "methodology_tier": "tier_1_rct_anchored", "diagnostic_ambiguity": False,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_2", "pilot": False,
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_b", "anchor": False,
      "notes": "Jarvis AMBITION-cm Uganda arm; single-dose lipo-AmpB."},
     {"vignette_id": 169, "filename": "crypto_169_jarvis_ambition_malawi.json",
      "anchor_pmid": "35320642", "pathogen_subtype": "cryptococcus_neoformans",
@@ -5203,7 +5195,7 @@ CRYPTO_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "dilated_virchow_robin_with_pseudocysts",
      "csf_profile_tier": "crypto_hiv_mononuclear_high_op_crag_positive",
      "methodology_tier": "tier_1_rct_anchored", "diagnostic_ambiguity": False,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_2", "pilot": False,
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_b", "anchor": False,
      "notes": "Jarvis AMBITION-cm Malawi female arm."},
     {"vignette_id": 170, "filename": "crypto_170_jarvis_ambition_zimbabwe.json",
      "anchor_pmid": "35320642", "pathogen_subtype": "cryptococcus_neoformans",
@@ -5217,7 +5209,7 @@ CRYPTO_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "dilated_virchow_robin_with_pseudocysts",
      "csf_profile_tier": "crypto_hiv_mononuclear_high_op_crag_positive",
      "methodology_tier": "tier_1_rct_anchored", "diagnostic_ambiguity": False,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_2", "pilot": False,
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_b", "anchor": False,
      "notes": "Jarvis AMBITION-cm Zimbabwe arm."},
     {"vignette_id": 171, "filename": "crypto_171_jarvis_ambition_southafrica.json",
      "anchor_pmid": "35320642", "pathogen_subtype": "cryptococcus_neoformans",
@@ -5231,7 +5223,7 @@ CRYPTO_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "dilated_virchow_robin_with_pseudocysts",
      "csf_profile_tier": "crypto_hiv_mononuclear_high_op_crag_positive",
      "methodology_tier": "tier_1_rct_anchored", "diagnostic_ambiguity": False,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_2", "pilot": False,
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_b", "anchor": False,
      "notes": "Jarvis AMBITION-cm South Africa arm late-stage fatal (~10-week mortality stratum)."},
     {"vignette_id": 172, "filename": "crypto_172_park_india_hiv.json",
      "anchor_pmid": "19182676", "pathogen_subtype": "cryptococcus_neoformans",
@@ -5245,7 +5237,7 @@ CRYPTO_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "dilated_virchow_robin_with_pseudocysts",
      "csf_profile_tier": "crypto_hiv_mononuclear_high_op_crag_positive",
      "methodology_tier": "tier_2_meta_analysis_anchored", "diagnostic_ambiguity": False,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_2", "pilot": False,
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_b", "anchor": False,
      "notes": "Park 2009 India subset HIV+CD4<100 (South Asia burden)."},
     {"vignette_id": 173, "filename": "crypto_173_park_peru_hiv.json",
      "anchor_pmid": "19182676", "pathogen_subtype": "cryptococcus_neoformans",
@@ -5259,7 +5251,7 @@ CRYPTO_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "dilated_virchow_robin_with_pseudocysts",
      "csf_profile_tier": "crypto_hiv_mononuclear_high_op_crag_positive",
      "methodology_tier": "tier_2_meta_analysis_anchored", "diagnostic_ambiguity": False,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_2", "pilot": False,
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_b", "anchor": False,
      "notes": "Park 2009 Peru-Lima HIV+CD4<100 subset; Peru-deployment-relevant slot."},
     {"vignette_id": 174, "filename": "crypto_174_singh_renal_tx.json",
      "anchor_pmid": "17262720", "pathogen_subtype": "cryptococcus_neoformans",
@@ -5272,7 +5264,7 @@ CRYPTO_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "dilated_virchow_robin_with_pseudocysts",
      "csf_profile_tier": "crypto_transplant_subacute_crag_positive",
      "methodology_tier": "tier_3_cohort_anchored", "diagnostic_ambiguity": False,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_2", "pilot": False,
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_b", "anchor": False,
      "notes": "Singh 2007 JID renal tx 18mo post-tx on tacrolimus + MMF; survived."},
     {"vignette_id": 175, "filename": "crypto_175_singh_liver_tx_fatal.json",
      "anchor_pmid": "17262720", "pathogen_subtype": "cryptococcus_neoformans",
@@ -5285,7 +5277,7 @@ CRYPTO_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "dilated_virchow_robin_with_pseudocysts",
      "csf_profile_tier": "crypto_transplant_subacute_crag_positive",
      "methodology_tier": "tier_3_cohort_anchored", "diagnostic_ambiguity": False,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_2", "pilot": False,
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_b", "anchor": False,
      "notes": "Singh JID liver-tx on cyclosporine non-calcineurin-protective; disseminated fatal."},
     {"vignette_id": 176, "filename": "crypto_176_singh_heart_tx_crag_neg.json",
      "anchor_pmid": "17262720", "pathogen_subtype": "cryptococcus_neoformans",
@@ -5298,9 +5290,9 @@ CRYPTO_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "dilated_virchow_robin_with_pseudocysts",
      "csf_profile_tier": "crypto_transplant_subacute_crag_negative_early",
      "methodology_tier": "tier_3_cohort_anchored", "diagnostic_ambiguity": True,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_2", "pilot": False,
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_b", "anchor": False,
      "notes": "Singh JID heart-tx CrAg LFA NEGATIVE early disease (culture-caught); 1/30 CrAg-negative realism."},
-    # --- Resolution #2 application: slots 177, 178 idiopathic CD4 lymphopenia HIV-neg ---
+    # --- Slots 177, 178: idiopathic CD4 lymphopenia, HIV-neg ---
     # immunocompromise_status="none" + cd4_count_cells_per_uL<200 + hiv_status="negative"
     # (schema lacks HIV-neutral T-cell-immunodeficiency enum; cd4_count Optional ge=0 le=2000)
     {"vignette_id": 177, "filename": "crypto_177_perfect_idiopathic_cd4_lymphopenia.json",
@@ -5315,9 +5307,9 @@ CRYPTO_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "dilated_virchow_robin_with_pseudocysts",
      "csf_profile_tier": "crypto_idiopathic_cd4_lymphopenia_crag_positive",
      "methodology_tier": "tier_2_guideline_anchored", "diagnostic_ambiguity": True,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_2", "pilot": False,
-     "notes": "Perfect IDSA HIV-NEG with CD4 150 idiopathic CD4 lymphopenia; cryptococcal meningitis. Resolution #2: immunocompromise_status='none' + cd4_count<200 at build.",
-     "resolution_applied": "5_4_1_resolution_2_idiopathic_cd4_no_hiv_neutral_enum"},
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_b", "anchor": False,
+     "notes": "Perfect IDSA HIV-NEG with CD4 150 idiopathic CD4 lymphopenia; cryptococcal meningitis. immunocompromise_status='none' + cd4_count<200 at build.",
+     "schema_encoding": "idiopathic_cd4_no_hiv_neutral_enum"},
     {"vignette_id": 178, "filename": "crypto_178_perfect_idiopathic_cd4_male.json",
      "anchor_pmid": "20047480", "pathogen_subtype": "cryptococcus_neoformans",
      "demographic_stratum": "idiopathic_cd4_lymphopenia",
@@ -5330,9 +5322,9 @@ CRYPTO_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "dilated_virchow_robin_with_pseudocysts",
      "csf_profile_tier": "crypto_idiopathic_cd4_lymphopenia_crag_positive",
      "methodology_tier": "tier_2_guideline_anchored", "diagnostic_ambiguity": True,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_2", "pilot": False,
-     "notes": "Perfect IDSA Peru-Lima HIV-NEG idiopathic CD4 lymphopenia; Peru deployment differential. Resolution #2 applied.",
-     "resolution_applied": "5_4_1_resolution_2_idiopathic_cd4_no_hiv_neutral_enum"},
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_b", "anchor": False,
+     "notes": "Perfect IDSA Peru-Lima HIV-NEG idiopathic CD4 lymphopenia; Peru deployment differential. immunocompromise_status='none' + cd4_count<200 at build.",
+     "schema_encoding": "idiopathic_cd4_no_hiv_neutral_enum"},
     {"vignette_id": 179, "filename": "crypto_179_datta_gattii_vancouver_island.json",
      "anchor_pmid": "19757550", "pathogen_subtype": "cryptococcus_gattii",
      "demographic_stratum": "c_gattii_immunocompetent",
@@ -5344,7 +5336,7 @@ CRYPTO_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "multiple_ring_enhancing_lesions",
      "csf_profile_tier": "crypto_gattii_immunocompetent_cryptococcoma_crag_positive",
      "methodology_tier": "tier_3_surveillance_anchored", "diagnostic_ambiguity": True,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_2", "pilot": False,
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_b", "anchor": False,
      "notes": "Datta 2009 EID C. gattii Vancouver Island immunocompetent; cryptococcoma mass-lesion phenotype distinct from C. neoformans."},
     {"vignette_id": 180, "filename": "crypto_180_datta_gattii_oregon.json",
      "anchor_pmid": "19757550", "pathogen_subtype": "cryptococcus_gattii",
@@ -5357,7 +5349,7 @@ CRYPTO_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "multiple_ring_enhancing_lesions",
      "csf_profile_tier": "crypto_gattii_immunocompetent_cryptococcoma_crag_positive",
      "methodology_tier": "tier_3_surveillance_anchored", "diagnostic_ambiguity": True,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_2", "pilot": False,
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_b", "anchor": False,
      "notes": "Datta 2009 EID C. gattii Pacific NW US (Oregon) immunocompetent female; cryptococcoma differential vs GAE."},
 ]
 
@@ -5379,15 +5371,15 @@ CRYPTO_DISTRIBUTION: list[dict[str, Any]] = [
 #   17428307 Visvesvara FEMS 2007 free-living amoebae review (7)
 #   34461057 Damhorst Lancet ID 2022 Acanthamoeba AIDS (8)
 #
-# Wave: pilot 2 (181 Alvarez + 182 Visvesvara) + wave_1 14 Balamuthia-
-# heavy (183-196) + wave_2 14 Acanthamoeba-heavy (197-210).
+# Groups: 2 Class 4-6 anchor slots (181 Alvarez + 182 Visvesvara), 14
+# Balamuthia-heavy slots (183-196), and 14 Acanthamoeba-heavy slots (197-210).
 #
 # Cross-class invariants:
 #   - multifocal ring-enhancing imaging: 30/30
 #   - chronic >=14 days symptom-to-presentation: 30/30
 #   - freshwater_exposure_within_14d=False: 30/30 (PAM differential guard)
 #
-# Resolution #1 applied: slots 184 (Lambayeque) + 185 (La Libertad)
+# Slots 184 (Lambayeque) + 185 (La Libertad) have
 # geography_region collapsed to "peru_lima_coast" since schema enum
 # Demographics.geography_region Literal at vignette.py L69-80 lacks
 # peru_lambayeque / peru_la_libertad keys. City-level retained in
@@ -5396,11 +5388,11 @@ CRYPTO_DISTRIBUTION: list[dict[str, Any]] = [
 
 GAE_DISTRIBUTION: list[dict[str, Any]] = [
     # ------------------------------------------------------------
-    # PILOTS (2 slots, ids 181-182)
+    # Class 4-6 anchor slots (2 slots, ids 181-182)
     # ------------------------------------------------------------
     {
         "vignette_id": 181,
-        "filename": "gae_181_alvarez_peru_balamuthia_pilot.json",
+        "filename": "gae_181_alvarez_peru_balamuthia.json",
         "anchor_pmid": "35059659",
         "pathogen_subtype": "balamuthia_mandrillaris",
         "demographic_stratum": "balamuthia_peruvian_with_skin_lesion",
@@ -5416,12 +5408,12 @@ GAE_DISTRIBUTION: list[dict[str, Any]] = [
         "csf_profile_tier": "gae_granulomatous_lymphocytic_modest_protein",
         "methodology_tier": "tier_3_case_series_anchored",
         "diagnostic_ambiguity": False, "freshwater_exposure_within_14d": False,
-        "wave_assignment": "pilot", "pilot": True,
-        "notes": "Alvarez/Bravo JAAD Int 2022 cutaneous balamuthiasis pilot; centrofacial skin lesion 15mo preceding CNS; fatal.",
+        "set_assignment": "anchor", "anchor": True,
+        "notes": "Alvarez/Bravo JAAD Int 2022 cutaneous balamuthiasis anchor; centrofacial skin lesion 15mo preceding CNS; fatal.",
     },
     {
         "vignette_id": 182,
-        "filename": "gae_182_visvesvara_acanthamoeba_review_pilot.json",
+        "filename": "gae_182_visvesvara_acanthamoeba_review.json",
         "anchor_pmid": "17428307",
         "pathogen_subtype": "acanthamoeba_spp",
         "demographic_stratum": "acanthamoeba_immunocompromised",
@@ -5437,11 +5429,11 @@ GAE_DISTRIBUTION: list[dict[str, Any]] = [
         "csf_profile_tier": "gae_granulomatous_lymphocytic_modest_protein",
         "methodology_tier": "tier_3_imputation_within_review",
         "diagnostic_ambiguity": False, "freshwater_exposure_within_14d": False,
-        "wave_assignment": "pilot", "pilot": True,
-        "notes": "Visvesvara 2007 FEMS Acanthamoeba GAE pilot; AIDS patient subset; brain biopsy histology + IHC.",
+        "set_assignment": "anchor", "anchor": True,
+        "notes": "Visvesvara 2007 FEMS Acanthamoeba GAE anchor; AIDS patient subset; brain biopsy histology + IHC.",
     },
     # ------------------------------------------------------------
-    # WAVE 1 Balamuthia-heavy (14 slots, ids 183-196)
+    # Balamuthia-heavy (14 slots, ids 183-196)
     # Alvarez/Bravo x9 + Cabello-Vilchez x2 + Cope x3 = 14
     # ------------------------------------------------------------
     {"vignette_id": 183, "filename": "gae_183_alvarez_lima_balamuthia_male.json",
@@ -5456,9 +5448,9 @@ GAE_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "multiple_ring_enhancing_lesions",
      "csf_profile_tier": "gae_granulomatous_lymphocytic_modest_protein",
      "methodology_tier": "tier_3_case_series_anchored", "diagnostic_ambiguity": False,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_1", "pilot": False,
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_a", "anchor": False,
      "notes": "Alvarez/Bravo Peru Balamuthia centrofacial skin lesion 15mo preceding CNS; fatal."},
-    # Resolution #1 applied: slot 184 (Lambayeque) geography_region=peru_lima_coast
+    # Slot 184 (Lambayeque): geography_region=peru_lima_coast
     {"vignette_id": 184, "filename": "gae_184_alvarez_lambayeque_balamuthia_female.json",
      "anchor_pmid": "35059659", "pathogen_subtype": "balamuthia_mandrillaris",
      "demographic_stratum": "balamuthia_peruvian_with_skin_lesion",
@@ -5471,10 +5463,10 @@ GAE_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "multiple_ring_enhancing_lesions",
      "csf_profile_tier": "gae_granulomatous_lymphocytic_modest_protein",
      "methodology_tier": "tier_3_case_series_anchored", "diagnostic_ambiguity": False,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_1", "pilot": False,
-     "notes": "Alvarez/Bravo Peru Lambayeque coastal Balamuthia female; centrofacial skin lesion 18mo preceding CNS. Resolution #1: geography_region=peru_lima_coast (no peru_lambayeque schema enum); city in geography_label.",
-     "resolution_applied": "5_4_1_resolution_1_lambayeque_to_peru_lima_coast"},
-    # Resolution #1 applied: slot 185 (La Libertad) geography_region=peru_lima_coast
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_a", "anchor": False,
+     "notes": "Alvarez/Bravo Peru Lambayeque coastal Balamuthia female; centrofacial skin lesion 18mo preceding CNS. geography_region=peru_lima_coast (no peru_lambayeque schema enum); city in geography_label.",
+     "schema_encoding": "lambayeque_to_peru_lima_coast"},
+    # Slot 185 (La Libertad): geography_region=peru_lima_coast
     {"vignette_id": 185, "filename": "gae_185_alvarez_laliber_balamuthia_young.json",
      "anchor_pmid": "35059659", "pathogen_subtype": "balamuthia_mandrillaris",
      "demographic_stratum": "balamuthia_peruvian_with_skin_lesion",
@@ -5487,9 +5479,9 @@ GAE_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "multiple_ring_enhancing_lesions",
      "csf_profile_tier": "gae_granulomatous_lymphocytic_modest_protein",
      "methodology_tier": "tier_3_case_series_anchored", "diagnostic_ambiguity": False,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_1", "pilot": False,
-     "notes": "Alvarez/Bravo Peru La Libertad young adult Balamuthia; 12mo preceding interval. Resolution #1: geography_region=peru_lima_coast (no peru_la_libertad schema enum); city in geography_label.",
-     "resolution_applied": "5_4_1_resolution_1_la_libertad_to_peru_lima_coast"},
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_a", "anchor": False,
+     "notes": "Alvarez/Bravo Peru La Libertad young adult Balamuthia; 12mo preceding interval. geography_region=peru_lima_coast (no peru_la_libertad schema enum); city in geography_label.",
+     "schema_encoding": "la_libertad_to_peru_lima_coast"},
     {"vignette_id": 186, "filename": "gae_186_alvarez_lima_balamuthia_survived.json",
      "anchor_pmid": "35059659", "pathogen_subtype": "balamuthia_mandrillaris",
      "demographic_stratum": "balamuthia_peruvian_with_skin_lesion",
@@ -5502,7 +5494,7 @@ GAE_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "multiple_ring_enhancing_lesions",
      "csf_profile_tier": "gae_granulomatous_lymphocytic_modest_protein",
      "methodology_tier": "tier_3_case_series_anchored", "diagnostic_ambiguity": False,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_1", "pilot": False,
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_a", "anchor": False,
      "notes": "Alvarez/Bravo Peru rare survivor on miltefosine + albendazole + sulfadiazine; sequelae."},
     {"vignette_id": 187, "filename": "gae_187_alvarez_lima_balamuthia_elderly.json",
      "anchor_pmid": "35059659", "pathogen_subtype": "balamuthia_mandrillaris",
@@ -5516,7 +5508,7 @@ GAE_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "multiple_ring_enhancing_lesions",
      "csf_profile_tier": "gae_granulomatous_lymphocytic_modest_protein",
      "methodology_tier": "tier_3_case_series_anchored", "diagnostic_ambiguity": False,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_1", "pilot": False,
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_a", "anchor": False,
      "notes": "Alvarez/Bravo Peru elderly diabetic Balamuthia; centrofacial skin lesion 20mo preceding CNS."},
     {"vignette_id": 188, "filename": "gae_188_alvarez_lima_balamuthia_female_30s.json",
      "anchor_pmid": "35059659", "pathogen_subtype": "balamuthia_mandrillaris",
@@ -5530,7 +5522,7 @@ GAE_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "multiple_ring_enhancing_lesions",
      "csf_profile_tier": "gae_granulomatous_lymphocytic_modest_protein",
      "methodology_tier": "tier_3_case_series_anchored", "diagnostic_ambiguity": False,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_1", "pilot": False,
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_a", "anchor": False,
      "notes": "Alvarez/Bravo Peru Lima female 31yo Balamuthia; median 15mo preceding interval."},
     {"vignette_id": 189, "filename": "gae_189_alvarezbravo_cutaneous_balamuthia_1.json",
      "anchor_pmid": "35059659", "pathogen_subtype": "balamuthia_mandrillaris",
@@ -5544,7 +5536,7 @@ GAE_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "multiple_ring_enhancing_lesions",
      "csf_profile_tier": "gae_granulomatous_lymphocytic_modest_protein",
      "methodology_tier": "tier_3_case_series_anchored", "diagnostic_ambiguity": False,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_1", "pilot": False,
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_a", "anchor": False,
      "notes": "Alvarez/Bravo 2022 JAAD Int cutaneous balamuthiasis clinpath; granulomatous skin biopsy-positive."},
     {"vignette_id": 190, "filename": "gae_190_alvarezbravo_cutaneous_balamuthia_2.json",
      "anchor_pmid": "35059659", "pathogen_subtype": "balamuthia_mandrillaris",
@@ -5558,7 +5550,7 @@ GAE_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "multiple_ring_enhancing_lesions",
      "csf_profile_tier": "gae_granulomatous_lymphocytic_modest_protein",
      "methodology_tier": "tier_3_case_series_anchored", "diagnostic_ambiguity": False,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_1", "pilot": False,
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_a", "anchor": False,
      "notes": "Alvarez/Bravo Peru young female cutaneous Balamuthia; 13mo preceding interval."},
     {"vignette_id": 191, "filename": "gae_191_alvarezbravo_cutaneous_balamuthia_3.json",
      "anchor_pmid": "35059659", "pathogen_subtype": "balamuthia_mandrillaris",
@@ -5572,7 +5564,7 @@ GAE_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "multiple_ring_enhancing_lesions",
      "csf_profile_tier": "gae_granulomatous_lymphocytic_modest_protein",
      "methodology_tier": "tier_3_case_series_anchored", "diagnostic_ambiguity": False,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_1", "pilot": False,
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_a", "anchor": False,
      "notes": "Alvarez/Bravo Peru middle-aged male cutaneous Balamuthia; granulomatous histology + IHC+."},
     {"vignette_id": 192, "filename": "gae_192_cabellovilchez_lima_pediatric_1.json",
      "anchor_pmid": "31758593", "pathogen_subtype": "balamuthia_mandrillaris",
@@ -5586,7 +5578,7 @@ GAE_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "multiple_ring_enhancing_lesions",
      "csf_profile_tier": "gae_granulomatous_lymphocytic_modest_protein",
      "methodology_tier": "tier_4_case_report_anchored", "diagnostic_ambiguity": True,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_1", "pilot": False,
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_a", "anchor": False,
      "notes": "Cabello-Vilchez 2020 Neuropathology Lima pediatric fatal Balamuthia case 1; no centrofacial skin lesion in pediatric variant."},
     {"vignette_id": 193, "filename": "gae_193_cabellovilchez_lima_pediatric_2.json",
      "anchor_pmid": "31758593", "pathogen_subtype": "balamuthia_mandrillaris",
@@ -5600,7 +5592,7 @@ GAE_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "multiple_ring_enhancing_lesions",
      "csf_profile_tier": "gae_granulomatous_lymphocytic_modest_protein",
      "methodology_tier": "tier_4_case_report_anchored", "diagnostic_ambiguity": True,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_1", "pilot": False,
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_a", "anchor": False,
      "notes": "Cabello-Vilchez 2020 Neuropathology Lima pediatric fatal Balamuthia case 2; autopsy-confirmed trophozoites."},
     {"vignette_id": 194, "filename": "gae_194_cope_us_balamuthia_hispanic_skinlesion.json",
      "anchor_pmid": "30239654", "pathogen_subtype": "balamuthia_mandrillaris",
@@ -5614,7 +5606,7 @@ GAE_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "multiple_ring_enhancing_lesions",
      "csf_profile_tier": "gae_granulomatous_lymphocytic_modest_protein",
      "methodology_tier": "tier_3_surveillance_anchored", "diagnostic_ambiguity": False,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_1", "pilot": False,
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_a", "anchor": False,
      "notes": "Cope 2019 CID US 1974-2016 surveillance Hispanic Californian Balamuthia; centrofacial skin lesion 11mo preceding CNS."},
     {"vignette_id": 195, "filename": "gae_195_cope_us_balamuthia_hispanic_skinlesion_2.json",
      "anchor_pmid": "30239654", "pathogen_subtype": "balamuthia_mandrillaris",
@@ -5628,7 +5620,7 @@ GAE_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "multiple_ring_enhancing_lesions",
      "csf_profile_tier": "gae_granulomatous_lymphocytic_modest_protein",
      "methodology_tier": "tier_3_surveillance_anchored", "diagnostic_ambiguity": False,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_1", "pilot": False,
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_a", "anchor": False,
      "notes": "Cope US Texas Hispanic female Balamuthia; centrofacial skin lesion 17mo preceding CNS."},
     {"vignette_id": 196, "filename": "gae_196_cope_us_balamuthia_transplant_no_skin.json",
      "anchor_pmid": "30239654", "pathogen_subtype": "balamuthia_mandrillaris",
@@ -5643,10 +5635,10 @@ GAE_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "multiple_ring_enhancing_lesions",
      "csf_profile_tier": "gae_granulomatous_lymphocytic_modest_protein",
      "methodology_tier": "tier_3_surveillance_anchored", "diagnostic_ambiguity": True,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_1", "pilot": False,
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_a", "anchor": False,
      "notes": "Cope US Arizona transplant donor-derived Balamuthia (organ-transmitted cluster subset); no skin lesion."},
     # ------------------------------------------------------------
-    # WAVE 2 Acanthamoeba-heavy (14 slots, ids 197-210)
+    # Acanthamoeba-heavy (14 slots, ids 197-210)
     # Visvesvara x6 (5 corneal-CNS + 1 immunocompromised) + Damhorst x8 = 14
     # ------------------------------------------------------------
     {"vignette_id": 197, "filename": "gae_197_visvesvara_corneal_cns_1.json",
@@ -5661,7 +5653,7 @@ GAE_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "multiple_ring_enhancing_lesions",
      "csf_profile_tier": "gae_granulomatous_lymphocytic_modest_protein",
      "methodology_tier": "tier_3_imputation_within_review", "diagnostic_ambiguity": True,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_2", "pilot": False,
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_b", "anchor": False,
      "notes": "Visvesvara FEMS corneal Acanthamoeba (contact lens) with CNS dissemination; fatal."},
     {"vignette_id": 198, "filename": "gae_198_visvesvara_corneal_cns_2.json",
      "anchor_pmid": "17428307", "pathogen_subtype": "acanthamoeba_spp",
@@ -5675,7 +5667,7 @@ GAE_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "multiple_ring_enhancing_lesions",
      "csf_profile_tier": "gae_granulomatous_lymphocytic_modest_protein",
      "methodology_tier": "tier_3_imputation_within_review", "diagnostic_ambiguity": True,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_2", "pilot": False,
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_b", "anchor": False,
      "notes": "Visvesvara FEMS corneal Acanthamoeba young female contact lens; CNS spread fatal."},
     {"vignette_id": 199, "filename": "gae_199_visvesvara_corneal_cns_3.json",
      "anchor_pmid": "17428307", "pathogen_subtype": "acanthamoeba_spp",
@@ -5689,7 +5681,7 @@ GAE_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "multiple_ring_enhancing_lesions",
      "csf_profile_tier": "gae_granulomatous_lymphocytic_modest_protein",
      "methodology_tier": "tier_3_imputation_within_review", "diagnostic_ambiguity": True,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_2", "pilot": False,
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_b", "anchor": False,
      "notes": "Visvesvara FEMS immunocompetent corneal-CNS Acanthamoeba; HSV-1-mimicker initial differential."},
     {"vignette_id": 200, "filename": "gae_200_visvesvara_corneal_cns_4.json",
      "anchor_pmid": "17428307", "pathogen_subtype": "acanthamoeba_spp",
@@ -5703,7 +5695,7 @@ GAE_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "multiple_ring_enhancing_lesions",
      "csf_profile_tier": "gae_granulomatous_lymphocytic_modest_protein",
      "methodology_tier": "tier_3_imputation_within_review", "diagnostic_ambiguity": True,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_2", "pilot": False,
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_b", "anchor": False,
      "notes": "Visvesvara FEMS LATAM Mexico Acanthamoeba corneal-CNS spread; ethnicity diversity."},
     {"vignette_id": 201, "filename": "gae_201_visvesvara_corneal_cns_5.json",
      "anchor_pmid": "17428307", "pathogen_subtype": "acanthamoeba_spp",
@@ -5717,7 +5709,7 @@ GAE_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "multiple_ring_enhancing_lesions",
      "csf_profile_tier": "gae_granulomatous_lymphocytic_modest_protein",
      "methodology_tier": "tier_3_imputation_within_review", "diagnostic_ambiguity": True,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_2", "pilot": False,
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_b", "anchor": False,
      "notes": "Visvesvara FEMS Asia subset Acanthamoeba corneal-CNS spread; mNGS positive."},
     {"vignette_id": 202, "filename": "gae_202_visvesvara_immuno_review.json",
      "anchor_pmid": "17428307", "pathogen_subtype": "acanthamoeba_spp",
@@ -5732,7 +5724,7 @@ GAE_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "multiple_ring_enhancing_lesions",
      "csf_profile_tier": "gae_granulomatous_lymphocytic_modest_protein",
      "methodology_tier": "tier_3_imputation_within_review", "diagnostic_ambiguity": False,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_2", "pilot": False,
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_b", "anchor": False,
      "notes": "Visvesvara FEMS transplant Acanthamoeba; brain biopsy histology + IHC confirmed."},
     {"vignette_id": 203, "filename": "gae_203_damhorst_aids_acanthamoeba_index.json",
      "anchor_pmid": "34461057", "pathogen_subtype": "acanthamoeba_castellanii",
@@ -5748,7 +5740,7 @@ GAE_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "multiple_ring_enhancing_lesions",
      "csf_profile_tier": "gae_granulomatous_lymphocytic_modest_protein",
      "methodology_tier": "tier_4_case_report_anchored", "diagnostic_ambiguity": False,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_2", "pilot": False,
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_b", "anchor": False,
      "notes": "Damhorst 2022 Lancet Infect Dis index case A. castellanii encephalitis AIDS; brain biopsy + mNGS confirmed."},
     {"vignette_id": 204, "filename": "gae_204_damhorst_litreview_aids_1.json",
      "anchor_pmid": "34461057", "pathogen_subtype": "acanthamoeba_spp",
@@ -5764,7 +5756,7 @@ GAE_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "multiple_ring_enhancing_lesions",
      "csf_profile_tier": "gae_granulomatous_lymphocytic_modest_protein",
      "methodology_tier": "tier_4_case_report_anchored", "diagnostic_ambiguity": False,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_2", "pilot": False,
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_b", "anchor": False,
      "notes": "Damhorst 2022 lit review HIV/AIDS Acanthamoeba case 1; CD4<50."},
     {"vignette_id": 205, "filename": "gae_205_damhorst_litreview_aids_2.json",
      "anchor_pmid": "34461057", "pathogen_subtype": "acanthamoeba_spp",
@@ -5780,7 +5772,7 @@ GAE_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "multiple_ring_enhancing_lesions",
      "csf_profile_tier": "gae_granulomatous_lymphocytic_modest_protein",
      "methodology_tier": "tier_4_case_report_anchored", "diagnostic_ambiguity": False,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_2", "pilot": False,
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_b", "anchor": False,
      "notes": "Damhorst lit review Europe AIDS Acanthamoeba case 2; A. polyphaga subset."},
     {"vignette_id": 206, "filename": "gae_206_damhorst_litreview_aids_3.json",
      "anchor_pmid": "34461057", "pathogen_subtype": "acanthamoeba_spp",
@@ -5796,7 +5788,7 @@ GAE_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "multiple_ring_enhancing_lesions",
      "csf_profile_tier": "gae_granulomatous_lymphocytic_modest_protein",
      "methodology_tier": "tier_4_case_report_anchored", "diagnostic_ambiguity": False,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_2", "pilot": False,
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_b", "anchor": False,
      "notes": "Damhorst lit review US AIDS female Acanthamoeba; fatal."},
     {"vignette_id": 207, "filename": "gae_207_damhorst_transplant_kidney.json",
      "anchor_pmid": "34461057", "pathogen_subtype": "acanthamoeba_spp",
@@ -5811,7 +5803,7 @@ GAE_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "multiple_ring_enhancing_lesions",
      "csf_profile_tier": "gae_granulomatous_lymphocytic_modest_protein",
      "methodology_tier": "tier_4_case_report_anchored", "diagnostic_ambiguity": False,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_2", "pilot": False,
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_b", "anchor": False,
      "notes": "Damhorst lit review renal transplant Acanthamoeba on tacrolimus."},
     {"vignette_id": 208, "filename": "gae_208_damhorst_hsct_acanthamoeba.json",
      "anchor_pmid": "34461057", "pathogen_subtype": "acanthamoeba_spp",
@@ -5826,7 +5818,7 @@ GAE_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "multiple_ring_enhancing_lesions",
      "csf_profile_tier": "gae_granulomatous_lymphocytic_modest_protein",
      "methodology_tier": "tier_4_case_report_anchored", "diagnostic_ambiguity": False,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_2", "pilot": False,
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_b", "anchor": False,
      "notes": "Damhorst lit review HSCT (highest Acanthamoeba risk) post-allogeneic transplant."},
     {"vignette_id": 209, "filename": "gae_209_damhorst_aids_latino.json",
      "anchor_pmid": "34461057", "pathogen_subtype": "acanthamoeba_spp",
@@ -5842,7 +5834,7 @@ GAE_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "multiple_ring_enhancing_lesions",
      "csf_profile_tier": "gae_granulomatous_lymphocytic_modest_protein",
      "methodology_tier": "tier_4_case_report_anchored", "diagnostic_ambiguity": False,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_2", "pilot": False,
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_b", "anchor": False,
      "notes": "Damhorst lit review Hispanic AIDS US Acanthamoeba (LATAM-ethnicity relevance)."},
     {"vignette_id": 210, "filename": "gae_210_damhorst_aids_survived.json",
      "anchor_pmid": "34461057", "pathogen_subtype": "acanthamoeba_spp",
@@ -5858,7 +5850,7 @@ GAE_DISTRIBUTION: list[dict[str, Any]] = [
      "expected_imaging_pattern": "multiple_ring_enhancing_lesions",
      "csf_profile_tier": "gae_granulomatous_lymphocytic_modest_protein",
      "methodology_tier": "tier_4_case_report_anchored", "diagnostic_ambiguity": False,
-     "freshwater_exposure_within_14d": False, "wave_assignment": "wave_2", "pilot": False,
+     "freshwater_exposure_within_14d": False, "set_assignment": "set_b", "anchor": False,
      "notes": "Damhorst lit review rare AIDS Acanthamoeba survivor on miltefosine + azoles; sequelae."},
 ]
 
@@ -5872,10 +5864,11 @@ CDC_TREATMENT_PROTOCOL = (
     "rifampin"
 )
 
-# Maps spec geography_label to the schema's Demographics.geography_region enum.
-# Several Day 1 cases are US states outside the us_south enum bucket; for those
-# the schema's "other_global" is the closest valid value (the v2.0 enum does
-# not enumerate every US state).
+# Maps a distribution entry's geography_label to the schema's
+# Demographics.geography_region enum. Several cases in vignettes 1-20 are US
+# states outside the us_south enum bucket; for those the schema's
+# "other_global" is the closest valid value (the v2.0 enum does not
+# enumerate every US state).
 _GEOGRAPHY_TO_SCHEMA_REGION: dict[str, str] = {
     "Arkansas, US": "us_south",
     "Florida, US": "us_south",
@@ -5888,16 +5881,16 @@ _GEOGRAPHY_TO_SCHEMA_REGION: dict[str, str] = {
     "Florida (acquired Costa Rica)": "other_latam",
     "Mexicali, MX": "other_latam",
     "Kerala, IN": "other_global",
-    # Day-2 pilot (v21-v25) geographies
+    # Vignettes 21-25 geographies
     "Mekong Delta, VN": "other_global",
     "Veneto, IT": "other_global",
     "Sichuan, CN": "other_global",
     "Korea (acquired Thailand)": "other_global",
-    # Day-2 wave 1 (v26-v40) geographies
+    # Vignettes 26-40 geographies
     "Shenzhen, CN": "other_global",
     "China (province imputed)": "other_global",
     "US South region": "us_south",
-    # Day-2 wave 2 (v41-v60) geographies
+    # Vignettes 41-60 geographies
     "Hunan, CN": "other_global",
     "Bangladesh": "other_global",
     "Costa Rica": "other_latam",
@@ -5906,51 +5899,50 @@ _GEOGRAPHY_TO_SCHEMA_REGION: dict[str, str] = {
 }
 
 
-# Methodology classification per wave-2 vignette (v41-v60). Threaded into
+# Methodology classification for vignettes 41-60 (v41-v60). Threaded into
 # adjudication.anchoring_documentation by _build_adjudication() as the
-# explicit "methodology=<class>; " prefix per Commit 5.2.2 spec.
+# explicit "methodology=<class>; " prefix.
 # Classes:
-#   primary_source_direct  - newcomer anchored to its own primary source
-#   day1_pmid_reuse        - same PMID as a Day-1 vignette, different demographic
+#   primary_source_direct  - new anchor, read from its own primary source
+#   pmid_reuse             - same PMID as one of vignettes 1-20, different
+#                            demographic
 #   tier_3_imputation      - within-cohort imputation, named-author review
 #                            with explicit cluster match
 #   tier_4_imputation      - sub-bucket within review (e.g., neti-irrigation
 #                            sub-bucket within a cohort that also covers other
 #                            exposure categories)
-_DAY2_WAVE2_METHODOLOGY: dict[int, str] = {
+_PAM_21_60_METHODOLOGY: dict[int, str] = {
     41: "primary_source_direct",
     42: "primary_source_direct",
     43: "primary_source_direct",
     44: "primary_source_direct",
     45: "primary_source_direct",
-    46: "day1_pmid_reuse",
+    46: "pmid_reuse",
     47: "tier_3_imputation",
     48: "tier_3_imputation",
-    49: "day1_pmid_reuse",
-    50: "day1_pmid_reuse",
-    51: "day1_pmid_reuse",
+    49: "pmid_reuse",
+    50: "pmid_reuse",
+    51: "pmid_reuse",
     52: "primary_source_direct",
-    53: "day1_pmid_reuse",
-    54: "day1_pmid_reuse",
-    55: "day1_pmid_reuse",
+    53: "pmid_reuse",
+    54: "pmid_reuse",
+    55: "pmid_reuse",
     56: "primary_source_direct",
     57: "tier_4_imputation",
     58: "tier_4_imputation",
-    59: "day1_pmid_reuse",
-    60: "day1_pmid_reuse",
+    59: "pmid_reuse",
+    60: "pmid_reuse",
 }
 
 
 def _build_case_id(spec: dict[str, Any], pmid_meta: dict[str, Any]) -> str:
     """Synthesize case_id following the schema convention.
 
-    Format: PAM-D{1,2}-NNN-<journal_short_code>-<year>-<state>-<cluster-tag>
-    Example: PAM-D1-001-MMWR-2025-Arkansas-Splash-Pad
-             PAM-D2-021-Diagnostics-2025-Mekong-Delta-River
+    Format: PAM-NNN-<journal_short_code>-<year>-<state>-<cluster-tag>
+    Example: PAM-001-MMWR-2025-Arkansas-Splash-Pad
+             PAM-021-Diagnostics-2025-Mekong-Delta-River
 
-    Day prefix is derived from the spec's filename convention
-    (pam_d1_NNN_*.json -> D1, pam_d2_NNN_*.json -> D2). Uses
-    pmid_meta["journal_short_code"] (canonical medical abbreviation)
+    Uses pmid_meta["journal_short_code"] (canonical medical abbreviation)
     rather than splitting the journal title, so multi-word journals like
     "Clin Infect Dis" become "CID" rather than "Clin".
     """
@@ -5958,8 +5950,7 @@ def _build_case_id(spec: dict[str, Any], pmid_meta: dict[str, Any]) -> str:
     journal_short = pmid_meta["journal_short_code"]
     state = spec["geography_label"].split(",")[0].replace(" ", "-")
     cluster_tag = "-".join(word.capitalize() for word in spec["cluster"].split("_"))
-    day_prefix = "D2" if spec["filename"].startswith("pam_d2_") else "D1"
-    return f"PAM-{day_prefix}-{nnn}-{journal_short}-{pmid_meta['year']}-{state}-{cluster_tag}"
+    return f"PAM-{nnn}-{journal_short}-{pmid_meta['year']}-{state}-{cluster_tag}"
 
 
 def _build_literature_anchor(pmid_meta: dict[str, Any]) -> dict[str, Any]:
@@ -5979,15 +5970,8 @@ def _build_provenance(spec: dict[str, Any], pmid_meta: dict[str, Any]) -> dict[s
     fields not directly extractable from the anchor publication.
     """
     atypical = spec.get("atypical_type") or "none"
-    is_day2 = spec["filename"].startswith("pam_d2_")
-    day_label = (
-        f"Day 2 vignette {spec['vignette_id']} of 60 (v21-v60 set)"
-        if is_day2
-        else f"Day 1 vignette {spec['vignette_id']} of 20"
-    )
     rationale = (
-        f"{day_label} for Subphase 1.2 PAM "
-        f"corpus. Cluster: {spec['cluster']}. Atypical type: {atypical}. "
+        f"PAM corpus vignette {spec['vignette_id']} of 60. Cluster: {spec['cluster']}. Atypical type: {atypical}. "
         f"Outcome: {spec['outcome']}. Anchored to PMID {pmid_meta['pmid']} "
         f"({pmid_meta['authors_short']}, {pmid_meta['journal']} "
         f"{pmid_meta['year']}). Sub-fields populated from published case "
@@ -6029,7 +6013,7 @@ def _build_provenance(spec: dict[str, Any], pmid_meta: dict[str, Any]) -> dict[s
 def _build_adjudication(spec: dict[str, Any], pmid_meta: dict[str, Any]) -> dict[str, Any]:
     """Build the AdjudicationMetadata sub-model dict.
 
-    Embeds the 4 spec adjudication-metadata items (clinical_stage,
+    Embeds the 4 required adjudication-metadata items (clinical_stage,
     exposure_certainty, diagnostic_confirmation, outcome) as structured
     text inside anchoring_documentation, since VignetteSchema v2.0 has
     no separate top-level fields for these.
@@ -6040,7 +6024,7 @@ def _build_adjudication(spec: dict[str, Any], pmid_meta: dict[str, Any]) -> dict
             "PCR (CSF Naegleria fowleri) plus CSF wet mount with motile "
             "trophozoites"
         )
-    methodology = _DAY2_WAVE2_METHODOLOGY.get(spec["vignette_id"])
+    methodology = _PAM_21_60_METHODOLOGY.get(spec["vignette_id"])
     methodology_prefix = f"methodology={methodology}; " if methodology else ""
     anchoring = (
         f"{methodology_prefix}"
@@ -9233,7 +9217,7 @@ def _build_vignette_020() -> dict[str, Any]:
 
 
 # ============================================================================
-# Day 2 pilot builders (v21-v25)
+# Builders for vignettes 21-25 (v21-v25)
 # ----------------------------------------------------------------------------
 # Each builder anchors 100% to primary-source data checked against the
 # PubMed record. Numeric values not reported in the primary source are
@@ -9475,7 +9459,7 @@ def _build_vignette_022() -> dict[str, Any]:
             "freshwater_exposure_within_14d": True,
             # Po River swimming hole; "lake" is the closest schema enum
             # (no separate "river" enum value in freshwater_exposure_type).
-            # Note: cluster is lake_pond per DAY2_DISTRIBUTION; the precise
+            # Note: cluster is lake_pond per PAM_DISTRIBUTION_21_60; the precise
             # "river-associated swimming hole" exposure is captured in the
             # narrative.
             "freshwater_exposure_type": "lake",
@@ -9496,8 +9480,8 @@ def _build_vignette_022() -> dict[str, Any]:
             "systolic_bp_mmHg": 108,
             "diastolic_bp_mmHg": 64,
             # Primary source day 4: "Glasgow Coma Scale score of 9".
-            # Vignette captures the rapid-progression mid-stage encoded by
-            # spec; presentation-day GCS 13 is encoded here as the post-
+            # Vignette captures the rapid-progression mid-stage set in the
+            # distribution entry; presentation-day GCS 13 is encoded here as the post-
             # admission worsening trajectory (day 4 GCS 9). Inferred.
             "glasgow_coma_scale": 9,
             "oxygen_saturation_pct": 95,
@@ -9891,7 +9875,7 @@ def _build_vignette_024() -> dict[str, Any]:
         "exposure": {
             "freshwater_exposure_within_14d": True,
             # Hong primary source does not specify exposure type during
-            # Thailand residence. lake_pond cluster per DAY2_DISTRIBUTION;
+            # Thailand residence. lake_pond cluster per PAM_DISTRIBUTION_21_60;
             # closest schema enum is "lake" (Korea Tourism Organization
             # 2019 traveler statistics show outdoor activity dominance).
             "freshwater_exposure_type": "lake",
@@ -9911,7 +9895,7 @@ def _build_vignette_024() -> dict[str, Any]:
             "systolic_bp_mmHg": 138,
             "diastolic_bp_mmHg": 84,
             # Primary source day 1: "alert mental status"; deteriorated to
-            # stuporous within 8h, apnea by 10h. Day-1 admission GCS encoded
+            # stuporous within 8h, apnea by 10h. Admission GCS on hospital day 1 encoded
             # here at 14 (alert with subtle change due to high fever).
             # Inferred GCS 14 from "alert mental status".
             "glasgow_coma_scale": 14,
@@ -10094,7 +10078,7 @@ def _build_vignette_025() -> dict[str, Any]:
         },
         "exposure": {
             "freshwater_exposure_within_14d": True,
-            # Splash pad cluster per DAY2_DISTRIBUTION; the outdoor
+            # Splash pad cluster per PAM_DISTRIBUTION_21_60; the outdoor
             # water park exposure fits the splash_pad/recreational
             # warm-water category.
             "freshwater_exposure_type": "splash_pad",
@@ -10324,12 +10308,11 @@ def _build_vignette_025() -> dict[str, Any]:
 
 
 # ============================================================================
-# Day 2 wave 1 builders (v26-v40)
+# Builders for vignettes 26-40 (v26-v40)
 # ----------------------------------------------------------------------------
-# Each builder uses imputation_within_anchor_epidemiology per
-# docs/DAY2_DISTRIBUTION_RATIONALE.md section 9.1. Clinical specifics
+# Each builder imputes within the anchor epidemiology. Clinical specifics
 # (CSF, labs, vitals) are PAM-cohort defaults consistent with cluster +
-# stage; demographics (age, sex) are locked from DAY2_DISTRIBUTION;
+# stage; demographics (age, sex) are taken from PAM_DISTRIBUTION_21_60;
 # geographic region is anchor-appropriate. Each narrative includes
 # explicit imputation disclosure.
 # ============================================================================
@@ -10339,8 +10322,8 @@ def _build_vignette_026() -> dict[str, Any]:
     """Vignette 26: 10-year-old male, Shenzhen China, late stage, fatal.
 
     Anchored to Wang Q et al. 2018 BMC Infect Dis (PMID 30055569),
-    first mainland-China NGS-confirmed PAM case. Demographics locked
-    in DAY2_DISTRIBUTION; clinical specifics imputed within Wang's
+    first mainland-China NGS-confirmed PAM case. Demographics fixed
+    in PAM_DISTRIBUTION_21_60; clinical specifics imputed within Wang's
     documented mainland-China NGS-confirmed case-context. Lake/pond
     freshwater exposure encoded; primary source documents recreational
     freshwater route consistent with mainland-China outdoor exposure.
@@ -10463,12 +10446,12 @@ def _build_vignette_026() -> dict[str, Any]:
             "sequencing identified Naegleria fowleri as the etiologic "
             "agent, confirmed by subsequent CSF PCR. CT showed diffuse "
             "cerebral edema. Treatment per CDC PAM protocol was "
-            "initiated; the patient died of refractory cerebral "
-            "edema. This vignette uses imputation within the anchor's "
-            "documented case-context: demographics are locked from "
-            "the Day-2 distribution table, and clinical specifics "
-            "follow Wang 2018 mainland-China NGS-confirmed PAM "
-            "epidemiology (PMID 30055569)."
+            "initiated; the patient died of refractory cerebral edema. "
+            "This vignette uses imputation within the anchor's "
+            "documented case-context: demographics are taken from the "
+            "PAM distribution table, and clinical specifics follow "
+            "Wang 2018 mainland-China NGS-confirmed PAM epidemiology "
+            "(PMID 30055569)."
         ),
         "narrative_es": (
             "Niño de 10 años originario de Shenzhen, China, que se "
@@ -10489,7 +10472,7 @@ def _build_vignette_026() -> dict[str, Any]:
             "por edema cerebral refractario. Esta viñeta utiliza "
             "imputación dentro del contexto del caso documentado por "
             "el anclaje: las características demográficas están "
-            "fijadas en la tabla de distribución del Día 2, y los "
+            "tomadas de la tabla de distribución de PAM, y los "
             "datos clínicos siguen la epidemiología de Wang 2018 "
             "(primer caso de PAM confirmado por NGS en China "
             "continental, PMID 30055569)."
@@ -10501,8 +10484,8 @@ def _build_vignette_027() -> dict[str, Any]:
     """Vignette 27: 8-year-old male, China province imputed, mid stage, fatal.
 
     Anchored to Huang S et al. 2021 BMC Infect Dis (PMID 34906097),
-    pediatric mNGS dual-compartment (CSF + blood) detection. Per
-    docs/DAY2_DISTRIBUTION_RATIONALE.md section 9.1: province within
+    pediatric mNGS dual-compartment (CSF + blood) detection. Imputation
+    note: province within
     China not fully transcribed in registry; imputed within Huang's
     documented mainland case-context.
     """
@@ -10607,23 +10590,23 @@ def _build_vignette_027() -> dict[str, Any]:
             "An 8-year-old male in China presented with a three-day "
             "history of fever, headache, and vomiting following "
             "recreational freshwater exposure. On admission temperature "
-            "was 39.0 C, Glasgow Coma Scale 11, with neck stiffness "
-            "and somnolence. Peripheral white cell count was 16,400 "
-            "per microliter; CSF showed 2,400 white cells per cubic "
+            "was 39.0 C, Glasgow Coma Scale 11, with neck stiffness and "
+            "somnolence. Peripheral white cell count was 16,400 per "
+            "microliter; CSF showed 2,400 white cells per cubic "
             "millimeter (88 percent neutrophils), glucose 22 mg/dL, "
             "protein 320 mg/dL, and lactate 6.4 mmol/L. Metagenomic "
             "next-generation sequencing of both CSF and peripheral "
             "blood identified Naegleria fowleri (dual-compartment "
             "detection). Brain MRI with DWI/FLAIR showed diffuse "
             "cerebral edema. Treatment per CDC PAM protocol was "
-            "initiated; the patient died despite multimodal care. "
-            "This vignette uses imputation within the anchor's "
-            "documented case-context: province within China is not "
-            "fully transcribed in the anchor publication so "
-            "geographic specificity is imputed at the country level, "
-            "and demographics are locked from the Day-2 distribution "
-            "table per Huang 2021 mainland-China dual-compartment "
-            "mNGS epidemiology (PMID 34906097)."
+            "initiated; the patient died despite multimodal care. This "
+            "vignette uses imputation within the anchor's documented "
+            "case-context: province within China is not fully "
+            "transcribed in the anchor publication so geographic "
+            "specificity is imputed at the country level, and "
+            "demographics are taken from the PAM distribution table per "
+            "Huang 2021 mainland-China dual-compartment mNGS "
+            "epidemiology (PMID 34906097)."
         ),
         "narrative_es": (
             "Niño de 8 años en China que se presentó con tres días de "
@@ -10645,8 +10628,8 @@ def _build_vignette_027() -> dict[str, Any]:
             "provincia china no está completamente transcrita en la "
             "publicación anclaje, por lo que la especificidad "
             "geográfica se imputa a nivel de país, y los datos "
-            "demográficos están fijados en la tabla de distribución "
-            "del Día 2 según la epidemiología de Huang 2021 "
+            "demográficos están tomados de la tabla de distribución "
+            "de PAM según la epidemiología de Huang 2021 "
             "(PMID 34906097)."
         ),
     }
@@ -10663,7 +10646,7 @@ def _build_capewell_imputed_vignette(
 ) -> dict[str, Any]:
     """Shared scaffolding for v28-v31 Capewell within-cohort imputations.
 
-    Per docs/DAY2_DISTRIBUTION_RATIONALE.md section 9.1: each Capewell
+    Imputation note: each Capewell
     entry is imputed within Capewell 2015's US 1937-2013 review of
     approximately 140-145 cases, ~79 percent recreational freshwater,
     with the lake/pond sub-bucket dominant. No specific named-case is
@@ -10804,8 +10787,8 @@ def _build_capewell_imputed_vignette(
             f"imputation: no specific named-case is claimed. Clinical "
             f"specifics follow Capewell 2015's documented US 1937-"
             f"2013 review of approximately 140-145 cases (lake/pond "
-            f"sub-bucket dominant); demographics are locked from the "
-            f"Day-2 distribution table (PMID 26582886)."
+            f"sub-bucket dominant); demographics are taken from the "
+            f"PAM distribution table (PMID 26582886)."
         ),
         "narrative_es": (
             f"Paciente de {age_years} años de sexo "
@@ -10825,8 +10808,8 @@ def _build_capewell_imputed_vignette(
             f"documentada por Capewell 2015 sobre PAM en Estados "
             f"Unidos 1937-2013 (aproximadamente 140-145 casos, "
             f"subgrupo lago/estanque dominante); las características "
-            f"demográficas están fijadas en la tabla de distribución "
-            f"del Día 2 (PMID 26582886)."
+            f"demográficas están tomadas de la tabla de distribución "
+            f"de PAM (PMID 26582886)."
         ),
     }
 
@@ -10851,8 +10834,8 @@ def _build_vignette_028() -> dict[str, Any]:
         "with a four-day history of fever, headache, and lethargy "
         "progressing to stupor following recreational freshwater "
         "(lake/pond) exposure. On admission temperature was 39.2 C, "
-        "Glasgow Coma Scale 7. CSF showed white cell count 4,350 "
-        "per cubic millimeter (90 percent neutrophils), glucose 17 "
+        "Glasgow Coma Scale 7. CSF showed white cell count 4,350 per "
+        "cubic millimeter (90 percent neutrophils), glucose 17 "
         "mg/dL, and protein 408 mg/dL. Acute-phase reactants were "
         "CRP 96 mg/L and procalcitonin 2.4 ng/mL. Treatment per CDC "
         "PAM protocol was initiated; the patient died of refractory "
@@ -10860,8 +10843,8 @@ def _build_vignette_028() -> dict[str, Any]:
         "imputation: no specific named-case is claimed. Clinical "
         "specifics follow Capewell 2015's documented US 1937-2013 "
         "review of approximately 140-145 cases (lake/pond sub-bucket "
-        "dominant); demographics are locked from the Day-2 "
-        "distribution table (PMID 26582886)."
+        "dominant); demographics are taken from the PAM distribution "
+        "table (PMID 26582886)."
     )
     base["narrative_es"] = (
         "Paciente de 8 años de sexo femenino originaria de la "
@@ -10880,8 +10863,8 @@ def _build_vignette_028() -> dict[str, Any]:
         "siguen la revisión documentada por Capewell 2015 sobre PAM "
         "en Estados Unidos 1937-2013 (aproximadamente 140-145 "
         "casos, subgrupo lago/estanque dominante); las "
-        "características demográficas están fijadas en la tabla de "
-        "distribución del Día 2 (PMID 26582886)."
+        "características demográficas están tomadas de la tabla de "
+        "distribución de PAM (PMID 26582886)."
     )
     return base
 
@@ -10902,9 +10885,9 @@ def _build_vignette_029() -> dict[str, Any]:
     base["labs"]["procalcitonin_ng_per_mL"] = 1.6
     # Sync narratives to jittered values (preserve imputation disclosure)
     base["narrative_en"] = (
-        "An 11-year-old male from the US South region presented "
-        "with a four-day history of fever, headache, and somnolence "
-        "with neck stiffness following recreational freshwater "
+        "An 11-year-old male from the US South region presented with "
+        "a four-day history of fever, headache, and somnolence with "
+        "neck stiffness following recreational freshwater "
         "(lake/pond) exposure. On admission temperature was 39.2 C, "
         "Glasgow Coma Scale 11. CSF showed white cell count 2,850 "
         "per cubic millimeter (90 percent neutrophils), glucose 21 "
@@ -10915,8 +10898,8 @@ def _build_vignette_029() -> dict[str, Any]:
         "imputation: no specific named-case is claimed. Clinical "
         "specifics follow Capewell 2015's documented US 1937-2013 "
         "review of approximately 140-145 cases (lake/pond sub-bucket "
-        "dominant); demographics are locked from the Day-2 "
-        "distribution table (PMID 26582886)."
+        "dominant); demographics are taken from the PAM distribution "
+        "table (PMID 26582886)."
     )
     base["narrative_es"] = (
         "Paciente de 11 años de sexo masculino originario de la "
@@ -10935,7 +10918,7 @@ def _build_vignette_029() -> dict[str, Any]:
         "documentada por Capewell 2015 sobre PAM en Estados Unidos "
         "1937-2013 (aproximadamente 140-145 casos, subgrupo "
         "lago/estanque dominante); las características demográficas "
-        "están fijadas en la tabla de distribución del Día 2 "
+        "están tomadas de la tabla de distribución de PAM "
         "(PMID 26582886)."
     )
     return base
@@ -10957,9 +10940,9 @@ def _build_vignette_030() -> dict[str, Any]:
     base["labs"]["procalcitonin_ng_per_mL"] = 3.1
     # Sync narratives to jittered values (preserve imputation disclosure)
     base["narrative_en"] = (
-        "A 15-year-old male from the US South region presented "
-        "with a four-day history of fever, headache, and stupor "
-        "with focal deficit following recreational freshwater "
+        "A 15-year-old male from the US South region presented with "
+        "a four-day history of fever, headache, and stupor with "
+        "focal deficit following recreational freshwater "
         "(lake/pond) exposure. On admission temperature was 39.2 C, "
         "Glasgow Coma Scale 7. CSF showed white cell count 4,500 "
         "per cubic millimeter (90 percent neutrophils), glucose 14 "
@@ -10971,7 +10954,7 @@ def _build_vignette_030() -> dict[str, Any]:
         "claimed. Clinical specifics follow Capewell 2015's "
         "documented US 1937-2013 review of approximately 140-145 "
         "cases (lake/pond sub-bucket dominant); demographics are "
-        "locked from the Day-2 distribution table (PMID 26582886)."
+        "taken from the PAM distribution table (PMID 26582886)."
     )
     base["narrative_es"] = (
         "Paciente de 15 años de sexo masculino originario de la "
@@ -10990,7 +10973,7 @@ def _build_vignette_030() -> dict[str, Any]:
         "documentada por Capewell 2015 sobre PAM en Estados Unidos "
         "1937-2013 (aproximadamente 140-145 casos, subgrupo "
         "lago/estanque dominante); las características demográficas "
-        "están fijadas en la tabla de distribución del Día 2 "
+        "están tomadas de la tabla de distribución de PAM "
         "(PMID 26582886)."
     )
     return base
@@ -11026,7 +11009,7 @@ def _build_vignette_031() -> dict[str, Any]:
         "claimed. Clinical specifics follow Capewell 2015's "
         "documented US 1937-2013 review of approximately 140-145 "
         "cases (lake/pond sub-bucket dominant); demographics are "
-        "locked from the Day-2 distribution table (PMID 26582886)."
+        "taken from the PAM distribution table (PMID 26582886)."
     )
     base["narrative_es"] = (
         "Paciente de 9 años de sexo masculino originario de la "
@@ -11045,7 +11028,7 @@ def _build_vignette_031() -> dict[str, Any]:
         "documentada por Capewell 2015 sobre PAM en Estados Unidos "
         "1937-2013 (aproximadamente 140-145 casos, subgrupo "
         "lago/estanque dominante); las características demográficas "
-        "están fijadas en la tabla de distribución del Día 2 "
+        "están tomadas de la tabla de distribución de PAM "
         "(PMID 26582886)."
     )
     return base
@@ -11061,9 +11044,9 @@ def _build_kemble_imputed_vignette(
 ) -> dict[str, Any]:
     """Shared scaffolding for v32-v34 Kemble Minnesota within-cohort imputations.
 
-    Per docs/DAY2_DISTRIBUTION_RATIONALE.md section 9.1: each Kemble
+    Imputation note: each Kemble
     entry is imputed within Kemble 2012 Minnesota northern-tier
-    expansion case-context. Day-1 used 2 Kemble entries; v32-v34 add
+    expansion case-context. Vignettes 1-20 used 2 Kemble entries; v32-v34 add
     demographic variation within the documented Minnesota lake
     exposure type.
     """
@@ -11184,7 +11167,7 @@ def _build_kemble_imputed_vignette(
             f"per CDC PAM protocol was initiated; the patient died. "
             f"This vignette is a within-cohort imputation per Kemble "
             f"2012 Minnesota northern-tier expansion case-context: "
-            f"demographics are locked from the Day-2 distribution "
+            f"demographics are taken from the PAM distribution "
             f"table, and clinical specifics follow the documented "
             f"Minnesota lake-exposure PAM epidemiology "
             f"(PMID 22238170)."
@@ -11204,8 +11187,8 @@ def _build_kemble_imputed_vignette(
             f"CDC; el paciente falleció. Esta viñeta es una "
             f"imputación dentro de la cohorte según el contexto del "
             f"caso documentado por Kemble 2012 (expansión septentrional "
-            f"de Minnesota): los datos demográficos están fijados en "
-            f"la tabla de distribución del Día 2, y las "
+            f"de Minnesota): los datos demográficos están tomados de "
+            f"la tabla de distribución de PAM, y las "
             f"características clínicas siguen la epidemiología de PAM "
             f"con exposición a lagos de Minnesota (PMID 22238170)."
         ),
@@ -11238,10 +11221,10 @@ def _build_vignette_032() -> dict[str, Any]:
         "CRP 82 mg/L and procalcitonin 1.7 ng/mL. CSF PCR confirmed "
         "Naegleria fowleri at the CDC reference laboratory. CT "
         "showed diffuse cerebral edema. Treatment per CDC PAM "
-        "protocol was initiated; the patient died. This vignette "
-        "is a within-cohort imputation per Kemble 2012 Minnesota "
+        "protocol was initiated; the patient died. This vignette is "
+        "a within-cohort imputation per Kemble 2012 Minnesota "
         "northern-tier expansion case-context: demographics are "
-        "locked from the Day-2 distribution table, and clinical "
+        "taken from the PAM distribution table, and clinical "
         "specifics follow the documented Minnesota lake-exposure "
         "PAM epidemiology (PMID 22238170)."
     )
@@ -11261,8 +11244,8 @@ def _build_vignette_032() -> dict[str, Any]:
         "los CDC; el paciente falleció. Esta viñeta es una "
         "imputación dentro de la cohorte según el contexto del caso "
         "documentado por Kemble 2012 (expansión septentrional de "
-        "Minnesota): los datos demográficos están fijados en la "
-        "tabla de distribución del Día 2, y las características "
+        "Minnesota): los datos demográficos están tomados de la "
+        "tabla de distribución de PAM, y las características "
         "clínicas siguen la epidemiología de PAM con exposición a "
         "lagos de Minnesota (PMID 22238170)."
     )
@@ -11285,21 +11268,21 @@ def _build_vignette_033() -> dict[str, Any]:
     base["labs"]["procalcitonin_ng_per_mL"] = 2.9
     # Sync narratives to jittered values (preserve imputation disclosure)
     base["narrative_en"] = (
-        "A 6-year-old male from Minnesota presented with a "
-        "five-day history of fever, headache, and rapid progression "
-        "to stupor with focal deficit following lake exposure "
-        "during the summer recreational season. On admission "
-        "temperature was 39.4 C, Glasgow Coma Scale 7. CSF showed "
-        "white cell count 4,480 per cubic millimeter (89 percent "
-        "neutrophils), glucose 15 mg/dL, and protein 432 mg/dL. "
-        "Acute-phase reactants were CRP 112 mg/L and procalcitonin "
-        "2.9 ng/mL. CSF PCR confirmed Naegleria fowleri at the CDC "
-        "reference laboratory. CT showed diffuse cerebral edema. "
-        "Treatment per CDC PAM protocol was initiated; the patient "
-        "died. This vignette is a within-cohort imputation per "
-        "Kemble 2012 Minnesota northern-tier expansion case-context: "
-        "demographics are locked from the Day-2 distribution table, "
-        "and clinical specifics follow the documented Minnesota "
+        "A 6-year-old male from Minnesota presented with a five-day "
+        "history of fever, headache, and rapid progression to stupor "
+        "with focal deficit following lake exposure during the "
+        "summer recreational season. On admission temperature was "
+        "39.4 C, Glasgow Coma Scale 7. CSF showed white cell count "
+        "4,480 per cubic millimeter (89 percent neutrophils), "
+        "glucose 15 mg/dL, and protein 432 mg/dL. Acute-phase "
+        "reactants were CRP 112 mg/L and procalcitonin 2.9 ng/mL. "
+        "CSF PCR confirmed Naegleria fowleri at the CDC reference "
+        "laboratory. CT showed diffuse cerebral edema. Treatment per "
+        "CDC PAM protocol was initiated; the patient died. This "
+        "vignette is a within-cohort imputation per Kemble 2012 "
+        "Minnesota northern-tier expansion case-context: "
+        "demographics are taken from the PAM distribution table, and "
+        "clinical specifics follow the documented Minnesota "
         "lake-exposure PAM epidemiology (PMID 22238170)."
     )
     base["narrative_es"] = (
@@ -11318,8 +11301,8 @@ def _build_vignette_033() -> dict[str, Any]:
         "los CDC; el paciente falleció. Esta viñeta es una "
         "imputación dentro de la cohorte según el contexto del caso "
         "documentado por Kemble 2012 (expansión septentrional de "
-        "Minnesota): los datos demográficos están fijados en la "
-        "tabla de distribución del Día 2, y las características "
+        "Minnesota): los datos demográficos están tomados de la "
+        "tabla de distribución de PAM, y las características "
         "clínicas siguen la epidemiología de PAM con exposición a "
         "lagos de Minnesota (PMID 22238170)."
     )
@@ -11342,22 +11325,22 @@ def _build_vignette_034() -> dict[str, Any]:
     base["labs"]["procalcitonin_ng_per_mL"] = 1.9
     # Sync narratives to jittered values (preserve imputation disclosure)
     base["narrative_en"] = (
-        "A 14-year-old male from Minnesota presented with a "
-        "five-day history of fever, headache, and progressive "
-        "lethargy with neck stiffness following lake exposure "
-        "during the summer recreational season. On admission "
-        "temperature was 39.4 C, Glasgow Coma Scale 11. CSF showed "
-        "white cell count 3,140 per cubic millimeter (89 percent "
-        "neutrophils), glucose 22 mg/dL, and protein 368 mg/dL. "
-        "Acute-phase reactants were CRP 88 mg/L and procalcitonin "
-        "1.9 ng/mL. CSF PCR confirmed Naegleria fowleri at the CDC "
-        "reference laboratory. CT showed diffuse cerebral edema. "
-        "Treatment per CDC PAM protocol was initiated; the patient "
-        "died. This vignette is a within-cohort imputation per "
-        "Kemble 2012 Minnesota northern-tier expansion case-context: "
-        "demographics are locked from the Day-2 distribution table, "
-        "and clinical specifics follow the documented Minnesota "
-        "lake-exposure PAM epidemiology (PMID 22238170)."
+        "A 14-year-old male from Minnesota presented with a five-day "
+        "history of fever, headache, and progressive lethargy with "
+        "neck stiffness following lake exposure during the summer "
+        "recreational season. On admission temperature was 39.4 C, "
+        "Glasgow Coma Scale 11. CSF showed white cell count 3,140 "
+        "per cubic millimeter (89 percent neutrophils), glucose 22 "
+        "mg/dL, and protein 368 mg/dL. Acute-phase reactants were "
+        "CRP 88 mg/L and procalcitonin 1.9 ng/mL. CSF PCR confirmed "
+        "Naegleria fowleri at the CDC reference laboratory. CT "
+        "showed diffuse cerebral edema. Treatment per CDC PAM "
+        "protocol was initiated; the patient died. This vignette is "
+        "a within-cohort imputation per Kemble 2012 Minnesota "
+        "northern-tier expansion case-context: demographics are "
+        "taken from the PAM distribution table, and clinical "
+        "specifics follow the documented Minnesota lake-exposure PAM "
+        "epidemiology (PMID 22238170)."
     )
     base["narrative_es"] = (
         "Varón de 14 años originario de Minnesota que se presentó "
@@ -11375,8 +11358,8 @@ def _build_vignette_034() -> dict[str, Any]:
         "los CDC; el paciente falleció. Esta viñeta es una "
         "imputación dentro de la cohorte según el contexto del caso "
         "documentado por Kemble 2012 (expansión septentrional de "
-        "Minnesota): los datos demográficos están fijados en la "
-        "tabla de distribución del Día 2, y las características "
+        "Minnesota): los datos demográficos están tomados de la "
+        "tabla de distribución de PAM, y las características "
         "clínicas siguen la epidemiología de PAM con exposición a "
         "lagos de Minnesota (PMID 22238170)."
     )
@@ -11394,9 +11377,9 @@ def _build_anjum_imputed_vignette(
 ) -> dict[str, Any]:
     """Shared scaffolding for v35-v37 Anjum Florida within-cohort imputations.
 
-    Per docs/DAY2_DISTRIBUTION_RATIONALE.md section 9.1: each Anjum
+    Imputation note: each Anjum
     entry is imputed within Anjum 2021 Florida tap-water/lake-context
-    case-set. Day-1 used 2 Anjum entries; v35-v37 add demographic
+    case-set. Vignettes 1-20 used 2 Anjum entries; v35-v37 add demographic
     variation.
     """
     if stage == "mid":
@@ -11516,8 +11499,8 @@ def _build_anjum_imputed_vignette(
             f"cerebral edema. Treatment per CDC PAM protocol was "
             f"initiated; the patient died. This vignette is a within-"
             f"cohort imputation per Anjum 2021 Florida tap-water/lake-"
-            f"context case-set: demographics are locked from the "
-            f"Day-2 distribution table, and clinical specifics follow "
+            f"context case-set: demographics are taken from the "
+            f"PAM distribution table, and clinical specifics follow "
             f"the documented Florida PAM epidemiology "
             f"(PMID 34307045)."
         ),
@@ -11538,7 +11521,7 @@ def _build_anjum_imputed_vignette(
             f"imputación dentro de la cohorte según el contexto del "
             f"caso documentado por Anjum 2021 (Florida, exposición a "
             f"agua de grifo/lago): los datos demográficos están "
-            f"fijados en la tabla de distribución del Día 2, y las "
+            f"tomados de la tabla de distribución de PAM, y las "
             f"características clínicas siguen la epidemiología de PAM "
             f"de Florida (PMID 34307045)."
         ),
@@ -11573,10 +11556,10 @@ def _build_vignette_035() -> dict[str, Any]:
         "showed diffuse cerebral edema. Treatment per CDC PAM "
         "protocol was initiated; the patient died. This vignette "
         "is a within-cohort imputation per Anjum 2021 Florida "
-        "tap-water/lake-context case-set: demographics are locked "
-        "from the Day-2 distribution table, and clinical specifics "
-        "follow the documented Florida PAM epidemiology "
-        "(PMID 34307045)."
+        "tap-water/lake-context case-set: demographics are taken "
+        "from the PAM distribution table, and clinical specifics "
+        "follow the documented Florida PAM epidemiology (PMID "
+        "34307045)."
     )
     base["narrative_es"] = (
         "Varón de 10 años originario de Florida que se presentó "
@@ -11594,8 +11577,8 @@ def _build_vignette_035() -> dict[str, Any]:
         "falleció. Esta viñeta es una imputación dentro de la "
         "cohorte según el contexto del caso documentado por Anjum "
         "2021 (Florida, exposición a agua de grifo/lago): los "
-        "datos demográficos están fijados en la tabla de "
-        "distribución del Día 2, y las características clínicas "
+        "datos demográficos están tomados de la tabla de "
+        "distribución de PAM, y las características clínicas "
         "siguen la epidemiología de PAM de Florida (PMID 34307045)."
     )
     return base
@@ -11621,18 +11604,18 @@ def _build_vignette_036() -> dict[str, Any]:
         "four-day history of fever, headache, and somnolence with "
         "neck stiffness following recreational freshwater (lake) "
         "exposure. On admission temperature was 39.6 C, Glasgow "
-        "Coma Scale 11. CSF showed white cell count 3,080 per "
-        "cubic millimeter (91 percent neutrophils), glucose 21 "
-        "mg/dL, and protein 356 mg/dL. Acute-phase reactants were "
-        "CRP 84 mg/L and procalcitonin 1.8 ng/mL. CSF PCR "
-        "confirmed Naegleria fowleri at the CDC reference "
-        "laboratory. CT showed diffuse cerebral edema. Treatment "
-        "per CDC PAM protocol was initiated; the patient died. "
-        "This vignette is a within-cohort imputation per Anjum "
-        "2021 Florida tap-water/lake-context case-set: demographics "
-        "are locked from the Day-2 distribution table, and clinical "
-        "specifics follow the documented Florida PAM epidemiology "
-        "(PMID 34307045)."
+        "Coma Scale 11. CSF showed white cell count 3,080 per cubic "
+        "millimeter (91 percent neutrophils), glucose 21 mg/dL, and "
+        "protein 356 mg/dL. Acute-phase reactants were CRP 84 mg/L "
+        "and procalcitonin 1.8 ng/mL. CSF PCR confirmed Naegleria "
+        "fowleri at the CDC reference laboratory. CT showed diffuse "
+        "cerebral edema. Treatment per CDC PAM protocol was "
+        "initiated; the patient died. This vignette is a "
+        "within-cohort imputation per Anjum 2021 Florida "
+        "tap-water/lake-context case-set: demographics are taken "
+        "from the PAM distribution table, and clinical specifics "
+        "follow the documented Florida PAM epidemiology (PMID "
+        "34307045)."
     )
     base["narrative_es"] = (
         "Adolescente femenina de 12 años originaria de Florida que "
@@ -11650,8 +11633,8 @@ def _build_vignette_036() -> dict[str, Any]:
         "los CDC; la paciente falleció. Esta viñeta es una "
         "imputación dentro de la cohorte según el contexto del caso "
         "documentado por Anjum 2021 (Florida, exposición a agua de "
-        "grifo/lago): los datos demográficos están fijados en la "
-        "tabla de distribución del Día 2, y las características "
+        "grifo/lago): los datos demográficos están tomados de la "
+        "tabla de distribución de PAM, y las características "
         "clínicas siguen la epidemiología de PAM de Florida "
         "(PMID 34307045)."
     )
@@ -11684,10 +11667,10 @@ def _build_vignette_037() -> dict[str, Any]:
         "CRP 124 mg/L and procalcitonin 3.2 ng/mL. CSF PCR "
         "confirmed Naegleria fowleri at the CDC reference "
         "laboratory. CT showed diffuse cerebral edema. Treatment "
-        "per CDC PAM protocol was initiated; the patient died. "
-        "This vignette is a within-cohort imputation per Anjum "
-        "2021 Florida tap-water/lake-context case-set: demographics "
-        "are locked from the Day-2 distribution table, and clinical "
+        "per CDC PAM protocol was initiated; the patient died. This "
+        "vignette is a within-cohort imputation per Anjum 2021 "
+        "Florida tap-water/lake-context case-set: demographics are "
+        "taken from the PAM distribution table, and clinical "
         "specifics follow the documented Florida PAM epidemiology "
         "(PMID 34307045)."
     )
@@ -11707,8 +11690,8 @@ def _build_vignette_037() -> dict[str, Any]:
         "falleció. Esta viñeta es una imputación dentro de la "
         "cohorte según el contexto del caso documentado por Anjum "
         "2021 (Florida, exposición a agua de grifo/lago): los "
-        "datos demográficos están fijados en la tabla de "
-        "distribución del Día 2, y las características clínicas "
+        "datos demográficos están tomados de la tabla de "
+        "distribución de PAM, y las características clínicas "
         "siguen la epidemiología de PAM de Florida (PMID 34307045)."
     )
     return base
@@ -11719,8 +11702,7 @@ def _build_vignette_038() -> dict[str, Any]:
 
     Tier-4 review imputation. Anchored to Rîpă C et al. 2025 J Clin
     Med (PMID 39860533), Romanian systematic review of 98 patients
-    with 17 USA cases. Per docs/DAY2_DISTRIBUTION_RATIONALE.md section
-    9.1: 28yo M imputed US South within Rîpă's 17 USA cases / 98-
+    with 17 USA cases. Imputation note: 28yo M imputed US South within Rîpă's 17 USA cases / 98-
     patient global cohort.
     """
     return {
@@ -11812,24 +11794,23 @@ def _build_vignette_038() -> dict[str, Any]:
             ],
         },
         "narrative_en": (
-            "A 28-year-old male from the US South region presented "
-            "with a five-day history of fever, headache, vomiting, "
-            "and progressive lethargy following recreational freshwater "
+            "A 28-year-old male from the US South region presented with "
+            "a five-day history of fever, headache, vomiting, and "
+            "progressive lethargy following recreational freshwater "
             "(lake) exposure. On admission temperature was 39.0 C, "
-            "Glasgow Coma Scale 11, with neck stiffness and "
-            "somnolence. CSF showed white cell count 3,000 per cubic "
-            "millimeter (90 percent neutrophils), glucose 22 mg/dL, "
-            "protein 360 mg/dL, and lactate 6.8 mmol/L. CSF PCR "
-            "confirmed Naegleria fowleri at the CDC reference "
-            "laboratory. CT showed diffuse cerebral edema. Treatment "
-            "per CDC PAM protocol was initiated; the patient died of "
-            "refractory cerebral edema. This vignette is a Tier-4 "
-            "within-cohort imputation: no specific named-case is "
-            "claimed. Clinical specifics follow Rîpă 2025 Romanian "
-            "systematic review epidemiology (98 patients across 52 "
-            "case-report articles, 17 USA sub-cohort); demographics "
-            "are locked from the Day-2 distribution table "
-            "(PMID 39860533)."
+            "Glasgow Coma Scale 11, with neck stiffness and somnolence. "
+            "CSF showed white cell count 3,000 per cubic millimeter (90 "
+            "percent neutrophils), glucose 22 mg/dL, protein 360 mg/dL, "
+            "and lactate 6.8 mmol/L. CSF PCR confirmed Naegleria "
+            "fowleri at the CDC reference laboratory. CT showed diffuse "
+            "cerebral edema. Treatment per CDC PAM protocol was "
+            "initiated; the patient died of refractory cerebral edema. "
+            "This vignette is a Tier-4 within-cohort imputation: no "
+            "specific named-case is claimed. Clinical specifics follow "
+            "Rîpă 2025 Romanian systematic review epidemiology (98 "
+            "patients across 52 case-report articles, 17 USA "
+            "sub-cohort); demographics are taken from the PAM "
+            "distribution table (PMID 39860533)."
         ),
         "narrative_es": (
             "Varón de 28 años originario de la región sur de Estados "
@@ -11850,8 +11831,8 @@ def _build_vignette_038() -> dict[str, Any]:
             "datos clínicos siguen la epidemiología de la revisión "
             "sistemática rumana de Rîpă 2025 (98 pacientes en 52 "
             "artículos, subcohorte de 17 casos en EE. UU.); las "
-            "características demográficas están fijadas en la tabla "
-            "de distribución del Día 2 (PMID 39860533)."
+            "características demográficas están tomadas de la tabla "
+            "de distribución de PAM (PMID 39860533)."
         ),
     }
 
@@ -11860,8 +11841,7 @@ def _build_vignette_039() -> dict[str, Any]:
     """Vignette 39: 13-year-old male, US South, late stage, fatal.
 
     Tier-4 review imputation. Anchored to Gharpure et al. 2021 CID
-    (PMID 32369575), global review. Per docs/DAY2_DISTRIBUTION_
-    RATIONALE.md section 9.1: 13yo M imputed within global review.
+    (PMID 32369575), global review. Imputation note: 13yo M imputed within global review.
     """
     return {
         "history": {
@@ -11966,7 +11946,7 @@ def _build_vignette_039() -> dict[str, Any]:
             "patient died. This vignette is a Tier-4 within-cohort "
             "imputation: no specific named-case is claimed. Clinical "
             "specifics follow Gharpure 2021 CID global review "
-            "epidemiology; demographics are locked from the Day-2 "
+            "epidemiology; demographics are taken from the PAM "
             "distribution table (PMID 32369575)."
         ),
         "narrative_es": (
@@ -11987,8 +11967,8 @@ def _build_vignette_039() -> dict[str, Any]:
             "imputación de Tier-4 dentro de la cohorte: no se reclama "
             "un caso nombrado específico. Los datos clínicos siguen "
             "la epidemiología de la revisión global de Gharpure 2021 "
-            "CID; las características demográficas están fijadas en "
-            "la tabla de distribución del Día 2 (PMID 32369575)."
+            "CID; las características demográficas están tomadas de "
+            "la tabla de distribución de PAM (PMID 32369575)."
         ),
     }
 
@@ -11998,8 +11978,7 @@ def _build_vignette_040() -> dict[str, Any]:
 
     Tier-4 review imputation. Anchored to Yoder et al. 2010
     Epidemiol Infect (PMID 19845995), foundational US 1962-2008 PAM
-    surveillance review. Per docs/DAY2_DISTRIBUTION_RATIONALE.md
-    section 9.1: 14yo M imputed US South within Yoder 2010 US 1962-
+    surveillance review. Imputation note: 14yo M imputed US South within Yoder 2010 US 1962-
     2008 review. Replaces previously planned Hall 2024 imputed
     survivor entry that was dropped.
     """
@@ -12105,10 +12084,10 @@ def _build_vignette_040() -> dict[str, Any]:
             "This vignette is a Tier-4 within-cohort imputation: no "
             "specific named-case is claimed. Clinical specifics follow "
             "Yoder 2010 foundational US 1962-2008 surveillance review "
-            "epidemiology; demographics are locked from the Day-2 "
-            "distribution table (PMID 19845995). This entry replaces "
-            "a previously planned Hall 2024 imputed survivor "
-            "placement that was dropped per rationale doc Section 9.1."
+            "epidemiology; demographics are taken from the PAM "
+            "distribution table (PMID 19845995). This entry replaces a "
+            "previously planned Hall 2024 imputed survivor placement "
+            "that was dropped from the corpus distribution."
         ),
         "narrative_es": (
             "Varón de 14 años originario de la región sur de Estados "
@@ -12128,28 +12107,30 @@ def _build_vignette_040() -> dict[str, Any]:
             "nombrado específico. Los datos clínicos siguen la "
             "epidemiología de la revisión fundacional de vigilancia "
             "estadounidense 1962-2008 de Yoder 2010; las "
-            "características demográficas están fijadas en la tabla "
-            "de distribución del Día 2 (PMID 19845995). Esta entrada "
+            "características demográficas están tomadas de la tabla "
+            "de distribución de PAM (PMID 19845995). Esta entrada "
             "reemplaza una colocación de Hall 2024 imputada como "
             "sobreviviente previamente planificada que fue retirada "
-            "según la sección 9.1 del documento de fundamentación."
+            "de la distribución del corpus."
         ),
     }
 
 
 # ============================================================================
-# Day 2 wave 2 builders (v41-v60)
+# Builders for vignettes 41-60 (v41-v60)
 # ----------------------------------------------------------------------------
-# Wave 2 of 2 builds the final 20 vignettes for the 60-vignette PAM corpus.
+# These builders produce the final 20 vignettes of the 60-vignette PAM corpus.
 # Mix of primary-source-anchored newcomers (Zhou Hunan, Sazzad Bangladesh,
 # Retana Costa Rica, DeNapoli Rio Grande, Wei Taiwan, Cope Louisiana
-# treated-tap), Day-1 PMID reuses with different demographics within the
+# treated-tap), reuses of PMIDs from vignettes 1-20 with different
+# demographics within the
 # same anchor (Lares-Villa, Rauf survivor, Dulski, Eger, Yoder 2012 x2,
 # Smith, Sandi, Burki survivor), and Tier-3/4 within-cohort imputations
 # (Capewell river, Gharpure EID river, Gharpure EID neti, Gharpure CID
 # neti). Survivors v49 and v60 use miltefosine + ICU + hypothermia plus
-# anchor-specific therapy. Each narrative carries its honest methodology
-# disclosure (primary-source / Day-1 reuse / Tier-3 or Tier-4 imputation).
+# anchor-specific therapy. Each narrative states its methodology
+# (primary-source / PMID reuse from vignettes 1-20 / Tier-3 or Tier-4
+# imputation).
 # ============================================================================
 
 
@@ -12920,12 +12901,12 @@ def _build_vignette_045() -> dict[str, Any]:
 def _build_vignette_046() -> dict[str, Any]:
     """v46: 11yo M Mexicali canal, river, mid, fatal - Lares-Villa reuse.
 
-    Anchored to Lares-Villa F et al. 1993 (PMID 8458963). Day-1 used
-    this PMID for v18 (9-year-old male same Mexicali canal, latam
+    Anchored to Lares-Villa F et al. 1993 (PMID 8458963). This PMID
+    also anchors v18 (9-year-old male same Mexicali canal, latam
     cluster). v46 is a within-cohort imputation for a different
     pediatric demographic (11-year-old male) within the same anchor's
     documented Mexicali irrigation-canal exposure context, but encoded
-    under the river cluster per DAY2_DISTRIBUTION.
+    under the river cluster per PAM_DISTRIBUTION_21_60.
     """
     return {
         "history": {
@@ -13026,15 +13007,15 @@ def _build_vignette_046() -> dict[str, Any]:
             "sign without focal deficit. CSF showed opening "
             "pressure 28 cmH2O, white cell count 3,060 per cubic "
             "millimeter (89 percent neutrophils), glucose 21 mg/dL, "
-            "protein 358 mg/dL, and lactate 6.8 mmol/L. CSF PCR "
-            "for Naegleria fowleri at the national reference "
-            "laboratory was positive. The CDC PAM regimen was "
-            "started but the patient died. Day-1 used Lares-Villa "
-            "1993 for v18 (9-year-old boy, same Mexicali canal "
-            "exposure); v46 is a within-cohort imputation for a "
-            "different pediatric demographic within the same "
-            "anchor's documented case context, encoded under the "
-            "river cluster (PMID 8458963)."
+            "protein 358 mg/dL, and lactate 6.8 mmol/L. CSF PCR for "
+            "Naegleria fowleri at the national reference laboratory "
+            "was positive. The CDC PAM regimen was started but the "
+            "patient died. Vignettes 1-20 used Lares-Villa 1993 for "
+            "v18 (9-year-old boy, same Mexicali canal exposure); "
+            "v46 is a within-cohort imputation for a different "
+            "pediatric demographic within the same anchor's "
+            "documented case context, encoded under the river "
+            "cluster (PMID 8458963)."
         ),
         "narrative_es": (
             "Niño de 11 años previamente sano, originario de "
@@ -13050,7 +13031,7 @@ def _build_vignette_046() -> dict[str, Any]:
             "lactato 6.8 mmol/L. La PCR de Naegleria fowleri en "
             "líquido cefalorraquídeo en el laboratorio nacional de "
             "referencia fue positiva. Se inició el protocolo de PAM "
-            "de los CDC, pero el paciente falleció. El Día 1 utilizó "
+            "de los CDC, pero el paciente falleció. Las viñetas 1-20 utilizaron "
             "a Lares-Villa 1993 para v18 (niño de 9 años, misma "
             "exposición al canal de Mexicali); v46 es una "
             "imputación dentro de la cohorte para un perfil "
@@ -13066,7 +13047,7 @@ def _build_vignette_047() -> dict[str, Any]:
 
     Tier-3 within-cohort imputation. Anchored to Capewell LG et al. 2015
     JPIDS (PMID 26582886), US 1937-2013 review of approximately 140-145
-    cases. Day-2 wave 1 used Capewell for v28-v31 (lake/pond sub-bucket);
+    cases. Vignettes 28-31 also use Capewell (lake/pond sub-bucket);
     v47 occupies the river sub-bucket within the same review's
     documented case-context. No specific named-case is claimed.
     """
@@ -13171,13 +13152,13 @@ def _build_vignette_047() -> dict[str, Any]:
             "ng/mL. CSF PCR confirmed Naegleria fowleri at the CDC "
             "reference laboratory. Treatment per CDC PAM protocol "
             "was initiated; the patient died of refractory "
-            "cerebral edema. This vignette is a Tier-3 within-"
-            "cohort imputation: no specific named-case is claimed. "
-            "Clinical specifics follow Capewell 2015's documented "
-            "US 1937-2013 review (approximately 140-145 cases, "
-            "river sub-bucket of the recreational freshwater "
-            "exposure category); demographics are locked from the "
-            "Day-2 distribution table (PMID 26582886)."
+            "cerebral edema. This vignette is a Tier-3 "
+            "within-cohort imputation: no specific named-case is "
+            "claimed. Clinical specifics follow Capewell 2015's "
+            "documented US 1937-2013 review (approximately 140-145 "
+            "cases, river sub-bucket of the recreational "
+            "freshwater exposure category); demographics are taken "
+            "from the PAM distribution table (PMID 26582886)."
         ),
         "narrative_es": (
             "Varón de 12 años originario de la región sur de "
@@ -13201,7 +13182,7 @@ def _build_vignette_047() -> dict[str, Any]:
             "Unidos 1937-2013 (aproximadamente 140-145 casos, "
             "subgrupo río de la categoría de exposición recreativa "
             "a agua dulce); las características demográficas están "
-            "fijadas en la tabla de distribución del Día 2 "
+            "tomadas de la tabla de distribución de PAM "
             "(PMID 26582886)."
         ),
     }
@@ -13329,8 +13310,8 @@ def _build_vignette_048() -> dict[str, Any]:
             "vignette is a Tier-3 within-cohort imputation: no "
             "specific named-case is claimed. Clinical specifics "
             "follow Gharpure 2021 EID US 2010-2019 surveillance "
-            "review (river sub-bucket); demographics are locked "
-            "from the Day-2 distribution table (PMID 33350926)."
+            "review (river sub-bucket); demographics are taken "
+            "from the PAM distribution table (PMID 33350926)."
         ),
         "narrative_es": (
             "Adolescente varón de 14 años originario de la región "
@@ -13352,7 +13333,7 @@ def _build_vignette_048() -> dict[str, Any]:
             "Los datos clínicos siguen la revisión de vigilancia "
             "estadounidense 2010-2019 de Gharpure 2021 EID "
             "(subgrupo río); las características demográficas "
-            "están fijadas en la tabla de distribución del Día 2 "
+            "están tomadas de la tabla de distribución de PAM "
             "(PMID 33350926)."
         ),
     }
@@ -13362,7 +13343,7 @@ def _build_vignette_049() -> dict[str, Any]:
     """v49: 11yo M Kerala India, river, mid, SURVIVED - Rauf 2025 reuse.
 
     Anchored to Rauf A et al. 2025 Indian J Pediatr (PMID 40009134).
-    Day-1 used this PMID for v20 (14-year-old male Kerala pediatric
+    This PMID also anchors v20 (14-year-old male Kerala pediatric
     survivor). v49 is a within-cohort imputation for a younger
     Indian pediatric survivor (11-year-old male, river-cluster
     encoding) within the same anchor's documented Kerala recreational
@@ -13492,12 +13473,12 @@ def _build_vignette_049() -> dict[str, Any]:
             "from the pediatric ICU on hospital day 16 and from "
             "acute care on hospital day 24 with preserved "
             "cognition, representing a pediatric Indian PAM "
-            "survivor. Day-1 used Rauf 2025 for v20 (14-year-old "
-            "male Kerala pediatric survivor); v49 is a within-"
-            "cohort imputation for a younger Indian pediatric "
-            "survivor demographic within the same anchor's "
-            "documented Kerala recreational freshwater context "
-            "(PMID 40009134)."
+            "survivor. Vignettes 1-20 used Rauf 2025 for v20 "
+            "(14-year-old male Kerala pediatric survivor); v49 is "
+            "a within-cohort imputation for a younger Indian "
+            "pediatric survivor demographic within the same "
+            "anchor's documented Kerala recreational freshwater "
+            "context (PMID 40009134)."
         ),
         "narrative_es": (
             "Niño de 11 años previamente sano, residente en "
@@ -13528,7 +13509,7 @@ def _build_vignette_049() -> dict[str, Any]:
             "intensivos pediátricos el día hospitalario 16 y de "
             "hospitalización aguda el día 24, con cognición "
             "preservada, como sobreviviente pediátrico indio de "
-            "PAM. El Día 1 utilizó a Rauf 2025 para v20 (varón de "
+            "PAM. Las viñetas 1-20 utilizaron a Rauf 2025 para v20 (varón de "
             "14 años, sobreviviente pediátrico de Kerala); v49 "
             "es una imputación dentro de la cohorte para un "
             "perfil pediátrico indio más joven dentro del "
@@ -13541,8 +13522,8 @@ def _build_vignette_049() -> dict[str, Any]:
 def _build_vignette_050() -> dict[str, Any]:
     """v50: 5yo M Arkansas, splash_pad, mid, fatal - Dulski 2025 reuse.
 
-    Anchored to Dulski TM et al. 2025 MMWR (PMID 40146665). Day-1 used
-    this PMID for v1 (16-month-old male) and v2 (3-year-old female),
+    Anchored to Dulski TM et al. 2025 MMWR (PMID 40146665). This PMID
+    also anchors v1 (16-month-old male) and v2 (3-year-old female),
     same Pulaski County Arkansas splash-pad case context. v50 is a
     within-cohort imputation for a different pediatric demographic
     (5-year-old male) within the same anchor's documented case-context.
@@ -13645,11 +13626,11 @@ def _build_vignette_050() -> dict[str, Any]:
             "344 mg/dL, and lactate 6.6 mmol/L. CSF PCR for "
             "Naegleria fowleri at the CDC reference laboratory was "
             "positive. The CDC PAM regimen was started but the "
-            "patient died. Day-1 used Dulski 2025 MMWR for v1 "
-            "(16-month-old boy) and v2 (3-year-old girl); v50 is a "
-            "within-cohort imputation for a 5-year-old male within "
-            "the same Pulaski County Arkansas splash-pad case "
-            "context (PMID 40146665)."
+            "patient died. Vignettes 1-20 used Dulski 2025 MMWR "
+            "for v1 (16-month-old boy) and v2 (3-year-old girl); "
+            "v50 is a within-cohort imputation for a 5-year-old "
+            "male within the same Pulaski County Arkansas "
+            "splash-pad case context (PMID 40146665)."
         ),
         "narrative_es": (
             "Niño de 5 años previamente sano, originario del "
@@ -13666,7 +13647,7 @@ def _build_vignette_050() -> dict[str, Any]:
             "mmol/L. La PCR de Naegleria fowleri en el laboratorio "
             "de referencia de los CDC fue positiva. Se inició el "
             "protocolo de PAM de los CDC, pero el paciente "
-            "falleció. El Día 1 utilizó a Dulski 2025 (MMWR) para "
+            "falleció. Las viñetas 1-20 utilizaron a Dulski 2025 (MMWR) para "
             "v1 (varón de 16 meses) y v2 (niña de 3 años); v50 es "
             "una imputación dentro de la cohorte para un perfil "
             "masculino de 5 años dentro del mismo contexto del "
@@ -13679,8 +13660,8 @@ def _build_vignette_050() -> dict[str, Any]:
 def _build_vignette_051() -> dict[str, Any]:
     """v51: 6yo M Texas, splash_pad, late, fatal - Eger 2023 reuse.
 
-    Anchored to Eger AS et al. 2023 (PMID 37470480). Day-1 used this
-    PMID for v3 (3-year-old male) and v4 (4-year-old male), same Texas
+    Anchored to Eger AS et al. 2023 (PMID 37470480). This PMID also
+    anchors v3 (3-year-old male) and v4 (4-year-old male), same Texas
     splash-pad case context. v51 is a within-cohort imputation for a
     different pediatric demographic (6-year-old male, late stage)
     within the same anchor's documented case-context.
@@ -13790,11 +13771,11 @@ def _build_vignette_051() -> dict[str, Any]:
             "lactate 8.5 mmol/L, and motile trophozoites on wet "
             "mount; the CDC reference laboratory CSF PCR confirmed "
             "Naegleria fowleri. The CDC PAM regimen was started "
-            "but the patient died. Day-1 used Eger 2023 for v3 "
-            "(3-year-old boy) and v4 (4-year-old boy); v51 is a "
-            "within-cohort imputation for a 6-year-old male, "
-            "late-stage demographic within the same Texas splash-"
-            "pad case context (PMID 37470480)."
+            "but the patient died. Vignettes 1-20 used Eger 2023 "
+            "for v3 (3-year-old boy) and v4 (4-year-old boy); v51 "
+            "is a within-cohort imputation for a 6-year-old male, "
+            "late-stage demographic within the same Texas "
+            "splash-pad case context (PMID 37470480)."
         ),
         "narrative_es": (
             "Niño de 6 años previamente sano, originario de Texas, "
@@ -13811,7 +13792,7 @@ def _build_vignette_051() -> dict[str, Any]:
             "directo; la PCR de Naegleria fowleri en el "
             "laboratorio de referencia de los CDC fue positiva. Se "
             "inició el protocolo de PAM de los CDC, pero el "
-            "paciente falleció. El Día 1 utilizó a Eger 2023 para "
+            "paciente falleció. Las viñetas 1-20 utilizaron a Eger 2023 para "
             "v3 (niño de 3 años) y v4 (niño de 4 años); v51 es "
             "una imputación dentro de la cohorte para un perfil "
             "masculino de 6 años en estadio tardío dentro del "
@@ -13974,8 +13955,8 @@ def _build_vignette_052() -> dict[str, Any]:
 def _build_vignette_053() -> dict[str, Any]:
     """v53: 35yo M Louisiana, nasal_irrigation, mid, fatal - Yoder 2012 reuse.
 
-    Anchored to Yoder JS et al. 2012 (PMID 22919000). Day-1 used this
-    PMID for v10 (28-year-old male) and v11 (51-year-old female), same
+    Anchored to Yoder JS et al. 2012 (PMID 22919000). This PMID also
+    anchors v10 (28-year-old male) and v11 (51-year-old female), same
     Louisiana neti-pot tap-water case context. v53 is a within-cohort
     imputation for a different adult demographic (35-year-old male)
     within the same anchor's documented Louisiana neti-pot context.
@@ -14079,12 +14060,12 @@ def _build_vignette_053() -> dict[str, Any]:
             "glucose 22 mg/dL, protein 348 mg/dL, and lactate 6.6 "
             "mmol/L. CSF PCR for Naegleria fowleri at the CDC "
             "reference laboratory was positive. The CDC PAM "
-            "regimen was started but the patient died. Day-1 used "
-            "Yoder 2012 for v10 (28-year-old male) and v11 (51-"
-            "year-old female); v53 is a within-cohort imputation "
-            "for a 35-year-old male adult within the same "
-            "Louisiana neti-pot tap-water case context "
-            "(PMID 22919000)."
+            "regimen was started but the patient died. Vignettes "
+            "1-20 used Yoder 2012 for v10 (28-year-old male) and "
+            "v11 (51-year-old female); v53 is a within-cohort "
+            "imputation for a 35-year-old male adult within the "
+            "same Louisiana neti-pot tap-water case context (PMID "
+            "22919000)."
         ),
         "narrative_es": (
             "Varón de 35 años originario de Luisiana que se "
@@ -14101,7 +14082,7 @@ def _build_vignette_053() -> dict[str, Any]:
             "mmol/L. La PCR de Naegleria fowleri en el "
             "laboratorio de referencia de los CDC fue positiva. "
             "Se inició el protocolo de PAM de los CDC, pero el "
-            "paciente falleció. El Día 1 utilizó a Yoder 2012 para "
+            "paciente falleció. Las viñetas 1-20 utilizaron a Yoder 2012 para "
             "v10 (varón de 28 años) y v11 (mujer de 51 años); v53 "
             "es una imputación dentro de la cohorte para un perfil "
             "adulto masculino de 35 años dentro del mismo contexto "
@@ -14114,8 +14095,8 @@ def _build_vignette_053() -> dict[str, Any]:
 def _build_vignette_054() -> dict[str, Any]:
     """v54: 62yo F Louisiana, nasal_irrigation, late, fatal - Yoder 2012 reuse.
 
-    Anchored to Yoder JS et al. 2012 (PMID 22919000). Day-1 used this
-    PMID for v10 (28M) and v11 (51F); v54 is a within-cohort imputation
+    Anchored to Yoder JS et al. 2012 (PMID 22919000). This PMID also
+    anchors v10 (28M) and v11 (51F); v54 is a within-cohort imputation
     for an older adult female (62F, late stage) within the same anchor's
     documented Louisiana neti-pot tap-water context.
     """
@@ -14226,11 +14207,12 @@ def _build_vignette_054() -> dict[str, Any]:
             "mmol/L, and motile trophozoites on wet mount; the "
             "CDC reference laboratory CSF PCR confirmed Naegleria "
             "fowleri. The CDC PAM regimen was started but the "
-            "patient died. Day-1 used Yoder 2012 for v10 (28-year-"
-            "old male) and v11 (51-year-old female); v54 is a "
-            "within-cohort imputation for an older adult female "
-            "(62 years, late stage) within the same Louisiana "
-            "neti-pot tap-water case context (PMID 22919000)."
+            "patient died. Vignettes 1-20 used Yoder 2012 for v10 "
+            "(28-year-old male) and v11 (51-year-old female); v54 "
+            "is a within-cohort imputation for an older adult "
+            "female (62 years, late stage) within the same "
+            "Louisiana neti-pot tap-water case context (PMID "
+            "22919000)."
         ),
         "narrative_es": (
             "Mujer de 62 años originaria de Luisiana que se "
@@ -14247,8 +14229,8 @@ def _build_vignette_054() -> dict[str, Any]:
             "móviles en frotis directo; la PCR del líquido "
             "cefalorraquídeo en el laboratorio de referencia de "
             "los CDC fue positiva. Se inició el protocolo de PAM "
-            "de los CDC, pero la paciente falleció. El Día 1 "
-            "utilizó a Yoder 2012 para v10 (varón de 28 años) y "
+            "de los CDC, pero la paciente falleció. Las viñetas 1-20 "
+            "utilizaron a Yoder 2012 para v10 (varón de 28 años) y "
             "v11 (mujer de 51 años); v54 es una imputación dentro "
             "de la cohorte para una mujer adulta mayor (62 años, "
             "estadio tardío) dentro del mismo contexto de neti pot "
@@ -14260,8 +14242,8 @@ def _build_vignette_054() -> dict[str, Any]:
 def _build_vignette_055() -> dict[str, Any]:
     """v55: 45yo M Texas, nasal_irrigation, mid, fatal - Smith 2025 reuse.
 
-    Anchored to Smith DR et al. 2025 (PMID 40440212). Day-1 used this
-    PMID for v12 (71-year-old female with RV plumbing exposure). v55 is
+    Anchored to Smith DR et al. 2025 (PMID 40440212). This PMID also
+    anchors v12 (71-year-old female with RV plumbing exposure). v55 is
     a within-cohort imputation for a different adult male demographic
     (45-year-old male) within the same anchor's RV/tank water tap
     nasal-rinse case context.
@@ -14355,22 +14337,22 @@ def _build_vignette_055() -> dict[str, Any]:
         "narrative_en": (
             "A 45-year-old man from Texas presented with five days "
             "of fever, frontal headache, nasal congestion, and "
-            "progressive somnolence after a multi-week travel "
-            "trip during which he used daily neti-pot rinses with "
-            "tap water drawn from his recreational vehicle's "
-            "water tank. Examination showed temperature 39.1 C, "
-            "Glasgow Coma Scale 11, neck stiffness, and a positive "
-            "Kernig sign without focal deficit. CSF showed opening "
+            "progressive somnolence after a multi-week travel trip "
+            "during which he used daily neti-pot rinses with tap "
+            "water drawn from his recreational vehicle's water "
+            "tank. Examination showed temperature 39.1 C, Glasgow "
+            "Coma Scale 11, neck stiffness, and a positive Kernig "
+            "sign without focal deficit. CSF showed opening "
             "pressure 28 cmH2O, white cell count 3,000 per cubic "
             "millimeter (90 percent neutrophils), glucose 21 "
             "mg/dL, protein 354 mg/dL, and lactate 6.8 mmol/L. CSF "
             "PCR for Naegleria fowleri at the CDC reference "
             "laboratory was positive. The CDC PAM regimen was "
-            "started but the patient died. Day-1 used Smith 2025 "
-            "for v12 (71-year-old female with RV plumbing "
-            "exposure); v55 is a within-cohort imputation for a "
-            "different adult male demographic (45-year-old man) "
-            "within the same RV/tank-water nasal-rinse case "
+            "started but the patient died. Vignettes 1-20 used "
+            "Smith 2025 for v12 (71-year-old female with RV "
+            "plumbing exposure); v55 is a within-cohort imputation "
+            "for a different adult male demographic (45-year-old "
+            "man) within the same RV/tank-water nasal-rinse case "
             "context (PMID 40440212)."
         ),
         "narrative_es": (
@@ -14388,7 +14370,7 @@ def _build_vignette_055() -> dict[str, Any]:
             "mg/dL y lactato 6.8 mmol/L. La PCR de Naegleria "
             "fowleri en el laboratorio de referencia de los CDC "
             "fue positiva. Se inició el protocolo de PAM de los "
-            "CDC, pero el paciente falleció. El Día 1 utilizó a "
+            "CDC, pero el paciente falleció. Las viñetas 1-20 utilizaron a "
             "Smith 2025 para v12 (mujer de 71 años con exposición "
             "a plomería de vehículo recreativo); v55 es una "
             "imputación dentro de la cohorte para un perfil "
@@ -14657,19 +14639,19 @@ def _build_vignette_057() -> dict[str, Any]:
             "congestion, and progressive somnolence after daily "
             "neti-pot tap-water rinses for chronic sinus symptoms. "
             "On admission temperature was 39.1 C, Glasgow Coma "
-            "Scale 12. CSF showed opening pressure 26 cmH2O, "
-            "white cell count 2,180 per cubic millimeter (89 "
-            "percent neutrophils), glucose 28 mg/dL, and protein "
-            "242 mg/dL. Acute-phase reactants were CRP 58 mg/L "
-            "and procalcitonin 1.4 ng/mL. CSF PCR confirmed "
-            "Naegleria fowleri at the CDC reference laboratory. "
-            "Treatment per CDC PAM protocol was initiated; the "
-            "patient died. This vignette is a Tier-4 within-cohort "
-            "imputation: no specific named-case is claimed. "
-            "Clinical specifics follow Gharpure 2021 EID US "
-            "2010-2019 surveillance review (nasal-irrigation sub-"
-            "bucket); demographics are locked from the Day-2 "
-            "distribution table (PMID 33350926)."
+            "Scale 12. CSF showed opening pressure 26 cmH2O, white "
+            "cell count 2,180 per cubic millimeter (89 percent "
+            "neutrophils), glucose 28 mg/dL, and protein 242 "
+            "mg/dL. Acute-phase reactants were CRP 58 mg/L and "
+            "procalcitonin 1.4 ng/mL. CSF PCR confirmed Naegleria "
+            "fowleri at the CDC reference laboratory. Treatment "
+            "per CDC PAM protocol was initiated; the patient died. "
+            "This vignette is a Tier-4 within-cohort imputation: "
+            "no specific named-case is claimed. Clinical specifics "
+            "follow Gharpure 2021 EID US 2010-2019 surveillance "
+            "review (nasal-irrigation sub-bucket); demographics "
+            "are taken from the PAM distribution table (PMID "
+            "33350926)."
         ),
         "narrative_es": (
             "Varón de 38 años originario de la región sur de "
@@ -14692,8 +14674,8 @@ def _build_vignette_057() -> dict[str, Any]:
             "clínicos siguen la revisión de vigilancia "
             "estadounidense 2010-2019 de Gharpure 2021 EID "
             "(subgrupo de irrigación nasal); las características "
-            "demográficas están fijadas en la tabla de "
-            "distribución del Día 2 (PMID 33350926)."
+            "demográficas están tomadas de la tabla de "
+            "distribución de PAM (PMID 33350926)."
         ),
     }
 
@@ -14818,9 +14800,9 @@ def _build_vignette_058() -> dict[str, Any]:
             "CDC PAM protocol was initiated; the patient died. "
             "This vignette is a Tier-4 within-cohort imputation: "
             "no specific named-case is claimed. Clinical specifics "
-            "follow Gharpure 2021 CID global review (nasal-"
-            "irrigation sub-bucket); demographics are locked from "
-            "the Day-2 distribution table (PMID 32369575)."
+            "follow Gharpure 2021 CID global review "
+            "(nasal-irrigation sub-bucket); demographics are taken "
+            "from the PAM distribution table (PMID 32369575)."
         ),
         "narrative_es": (
             "Varón de 50 años originario de la región sur de "
@@ -14842,8 +14824,8 @@ def _build_vignette_058() -> dict[str, Any]:
             "reclama un caso nombrado específico. Los datos "
             "clínicos siguen la revisión global de Gharpure 2021 "
             "CID (subgrupo de irrigación nasal); las "
-            "características demográficas están fijadas en la "
-            "tabla de distribución del Día 2 (PMID 32369575)."
+            "características demográficas están tomadas de la "
+            "tabla de distribución de PAM (PMID 32369575)."
         ),
     }
 
@@ -14851,8 +14833,8 @@ def _build_vignette_058() -> dict[str, Any]:
 def _build_vignette_059() -> dict[str, Any]:
     """v59: 8yo F Florida (acquired Costa Rica), hot_springs, mid, fatal - Sandi reuse.
 
-    Anchored to Sandi M et al. 2015 (PMID 25625800). Day-1 used this
-    PMID for v17 (11-year-old male, latam cluster, Florida acquired
+    Anchored to Sandi M et al. 2015 (PMID 25625800). This PMID also
+    anchors v17 (11-year-old male, latam cluster, Florida acquired
     Costa Rica hot-springs travel). v59 is a within-cohort imputation
     for a different family-member demographic (8-year-old female)
     within the same anchor's documented Costa Rica hot-springs
@@ -14958,16 +14940,17 @@ def _build_vignette_059() -> dict[str, Any]:
             "deficit. CSF showed opening pressure 28 cmH2O, white "
             "cell count 3,160 per cubic millimeter (90 percent "
             "neutrophils), glucose 21 mg/dL, protein 364 mg/dL, "
-            "and lactate 6.8 mmol/L. CSF PCR for Naegleria "
-            "fowleri at the CDC reference laboratory was positive. "
-            "The CDC PAM regimen was started but the patient "
-            "died. Day-1 used Sandi 2015 for v17 (11-year-old boy, "
-            "same Florida-acquired-Costa-Rica hot-springs travel "
-            "context, latam cluster); v59 is a within-cohort "
-            "imputation for a different family-member demographic "
-            "(8-year-old girl) within the same anchor's "
-            "documented hot-springs travel context, encoded under "
-            "the hot_springs cluster (PMID 25625800)."
+            "and lactate 6.8 mmol/L. CSF PCR for Naegleria fowleri "
+            "at the CDC reference laboratory was positive. The CDC "
+            "PAM regimen was started but the patient died. "
+            "Vignettes 1-20 used Sandi 2015 for v17 (11-year-old "
+            "boy, same Florida-acquired-Costa-Rica hot-springs "
+            "travel context, latam cluster); v59 is a "
+            "within-cohort imputation for a different "
+            "family-member demographic (8-year-old girl) within "
+            "the same anchor's documented hot-springs travel "
+            "context, encoded under the hot_springs cluster (PMID "
+            "25625800)."
         ),
         "narrative_es": (
             "Niña de 8 años previamente sana que regresó a "
@@ -14986,7 +14969,7 @@ def _build_vignette_059() -> dict[str, Any]:
             "en líquido cefalorraquídeo en el laboratorio de "
             "referencia de los CDC fue positiva. Se inició el "
             "protocolo de PAM de los CDC, pero la paciente "
-            "falleció. El Día 1 utilizó a Sandi 2015 para v17 "
+            "falleció. Las viñetas 1-20 utilizaron a Sandi 2015 para v17 "
             "(niño de 11 años, mismo contexto de viaje Florida-"
             "Costa Rica con aguas termales, clúster latam); v59 "
             "es una imputación dentro de la cohorte para un "
@@ -15002,7 +14985,7 @@ def _build_vignette_060() -> dict[str, Any]:
     """v60: 26yo M Karachi, pakistan_ablution, mid, SURVIVED - Burki 2024 reuse.
 
     Anchored to Burki et al. 2024 Emerg Infect Dis (PMID 38526236).
-    Day-1 used this PMID for v19 (22-year-old male Karachi adult
+    This PMID also anchors v19 (22-year-old male Karachi adult
     survivor, ablution exposure). v60 is a within-cohort imputation
     for a different adult demographic (26-year-old male) within the
     same anchor's documented Karachi ritual-ablution context.
@@ -15114,32 +15097,31 @@ def _build_vignette_060() -> dict[str, Any]:
             "photophobia, vomiting, and progressive somnolence in "
             "the context of daily ritual ablution (wudu) using "
             "municipal tap water. Family-recognized early decline "
-            "prompted arrival within hours of mental-status "
-            "change. Examination showed temperature 39.5 C, "
-            "Glasgow Coma Scale 12, neck stiffness, and a positive "
-            "Kernig sign without focal deficit. CSF showed opening "
-            "pressure 28 cmH2O, white cell count 1,860 per cubic "
-            "millimeter (88 percent neutrophils), glucose 31 "
-            "mg/dL, protein 198 mg/dL, lactate 5.0 mmol/L, and "
-            "motile trophozoites on wet mount; the Aga Khan "
-            "University reference laboratory CSF real-time PCR "
-            "confirmed Naegleria fowleri. The CDC six-drug regimen "
-            "(amphotericin B intravenous and intrathecal, "
-            "miltefosine, dexamethasone, fluconazole, "
-            "azithromycin, rifampin), induced hypothermia, and "
-            "aggressive intracranial pressure control were started "
-            "within two hours of diagnosis. The patient remained "
-            "intubated for nine days with gradual neurologic "
-            "recovery, was discharged from the intensive care unit "
-            "on hospital day 19, and from acute care on hospital "
-            "day 30 with preserved cognition and mild residual "
-            "deficits, representing one of the rare adult "
-            "Pakistani PAM survivors. Day-1 used Burki 2024 for "
-            "v19 (22-year-old male Karachi adult survivor); v60 "
-            "is a within-cohort imputation for a different adult "
-            "demographic (26-year-old male) within the same "
-            "Karachi ritual-ablution survivor case context "
-            "(PMID 38526236)."
+            "prompted arrival within hours of mental-status change. "
+            "Examination showed temperature 39.5 C, Glasgow Coma "
+            "Scale 12, neck stiffness, and a positive Kernig sign "
+            "without focal deficit. CSF showed opening pressure 28 "
+            "cmH2O, white cell count 1,860 per cubic millimeter (88 "
+            "percent neutrophils), glucose 31 mg/dL, protein 198 "
+            "mg/dL, lactate 5.0 mmol/L, and motile trophozoites on "
+            "wet mount; the Aga Khan University reference "
+            "laboratory CSF real-time PCR confirmed Naegleria "
+            "fowleri. The CDC six-drug regimen (amphotericin B "
+            "intravenous and intrathecal, miltefosine, "
+            "dexamethasone, fluconazole, azithromycin, rifampin), "
+            "induced hypothermia, and aggressive intracranial "
+            "pressure control were started within two hours of "
+            "diagnosis. The patient remained intubated for nine "
+            "days with gradual neurologic recovery, was discharged "
+            "from the intensive care unit on hospital day 19, and "
+            "from acute care on hospital day 30 with preserved "
+            "cognition and mild residual deficits, representing one "
+            "of the rare adult Pakistani PAM survivors. Vignettes "
+            "1-20 used Burki 2024 for v19 (22-year-old male Karachi "
+            "adult survivor); v60 is a within-cohort imputation for "
+            "a different adult demographic (26-year-old male) "
+            "within the same Karachi ritual-ablution survivor case "
+            "context (PMID 38526236)."
         ),
         "narrative_es": (
             "Varón previamente sano de 26 años, residente en "
@@ -15171,7 +15153,7 @@ def _build_vignette_060() -> dict[str, Any]:
             "hospitalario 19 y de hospitalización aguda el día 30, "
             "con cognición preservada y déficits residuales leves, "
             "como uno de los raros sobrevivientes adultos "
-            "pakistaníes de PAM. El Día 1 utilizó a Burki 2024 "
+            "pakistaníes de PAM. Las viñetas 1-20 utilizaron a Burki 2024 "
             "para v19 (varón de 22 años, sobreviviente adulto de "
             "Karachi); v60 es una imputación dentro de la cohorte "
             "para un perfil adulto distinto (varón de 26 años) "
@@ -15182,7 +15164,7 @@ def _build_vignette_060() -> dict[str, Any]:
 
 
 # ============================================================================
-# Wave 1 BACTERIAL vignette builders (n=14)
+# BACTERIAL set A vignette builders (n=14)
 # ----------------------------------------------------------------------------
 # Slot IDs: 65, 66, 67, 69, 71, 73, 75, 76, 77, 78, 79, 80, 81, 90.
 # Anchors: 10 Tunkel IDSA 2004 (PMID 15494903, anchor_type=guideline) +
@@ -15190,20 +15172,21 @@ def _build_vignette_060() -> dict[str, Any]:
 # Pathogens: 13 S. pneumoniae + 1 gram-negative (v90 post-neurosurgical).
 # Diagnostic ambiguity: 4 of 14 (v75, v76, v79, v80) - partial antibiotic
 # pretreatment, sterile cultures, attenuated CSF profile.
-# All adjudication.inclusion_decision = "hold_for_revision" (Q7 5.3.1 lock).
-# All freshwater_exposure_within_14d = False (spec 1.3.10).
-# CSF profile per spec 1.3.3: WBC 1k-10k neutrophilic, glucose <40,
+# All adjudication.inclusion_decision = "hold_for_revision" (pending
+# external adjudication).
+# All freshwater_exposure_within_14d = False (PAM differential guard).
+# CSF profile: WBC 1k-10k neutrophilic, glucose <40,
 # protein >100. Ambiguity cases attenuated WBC + neutrophil pct per the
 # pretreatment-recrudescence pattern in the IDSA guideline narrative.
 # ============================================================================
 
-BACT_WAVE1_OUTPUT_DIR = Path("data/vignettes/v2/class_02_bacterial")
-BACT_WAVE1_IDS: list[int] = [65, 66, 67, 69, 71, 73, 75, 76, 77, 78, 79, 80, 81, 90]
-BACT_WAVE1_AMBIGUITY_IDS: set[int] = {75, 76, 79, 80}
+BACT_SET_A_OUTPUT_DIR = Path("data/vignettes/v2/class_02_bacterial")
+BACT_SET_A_IDS: list[int] = [65, 66, 67, 69, 71, 73, 75, 76, 77, 78, 79, 80, 81, 90]
+BACT_SET_A_AMBIGUITY_IDS: set[int] = {75, 76, 79, 80}
 
 
-def _bact_wave1_altitude(region: str) -> int:
-    """Altitude proxy by schema region (matches the pilot conventions)."""
+def _bact_set_a_altitude(region: str) -> int:
+    """Altitude proxy by schema region (same convention as bact_062, bact_064, bact_082)."""
     return {
         "us_south": 100,
         "other_global": 5,
@@ -15214,8 +15197,8 @@ def _bact_wave1_altitude(region: str) -> int:
     }.get(region, 100)
 
 
-def _bact_wave1_ethnicity(region: str) -> str:
-    """Ethnicity proxy by schema region (matches the pilot conventions)."""
+def _bact_set_a_ethnicity(region: str) -> str:
+    """Ethnicity proxy by schema region (same convention as bact_062, bact_064, bact_082)."""
     if region == "us_south":
         return "white_non_hispanic"
     if region.startswith("peru_"):
@@ -15223,8 +15206,8 @@ def _bact_wave1_ethnicity(region: str) -> str:
     return "white_non_hispanic"
 
 
-def _bact_wave1_case_id(spec: dict[str, Any], pmid_meta: dict[str, Any]) -> str:
-    """Mirror BACT-D3-NNN-<journal>-<year>-<region-tag>-<descriptor> pattern."""
+def _bact_set_a_case_id(spec: dict[str, Any], pmid_meta: dict[str, Any]) -> str:
+    """Mirror BACT-NNN-<journal>-<year>-<region-tag>-<descriptor> pattern."""
     nnn = f"{spec['vignette_id']:03d}"
     journal = pmid_meta["journal_short_code"].replace(" ", "-")
     year = pmid_meta["year"]
@@ -15242,10 +15225,10 @@ def _bact_wave1_case_id(spec: dict[str, Any], pmid_meta: dict[str, Any]) -> str:
         descriptor_tail = f"{pathogen_descriptor}-{spec['stage'].capitalize()}-Fatal"
     else:
         descriptor_tail = f"{pathogen_descriptor}-{spec['stage'].capitalize()}"
-    return f"BACT-D3-{nnn}-{journal}-{year}-{region_tag}-{descriptor_tail}"
+    return f"BACT-{nnn}-{journal}-{year}-{region_tag}-{descriptor_tail}"
 
 
-def _bact_wave1_anchor_short(pmid: str) -> str:
+def _bact_set_a_anchor_short(pmid: str) -> str:
     if pmid == "15494903":
         return "Tunkel IDSA 2004"
     if pmid == "15509818":
@@ -15253,7 +15236,7 @@ def _bact_wave1_anchor_short(pmid: str) -> str:
     raise KeyError(pmid)
 
 
-def _bact_wave1_dx_tests_sp_culture_positive(pmid: str) -> list[dict[str, Any]]:
+def _bact_set_a_dx_tests_sp_culture_positive(pmid: str) -> list[dict[str, Any]]:
     """Standard SP gram-positive culture-confirmed diagnostic battery."""
     cit = f"PMID:{pmid}"
     gram_s, gram_sp = (80.0, 97.0) if pmid == "15509818" else (None, None)
@@ -15282,7 +15265,7 @@ def _bact_wave1_dx_tests_sp_culture_positive(pmid: str) -> list[dict[str, Any]]:
     ]
 
 
-def _bact_wave1_dx_tests_sp_pretreated(pmid: str) -> list[dict[str, Any]]:
+def _bact_set_a_dx_tests_sp_pretreated(pmid: str) -> list[dict[str, Any]]:
     """SP-suspected after partial antibiotic pretreatment: cultures sterile,
     Gram stain unrevealing, antigen or PCR confirms organism."""
     cit = f"PMID:{pmid}"
@@ -15318,7 +15301,7 @@ def _bact_wave1_dx_tests_sp_pretreated(pmid: str) -> list[dict[str, Any]]:
     ]
 
 
-def _bact_wave1_dx_tests_gn_pseudomonas(pmid: str) -> list[dict[str, Any]]:
+def _bact_set_a_dx_tests_gn_pseudomonas(pmid: str) -> list[dict[str, Any]]:
     """Gram-negative healthcare-associated meningitis confirming Pseudomonas."""
     cit = f"PMID:{pmid}"
     return [
@@ -15346,7 +15329,7 @@ def _bact_wave1_dx_tests_gn_pseudomonas(pmid: str) -> list[dict[str, Any]]:
     ]
 
 
-def _bact_wave1_imaging_for(spec: dict[str, Any]) -> dict[str, Any]:
+def _bact_set_a_imaging_for(spec: dict[str, Any]) -> dict[str, Any]:
     """CT non-contrast pattern by stage/outcome.
 
     Mid stage SP: typically normal at admission (per Tunkel 2004).
@@ -15378,7 +15361,7 @@ def _bact_wave1_imaging_for(spec: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def _bact_wave1_exposure(spec: dict[str, Any]) -> dict[str, Any]:
+def _bact_set_a_exposure(spec: dict[str, Any]) -> dict[str, Any]:
     """Exposure block with risk-factor specific overrides."""
     risk = set(spec.get("risk_factors", []))
     immune = "none"
@@ -15403,7 +15386,7 @@ def _bact_wave1_exposure(spec: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def _bact_wave1_red_flags(spec: dict[str, Any]) -> list[str]:
+def _bact_set_a_red_flags(spec: dict[str, Any]) -> list[str]:
     flags: list[str] = []
     if spec["vignette_id"] == 78:
         flags.append("immunocompromise")
@@ -15412,31 +15395,31 @@ def _bact_wave1_red_flags(spec: dict[str, Any]) -> list[str]:
     return flags
 
 
-def _bact_wave1_adjudication(spec: dict[str, Any], anchoring_extras: str) -> dict[str, Any]:
-    """Pre-adjudication hold_for_revision adjudication block (Q7 5.3.1 lock).
+def _bact_set_a_adjudication(spec: dict[str, Any], anchoring_extras: str) -> dict[str, Any]:
+    """Pre-adjudication hold_for_revision adjudication block.
 
     The 5-field schema (adjudicator_ids, cohen_kappa, disagreement_resolution,
     anchoring_documentation, inclusion_decision) is fully populated. The
     structured pre-adjudication disclosure embeds verbatim
     'self_review_disposition=hold_for_revision' inside anchoring_documentation,
-    matching the pilot pattern.
+    matching bact_062, bact_064 and bact_082.
     """
     pmid = spec["pmid"]
-    anchor_short = _bact_wave1_anchor_short(pmid)
+    anchor_short = _bact_set_a_anchor_short(pmid)
     base = (
         f"stage=pre_adjudication; status=pending_external_review; "
         f"self_review_disposition=hold_for_revision; "
-        f"self_review_notes=wave 1 vignette anchored to PMID {pmid} ({anchor_short}); "
+        f"self_review_notes=vignette anchored to PMID {pmid} ({anchor_short}); "
         f"external clinical adjudication pending; classification provisional. "
-        f"adjudicator_ids=WAVE1-PRE-ADJ-1, WAVE1-PRE-ADJ-2 (sentinel); "
+        f"adjudicator_ids=PRE-ADJ-1, PRE-ADJ-2 (sentinel); "
         f"cohen_kappa=0.0 placeholder; adjudicator_name=null; "
         f"adjudication_date=null; post_adjudication_disposition=null. "
-        f"Subphase 1.3 commit 5.3.3 (2026-05-08)."
+        "Generated 2026-05-08."
     )
     if anchoring_extras:
         base = base + " " + anchoring_extras
     return {
-        "adjudicator_ids": ["WAVE1-PRE-ADJ-1", "WAVE1-PRE-ADJ-2"],
+        "adjudicator_ids": ["PRE-ADJ-1", "PRE-ADJ-2"],
         "cohen_kappa": 0.0,
         "disagreement_resolution": None,
         "anchoring_documentation": base,
@@ -15444,13 +15427,13 @@ def _bact_wave1_adjudication(spec: dict[str, Any], anchoring_extras: str) -> dic
     }
 
 
-def _bact_wave1_provenance(rationale: str) -> dict[str, Any]:
+def _bact_set_a_provenance(rationale: str) -> dict[str, Any]:
     if len(rationale) > 1000:
         rationale = rationale[:997] + "..."
     return {
         "generation_timestamp_utc": "2026-05-08T12:00:00Z",
         "generator_model_identifier": (
-            "scripts.generate_pam_vignettes/v1.subphase_1_3_commit_5_3_3"
+            "scripts.generate_pam_vignettes/v1"
         ),
         "prompt_hash_sha256": "0" * 64,
         "schema_version": "2.0",
@@ -15530,14 +15513,14 @@ def _build_bact_vignette_065() -> dict[str, Any]:
             "39.4 C, severe headache, neck stiffness, and vomiting. He was "
             "post-splenectomy six years prior following a motor vehicle accident. "
             "Examination on admission: temperature 39.4 C, Glasgow Coma Scale 12, "
-            "neck stiffness, positive Kernig sign, no focal deficit, no rash. "
-            "CSF showed opening pressure 32 cmH2O, white cell count 6,800 per "
-            "cubic millimeter (92 percent neutrophils), glucose 18 mg/dL, protein "
-            "250 mg/dL. Gram stain revealed gram-positive diplococci; culture "
+            "neck stiffness, positive Kernig sign, no focal deficit, no rash. CSF "
+            "showed opening pressure 32 cmH2O, white cell count 6,800 per cubic "
+            "millimeter (92 percent neutrophils), glucose 18 mg/dL, protein 250 "
+            "mg/dL. Gram stain revealed gram-positive diplococci; culture "
             "identified Streptococcus pneumoniae. Anchored to Tunkel IDSA 2004 "
             "(PMID 15494903) recommendations for suspected pneumococcal "
             "meningitis with asplenia risk factor. Outcome: survived no sequelae. "
-            "Subphase 1.3 commit 5.3.3 wave 1, pre-adjudication hold_for_revision."
+            "Pre-adjudication status: hold_for_revision."
         ),
         "narrative_es": (
             "Varon de 28 anos en region sur de Estados Unidos, ingresado a "
@@ -15550,23 +15533,23 @@ def _build_bact_vignette_065() -> dict[str, Any]:
             "neutrofilos), glucosa 18 mg/dL, proteina 250 mg/dL. Tincion de Gram "
             "con diplococos grampositivos y cultivo Streptococcus pneumoniae. "
             "Anclaje en guia IDSA Tunkel 2004 (PMID 15494903) para meningitis "
-            "neumococica con asplenia. Subphase 1.3 commit 5.3.3 wave 1."
+            "neumococica con asplenia."
         ),
         "rationale": (
             "Anchored to PMID 15494903 (Tunkel IDSA 2004 CID guideline). "
-            "Demographic anchor (28yo M asplenic) reflects the encapsulated-"
-            "organism risk stratum referenced by Tunkel as a covered indication "
-            "for empiric vancomycin plus ceftriaxone. CSF profile bacterial "
-            "range per guideline cutoffs. Imputation tiers: tier_1_primary={"
-            "csf_culture, csf_gram_stain, age, sex, asplenia risk factor}; "
-            "tier_3_within_cohort={csf_wbc, neutrophil_pct, glucose, protein}; "
-            "tier_4_priors={temp, gcs, symptom_days}. Indeterminate=none. "
-            "Diagnostic_ambiguity=false. Outcome=survived_no_sequelae. "
-            "Antibiotic_started_hours=1. Tier: tier_4_imputation_idsa_guideline_"
-            "anchored. 5.3.3 wave1 SP-asplenia."
+            "Demographic anchor (28yo M asplenic) reflects the "
+            "encapsulated-organism risk stratum referenced by Tunkel as a "
+            "covered indication for empiric vancomycin plus ceftriaxone. CSF "
+            "profile bacterial range per guideline cutoffs. Imputation tiers: "
+            "tier_1_primary={csf_culture, csf_gram_stain, age, sex, asplenia "
+            "risk factor}; tier_3_within_cohort={csf_wbc, neutrophil_pct, "
+            "glucose, protein}; tier_4_priors={temp, gcs, symptom_days}. "
+            "Indeterminate=none. Diagnostic_ambiguity=false. "
+            "Outcome=survived_no_sequelae. Antibiotic_started_hours=1. Tier: "
+            "tier_4_imputation_idsa_guideline_anchored. Stratum: SP-asplenia."
         ),
         "anchoring_extras": "anchor=Tunkel-IDSA-2004 risk_factor=asplenia.",
-        "diagnostic_tests": _bact_wave1_dx_tests_sp_culture_positive("15494903"),
+        "diagnostic_tests": _bact_set_a_dx_tests_sp_culture_positive("15494903"),
     }
 
 
@@ -15631,33 +15614,31 @@ def _build_bact_vignette_066() -> dict[str, Any]:
         "narrative_en": (
             "A 68-year-old man in the Netherlands presented to a tertiary "
             "emergency department in Amsterdam after a 3-day course of "
-            "progressive fever, headache, and confusion. He had a 30-year "
-            "history of chronic alcohol use. He was obtunded on arrival. "
-            "Examination on admission: temperature 39.5 C, Glasgow Coma Scale 8, "
-            "neck stiffness, positive Kernig sign, no focal deficit, no rash. "
-            "CSF showed opening pressure 28 cmH2O, white cell count 5,400 per "
-            "cubic millimeter (88 percent neutrophils), glucose 22 mg/dL, protein "
-            "220 mg/dL. Gram stain revealed gram-positive diplococci; culture "
-            "identified Streptococcus pneumoniae. Primary anchor: PMID 15509818 "
-            "(van de Beek 2004 NEJM), 696-episode prospective Netherlands cohort "
-            "1998-2002 (alcoholic stratum mortality elevated). Outcome: fatal "
-            "hospital day 4. Subphase 1.3 commit 5.3.3 wave 1, pre-adjudication "
-            "hold_for_revision."
+            "progressive fever, headache, and confusion. He had a 30-year history "
+            "of chronic alcohol use. He was obtunded on arrival. Examination on "
+            "admission: temperature 39.5 C, Glasgow Coma Scale 8, neck stiffness, "
+            "positive Kernig sign, no focal deficit, no rash. CSF showed opening "
+            "pressure 28 cmH2O, white cell count 5,400 per cubic millimeter (88 "
+            "percent neutrophils), glucose 22 mg/dL, protein 220 mg/dL. Gram "
+            "stain revealed gram-positive diplococci; culture identified "
+            "Streptococcus pneumoniae. Primary anchor: PMID 15509818 (van de Beek "
+            "2004 NEJM), 696-episode prospective Netherlands cohort 1998-2002 "
+            "(alcoholic stratum mortality elevated). Outcome: fatal hospital day "
+            "4. Pre-adjudication status: hold_for_revision."
         ),
         "narrative_es": (
             "Varon de 68 anos en Paises Bajos (Amsterdam), ingresado a urgencias "
             "terciarias tras tres dias de fiebre progresiva, cefalea y confusion. "
             "Antecedente de consumo cronico de alcohol durante 30 anos. Ingreso "
-            "obnubilado. Examen: temperatura 39.5 C, escala de Glasgow 8, rigidez "
-            "de nuca, signo de Kernig positivo, sin deficit focal, sin exantema. "
-            "Liquido cefalorraquideo mostro presion de apertura 28 cmH2O, "
-            "leucocitos 5,400 por mm3 (88 por ciento neutrofilos), glucosa 22 mg/dL, "
-            "proteina 220 mg/dL. Tincion de Gram con diplococos grampositivos y "
-            "cultivo Streptococcus pneumoniae. Anclaje primario en cohorte "
-            "prospectiva van de Beek 2004 NEJM (PMID 15509818, 696 episodios "
-            "1998-2002, estrato alcoholico con mortalidad elevada). Resultado: "
-            "fatal en hospital dia 4. Subphase 1.3 commit 5.3.3 wave 1, "
-            "pre-adjudicacion hold_for_revision."
+            "obnubilado. Examen: temperatura 39.5 C, escala de Glasgow 8, rigidez de "
+            "nuca, signo de Kernig positivo, sin deficit focal, sin exantema. "
+            "Liquido cefalorraquideo mostro presion de apertura 28 cmH2O, leucocitos "
+            "5,400 por mm3 (88 por ciento neutrofilos), glucosa 22 mg/dL, proteina "
+            "220 mg/dL. Tincion de Gram con diplococos grampositivos y cultivo "
+            "Streptococcus pneumoniae. Anclaje primario en cohorte prospectiva van "
+            "de Beek 2004 NEJM (PMID 15509818, 696 episodios 1998-2002, estrato "
+            "alcoholico con mortalidad elevada). Resultado: fatal en hospital dia 4. "
+            "Estado previo a la adjudicacion: hold_for_revision."
         ),
         "rationale": (
             "Anchored to PMID 15509818 (van de Beek 2004 NEJM), 696-episode "
@@ -15667,13 +15648,14 @@ def _build_bact_vignette_066() -> dict[str, Any]:
             "alcoholic stratum. CSF profile bacterial range. Imputation tiers: "
             "tier_1_primary={age, sex, csf_culture, csf_gram_stain, alcohol "
             "risk}; tier_3_within_cohort={csf_wbc, neutrophil_pct, glucose, "
-            "protein, gcs}; tier_4_priors={temp, symptom_days}. Indeterminate="
-            "none. Diagnostic_ambiguity=false. Outcome=fatal_hospital_day_4. "
-            "Antibiotic_started_hours=3. Tier: tier_3_imputation_within_cohort_"
-            "review. 5.3.3 wave1 SP-alcoholic-fatal."
+            "protein, gcs}; tier_4_priors={temp, symptom_days}. "
+            "Indeterminate=none. Diagnostic_ambiguity=false. "
+            "Outcome=fatal_hospital_day_4. Antibiotic_started_hours=3. Tier: "
+            "tier_3_imputation_within_cohort_review. Stratum: "
+            "SP-alcoholic-fatal."
         ),
         "anchoring_extras": "anchor=van-de-Beek-NEJM-2004 stratum=alcoholic-elderly.",
-        "diagnostic_tests": _bact_wave1_dx_tests_sp_culture_positive("15509818"),
+        "diagnostic_tests": _bact_set_a_dx_tests_sp_culture_positive("15509818"),
     }
 
 
@@ -15739,16 +15721,16 @@ def _build_bact_vignette_067() -> dict[str, Any]:
             "A three-year-old boy in the US South region presented to a tertiary "
             "pediatric emergency department with a 36-hour history of fever to "
             "39.6 C, vomiting, irritability, and decreasing responsiveness. He "
-            "had been treated for otitis media in the preceding week. "
-            "Examination on admission: temperature 39.6 C, Glasgow Coma Scale 12, "
-            "neck stiffness, positive Kernig sign, no focal deficit, no rash. "
-            "CSF showed opening pressure 30 cmH2O, white cell count 7,200 per "
-            "cubic millimeter (90 percent neutrophils), glucose 20 mg/dL, protein "
-            "240 mg/dL. Gram stain revealed gram-positive diplococci; culture "
+            "had been treated for otitis media in the preceding week. Examination "
+            "on admission: temperature 39.6 C, Glasgow Coma Scale 12, neck "
+            "stiffness, positive Kernig sign, no focal deficit, no rash. CSF "
+            "showed opening pressure 30 cmH2O, white cell count 7,200 per cubic "
+            "millimeter (90 percent neutrophils), glucose 20 mg/dL, protein 240 "
+            "mg/dL. Gram stain revealed gram-positive diplococci; culture "
             "identified Streptococcus pneumoniae. Anchored to Tunkel IDSA 2004 "
             "(PMID 15494903) pediatric pneumococcal meningitis recommendations. "
-            "Outcome: survived with mild hearing loss. Subphase 1.3 commit 5.3.3 "
-            "wave 1, pre-adjudication hold_for_revision."
+            "Outcome: survived with mild hearing loss. Pre-adjudication status: "
+            "hold_for_revision."
         ),
         "narrative_es": (
             "Varon de tres anos en region sur de Estados Unidos, ingresado a "
@@ -15761,7 +15743,7 @@ def _build_bact_vignette_067() -> dict[str, Any]:
             "neutrofilos), glucosa 20 mg/dL, proteina 240 mg/dL. Tincion de Gram "
             "con diplococos grampositivos y cultivo Streptococcus pneumoniae. "
             "Anclaje en guia IDSA Tunkel 2004 (PMID 15494903), recomendaciones "
-            "pediatricas. Subphase 1.3 commit 5.3.3 wave 1."
+            "pediatricas."
         ),
         "rationale": (
             "Anchored to PMID 15494903 (Tunkel IDSA 2004 CID guideline) for "
@@ -15771,13 +15753,13 @@ def _build_bact_vignette_067() -> dict[str, Any]:
             "guideline cutoffs. Imputation tiers: tier_1_primary={age, sex, "
             "csf_culture, csf_gram_stain}; tier_3_within_cohort={csf_wbc, "
             "neutrophil_pct, glucose, protein}; tier_4_priors={temp, gcs, "
-            "symptom_days, hr}. Indeterminate=papilledema. Diagnostic_ambiguity="
-            "false. Outcome=survived_mild_hearing_loss. Antibiotic_started_"
-            "hours=1.5. Tier: tier_4_imputation_idsa_guideline_anchored. 5.3.3 "
-            "wave1 SP-pediatric."
+            "symptom_days, hr}. Indeterminate=papilledema. "
+            "Diagnostic_ambiguity=false. Outcome=survived_mild_hearing_loss. "
+            "Antibiotic_started_hours=1.5. Tier: "
+            "tier_4_imputation_idsa_guideline_anchored. Stratum: SP-pediatric."
         ),
         "anchoring_extras": "anchor=Tunkel-IDSA-2004 stratum=pediatric.",
-        "diagnostic_tests": _bact_wave1_dx_tests_sp_culture_positive("15494903"),
+        "diagnostic_tests": _bact_set_a_dx_tests_sp_culture_positive("15494903"),
     }
 
 
@@ -15841,49 +15823,48 @@ def _build_bact_vignette_069() -> dict[str, Any]:
         },
         "narrative_en": (
             "A 19-year-old man in the US South region presented to a tertiary "
-            "emergency department with a 2-day history of fever to 39.2 C, "
-            "headache, and neck stiffness. He had a skull-base fracture with "
-            "CSF rhinorrhea three years prior following a motor vehicle accident "
-            "that had not been surgically corrected; this was his second episode "
-            "of bacterial meningitis. Examination on admission: temperature "
-            "39.2 C, Glasgow Coma Scale 13, neck stiffness, positive Kernig sign, "
-            "no focal deficit, no rash. CSF showed opening pressure 26 cmH2O, "
-            "white cell count 4,200 per cubic millimeter (85 percent neutrophils), "
-            "glucose 25 mg/dL, protein 180 mg/dL. Gram stain revealed gram-positive "
-            "diplococci; culture identified Streptococcus pneumoniae. Anchored to "
-            "Tunkel IDSA 2004 (PMID 15494903) recurrent SP meningitis recommendations. "
-            "Outcome: survived. Subphase 1.3 commit 5.3.3 wave 1, pre-adjudication "
-            "hold_for_revision."
+            "emergency department with a 2-day history of fever to 39.2 C, headache, "
+            "and neck stiffness. He had a skull-base fracture with CSF rhinorrhea "
+            "three years prior following a motor vehicle accident that had not been "
+            "surgically corrected; this was his second episode of bacterial "
+            "meningitis. Examination on admission: temperature 39.2 C, Glasgow Coma "
+            "Scale 13, neck stiffness, positive Kernig sign, no focal deficit, no "
+            "rash. CSF showed opening pressure 26 cmH2O, white cell count 4,200 per "
+            "cubic millimeter (85 percent neutrophils), glucose 25 mg/dL, protein 180 "
+            "mg/dL. Gram stain revealed gram-positive diplococci; culture identified "
+            "Streptococcus pneumoniae. Anchored to Tunkel IDSA 2004 (PMID 15494903) "
+            "recurrent SP meningitis recommendations. Outcome: survived. "
+            "Pre-adjudication status: hold_for_revision."
         ),
         "narrative_es": (
-            "Varon de 19 anos en region sur de Estados Unidos, ingresado a "
-            "urgencias terciarias con dos dias de fiebre 39.2 C, cefalea y "
-            "rigidez de nuca. Antecedente de fractura de base de craneo con "
-            "rinorrea de liquido cefalorraquideo tres anos antes (no corregida "
-            "quirurgicamente); segundo episodio de meningitis bacteriana. Examen: "
-            "temperatura 39.2 C, escala de Glasgow 13, rigidez de nuca, signo de "
-            "Kernig positivo, sin deficit focal, sin exantema. Liquido "
-            "cefalorraquideo mostro presion de apertura 26 cmH2O, leucocitos 4,200 "
-            "por mm3 (85 por ciento neutrofilos), glucosa 25 mg/dL, proteina 180 mg/dL. "
-            "Tincion de Gram con diplococos grampositivos y cultivo Streptococcus "
-            "pneumoniae. Anclaje en guia IDSA Tunkel 2004 (PMID 15494903). "
-            "Subphase 1.3 commit 5.3.3 wave 1."
+            "Varon de 19 anos en region sur de Estados Unidos, ingresado a urgencias "
+            "terciarias con dos dias de fiebre 39.2 C, cefalea y rigidez de nuca. "
+            "Antecedente de fractura de base de craneo con rinorrea de liquido "
+            "cefalorraquideo tres anos antes (no corregida quirurgicamente); segundo "
+            "episodio de meningitis bacteriana. Examen: temperatura 39.2 C, escala de "
+            "Glasgow 13, rigidez de nuca, signo de Kernig positivo, sin deficit focal, "
+            "sin exantema. Liquido cefalorraquideo mostro presion de apertura 26 cmH2O, "
+            "leucocitos 4,200 por mm3 (85 por ciento neutrofilos), glucosa 25 mg/dL, "
+            "proteina 180 mg/dL. Tincion de Gram con diplococos grampositivos y cultivo "
+            "Streptococcus pneumoniae. Anclaje en guia IDSA Tunkel 2004 (PMID "
+            "15494903)."
         ),
         "rationale": (
             "Anchored to PMID 15494903 (Tunkel IDSA 2004 CID guideline) recurrent "
             "SP meningitis recommendations. Anatomic CSF rhinorrhea raises "
             "recurrent-SP risk per guideline. Demographic anchor (19yo M with "
             "anatomic CSF leak) reflects the recurrent-meningitis stratum. CSF "
-            "profile bacterial range. Imputation tiers: tier_1_primary={age, "
-            "sex, csf_culture, csf_gram_stain, anatomic_leak history}; "
+            "profile bacterial range. Imputation tiers: tier_1_primary={age, sex, "
+            "csf_culture, csf_gram_stain, anatomic_leak history}; "
             "tier_3_within_cohort={csf_wbc, neutrophil_pct, glucose, protein}; "
             "tier_4_priors={temp, gcs, symptom_days}. Indeterminate=none. "
-            "Diagnostic_ambiguity=false. Outcome=survived. Antibiotic_started_"
-            "hours=2. Tier: tier_4_imputation_idsa_guideline_anchored. 5.3.3 "
-            "wave1 SP-recurrent-CSF-leak."
+            "Diagnostic_ambiguity=false. Outcome=survived. "
+            "Antibiotic_started_hours=2. Tier: "
+            "tier_4_imputation_idsa_guideline_anchored. Stratum: "
+            "SP-recurrent-CSF-leak."
         ),
         "anchoring_extras": "anchor=Tunkel-IDSA-2004 risk_factor=anatomic-CSF-leak.",
-        "diagnostic_tests": _bact_wave1_dx_tests_sp_culture_positive("15494903"),
+        "diagnostic_tests": _bact_set_a_dx_tests_sp_culture_positive("15494903"),
     }
 
 
@@ -15952,13 +15933,12 @@ def _build_bact_vignette_071() -> dict[str, Any]:
             "admission: temperature 39.0 C, Glasgow Coma Scale 13, neck "
             "stiffness, positive Kernig sign, no focal deficit, no rash. CSF "
             "showed opening pressure 28 cmH2O, white cell count 5,800 per cubic "
-            "millimeter (88 percent neutrophils), glucose 22 mg/dL, protein "
-            "200 mg/dL. Gram stain revealed gram-positive diplococci; culture "
+            "millimeter (88 percent neutrophils), glucose 22 mg/dL, protein 200 "
+            "mg/dL. Gram stain revealed gram-positive diplococci; culture "
             "identified Streptococcus pneumoniae. Anchored to Tunkel IDSA 2004 "
             "(PMID 15494903) for empiric ceftriaxone-vancomycin coverage of "
             "adult community-acquired pneumococcal meningitis. Outcome: "
-            "survived no sequelae. Subphase 1.3 commit 5.3.3 wave 1, "
-            "pre-adjudication hold_for_revision."
+            "survived no sequelae. Pre-adjudication status: hold_for_revision."
         ),
         "narrative_es": (
             "Mujer de 38 anos en Lima, Peru, ingresada a urgencias terciarias "
@@ -15972,26 +15952,27 @@ def _build_bact_vignette_071() -> dict[str, Any]:
             "Anclaje en guia IDSA Tunkel 2004 (PMID 15494903) para cobertura "
             "empirica con ceftriaxona-vancomicina mas dexametasona en "
             "meningitis neumococica del adulto adquirida en la comunidad. "
-            "Geografia anclada a Peru (5/30 escenarios bacterianos de la "
-            "distribucion 5.3.1 asignados a Peru). Resultado: sobrevivio sin "
-            "secuelas. Subphase 1.3 commit 5.3.3 wave 1, pre-adjudicacion "
-            "hold_for_revision."
+            "Geografia anclada a Peru (5/30 escenarios bacterianos asignados "
+            "a Peru en la distribucion original; 4/28 tras retirar el "
+            "escenario de Listeria de Tumbes). Resultado: sobrevivio "
+            "sin secuelas. Estado previo a la adjudicacion: hold_for_revision."
         ),
         "rationale": (
             "Anchored to PMID 15494903 (Tunkel IDSA 2004 CID guideline) for "
             "adult community-acquired pneumococcal meningitis empiric coverage. "
-            "Peru-anchored geography (5/30 BACT slots assigned to Peru per "
-            "5.3.1 distribution lock). Demographic anchor (38yo F adult) sits "
-            "in standard adult community stratum. CSF profile bacterial range. "
+            "Peru-anchored geography (5/30 BACT slots were assigned to Peru in "
+            "the original distribution; 4/28 after the Tumbes Listeria slot "
+            "was removed). Demographic anchor (38yo F adult) sits in "
+            "standard adult community stratum. CSF profile bacterial range. "
             "Imputation tiers: tier_1_primary={age, sex, region, csf_culture, "
             "csf_gram_stain}; tier_3_within_cohort={csf_wbc, neutrophil_pct, "
             "glucose, protein}; tier_4_priors={temp, gcs, symptom_days}. "
             "Indeterminate=none. Diagnostic_ambiguity=false. Outcome=survived. "
-            "Antibiotic_started_hours=1. Tier: tier_4_imputation_idsa_"
-            "guideline_anchored. 5.3.3 wave1 SP-Lima-adult."
+            "Antibiotic_started_hours=1. Tier: "
+            "tier_4_imputation_idsa_guideline_anchored. Stratum: SP-Lima-adult."
         ),
         "anchoring_extras": "anchor=Tunkel-IDSA-2004 region=Lima-Peru.",
-        "diagnostic_tests": _bact_wave1_dx_tests_sp_culture_positive("15494903"),
+        "diagnostic_tests": _bact_set_a_dx_tests_sp_culture_positive("15494903"),
     }
 
 
@@ -16057,15 +16038,15 @@ def _build_bact_vignette_073() -> dict[str, Any]:
             "A 70-year-old woman in the Netherlands presented to a tertiary "
             "emergency department in Amsterdam after a 4-day course of "
             "progressive fever, headache, and confusion progressing to "
-            "obtundation. Examination on admission: temperature 38.9 C, "
-            "Glasgow Coma Scale 7, neck stiffness, positive Kernig sign, no "
-            "focal deficit, no rash. CSF showed opening pressure 26 cmH2O, "
-            "white cell count 4,100 per cubic millimeter (80 percent "
-            "neutrophils), glucose 25 mg/dL, protein 195 mg/dL. Gram stain "
-            "revealed gram-positive diplococci; culture identified Streptococcus "
-            "pneumoniae. Primary anchor: PMID 15509818 (van de Beek 2004 NEJM), "
-            "elderly stratum mortality 41 percent. Outcome: fatal hospital day 3. "
-            "Subphase 1.3 commit 5.3.3 wave 1, pre-adjudication hold_for_revision."
+            "obtundation. Examination on admission: temperature 38.9 C, Glasgow "
+            "Coma Scale 7, neck stiffness, positive Kernig sign, no focal "
+            "deficit, no rash. CSF showed opening pressure 26 cmH2O, white cell "
+            "count 4,100 per cubic millimeter (80 percent neutrophils), glucose "
+            "25 mg/dL, protein 195 mg/dL. Gram stain revealed gram-positive "
+            "diplococci; culture identified Streptococcus pneumoniae. Primary "
+            "anchor: PMID 15509818 (van de Beek 2004 NEJM), elderly stratum "
+            "mortality 41 percent. Outcome: fatal hospital day 3. "
+            "Pre-adjudication status: hold_for_revision."
         ),
         "narrative_es": (
             "Mujer de 70 anos en Paises Bajos (Amsterdam), ingresada a "
@@ -16079,8 +16060,8 @@ def _build_bact_vignette_073() -> dict[str, Any]:
             "Streptococcus pneumoniae. Anclaje primario en cohorte prospectiva "
             "van de Beek 2004 NEJM (PMID 15509818, 696 episodios 1998-2002, "
             "estrato de adultos mayores con mortalidad 41 por ciento a edad "
-            ">=65). Resultado: fatal en hospital dia 3. Subphase 1.3 commit "
-            "5.3.3 wave 1, pre-adjudicacion hold_for_revision."
+            ">=65). Resultado: fatal en hospital dia 3. Estado previo a la "
+            "adjudicacion: hold_for_revision."
         ),
         "rationale": (
             "Anchored to PMID 15509818 (van de Beek 2004 NEJM), 696-episode "
@@ -16091,11 +16072,11 @@ def _build_bact_vignette_073() -> dict[str, Any]:
             "tier_3_within_cohort={csf_wbc, neutrophil_pct, glucose, protein, "
             "gcs}; tier_4_priors={temp, symptom_days}. Indeterminate=none. "
             "Diagnostic_ambiguity=false. Outcome=fatal_hospital_day_3. "
-            "Antibiotic_started_hours=2. Tier: tier_3_imputation_within_cohort_"
-            "review. 5.3.3 wave1 SP-elderly-fatal."
+            "Antibiotic_started_hours=2. Tier: "
+            "tier_3_imputation_within_cohort_review. Stratum: SP-elderly-fatal."
         ),
         "anchoring_extras": "anchor=van-de-Beek-NEJM-2004 stratum=elderly-fatal.",
-        "diagnostic_tests": _bact_wave1_dx_tests_sp_culture_positive("15509818"),
+        "diagnostic_tests": _bact_set_a_dx_tests_sp_culture_positive("15509818"),
     }
 
 
@@ -16165,15 +16146,15 @@ def _build_bact_vignette_075() -> dict[str, Any]:
             "for presumed sinusitis (24 hours of pretreatment). Examination on "
             "admission: temperature 39.0 C, Glasgow Coma Scale 14, neck stiffness, "
             "positive Kernig sign, no focal deficit, no rash. CSF showed opening "
-            "pressure 22 cmH2O, white cell count 1,850 per cubic millimeter "
-            "(65 percent neutrophils), glucose 30 mg/dL, protein 165 mg/dL. Gram "
-            "stain unrevealing; CSF and blood cultures sterile after partial "
-            "antibiotic pretreatment; CSF pneumococcal antigen positive. "
-            "Diagnostic_ambiguity=true; type=partial_antibiotic_pretreatment_"
-            "sterile_cultures. Anchored to Tunkel IDSA 2004 (PMID 15494903) "
-            "pretreated-meningitis recommendations. Outcome: survived no "
-            "sequelae. Subphase 1.3 commit 5.3.3 wave 1, pre-adjudication "
-            "hold_for_revision."
+            "pressure 22 cmH2O, white cell count 1,850 per cubic millimeter (65 "
+            "percent neutrophils), glucose 30 mg/dL, protein 165 mg/dL. Gram stain "
+            "unrevealing; CSF and blood cultures sterile after partial antibiotic "
+            "pretreatment; CSF pneumococcal antigen positive. "
+            "Diagnostic_ambiguity=true; "
+            "type=partial_antibiotic_pretreatment_sterile_cultures. Anchored to "
+            "Tunkel IDSA 2004 (PMID 15494903) pretreated-meningitis "
+            "recommendations. Outcome: survived no sequelae. Pre-adjudication "
+            "status: hold_for_revision."
         ),
         "narrative_es": (
             "Mujer de 25 anos en region sur de Estados Unidos, ingresada a "
@@ -16187,26 +16168,27 @@ def _build_bact_vignette_075() -> dict[str, Any]:
             "de Gram sin organismos; cultivos de liquido y sangre esteriles tras "
             "pretratamiento antibiotico parcial; antigeno neumococico en liquido "
             "positivo. Ambiguedad diagnostica por pretratamiento parcial. "
-            "Anclaje en guia IDSA Tunkel 2004 (PMID 15494903). Subphase 1.3 "
-            "commit 5.3.3 wave 1."
+            "Anclaje en guia IDSA Tunkel 2004 (PMID 15494903)."
         ),
         "rationale": (
             "Anchored to PMID 15494903 (Tunkel IDSA 2004 CID guideline) "
-            "pretreated-suspected meningitis recommendations. Diagnostic_"
-            "ambiguity=true; type=partial_antibiotic_pretreatment_sterile_"
-            "cultures. Demographic anchor (25yo F outpatient pretreated) "
-            "reflects ambiguity stratum. CSF profile attenuated (WBC 1850, "
-            "neutrophil 65 percent) consistent with partial treatment. Antigen "
-            "confirms organism. Imputation tiers: tier_1_primary={age, sex, "
-            "csf_pneumococcal_antigen, pretreatment_history}; tier_3_within_"
-            "cohort={csf_wbc, neutrophil_pct, glucose, protein attenuation}; "
-            "tier_4_priors={temp, gcs, symptom_days}. Indeterminate=culture-"
-            "based-organism-confirmation. Outcome=survived. Antibiotic_started_"
-            "hours=1. Tier: tier_4_imputation_idsa_guideline_anchored. 5.3.3 "
-            "wave1 SP-pretreated-ambiguity."
+            "pretreated-suspected meningitis recommendations. "
+            "Diagnostic_ambiguity=true; "
+            "type=partial_antibiotic_pretreatment_sterile_cultures. "
+            "Demographic anchor (25yo F outpatient pretreated) reflects "
+            "ambiguity stratum. CSF profile attenuated (WBC 1850, neutrophil "
+            "65 percent) consistent with partial treatment. Antigen confirms "
+            "organism. Imputation tiers: tier_1_primary={age, sex, "
+            "csf_pneumococcal_antigen, pretreatment_history}; "
+            "tier_3_within_cohort={csf_wbc, neutrophil_pct, glucose, protein "
+            "attenuation}; tier_4_priors={temp, gcs, symptom_days}. "
+            "Indeterminate=culture-based-organism-confirmation. "
+            "Outcome=survived. Antibiotic_started_hours=1. Tier: "
+            "tier_4_imputation_idsa_guideline_anchored. Stratum: "
+            "SP-pretreated-ambiguity."
         ),
         "anchoring_extras": "anchor=Tunkel-IDSA-2004 type=partial_antibiotic_pretreatment.",
-        "diagnostic_tests": _bact_wave1_dx_tests_sp_pretreated("15494903"),
+        "diagnostic_tests": _bact_set_a_dx_tests_sp_pretreated("15494903"),
     }
 
 
@@ -16270,48 +16252,50 @@ def _build_bact_vignette_076() -> dict[str, Any]:
         },
         "narrative_en": (
             "A 60-year-old man in the Netherlands presented to a tertiary "
-            "emergency department after 48 hours of outpatient amoxicillin for "
-            "a productive cough, with recrudescence of symptoms (fever 38.7 C, "
+            "emergency department after 48 hours of outpatient amoxicillin for a "
+            "productive cough, with recrudescence of symptoms (fever 38.7 C, "
             "headache, neck stiffness). Examination on admission: temperature "
-            "38.7 C, Glasgow Coma Scale 14, neck stiffness, positive Kernig "
-            "sign, no focal deficit, no rash. CSF showed opening pressure 24 "
-            "cmH2O, white cell count 2,400 per cubic millimeter (70 percent "
+            "38.7 C, Glasgow Coma Scale 14, neck stiffness, positive Kernig sign, "
+            "no focal deficit, no rash. CSF showed opening pressure 24 cmH2O, "
+            "white cell count 2,400 per cubic millimeter (70 percent "
             "neutrophils), glucose 26 mg/dL, protein 180 mg/dL. Gram stain "
             "unrevealing; cultures sterile after partial antibiotic pretreatment; "
             "CSF pneumococcal antigen positive. Diagnostic_ambiguity=true; "
             "type=partial_antibiotic_pretreatment_sterile_cultures. Anchored to "
-            "Tunkel IDSA 2004 (PMID 15494903). Outcome: survived. Subphase 1.3 "
-            "commit 5.3.3 wave 1, pre-adjudication hold_for_revision."
+            "Tunkel IDSA 2004 (PMID 15494903). Outcome: survived. "
+            "Pre-adjudication status: hold_for_revision."
         ),
         "narrative_es": (
             "Varon de 60 anos en Paises Bajos, ingresado a urgencias terciarias "
             "tras 48 horas de amoxicilina ambulatoria por tos productiva, con "
             "recrudescencia de sintomas (fiebre 38.7 C, cefalea, rigidez de "
-            "nuca). Examen: temperatura 38.7 C, escala de Glasgow 14, rigidez "
-            "de nuca, signo de Kernig positivo, sin deficit focal, sin exantema. "
+            "nuca). Examen: temperatura 38.7 C, escala de Glasgow 14, rigidez de "
+            "nuca, signo de Kernig positivo, sin deficit focal, sin exantema. "
             "Liquido cefalorraquideo mostro presion de apertura 24 cmH2O, "
             "leucocitos 2,400 por mm3 (70 por ciento neutrofilos), glucosa 26 "
             "mg/dL, proteina 180 mg/dL. Cultivos esteriles tras pretratamiento "
             "antibiotico parcial; antigeno neumococico en liquido positivo. "
             "Ambiguedad diagnostica por pretratamiento parcial. Anclaje en guia "
-            "IDSA Tunkel 2004 (PMID 15494903). Subphase 1.3 commit 5.3.3 wave 1."
+            "IDSA Tunkel 2004 (PMID 15494903)."
         ),
         "rationale": (
             "Anchored to PMID 15494903 (Tunkel IDSA 2004 CID guideline) "
-            "pretreated-suspected meningitis recommendations. Diagnostic_"
-            "ambiguity=true; type=partial_antibiotic_pretreatment_sterile_"
-            "cultures. Demographic anchor (60yo M outpatient pretreated). CSF "
-            "profile attenuated (WBC 2400, neutrophil 70 percent). Antigen "
-            "confirms organism. Imputation tiers: tier_1_primary={age, sex, "
-            "csf_pneumococcal_antigen, pretreatment_history}; tier_3_within_"
-            "cohort={csf_wbc, neutrophil_pct, glucose, protein attenuation}; "
-            "tier_4_priors={temp, gcs, symptom_days}. Indeterminate=culture-"
-            "based-organism-confirmation. Outcome=survived. Tier: tier_4_"
-            "imputation_idsa_guideline_anchored. 5.3.3 wave1 SP-pretreated-"
-            "ambiguity NL."
+            "pretreated-suspected meningitis recommendations. "
+            "Diagnostic_ambiguity=true; "
+            "type=partial_antibiotic_pretreatment_sterile_cultures. "
+            "Demographic anchor (60yo M outpatient pretreated). CSF profile "
+            "attenuated (WBC 2400, neutrophil 70 percent). Antigen confirms "
+            "organism. Imputation tiers: tier_1_primary={age, sex, "
+            "csf_pneumococcal_antigen, pretreatment_history}; "
+            "tier_3_within_cohort={csf_wbc, neutrophil_pct, glucose, protein "
+            "attenuation}; tier_4_priors={temp, gcs, symptom_days}. "
+            "Indeterminate=culture-based-organism-confirmation. "
+            "Outcome=survived. Tier: "
+            "tier_4_imputation_idsa_guideline_anchored. Stratum: "
+            "SP-pretreated-ambiguity NL."
         ),
         "anchoring_extras": "anchor=Tunkel-IDSA-2004 type=partial_antibiotic_pretreatment.",
-        "diagnostic_tests": _bact_wave1_dx_tests_sp_pretreated("15494903"),
+        "diagnostic_tests": _bact_set_a_dx_tests_sp_pretreated("15494903"),
     }
 
 
@@ -16376,19 +16360,18 @@ def _build_bact_vignette_077() -> dict[str, Any]:
         "narrative_en": (
             "An 18-year-old woman in the Netherlands presented to a tertiary "
             "emergency department in Amsterdam with sudden onset of fever to "
-            "39.5 C, severe headache, neck stiffness, and photophobia within "
-            "12 hours. Examination on admission: temperature 39.5 C, Glasgow "
-            "Coma Scale 13, neck stiffness, positive Kernig sign, no focal "
-            "deficit, no rash. Classic triad present (this case sits in the "
-            "young-adult subgroup of the van de Beek 2004 cohort). CSF showed "
-            "opening pressure 28 cmH2O, white cell count 6,400 per cubic "
-            "millimeter (88 percent neutrophils), glucose 24 mg/dL, protein "
-            "210 mg/dL. Gram stain revealed gram-positive diplococci; culture "
-            "identified Streptococcus pneumoniae. Primary anchor: PMID 15509818 "
-            "(van de Beek 2004 NEJM), 696-episode prospective Netherlands "
-            "cohort 1998-2002 (SP 51 percent, classic triad 44 percent). "
-            "Outcome: survived no sequelae. Subphase 1.3 commit 5.3.3 wave 1, "
-            "pre-adjudication hold_for_revision."
+            "39.5 C, severe headache, neck stiffness, and photophobia within 12 "
+            "hours. Examination on admission: temperature 39.5 C, Glasgow Coma "
+            "Scale 13, neck stiffness, positive Kernig sign, no focal deficit, "
+            "no rash. Classic triad present (this case sits in the young-adult "
+            "subgroup of the van de Beek 2004 cohort). CSF showed opening "
+            "pressure 28 cmH2O, white cell count 6,400 per cubic millimeter (88 "
+            "percent neutrophils), glucose 24 mg/dL, protein 210 mg/dL. Gram "
+            "stain revealed gram-positive diplococci; culture identified "
+            "Streptococcus pneumoniae. Primary anchor: PMID 15509818 (van de "
+            "Beek 2004 NEJM), 696-episode prospective Netherlands cohort "
+            "1998-2002 (SP 51 percent, classic triad 44 percent). Outcome: "
+            "survived no sequelae. Pre-adjudication status: hold_for_revision."
         ),
         "narrative_es": (
             "Mujer de 18 anos en Paises Bajos (Amsterdam), ingresada a "
@@ -16396,13 +16379,12 @@ def _build_bact_vignette_077() -> dict[str, Any]:
             "intensa, rigidez de nuca y fotofobia en 12 horas. Examen: "
             "temperatura 39.5 C, escala de Glasgow 13, rigidez de nuca, signo "
             "de Kernig positivo, sin deficit focal, sin exantema. Triada "
-            "clasica presente (subgrupo de adultos jovenes de la cohorte van "
-            "de Beek 2004). Liquido cefalorraquideo mostro presion de apertura "
-            "28 cmH2O, leucocitos 6,400 por mm3 (88 por ciento neutrofilos), "
+            "clasica presente (subgrupo de adultos jovenes de la cohorte van de "
+            "Beek 2004). Liquido cefalorraquideo mostro presion de apertura 28 "
+            "cmH2O, leucocitos 6,400 por mm3 (88 por ciento neutrofilos), "
             "glucosa 24 mg/dL, proteina 210 mg/dL. Tincion de Gram con "
             "diplococos grampositivos y cultivo Streptococcus pneumoniae. "
-            "Anclaje primario en cohorte van de Beek 2004 NEJM (PMID 15509818). "
-            "Subphase 1.3 commit 5.3.3 wave 1."
+            "Anclaje primario en cohorte van de Beek 2004 NEJM (PMID 15509818)."
         ),
         "rationale": (
             "Anchored to PMID 15509818 (van de Beek 2004 NEJM), 696-episode "
@@ -16411,13 +16393,13 @@ def _build_bact_vignette_077() -> dict[str, Any]:
             "in young-adult subgroup. CSF profile bacterial range. Imputation "
             "tiers: tier_1_primary={age, sex, csf_culture, csf_gram_stain, "
             "triad}; tier_3_within_cohort={csf_wbc, neutrophil_pct, glucose, "
-            "protein, gcs}; tier_4_priors={temp, symptom_days}. Indeterminate="
-            "none. Diagnostic_ambiguity=false. Outcome=survived. Antibiotic_"
-            "started_hours=1. Tier: tier_3_imputation_within_cohort_review. "
-            "5.3.3 wave1 SP-young-adult."
+            "protein, gcs}; tier_4_priors={temp, symptom_days}. "
+            "Indeterminate=none. Diagnostic_ambiguity=false. "
+            "Outcome=survived. Antibiotic_started_hours=1. Tier: "
+            "tier_3_imputation_within_cohort_review. Stratum: SP-young-adult."
         ),
         "anchoring_extras": "anchor=van-de-Beek-NEJM-2004 stratum=young-adult.",
-        "diagnostic_tests": _bact_wave1_dx_tests_sp_culture_positive("15509818"),
+        "diagnostic_tests": _bact_set_a_dx_tests_sp_culture_positive("15509818"),
     }
 
 
@@ -16480,20 +16462,19 @@ def _build_bact_vignette_078() -> dict[str, Any]:
             "csf_rbc_decreasing_across_tubes": None,
         },
         "narrative_en": (
-            "A 50-year-old man in the US South region with HIV (eight years "
-            "on antiretroviral therapy, CD4 count 285 cells per microliter) "
+            "A 50-year-old man in the US South region with HIV (eight years on "
+            "antiretroviral therapy, CD4 count 285 cells per microliter) "
             "presented to a tertiary emergency department with a 2-day history "
             "of fever to 39.2 C, severe headache, and neck stiffness. "
             "Examination on admission: temperature 39.2 C, Glasgow Coma Scale "
             "13, neck stiffness, positive Kernig sign, no focal deficit, no "
             "rash. CSF showed opening pressure 27 cmH2O, white cell count "
             "5,200 per cubic millimeter (85 percent neutrophils), glucose 22 "
-            "mg/dL, protein 195 mg/dL; CSF cryptococcal antigen negative. "
-            "Gram stain revealed gram-positive diplococci; culture identified "
+            "mg/dL, protein 195 mg/dL; CSF cryptococcal antigen negative. Gram "
+            "stain revealed gram-positive diplococci; culture identified "
             "Streptococcus pneumoniae. Anchored to Tunkel IDSA 2004 (PMID "
             "15494903) HIV-specific empiric coverage recommendations. Outcome: "
-            "survived. Subphase 1.3 commit 5.3.3 wave 1, pre-adjudication "
-            "hold_for_revision."
+            "survived. Pre-adjudication status: hold_for_revision."
         ),
         "narrative_es": (
             "Varon de 50 anos en region sur de Estados Unidos con infeccion "
@@ -16506,26 +16487,26 @@ def _build_bact_vignette_078() -> dict[str, Any]:
             "5,200 por mm3 (85 por ciento neutrofilos), glucosa 22 mg/dL, "
             "proteina 195 mg/dL; antigeno criptococico en liquido negativo. "
             "Tincion de Gram con diplococos grampositivos y cultivo "
-            "Streptococcus pneumoniae. Anclaje en guia IDSA Tunkel 2004 "
-            "(PMID 15494903) recomendaciones VIH-especificas. Subphase 1.3 "
-            "commit 5.3.3 wave 1."
+            "Streptococcus pneumoniae. Anclaje en guia IDSA Tunkel 2004 (PMID "
+            "15494903) recomendaciones VIH-especificas."
         ),
         "rationale": (
             "Anchored to PMID 15494903 (Tunkel IDSA 2004 CID guideline) "
-            "HIV-specific empiric coverage recommendations. Demographic "
-            "anchor (50yo M HIV+ ART CD4 285) reflects HIV-on-ART stratum "
-            "covered by Tunkel for SP empiric vancomycin plus ceftriaxone. "
-            "CrAg negative excludes co-incident cryptococcal infection. CSF "
-            "profile bacterial range. Imputation tiers: tier_1_primary={age, "
-            "sex, csf_culture, csf_gram_stain, hiv_status, cd4}; tier_3_"
-            "within_cohort={csf_wbc, neutrophil_pct, glucose, protein}; "
+            "HIV-specific empiric coverage recommendations. Demographic anchor "
+            "(50yo M HIV+ ART CD4 285) reflects HIV-on-ART stratum covered by "
+            "Tunkel for SP empiric vancomycin plus ceftriaxone. CrAg negative "
+            "excludes co-incident cryptococcal infection. CSF profile "
+            "bacterial range. Imputation tiers: tier_1_primary={age, sex, "
+            "csf_culture, csf_gram_stain, hiv_status, cd4}; "
+            "tier_3_within_cohort={csf_wbc, neutrophil_pct, glucose, protein}; "
             "tier_4_priors={temp, gcs, symptom_days}. Indeterminate=none. "
-            "Diagnostic_ambiguity=false. Outcome=survived. Antibiotic_"
-            "started_hours=1. Tier: tier_4_imputation_idsa_guideline_anchored. "
-            "5.3.3 wave1 SP-HIV-on-ART."
+            "Diagnostic_ambiguity=false. Outcome=survived. "
+            "Antibiotic_started_hours=1. Tier: "
+            "tier_4_imputation_idsa_guideline_anchored. Stratum: "
+            "SP-HIV-on-ART."
         ),
         "anchoring_extras": "anchor=Tunkel-IDSA-2004 stratum=HIV-on-ART.",
-        "diagnostic_tests": _bact_wave1_dx_tests_sp_culture_positive("15494903"),
+        "diagnostic_tests": _bact_set_a_dx_tests_sp_culture_positive("15494903"),
     }
 
 
@@ -16592,16 +16573,17 @@ def _build_bact_vignette_079() -> dict[str, Any]:
             "emergency department after 36 hours of outpatient cefuroxime for "
             "presumed bronchitis, with recrudescence of fever to 38.8 C, "
             "headache, and neck stiffness. Examination on admission: temperature "
-            "38.8 C, Glasgow Coma Scale 14, neck stiffness, positive Kernig "
-            "sign, no focal deficit, no rash. CSF showed opening pressure 20 "
-            "cmH2O, white cell count 1,600 per cubic millimeter (60 percent "
+            "38.8 C, Glasgow Coma Scale 14, neck stiffness, positive Kernig sign, "
+            "no focal deficit, no rash. CSF showed opening pressure 20 cmH2O, "
+            "white cell count 1,600 per cubic millimeter (60 percent "
             "neutrophils), glucose 32 mg/dL, protein 155 mg/dL. Gram stain "
             "unrevealing; CSF and blood cultures sterile after partial antibiotic "
-            "pretreatment; CSF pneumococcal antigen positive. Diagnostic_"
-            "ambiguity=true; type=partial_antibiotic_pretreatment_sterile_"
-            "cultures. Anchored to Tunkel IDSA 2004 (PMID 15494903) "
-            "pretreated-meningitis recommendations. Outcome: survived. Subphase "
-            "1.3 commit 5.3.3 wave 1, pre-adjudication hold_for_revision."
+            "pretreatment; CSF pneumococcal antigen positive. "
+            "Diagnostic_ambiguity=true; "
+            "type=partial_antibiotic_pretreatment_sterile_cultures. Anchored to "
+            "Tunkel IDSA 2004 (PMID 15494903) pretreated-meningitis "
+            "recommendations. Outcome: survived. Pre-adjudication status: "
+            "hold_for_revision."
         ),
         "narrative_es": (
             "Mujer de 45 anos en region sur de Estados Unidos, ingresada a "
@@ -16614,25 +16596,26 @@ def _build_bact_vignette_079() -> dict[str, Any]:
             "glucosa 32 mg/dL, proteina 155 mg/dL. Cultivos esteriles tras "
             "pretratamiento antibiotico parcial; antigeno neumococico en "
             "liquido positivo. Ambiguedad diagnostica por pretratamiento "
-            "parcial. Anclaje en guia IDSA Tunkel 2004 (PMID 15494903). "
-            "Subphase 1.3 commit 5.3.3 wave 1."
+            "parcial. Anclaje en guia IDSA Tunkel 2004 (PMID 15494903)."
         ),
         "rationale": (
             "Anchored to PMID 15494903 (Tunkel IDSA 2004 CID guideline) "
-            "pretreated-suspected meningitis recommendations. Diagnostic_"
-            "ambiguity=true; type=partial_antibiotic_pretreatment_sterile_"
-            "cultures. Demographic anchor (45yo F outpatient pretreated). CSF "
-            "profile attenuated (WBC 1600, neutrophil 60 percent, glucose 32). "
-            "Antigen confirms organism. Imputation tiers: tier_1_primary={age, "
-            "sex, csf_pneumococcal_antigen, pretreatment_history}; tier_3_"
-            "within_cohort={csf_wbc, neutrophil_pct, glucose, protein "
+            "pretreated-suspected meningitis recommendations. "
+            "Diagnostic_ambiguity=true; "
+            "type=partial_antibiotic_pretreatment_sterile_cultures. "
+            "Demographic anchor (45yo F outpatient pretreated). CSF profile "
+            "attenuated (WBC 1600, neutrophil 60 percent, glucose 32). Antigen "
+            "confirms organism. Imputation tiers: tier_1_primary={age, sex, "
+            "csf_pneumococcal_antigen, pretreatment_history}; "
+            "tier_3_within_cohort={csf_wbc, neutrophil_pct, glucose, protein "
             "attenuation}; tier_4_priors={temp, gcs, symptom_days}. "
-            "Indeterminate=culture-based-organism-confirmation. Outcome="
-            "survived. Tier: tier_4_imputation_idsa_guideline_anchored. 5.3.3 "
-            "wave1 SP-pretreated-ambiguity-2."
+            "Indeterminate=culture-based-organism-confirmation. "
+            "Outcome=survived. Tier: "
+            "tier_4_imputation_idsa_guideline_anchored. Stratum: "
+            "SP-pretreated-ambiguity-2."
         ),
         "anchoring_extras": "anchor=Tunkel-IDSA-2004 type=partial_antibiotic_pretreatment.",
-        "diagnostic_tests": _bact_wave1_dx_tests_sp_pretreated("15494903"),
+        "diagnostic_tests": _bact_set_a_dx_tests_sp_pretreated("15494903"),
     }
 
 
@@ -16698,17 +16681,17 @@ def _build_bact_vignette_080() -> dict[str, Any]:
             "A 33-year-old man in the Netherlands presented to a tertiary "
             "emergency department after 30 hours of outpatient amoxicillin for "
             "sinus pain, with recrudescence of fever to 38.9 C, headache, neck "
-            "stiffness, and vomiting. Examination on admission: temperature "
-            "38.9 C, Glasgow Coma Scale 14, neck stiffness, positive Kernig "
-            "sign, no focal deficit, no rash. CSF showed opening pressure 23 "
-            "cmH2O, white cell count 2,900 per cubic millimeter (68 percent "
-            "neutrophils), glucose 28 mg/dL, protein 175 mg/dL. Gram stain "
-            "unrevealing; cultures sterile after partial antibiotic pretreatment; "
-            "CSF pneumococcal antigen positive. Diagnostic_ambiguity=true; "
+            "stiffness, and vomiting. Examination on admission: temperature 38.9 "
+            "C, Glasgow Coma Scale 14, neck stiffness, positive Kernig sign, no "
+            "focal deficit, no rash. CSF showed opening pressure 23 cmH2O, white "
+            "cell count 2,900 per cubic millimeter (68 percent neutrophils), "
+            "glucose 28 mg/dL, protein 175 mg/dL. Gram stain unrevealing; "
+            "cultures sterile after partial antibiotic pretreatment; CSF "
+            "pneumococcal antigen positive. Diagnostic_ambiguity=true; "
             "type=partial_antibiotic_pretreatment_sterile_cultures. Anchored to "
             "Tunkel IDSA 2004 (PMID 15494903) pretreated-meningitis "
-            "recommendations. Outcome: survived. Subphase 1.3 commit 5.3.3 "
-            "wave 1, pre-adjudication hold_for_revision."
+            "recommendations. Outcome: survived. Pre-adjudication status: "
+            "hold_for_revision."
         ),
         "narrative_es": (
             "Varon de 33 anos en Paises Bajos, ingresado a urgencias terciarias "
@@ -16720,26 +16703,28 @@ def _build_bact_vignette_080() -> dict[str, Any]:
             "leucocitos 2,900 por mm3 (68 por ciento neutrofilos), glucosa 28 "
             "mg/dL, proteina 175 mg/dL. Cultivos esteriles tras pretratamiento "
             "antibiotico parcial; antigeno neumococico en liquido positivo. "
-            "Ambiguedad diagnostica por pretratamiento parcial. Anclaje en "
-            "guia IDSA Tunkel 2004 (PMID 15494903). Subphase 1.3 commit 5.3.3 "
-            "wave 1."
+            "Ambiguedad diagnostica por pretratamiento parcial. Anclaje en guia "
+            "IDSA Tunkel 2004 (PMID 15494903)."
         ),
         "rationale": (
             "Anchored to PMID 15494903 (Tunkel IDSA 2004 CID guideline) "
-            "pretreated-suspected meningitis recommendations. Diagnostic_"
-            "ambiguity=true; type=partial_antibiotic_pretreatment_sterile_"
-            "cultures. Demographic anchor (33yo M outpatient pretreated NL). "
-            "CSF profile attenuated (WBC 2900, neutrophil 68 percent, glucose "
-            "28). Antigen confirms organism. Imputation tiers: tier_1_primary"
-            "={age, sex, csf_pneumococcal_antigen, pretreatment_history}; "
-            "tier_3_within_cohort={csf_wbc, neutrophil_pct, glucose, protein "
-            "attenuation}; tier_4_priors={temp, gcs, symptom_days}. "
-            "Indeterminate=culture-based-organism-confirmation. Outcome="
-            "survived. Tier: tier_4_imputation_idsa_guideline_anchored. 5.3.3 "
-            "wave1 SP-pretreated-ambiguity NL-2."
+            "pretreated-suspected meningitis recommendations. "
+            "Diagnostic_ambiguity=true; "
+            "type=partial_antibiotic_pretreatment_sterile_cultures. "
+            "Demographic anchor (33yo M outpatient pretreated NL). CSF "
+            "profile attenuated (WBC 2900, neutrophil 68 percent, glucose "
+            "28). Antigen confirms organism. Imputation tiers: "
+            "tier_1_primary={age, sex, csf_pneumococcal_antigen, "
+            "pretreatment_history}; tier_3_within_cohort={csf_wbc, "
+            "neutrophil_pct, glucose, protein attenuation}; "
+            "tier_4_priors={temp, gcs, symptom_days}. "
+            "Indeterminate=culture-based-organism-confirmation. "
+            "Outcome=survived. Tier: "
+            "tier_4_imputation_idsa_guideline_anchored. Stratum: "
+            "SP-pretreated-ambiguity NL-2."
         ),
         "anchoring_extras": "anchor=Tunkel-IDSA-2004 type=partial_antibiotic_pretreatment.",
-        "diagnostic_tests": _bact_wave1_dx_tests_sp_pretreated("15494903"),
+        "diagnostic_tests": _bact_set_a_dx_tests_sp_pretreated("15494903"),
     }
 
 
@@ -16813,8 +16798,7 @@ def _build_bact_vignette_081() -> dict[str, Any]:
             "diplococci; culture identified Streptococcus pneumoniae. Primary "
             "anchor: PMID 15509818 (van de Beek 2004 NEJM), elderly subgroup "
             "mortality 51 percent at age 70 years and older. Outcome: fatal "
-            "hospital day 2. Subphase 1.3 commit 5.3.3 wave 1, pre-adjudication "
-            "hold_for_revision."
+            "hospital day 2. Pre-adjudication status: hold_for_revision."
         ),
         "narrative_es": (
             "Mujer de 79 anos en Paises Bajos (Amsterdam), ingresada a "
@@ -16828,8 +16812,8 @@ def _build_bact_vignette_081() -> dict[str, Any]:
             "Streptococcus pneumoniae. Anclaje primario en cohorte prospectiva "
             "van de Beek 2004 NEJM (PMID 15509818, 696 episodios 1998-2002, "
             "mortalidad estrato adultos mayores 51 por ciento a edad >=70). "
-            "Resultado: fatal en hospital dia 2. Subphase 1.3 commit 5.3.3 "
-            "wave 1, pre-adjudicacion hold_for_revision."
+            "Resultado: fatal en hospital dia 2. Estado previo a la "
+            "adjudicacion: hold_for_revision."
         ),
         "rationale": (
             "Anchored to PMID 15509818 (van de Beek 2004 NEJM), 696-episode "
@@ -16841,11 +16825,10 @@ def _build_bact_vignette_081() -> dict[str, Any]:
             "glucose, protein, gcs, hyponatremia}; tier_4_priors={temp, "
             "symptom_days, hr}. Indeterminate=none. Diagnostic_ambiguity=false. "
             "Outcome=fatal_hospital_day_2. Antibiotic_started_hours=2. Tier: "
-            "tier_3_imputation_within_cohort_review. 5.3.3 wave1 SP-eldest-"
-            "fatal."
+            "tier_3_imputation_within_cohort_review. Stratum: SP-eldest-fatal."
         ),
         "anchoring_extras": "anchor=van-de-Beek-NEJM-2004 stratum=eldest-fatal.",
-        "diagnostic_tests": _bact_wave1_dx_tests_sp_culture_positive("15509818"),
+        "diagnostic_tests": _bact_set_a_dx_tests_sp_culture_positive("15509818"),
     }
 
 
@@ -16910,26 +16893,25 @@ def _build_bact_vignette_090() -> dict[str, Any]:
         },
         "narrative_en": (
             "A 55-year-old man in the US South region presented to a tertiary "
-            "emergency department 9 days after glioma resection. The "
-            "postoperative course had been complicated by a CSF leak at the "
-            "surgical site. Over 36 hours he developed fever to 39.0 C, "
-            "headache, and declining mental status with progressive obtundation. "
-            "Examination on admission: temperature 39.0 C, Glasgow Coma Scale 8, "
-            "neck stiffness, positive Kernig sign, focal deficit (right hemiparesis), "
-            "no rash. CSF showed opening pressure 30 cmH2O, white cell count "
-            "4,500 per cubic millimeter (86 percent neutrophils), glucose 16 "
-            "mg/dL, protein 290 mg/dL. Gram stain revealed gram-negative rods; "
-            "culture identified Pseudomonas aeruginosa. Anchored to Tunkel IDSA "
-            "2004 (PMID 15494903) healthcare-associated meningitis "
-            "recommendations (empiric meropenem coverage of gram-negative "
-            "rods including Pseudomonas in post-neurosurgical context). Outcome: "
-            "fatal hospital day 4. Subphase 1.3 commit 5.3.3 wave 1, "
-            "pre-adjudication hold_for_revision."
+            "emergency department 9 days after glioma resection. The postoperative "
+            "course had been complicated by a CSF leak at the surgical site. Over 36 "
+            "hours he developed fever to 39.0 C, headache, and declining mental "
+            "status with progressive obtundation. Examination on admission: "
+            "temperature 39.0 C, Glasgow Coma Scale 8, neck stiffness, positive "
+            "Kernig sign, focal deficit (right hemiparesis), no rash. CSF showed "
+            "opening pressure 30 cmH2O, white cell count 4,500 per cubic millimeter "
+            "(86 percent neutrophils), glucose 16 mg/dL, protein 290 mg/dL. Gram "
+            "stain revealed gram-negative rods; culture identified Pseudomonas "
+            "aeruginosa. Anchored to Tunkel IDSA 2004 (PMID 15494903) "
+            "healthcare-associated meningitis recommendations (empiric meropenem "
+            "coverage of gram-negative rods including Pseudomonas in "
+            "post-neurosurgical context). Outcome: fatal hospital day 4. "
+            "Pre-adjudication status: hold_for_revision."
         ),
         "narrative_es": (
             "Varon de 55 anos en region sur de Estados Unidos, ingresado a "
-            "urgencias terciarias nueve dias despues de reseccion de glioma. "
-            "El curso postoperatorio se complico con fuga de liquido "
+            "urgencias terciarias nueve dias despues de reseccion de glioma. El "
+            "curso postoperatorio se complico con fuga de liquido "
             "cefalorraquideo en el sitio quirurgico. En 36 horas desarrollo "
             "fiebre 39.0 C, cefalea y deterioro del estado mental con "
             "obnubilacion progresiva. Examen: temperatura 39.0 C, escala de "
@@ -16939,31 +16921,30 @@ def _build_bact_vignette_090() -> dict[str, Any]:
             "por ciento neutrofilos), glucosa 16 mg/dL, proteina 290 mg/dL. "
             "Tincion de Gram con bacilos gramnegativos y cultivo Pseudomonas "
             "aeruginosa. Anclaje en guia IDSA Tunkel 2004 (PMID 15494903), "
-            "recomendaciones para meningitis asociada a atencion sanitaria. "
-            "Subphase 1.3 commit 5.3.3 wave 1."
+            "recomendaciones para meningitis asociada a atencion sanitaria."
         ),
         "rationale": (
             "Anchored to PMID 15494903 (Tunkel IDSA 2004 CID guideline) "
             "healthcare-associated meningitis recommendations. Demographic "
-            "anchor (55yo M post-neurosurgical glioma resection day 9 with "
-            "CSF leak) reflects post-neurosurgical gram-negative stratum "
-            "covered by Tunkel for empiric meropenem-vancomycin coverage. "
-            "CSF profile bacterial range; gram-negative rods on Gram stain "
-            "with Pseudomonas culture. Imputation tiers: tier_1_primary={age, "
-            "sex, csf_culture, csf_gram_stain, neurosurgery_history, csf_leak}; "
+            "anchor (55yo M post-neurosurgical glioma resection day 9 with CSF "
+            "leak) reflects post-neurosurgical gram-negative stratum covered by "
+            "Tunkel for empiric meropenem-vancomycin coverage. CSF profile "
+            "bacterial range; gram-negative rods on Gram stain with Pseudomonas "
+            "culture. Imputation tiers: tier_1_primary={age, sex, csf_culture, "
+            "csf_gram_stain, neurosurgery_history, csf_leak}; "
             "tier_3_within_cohort={csf_wbc, neutrophil_pct, glucose, protein, "
             "lactate, gcs}; tier_4_priors={temp, symptom_days, hr}. "
-            "Indeterminate=none. Diagnostic_ambiguity=false. Outcome=fatal_"
-            "hospital_day_4. Antibiotic_started_hours=2. Tier: tier_4_"
-            "imputation_idsa_guideline_anchored. 5.3.3 wave1 GN-post-"
-            "neurosurgical-fatal."
+            "Indeterminate=none. Diagnostic_ambiguity=false. "
+            "Outcome=fatal_hospital_day_4. Antibiotic_started_hours=2. Tier: "
+            "tier_4_imputation_idsa_guideline_anchored. Stratum: "
+            "GN-post-neurosurgical-fatal."
         ),
         "anchoring_extras": "anchor=Tunkel-IDSA-2004 stratum=post-neurosurgical-GN.",
-        "diagnostic_tests": _bact_wave1_dx_tests_gn_pseudomonas("15494903"),
+        "diagnostic_tests": _bact_set_a_dx_tests_gn_pseudomonas("15494903"),
     }
 
 
-_BACT_WAVE1_BUILDERS: dict[int, Any] = {
+_BACT_SET_A_BUILDERS: dict[int, Any] = {
     65: _build_bact_vignette_065,
     66: _build_bact_vignette_066,
     67: _build_bact_vignette_067,
@@ -16981,60 +16962,60 @@ _BACT_WAVE1_BUILDERS: dict[int, Any] = {
 }
 
 
-def generate_bact_wave1_vignette(vignette_id: int) -> dict[str, Any]:
-    """Build one BACT Wave-1 vignette dict from a vignette_id.
+def generate_bact_set_a_vignette(vignette_id: int) -> dict[str, Any]:
+    """Build one BACT set A vignette dict from a vignette_id.
 
-    Looks up the BACTERIAL_DISTRIBUTION spec, the PMID_REGISTRY metadata,
+    Looks up the BACTERIAL_DISTRIBUTION entry, the PMID_REGISTRY metadata,
     and the per-slot clinical builder, then composes the full
     VignetteSchema-compliant dict.
     """
-    if vignette_id not in BACT_WAVE1_IDS:
+    if vignette_id not in BACT_SET_A_IDS:
         raise KeyError(
-            f"vignette_id {vignette_id!r} not in BACT_WAVE1_IDS {BACT_WAVE1_IDS}"
+            f"vignette_id {vignette_id!r} not in BACT_SET_A_IDS {BACT_SET_A_IDS}"
         )
     spec = next(s for s in BACTERIAL_DISTRIBUTION if s["vignette_id"] == vignette_id)
     pmid_meta = load_pmid_metadata(spec["pmid"])
-    clinical = _BACT_WAVE1_BUILDERS[vignette_id]()
+    clinical = _BACT_SET_A_BUILDERS[vignette_id]()
 
     region = spec["geography_region"]
     history = clinical["history"]
     if not history.get("red_flags_present"):
-        history = {**history, "red_flags_present": _bact_wave1_red_flags(spec)}
+        history = {**history, "red_flags_present": _bact_set_a_red_flags(spec)}
 
     return {
         "schema_version": "2.0",
-        "case_id": _bact_wave1_case_id(spec, pmid_meta),
+        "case_id": _bact_set_a_case_id(spec, pmid_meta),
         "ground_truth_class": 2,
         "demographics": {
             "age_years": spec["age_years"],
             "sex": spec["sex"],
-            "ethnicity": _bact_wave1_ethnicity(region),
+            "ethnicity": _bact_set_a_ethnicity(region),
             "geography_region": region,
-            "altitude_residence_m": _bact_wave1_altitude(region),
+            "altitude_residence_m": _bact_set_a_altitude(region),
         },
         "history": history,
-        "exposure": _bact_wave1_exposure(spec),
+        "exposure": _bact_set_a_exposure(spec),
         "vitals": clinical["vitals"],
         "exam": clinical["exam"],
         "labs": clinical["labs"],
         "csf": clinical["csf"],
-        "imaging": _bact_wave1_imaging_for(spec),
+        "imaging": _bact_set_a_imaging_for(spec),
         "diagnostic_tests": {"results": clinical["diagnostic_tests"]},
-        "adjudication": _bact_wave1_adjudication(spec, clinical["anchoring_extras"]),
+        "adjudication": _bact_set_a_adjudication(spec, clinical["anchoring_extras"]),
         "literature_anchors": [_build_literature_anchor(pmid_meta)],
-        "provenance": _bact_wave1_provenance(clinical["rationale"]),
+        "provenance": _bact_set_a_provenance(clinical["rationale"]),
         "narrative_es": clinical["narrative_es"],
         "narrative_en": clinical["narrative_en"],
     }
 
 
-def write_bact_wave1_vignette(
+def write_bact_set_a_vignette(
     vignette_id: int,
-    output_dir: Path = BACT_WAVE1_OUTPUT_DIR,
+    output_dir: Path = BACT_SET_A_OUTPUT_DIR,
 ) -> Path:
-    """Build, validate, and write one BACT Wave-1 vignette to disk."""
+    """Build, validate, and write one BACT set A vignette to disk."""
     spec = next(s for s in BACTERIAL_DISTRIBUTION if s["vignette_id"] == vignette_id)
-    vignette = generate_bact_wave1_vignette(vignette_id)
+    vignette = generate_bact_set_a_vignette(vignette_id)
     VignetteSchema.model_validate(vignette)
     output_dir.mkdir(parents=True, exist_ok=True)
     filepath = output_dir / spec["filename"]
@@ -17046,18 +17027,18 @@ def write_bact_wave1_vignette(
     return filepath
 
 
-def write_bact_wave1_corpus(
-    output_dir: Path = BACT_WAVE1_OUTPUT_DIR,
+def write_bact_set_a_corpus(
+    output_dir: Path = BACT_SET_A_OUTPUT_DIR,
 ) -> list[Path]:
-    """Build, validate, and write all 14 BACT Wave-1 vignettes."""
+    """Build, validate, and write all 14 BACT set A vignettes."""
     paths: list[Path] = []
-    for vid in BACT_WAVE1_IDS:
-        paths.append(write_bact_wave1_vignette(vid, output_dir=output_dir))
+    for vid in BACT_SET_A_IDS:
+        paths.append(write_bact_set_a_vignette(vid, output_dir=output_dir))
     return paths
 
 
 # ============================================================================
-# Wave 2 BACTERIAL vignette builders (n=11)
+# BACTERIAL set B vignette builders (n=11)
 # ----------------------------------------------------------------------------
 # Slot IDs: 61, 63, 68, 70, 72, 74, 83, 84, 85, 86, 87.
 # Anchors: 6 Bijlsma 2016 Lancet ID (PMID 26652862, anchor_type=cohort) +
@@ -17065,26 +17046,25 @@ def write_bact_wave1_corpus(
 #          removed: v83 and v84 MacNeil 2018 CID 29126310, v85 Marcus 2022
 #          OFID 35493127, v86 Park 2022 JOGH 35265327, v87 Soeters 2018 CID
 #          29509834. (Both Mylonakis 2002 Listeria slots v88/v89 were
-#          removed in errata 5.4.3.3 - full-text verification standard not
-#          met; corpus 270->268.)
+#          removed because they did not meet the full-text verification
+#          standard; corpus 270 to 268.)
 # Pathogens: 6 SP + 3 NM + 2 Hib.
-# Diagnostic ambiguity: 1 of 13 (v84 NM Loreto infant; partial-antibiotic
+# Diagnostic ambiguity: 1 of 11 (v84 NM Loreto infant; partial-antibiotic
 # pretreatment + remote specimen handling delay).
 # Peru-anchored: 2 of 11 (v84 Loreto, v86 Cusco).
-# Architecture: extends Wave 1 by reusing _bact_wave1_altitude,
-# _bact_wave1_ethnicity, _bact_wave1_case_id, _bact_wave1_imaging_for,
-# _build_literature_anchor; adds Wave 2 dx_tests + adjudication +
-# provenance + exposure + red_flags variants for new pathogens and
-# pregnancy red-flag handling.
+# Architecture: extends set A by reusing _bact_set_a_altitude,
+# _bact_set_a_ethnicity, _bact_set_a_case_id, _bact_set_a_imaging_for,
+# _build_literature_anchor; adds set B dx_tests + adjudication +
+# provenance + exposure + red_flags variants for new pathogens.
 # ============================================================================
 
-BACT_WAVE2_OUTPUT_DIR = Path("data/vignettes/v2/class_02_bacterial")
-BACT_WAVE2_IDS: list[int] = [61, 63, 68, 70, 72, 74, 83, 84, 85, 86, 87]
-BACT_WAVE2_AMBIGUITY_IDS: set[int] = {84}
-BACT_WAVE2_PERU_IDS: set[int] = {84, 86}
+BACT_SET_B_OUTPUT_DIR = Path("data/vignettes/v2/class_02_bacterial")
+BACT_SET_B_IDS: list[int] = [61, 63, 68, 70, 72, 74, 83, 84, 85, 86, 87]
+BACT_SET_B_AMBIGUITY_IDS: set[int] = {84}
+BACT_SET_B_PERU_IDS: set[int] = {84, 86}
 
 
-def _bact_wave2_anchor_short(pmid: str) -> str:
+def _bact_set_b_anchor_short(pmid: str) -> str:
     if pmid == "26652862":
         return "Bijlsma 2016 Lancet ID"
     if pmid == "29126310":
@@ -17098,7 +17078,7 @@ def _bact_wave2_anchor_short(pmid: str) -> str:
     raise KeyError(pmid)
 
 
-def _bact_wave2_dx_tests_nm_culture_positive(pmid: str) -> list[dict[str, Any]]:
+def _bact_set_b_dx_tests_nm_culture_positive(pmid: str) -> list[dict[str, Any]]:
     """N. meningitidis Gram-negative diplococci with culture confirmation."""
     cit = f"PMID:{pmid}"
     return [
@@ -17126,7 +17106,7 @@ def _bact_wave2_dx_tests_nm_culture_positive(pmid: str) -> list[dict[str, Any]]:
     ]
 
 
-def _bact_wave2_dx_tests_nm_pretreated(pmid: str) -> list[dict[str, Any]]:
+def _bact_set_b_dx_tests_nm_pretreated(pmid: str) -> list[dict[str, Any]]:
     """N. meningitidis after partial-Abx pretreatment + remote specimen
     handling delay (v84 Loreto infant): cultures sterile, PCR positive."""
     cit = f"PMID:{pmid}"
@@ -17162,7 +17142,7 @@ def _bact_wave2_dx_tests_nm_pretreated(pmid: str) -> list[dict[str, Any]]:
     ]
 
 
-def _bact_wave2_dx_tests_hib(pmid: str) -> list[dict[str, Any]]:
+def _bact_set_b_dx_tests_hib(pmid: str) -> list[dict[str, Any]]:
     """H. influenzae type b: Gram-negative coccobacilli + culture + antigen."""
     cit = f"PMID:{pmid}"
     return [
@@ -17197,8 +17177,8 @@ def _bact_wave2_dx_tests_hib(pmid: str) -> list[dict[str, Any]]:
     ]
 
 
-def _bact_wave2_exposure() -> dict[str, Any]:
-    """Wave 2 exposure block. Wave 2 has no HIV/transplant slots; pregnancy
+def _bact_set_b_exposure() -> dict[str, Any]:
+    """Set B exposure block. Set B has no HIV/transplant slots; pregnancy
     is captured in red_flags (pregnancy_postpartum), not in immunocompromise_
     status (which has no pregnancy enum value)."""
     return {
@@ -17213,39 +17193,36 @@ def _bact_wave2_exposure() -> dict[str, Any]:
     }
 
 
-def _bact_wave2_red_flags(spec: dict[str, Any]) -> list[str]:
-    """Wave 2 red flags. v88 Tumbes pregnancy ramps pregnancy_postpartum;
-    elderly + pediatric extreme ages do not have a dedicated red_flag enum."""
-    if spec["vignette_id"] == 88:
-        return ["pregnancy_postpartum"]
+def _bact_set_b_red_flags(spec: dict[str, Any]) -> list[str]:
+    """Set B red flags. No set B slot carries one; elderly and pediatric
+    extreme ages do not have a dedicated red_flag enum."""
     return []
 
 
-def _bact_wave2_adjudication(
+def _bact_set_b_adjudication(
     spec: dict[str, Any], anchoring_extras: str
 ) -> dict[str, Any]:
-    """Wave 2 pre-adjudication adjudication block (Q7 5.3.1 lock).
+    """Set B pre-adjudication adjudication block.
 
-    Sentinel adjudicators WAVE2-PRE-ADJ-1 / WAVE2-PRE-ADJ-2 distinguish
-    Wave 2 from Wave 1 + pilot adjudicators. Embeds verbatim
-    self_review_disposition=hold_for_revision per the 5.3.2 D8 pattern.
+    Sentinel adjudicators PRE-ADJ-1 / PRE-ADJ-2, as in set A. Embeds verbatim
+    self_review_disposition=hold_for_revision, the same pattern as set A.
     """
     pmid = spec["pmid"]
-    anchor_short = _bact_wave2_anchor_short(pmid)
+    anchor_short = _bact_set_b_anchor_short(pmid)
     base = (
         f"stage=pre_adjudication; status=pending_external_review; "
         f"self_review_disposition=hold_for_revision; "
-        f"self_review_notes=wave 2 vignette anchored to PMID {pmid} ({anchor_short}); "
+        f"self_review_notes=vignette anchored to PMID {pmid} ({anchor_short}); "
         f"external clinical adjudication pending; classification provisional. "
-        f"adjudicator_ids=WAVE2-PRE-ADJ-1, WAVE2-PRE-ADJ-2 (sentinel); "
+        f"adjudicator_ids=PRE-ADJ-1, PRE-ADJ-2 (sentinel); "
         f"cohen_kappa=0.0 placeholder; adjudicator_name=null; "
         f"adjudication_date=null; post_adjudication_disposition=null. "
-        f"Subphase 1.3 commit 5.3.4 (2026-05-08)."
+        "Generated 2026-05-08."
     )
     if anchoring_extras:
         base = base + " " + anchoring_extras
     return {
-        "adjudicator_ids": ["WAVE2-PRE-ADJ-1", "WAVE2-PRE-ADJ-2"],
+        "adjudicator_ids": ["PRE-ADJ-1", "PRE-ADJ-2"],
         "cohen_kappa": 0.0,
         "disagreement_resolution": None,
         "anchoring_documentation": base,
@@ -17253,13 +17230,13 @@ def _bact_wave2_adjudication(
     }
 
 
-def _bact_wave2_provenance(rationale: str) -> dict[str, Any]:
+def _bact_set_b_provenance(rationale: str) -> dict[str, Any]:
     if len(rationale) > 1000:
         rationale = rationale[:997] + "..."
     return {
         "generation_timestamp_utc": "2026-05-08T15:00:00Z",
         "generator_model_identifier": (
-            "scripts.generate_pam_vignettes/v1.subphase_1_3_commit_5_3_4"
+            "scripts.generate_pam_vignettes/v1"
         ),
         "prompt_hash_sha256": "0" * 64,
         "schema_version": "2.0",
@@ -17268,7 +17245,7 @@ def _bact_wave2_provenance(rationale: str) -> dict[str, Any]:
 
 
 # ----------------------------------------------------------------------------
-# Wave 2 per-slot clinical builders. Each returns a dict with keys: history,
+# Set B per-slot clinical builders. Each returns a dict with keys: history,
 # vitals, exam, labs, csf, narrative_es, narrative_en, rationale,
 # anchoring_extras, diagnostic_tests.
 # ----------------------------------------------------------------------------
@@ -17336,17 +17313,17 @@ def _build_bact_vignette_061() -> dict[str, Any]:
             "A 35-year-old man in the Netherlands presented to a tertiary "
             "emergency department in Amsterdam with a 36-hour rapid progression "
             "of fever to 39.0 C, severe headache, neck stiffness, and "
-            "photophobia. Examination on admission: temperature 39.0 C, "
-            "Glasgow Coma Scale 13, neck stiffness, positive Kernig sign, no "
-            "focal deficit, no rash. CSF showed opening pressure 27 cmH2O, "
-            "white cell count 5,200 per cubic millimeter (88 percent "
-            "neutrophils), glucose 22 mg/dL, protein 200 mg/dL. Gram stain "
-            "revealed gram-positive diplococci; culture identified Streptococcus "
-            "pneumoniae. Primary anchor: PMID 26652862 (Bijlsma 2016 Lancet "
-            "Infect Dis), 1,412-episode prospective Netherlands community-"
-            "acquired adult bacterial meningitis cohort 2006-2014 (SP 70 "
-            "percent, classic triad 47 percent). Outcome: survived. Subphase "
-            "1.3 commit 5.3.4 wave 2, pre-adjudication hold_for_revision."
+            "photophobia. Examination on admission: temperature 39.0 C, Glasgow "
+            "Coma Scale 13, neck stiffness, positive Kernig sign, no focal "
+            "deficit, no rash. CSF showed opening pressure 27 cmH2O, white cell "
+            "count 5,200 per cubic millimeter (88 percent neutrophils), glucose "
+            "22 mg/dL, protein 200 mg/dL. Gram stain revealed gram-positive "
+            "diplococci; culture identified Streptococcus pneumoniae. Primary "
+            "anchor: PMID 26652862 (Bijlsma 2016 Lancet Infect Dis), "
+            "1,412-episode prospective Netherlands community-acquired adult "
+            "bacterial meningitis cohort 2006-2014 (SP 70 percent, classic triad "
+            "47 percent). Outcome: survived. Pre-adjudication status: "
+            "hold_for_revision."
         ),
         "narrative_es": (
             "Varon de 35 anos en Paises Bajos (Amsterdam), ingresado a "
@@ -17361,8 +17338,7 @@ def _build_bact_vignette_061() -> dict[str, Any]:
             "Gram con diplococos grampositivos y cultivo Streptococcus "
             "pneumoniae. Anclaje primario en cohorte prospectiva neerlandesa "
             "Bijlsma 2016 Lancet ID (PMID 26652862, 1,412 episodios 2006-2014, "
-            "SP 70 por ciento, triada 47 por ciento). Subphase 1.3 commit "
-            "5.3.4 wave 2."
+            "SP 70 por ciento, triada 47 por ciento)."
         ),
         "rationale": (
             "Anchored to PMID 26652862 (Bijlsma 2016 Lancet Infect Dis), "
@@ -17371,14 +17347,15 @@ def _build_bact_vignette_061() -> dict[str, Any]:
             "triad 47 percent, mortality 17 percent). Demographic anchor "
             "(35yo M adult community SP) sits in dominant cohort stratum. CSF "
             "profile bacterial range. Imputation tiers: tier_1_primary={age, "
-            "sex, csf_culture, csf_gram_stain, triad}; tier_3_within_cohort="
-            "{csf_wbc, neutrophil_pct, glucose, protein, gcs}; tier_4_priors="
-            "{temp, symptom_days}. Indeterminate=none. Diagnostic_ambiguity="
-            "false. Outcome=survived. Antibiotic_started_hours=1. Tier: "
-            "tier_3_imputation_within_cohort_review. 5.3.4 wave2 SP-NL-adult."
+            "sex, csf_culture, csf_gram_stain, triad}; "
+            "tier_3_within_cohort={csf_wbc, neutrophil_pct, glucose, protein, "
+            "gcs}; tier_4_priors={temp, symptom_days}. Indeterminate=none. "
+            "Diagnostic_ambiguity=false. Outcome=survived. "
+            "Antibiotic_started_hours=1. Tier: "
+            "tier_3_imputation_within_cohort_review. Stratum: SP-NL-adult."
         ),
         "anchoring_extras": "anchor=Bijlsma-Lancet-ID-2016 stratum=adult-community.",
-        "diagnostic_tests": _bact_wave1_dx_tests_sp_culture_positive("26652862"),
+        "diagnostic_tests": _bact_set_a_dx_tests_sp_culture_positive("26652862"),
     }
 
 
@@ -17445,16 +17422,15 @@ def _build_bact_vignette_063() -> dict[str, Any]:
             "A 72-year-old woman in the Netherlands presented to a tertiary "
             "emergency department in Amsterdam after a 3-day course of "
             "progressive fever, headache, and confusion progressing to "
-            "obtundation. Examination on admission: temperature 39.1 C, "
-            "Glasgow Coma Scale 7, neck stiffness, positive Kernig sign, no "
-            "focal deficit, no rash. CSF showed opening pressure 27 cmH2O, "
-            "white cell count 4,400 per cubic millimeter (82 percent "
-            "neutrophils), glucose 24 mg/dL, protein 195 mg/dL. Gram stain "
-            "revealed gram-positive diplococci; culture identified Streptococcus "
-            "pneumoniae. Primary anchor: PMID 26652862 (Bijlsma 2016 Lancet "
-            "Infect Dis), elderly stratum mortality elevated above the 17 "
-            "percent cohort-overall rate. Outcome: fatal hospital day 3. "
-            "Subphase 1.3 commit 5.3.4 wave 2, pre-adjudication "
+            "obtundation. Examination on admission: temperature 39.1 C, Glasgow "
+            "Coma Scale 7, neck stiffness, positive Kernig sign, no focal "
+            "deficit, no rash. CSF showed opening pressure 27 cmH2O, white cell "
+            "count 4,400 per cubic millimeter (82 percent neutrophils), glucose "
+            "24 mg/dL, protein 195 mg/dL. Gram stain revealed gram-positive "
+            "diplococci; culture identified Streptococcus pneumoniae. Primary "
+            "anchor: PMID 26652862 (Bijlsma 2016 Lancet Infect Dis), elderly "
+            "stratum mortality elevated above the 17 percent cohort-overall "
+            "rate. Outcome: fatal hospital day 3. Pre-adjudication status: "
             "hold_for_revision."
         ),
         "narrative_es": (
@@ -17470,7 +17446,7 @@ def _build_bact_vignette_063() -> dict[str, Any]:
             "Bijlsma 2016 Lancet ID (PMID 26652862, 1,412 episodios 2006-2014, "
             "estrato de adultos mayores con mortalidad elevada por encima del "
             "17 por ciento global de la cohorte). Resultado: fatal en hospital "
-            "dia 3. Subphase 1.3 commit 5.3.4 wave 2."
+            "dia 3."
         ),
         "rationale": (
             "Anchored to PMID 26652862 (Bijlsma 2016 Lancet Infect Dis), "
@@ -17479,14 +17455,15 @@ def _build_bact_vignette_063() -> dict[str, Any]:
             "Demographic anchor (72yo F elderly) sits in elderly stratum. CSF "
             "profile bacterial range. Imputation tiers: tier_1_primary={age, "
             "sex, csf_culture, csf_gram_stain}; tier_3_within_cohort={csf_wbc, "
-            "neutrophil_pct, glucose, protein, gcs, hyponatremia}; tier_4_"
-            "priors={temp, symptom_days, hr}. Indeterminate=none. Diagnostic_"
-            "ambiguity=false. Outcome=fatal_hospital_day_3. Antibiotic_"
-            "started_hours=2. Tier: tier_3_imputation_within_cohort_review. "
-            "5.3.4 wave2 SP-NL-elderly-fatal."
+            "neutrophil_pct, glucose, protein, gcs, hyponatremia}; "
+            "tier_4_priors={temp, symptom_days, hr}. Indeterminate=none. "
+            "Diagnostic_ambiguity=false. Outcome=fatal_hospital_day_3. "
+            "Antibiotic_started_hours=2. Tier: "
+            "tier_3_imputation_within_cohort_review. Stratum: "
+            "SP-NL-elderly-fatal."
         ),
         "anchoring_extras": "anchor=Bijlsma-Lancet-ID-2016 stratum=elderly-fatal.",
-        "diagnostic_tests": _bact_wave1_dx_tests_sp_culture_positive("26652862"),
+        "diagnostic_tests": _bact_set_a_dx_tests_sp_culture_positive("26652862"),
     }
 
 
@@ -17561,8 +17538,7 @@ def _build_bact_vignette_068() -> dict[str, Any]:
             "culture identified Streptococcus pneumoniae. Primary anchor: "
             "PMID 26652862 (Bijlsma 2016 Lancet Infect Dis), 1,412-episode "
             "prospective Netherlands cohort 2006-2014. Outcome: survived no "
-            "sequelae. Subphase 1.3 commit 5.3.4 wave 2, pre-adjudication "
-            "hold_for_revision."
+            "sequelae. Pre-adjudication status: hold_for_revision."
         ),
         "narrative_es": (
             "Mujer de 51 anos en Paises Bajos (Amsterdam), ingresada a "
@@ -17576,9 +17552,8 @@ def _build_bact_vignette_068() -> dict[str, Any]:
             "diplococos grampositivos y cultivo Streptococcus pneumoniae. "
             "Anclaje primario en cohorte prospectiva Bijlsma 2016 Lancet ID "
             "(PMID 26652862, 1,412 episodios 2006-2014, SP 70 por ciento, "
-            "triada 47 por ciento). Resultado: sobrevivio sin secuelas. "
-            "Subphase 1.3 commit 5.3.4 wave 2, pre-adjudicacion "
-            "hold_for_revision."
+            "triada 47 por ciento). Resultado: sobrevivio sin secuelas. Estado "
+            "previo a la adjudicacion: hold_for_revision."
         ),
         "rationale": (
             "Anchored to PMID 26652862 (Bijlsma 2016 Lancet ID), 1,412-episode "
@@ -17586,15 +17561,15 @@ def _build_bact_vignette_068() -> dict[str, Any]:
             "triad 47 percent). Demographic anchor (51yo F adult with otitis "
             "media antecedent) sits in adult community stratum. CSF profile "
             "bacterial range. Imputation tiers: tier_1_primary={age, sex, "
-            "csf_culture, csf_gram_stain, otitis_media history}; tier_3_"
-            "within_cohort={csf_wbc, neutrophil_pct, glucose, protein}; "
+            "csf_culture, csf_gram_stain, otitis_media history}; "
+            "tier_3_within_cohort={csf_wbc, neutrophil_pct, glucose, protein}; "
             "tier_4_priors={temp, gcs, symptom_days}. Indeterminate=none. "
-            "Diagnostic_ambiguity=false. Outcome=survived_no_sequelae. "
-            "Tier: tier_3_imputation_within_cohort_review. 5.3.4 wave2 "
+            "Diagnostic_ambiguity=false. Outcome=survived_no_sequelae. Tier: "
+            "tier_3_imputation_within_cohort_review. Stratum: "
             "SP-NL-adult-female."
         ),
         "anchoring_extras": "anchor=Bijlsma-Lancet-ID-2016 stratum=adult-community-female.",
-        "diagnostic_tests": _bact_wave1_dx_tests_sp_culture_positive("26652862"),
+        "diagnostic_tests": _bact_set_a_dx_tests_sp_culture_positive("26652862"),
     }
 
 
@@ -17666,11 +17641,11 @@ def _build_bact_vignette_070() -> dict[str, Any]:
             "4,800 per cubic millimeter (84 percent neutrophils), glucose 25 "
             "mg/dL, protein 195 mg/dL. Gram stain revealed gram-positive "
             "diplococci; culture identified Streptococcus pneumoniae. Primary "
-            "anchor: PMID 26652862 (Bijlsma 2016 Lancet Infect Dis), 1,412-"
-            "episode prospective Netherlands cohort 2006-2014; elderly "
+            "anchor: PMID 26652862 (Bijlsma 2016 Lancet Infect Dis), "
+            "1,412-episode prospective Netherlands cohort 2006-2014; elderly "
             "stratum sequelae rate 24 percent in survivors. Outcome: survived "
-            "with mild hearing loss. Subphase 1.3 commit 5.3.4 wave 2, "
-            "pre-adjudication hold_for_revision."
+            "with mild hearing loss. Pre-adjudication status: "
+            "hold_for_revision."
         ),
         "narrative_es": (
             "Varon de 65 anos en Paises Bajos (Amsterdam), ingresado a "
@@ -17682,25 +17657,26 @@ def _build_bact_vignette_070() -> dict[str, Any]:
             "ciento neutrofilos), glucosa 25 mg/dL, proteina 195 mg/dL. "
             "Tincion de Gram con diplococos grampositivos y cultivo "
             "Streptococcus pneumoniae. Anclaje primario en cohorte Bijlsma "
-            "2016 Lancet ID (PMID 26652862, estrato adulto mayor, secuelas "
-            "24 por ciento en sobrevivientes). Resultado: sobrevivio con "
-            "perdida auditiva leve. Subphase 1.3 commit 5.3.4 wave 2."
+            "2016 Lancet ID (PMID 26652862, estrato adulto mayor, secuelas 24 "
+            "por ciento en sobrevivientes). Resultado: sobrevivio con perdida "
+            "auditiva leve."
         ),
         "rationale": (
             "Anchored to PMID 26652862 (Bijlsma 2016 Lancet ID), 1,412-episode "
             "prospective Netherlands cohort 2006-2014 (SP 70 percent, sequelae "
             "rate 24 percent in survivors at age >=60). Demographic anchor "
             "(65yo M elderly survived) sits in elderly-survived-with-sequelae "
-            "stratum. CSF profile bacterial range. Imputation tiers: tier_1_"
-            "primary={age, sex, csf_culture, csf_gram_stain}; tier_3_within_"
-            "cohort={csf_wbc, neutrophil_pct, glucose, protein, gcs}; tier_4_"
-            "priors={temp, symptom_days}. Indeterminate=none. Diagnostic_"
-            "ambiguity=false. Outcome=survived_with_mild_hearing_loss. "
-            "Tier: tier_3_imputation_within_cohort_review. 5.3.4 wave2 SP-NL-"
-            "elderly-sequelae."
+            "stratum. CSF profile bacterial range. Imputation tiers: "
+            "tier_1_primary={age, sex, csf_culture, csf_gram_stain}; "
+            "tier_3_within_cohort={csf_wbc, neutrophil_pct, glucose, protein, "
+            "gcs}; tier_4_priors={temp, symptom_days}. Indeterminate=none. "
+            "Diagnostic_ambiguity=false. "
+            "Outcome=survived_with_mild_hearing_loss. Tier: "
+            "tier_3_imputation_within_cohort_review. Stratum: "
+            "SP-NL-elderly-sequelae."
         ),
         "anchoring_extras": "anchor=Bijlsma-Lancet-ID-2016 stratum=elderly-survived-sequelae.",
-        "diagnostic_tests": _bact_wave1_dx_tests_sp_culture_positive("26652862"),
+        "diagnostic_tests": _bact_set_a_dx_tests_sp_culture_positive("26652862"),
     }
 
 
@@ -17772,11 +17748,11 @@ def _build_bact_vignette_072() -> dict[str, Any]:
             "5,600 per cubic millimeter (88 percent neutrophils), glucose 23 "
             "mg/dL, protein 205 mg/dL. Gram stain revealed gram-positive "
             "diplococci; culture identified Streptococcus pneumoniae. Primary "
-            "anchor: PMID 26652862 (Bijlsma 2016 Lancet Infect Dis), 1,412-"
-            "episode prospective Netherlands community-acquired adult cohort "
-            "2006-2014 (SP 70 percent, classic triad 47 percent, mortality "
-            "17 percent). Outcome: survived no sequelae. Subphase 1.3 commit "
-            "5.3.4 wave 2, pre-adjudication hold_for_revision."
+            "anchor: PMID 26652862 (Bijlsma 2016 Lancet Infect Dis), "
+            "1,412-episode prospective Netherlands community-acquired adult "
+            "cohort 2006-2014 (SP 70 percent, classic triad 47 percent, "
+            "mortality 17 percent). Outcome: survived no sequelae. "
+            "Pre-adjudication status: hold_for_revision."
         ),
         "narrative_es": (
             "Varon de 55 anos en Paises Bajos (Amsterdam), ingresado a "
@@ -17789,8 +17765,8 @@ def _build_bact_vignette_072() -> dict[str, Any]:
             "Tincion de Gram con diplococos grampositivos y cultivo "
             "Streptococcus pneumoniae. Anclaje primario en cohorte prospectiva "
             "Bijlsma 2016 Lancet ID (PMID 26652862, 1,412 episodios 2006-2014, "
-            "estrato adulto comunitario). Subphase 1.3 commit 5.3.4 wave 2, "
-            "pre-adjudicacion hold_for_revision."
+            "estrato adulto comunitario). Estado previo a la adjudicacion: "
+            "hold_for_revision."
         ),
         "rationale": (
             "Anchored to PMID 26652862 (Bijlsma 2016 Lancet ID), 1,412-episode "
@@ -17801,11 +17777,11 @@ def _build_bact_vignette_072() -> dict[str, Any]:
             "csf_gram_stain}; tier_3_within_cohort={csf_wbc, neutrophil_pct, "
             "glucose, protein}; tier_4_priors={temp, gcs, symptom_days}. "
             "Indeterminate=none. Diagnostic_ambiguity=false. Outcome=survived. "
-            "Tier: tier_3_imputation_within_cohort_review. 5.3.4 wave2 "
+            "Tier: tier_3_imputation_within_cohort_review. Stratum: "
             "SP-NL-adult-community."
         ),
         "anchoring_extras": "anchor=Bijlsma-Lancet-ID-2016 stratum=adult-community-male.",
-        "diagnostic_tests": _bact_wave1_dx_tests_sp_culture_positive("26652862"),
+        "diagnostic_tests": _bact_set_a_dx_tests_sp_culture_positive("26652862"),
     }
 
 
@@ -17880,8 +17856,8 @@ def _build_bact_vignette_074() -> dict[str, Any]:
             "Streptococcus pneumoniae. Primary anchor: PMID 26652862 (Bijlsma "
             "2016 Lancet Infect Dis), 1,412-episode prospective Netherlands "
             "cohort 2006-2014 (women cohort proportion 46 percent). Outcome: "
-            "survived no sequelae. Subphase 1.3 commit 5.3.4 wave 2, "
-            "pre-adjudication hold_for_revision."
+            "survived no sequelae. Pre-adjudication status: "
+            "hold_for_revision."
         ),
         "narrative_es": (
             "Mujer de 42 anos en Paises Bajos (Amsterdam), ingresada a "
@@ -17894,8 +17870,8 @@ def _build_bact_vignette_074() -> dict[str, Any]:
             "Tincion de Gram con diplococos grampositivos y cultivo "
             "Streptococcus pneumoniae. Anclaje primario en cohorte prospectiva "
             "Bijlsma 2016 Lancet ID (PMID 26652862, 1,412 episodios 2006-2014, "
-            "proporcion de mujeres 46 por ciento). Subphase 1.3 commit 5.3.4 "
-            "wave 2, pre-adjudicacion hold_for_revision."
+            "proporcion de mujeres 46 por ciento). Estado previo a la "
+            "adjudicacion: hold_for_revision."
         ),
         "rationale": (
             "Anchored to PMID 26652862 (Bijlsma 2016 Lancet ID), 1,412-episode "
@@ -17905,11 +17881,12 @@ def _build_bact_vignette_074() -> dict[str, Any]:
             "sex, csf_culture, csf_gram_stain}; tier_3_within_cohort={csf_wbc, "
             "neutrophil_pct, glucose, protein}; tier_4_priors={temp, gcs, "
             "symptom_days}. Indeterminate=none. Diagnostic_ambiguity=false. "
-            "Outcome=survived_no_sequelae. Tier: tier_3_imputation_within_"
-            "cohort_review. 5.3.4 wave2 SP-NL-adult-female-2."
+            "Outcome=survived_no_sequelae. Tier: "
+            "tier_3_imputation_within_cohort_review. Stratum: "
+            "SP-NL-adult-female-2."
         ),
         "anchoring_extras": "anchor=Bijlsma-Lancet-ID-2016 stratum=adult-community-female-2.",
-        "diagnostic_tests": _bact_wave1_dx_tests_sp_culture_positive("26652862"),
+        "diagnostic_tests": _bact_set_a_dx_tests_sp_culture_positive("26652862"),
     }
 
 
@@ -17987,8 +17964,7 @@ def _build_bact_vignette_083() -> dict[str, Any]:
             "MacNeil 2018 CID (PMID 29126310, US meningococcal disease "
             "epidemiology 1996-2015; serogroup B 35.8 percent of cases, "
             "overall case-fatality 14.9 percent). Outcome: fatal hospital day "
-            "2. Subphase 1.3 commit 5.3.4 wave 2, pre-adjudication "
-            "hold_for_revision."
+            "2. Pre-adjudication status: hold_for_revision."
         ),
         "narrative_es": (
             "Mujer de 17 anos en region sur de Estados Unidos, ingresada a "
@@ -18005,7 +17981,7 @@ def _build_bact_vignette_083() -> dict[str, Any]:
             "serogrupo B. Anclaje en MacNeil 2018 CID (PMID 29126310, "
             "epidemiologia meningococica en Estados Unidos 1996-2015; "
             "serogrupo B 35.8 por ciento de casos, letalidad global 14.9 por "
-            "ciento). Subphase 1.3 commit 5.3.4 wave 2."
+            "ciento)."
         ),
         "rationale": (
             "Anchored to PMID 29126310 (MacNeil 2018 CID US meningococcal "
@@ -18013,19 +17989,19 @@ def _build_bact_vignette_083() -> dict[str, Any]:
             "serogroup B 35.8 percent of cases, and adolescents and young "
             "adults a documented age stratum. Fulminant purpura with "
             "disseminated intravascular coagulation marks the severe end of "
-            "the clinical spectrum. Demographic anchor (17yo F "
-            "adolescent) sits in target surveillance stratum. CSF bacterial "
-            "range; petechial-to-purpuric evolution + DIC consistent with "
-            "fulminant meningococcemia. Imputation tiers: tier_1_primary={age, "
-            "sex, csf_culture, csf_gram_stain, petechial_rash, DIC platelets}; "
+            "the clinical spectrum. Demographic anchor (17yo F adolescent) "
+            "sits in target surveillance stratum. CSF bacterial range; "
+            "petechial-to-purpuric evolution + DIC consistent with fulminant "
+            "meningococcemia. Imputation tiers: tier_1_primary={age, sex, "
+            "csf_culture, csf_gram_stain, petechial_rash, DIC platelets}; "
             "tier_3_within_cohort={csf_wbc, neutrophil_pct, glucose, protein}; "
             "tier_4_priors={temp, gcs, symptom_days}. Indeterminate=none. "
-            "Diagnostic_ambiguity=false. Outcome=fatal_hospital_day_2. "
-            "Tier: tier_4_imputation_literature_anchored. 5.3.4 wave2 NM-"
-            "adolescent-fulminant-fatal."
+            "Diagnostic_ambiguity=false. Outcome=fatal_hospital_day_2. Tier: "
+            "tier_4_imputation_literature_anchored. Stratum: "
+            "NM-adolescent-fulminant-fatal."
         ),
         "anchoring_extras": "anchor=MacNeil-2018-CID-US-meningococcal-epidemiology stratum=adolescent-fulminant.",
-        "diagnostic_tests": _bact_wave2_dx_tests_nm_culture_positive("29126310"),
+        "diagnostic_tests": _bact_set_b_dx_tests_nm_culture_positive("29126310"),
     }
 
 
@@ -18103,14 +18079,14 @@ def _build_bact_vignette_084() -> dict[str, Any]:
             "165 mg/dL. Gram stain unrevealing; CSF + blood cultures sterile "
             "after partial-antibiotic pretreatment and remote specimen "
             "handling delay; CSF meningococcal PCR positive for serogroup B. "
-            "Diagnostic_ambiguity=true; type=partial_antibiotic_pretreatment_"
-            "sterile_cultures. Anchored to MacNeil 2018 CID (PMID 29126310, "
-            "US meningococcal epidemiology with serogroup B predominance) "
-            "overlaid with Peru-Amazon care-access context and the August "
-            "2024 serogroup B meningococcal outbreak in Loreto, Peru "
-            "(Fairweather et al., Global Biosecurity 2025, doi:10.31646/"
-            "gbio.296) as regional epidemiologic context. Outcome: fatal. "
-            "Subphase 1.3 commit 5.3.4 wave 2, pre-adjudication "
+            "Diagnostic_ambiguity=true; "
+            "type=partial_antibiotic_pretreatment_sterile_cultures. Anchored "
+            "to MacNeil 2018 CID (PMID 29126310, US meningococcal "
+            "epidemiology with serogroup B predominance) overlaid with "
+            "Peru-Amazon care-access context and the August 2024 serogroup B "
+            "meningococcal outbreak in Loreto, Peru (Fairweather et al., "
+            "Global Biosecurity 2025, doi:10.31646/gbio.296) as regional "
+            "epidemiologic context. Outcome: fatal. Pre-adjudication status: "
             "hold_for_revision."
         ),
         "narrative_es": (
@@ -18131,7 +18107,7 @@ def _build_bact_vignette_084() -> dict[str, Any]:
             "CID (PMID 29126310, predominio de serogrupo B) con contexto "
             "regional del brote de meningococo serogrupo B en Loreto Peru de "
             "agosto 2024 (Fairweather et al., Global Biosecurity 2025, "
-            "doi:10.31646/gbio.296). Subphase 1.3 commit 5.3.4 wave 2."
+            "doi:10.31646/gbio.296)."
         ),
         "rationale": (
             "Anchored to PMID 29126310 (MacNeil 2018 CID US meningococcal "
@@ -18139,21 +18115,22 @@ def _build_bact_vignette_084() -> dict[str, Any]:
             "Peru-Amazon care-access context and the August 2024 Loreto "
             "serogroup B meningococcal outbreak (Fairweather et al., Global "
             "Biosecurity 2025, doi:10.31646/gbio.296). "
-            "Diagnostic_ambiguity=true; type=partial_antibiotic_pretreatment_"
-            "sterile_cultures with secondary remote-specimen-handling-delay "
-            "compounding feature. Demographic anchor (14mo M Loreto pediatric "
-            "outpatient pretreated then air-evac) sits in ambiguity stratum. "
-            "CSF profile attenuated (WBC 1800, neutrophil 60 percent). PCR "
-            "confirms organism (serogroup B). Imputation tiers: tier_1_primary"
-            "={age, sex, csf_meningococcal_pcr, pretreatment_history, "
-            "petechial_rash}; tier_3_within_cohort={csf_wbc, neutrophil_pct, "
-            "glucose, protein attenuation}; tier_4_priors={temp, gcs, hr}. "
+            "Diagnostic_ambiguity=true; "
+            "type=partial_antibiotic_pretreatment_sterile_cultures with "
+            "secondary remote-specimen-handling-delay compounding feature. "
+            "Demographic anchor (14mo M Loreto pediatric outpatient pretreated "
+            "then air-evac) sits in ambiguity stratum. CSF profile attenuated "
+            "(WBC 1800, neutrophil 60 percent). PCR confirms organism "
+            "(serogroup B). Imputation tiers: tier_1_primary={age, sex, "
+            "csf_meningococcal_pcr, pretreatment_history, petechial_rash}; "
+            "tier_3_within_cohort={csf_wbc, neutrophil_pct, glucose, protein "
+            "attenuation}; tier_4_priors={temp, gcs, hr}. "
             "Indeterminate=culture-based-organism-confirmation. Outcome=fatal. "
-            "Tier: tier_4_imputation_literature_anchored. 5.3.4 wave2 NM-"
-            "Loreto-infant-ambiguity."
+            "Tier: tier_4_imputation_literature_anchored. Stratum: "
+            "NM-Loreto-infant-ambiguity."
         ),
         "anchoring_extras": "anchor=MacNeil-2018-CID-US-meningococcal-epidemiology context=loreto-2024-serogroupB-outbreak-Fairweather-GlobalBiosecurity-doi-10.31646-gbio.296 type=partial_antibiotic_pretreatment region=peru-loreto-amazon.",
-        "diagnostic_tests": _bact_wave2_dx_tests_nm_pretreated("29126310"),
+        "diagnostic_tests": _bact_set_b_dx_tests_nm_pretreated("29126310"),
     }
 
 
@@ -18228,9 +18205,8 @@ def _build_bact_vignette_085() -> dict[str, Any]:
             "gram-negative diplococci; culture identified Neisseria "
             "meningitidis serogroup B. Anchored to Marcus 2022 OFID (PMID "
             "35493127, US serogroup B meningococcal disease in a military "
-            "trainee in a congregate setting). Outcome: survived no "
-            "sequelae. Subphase 1.3 commit 5.3.4 wave 2, pre-adjudication "
-            "hold_for_revision."
+            "trainee in a congregate setting). Outcome: survived no sequelae. "
+            "Pre-adjudication status: hold_for_revision."
         ),
         "narrative_es": (
             "Mujer de 22 anos en region sur de Estados Unidos, en cuartel "
@@ -18239,29 +18215,29 @@ def _build_bact_vignette_085() -> dict[str, Any]:
             "exantema petequial en extremidades. Examen: temperatura 39.4 C, "
             "escala de Glasgow 13, rigidez de nuca, signo de Kernig positivo, "
             "exantema petequial, sin deficit focal. Liquido cefalorraquideo "
-            "mostro presion de apertura 26 cmH2O, leucocitos 5,200 por mm3 "
-            "(90 por ciento neutrofilos), glucosa 22 mg/dL, proteina 200 mg/dL. "
+            "mostro presion de apertura 26 cmH2O, leucocitos 5,200 por mm3 (90 "
+            "por ciento neutrofilos), glucosa 22 mg/dL, proteina 200 mg/dL. "
             "Tincion de Gram con diplococos gramnegativos y cultivo Neisseria "
             "meningitidis serogrupo B. Anclaje en Marcus 2022 OFID (PMID "
-            "35493127, enfermedad meningococica serogrupo B en recluta "
-            "militar en entorno de congregacion). Subphase 1.3 commit 5.3.4 "
-            "wave 2."
+            "35493127, enfermedad meningococica serogrupo B en recluta militar "
+            "en entorno de congregacion)."
         ),
         "rationale": (
             "Anchored to PMID 35493127 (Marcus 2022 OFID serogroup B "
             "meningococcal disease in a military trainee). Demographic anchor "
             "(22yo F young adult military congregate setting) matches the "
-            "trainee congregate-setting stratum. CSF profile bacterial "
-            "range; petechial rash + classic NM serogroup B. Imputation tiers: "
+            "trainee congregate-setting stratum. CSF profile bacterial range; "
+            "petechial rash + classic NM serogroup B. Imputation tiers: "
             "tier_1_primary={age, sex, csf_culture, csf_gram_stain, "
-            "petechial_rash, military_barracks_setting}; tier_3_within_cohort"
-            "={csf_wbc, neutrophil_pct, glucose, protein}; tier_4_priors={temp, "
-            "gcs, symptom_days}. Indeterminate=none. Diagnostic_ambiguity=false. "
-            "Outcome=survived_no_sequelae. Tier: tier_4_imputation_literature_"
-            "anchored. 5.3.4 wave2 NM-young-adult-military."
+            "petechial_rash, military_barracks_setting}; "
+            "tier_3_within_cohort={csf_wbc, neutrophil_pct, glucose, protein}; "
+            "tier_4_priors={temp, gcs, symptom_days}. Indeterminate=none. "
+            "Diagnostic_ambiguity=false. Outcome=survived_no_sequelae. Tier: "
+            "tier_4_imputation_literature_anchored. Stratum: "
+            "NM-young-adult-military."
         ),
         "anchoring_extras": "anchor=Marcus-2022-OFID-serogroup-B-military-trainee stratum=young-adult-military.",
-        "diagnostic_tests": _bact_wave2_dx_tests_nm_culture_positive("35493127"),
+        "diagnostic_tests": _bact_set_b_dx_tests_nm_culture_positive("35493127"),
     }
 
 
@@ -18341,8 +18317,8 @@ def _build_bact_vignette_086() -> dict[str, Any]:
             "(PMID 35265327, global and regional burden of Hib meningitis in "
             "children under 5, pooled case-fatality 11.21 percent) overlaid "
             "with incomplete-vaccination-coverage Andean stratum. Outcome: "
-            "survived no sequelae. Subphase 1.3 commit 5.3.4 wave 2, "
-            "pre-adjudication hold_for_revision."
+            "survived no sequelae. Pre-adjudication status: "
+            "hold_for_revision."
         ),
         "narrative_es": (
             "Varon de tres anos de Cusco Peru en sierra andina (3,399 m), "
@@ -18350,36 +18326,36 @@ def _build_bact_vignette_086() -> dict[str, Any]:
             "progresion gradual: fiebre 39.0 C, vomitos, respuesta disminuida "
             "y rigidez de nuca. Tratamiento previo para otitis media en la "
             "semana anterior; cobertura vacunal Hib incompleta. Examen: "
-            "temperatura 39.0 C, escala de Glasgow 12, rigidez de nuca, "
-            "signo de Kernig positivo, sin deficit focal, sin exantema. "
-            "Liquido cefalorraquideo mostro presion de apertura 28 cmH2O, "
-            "leucocitos 4,800 por mm3 (88 por ciento neutrofilos), glucosa "
-            "22 mg/dL, proteina 210 mg/dL. Tincion de Gram con cocobacilos "
+            "temperatura 39.0 C, escala de Glasgow 12, rigidez de nuca, signo "
+            "de Kernig positivo, sin deficit focal, sin exantema. Liquido "
+            "cefalorraquideo mostro presion de apertura 28 cmH2O, leucocitos "
+            "4,800 por mm3 (88 por ciento neutrofilos), glucosa 22 mg/dL, "
+            "proteina 210 mg/dL. Tincion de Gram con cocobacilos "
             "gramnegativos y cultivo Haemophilus influenzae tipo b; antigeno "
             "Hib en liquido positivo. Anclaje en Park 2022 JOGH (PMID "
             "35265327, carga global y regional de meningitis por Hib en "
-            "menores de 5 anos, letalidad combinada 11.21 por ciento). "
-            "Subphase 1.3 commit 5.3.4 wave 2."
+            "menores de 5 anos, letalidad combinada 11.21 por ciento)."
         ),
         "rationale": (
             "Anchored to PMID 35265327 (Park 2022 JOGH systematic review and "
             "meta-analysis of Hib meningitis burden in children under 5, "
             "pooled case-fatality 11.21 percent, sequelae in 30 to 40 percent "
-            "of survivors) overlaid with Andean-pediatric incomplete-Hib-"
-            "coverage stratum (Cusco altitude region 3,399m). Demographic "
-            "anchor (3yo M Cusco pediatric undervaccinated post-otitis-"
-            "media) sits in surveillance gap stratum. CSF bacterial range; "
-            "Gram stain + culture + antigen all confirm Hib. Imputation "
-            "tiers: tier_1_primary={age, sex, region, csf_culture, csf_gram_"
-            "stain, csf_hib_antigen, otitis_media}; tier_3_within_cohort="
-            "{csf_wbc, neutrophil_pct, glucose, protein}; tier_4_priors="
-            "{temp, gcs, symptom_days}. Indeterminate=papilledema_on_"
-            "fundoscopy. Diagnostic_ambiguity=false. Outcome=survived. Tier: "
-            "tier_4_imputation_literature_anchored. 5.3.4 wave2 Hib-Cusco-"
-            "pediatric."
+            "of survivors) overlaid with Andean-pediatric "
+            "incomplete-Hib-coverage stratum (Cusco altitude region 3,399m). "
+            "Demographic anchor (3yo M Cusco pediatric undervaccinated "
+            "post-otitis-media) sits in surveillance gap stratum. CSF "
+            "bacterial range; Gram stain + culture + antigen all confirm Hib. "
+            "Imputation tiers: tier_1_primary={age, sex, region, csf_culture, "
+            "csf_gram_stain, csf_hib_antigen, otitis_media}; "
+            "tier_3_within_cohort={csf_wbc, neutrophil_pct, glucose, "
+            "protein}; tier_4_priors={temp, gcs, symptom_days}. "
+            "Indeterminate=papilledema_on_fundoscopy. "
+            "Diagnostic_ambiguity=false. Outcome=survived. Tier: "
+            "tier_4_imputation_literature_anchored. Stratum: "
+            "Hib-Cusco-pediatric."
         ),
         "anchoring_extras": "anchor=Park-2022-JOGH-Hib-meningitis-burden stratum=pediatric-Cusco-altitude.",
-        "diagnostic_tests": _bact_wave2_dx_tests_hib("35265327"),
+        "diagnostic_tests": _bact_set_b_dx_tests_hib("35265327"),
     }
 
 
@@ -18449,55 +18425,53 @@ def _build_bact_vignette_087() -> dict[str, Any]:
             "of fever to 39.2 C, vomiting, irritability progressing to "
             "lethargy, and a bulging anterior fontanelle. Examination on "
             "admission: temperature 39.2 C, Glasgow Coma Scale 12, neck "
-            "stiffness, positive Kernig sign, no focal deficit, no rash. "
-            "CSF showed opening pressure 30 cmH2O, white cell count 6,200 "
-            "per cubic millimeter (90 percent neutrophils), glucose 20 mg/dL, "
+            "stiffness, positive Kernig sign, no focal deficit, no rash. CSF "
+            "showed opening pressure 30 cmH2O, white cell count 6,200 per "
+            "cubic millimeter (90 percent neutrophils), glucose 20 mg/dL, "
             "protein 230 mg/dL. Gram stain revealed gram-negative "
             "coccobacilli; culture identified Haemophilus influenzae type b; "
             "CSF Hib capsular antigen positive. Anchored to Soeters 2018 CID "
             "(PMID 29509834, US invasive Haemophilus influenzae surveillance "
             "2009-2015), undervaccinated-infant Hib stratum. Outcome: "
-            "survived no sequelae. "
-            "Subphase 1.3 commit 5.3.4 wave 2, pre-adjudication "
+            "survived no sequelae. Pre-adjudication status: "
             "hold_for_revision."
         ),
         "narrative_es": (
-            "Lactante varon de 18 meses en region sur de Estados Unidos, "
-            "cuyos padres habian declinado las vacunas (incluida la serie "
-            "Hib), ingresado a urgencias pediatricas terciarias con 48 horas "
-            "de fiebre 39.2 C, vomitos, irritabilidad con progresion a "
-            "letargo y fontanela anterior abombada. Examen: temperatura 39.2 "
-            "C, escala de Glasgow 12, rigidez de nuca, signo de Kernig "
-            "positivo, sin deficit focal, sin exantema. Liquido cefalorraquideo "
-            "mostro presion de apertura 30 cmH2O, leucocitos 6,200 por mm3 "
-            "(90 por ciento neutrofilos), glucosa 20 mg/dL, proteina 230 mg/dL. "
-            "Tincion de Gram con cocobacilos gramnegativos y cultivo "
-            "Haemophilus influenzae tipo b; antigeno Hib positivo. Anclaje "
-            "en Soeters 2018 CID (PMID 29509834, vigilancia de Haemophilus "
-            "influenzae invasivo en Estados Unidos 2009-2015, estrato "
-            "lactante no vacunado). Subphase 1.3 commit 5.3.4 wave 2."
+            "Lactante varon de 18 meses en region sur de Estados Unidos, cuyos "
+            "padres habian declinado las vacunas (incluida la serie Hib), "
+            "ingresado a urgencias pediatricas terciarias con 48 horas de "
+            "fiebre 39.2 C, vomitos, irritabilidad con progresion a letargo y "
+            "fontanela anterior abombada. Examen: temperatura 39.2 C, escala de "
+            "Glasgow 12, rigidez de nuca, signo de Kernig positivo, sin deficit "
+            "focal, sin exantema. Liquido cefalorraquideo mostro presion de "
+            "apertura 30 cmH2O, leucocitos 6,200 por mm3 (90 por ciento "
+            "neutrofilos), glucosa 20 mg/dL, proteina 230 mg/dL. Tincion de "
+            "Gram con cocobacilos gramnegativos y cultivo Haemophilus "
+            "influenzae tipo b; antigeno Hib positivo. Anclaje en Soeters 2018 "
+            "CID (PMID 29509834, vigilancia de Haemophilus influenzae invasivo "
+            "en Estados Unidos 2009-2015, estrato lactante no vacunado)."
         ),
         "rationale": (
             "Anchored to PMID 29509834 (Soeters 2018 CID US invasive H. "
             "influenzae surveillance 2009-2015) with undervaccinated-infant "
             "Hib stratum. Demographic anchor (18mo M unimmunized Hib) sits in "
             "the post-vaccine-era stratum documented by US ABCs invasive Hi "
-            "surveillance. CSF "
-            "bacterial range; Gram + culture + antigen all confirm Hib. "
-            "Imputation tiers: tier_1_primary={age, sex, csf_culture, csf_"
-            "gram_stain, csf_hib_antigen, vaccine_decline}; tier_3_within_"
-            "cohort={csf_wbc, neutrophil_pct, glucose, protein}; tier_4_"
-            "priors={temp, gcs, hr, symptom_days}. Indeterminate=papilledema_"
-            "on_fundoscopy. Diagnostic_ambiguity=false. Outcome=survived. "
-            "Tier: tier_4_imputation_literature_anchored. 5.3.4 wave2 Hib-"
-            "unimmunized-infant."
+            "surveillance. CSF bacterial range; Gram + culture + antigen all "
+            "confirm Hib. Imputation tiers: tier_1_primary={age, sex, "
+            "csf_culture, csf_gram_stain, csf_hib_antigen, vaccine_decline}; "
+            "tier_3_within_cohort={csf_wbc, neutrophil_pct, glucose, "
+            "protein}; tier_4_priors={temp, gcs, hr, symptom_days}. "
+            "Indeterminate=papilledema_on_fundoscopy. "
+            "Diagnostic_ambiguity=false. Outcome=survived. Tier: "
+            "tier_4_imputation_literature_anchored. Stratum: "
+            "Hib-unimmunized-infant."
         ),
         "anchoring_extras": "anchor=Soeters-2018-CID-US-invasive-H-influenzae stratum=undervaccinated-infant.",
-        "diagnostic_tests": _bact_wave2_dx_tests_hib("29509834"),
+        "diagnostic_tests": _bact_set_b_dx_tests_hib("29509834"),
     }
 
 
-_BACT_WAVE2_BUILDERS: dict[int, Any] = {
+_BACT_SET_B_BUILDERS: dict[int, Any] = {
     61: _build_bact_vignette_061,
     63: _build_bact_vignette_063,
     68: _build_bact_vignette_068,
@@ -18512,55 +18486,55 @@ _BACT_WAVE2_BUILDERS: dict[int, Any] = {
 }
 
 
-def generate_bact_wave2_vignette(vignette_id: int) -> dict[str, Any]:
-    """Build one BACT Wave-2 vignette dict from a vignette_id."""
-    if vignette_id not in BACT_WAVE2_IDS:
+def generate_bact_set_b_vignette(vignette_id: int) -> dict[str, Any]:
+    """Build one BACT set B vignette dict from a vignette_id."""
+    if vignette_id not in BACT_SET_B_IDS:
         raise KeyError(
-            f"vignette_id {vignette_id!r} not in BACT_WAVE2_IDS {BACT_WAVE2_IDS}"
+            f"vignette_id {vignette_id!r} not in BACT_SET_B_IDS {BACT_SET_B_IDS}"
         )
     spec = next(s for s in BACTERIAL_DISTRIBUTION if s["vignette_id"] == vignette_id)
     pmid_meta = load_pmid_metadata(spec["pmid"])
-    clinical = _BACT_WAVE2_BUILDERS[vignette_id]()
+    clinical = _BACT_SET_B_BUILDERS[vignette_id]()
 
     region = spec["geography_region"]
     history = clinical["history"]
     if not history.get("red_flags_present"):
-        history = {**history, "red_flags_present": _bact_wave2_red_flags(spec)}
+        history = {**history, "red_flags_present": _bact_set_b_red_flags(spec)}
 
     return {
         "schema_version": "2.0",
-        "case_id": _bact_wave1_case_id(spec, pmid_meta),
+        "case_id": _bact_set_a_case_id(spec, pmid_meta),
         "ground_truth_class": 2,
         "demographics": {
             "age_years": spec["age_years"],
             "sex": spec["sex"],
-            "ethnicity": _bact_wave1_ethnicity(region),
+            "ethnicity": _bact_set_a_ethnicity(region),
             "geography_region": region,
-            "altitude_residence_m": _bact_wave1_altitude(region),
+            "altitude_residence_m": _bact_set_a_altitude(region),
         },
         "history": history,
-        "exposure": _bact_wave2_exposure(),
+        "exposure": _bact_set_b_exposure(),
         "vitals": clinical["vitals"],
         "exam": clinical["exam"],
         "labs": clinical["labs"],
         "csf": clinical["csf"],
-        "imaging": _bact_wave1_imaging_for(spec),
+        "imaging": _bact_set_a_imaging_for(spec),
         "diagnostic_tests": {"results": clinical["diagnostic_tests"]},
-        "adjudication": _bact_wave2_adjudication(spec, clinical["anchoring_extras"]),
+        "adjudication": _bact_set_b_adjudication(spec, clinical["anchoring_extras"]),
         "literature_anchors": [_build_literature_anchor(pmid_meta)],
-        "provenance": _bact_wave2_provenance(clinical["rationale"]),
+        "provenance": _bact_set_b_provenance(clinical["rationale"]),
         "narrative_es": clinical["narrative_es"],
         "narrative_en": clinical["narrative_en"],
     }
 
 
-def write_bact_wave2_vignette(
+def write_bact_set_b_vignette(
     vignette_id: int,
-    output_dir: Path = BACT_WAVE2_OUTPUT_DIR,
+    output_dir: Path = BACT_SET_B_OUTPUT_DIR,
 ) -> Path:
-    """Build, validate, and write one BACT Wave-2 vignette to disk."""
+    """Build, validate, and write one BACT set B vignette to disk."""
     spec = next(s for s in BACTERIAL_DISTRIBUTION if s["vignette_id"] == vignette_id)
-    vignette = generate_bact_wave2_vignette(vignette_id)
+    vignette = generate_bact_set_b_vignette(vignette_id)
     VignetteSchema.model_validate(vignette)
     output_dir.mkdir(parents=True, exist_ok=True)
     filepath = output_dir / spec["filename"]
@@ -18572,45 +18546,46 @@ def write_bact_wave2_vignette(
     return filepath
 
 
-def write_bact_wave2_corpus(
-    output_dir: Path = BACT_WAVE2_OUTPUT_DIR,
+def write_bact_set_b_corpus(
+    output_dir: Path = BACT_SET_B_OUTPUT_DIR,
 ) -> list[Path]:
-    """Build, validate, and write all 13 BACT Wave-2 vignettes."""
+    """Build, validate, and write all BACT set B vignettes (11 ids)."""
     paths: list[Path] = []
-    for vid in BACT_WAVE2_IDS:
-        paths.append(write_bact_wave2_vignette(vid, output_dir=output_dir))
+    for vid in BACT_SET_B_IDS:
+        paths.append(write_bact_set_b_vignette(vid, output_dir=output_dir))
     return paths
 
 
 # ============================================================================
-# Wave 1 VIRAL vignette builders (n=13)
+# VIRAL set A vignette builders (n=13)
 # ----------------------------------------------------------------------------
 # Slot IDs: 96, 99, 102, 106, 107, 108, 109, 111, 113, 114, 117, 119, 120.
-# All 13 anchored to PMID 30089069 (Tyler KL 2018 NEJM viral encephalitis
-# review, anchor_type=review).
+# 11 anchored to PMID 30089069 (Tyler KL 2018 NEJM viral encephalitis
+# review, anchor_type=review); the 2 dengue slots (v117, v119) are anchored
+# to PMID 38157877 (Puccioni-Sohler 2023 dengue-neuro review).
 # Pathogens: 3 HSV1 (v96, v99, v102) + 5 enterovirus (v106, v107, v108,
 # v109, v111) + 2 HSV2 (v113, v114) + 2 dengue (v117, v119) + 1 EEE (v120).
 # Diagnostic ambiguity: 2 of 13 (v113 HSV2 first-episode meningismus
 # bacterial DDx; v117 dengue with prominent CNS arbo overlap).
 # Peru-anchored: 3 of 13 (v99 Lima HSV1, v117 Lima dengue, v119 Tumbes dengue).
-# Spec 1.3.4 Class 3 mandate: csf_lymphocyte_pct >= 50,
+# Class 3 requirement: csf_lymphocyte_pct >= 50,
 # csf_neutrophil_pct < 50, csf_glucose_mg_per_dL >= 40, ground_truth_class=3.
-# Architecture: extends Wave 2 BACT by reusing _bact_wave1_altitude,
-# _bact_wave1_ethnicity, _build_literature_anchor; adds VIRAL-specific
+# Architecture: extends BACT set B by reusing _bact_set_a_altitude,
+# _bact_set_a_ethnicity, _build_literature_anchor; adds VIRAL-specific
 # imaging (HSV1 mesial-temporal MRI, EEE diffuse cerebral edema), CSF
 # (lymphocytic), exposure (dengue mosquito_endemic_area_exposure), case_id
-# (VIR-D3 prefix), adjudication (VIRAL-WAVE1-PRE-ADJ sentinels), provenance
-# (commit 5.3.5).
+# (VIR-NNN prefix), adjudication (PRE-ADJ sentinels), provenance
+# (generation timestamp 2026-05-08T18:00:00Z).
 # ============================================================================
 
-VIRAL_WAVE1_OUTPUT_DIR = Path("data/vignettes/v2/class_03_viral")
-VIRAL_WAVE1_IDS: list[int] = [96, 99, 102, 106, 107, 108, 109, 111, 113, 114, 117, 119, 120]
-VIRAL_WAVE1_AMBIGUITY_IDS: set[int] = {113, 117}
-VIRAL_WAVE1_PERU_IDS: set[int] = {99, 117, 119}
+VIRAL_SET_A_OUTPUT_DIR = Path("data/vignettes/v2/class_03_viral")
+VIRAL_SET_A_IDS: list[int] = [96, 99, 102, 106, 107, 108, 109, 111, 113, 114, 117, 119, 120]
+VIRAL_SET_A_AMBIGUITY_IDS: set[int] = {113, 117}
+VIRAL_SET_A_PERU_IDS: set[int] = {99, 117, 119}
 
 
-def _viral_wave1_case_id(spec: dict[str, Any], pmid_meta: dict[str, Any]) -> str:
-    """VIR-D3-NNN-<journal>-<year>-<region-tag>-<descriptor> pattern."""
+def _viral_set_a_case_id(spec: dict[str, Any], pmid_meta: dict[str, Any]) -> str:
+    """VIR-NNN-<journal>-<year>-<region-tag>-<descriptor> pattern."""
     nnn = f"{spec['vignette_id']:03d}"
     journal = pmid_meta["journal_short_code"].replace(" ", "-")
     year = pmid_meta["year"]
@@ -18630,13 +18605,13 @@ def _viral_wave1_case_id(spec: dict[str, Any], pmid_meta: dict[str, Any]) -> str
         descriptor_tail = f"{pathogen_descriptor}-{spec['stage'].capitalize()}-Fatal"
     else:
         descriptor_tail = f"{pathogen_descriptor}-{spec['stage'].capitalize()}"
-    return f"VIR-D3-{nnn}-{journal}-{year}-{region_tag}-{descriptor_tail}"
+    return f"VIR-{nnn}-{journal}-{year}-{region_tag}-{descriptor_tail}"
 
 
-def _viral_wave1_imaging_for(spec: dict[str, Any]) -> dict[str, Any]:
+def _viral_set_a_imaging_for(spec: dict[str, Any]) -> dict[str, Any]:
     """Pathogen-specific imaging.
 
-    HSV1: mesial_temporal_t2_flair_hyperintensity on MRI (spec 1.3.4 mandate).
+    HSV1: mesial_temporal_t2_flair_hyperintensity on MRI (required for Class 3 HSV1).
     EV: typically no imaging needed for benign aseptic meningitis (modality=none).
     HSV2: mri_with_dwi_flair normal (Mollaret typically benign imaging).
     Dengue: mri_with_dwi_flair normal (metabolic/cytokine encephalopathy, not direct).
@@ -18743,7 +18718,7 @@ def _viral_wave1_imaging_for(spec: dict[str, Any]) -> dict[str, Any]:
     raise KeyError(f"Unhandled VIRAL pathogen for imaging: {pathogen!r}")
 
 
-def _viral_wave1_exposure(spec: dict[str, Any]) -> dict[str, Any]:
+def _viral_set_a_exposure(spec: dict[str, Any]) -> dict[str, Any]:
     """VIRAL exposure block. Dengue cases set mosquito_endemic_area_exposure=True."""
     mosquito = spec.get("pathogen") == "dengue"
     return {
@@ -18758,37 +18733,37 @@ def _viral_wave1_exposure(spec: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def _viral_wave1_red_flags() -> list[str]:
+def _viral_set_a_red_flags() -> list[str]:
     """No Tyler-set slots have schema-encodable red flags; v117/v119 dengue
     mosquito-endemic-area is captured in exposure rather than red_flags."""
     return []
 
 
-def _viral_wave1_adjudication(
+def _viral_set_a_adjudication(
     spec: dict[str, Any], anchoring_extras: str
 ) -> dict[str, Any]:
-    """Wave 1 VIRAL pre-adjudication adjudication block (Q7 5.3.1 lock).
+    """VIRAL set A pre-adjudication adjudication block.
 
-    Sentinel adjudicators VIRAL-WAVE1-PRE-ADJ-1 / VIRAL-WAVE1-PRE-ADJ-2
-    distinguish viral wave from BACT adjudicators. Embeds verbatim
+    Sentinel adjudicators PRE-ADJ-1 / PRE-ADJ-2 (same IDs as the BACT
+    builders); self_review_notes names the vignette as VIRAL. Embeds verbatim
     self_review_disposition=hold_for_revision.
     """
     pmid = spec["pmid"]
     base = (
         f"stage=pre_adjudication; status=pending_external_review; "
         f"self_review_disposition=hold_for_revision; "
-        f"self_review_notes=wave 5.3.5 VIRAL vignette anchored to PMID {pmid} "
+        f"self_review_notes=VIRAL vignette anchored to PMID {pmid} "
         f"({spec['review_label']}); external clinical "
         f"adjudication pending; classification provisional. "
-        f"adjudicator_ids=VIRAL-WAVE1-PRE-ADJ-1, VIRAL-WAVE1-PRE-ADJ-2 (sentinel); "
+        f"adjudicator_ids=PRE-ADJ-1, PRE-ADJ-2 (sentinel); "
         f"cohen_kappa=0.0 placeholder; adjudicator_name=null; "
         f"adjudication_date=null; post_adjudication_disposition=null. "
-        f"Subphase 1.3 commit 5.3.5 (2026-05-08)."
+        "Generated 2026-05-08."
     )
     if anchoring_extras:
         base = base + " " + anchoring_extras
     return {
-        "adjudicator_ids": ["VIRAL-WAVE1-PRE-ADJ-1", "VIRAL-WAVE1-PRE-ADJ-2"],
+        "adjudicator_ids": ["PRE-ADJ-1", "PRE-ADJ-2"],
         "cohen_kappa": 0.0,
         "disagreement_resolution": None,
         "anchoring_documentation": base,
@@ -18796,13 +18771,13 @@ def _viral_wave1_adjudication(
     }
 
 
-def _viral_wave1_provenance(rationale: str) -> dict[str, Any]:
+def _viral_set_a_provenance(rationale: str) -> dict[str, Any]:
     if len(rationale) > 1000:
         rationale = rationale[:997] + "..."
     return {
         "generation_timestamp_utc": "2026-05-08T18:00:00Z",
         "generator_model_identifier": (
-            "scripts.generate_pam_vignettes/v1.subphase_1_3_commit_5_3_5"
+            "scripts.generate_pam_vignettes/v1"
         ),
         "prompt_hash_sha256": "0" * 64,
         "schema_version": "2.0",
@@ -18810,7 +18785,7 @@ def _viral_wave1_provenance(rationale: str) -> dict[str, Any]:
     }
 
 
-def _viral_wave1_dx_tests_hsv1_pcr(pmid: str) -> list[dict[str, Any]]:
+def _viral_set_a_dx_tests_hsv1_pcr(pmid: str) -> list[dict[str, Any]]:
     """HSV1 PCR positive + canonical Gram/culture negatives (Tyler review)."""
     cit = f"PMID:{pmid}"
     return [
@@ -18838,7 +18813,7 @@ def _viral_wave1_dx_tests_hsv1_pcr(pmid: str) -> list[dict[str, Any]]:
     ]
 
 
-def _viral_wave1_dx_tests_ev_pcr(pmid: str) -> list[dict[str, Any]]:
+def _viral_set_a_dx_tests_ev_pcr(pmid: str) -> list[dict[str, Any]]:
     cit = f"PMID:{pmid}"
     return [
         {
@@ -18865,7 +18840,7 @@ def _viral_wave1_dx_tests_ev_pcr(pmid: str) -> list[dict[str, Any]]:
     ]
 
 
-def _viral_wave1_dx_tests_hsv2_pcr(pmid: str) -> list[dict[str, Any]]:
+def _viral_set_a_dx_tests_hsv2_pcr(pmid: str) -> list[dict[str, Any]]:
     cit = f"PMID:{pmid}"
     return [
         {
@@ -18892,7 +18867,7 @@ def _viral_wave1_dx_tests_hsv2_pcr(pmid: str) -> list[dict[str, Any]]:
     ]
 
 
-def _viral_wave1_dx_tests_dengue(pmid: str, serotype: str) -> list[dict[str, Any]]:
+def _viral_set_a_dx_tests_dengue(pmid: str, serotype: str) -> list[dict[str, Any]]:
     cit = f"PMID:{pmid}"
     return [
         {
@@ -18926,7 +18901,7 @@ def _viral_wave1_dx_tests_dengue(pmid: str, serotype: str) -> list[dict[str, Any
     ]
 
 
-def _viral_wave1_dx_tests_eee(pmid: str) -> list[dict[str, Any]]:
+def _viral_set_a_dx_tests_eee(pmid: str) -> list[dict[str, Any]]:
     cit = f"PMID:{pmid}"
     return [
         {
@@ -18961,7 +18936,7 @@ def _viral_wave1_dx_tests_eee(pmid: str) -> list[dict[str, Any]]:
 
 
 # ----------------------------------------------------------------------------
-# Wave 1 VIRAL per-slot clinical builders. Each returns a dict with keys:
+# VIRAL set A per-slot clinical builders. Each returns a dict with keys:
 # history, vitals, exam, labs, csf, narrative_es, narrative_en, rationale,
 # anchoring_extras, diagnostic_tests.
 # ----------------------------------------------------------------------------
@@ -19039,13 +19014,13 @@ def _build_viral_vignette_096() -> dict[str, Any]:
             "aphasia). CSF showed opening pressure 22 cmH2O, white cell "
             "count 220 per cubic millimeter (75 percent lymphocytes), "
             "glucose 55 mg/dL, protein 120 mg/dL, RBC 35 with mild "
-            "xanthochromia (canonical hemorrhagic component). CSF HSV-1 "
-            "PCR positive. Brain MRI with DWI/FLAIR showed mesial temporal "
+            "xanthochromia (canonical hemorrhagic component). CSF HSV-1 PCR "
+            "positive. Brain MRI with DWI/FLAIR showed mesial temporal "
             "T2/FLAIR hyperintensity asymmetric with basal ganglia sparing. "
             "Acyclovir initiated within five hours. Anchored to Tyler 2018 "
             "NEJM viral encephalitis review (PMID 30089069). Outcome: "
-            "survived with mild memory deficit. Subphase 1.3 commit 5.3.5 "
-            "wave 1, pre-adjudication hold_for_revision."
+            "survived with mild memory deficit. Pre-adjudication status: "
+            "hold_for_revision."
         ),
         "narrative_es": (
             "Mujer de 45 anos en Paises Bajos (Amsterdam), ingresada a "
@@ -19053,36 +19028,34 @@ def _build_viral_vignette_096() -> dict[str, Any]:
             "fiebre 38.7 C, cefalea intensa, cambio conductual con "
             "alteracion de personalidad al segundo dia, afasia expresiva al "
             "tercer dia, crisis focal derecha al cuarto dia que motivo "
-            "consulta. Sin rigidez de nuca al examen. Sin exposicion a "
-            "agua dulce. Examen: escala de Glasgow 12, deficit focal "
-            "(afasia expresiva). Liquido cefalorraquideo mostro presion de "
-            "apertura 22 cmH2O, leucocitos 220 por mm3 (75 por ciento "
-            "linfocitos), glucosa 55 mg/dL, proteina 120 mg/dL, eritrocitos "
-            "35 con xantocromia leve. PCR de HSV-1 positiva. RM cerebral "
-            "mostro hiperintensidad temporal mesial T2/FLAIR asimetrica con "
+            "consulta. Sin rigidez de nuca al examen. Sin exposicion a agua "
+            "dulce. Examen: escala de Glasgow 12, deficit focal (afasia "
+            "expresiva). Liquido cefalorraquideo mostro presion de apertura "
+            "22 cmH2O, leucocitos 220 por mm3 (75 por ciento linfocitos), "
+            "glucosa 55 mg/dL, proteina 120 mg/dL, eritrocitos 35 con "
+            "xantocromia leve. PCR de HSV-1 positiva. RM cerebral mostro "
+            "hiperintensidad temporal mesial T2/FLAIR asimetrica con "
             "preservacion de ganglios basales. Anclaje en revision Tyler "
-            "2018 NEJM encefalitis viral aguda (PMID 30089069). Subphase "
-            "1.3 commit 5.3.5 wave 1."
+            "2018 NEJM encefalitis viral aguda (PMID 30089069)."
         ),
         "rationale": (
-            "Anchored to PMID 30089069 (Tyler KL 2018 NEJM clinical review "
-            "of acute viral encephalitis), HSV1 mesial-temporal-encephalitis "
-            "phenotype. Demographic anchor (45yo F adult HSE) sits in adult-"
-            "HSE stratum (HSE bimodal age, peaks at adulthood). CSF "
-            "lymphocytic (220 WBC, 75 percent lymphocytes), normal glucose "
-            "55, mildly elevated protein 120, RBC 35 with xanthochromia "
+            "Anchored to PMID 30089069 (Tyler KL 2018 NEJM clinical review of "
+            "acute viral encephalitis), HSV1 mesial-temporal-encephalitis "
+            "phenotype. Demographic anchor (45yo F adult HSE) sits in "
+            "adult-HSE stratum (HSE bimodal age, peaks at adulthood). CSF "
+            "lymphocytic (220 WBC, 75 percent lymphocytes), normal glucose 55, "
+            "mildly elevated protein 120, RBC 35 with xanthochromia "
             "(hemorrhagic temporal necrosis component). MRI mesial temporal "
-            "T2/FLAIR hyperintensity per spec 1.3.4 mandate. "
-            "Imputation tiers: tier_1_primary={age, sex, hsv1_pcr, "
-            "imaging_pattern, focal_aphasia}; tier_3_within_review={csf_wbc, "
-            "neutrophil_pct, glucose, protein, rbc, xanthochromia, gcs}; "
-            "tier_4_priors={temp, symptom_days}. Indeterminate=none. "
-            "Diagnostic_ambiguity=false. Outcome=survived_mild_memory_deficit. "
-            "Acyclovir_hours=5. Tier: tier_3_imputation_within_review. "
-            "5.3.5 wave1 HSV1-NL-adult-female."
+            "T2/FLAIR hyperintensity per the corpus specification. Imputation "
+            "tiers: tier_1_primary={age, sex, hsv1_pcr, imaging_pattern, "
+            "focal_aphasia}; tier_3_within_review={csf_wbc, neutrophil_pct, "
+            "glucose, protein, rbc, xanthochromia, gcs}; tier_4_priors={temp, "
+            "symptom_days}. Indeterminate=none. Diagnostic_ambiguity=false. "
+            "Outcome=survived_mild_memory_deficit. Acyclovir_hours=5. Tier: "
+            "tier_3_imputation_within_review. Stratum: HSV1-NL-adult-female."
         ),
         "anchoring_extras": "anchor=Tyler-NEJM-2018 stratum=HSV1-adult-HSE.",
-        "diagnostic_tests": _viral_wave1_dx_tests_hsv1_pcr("30089069"),
+        "diagnostic_tests": _viral_set_a_dx_tests_hsv1_pcr("30089069"),
     }
 
 
@@ -19162,24 +19135,23 @@ def _build_viral_vignette_099() -> dict[str, Any]:
             "asymmetric with basal ganglia sparing. Acyclovir initiated "
             "within eight hours. Anchored to Tyler 2018 NEJM viral "
             "encephalitis review (PMID 30089069), Peru-Lima coastal "
-            "stratum. Outcome: survived with mild memory deficit. Subphase "
-            "1.3 commit 5.3.5 wave 1, pre-adjudication hold_for_revision."
+            "stratum. Outcome: survived with mild memory deficit. "
+            "Pre-adjudication status: hold_for_revision."
         ),
         "narrative_es": (
             "Varon de 38 anos en Lima, Peru, ingresado a urgencias urbanas "
             "terciarias con curso de cinco dias: febricula 38.5 C, cefalea "
             "intensa, alucinaciones olfativas de novo al tercer dia, afasia "
-            "expresiva al cuarto dia y crisis parcial compleja al quinto "
-            "dia que motivo consulta. Sin rigidez de nuca al examen. Sin "
+            "expresiva al cuarto dia y crisis parcial compleja al quinto dia "
+            "que motivo consulta. Sin rigidez de nuca al examen. Sin "
             "exposicion a agua dulce. Examen: escala de Glasgow 13, deficit "
             "focal (afasia expresiva, alucinaciones olfativas). Liquido "
-            "cefalorraquideo mostro presion de apertura 21 cmH2O, "
-            "leucocitos 180 por mm3 (78 por ciento linfocitos), glucosa 58 "
-            "mg/dL, proteina 105 mg/dL, eritrocitos 28 con xantocromia "
-            "leve. PCR de HSV-1 positiva. RM cerebral mostro hiperintensidad "
-            "temporal mesial T2/FLAIR asimetrica. Anclaje en revision Tyler "
-            "2018 NEJM (PMID 30089069), estrato Lima coastal. Subphase 1.3 "
-            "commit 5.3.5 wave 1."
+            "cefalorraquideo mostro presion de apertura 21 cmH2O, leucocitos "
+            "180 por mm3 (78 por ciento linfocitos), glucosa 58 mg/dL, "
+            "proteina 105 mg/dL, eritrocitos 28 con xantocromia leve. PCR de "
+            "HSV-1 positiva. RM cerebral mostro hiperintensidad temporal "
+            "mesial T2/FLAIR asimetrica. Anclaje en revision Tyler 2018 NEJM "
+            "(PMID 30089069), estrato Lima coastal."
         ),
         "rationale": (
             "Anchored to PMID 30089069 (Tyler 2018 NEJM viral encephalitis "
@@ -19188,17 +19160,19 @@ def _build_viral_vignette_099() -> dict[str, Any]:
             "limbic-dominant signature). Demographic anchor (38yo M Lima) "
             "sits in adult-HSE stratum + Peru-coastal-tertiary-care "
             "stratum. CSF lymphocytic with hemorrhagic component. MRI "
-            "mesial temporal pattern. Imputation tiers: tier_1_primary="
-            "{age, sex, region, hsv1_pcr, imaging_pattern, olfactory_"
-            "hallucinations, aphasia}; tier_3_within_review={csf_wbc, "
-            "neutrophil_pct, glucose, protein, rbc, xanthochromia, gcs}; "
-            "tier_4_priors={temp, symptom_days}. Indeterminate=none. "
-            "Diagnostic_ambiguity=false. Outcome=survived_mild_memory_"
-            "deficit. Acyclovir_hours=8. Tier: tier_3_imputation_within_"
-            "review. 5.3.5 wave1 HSV1-Lima-adult-male."
+            "mesial temporal pattern. Imputation tiers: "
+            "tier_1_primary={age, sex, region, hsv1_pcr, imaging_pattern, "
+            "olfactory_hallucinations, aphasia}; "
+            "tier_3_within_review={csf_wbc, neutrophil_pct, glucose, "
+            "protein, rbc, xanthochromia, gcs}; tier_4_priors={temp, "
+            "symptom_days}. Indeterminate=none. "
+            "Diagnostic_ambiguity=false. "
+            "Outcome=survived_mild_memory_deficit. Acyclovir_hours=8. "
+            "Tier: tier_3_imputation_within_review. Stratum: "
+            "HSV1-Lima-adult-male."
         ),
         "anchoring_extras": "anchor=Tyler-NEJM-2018 region=Lima-Peru.",
-        "diagnostic_tests": _viral_wave1_dx_tests_hsv1_pcr("30089069"),
+        "diagnostic_tests": _viral_set_a_dx_tests_hsv1_pcr("30089069"),
     }
 
 
@@ -19279,8 +19253,7 @@ def _build_viral_vignette_102() -> dict[str, Any]:
             "basal ganglia sparing. Acyclovir initiated within four hours. "
             "Anchored to Tyler 2018 NEJM viral encephalitis review (PMID "
             "30089069). Outcome: survived with moderate memory deficit. "
-            "Subphase 1.3 commit 5.3.5 wave 1, pre-adjudication "
-            "hold_for_revision."
+            "Pre-adjudication status: hold_for_revision."
         ),
         "narrative_es": (
             "Varon de 50 anos en Paises Bajos (Amsterdam), ingresado a "
@@ -19288,34 +19261,34 @@ def _build_viral_vignette_102() -> dict[str, Any]:
             "cefalea, luego cambio conductual progresivo con desinhibicion "
             "al tercer dia, afasia anomica al cuarto dia y crisis focal "
             "izquierda al sexto dia que motivo consulta. Sin rigidez de "
-            "nuca al examen. Sin exposicion a agua dulce. Examen: escala "
-            "de Glasgow 11, deficit focal (afasia anomica, desinhibicion). "
+            "nuca al examen. Sin exposicion a agua dulce. Examen: escala de "
+            "Glasgow 11, deficit focal (afasia anomica, desinhibicion). "
             "Liquido cefalorraquideo mostro presion de apertura 24 cmH2O, "
             "leucocitos 250 por mm3 (72 por ciento linfocitos), glucosa 52 "
-            "mg/dL, proteina 135 mg/dL, eritrocitos 40 con xantocromia. "
-            "PCR de HSV-1 positiva. RM cerebral mostro hiperintensidad "
-            "temporal mesial T2/FLAIR bilateral con dominancia izquierda. "
-            "Anclaje en revision Tyler 2018 NEJM (PMID 30089069). Subphase "
-            "1.3 commit 5.3.5 wave 1, pre-adjudicacion hold_for_revision."
+            "mg/dL, proteina 135 mg/dL, eritrocitos 40 con xantocromia. PCR "
+            "de HSV-1 positiva. RM cerebral mostro hiperintensidad temporal "
+            "mesial T2/FLAIR bilateral con dominancia izquierda. Anclaje en "
+            "revision Tyler 2018 NEJM (PMID 30089069). Estado previo a la "
+            "adjudicacion: hold_for_revision."
         ),
         "rationale": (
             "Anchored to PMID 30089069 (Tyler 2018 NEJM viral encephalitis "
             "review). HSV1 mesial-temporal-encephalitis phenotype with "
             "frontal-disinhibition + anomic aphasia (limbic + frontal "
             "extension). Demographic anchor (50yo M adult HSE) sits in "
-            "adult-HSE stratum. CSF lymphocytic with hemorrhagic "
-            "component. MRI mesial temporal pattern with bilateral but "
-            "asymmetric involvement. Imputation tiers: tier_1_primary={age, "
-            "sex, hsv1_pcr, imaging_pattern, focal_aphasia, behavioral_"
-            "change}; tier_3_within_review={csf_wbc, neutrophil_pct, "
-            "glucose, protein, rbc, xanthochromia, gcs}; tier_4_priors="
-            "{temp, symptom_days}. Indeterminate=none. Diagnostic_ambiguity"
-            "=false. Outcome=survived_moderate_memory_deficit. Acyclovir_"
-            "hours=4. Tier: tier_3_imputation_within_review. 5.3.5 wave1 "
+            "adult-HSE stratum. CSF lymphocytic with hemorrhagic component. "
+            "MRI mesial temporal pattern with bilateral but asymmetric "
+            "involvement. Imputation tiers: tier_1_primary={age, sex, "
+            "hsv1_pcr, imaging_pattern, focal_aphasia, behavioral_change}; "
+            "tier_3_within_review={csf_wbc, neutrophil_pct, glucose, "
+            "protein, rbc, xanthochromia, gcs}; tier_4_priors={temp, "
+            "symptom_days}. Indeterminate=none. Diagnostic_ambiguity=false. "
+            "Outcome=survived_moderate_memory_deficit. Acyclovir_hours=4. "
+            "Tier: tier_3_imputation_within_review. Stratum: "
             "HSV1-NL-adult-male-bilateral."
         ),
         "anchoring_extras": "anchor=Tyler-NEJM-2018 stratum=HSV1-adult-bilateral.",
-        "diagnostic_tests": _viral_wave1_dx_tests_hsv1_pcr("30089069"),
+        "diagnostic_tests": _viral_set_a_dx_tests_hsv1_pcr("30089069"),
     }
 
 
@@ -19392,8 +19365,8 @@ def _build_viral_vignette_106() -> dict[str, Any]:
             "presentation in a child with normal mental status). Anchored "
             "to Tyler 2018 NEJM viral encephalitis review (PMID 30089069), "
             "summer enteroviral peak stratum. Outcome: survived with full "
-            "recovery in five days. Subphase 1.3 commit 5.3.5 wave 1, "
-            "pre-adjudication hold_for_revision."
+            "recovery in five days. Pre-adjudication status: "
+            "hold_for_revision."
         ),
         "narrative_es": (
             "Nina de 7 anos en region sur de Estados Unidos, ingresada a "
@@ -19407,8 +19380,8 @@ def _build_viral_vignette_106() -> dict[str, Any]:
             "enterovirus en liquido cefalorraquideo positiva. Tincion de "
             "Gram y cultivo negativos. Sin imagenes (presentacion no "
             "complicada). Anclaje en revision Tyler 2018 NEJM (PMID "
-            "30089069), estrato pico estival enteroviral. Subphase 1.3 "
-            "commit 5.3.5 wave 1, pre-adjudicacion hold_for_revision."
+            "30089069), estrato pico estival enteroviral. Estado previo a "
+            "la adjudicacion: hold_for_revision."
         ),
         "rationale": (
             "Anchored to PMID 30089069 (Tyler 2018 NEJM viral encephalitis "
@@ -19418,15 +19391,16 @@ def _build_viral_vignette_106() -> dict[str, Any]:
             "stratum. CSF lymphocytic (95 WBC, 80 percent lymphocytes), "
             "normal glucose 60, modestly elevated protein 50 - textbook "
             "viral pattern per Tyler review. EV PCR positive. Imputation "
-            "tiers: tier_1_primary={age, sex, ev_pcr, season}; tier_3_"
-            "within_review={csf_wbc, neutrophil_pct, glucose, protein}; "
-            "tier_4_priors={temp, gcs, symptom_days}. Indeterminate=none. "
-            "Diagnostic_ambiguity=false. Outcome=survived_full_recovery. "
-            "Tier: tier_3_imputation_within_review. 5.3.5 wave1 EV-US-"
-            "pediatric-summer."
+            "tiers: tier_1_primary={age, sex, ev_pcr, season}; "
+            "tier_3_within_review={csf_wbc, neutrophil_pct, glucose, "
+            "protein}; tier_4_priors={temp, gcs, symptom_days}. "
+            "Indeterminate=none. Diagnostic_ambiguity=false. "
+            "Outcome=survived_full_recovery. Tier: "
+            "tier_3_imputation_within_review. Stratum: "
+            "EV-US-pediatric-summer."
         ),
         "anchoring_extras": "anchor=Tyler-NEJM-2018 stratum=EV-pediatric-summer.",
-        "diagnostic_tests": _viral_wave1_dx_tests_ev_pcr("30089069"),
+        "diagnostic_tests": _viral_set_a_dx_tests_ev_pcr("30089069"),
     }
 
 
@@ -19490,21 +19464,20 @@ def _build_viral_vignette_107() -> dict[str, Any]:
             "csf_rbc_decreasing_across_tubes": None,
         },
         "narrative_en": (
-            "A 22-year-old woman in the Netherlands presented to a "
-            "tertiary emergency department in Amsterdam in late August "
-            "with a 2-day course of fever to 38.6 C, severe headache, "
-            "neck stiffness, photophobia, and myalgia. She lived in a "
-            "university setting. Examination on admission: temperature "
-            "38.6 C, Glasgow Coma Scale 15, alert, neck stiffness, "
-            "positive Kernig sign, no focal deficit, no rash. CSF showed "
-            "opening pressure 19 cmH2O, white cell count 220 per cubic "
-            "millimeter (78 percent lymphocytes), glucose 55 mg/dL, "
-            "protein 65 mg/dL. CSF enterovirus PCR positive. Gram stain "
-            "and culture negative. No imaging performed (uncomplicated "
-            "presentation). Anchored to Tyler 2018 NEJM viral "
-            "encephalitis review (PMID 30089069), young-adult enteroviral "
-            "summer-peak stratum. Outcome: survived with full recovery in "
-            "seven days. Subphase 1.3 commit 5.3.5 wave 1, pre-adjudication "
+            "A 22-year-old woman in the Netherlands presented to a tertiary "
+            "emergency department in Amsterdam in late August with a 2-day "
+            "course of fever to 38.6 C, severe headache, neck stiffness, "
+            "photophobia, and myalgia. She lived in a university setting. "
+            "Examination on admission: temperature 38.6 C, Glasgow Coma "
+            "Scale 15, alert, neck stiffness, positive Kernig sign, no "
+            "focal deficit, no rash. CSF showed opening pressure 19 cmH2O, "
+            "white cell count 220 per cubic millimeter (78 percent "
+            "lymphocytes), glucose 55 mg/dL, protein 65 mg/dL. CSF "
+            "enterovirus PCR positive. Gram stain and culture negative. No "
+            "imaging performed (uncomplicated presentation). Anchored to "
+            "Tyler 2018 NEJM viral encephalitis review (PMID 30089069), "
+            "young-adult enteroviral summer-peak stratum. Outcome: survived "
+            "with full recovery in seven days. Pre-adjudication status: "
             "hold_for_revision."
         ),
         "narrative_es": (
@@ -19515,29 +19488,29 @@ def _build_viral_vignette_107() -> dict[str, Any]:
             "Glasgow 15, alerta, rigidez de nuca, signo de Kernig "
             "positivo, sin deficit focal, sin exantema. Liquido "
             "cefalorraquideo mostro presion de apertura 19 cmH2O, "
-            "leucocitos 220 por mm3 (78 por ciento linfocitos), glucosa "
-            "55 mg/dL, proteina 65 mg/dL. PCR de enterovirus en LCR "
-            "positiva. Tincion de Gram y cultivo negativos. Sin imagenes. "
-            "Anclaje en revision Tyler 2018 NEJM (PMID 30089069), estrato "
-            "adulto joven pico estival enteroviral. Subphase 1.3 commit "
-            "5.3.5 wave 1, pre-adjudicacion hold_for_revision."
+            "leucocitos 220 por mm3 (78 por ciento linfocitos), glucosa 55 "
+            "mg/dL, proteina 65 mg/dL. PCR de enterovirus en LCR positiva. "
+            "Tincion de Gram y cultivo negativos. Sin imagenes. Anclaje en "
+            "revision Tyler 2018 NEJM (PMID 30089069), estrato adulto "
+            "joven pico estival enteroviral. Estado previo a la "
+            "adjudicacion: hold_for_revision."
         ),
         "rationale": (
             "Anchored to PMID 30089069 (Tyler 2018 NEJM viral encephalitis "
             "review). Enteroviral aseptic meningitis young-adult pattern. "
             "Demographic anchor (22yo F NL university summer) sits in "
-            "young-adult-aseptic-meningitis-summer stratum. CSF "
-            "lymphocytic (220 WBC, 78 percent lymphocytes), normal "
-            "glucose 55, mildly elevated protein 65 - textbook viral "
-            "pattern. EV PCR positive. Imputation tiers: tier_1_primary="
-            "{age, sex, ev_pcr, season}; tier_3_within_review={csf_wbc, "
-            "neutrophil_pct, glucose, protein}; tier_4_priors={temp, gcs, "
-            "symptom_days}. Indeterminate=none. Diagnostic_ambiguity=false. "
-            "Outcome=survived_full_recovery. Tier: tier_3_imputation_"
-            "within_review. 5.3.5 wave1 EV-NL-young-adult."
+            "young-adult-aseptic-meningitis-summer stratum. CSF lymphocytic "
+            "(220 WBC, 78 percent lymphocytes), normal glucose 55, mildly "
+            "elevated protein 65 - textbook viral pattern. EV PCR positive. "
+            "Imputation tiers: tier_1_primary={age, sex, ev_pcr, season}; "
+            "tier_3_within_review={csf_wbc, neutrophil_pct, glucose, "
+            "protein}; tier_4_priors={temp, gcs, symptom_days}. "
+            "Indeterminate=none. Diagnostic_ambiguity=false. "
+            "Outcome=survived_full_recovery. Tier: "
+            "tier_3_imputation_within_review. Stratum: EV-NL-young-adult."
         ),
         "anchoring_extras": "anchor=Tyler-NEJM-2018 stratum=EV-young-adult-summer.",
-        "diagnostic_tests": _viral_wave1_dx_tests_ev_pcr("30089069"),
+        "diagnostic_tests": _viral_set_a_dx_tests_ev_pcr("30089069"),
     }
 
 
@@ -19615,12 +19588,12 @@ def _build_viral_vignette_108() -> dict[str, Any]:
             "stain and culture negative. No imaging performed. Anchored to "
             "Tyler 2018 NEJM viral encephalitis review (PMID 30089069), "
             "school-outbreak enteroviral stratum. Outcome: survived with "
-            "full recovery in six days. Subphase 1.3 commit 5.3.5 wave 1, "
-            "pre-adjudication hold_for_revision."
+            "full recovery in six days. Pre-adjudication status: "
+            "hold_for_revision."
         ),
         "narrative_es": (
-            "Varon de 11 anos en region sur de Estados Unidos, ingresado "
-            "a urgencias pediatricas terciarias a principios de septiembre "
+            "Varon de 11 anos en region sur de Estados Unidos, ingresado a "
+            "urgencias pediatricas terciarias a principios de septiembre "
             "con dos dias de fiebre 38.7 C, cefalea, rigidez de nuca, "
             "fotofobia y vomitos. Asistio a colegio con varios companeros "
             "con sintomas similares la misma semana (brote escolar de "
@@ -19628,29 +19601,29 @@ def _build_viral_vignette_108() -> dict[str, Any]:
             "de Glasgow 15, alerta, rigidez de nuca, signo de Kernig "
             "positivo, sin deficit focal, sin exantema. Liquido "
             "cefalorraquideo mostro presion de apertura 18 cmH2O, "
-            "leucocitos 180 por mm3 (82 por ciento linfocitos), glucosa "
-            "58 mg/dL, proteina 60 mg/dL. PCR de enterovirus en LCR "
-            "positiva. Anclaje en revision Tyler 2018 NEJM (PMID "
-            "30089069), estrato brote escolar. Subphase 1.3 commit 5.3.5 "
-            "wave 1."
+            "leucocitos 180 por mm3 (82 por ciento linfocitos), glucosa 58 "
+            "mg/dL, proteina 60 mg/dL. PCR de enterovirus en LCR positiva. "
+            "Anclaje en revision Tyler 2018 NEJM (PMID 30089069), estrato "
+            "brote escolar."
         ),
         "rationale": (
             "Anchored to PMID 30089069 (Tyler 2018 NEJM viral encephalitis "
             "review). Enteroviral aseptic meningitis with school-outbreak "
             "epidemiology. Demographic anchor (11yo M US school outbreak "
             "September) sits in school-outbreak-pediatric stratum. CSF "
-            "lymphocytic (180 WBC, 82 percent lymphocytes), normal "
-            "glucose 58, mildly elevated protein 60 - textbook viral "
-            "pattern. EV PCR positive. Imputation tiers: tier_1_primary="
-            "{age, sex, ev_pcr, school_outbreak_context, season}; "
+            "lymphocytic (180 WBC, 82 percent lymphocytes), normal glucose "
+            "58, mildly elevated protein 60 - textbook viral pattern. EV "
+            "PCR positive. Imputation tiers: tier_1_primary={age, sex, "
+            "ev_pcr, school_outbreak_context, season}; "
             "tier_3_within_review={csf_wbc, neutrophil_pct, glucose, "
             "protein}; tier_4_priors={temp, gcs, symptom_days}. "
-            "Indeterminate=none. Diagnostic_ambiguity=false. Outcome="
-            "survived_full_recovery. Tier: tier_3_imputation_within_"
-            "review. 5.3.5 wave1 EV-school-outbreak-pediatric."
+            "Indeterminate=none. Diagnostic_ambiguity=false. "
+            "Outcome=survived_full_recovery. Tier: "
+            "tier_3_imputation_within_review. Stratum: "
+            "EV-school-outbreak-pediatric."
         ),
         "anchoring_extras": "anchor=Tyler-NEJM-2018 stratum=EV-school-outbreak.",
-        "diagnostic_tests": _viral_wave1_dx_tests_ev_pcr("30089069"),
+        "diagnostic_tests": _viral_set_a_dx_tests_ev_pcr("30089069"),
     }
 
 
@@ -19727,23 +19700,23 @@ def _build_viral_vignette_109() -> dict[str, Any]:
             "No imaging performed. Anchored to Tyler 2018 NEJM viral "
             "encephalitis review (PMID 30089069), early-childhood "
             "enteroviral summer stratum. Outcome: survived with full "
-            "recovery in five days. Subphase 1.3 commit 5.3.5 wave 1, "
-            "pre-adjudication hold_for_revision."
+            "recovery in five days. Pre-adjudication status: "
+            "hold_for_revision."
         ),
         "narrative_es": (
             "Nina de 3 anos en Paises Bajos (Amsterdam), ingresada a "
             "urgencias pediatricas terciarias en julio con dos dias de "
             "fiebre 38.5 C, irritabilidad, disminucion de ingesta oral, "
             "vomitos y rigidez de nuca al examen. Examen: temperatura "
-            "38.5 C, escala de Glasgow 15, alerta, rigidez de nuca, "
-            "signo de Kernig positivo, sin deficit focal, sin exantema. "
-            "Liquido cefalorraquideo mostro presion de apertura 17 cmH2O, "
+            "38.5 C, escala de Glasgow 15, alerta, rigidez de nuca, signo "
+            "de Kernig positivo, sin deficit focal, sin exantema. Liquido "
+            "cefalorraquideo mostro presion de apertura 17 cmH2O, "
             "leucocitos 145 por mm3 (85 por ciento linfocitos), glucosa "
             "56 mg/dL, proteina 55 mg/dL. PCR de enterovirus en LCR "
             "positiva. Tincion de Gram y cultivo negativos. Sin imagenes. "
             "Anclaje en revision Tyler 2018 NEJM (PMID 30089069), estrato "
-            "infancia temprana pico estival enteroviral. Subphase 1.3 "
-            "commit 5.3.5 wave 1, pre-adjudicacion hold_for_revision."
+            "infancia temprana pico estival enteroviral. Estado previo a "
+            "la adjudicacion: hold_for_revision."
         ),
         "rationale": (
             "Anchored to PMID 30089069 (Tyler 2018 NEJM viral encephalitis "
@@ -19751,16 +19724,17 @@ def _build_viral_vignette_109() -> dict[str, Any]:
             "summer pattern. Demographic anchor (3yo F NL summer) sits in "
             "early-childhood-EV-summer stratum. CSF lymphocytic (145 WBC, "
             "85 percent lymphocytes), normal glucose 56, mildly elevated "
-            "protein 55. EV PCR positive. Imputation tiers: tier_1_primary"
-            "={age, sex, ev_pcr, season, irritability}; tier_3_within_"
-            "review={csf_wbc, neutrophil_pct, glucose, protein}; tier_4_"
-            "priors={temp, gcs, hr, symptom_days}. Indeterminate=none. "
-            "Diagnostic_ambiguity=false. Outcome=survived_full_recovery. "
-            "Tier: tier_3_imputation_within_review. 5.3.5 wave1 EV-NL-"
-            "infant-summer."
+            "protein 55. EV PCR positive. Imputation tiers: "
+            "tier_1_primary={age, sex, ev_pcr, season, irritability}; "
+            "tier_3_within_review={csf_wbc, neutrophil_pct, glucose, "
+            "protein}; tier_4_priors={temp, gcs, hr, symptom_days}. "
+            "Indeterminate=none. Diagnostic_ambiguity=false. "
+            "Outcome=survived_full_recovery. Tier: "
+            "tier_3_imputation_within_review. Stratum: "
+            "EV-NL-infant-summer."
         ),
         "anchoring_extras": "anchor=Tyler-NEJM-2018 stratum=EV-early-childhood-summer.",
-        "diagnostic_tests": _viral_wave1_dx_tests_ev_pcr("30089069"),
+        "diagnostic_tests": _viral_set_a_dx_tests_ev_pcr("30089069"),
     }
 
 
@@ -19838,8 +19812,7 @@ def _build_viral_vignette_111() -> dict[str, Any]:
             "status). Anchored to Tyler 2018 NEJM viral encephalitis "
             "review (PMID 30089069), pediatric enteroviral summer-peak "
             "stratum. Outcome: survived with full recovery in six days. "
-            "Subphase 1.3 commit 5.3.5 wave 1, pre-adjudication "
-            "hold_for_revision."
+            "Pre-adjudication status: hold_for_revision."
         ),
         "narrative_es": (
             "Varon de 5 anos en region sur de Estados Unidos, ingresado a "
@@ -19853,8 +19826,7 @@ def _build_viral_vignette_111() -> dict[str, Any]:
             "LCR positiva. Tincion de Gram y cultivo negativos. Sin "
             "imagenes. Anclaje en revision Tyler 2018 NEJM (PMID "
             "30089069), estrato pediatrico pico estival enteroviral. "
-            "Subphase 1.3 commit 5.3.5 wave 1, pre-adjudicacion "
-            "hold_for_revision."
+            "Estado previo a la adjudicacion: hold_for_revision."
         ),
         "rationale": (
             "Anchored to PMID 30089069 (Tyler 2018 NEJM viral encephalitis "
@@ -19862,15 +19834,17 @@ def _build_viral_vignette_111() -> dict[str, Any]:
             "pattern. Demographic anchor (5yo M US South August) sits in "
             "pediatric-EV-summer stratum. CSF lymphocytic (165 WBC, 80 "
             "percent lymphocytes), normal glucose 55, mildly elevated "
-            "protein 58. EV PCR positive. Imputation tiers: tier_1_primary"
-            "={age, sex, ev_pcr, season}; tier_3_within_review={csf_wbc, "
-            "neutrophil_pct, glucose, protein}; tier_4_priors={temp, gcs, "
-            "symptom_days}. Indeterminate=none. Diagnostic_ambiguity=false. "
-            "Outcome=survived_full_recovery. Tier: tier_3_imputation_"
-            "within_review. 5.3.5 wave1 EV-US-pediatric-summer-2."
+            "protein 58. EV PCR positive. Imputation tiers: "
+            "tier_1_primary={age, sex, ev_pcr, season}; "
+            "tier_3_within_review={csf_wbc, neutrophil_pct, glucose, "
+            "protein}; tier_4_priors={temp, gcs, symptom_days}. "
+            "Indeterminate=none. Diagnostic_ambiguity=false. "
+            "Outcome=survived_full_recovery. Tier: "
+            "tier_3_imputation_within_review. Stratum: "
+            "EV-US-pediatric-summer-2."
         ),
         "anchoring_extras": "anchor=Tyler-NEJM-2018 stratum=EV-pediatric-summer-2.",
-        "diagnostic_tests": _viral_wave1_dx_tests_ev_pcr("30089069"),
+        "diagnostic_tests": _viral_set_a_dx_tests_ev_pcr("30089069"),
     }
 
 
@@ -19953,13 +19927,13 @@ def _build_viral_vignette_113() -> dict[str, Any]:
             "neutrophils), glucose 48 mg/dL, protein 105 mg/dL. CSF HSV-2 "
             "PCR positive. Gram stain and culture negative. MRI brain "
             "with DWI/FLAIR normal. Diagnostic_ambiguity=true; "
-            "type=hsv2_first_episode_with_prominent_meningismus_bacterial_"
-            "ddx. The prominent meningismus and CSF pleocytosis at 350 "
-            "WBC with 35 percent neutrophils raised initial bacterial-"
-            "meningitis differential; HSV2 PCR confirmed organism. "
-            "Anchored to Tyler 2018 NEJM viral encephalitis review (PMID "
-            "30089069). Outcome: survived with full recovery. Subphase "
-            "1.3 commit 5.3.5 wave 1, pre-adjudication hold_for_revision."
+            "type=hsv2_first_episode_with_prominent_meningismus_bacterial_ddx. "
+            "The prominent meningismus and CSF pleocytosis at 350 WBC "
+            "with 35 percent neutrophils raised initial "
+            "bacterial-meningitis differential; HSV2 PCR confirmed "
+            "organism. Anchored to Tyler 2018 NEJM viral encephalitis "
+            "review (PMID 30089069). Outcome: survived with full "
+            "recovery. Pre-adjudication status: hold_for_revision."
         ),
         "narrative_es": (
             "Mujer de 28 anos en Paises Bajos (Amsterdam), ingresada a "
@@ -19974,31 +19948,32 @@ def _build_viral_vignette_113() -> dict[str, Any]:
             "mg/dL. PCR de HSV-2 en LCR positiva. RM cerebral normal. "
             "Ambiguedad diagnostica por meningismo prominente con DDx "
             "bacteriana inicial. Anclaje en revision Tyler 2018 NEJM "
-            "(PMID 30089069). Subphase 1.3 commit 5.3.5 wave 1, "
-            "pre-adjudicacion hold_for_revision."
+            "(PMID 30089069). Estado previo a la adjudicacion: "
+            "hold_for_revision."
         ),
         "rationale": (
             "Anchored to PMID 30089069 (Tyler 2018 NEJM viral encephalitis "
             "review). HSV2 first-episode lymphocytic meningitis with "
-            "prominent meningismus that mimics bacterial DDx. Diagnostic_"
-            "ambiguity=true; type=hsv2_first_episode_with_prominent_"
-            "meningismus_bacterial_ddx (verbatim from spec). Demographic "
-            "anchor (28yo F NL post-genital-herpes) sits in HSV2-first-"
-            "episode stratum. CSF prominent (WBC 350) with 35 percent "
-            "neutrophils approaching bacterial threshold but lymphocyte-"
-            "dominant; protein elevated 105; glucose mildly low 48 - "
-            "borderline-bacterial-DDx pattern raising initial empiric-"
-            "ceftriaxone consideration. HSV2 PCR confirms organism. "
+            "prominent meningismus that mimics bacterial DDx. "
+            "Diagnostic_ambiguity=true; "
+            "type=hsv2_first_episode_with_prominent_meningismus_bacterial_ddx. "
+            "Demographic anchor (28yo F NL post-genital-herpes) sits in "
+            "HSV2-first-episode stratum. CSF prominent (WBC 350) with 35 "
+            "percent neutrophils approaching bacterial threshold but "
+            "lymphocyte-dominant; protein elevated 105; glucose mildly low 48 "
+            "- borderline-bacterial-DDx pattern raising initial "
+            "empiric-ceftriaxone consideration. HSV2 PCR confirms organism. "
             "Imputation tiers: tier_1_primary={age, sex, hsv2_pcr, "
             "primary_genital_herpes_history, prominent_meningismus}; "
             "tier_3_within_review={csf_wbc, neutrophil_pct, glucose, "
             "protein}; tier_4_priors={temp, gcs, symptom_days}. "
-            "Indeterminate=initial-bacterial-DDx-resolved-by-PCR. Outcome="
-            "survived_full_recovery. Tier: tier_3_imputation_within_"
-            "review. 5.3.5 wave1 HSV2-first-episode-ambiguity."
+            "Indeterminate=initial-bacterial-DDx-resolved-by-PCR. "
+            "Outcome=survived_full_recovery. Tier: "
+            "tier_3_imputation_within_review. Stratum: "
+            "HSV2-first-episode-ambiguity."
         ),
         "anchoring_extras": "anchor=Tyler-NEJM-2018 type=hsv2_first_episode_with_prominent_meningismus_bacterial_ddx.",
-        "diagnostic_tests": _viral_wave1_dx_tests_hsv2_pcr("30089069"),
+        "diagnostic_tests": _viral_set_a_dx_tests_hsv2_pcr("30089069"),
     }
 
 
@@ -20062,20 +20037,20 @@ def _build_viral_vignette_114() -> dict[str, Any]:
         },
         "narrative_en": (
             "A 35-year-old man in the US South region presented to a "
-            "tertiary emergency department with a 2-day course of fever "
-            "to 38.4 C, severe headache, neck stiffness, and photophobia, "
-            "ten days after a primary genital herpes outbreak. Examination "
-            "on admission: temperature 38.4 C, Glasgow Coma Scale 15, "
-            "alert, neck stiffness, positive Kernig sign, no focal "
-            "deficit, no rash. CSF showed opening pressure 22 cmH2O, "
-            "white cell count 280 per cubic millimeter (78 percent "
-            "lymphocytes), glucose 55 mg/dL, protein 80 mg/dL. CSF HSV-2 "
-            "PCR positive. Gram stain and culture negative. MRI brain "
-            "with DWI/FLAIR normal. Empiric IV acyclovir initiated. "
-            "Anchored to Tyler 2018 NEJM viral encephalitis review (PMID "
-            "30089069), HSV2 first-episode lymphocytic meningitis stratum. "
-            "Outcome: survived with full recovery in six days. Subphase "
-            "1.3 commit 5.3.5 wave 1, pre-adjudication hold_for_revision."
+            "tertiary emergency department with a 2-day course of fever to "
+            "38.4 C, severe headache, neck stiffness, and photophobia, ten "
+            "days after a primary genital herpes outbreak. Examination on "
+            "admission: temperature 38.4 C, Glasgow Coma Scale 15, alert, "
+            "neck stiffness, positive Kernig sign, no focal deficit, no "
+            "rash. CSF showed opening pressure 22 cmH2O, white cell count "
+            "280 per cubic millimeter (78 percent lymphocytes), glucose 55 "
+            "mg/dL, protein 80 mg/dL. CSF HSV-2 PCR positive. Gram stain "
+            "and culture negative. MRI brain with DWI/FLAIR normal. "
+            "Empiric IV acyclovir initiated. Anchored to Tyler 2018 NEJM "
+            "viral encephalitis review (PMID 30089069), HSV2 first-episode "
+            "lymphocytic meningitis stratum. Outcome: survived with full "
+            "recovery in six days. Pre-adjudication status: "
+            "hold_for_revision."
         ),
         "narrative_es": (
             "Varon de 35 anos en region sur de Estados Unidos, ingresado "
@@ -20090,25 +20065,26 @@ def _build_viral_vignette_114() -> dict[str, Any]:
             "Tincion de Gram y cultivo negativos. RM cerebral normal. "
             "Aciclovir IV empirico iniciado. Anclaje en revision Tyler "
             "2018 NEJM (PMID 30089069), estrato HSV2 primer episodio. "
-            "Subphase 1.3 commit 5.3.5 wave 1, pre-adjudicacion "
-            "hold_for_revision."
+            "Estado previo a la adjudicacion: hold_for_revision."
         ),
         "rationale": (
             "Anchored to PMID 30089069 (Tyler 2018 NEJM viral encephalitis "
             "review). HSV2 first-episode lymphocytic meningitis. "
             "Demographic anchor (35yo M US post-genital-herpes) sits in "
-            "HSV2-first-episode-male stratum. CSF lymphocytic (280 WBC, "
-            "78 percent lymphocytes), normal glucose 55, mildly elevated "
-            "protein 80. HSV2 PCR positive. Imputation tiers: tier_1_"
-            "primary={age, sex, hsv2_pcr, primary_genital_herpes_history}; "
+            "HSV2-first-episode-male stratum. CSF lymphocytic (280 WBC, 78 "
+            "percent lymphocytes), normal glucose 55, mildly elevated "
+            "protein 80. HSV2 PCR positive. Imputation tiers: "
+            "tier_1_primary={age, sex, hsv2_pcr, "
+            "primary_genital_herpes_history}; "
             "tier_3_within_review={csf_wbc, neutrophil_pct, glucose, "
             "protein}; tier_4_priors={temp, gcs, symptom_days}. "
-            "Indeterminate=none. Diagnostic_ambiguity=false. Outcome="
-            "survived_full_recovery. Tier: tier_3_imputation_within_"
-            "review. 5.3.5 wave1 HSV2-first-episode-male."
+            "Indeterminate=none. Diagnostic_ambiguity=false. "
+            "Outcome=survived_full_recovery. Tier: "
+            "tier_3_imputation_within_review. Stratum: "
+            "HSV2-first-episode-male."
         ),
         "anchoring_extras": "anchor=Tyler-NEJM-2018 stratum=HSV2-first-episode-male.",
-        "diagnostic_tests": _viral_wave1_dx_tests_hsv2_pcr("30089069"),
+        "diagnostic_tests": _viral_set_a_dx_tests_hsv2_pcr("30089069"),
     }
 
 
@@ -20174,16 +20150,16 @@ def _build_viral_vignette_117() -> dict[str, Any]:
             "csf_rbc_decreasing_across_tubes": None,
         },
         "narrative_en": (
-            "A 32-year-old woman in Lima, Peru presented to a tertiary urban emergency department during the Peru 2024 dengue outbreak with a 4-day febrile illness: fever to 39.4 C, retro-orbital pain, severe myalgia, severe headache, and encephalopathic mental status by day 3. The prominent CNS features raised initial differential for other co-circulating arboviral CNS infections (zika, chikungunya). No neck stiffness on examination. Examination on admission: temperature 39.4 C, Glasgow Coma Scale 12, confused, no neck stiffness, no focal deficit, no rash. Platelets 75,000 per cubic millimeter (WHO 2009 dengue with warning signs threshold below 150,000 satisfied). CSF showed opening pressure 19 cmH2O, white cell count 110 per cubic millimeter (70 percent lymphocytes), glucose 58 mg/dL, protein 80 mg/dL. DENV NS1 antigen positive and DENV-2 PCR positive. Brain MRI normal. Diagnostic_ambiguity=true; type=dengue_with_prominent_cns_arbo_encephalitis_overlap. Anchored to Puccioni-Sohler 2023 dengue-neuro review (PMID 38157877). Outcome: survived. Subphase 1.3 commit 5.3.5 wave 1, pre-adjudication hold_for_revision."
+            "A 32-year-old woman in Lima, Peru presented to a tertiary urban emergency department during the Peru 2024 dengue outbreak with a 4-day febrile illness: fever to 39.4 C, retro-orbital pain, severe myalgia, severe headache, and encephalopathic mental status by day 3. The prominent CNS features raised initial differential for other co-circulating arboviral CNS infections (zika, chikungunya). No neck stiffness on examination. Examination on admission: temperature 39.4 C, Glasgow Coma Scale 12, confused, no neck stiffness, no focal deficit, no rash. Platelets 75,000 per cubic millimeter (WHO 2009 dengue with warning signs threshold below 150,000 satisfied). CSF showed opening pressure 19 cmH2O, white cell count 110 per cubic millimeter (70 percent lymphocytes), glucose 58 mg/dL, protein 80 mg/dL. DENV NS1 antigen positive and DENV-2 PCR positive. Brain MRI normal. Diagnostic_ambiguity=true; type=dengue_with_prominent_cns_arbo_encephalitis_overlap. Anchored to Puccioni-Sohler 2023 dengue-neuro review (PMID 38157877). Outcome: survived. Pre-adjudication status: hold_for_revision."
         ),
         "narrative_es": (
-            "Mujer de 32 anos en Lima, Peru, ingresada a urgencias urbanas terciarias durante el brote de dengue de Peru 2024: cuatro dias de fiebre 39.4 C, dolor retro-orbitario, mialgia severa, cefalea intensa y estado mental encefalopatico al tercer dia. Las manifestaciones CNS prominentes elevaron el diagnostico diferencial inicial con otras encefalitides arbovirales. Sin rigidez de nuca al examen. Examen: temperatura 39.4 C, escala de Glasgow 12, confusa. Plaquetas 75,000 por mm3 (umbral signos de alarma OMS 2009 menor de 150,000). Liquido cefalorraquideo mostro presion de apertura 19 cmH2O, leucocitos 110 por mm3 (70 por ciento linfocitos), glucosa 58 mg/dL, proteina 80 mg/dL. NS1 antigeno DENV positivo y PCR DENV-2 positiva. RM cerebral normal. Ambiguedad diagnostica por superposicion CNS arbo-encefalitis. Anclaje en revision dengue-neuro Puccioni-Sohler 2023 (PMID 38157877). Subphase 1.3 commit 5.3.5 wave 1."
+            "Mujer de 32 anos en Lima, Peru, ingresada a urgencias urbanas terciarias durante el brote de dengue de Peru 2024: cuatro dias de fiebre 39.4 C, dolor retro-orbitario, mialgia severa, cefalea intensa y estado mental encefalopatico al tercer dia. Las manifestaciones CNS prominentes elevaron el diagnostico diferencial inicial con otras encefalitides arbovirales. Sin rigidez de nuca al examen. Examen: temperatura 39.4 C, escala de Glasgow 12, confusa. Plaquetas 75,000 por mm3 (umbral signos de alarma OMS 2009 menor de 150,000). Liquido cefalorraquideo mostro presion de apertura 19 cmH2O, leucocitos 110 por mm3 (70 por ciento linfocitos), glucosa 58 mg/dL, proteina 80 mg/dL. NS1 antigeno DENV positivo y PCR DENV-2 positiva. RM cerebral normal. Ambiguedad diagnostica por superposicion CNS arbo-encefalitis. Anclaje en revision dengue-neuro Puccioni-Sohler 2023 (PMID 38157877)."
         ),
         "rationale": (
-            "Anchored to PMID 38157877 (Puccioni-Sohler 2023 dengue-neuro review) with prominent CNS-arbo-encephalitis-overlap phenotype. Diagnostic_ambiguity=true; type=dengue_with_prominent_cns_arbo_encephalitis_overlap (verbatim from spec). Demographic anchor (32yo F Lima during 2024 outbreak) sits in dengue-with-CNS stratum that overlaps with co-circulating zika/chikungunya arbo DDx. Platelets 75k satisfies thrombocytopenia-warning-signs threshold. CSF lymphocytic (110 WBC, 70 percent lymphocytes), normal glucose 58, mildly elevated protein 80. NS1 + DENV-2 PCR confirm organism. Imputation tiers: tier_1_primary={age, sex, region, denv_pcr, ns1, platelets, outbreak_context}; tier_3_within_review={csf_wbc, neutrophil_pct, glucose, protein}; tier_4_priors={temp, gcs, symptom_days}. Indeterminate=initial-arbo-DDx-resolved-by-DENV-PCR. Outcome=survived. Tier: tier_4_imputation_peru_dengue_2024_anchored. 5.3.5 wave1 dengue-Lima-arbo-overlap."
+            "Anchored to PMID 38157877 (Puccioni-Sohler 2023 dengue-neuro review) with prominent CNS-arbo-encephalitis-overlap phenotype. Diagnostic_ambiguity=true; type=dengue_with_prominent_cns_arbo_encephalitis_overlap. Demographic anchor (32yo F Lima during 2024 outbreak) sits in dengue-with-CNS stratum that overlaps with co-circulating zika/chikungunya arbo DDx. Platelets 75k satisfies thrombocytopenia-warning-signs threshold. CSF lymphocytic (110 WBC, 70 percent lymphocytes), normal glucose 58, mildly elevated protein 80. NS1 + DENV-2 PCR confirm organism. Imputation tiers: tier_1_primary={age, sex, region, denv_pcr, ns1, platelets, outbreak_context}; tier_3_within_review={csf_wbc, neutrophil_pct, glucose, protein}; tier_4_priors={temp, gcs, symptom_days}. Indeterminate=initial-arbo-DDx-resolved-by-DENV-PCR. Outcome=survived. Tier: tier_4_imputation_peru_dengue_2024_anchored. Stratum: dengue-Lima-arbo-overlap."
         ),
         "anchoring_extras": "anchor=PuccioniSohler-ANP-2023 type=dengue_with_prominent_cns_arbo_encephalitis_overlap region=Lima-Peru.",
-        "diagnostic_tests": _viral_wave1_dx_tests_dengue("38157877", "DENV_2"),
+        "diagnostic_tests": _viral_set_a_dx_tests_dengue("38157877", "DENV_2"),
     }
 
 
@@ -20247,16 +20223,16 @@ def _build_viral_vignette_119() -> dict[str, Any]:
             "csf_rbc_decreasing_across_tubes": None,
         },
         "narrative_en": (
-            "A 41-year-old man in Tumbes, Peru coastal community presented to a regional hospital during regional dengue activity with a 4-day febrile illness: fever to 39.2 C, retro-orbital pain, severe myalgia, severe headache, and transient encephalopathy on day 3. He had no neck stiffness on examination. Examination on admission: temperature 39.2 C, Glasgow Coma Scale 13, confused, no neck stiffness, no focal deficit, no rash. Platelets 85,000 per cubic millimeter (WHO 2009 dengue with warning signs threshold below 150,000). CSF showed opening pressure 18 cmH2O, white cell count 95 per cubic millimeter (72 percent lymphocytes), glucose 60 mg/dL, protein 75 mg/dL. DENV NS1 antigen positive and DENV-2 PCR positive. Brain MRI normal (metabolic / cytokine-mediated encephalopathy). Anchored to Puccioni-Sohler 2023 dengue-neuro review (PMID 38157877), Peru-coastal-Tumbes dengue stratum. Outcome: survived with full recovery. Subphase 1.3 commit 5.3.5 wave 1, pre-adjudication hold_for_revision."
+            "A 41-year-old man in Tumbes, Peru coastal community presented to a regional hospital during regional dengue activity with a 4-day febrile illness: fever to 39.2 C, retro-orbital pain, severe myalgia, severe headache, and transient encephalopathy on day 3. He had no neck stiffness on examination. Examination on admission: temperature 39.2 C, Glasgow Coma Scale 13, confused, no neck stiffness, no focal deficit, no rash. Platelets 85,000 per cubic millimeter (WHO 2009 dengue with warning signs threshold below 150,000). CSF showed opening pressure 18 cmH2O, white cell count 95 per cubic millimeter (72 percent lymphocytes), glucose 60 mg/dL, protein 75 mg/dL. DENV NS1 antigen positive and DENV-2 PCR positive. Brain MRI normal (metabolic / cytokine-mediated encephalopathy). Anchored to Puccioni-Sohler 2023 dengue-neuro review (PMID 38157877), Peru-coastal-Tumbes dengue stratum. Outcome: survived with full recovery. Pre-adjudication status: hold_for_revision."
         ),
         "narrative_es": (
-            "Varon de 41 anos en comunidad costera de Tumbes, Peru, ingresado a hospital regional durante actividad regional de dengue: cuatro dias de fiebre 39.2 C, dolor retro-orbitario, mialgia severa, cefalea intensa y encefalopatia transitoria al tercer dia. Sin rigidez de nuca al examen. Examen: temperatura 39.2 C, escala de Glasgow 13, confuso. Plaquetas 85,000 por mm3 (umbral OMS 2009 menor de 150,000). Liquido cefalorraquideo mostro presion de apertura 18 cmH2O, leucocitos 95 por mm3 (72 por ciento linfocitos), glucosa 60 mg/dL, proteina 75 mg/dL. NS1 antigeno DENV positivo y PCR DENV-2 positiva. RM cerebral normal. Anclaje en revision dengue-neuro Puccioni-Sohler 2023 (PMID 38157877), estrato Tumbes-coastal dengue. Subphase 1.3 commit 5.3.5 wave 1, pre-adjudicacion hold_for_revision."
+            "Varon de 41 anos en comunidad costera de Tumbes, Peru, ingresado a hospital regional durante actividad regional de dengue: cuatro dias de fiebre 39.2 C, dolor retro-orbitario, mialgia severa, cefalea intensa y encefalopatia transitoria al tercer dia. Sin rigidez de nuca al examen. Examen: temperatura 39.2 C, escala de Glasgow 13, confuso. Plaquetas 85,000 por mm3 (umbral OMS 2009 menor de 150,000). Liquido cefalorraquideo mostro presion de apertura 18 cmH2O, leucocitos 95 por mm3 (72 por ciento linfocitos), glucosa 60 mg/dL, proteina 75 mg/dL. NS1 antigeno DENV positivo y PCR DENV-2 positiva. RM cerebral normal. Anclaje en revision dengue-neuro Puccioni-Sohler 2023 (PMID 38157877), estrato Tumbes-coastal dengue. Estado previo a la adjudicacion: hold_for_revision."
         ),
         "rationale": (
-            "Anchored to PMID 38157877 (Puccioni-Sohler 2023 dengue-neuro review). Dengue with transient encephalopathy in Peru-coastal-Tumbes stratum. Demographic anchor (41yo M Tumbes) sits in Peru-coastal-dengue stratum. Platelets 85k satisfies thrombocytopenia-warning-signs threshold. CSF lymphocytic (95 WBC, 72 percent lymphocytes), normal glucose 60, mildly elevated protein 75. NS1 + DENV-2 PCR confirm organism. MRI normal (metabolic / cytokine encephalopathy not direct viral invasion). Imputation tiers: tier_1_primary={age, sex, region, denv_pcr, ns1, platelets}; tier_3_within_review={csf_wbc, neutrophil_pct, glucose, protein}; tier_4_priors={temp, gcs, symptom_days}. Indeterminate=none. Diagnostic_ambiguity=false. Outcome=survived_full_recovery. Tier: tier_4_imputation_peru_dengue_2024_anchored. 5.3.5 wave1 dengue-Tumbes-coastal."
+            "Anchored to PMID 38157877 (Puccioni-Sohler 2023 dengue-neuro review). Dengue with transient encephalopathy in Peru-coastal-Tumbes stratum. Demographic anchor (41yo M Tumbes) sits in Peru-coastal-dengue stratum. Platelets 85k satisfies thrombocytopenia-warning-signs threshold. CSF lymphocytic (95 WBC, 72 percent lymphocytes), normal glucose 60, mildly elevated protein 75. NS1 + DENV-2 PCR confirm organism. MRI normal (metabolic / cytokine encephalopathy not direct viral invasion). Imputation tiers: tier_1_primary={age, sex, region, denv_pcr, ns1, platelets}; tier_3_within_review={csf_wbc, neutrophil_pct, glucose, protein}; tier_4_priors={temp, gcs, symptom_days}. Indeterminate=none. Diagnostic_ambiguity=false. Outcome=survived_full_recovery. Tier: tier_4_imputation_peru_dengue_2024_anchored. Stratum: dengue-Tumbes-coastal."
         ),
         "anchoring_extras": "anchor=PuccioniSohler-ANP-2023 region=Tumbes-Peru.",
-        "diagnostic_tests": _viral_wave1_dx_tests_dengue("38157877", "DENV_2"),
+        "diagnostic_tests": _viral_set_a_dx_tests_dengue("38157877", "DENV_2"),
     }
 
 
@@ -20331,32 +20307,32 @@ def _build_viral_vignette_120() -> dict[str, Any]:
             "CSF showed opening pressure 28 cmH2O, white cell count 350 "
             "per cubic millimeter (60 percent lymphocytes, 35 percent "
             "neutrophils, 5 percent eosinophils), glucose 48 mg/dL, "
-            "protein 145 mg/dL. CSF EEE IgM serology positive and CSF "
-            "EEE PCR positive. Brain MRI with DWI/FLAIR showed diffuse "
+            "protein 145 mg/dL. CSF EEE IgM serology positive and CSF EEE "
+            "PCR positive. Brain MRI with DWI/FLAIR showed diffuse "
             "cerebral edema with basal ganglia and thalamic involvement "
             "(EEE predilection per Tyler review). Anchored to Tyler 2018 "
-            "NEJM viral encephalitis review (PMID 30089069), EEE high-"
-            "mortality older-adult stratum (case fatality approximately "
-            "30 percent, permanent sequelae in 50 percent of survivors). "
-            "Outcome: fatal hospital day 4. Subphase 1.3 commit 5.3.5 "
-            "wave 1, pre-adjudication hold_for_revision."
+            "NEJM viral encephalitis review (PMID 30089069), EEE "
+            "high-mortality older-adult stratum (case fatality "
+            "approximately 30 percent, permanent sequelae in 50 percent "
+            "of survivors). Outcome: fatal hospital day 4. "
+            "Pre-adjudication status: hold_for_revision."
         ),
         "narrative_es": (
             "Varon de 58 anos en region sur de Estados Unidos, ingresado "
             "a urgencias terciarias con curso de cinco dias: fiebre 39.0 "
             "C, cefalea intensa, rigidez de nuca, luego encefalopatia "
             "progresiva con estupor al cuarto dia y coma al quinto. "
-            "Actividad reciente al aire libre en area boscosa endemica "
-            "de mosquitos. Examen: temperatura 39.0 C, escala de Glasgow "
-            "6, comatoso, rigidez de nuca, signo de Kernig positivo, "
-            "deficit focal (debilidad izquierda), sin exantema. Liquido "
+            "Actividad reciente al aire libre en area boscosa endemica de "
+            "mosquitos. Examen: temperatura 39.0 C, escala de Glasgow 6, "
+            "comatoso, rigidez de nuca, signo de Kernig positivo, deficit "
+            "focal (debilidad izquierda), sin exantema. Liquido "
             "cefalorraquideo mostro presion de apertura 28 cmH2O, "
             "leucocitos 350 por mm3 (60 por ciento linfocitos, 35 por "
             "ciento neutrofilos), glucosa 48 mg/dL, proteina 145 mg/dL. "
             "IgM y PCR de EEE en LCR positivas. RM cerebral con edema "
             "cerebral difuso con compromiso de ganglios basales y talamo. "
             "Anclaje en revision Tyler 2018 NEJM (PMID 30089069), estrato "
-            "EEE alta mortalidad. Subphase 1.3 commit 5.3.5 wave 1."
+            "EEE alta mortalidad."
         ),
         "rationale": (
             "Anchored to PMID 30089069 (Tyler 2018 NEJM viral encephalitis "
@@ -20366,23 +20342,24 @@ def _build_viral_vignette_120() -> dict[str, Any]:
             "Demographic anchor (58yo M US South mosquito-endemic woods) "
             "sits in EEE-older-adult stratum. CSF mixed-cellularity "
             "leaning lymphocytic (350 WBC, 60 percent lymphocytes, 35 "
-            "percent neutrophils, 5 percent eosinophils), glucose 48 "
-            "(near spec 1.3.4 floor), elevated protein 145. EEE "
-            "IgM + PCR positive. MRI diffuse cerebral edema with basal "
-            "ganglia and thalamic involvement. Imputation tiers: tier_1_"
-            "primary={age, sex, eee_igm, eee_pcr, mosquito_endemic_area, "
-            "imaging_pattern}; tier_3_within_review={csf_wbc, neutrophil_"
-            "pct, glucose, protein, gcs}; tier_4_priors={temp, symptom_"
-            "days, hr}. Indeterminate=none. Diagnostic_ambiguity=false. "
-            "Outcome=fatal_hospital_day_4. Tier: tier_3_imputation_within_"
-            "review. 5.3.5 wave1 EEE-older-adult-fatal."
+            "percent neutrophils, 5 percent eosinophils), glucose 48 (near "
+            "the specification floor), elevated protein 145. EEE IgM + PCR "
+            "positive. MRI diffuse cerebral edema with basal ganglia and "
+            "thalamic involvement. Imputation tiers: tier_1_primary={age, "
+            "sex, eee_igm, eee_pcr, mosquito_endemic_area, "
+            "imaging_pattern}; tier_3_within_review={csf_wbc, "
+            "neutrophil_pct, glucose, protein, gcs}; tier_4_priors={temp, "
+            "symptom_days, hr}. Indeterminate=none. "
+            "Diagnostic_ambiguity=false. Outcome=fatal_hospital_day_4. "
+            "Tier: tier_3_imputation_within_review. Stratum: "
+            "EEE-older-adult-fatal."
         ),
         "anchoring_extras": "anchor=Tyler-NEJM-2018 stratum=EEE-older-adult-fatal mosquito_endemic=true.",
-        "diagnostic_tests": _viral_wave1_dx_tests_eee("30089069"),
+        "diagnostic_tests": _viral_set_a_dx_tests_eee("30089069"),
     }
 
 
-_VIRAL_WAVE1_BUILDERS: dict[int, Any] = {
+_VIRAL_SET_A_BUILDERS: dict[int, Any] = {
     96: _build_viral_vignette_096,
     99: _build_viral_vignette_099,
     102: _build_viral_vignette_102,
@@ -20399,55 +20376,55 @@ _VIRAL_WAVE1_BUILDERS: dict[int, Any] = {
 }
 
 
-def generate_viral_wave1_vignette(vignette_id: int) -> dict[str, Any]:
-    """Build one VIRAL Wave-1 (Tyler-anchored) vignette dict."""
-    if vignette_id not in VIRAL_WAVE1_IDS:
+def generate_viral_set_a_vignette(vignette_id: int) -> dict[str, Any]:
+    """Build one VIRAL set A (Tyler or Puccioni-Sohler anchored) vignette dict."""
+    if vignette_id not in VIRAL_SET_A_IDS:
         raise KeyError(
-            f"vignette_id {vignette_id!r} not in VIRAL_WAVE1_IDS {VIRAL_WAVE1_IDS}"
+            f"vignette_id {vignette_id!r} not in VIRAL_SET_A_IDS {VIRAL_SET_A_IDS}"
         )
     spec = next(s for s in VIRAL_DISTRIBUTION if s["vignette_id"] == vignette_id)
     pmid_meta = load_pmid_metadata(spec["pmid"])
-    clinical = _VIRAL_WAVE1_BUILDERS[vignette_id]()
+    clinical = _VIRAL_SET_A_BUILDERS[vignette_id]()
 
     region = spec["geography_region"]
     history = clinical["history"]
     if not history.get("red_flags_present"):
-        history = {**history, "red_flags_present": _viral_wave1_red_flags()}
+        history = {**history, "red_flags_present": _viral_set_a_red_flags()}
 
     return {
         "schema_version": "2.0",
-        "case_id": _viral_wave1_case_id(spec, pmid_meta),
+        "case_id": _viral_set_a_case_id(spec, pmid_meta),
         "ground_truth_class": 3,
         "demographics": {
             "age_years": spec["age_years"],
             "sex": spec["sex"],
-            "ethnicity": _bact_wave1_ethnicity(region),
+            "ethnicity": _bact_set_a_ethnicity(region),
             "geography_region": region,
-            "altitude_residence_m": _bact_wave1_altitude(region),
+            "altitude_residence_m": _bact_set_a_altitude(region),
         },
         "history": history,
-        "exposure": _viral_wave1_exposure(spec),
+        "exposure": _viral_set_a_exposure(spec),
         "vitals": clinical["vitals"],
         "exam": clinical["exam"],
         "labs": clinical["labs"],
         "csf": clinical["csf"],
-        "imaging": _viral_wave1_imaging_for(spec),
+        "imaging": _viral_set_a_imaging_for(spec),
         "diagnostic_tests": {"results": clinical["diagnostic_tests"]},
-        "adjudication": _viral_wave1_adjudication(spec, clinical["anchoring_extras"]),
+        "adjudication": _viral_set_a_adjudication(spec, clinical["anchoring_extras"]),
         "literature_anchors": [_build_literature_anchor(pmid_meta)],
-        "provenance": _viral_wave1_provenance(clinical["rationale"]),
+        "provenance": _viral_set_a_provenance(clinical["rationale"]),
         "narrative_es": clinical["narrative_es"],
         "narrative_en": clinical["narrative_en"],
     }
 
 
-def write_viral_wave1_vignette(
+def write_viral_set_a_vignette(
     vignette_id: int,
-    output_dir: Path = VIRAL_WAVE1_OUTPUT_DIR,
+    output_dir: Path = VIRAL_SET_A_OUTPUT_DIR,
 ) -> Path:
-    """Build, validate, and write one VIRAL Wave-1 vignette to disk."""
+    """Build, validate, and write one VIRAL set A vignette to disk."""
     spec = next(s for s in VIRAL_DISTRIBUTION if s["vignette_id"] == vignette_id)
-    vignette = generate_viral_wave1_vignette(vignette_id)
+    vignette = generate_viral_set_a_vignette(vignette_id)
     VignetteSchema.model_validate(vignette)
     output_dir.mkdir(parents=True, exist_ok=True)
     filepath = output_dir / spec["filename"]
@@ -20459,47 +20436,47 @@ def write_viral_wave1_vignette(
     return filepath
 
 
-def write_viral_wave1_corpus(
-    output_dir: Path = VIRAL_WAVE1_OUTPUT_DIR,
+def write_viral_set_a_corpus(
+    output_dir: Path = VIRAL_SET_A_OUTPUT_DIR,
 ) -> list[Path]:
-    """Build, validate, and write all 13 VIRAL Wave-1 vignettes."""
+    """Build, validate, and write all 13 VIRAL set A vignettes."""
     paths: list[Path] = []
-    for vid in VIRAL_WAVE1_IDS:
-        paths.append(write_viral_wave1_vignette(vid, output_dir=output_dir))
+    for vid in VIRAL_SET_A_IDS:
+        paths.append(write_viral_set_a_vignette(vid, output_dir=output_dir))
     return paths
 
 
 # ============================================================================
-# Wave 2 VIRAL vignette builders (n=14, FINAL)
+# VIRAL set B vignette builders (n=14)
 # ----------------------------------------------------------------------------
 # Slot IDs: 91, 93, 94, 95, 97, 98, 100, 101, 103, 104, 110, 112, 115, 116.
 # 9 anchored to Granerod 2010 Lancet Infect Dis (PMID 20952256, anchor_type=
 # cohort, prospective UK encephalitis cohort N=203) + 5 anchored to Whitley
-# 2006 Lancet Infect Dis (PMID 16675036, anchor_type=review, HSE pathogenesis).
+# 2006 Antiviral Res (PMID 16675036, anchor_type=review, HSE pathogenesis).
 # Pathogens: 8 HSV1 + 2 HSV_PCR_negative_72h (ambiguity) + 2 enterovirus + 2
 # VZV (zoster ophthalmicus immunocompromised + post-zoster encephalitis).
 # Diagnostic ambiguity: 2 of 14 (v103, v104 HSV-PCR-negative-72h with empiric
 # acyclovir continuation despite negative early PCR).
 # Peru-anchored: 0 of 14 (all NL or US South).
-# Architecture: extends Wave 5.3.5 viral helpers via reuse of altitude,
+# Architecture: extends the VIRAL set A helpers via reuse of altitude,
 # ethnicity, case_id (extended for HSV-PCR-neg + VZV pathogens), imaging_for
-# (extended), shared dx_test helpers; adds Wave 5.3.6 specific exposure
+# (extended), shared dx_test helpers; adds set B specific exposure
 # (v115 immunocompromise via malignancy_active), red_flags (v115
-# immunocompromise), adjudication (VIRAL-WAVE2-PRE-ADJ sentinels, commit
-# 5.3.6), provenance (commit 5.3.6), and pathogen-specific dx_tests for
-# HSV_PCR_negative_72h (PCR neg + EEG temporal lateralization) and VZV (PCR
-# + IgG/IgM serology). This commit closes BACT 30/30 + VIRAL 30/30 = 60/60.
+# immunocompromise), adjudication (PRE-ADJ sentinels), provenance, and
+# pathogen-specific dx_tests for HSV_PCR_negative_72h (PCR neg + EEG
+# temporal lateralization) and VZV (PCR + IgG/IgM serology). With set B,
+# the VIRAL class has 30/30 slots built.
 # ============================================================================
 
-VIRAL_WAVE2_OUTPUT_DIR = Path("data/vignettes/v2/class_03_viral")
-VIRAL_WAVE2_IDS: list[int] = [91, 93, 94, 95, 97, 98, 100, 101, 103, 104, 110, 112, 115, 116]
-VIRAL_WAVE2_AMBIGUITY_IDS: set[int] = {103, 104}
-VIRAL_WAVE2_GRANEROD_IDS: set[int] = {94, 97, 100, 103, 104, 110, 112, 115, 116}
-VIRAL_WAVE2_WHITLEY_IDS: set[int] = {91, 93, 95, 98, 101}
+VIRAL_SET_B_OUTPUT_DIR = Path("data/vignettes/v2/class_03_viral")
+VIRAL_SET_B_IDS: list[int] = [91, 93, 94, 95, 97, 98, 100, 101, 103, 104, 110, 112, 115, 116]
+VIRAL_SET_B_AMBIGUITY_IDS: set[int] = {103, 104}
+VIRAL_SET_B_GRANEROD_IDS: set[int] = {94, 97, 100, 103, 104, 110, 112, 115, 116}
+VIRAL_SET_B_WHITLEY_IDS: set[int] = {91, 93, 95, 98, 101}
 
 
-def _viral_wave2_exposure(spec: dict[str, Any]) -> dict[str, Any]:
-    """Wave 2 VIRAL exposure block. v115 zoster ophthalmicus immunocompromised
+def _viral_set_b_exposure(spec: dict[str, Any]) -> dict[str, Any]:
+    """VIRAL set B exposure block. v115 zoster ophthalmicus immunocompromised
     sets immunocompromise_status=malignancy_active; others use 'none'."""
     immune = "none"
     if spec["vignette_id"] == 115:
@@ -20516,18 +20493,18 @@ def _viral_wave2_exposure(spec: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def _viral_wave2_red_flags(spec: dict[str, Any]) -> list[str]:
-    """Wave 2 VIRAL red flags. v115 immunocompromised gets immunocompromise."""
+def _viral_set_b_red_flags(spec: dict[str, Any]) -> list[str]:
+    """VIRAL set B red flags. v115 immunocompromised gets immunocompromise."""
     if spec["vignette_id"] == 115:
         return ["immunocompromise"]
     return []
 
 
-def _viral_wave2_adjudication(
+def _viral_set_b_adjudication(
     spec: dict[str, Any], anchoring_extras: str
 ) -> dict[str, Any]:
-    """Wave 2 VIRAL pre-adjudication block. Sentinel adjudicators
-    VIRAL-WAVE2-PRE-ADJ-1/2 distinguish wave 5.3.6 from wave 5.3.5 + pilot.
+    """VIRAL set B pre-adjudication block. Sentinel adjudicators
+    PRE-ADJ-1/2, the same IDs as VIRAL set A.
     Embeds verbatim self_review_disposition=hold_for_revision.
     """
     pmid = spec["pmid"]
@@ -20536,22 +20513,22 @@ def _viral_wave2_adjudication(
     elif pmid == "16675036":
         anchor_short = "Whitley 2006 Lancet ID HSE pathogenesis review"
     else:
-        raise KeyError(f"Wave 5.3.6 unexpected anchor PMID {pmid!r}")
+        raise KeyError(f"Unexpected viral anchor PMID {pmid!r}")
     base = (
         f"stage=pre_adjudication; status=pending_external_review; "
         f"self_review_disposition=hold_for_revision; "
-        f"self_review_notes=wave 5.3.6 VIRAL vignette anchored to PMID {pmid} "
+        f"self_review_notes=VIRAL vignette anchored to PMID {pmid} "
         f"({anchor_short}); external clinical adjudication pending; "
         f"classification provisional. "
-        f"adjudicator_ids=VIRAL-WAVE2-PRE-ADJ-1, VIRAL-WAVE2-PRE-ADJ-2 (sentinel); "
+        f"adjudicator_ids=PRE-ADJ-1, PRE-ADJ-2 (sentinel); "
         f"cohen_kappa=0.0 placeholder; adjudicator_name=null; "
         f"adjudication_date=null; post_adjudication_disposition=null. "
-        f"Subphase 1.3 commit 5.3.6 (2026-05-08, FINAL Subphase 1.3 wave)."
+        "Generated 2026-05-08."
     )
     if anchoring_extras:
         base = base + " " + anchoring_extras
     return {
-        "adjudicator_ids": ["VIRAL-WAVE2-PRE-ADJ-1", "VIRAL-WAVE2-PRE-ADJ-2"],
+        "adjudicator_ids": ["PRE-ADJ-1", "PRE-ADJ-2"],
         "cohen_kappa": 0.0,
         "disagreement_resolution": None,
         "anchoring_documentation": base,
@@ -20559,13 +20536,13 @@ def _viral_wave2_adjudication(
     }
 
 
-def _viral_wave2_provenance(rationale: str) -> dict[str, Any]:
+def _viral_set_b_provenance(rationale: str) -> dict[str, Any]:
     if len(rationale) > 1000:
         rationale = rationale[:997] + "..."
     return {
         "generation_timestamp_utc": "2026-05-08T21:00:00Z",
         "generator_model_identifier": (
-            "scripts.generate_pam_vignettes/v1.subphase_1_3_commit_5_3_6"
+            "scripts.generate_pam_vignettes/v1"
         ),
         "prompt_hash_sha256": "0" * 64,
         "schema_version": "2.0",
@@ -20573,7 +20550,7 @@ def _viral_wave2_provenance(rationale: str) -> dict[str, Any]:
     }
 
 
-def _viral_wave2_dx_tests_hsv_pcr_negative_72h(pmid: str) -> list[dict[str, Any]]:
+def _viral_set_b_dx_tests_hsv_pcr_negative_72h(pmid: str) -> list[dict[str, Any]]:
     """HSV1 PCR negative at 72h with empiric acyclovir continuation + EEG
     temporal lateralization supporting clinical HSE phenotype."""
     cit = f"PMID:{pmid}"
@@ -20616,7 +20593,7 @@ def _viral_wave2_dx_tests_hsv_pcr_negative_72h(pmid: str) -> list[dict[str, Any]
     ]
 
 
-def _viral_wave2_dx_tests_vzv(pmid: str) -> list[dict[str, Any]]:
+def _viral_set_b_dx_tests_vzv(pmid: str) -> list[dict[str, Any]]:
     """VZV PCR + serology + Tzanck smear of dermatomal vesicle."""
     cit = f"PMID:{pmid}"
     return [
@@ -20659,7 +20636,7 @@ def _viral_wave2_dx_tests_vzv(pmid: str) -> list[dict[str, Any]]:
 
 
 # ----------------------------------------------------------------------------
-# Wave 2 VIRAL per-slot clinical builders.
+# VIRAL set B per-slot clinical builders.
 # ----------------------------------------------------------------------------
 
 
@@ -20728,8 +20705,8 @@ def _build_viral_vignette_091() -> dict[str, Any]:
             "tertiary pediatric emergency department with a 6-day course: "
             "low-grade fever to 38.4 C, headache, progressive behavioral "
             "change on day 3, expressive aphasia on day 4, complex "
-            "partial seizures on day 5, and obtundation on day 6. She "
-            "had no neck stiffness on examination and no antecedent "
+            "partial seizures on day 5, and obtundation on day 6. She had "
+            "no neck stiffness on examination and no antecedent "
             "freshwater exposure. Examination on admission: temperature "
             "38.4 C, Glasgow Coma Scale 9, focal deficit (expressive "
             "aphasia), no rash. CSF showed opening pressure 24 cmH2O, "
@@ -20738,10 +20715,10 @@ def _build_viral_vignette_091() -> dict[str, Any]:
             "with xanthochromia (canonical hemorrhagic component). CSF "
             "HSV-1 PCR positive. Brain MRI with DWI/FLAIR showed mesial "
             "temporal T2/FLAIR hyperintensity asymmetric. Acyclovir "
-            "initiated within four hours. Anchored to Whitley 2006 "
-            "Lancet Infect Dis HSE pathogenesis review (PMID 16675036). "
-            "Outcome: survived with moderate cognitive sequelae. Subphase "
-            "1.3 commit 5.3.6 wave 2, pre-adjudication hold_for_revision."
+            "initiated within four hours. Anchored to Whitley 2006 Lancet "
+            "Infect Dis HSE pathogenesis review (PMID 16675036). Outcome: "
+            "survived with moderate cognitive sequelae. Pre-adjudication "
+            "status: hold_for_revision."
         ),
         "narrative_es": (
             "Nina de 8 anos en region sur de Estados Unidos, ingresada a "
@@ -20757,8 +20734,8 @@ def _build_viral_vignette_091() -> dict[str, Any]:
             "mg/dL, eritrocitos 38 con xantocromia. PCR de HSV-1 positiva. "
             "RM cerebral con hiperintensidad temporal mesial T2/FLAIR. "
             "Aciclovir en cuatro horas. Anclaje en revision Whitley 2006 "
-            "Lancet ID HSE (PMID 16675036). Subphase 1.3 commit 5.3.6 "
-            "wave 2, pre-adjudicacion hold_for_revision."
+            "Lancet ID HSE (PMID 16675036). Estado previo a la "
+            "adjudicacion: hold_for_revision."
         ),
         "rationale": (
             "Anchored to PMID 16675036 (Whitley 2006 Lancet ID HSE "
@@ -20769,16 +20746,17 @@ def _build_viral_vignette_091() -> dict[str, Any]:
             "lymphocytic with hemorrhagic component (RBC 38, "
             "xanthochromia). MRI mesial temporal pattern. Imputation "
             "tiers: tier_1_primary={age, sex, hsv1_pcr, imaging_pattern, "
-            "focal_aphasia, behavioral_change}; tier_3_within_review="
-            "{csf_wbc, neutrophil_pct, glucose, protein, rbc, "
-            "xanthochromia, gcs}; tier_4_priors={temp, symptom_days}. "
-            "Indeterminate=none. Diagnostic_ambiguity=false. Outcome="
-            "survived_moderate_cognitive_sequelae. Acyclovir_hours=4. "
-            "Tier: tier_3_imputation_within_review. 5.3.6 wave2 HSV1-"
-            "Whitley-pediatric-sequelae."
+            "focal_aphasia, behavioral_change}; "
+            "tier_3_within_review={csf_wbc, neutrophil_pct, glucose, "
+            "protein, rbc, xanthochromia, gcs}; tier_4_priors={temp, "
+            "symptom_days}. Indeterminate=none. "
+            "Diagnostic_ambiguity=false. "
+            "Outcome=survived_moderate_cognitive_sequelae. "
+            "Acyclovir_hours=4. Tier: tier_3_imputation_within_review. "
+            "Stratum: HSV1-Whitley-pediatric-sequelae."
         ),
         "anchoring_extras": "anchor=Whitley-Lancet-ID-2006 stratum=pediatric-HSE-sequelae.",
-        "diagnostic_tests": _viral_wave1_dx_tests_hsv1_pcr("16675036"),
+        "diagnostic_tests": _viral_set_a_dx_tests_hsv1_pcr("16675036"),
     }
 
 
@@ -20860,8 +20838,8 @@ def _build_viral_vignette_093() -> dict[str, Any]:
             "(delayed by atypical presentation). Anchored to Whitley "
             "2006 Lancet Infect Dis HSE pathogenesis review (PMID "
             "16675036). Outcome: fatal hospital day 5 per Whitley HSE "
-            "elderly-mortality data. Subphase 1.3 commit 5.3.6 wave 2, "
-            "pre-adjudication hold_for_revision."
+            "elderly-mortality data. Pre-adjudication status: "
+            "hold_for_revision."
         ),
         "narrative_es": (
             "Mujer de 67 anos en Paises Bajos (Amsterdam), ingresada a "
@@ -20878,7 +20856,7 @@ def _build_viral_vignette_093() -> dict[str, Any]:
             "hiperintensidad temporal mesial T2/FLAIR bilateral. "
             "Aciclovir en hora 12 (retraso por presentacion atipica). "
             "Anclaje en revision Whitley 2006 Lancet ID HSE (PMID "
-            "16675036). Subphase 1.3 commit 5.3.6 wave 2."
+            "16675036)."
         ),
         "rationale": (
             "Anchored to PMID 16675036 (Whitley 2006 Lancet ID HSE "
@@ -20886,19 +20864,19 @@ def _build_viral_vignette_093() -> dict[str, Any]:
             "fatal outcome per Whitley elderly-mortality stratum. "
             "Demographic anchor (67yo F NL elderly HSE delayed-treatment) "
             "sits in elderly-fatal-HSE stratum. CSF lymphocytic with "
-            "prominent hemorrhagic component (RBC 50, xanthochromia). "
-            "MRI bilateral mesial temporal. Imputation tiers: tier_1_"
-            "primary={age, sex, hsv1_pcr, imaging_pattern, focal_aphasia, "
-            "delayed_acyclovir}; tier_3_within_review={csf_wbc, "
-            "neutrophil_pct, glucose, protein, rbc, xanthochromia, gcs}; "
-            "tier_4_priors={temp, symptom_days, hyponatremia}. "
-            "Indeterminate=none. Diagnostic_ambiguity=false. Outcome="
-            "fatal_hospital_day_5. Acyclovir_hours=12. Tier: tier_3_"
-            "imputation_within_review. 5.3.6 wave2 HSV1-Whitley-elderly-"
-            "fatal."
+            "prominent hemorrhagic component (RBC 50, xanthochromia). MRI "
+            "bilateral mesial temporal. Imputation tiers: "
+            "tier_1_primary={age, sex, hsv1_pcr, imaging_pattern, "
+            "focal_aphasia, delayed_acyclovir}; "
+            "tier_3_within_review={csf_wbc, neutrophil_pct, glucose, "
+            "protein, rbc, xanthochromia, gcs}; tier_4_priors={temp, "
+            "symptom_days, hyponatremia}. Indeterminate=none. "
+            "Diagnostic_ambiguity=false. Outcome=fatal_hospital_day_5. "
+            "Acyclovir_hours=12. Tier: tier_3_imputation_within_review. "
+            "Stratum: HSV1-Whitley-elderly-fatal."
         ),
         "anchoring_extras": "anchor=Whitley-Lancet-ID-2006 stratum=elderly-fatal-delayed-treatment.",
-        "diagnostic_tests": _viral_wave1_dx_tests_hsv1_pcr("16675036"),
+        "diagnostic_tests": _viral_set_a_dx_tests_hsv1_pcr("16675036"),
     }
 
 
@@ -20964,23 +20942,22 @@ def _build_viral_vignette_094() -> dict[str, Any]:
         "narrative_en": (
             "A 23-year-old woman in the Netherlands presented to a "
             "tertiary emergency department in Amsterdam with a 4-day "
-            "course: fever to 38.6 C, severe headache, behavioral "
-            "change on day 2, expressive aphasia on day 3, and a focal "
-            "seizure on day 4 prompting ED presentation. She had no "
-            "neck stiffness and no antecedent freshwater exposure. "
+            "course: fever to 38.6 C, severe headache, behavioral change "
+            "on day 2, expressive aphasia on day 3, and a focal seizure "
+            "on day 4 prompting ED presentation. She had no neck "
+            "stiffness and no antecedent freshwater exposure. "
             "Examination on admission: temperature 38.6 C, Glasgow Coma "
-            "Scale 12, focal deficit (expressive aphasia), no rash. "
-            "CSF showed opening pressure 22 cmH2O, white cell count "
-            "200 per cubic millimeter (78 percent lymphocytes), glucose "
-            "56 mg/dL, protein 110 mg/dL, RBC 30 with xanthochromia. "
-            "CSF HSV-1 PCR positive. Brain MRI with DWI/FLAIR showed "
-            "mesial temporal T2/FLAIR hyperintensity asymmetric. "
-            "Acyclovir initiated within four hours. Anchored to "
-            "Granerod 2010 Lancet Infect Dis prospective UK encephalitis "
-            "cohort (PMID 20952256, N=203 with 42 percent infectious "
-            "encephalitis cause-attribution). Outcome: survived with "
-            "mild memory deficit. Subphase 1.3 commit 5.3.6 wave 2, "
-            "pre-adjudication hold_for_revision."
+            "Scale 12, focal deficit (expressive aphasia), no rash. CSF "
+            "showed opening pressure 22 cmH2O, white cell count 200 per "
+            "cubic millimeter (78 percent lymphocytes), glucose 56 "
+            "mg/dL, protein 110 mg/dL, RBC 30 with xanthochromia. CSF "
+            "HSV-1 PCR positive. Brain MRI with DWI/FLAIR showed mesial "
+            "temporal T2/FLAIR hyperintensity asymmetric. Acyclovir "
+            "initiated within four hours. Anchored to Granerod 2010 "
+            "Lancet Infect Dis prospective UK encephalitis cohort (PMID "
+            "20952256, N=203 with 42 percent infectious encephalitis "
+            "cause-attribution). Outcome: survived with mild memory "
+            "deficit. Pre-adjudication status: hold_for_revision."
         ),
         "narrative_es": (
             "Mujer de 23 anos en Paises Bajos (Amsterdam), ingresada a "
@@ -20996,26 +20973,27 @@ def _build_viral_vignette_094() -> dict[str, Any]:
             "positiva. RM cerebral con hiperintensidad temporal mesial "
             "T2/FLAIR. Aciclovir en cuatro horas. Anclaje en cohorte "
             "prospectiva Granerod 2010 Lancet ID encefalitis Reino Unido "
-            "(PMID 20952256). Subphase 1.3 commit 5.3.6 wave 2."
+            "(PMID 20952256)."
         ),
         "rationale": (
             "Anchored to PMID 20952256 (Granerod 2010 Lancet Infect Dis), "
-            "203-patient prospective UK encephalitis cohort with HSV1 "
-            "as the most common identified cause (19 percent of cohort). "
+            "203-patient prospective UK encephalitis cohort with HSV1 as "
+            "the most common identified cause (19 percent of cohort). "
             "Demographic anchor (23yo F NL young-adult HSE) sits in "
             "Granerod young-adult-HSE stratum. CSF lymphocytic with "
             "hemorrhagic component. MRI mesial temporal pattern. "
             "Imputation tiers: tier_1_primary={age, sex, hsv1_pcr, "
-            "imaging_pattern, focal_aphasia}; tier_3_within_review="
-            "{csf_wbc, neutrophil_pct, glucose, protein, rbc, "
-            "xanthochromia, gcs}; tier_4_priors={temp, symptom_days}. "
-            "Indeterminate=none. Diagnostic_ambiguity=false. Outcome="
-            "survived_mild_memory_deficit. Acyclovir_hours=4. Tier: "
-            "tier_3_imputation_within_review. 5.3.6 wave2 HSV1-Granerod-"
-            "young-adult."
+            "imaging_pattern, focal_aphasia}; "
+            "tier_3_within_review={csf_wbc, neutrophil_pct, glucose, "
+            "protein, rbc, xanthochromia, gcs}; tier_4_priors={temp, "
+            "symptom_days}. Indeterminate=none. "
+            "Diagnostic_ambiguity=false. "
+            "Outcome=survived_mild_memory_deficit. Acyclovir_hours=4. "
+            "Tier: tier_3_imputation_within_review. Stratum: "
+            "HSV1-Granerod-young-adult."
         ),
         "anchoring_extras": "anchor=Granerod-Lancet-ID-2010 stratum=young-adult-HSE.",
-        "diagnostic_tests": _viral_wave1_dx_tests_hsv1_pcr("20952256"),
+        "diagnostic_tests": _viral_set_a_dx_tests_hsv1_pcr("20952256"),
     }
 
 
@@ -21090,15 +21068,14 @@ def _build_viral_vignette_095() -> dict[str, Any]:
             "38.5 C, Glasgow Coma Scale 12, focal deficit (anomic "
             "aphasia), no rash. CSF showed opening pressure 22 cmH2O, "
             "white cell count 195 per cubic millimeter (78 percent "
-            "lymphocytes), glucose 55 mg/dL, protein 105 mg/dL, RBC "
-            "28 with xanthochromia. CSF HSV-1 PCR positive. Brain MRI "
-            "with DWI/FLAIR showed mesial temporal T2/FLAIR "
-            "hyperintensity asymmetric. Acyclovir initiated within "
-            "five hours. Anchored to Whitley 2006 Lancet Infect Dis "
-            "HSE pathogenesis review (PMID 16675036), adolescent-HSE "
+            "lymphocytes), glucose 55 mg/dL, protein 105 mg/dL, RBC 28 "
+            "with xanthochromia. CSF HSV-1 PCR positive. Brain MRI with "
+            "DWI/FLAIR showed mesial temporal T2/FLAIR hyperintensity "
+            "asymmetric. Acyclovir initiated within five hours. "
+            "Anchored to Whitley 2006 Lancet Infect Dis HSE "
+            "pathogenesis review (PMID 16675036), adolescent-HSE "
             "stratum. Outcome: survived with mild memory deficit. "
-            "Subphase 1.3 commit 5.3.6 wave 2, pre-adjudication "
-            "hold_for_revision."
+            "Pre-adjudication status: hold_for_revision."
         ),
         "narrative_es": (
             "Varon de 14 anos en region sur de Estados Unidos, ingresado "
@@ -21109,31 +21086,31 @@ def _build_viral_vignette_095() -> dict[str, Any]:
             "rigidez de nuca. Sin exposicion a agua dulce. Examen: "
             "temperatura 38.5 C, escala de Glasgow 12, deficit focal "
             "(afasia anomica), sin exantema. Liquido cefalorraquideo "
-            "mostro presion de apertura 22 cmH2O, leucocitos 195 por "
-            "mm3 (78 por ciento linfocitos), glucosa 55 mg/dL, proteina "
-            "105 mg/dL, eritrocitos 28 con xantocromia. PCR de HSV-1 "
+            "mostro presion de apertura 22 cmH2O, leucocitos 195 por mm3 "
+            "(78 por ciento linfocitos), glucosa 55 mg/dL, proteina 105 "
+            "mg/dL, eritrocitos 28 con xantocromia. PCR de HSV-1 "
             "positiva. RM cerebral con hiperintensidad temporal mesial "
             "T2/FLAIR. Aciclovir en cinco horas. Anclaje en revision "
-            "Whitley 2006 Lancet ID HSE (PMID 16675036). Subphase 1.3 "
-            "commit 5.3.6 wave 2."
+            "Whitley 2006 Lancet ID HSE (PMID 16675036)."
         ),
         "rationale": (
             "Anchored to PMID 16675036 (Whitley 2006 Lancet ID HSE "
             "pathogenesis review). Adolescent HSE phenotype with classic "
-            "limbic-frontal pattern. Demographic anchor (14yo M US "
-            "South adolescent HSE) sits in Whitley adolescent-HSE "
-            "stratum. CSF lymphocytic with hemorrhagic component. MRI "
-            "mesial temporal. Imputation tiers: tier_1_primary={age, "
-            "sex, hsv1_pcr, imaging_pattern, focal_aphasia, behavioral_"
-            "change}; tier_3_within_review={csf_wbc, neutrophil_pct, "
-            "glucose, protein, rbc, xanthochromia, gcs}; tier_4_priors="
-            "{temp, symptom_days}. Indeterminate=none. Diagnostic_"
-            "ambiguity=false. Outcome=survived_mild_memory_deficit. "
-            "Acyclovir_hours=5. Tier: tier_3_imputation_within_review. "
-            "5.3.6 wave2 HSV1-Whitley-adolescent."
+            "limbic-frontal pattern. Demographic anchor (14yo M US South "
+            "adolescent HSE) sits in Whitley adolescent-HSE stratum. CSF "
+            "lymphocytic with hemorrhagic component. MRI mesial "
+            "temporal. Imputation tiers: tier_1_primary={age, sex, "
+            "hsv1_pcr, imaging_pattern, focal_aphasia, "
+            "behavioral_change}; tier_3_within_review={csf_wbc, "
+            "neutrophil_pct, glucose, protein, rbc, xanthochromia, gcs}; "
+            "tier_4_priors={temp, symptom_days}. Indeterminate=none. "
+            "Diagnostic_ambiguity=false. "
+            "Outcome=survived_mild_memory_deficit. Acyclovir_hours=5. "
+            "Tier: tier_3_imputation_within_review. Stratum: "
+            "HSV1-Whitley-adolescent."
         ),
         "anchoring_extras": "anchor=Whitley-Lancet-ID-2006 stratum=adolescent-HSE.",
-        "diagnostic_tests": _viral_wave1_dx_tests_hsv1_pcr("16675036"),
+        "diagnostic_tests": _viral_set_a_dx_tests_hsv1_pcr("16675036"),
     }
 
 
@@ -21201,22 +21178,22 @@ def _build_viral_vignette_097() -> dict[str, Any]:
             "A 78-year-old man in the Netherlands presented to a "
             "tertiary emergency department in Amsterdam after a 6-day "
             "course: low-grade fever to 38.2 C, headache, behavioral "
-            "change on day 2, anomic aphasia on day 3, focal seizures "
-            "on day 4, obtundation on day 5, and coma on day 6. He "
-            "had no neck stiffness and no antecedent freshwater "
-            "exposure. Examination on admission: temperature 38.2 C, "
-            "Glasgow Coma Scale 6, comatose, focal deficit (anomic "
-            "aphasia residual + right-sided posturing), no rash. CSF "
-            "showed opening pressure 28 cmH2O, white cell count 320 "
-            "per cubic millimeter (70 percent lymphocytes), glucose 48 "
-            "mg/dL, protein 160 mg/dL, RBC 60 with xanthochromia "
-            "(prominent hemorrhagic component). CSF HSV-1 PCR positive. "
-            "Brain MRI with DWI/FLAIR showed mesial temporal T2/FLAIR "
+            "change on day 2, anomic aphasia on day 3, focal seizures on "
+            "day 4, obtundation on day 5, and coma on day 6. He had no "
+            "neck stiffness and no antecedent freshwater exposure. "
+            "Examination on admission: temperature 38.2 C, Glasgow Coma "
+            "Scale 6, comatose, focal deficit (anomic aphasia residual + "
+            "right-sided posturing), no rash. CSF showed opening "
+            "pressure 28 cmH2O, white cell count 320 per cubic "
+            "millimeter (70 percent lymphocytes), glucose 48 mg/dL, "
+            "protein 160 mg/dL, RBC 60 with xanthochromia (prominent "
+            "hemorrhagic component). CSF HSV-1 PCR positive. Brain MRI "
+            "with DWI/FLAIR showed mesial temporal T2/FLAIR "
             "hyperintensity bilateral. Acyclovir initiated at hour 8 "
             "(delayed). Anchored to Granerod 2010 Lancet Infect Dis UK "
             "encephalitis cohort (PMID 20952256), elderly-HSE-mortality "
-            "stratum. Outcome: fatal hospital day 4. Subphase 1.3 commit "
-            "5.3.6 wave 2, pre-adjudication hold_for_revision."
+            "stratum. Outcome: fatal hospital day 4. Pre-adjudication "
+            "status: hold_for_revision."
         ),
         "narrative_es": (
             "Varon de 78 anos en Paises Bajos (Amsterdam), ingresado a "
@@ -21229,12 +21206,11 @@ def _build_viral_vignette_097() -> dict[str, Any]:
             "exantema. Liquido cefalorraquideo mostro presion de "
             "apertura 28 cmH2O, leucocitos 320 por mm3 (70 por ciento "
             "linfocitos), glucosa 48 mg/dL, proteina 160 mg/dL, "
-            "eritrocitos 60 con xantocromia. PCR de HSV-1 positiva. "
-            "RM cerebral con hiperintensidad temporal mesial T2/FLAIR "
+            "eritrocitos 60 con xantocromia. PCR de HSV-1 positiva. RM "
+            "cerebral con hiperintensidad temporal mesial T2/FLAIR "
             "bilateral. Aciclovir en hora 8 (retraso). Anclaje en "
             "cohorte Granerod 2010 Lancet ID (PMID 20952256), estrato "
-            "HSE adulto mayor. Resultado: fatal en hospital dia 4. "
-            "Subphase 1.3 commit 5.3.6 wave 2."
+            "HSE adulto mayor. Resultado: fatal en hospital dia 4."
         ),
         "rationale": (
             "Anchored to PMID 20952256 (Granerod 2010 Lancet ID UK "
@@ -21242,18 +21218,18 @@ def _build_viral_vignette_097() -> dict[str, Any]:
             "fatal outcome. Demographic anchor (78yo M NL elderly HSE "
             "delayed-treatment) sits in elderly-fatal-HSE stratum. CSF "
             "lymphocytic with prominent hemorrhagic component. MRI "
-            "bilateral mesial temporal. Imputation tiers: tier_1_"
-            "primary={age, sex, hsv1_pcr, imaging_pattern, focal_aphasia, "
-            "delayed_acyclovir}; tier_3_within_review={csf_wbc, "
-            "neutrophil_pct, glucose, protein, rbc, xanthochromia, gcs, "
-            "hyponatremia}; tier_4_priors={temp, symptom_days}. "
-            "Indeterminate=none. Diagnostic_ambiguity=false. Outcome="
-            "fatal_hospital_day_4. Acyclovir_hours=8. Tier: tier_3_"
-            "imputation_within_review. 5.3.6 wave2 HSV1-Granerod-elderly-"
-            "fatal."
+            "bilateral mesial temporal. Imputation tiers: "
+            "tier_1_primary={age, sex, hsv1_pcr, imaging_pattern, "
+            "focal_aphasia, delayed_acyclovir}; "
+            "tier_3_within_review={csf_wbc, neutrophil_pct, glucose, "
+            "protein, rbc, xanthochromia, gcs, hyponatremia}; "
+            "tier_4_priors={temp, symptom_days}. Indeterminate=none. "
+            "Diagnostic_ambiguity=false. Outcome=fatal_hospital_day_4. "
+            "Acyclovir_hours=8. Tier: tier_3_imputation_within_review. "
+            "Stratum: HSV1-Granerod-elderly-fatal."
         ),
         "anchoring_extras": "anchor=Granerod-Lancet-ID-2010 stratum=elderly-fatal-HSE.",
-        "diagnostic_tests": _viral_wave1_dx_tests_hsv1_pcr("20952256"),
+        "diagnostic_tests": _viral_set_a_dx_tests_hsv1_pcr("20952256"),
     }
 
 
@@ -21324,17 +21300,17 @@ def _build_viral_vignette_098() -> dict[str, Any]:
             "and a complex partial seizure on day 4. She had no neck "
             "stiffness and no antecedent freshwater exposure. "
             "Examination on admission: temperature 38.6 C, Glasgow Coma "
-            "Scale 12, focal deficit (expressive aphasia), no rash. "
-            "CSF showed opening pressure 22 cmH2O, white cell count "
-            "210 per cubic millimeter (78 percent lymphocytes), glucose "
-            "56 mg/dL, protein 105 mg/dL, RBC 30 with xanthochromia. "
-            "CSF HSV-1 PCR positive. Brain MRI with DWI/FLAIR showed "
-            "mesial temporal T2/FLAIR hyperintensity asymmetric. "
-            "Acyclovir initiated within four hours. Anchored to Whitley "
-            "2006 Lancet Infect Dis HSE pathogenesis review (PMID "
-            "16675036), pediatric-HSE stratum. Outcome: survived with "
-            "mild cognitive sequelae. Subphase 1.3 commit 5.3.6 wave 2, "
-            "pre-adjudication hold_for_revision."
+            "Scale 12, focal deficit (expressive aphasia), no rash. CSF "
+            "showed opening pressure 22 cmH2O, white cell count 210 per "
+            "cubic millimeter (78 percent lymphocytes), glucose 56 "
+            "mg/dL, protein 105 mg/dL, RBC 30 with xanthochromia. CSF "
+            "HSV-1 PCR positive. Brain MRI with DWI/FLAIR showed mesial "
+            "temporal T2/FLAIR hyperintensity asymmetric. Acyclovir "
+            "initiated within four hours. Anchored to Whitley 2006 "
+            "Lancet Infect Dis HSE pathogenesis review (PMID 16675036), "
+            "pediatric-HSE stratum. Outcome: survived with mild "
+            "cognitive sequelae. Pre-adjudication status: "
+            "hold_for_revision."
         ),
         "narrative_es": (
             "Nina de 9 anos en region sur de Estados Unidos, ingresada "
@@ -21350,8 +21326,8 @@ def _build_viral_vignette_098() -> dict[str, Any]:
             "eritrocitos 30 con xantocromia. PCR de HSV-1 positiva. RM "
             "cerebral con hiperintensidad temporal mesial T2/FLAIR. "
             "Aciclovir en cuatro horas. Anclaje en revision Whitley "
-            "2006 Lancet ID HSE (PMID 16675036). Subphase 1.3 commit "
-            "5.3.6 wave 2, pre-adjudicacion hold_for_revision."
+            "2006 Lancet ID HSE (PMID 16675036). Estado previo a la "
+            "adjudicacion: hold_for_revision."
         ),
         "rationale": (
             "Anchored to PMID 16675036 (Whitley 2006 Lancet ID HSE "
@@ -21360,16 +21336,17 @@ def _build_viral_vignette_098() -> dict[str, Any]:
             "HSE) sits in Whitley pediatric-HSE stratum. CSF "
             "lymphocytic with hemorrhagic component. MRI mesial "
             "temporal. Imputation tiers: tier_1_primary={age, sex, "
-            "hsv1_pcr, imaging_pattern, focal_aphasia, behavioral_"
-            "change}; tier_3_within_review={csf_wbc, neutrophil_pct, "
-            "glucose, protein, rbc, xanthochromia, gcs}; tier_4_priors"
-            "={temp, symptom_days, hr}. Indeterminate=none. Diagnostic_"
-            "ambiguity=false. Outcome=survived_mild_cognitive_sequelae. "
+            "hsv1_pcr, imaging_pattern, focal_aphasia, "
+            "behavioral_change}; tier_3_within_review={csf_wbc, "
+            "neutrophil_pct, glucose, protein, rbc, xanthochromia, "
+            "gcs}; tier_4_priors={temp, symptom_days, hr}. "
+            "Indeterminate=none. Diagnostic_ambiguity=false. "
+            "Outcome=survived_mild_cognitive_sequelae. "
             "Acyclovir_hours=4. Tier: tier_3_imputation_within_review. "
-            "5.3.6 wave2 HSV1-Whitley-pediatric."
+            "Stratum: HSV1-Whitley-pediatric."
         ),
         "anchoring_extras": "anchor=Whitley-Lancet-ID-2006 stratum=pediatric-HSE.",
-        "diagnostic_tests": _viral_wave1_dx_tests_hsv1_pcr("16675036"),
+        "diagnostic_tests": _viral_set_a_dx_tests_hsv1_pcr("16675036"),
     }
 
 
@@ -21450,8 +21427,7 @@ def _build_viral_vignette_100() -> dict[str, Any]:
             "asymmetric. Acyclovir initiated within six hours. Anchored "
             "to Granerod 2010 Lancet Infect Dis UK encephalitis cohort "
             "(PMID 20952256). Outcome: survived with mild memory "
-            "deficit. Subphase 1.3 commit 5.3.6 wave 2, pre-adjudication "
-            "hold_for_revision."
+            "deficit. Pre-adjudication status: hold_for_revision."
         ),
         "narrative_es": (
             "Mujer de 60 anos en Paises Bajos (Amsterdam), ingresada a "
@@ -21467,7 +21443,7 @@ def _build_viral_vignette_100() -> dict[str, Any]:
             "xantocromia. PCR de HSV-1 positiva. RM cerebral con "
             "hiperintensidad temporal mesial T2/FLAIR. Aciclovir en "
             "seis horas. Anclaje en cohorte Granerod 2010 Lancet ID "
-            "(PMID 20952256). Subphase 1.3 commit 5.3.6 wave 2."
+            "(PMID 20952256)."
         ),
         "rationale": (
             "Anchored to PMID 20952256 (Granerod 2010 Lancet ID UK "
@@ -21476,16 +21452,17 @@ def _build_viral_vignette_100() -> dict[str, Any]:
             "Granerod older-adult-HSE stratum. CSF lymphocytic with "
             "hemorrhagic component. MRI mesial temporal. Imputation "
             "tiers: tier_1_primary={age, sex, hsv1_pcr, imaging_pattern, "
-            "focal_aphasia, behavioral_change}; tier_3_within_review="
-            "{csf_wbc, neutrophil_pct, glucose, protein, rbc, "
-            "xanthochromia, gcs}; tier_4_priors={temp, symptom_days}. "
-            "Indeterminate=none. Diagnostic_ambiguity=false. Outcome="
-            "survived_mild_memory_deficit. Acyclovir_hours=6. Tier: "
-            "tier_3_imputation_within_review. 5.3.6 wave2 HSV1-Granerod-"
-            "older-adult-female."
+            "focal_aphasia, behavioral_change}; "
+            "tier_3_within_review={csf_wbc, neutrophil_pct, glucose, "
+            "protein, rbc, xanthochromia, gcs}; tier_4_priors={temp, "
+            "symptom_days}. Indeterminate=none. "
+            "Diagnostic_ambiguity=false. "
+            "Outcome=survived_mild_memory_deficit. Acyclovir_hours=6. "
+            "Tier: tier_3_imputation_within_review. Stratum: "
+            "HSV1-Granerod-older-adult-female."
         ),
         "anchoring_extras": "anchor=Granerod-Lancet-ID-2010 stratum=older-adult-HSE.",
-        "diagnostic_tests": _viral_wave1_dx_tests_hsv1_pcr("20952256"),
+        "diagnostic_tests": _viral_set_a_dx_tests_hsv1_pcr("20952256"),
     }
 
 
@@ -21565,8 +21542,8 @@ def _build_viral_vignette_101() -> dict[str, Any]:
             "initiated within four hours. Anchored to Whitley 2006 "
             "Lancet Infect Dis HSE pathogenesis review (PMID 16675036), "
             "older-adolescent-HSE stratum. Outcome: survived with mild "
-            "memory deficit. Subphase 1.3 commit 5.3.6 wave 2, "
-            "pre-adjudication hold_for_revision."
+            "memory deficit. Pre-adjudication status: "
+            "hold_for_revision."
         ),
         "narrative_es": (
             "Varon de 17 anos en region sur de Estados Unidos, "
@@ -21582,8 +21559,8 @@ def _build_viral_vignette_101() -> dict[str, Any]:
             "mg/dL, eritrocitos 30 con xantocromia. PCR de HSV-1 "
             "positiva. RM cerebral con hiperintensidad temporal mesial "
             "T2/FLAIR. Aciclovir en cuatro horas. Anclaje en revision "
-            "Whitley 2006 Lancet ID HSE (PMID 16675036). Subphase 1.3 "
-            "commit 5.3.6 wave 2, pre-adjudicacion hold_for_revision."
+            "Whitley 2006 Lancet ID HSE (PMID 16675036). Estado previo "
+            "a la adjudicacion: hold_for_revision."
         ),
         "rationale": (
             "Anchored to PMID 16675036 (Whitley 2006 Lancet ID HSE "
@@ -21592,16 +21569,17 @@ def _build_viral_vignette_101() -> dict[str, Any]:
             "sits in Whitley adolescent-HSE stratum. CSF lymphocytic "
             "with hemorrhagic component. MRI mesial temporal. Imputation "
             "tiers: tier_1_primary={age, sex, hsv1_pcr, imaging_pattern, "
-            "focal_aphasia, behavioral_change}; tier_3_within_review="
-            "{csf_wbc, neutrophil_pct, glucose, protein, rbc, "
-            "xanthochromia, gcs}; tier_4_priors={temp, symptom_days}. "
-            "Indeterminate=none. Diagnostic_ambiguity=false. Outcome="
-            "survived_mild_memory_deficit. Acyclovir_hours=4. Tier: "
-            "tier_3_imputation_within_review. 5.3.6 wave2 HSV1-Whitley-"
-            "older-adolescent."
+            "focal_aphasia, behavioral_change}; "
+            "tier_3_within_review={csf_wbc, neutrophil_pct, glucose, "
+            "protein, rbc, xanthochromia, gcs}; tier_4_priors={temp, "
+            "symptom_days}. Indeterminate=none. "
+            "Diagnostic_ambiguity=false. "
+            "Outcome=survived_mild_memory_deficit. Acyclovir_hours=4. "
+            "Tier: tier_3_imputation_within_review. Stratum: "
+            "HSV1-Whitley-older-adolescent."
         ),
         "anchoring_extras": "anchor=Whitley-Lancet-ID-2006 stratum=older-adolescent-HSE.",
-        "diagnostic_tests": _viral_wave1_dx_tests_hsv1_pcr("16675036"),
+        "diagnostic_tests": _viral_set_a_dx_tests_hsv1_pcr("16675036"),
     }
 
 
@@ -21683,11 +21661,11 @@ def _build_viral_vignette_103() -> dict[str, Any]:
             "discharges. Brain MRI DWI/FLAIR showed asymmetric mesial "
             "temporal hyperintensity supporting clinical HSE phenotype "
             "despite negative PCR. Empiric acyclovir continued for the "
-            "full 21-day course. Diagnostic_ambiguity=true; type=hsv_"
-            "clinical_phenotype_pcr_negative_at_72h. Anchored to "
-            "Granerod 2010 Lancet ID UK encephalitis cohort (PMID "
-            "20952256). Outcome: survived with full recovery. Subphase "
-            "1.3 commit 5.3.6 wave 2, pre-adjudication hold."
+            "full 21-day course. Diagnostic_ambiguity=true; "
+            "type=hsv_clinical_phenotype_pcr_negative_at_72h. Anchored "
+            "to Granerod 2010 Lancet ID UK encephalitis cohort (PMID "
+            "20952256). Outcome: survived with full recovery. "
+            "Pre-adjudication status: hold."
         ),
         "narrative_es": (
             "Varon de 42 anos en Paises Bajos (Amsterdam), ingresado a "
@@ -21703,29 +21681,31 @@ def _build_viral_vignette_103() -> dict[str, Any]:
             "mesial T2/FLAIR asimetrica. Aciclovir empirico continuado "
             "por 21 dias completos. Ambiguedad diagnostica: fenotipo "
             "clinico de HSE con PCR negativa. Anclaje en cohorte "
-            "Granerod 2010 Lancet ID (PMID 20952256). Subphase 1.3 "
-            "commit 5.3.6 wave 2."
+            "Granerod 2010 Lancet ID (PMID 20952256)."
         ),
         "rationale": (
             "Anchored to PMID 20952256 (Granerod 2010 Lancet ID UK "
-            "encephalitis cohort) documenting PCR-negative-but-clinical-"
-            "HSE phenotype. Diagnostic_ambiguity=true; type=hsv_clinical_"
-            "phenotype_pcr_negative_at_72h (verbatim from spec). "
+            "encephalitis cohort) documenting "
+            "PCR-negative-but-clinical-HSE phenotype. "
+            "Diagnostic_ambiguity=true; "
+            "type=hsv_clinical_phenotype_pcr_negative_at_72h. "
             "Demographic anchor (42yo M NL adult HSE PCR-neg) sits in "
             "PCR-negative-HSE-window stratum. CSF lymphocytic, no "
             "hemorrhagic component (atypical for HSE; supports "
             "diagnostic uncertainty), MRI consistent with HSE despite "
-            "negative PCR. EEG temporal lateralization supports clinical "
-            "HSE. Imputation tiers: tier_1_primary={age, sex, hsv1_pcr_"
-            "neg, eeg_lateralization, imaging_pattern, empiric_acyclovir_"
-            "continuation}; tier_3_within_review={csf_wbc, neutrophil_"
-            "pct, glucose, protein, gcs}; tier_4_priors={temp, symptom_"
-            "days}. Indeterminate=organism-level-confirmation. Outcome="
-            "survived_full_recovery. Tier: tier_4_imputation_within_"
-            "review_ambiguity. 5.3.6 wave2 HSV-PCR-neg-male."
+            "negative PCR. EEG temporal lateralization supports "
+            "clinical HSE. Imputation tiers: tier_1_primary={age, sex, "
+            "hsv1_pcr_neg, eeg_lateralization, imaging_pattern, "
+            "empiric_acyclovir_continuation}; "
+            "tier_3_within_review={csf_wbc, neutrophil_pct, glucose, "
+            "protein, gcs}; tier_4_priors={temp, symptom_days}. "
+            "Indeterminate=organism-level-confirmation. "
+            "Outcome=survived_full_recovery. Tier: "
+            "tier_4_imputation_within_review_ambiguity. Stratum: "
+            "HSV-PCR-neg-male."
         ),
         "anchoring_extras": "anchor=Granerod-Lancet-ID-2010 type=hsv_clinical_phenotype_pcr_negative_at_72h.",
-        "diagnostic_tests": _viral_wave2_dx_tests_hsv_pcr_negative_72h("20952256"),
+        "diagnostic_tests": _viral_set_b_dx_tests_hsv_pcr_negative_72h("20952256"),
     }
 
 
@@ -21808,10 +21788,11 @@ def _build_viral_vignette_104() -> dict[str, Any]:
             "showed asymmetric mesial temporal hyperintensity "
             "supporting clinical HSE despite negative PCR. Empiric "
             "acyclovir continued for the full 21-day course. "
-            "Diagnostic_ambiguity=true; type=hsv_clinical_phenotype_"
-            "pcr_negative_at_72h. Anchored to Granerod 2010 Lancet ID "
-            "(PMID 20952256). Outcome: survived with mild memory "
-            "deficit. Subphase 1.3 commit 5.3.6 wave 2, pre-adj hold."
+            "Diagnostic_ambiguity=true; "
+            "type=hsv_clinical_phenotype_pcr_negative_at_72h. Anchored "
+            "to Granerod 2010 Lancet ID (PMID 20952256). Outcome: "
+            "survived with mild memory deficit. Pre-adjudication "
+            "status: hold."
         ),
         "narrative_es": (
             "Mujer de 35 anos en Paises Bajos (Amsterdam), ingresada a "
@@ -21821,34 +21802,35 @@ def _build_viral_vignette_104() -> dict[str, Any]:
             "y crisis parcial compleja al cuarto. Sin rigidez de nuca. "
             "Examen: 38.5 C, Glasgow 12, deficit focal (afasia "
             "expresiva), sin exantema. LCR: presion 22 cmH2O, "
-            "leucocitos 165/mm3 (72 por ciento linfocitos), glucosa "
-            "55 mg/dL, proteina 95 mg/dL. PCR de HSV-1 negativa "
-            "inicial y a las 72 horas tambien negativa. EEG con "
-            "descargas lateralizadas temporales derechas. RM con "
-            "hiperintensidad temporal mesial T2/FLAIR. Aciclovir "
-            "empirico continuado por 21 dias. Ambiguedad diagnostica "
-            "HSE con PCR negativa. Anclaje en cohorte Granerod 2010 "
-            "Lancet ID (PMID 20952256). Subphase 1.3 commit 5.3.6 "
-            "wave 2."
+            "leucocitos 165/mm3 (72 por ciento linfocitos), glucosa 55 "
+            "mg/dL, proteina 95 mg/dL. PCR de HSV-1 negativa inicial y "
+            "a las 72 horas tambien negativa. EEG con descargas "
+            "lateralizadas temporales derechas. RM con hiperintensidad "
+            "temporal mesial T2/FLAIR. Aciclovir empirico continuado "
+            "por 21 dias. Ambiguedad diagnostica HSE con PCR negativa. "
+            "Anclaje en cohorte Granerod 2010 Lancet ID (PMID "
+            "20952256)."
         ),
         "rationale": (
             "Anchored to PMID 20952256 (Granerod 2010 Lancet ID UK "
             "encephalitis cohort) PCR-negative-HSE phenotype. "
-            "Diagnostic_ambiguity=true; type=hsv_clinical_phenotype_pcr_"
-            "negative_at_72h (verbatim from spec). Demographic anchor "
-            "(35yo F NL adult HSE PCR-neg) sits in PCR-negative-HSE-"
-            "window stratum. CSF lymphocytic, no hemorrhagic component, "
-            "MRI consistent with HSE. EEG right-temporal lateralization. "
-            "Imputation tiers: tier_1_primary={age, sex, hsv1_pcr_neg, "
-            "eeg_lateralization, imaging_pattern, empiric_acyclovir}; "
+            "Diagnostic_ambiguity=true; "
+            "type=hsv_clinical_phenotype_pcr_negative_at_72h. "
+            "Demographic anchor (35yo F NL adult HSE PCR-neg) sits in "
+            "PCR-negative-HSE-window stratum. CSF lymphocytic, no "
+            "hemorrhagic component, MRI consistent with HSE. EEG "
+            "right-temporal lateralization. Imputation tiers: "
+            "tier_1_primary={age, sex, hsv1_pcr_neg, eeg_lateralization, "
+            "imaging_pattern, empiric_acyclovir}; "
             "tier_3_within_review={csf_wbc, neutrophil_pct, glucose, "
             "protein, gcs}; tier_4_priors={temp, symptom_days}. "
-            "Indeterminate=organism-confirmation. Outcome=survived_mild_"
-            "memory_deficit. Tier: tier_4_imputation_within_review_"
-            "ambiguity. 5.3.6 wave2 HSV-PCR-neg-female."
+            "Indeterminate=organism-confirmation. "
+            "Outcome=survived_mild_memory_deficit. Tier: "
+            "tier_4_imputation_within_review_ambiguity. Stratum: "
+            "HSV-PCR-neg-female."
         ),
         "anchoring_extras": "anchor=Granerod-Lancet-ID-2010 type=hsv_clinical_phenotype_pcr_negative_at_72h.",
-        "diagnostic_tests": _viral_wave2_dx_tests_hsv_pcr_negative_72h("20952256"),
+        "diagnostic_tests": _viral_set_b_dx_tests_hsv_pcr_negative_72h("20952256"),
     }
 
 
@@ -21914,53 +21896,52 @@ def _build_viral_vignette_110() -> dict[str, Any]:
         "narrative_en": (
             "A 19-year-old woman in the Netherlands presented to a "
             "tertiary emergency department in Amsterdam in late August "
-            "with a 2-day course: fever to 38.7 C, severe headache, "
-            "neck stiffness, photophobia, and myalgia. She lived in a "
+            "with a 2-day course: fever to 38.7 C, severe headache, neck "
+            "stiffness, photophobia, and myalgia. She lived in a "
             "university setting. Examination on admission: temperature "
             "38.7 C, Glasgow Coma Scale 15, alert, neck stiffness, "
-            "positive Kernig sign, no focal deficit, no rash. CSF "
-            "showed opening pressure 19 cmH2O, white cell count 200 "
-            "per cubic millimeter (78 percent lymphocytes), glucose 56 "
-            "mg/dL, protein 60 mg/dL. CSF enterovirus PCR positive. "
-            "Gram stain and culture negative. No imaging performed. "
-            "Anchored to Granerod 2010 Lancet Infect Dis UK encephalitis "
-            "cohort (PMID 20952256), college-age-enteroviral-meningitis "
+            "positive Kernig sign, no focal deficit, no rash. CSF showed "
+            "opening pressure 19 cmH2O, white cell count 200 per cubic "
+            "millimeter (78 percent lymphocytes), glucose 56 mg/dL, "
+            "protein 60 mg/dL. CSF enterovirus PCR positive. Gram stain "
+            "and culture negative. No imaging performed. Anchored to "
+            "Granerod 2010 Lancet Infect Dis UK encephalitis cohort "
+            "(PMID 20952256), college-age-enteroviral-meningitis "
             "stratum. Outcome: survived with full recovery in six days. "
-            "Subphase 1.3 commit 5.3.6 wave 2, pre-adjudication "
-            "hold_for_revision."
+            "Pre-adjudication status: hold_for_revision."
         ),
         "narrative_es": (
             "Mujer de 19 anos en Paises Bajos (Amsterdam), ingresada a "
             "urgencias terciarias en agosto con curso de dos dias: "
             "fiebre 38.7 C, cefalea intensa, rigidez de nuca, fotofobia "
             "y mialgia. Entorno universitario. Examen: temperatura 38.7 "
-            "C, escala de Glasgow 15, alerta, rigidez de nuca, signo "
-            "de Kernig positivo, sin deficit focal, sin exantema. "
-            "Liquido cefalorraquideo mostro presion de apertura 19 "
-            "cmH2O, leucocitos 200 por mm3 (78 por ciento linfocitos), "
-            "glucosa 56 mg/dL, proteina 60 mg/dL. PCR de enterovirus "
-            "en LCR positiva. Tincion de Gram y cultivo negativos. Sin "
-            "imagenes. Anclaje en cohorte Granerod 2010 Lancet ID "
-            "(PMID 20952256), estrato adulto joven enteroviral. "
-            "Subphase 1.3 commit 5.3.6 wave 2, pre-adjudicacion "
-            "hold_for_revision."
+            "C, escala de Glasgow 15, alerta, rigidez de nuca, signo de "
+            "Kernig positivo, sin deficit focal, sin exantema. Liquido "
+            "cefalorraquideo mostro presion de apertura 19 cmH2O, "
+            "leucocitos 200 por mm3 (78 por ciento linfocitos), glucosa "
+            "56 mg/dL, proteina 60 mg/dL. PCR de enterovirus en LCR "
+            "positiva. Tincion de Gram y cultivo negativos. Sin "
+            "imagenes. Anclaje en cohorte Granerod 2010 Lancet ID (PMID "
+            "20952256), estrato adulto joven enteroviral. Estado previo "
+            "a la adjudicacion: hold_for_revision."
         ),
         "rationale": (
             "Anchored to PMID 20952256 (Granerod 2010 Lancet ID UK "
             "encephalitis cohort). Enteroviral aseptic meningitis "
-            "college-age summer phenotype. Demographic anchor (19yo F "
-            "NL university summer) sits in college-age-enteroviral "
-            "stratum. CSF lymphocytic (200 WBC, 78 percent lymphocytes), "
-            "normal glucose 56, mildly elevated protein 60. EV PCR "
-            "positive. Imputation tiers: tier_1_primary={age, sex, ev_"
-            "pcr, season}; tier_3_within_review={csf_wbc, neutrophil_"
-            "pct, glucose, protein}; tier_4_priors={temp, gcs, symptom_"
-            "days}. Indeterminate=none. Diagnostic_ambiguity=false. "
-            "Outcome=survived_full_recovery. Tier: tier_3_imputation_"
-            "within_review. 5.3.6 wave2 EV-Granerod-college-age."
+            "college-age summer phenotype. Demographic anchor (19yo F NL "
+            "university summer) sits in college-age-enteroviral stratum. "
+            "CSF lymphocytic (200 WBC, 78 percent lymphocytes), normal "
+            "glucose 56, mildly elevated protein 60. EV PCR positive. "
+            "Imputation tiers: tier_1_primary={age, sex, ev_pcr, "
+            "season}; tier_3_within_review={csf_wbc, neutrophil_pct, "
+            "glucose, protein}; tier_4_priors={temp, gcs, symptom_days}. "
+            "Indeterminate=none. Diagnostic_ambiguity=false. "
+            "Outcome=survived_full_recovery. Tier: "
+            "tier_3_imputation_within_review. Stratum: "
+            "EV-Granerod-college-age."
         ),
         "anchoring_extras": "anchor=Granerod-Lancet-ID-2010 stratum=college-age-EV.",
-        "diagnostic_tests": _viral_wave1_dx_tests_ev_pcr("20952256"),
+        "diagnostic_tests": _viral_set_a_dx_tests_ev_pcr("20952256"),
     }
 
 
@@ -22037,42 +22018,43 @@ def _build_viral_vignette_112() -> dict[str, Any]:
             "No imaging performed. Anchored to Granerod 2010 Lancet "
             "Infect Dis UK encephalitis cohort (PMID 20952256), "
             "adolescent-enteroviral-summer-meningitis stratum. Outcome: "
-            "survived with full recovery in five days. Subphase 1.3 "
-            "commit 5.3.6 wave 2, pre-adjudication hold_for_revision."
+            "survived with full recovery in five days. Pre-adjudication "
+            "status: hold_for_revision."
         ),
         "narrative_es": (
             "Nina de 14 anos en Paises Bajos (Amsterdam), ingresada a "
             "urgencias pediatricas terciarias en julio con curso de dos "
-            "dias: fiebre 38.5 C, cefalea, rigidez de nuca, fotofobia "
-            "y vomitos sin antecedente de exposicion a agua dulce. "
-            "Examen al ingreso: temperatura 38.5 C, escala de Glasgow "
-            "15, alerta, rigidez de nuca, signo de Kernig positivo, "
-            "sin deficit focal, sin exantema. Liquido cefalorraquideo "
+            "dias: fiebre 38.5 C, cefalea, rigidez de nuca, fotofobia y "
+            "vomitos sin antecedente de exposicion a agua dulce. Examen "
+            "al ingreso: temperatura 38.5 C, escala de Glasgow 15, "
+            "alerta, rigidez de nuca, signo de Kernig positivo, sin "
+            "deficit focal, sin exantema. Liquido cefalorraquideo "
             "mostro presion de apertura 18 cmH2O, leucocitos 175 por "
             "mm3 (82 por ciento linfocitos), glucosa 58 mg/dL, proteina "
             "58 mg/dL. PCR de enterovirus en LCR positiva. Tincion de "
             "Gram y cultivo negativos. Sin estudios de neuroimagen. "
             "Anclaje en cohorte Granerod 2010 Lancet ID (PMID "
             "20952256), estrato adolescente enteroviral de verano. "
-            "Resultado: recuperacion completa en cinco dias. Subphase "
-            "1.3 commit 5.3.6 wave 2, pre-adjudicacion en hold."
+            "Resultado: recuperacion completa en cinco dias. Estado "
+            "previo a la adjudicacion: en hold."
         ),
         "rationale": (
             "Anchored to PMID 20952256 (Granerod 2010 Lancet ID UK "
             "encephalitis cohort). Enteroviral aseptic meningitis "
-            "adolescent summer phenotype. Demographic anchor (14yo F "
-            "NL adolescent summer) sits in adolescent-enteroviral "
-            "stratum. CSF lymphocytic (175 WBC, 82 percent lymphocytes), "
-            "normal glucose 58, mildly elevated protein 58. EV PCR "
-            "positive. Imputation tiers: tier_1_primary={age, sex, ev_"
-            "pcr, season}; tier_3_within_review={csf_wbc, neutrophil_"
-            "pct, glucose, protein}; tier_4_priors={temp, gcs, symptom_"
-            "days}. Indeterminate=none. Diagnostic_ambiguity=false. "
-            "Outcome=survived_full_recovery. Tier: tier_3_imputation_"
-            "within_review. 5.3.6 wave2 EV-Granerod-adolescent."
+            "adolescent summer phenotype. Demographic anchor (14yo F NL "
+            "adolescent summer) sits in adolescent-enteroviral stratum. "
+            "CSF lymphocytic (175 WBC, 82 percent lymphocytes), normal "
+            "glucose 58, mildly elevated protein 58. EV PCR positive. "
+            "Imputation tiers: tier_1_primary={age, sex, ev_pcr, "
+            "season}; tier_3_within_review={csf_wbc, neutrophil_pct, "
+            "glucose, protein}; tier_4_priors={temp, gcs, symptom_days}. "
+            "Indeterminate=none. Diagnostic_ambiguity=false. "
+            "Outcome=survived_full_recovery. Tier: "
+            "tier_3_imputation_within_review. Stratum: "
+            "EV-Granerod-adolescent."
         ),
         "anchoring_extras": "anchor=Granerod-Lancet-ID-2010 stratum=adolescent-EV.",
-        "diagnostic_tests": _viral_wave1_dx_tests_ev_pcr("20952256"),
+        "diagnostic_tests": _viral_set_a_dx_tests_ev_pcr("20952256"),
     }
 
 
@@ -22141,24 +22123,24 @@ def _build_viral_vignette_115() -> dict[str, Any]:
         "narrative_en": (
             "A 65-year-old man in the Netherlands on chemotherapy for "
             "multiple myeloma presented to a tertiary emergency "
-            "department in Amsterdam after a 5-day course beginning "
-            "with a vesicular dermatomal rash in the V1 trigeminal "
+            "department in Amsterdam after a 5-day course beginning with "
+            "a vesicular dermatomal rash in the V1 trigeminal "
             "distribution (zoster ophthalmicus) on day 1, followed by "
             "headache on day 3, low-grade fever to 38.0 C and confusion "
             "on day 4, and neck stiffness on day 5. Examination on "
-            "admission: temperature 38.0 C, Glasgow Coma Scale 14, "
-            "neck stiffness, positive Kernig sign, focal deficit (left "
-            "V1 dermatomal vesicular rash with eyelid involvement), no "
-            "petechial rash. CSF showed opening pressure 22 cmH2O, "
-            "white cell count 220 per cubic millimeter (75 percent "
-            "lymphocytes), glucose 52 mg/dL, protein 110 mg/dL. CSF "
-            "VZV PCR positive. VZV IgM serology positive. Vesicle swab "
+            "admission: temperature 38.0 C, Glasgow Coma Scale 14, neck "
+            "stiffness, positive Kernig sign, focal deficit (left V1 "
+            "dermatomal vesicular rash with eyelid involvement), no "
+            "petechial rash. CSF showed opening pressure 22 cmH2O, white "
+            "cell count 220 per cubic millimeter (75 percent "
+            "lymphocytes), glucose 52 mg/dL, protein 110 mg/dL. CSF VZV "
+            "PCR positive. VZV IgM serology positive. Vesicle swab "
             "Tzanck smear showed multinucleated giant cells. Brain MRI "
-            "with DWI/FLAIR was normal. Anchored to Granerod 2010 "
-            "Lancet Infect Dis UK encephalitis cohort (PMID 20952256), "
+            "with DWI/FLAIR was normal. Anchored to Granerod 2010 Lancet "
+            "Infect Dis UK encephalitis cohort (PMID 20952256), "
             "VZV-immunocompromised-zoster-ophthalmicus stratum. Outcome: "
-            "survived with mild residual visual field deficit. Subphase "
-            "1.3 commit 5.3.6 wave 2, pre-adjudication hold_for_revision."
+            "survived with mild residual visual field deficit. "
+            "Pre-adjudication status: hold_for_revision."
         ),
         "narrative_es": (
             "Varon de 65 anos en Paises Bajos en quimioterapia por "
@@ -22166,38 +22148,37 @@ def _build_viral_vignette_115() -> dict[str, Any]:
             "Amsterdam tras curso de cinco dias: exantema vesicular "
             "dermatomal en distribucion V1 trigeminal (herpes zoster "
             "oftalmico) al primer dia, luego cefalea al tercer dia, "
-            "febricula 38.0 C y confusion al cuarto y rigidez de nuca "
-            "al quinto. Examen: temperatura 38.0 C, escala de Glasgow "
-            "14, rigidez de nuca, signo de Kernig positivo, deficit "
-            "focal (exantema vesicular dermatomal V1 con compromiso "
+            "febricula 38.0 C y confusion al cuarto y rigidez de nuca al "
+            "quinto. Examen: temperatura 38.0 C, escala de Glasgow 14, "
+            "rigidez de nuca, signo de Kernig positivo, deficit focal "
+            "(exantema vesicular dermatomal V1 con compromiso "
             "palpebral), sin exantema petequial. Liquido cefalorraquideo "
             "mostro leucocitos 220 por mm3 (75 por ciento linfocitos), "
             "glucosa 52 mg/dL, proteina 110 mg/dL. PCR de VZV en LCR "
             "positiva. IgM VZV positiva. Tzanck con celulas gigantes "
             "multinucleadas. RM cerebral normal. Anclaje en cohorte "
-            "Granerod 2010 Lancet ID (PMID 20952256). Subphase 1.3 "
-            "commit 5.3.6 wave 2."
+            "Granerod 2010 Lancet ID (PMID 20952256)."
         ),
         "rationale": (
             "Anchored to PMID 20952256 (Granerod 2010 Lancet ID UK "
-            "encephalitis cohort). VZV-immunocompromised-zoster-"
-            "ophthalmicus phenotype with V1 dermatomal vesicular rash "
-            "+ CSF lymphocytic pleocytosis + VZV PCR positive. "
-            "Demographic anchor (65yo M NL multiple myeloma chemotherapy "
-            "with V1 dermatomal vesicular rash) sits in VZV-immuno-"
-            "compromised stratum. CSF lymphocytic. MRI parenchyma "
-            "normal in absence of overt VZV vasculopathy. Imputation "
-            "tiers: tier_1_primary={age, sex, vzv_pcr, dermatomal_v1_"
-            "rash, immunocompromise_chemotherapy}; tier_3_within_review="
-            "{csf_wbc, neutrophil_pct, glucose, protein, gcs}; tier_4_"
-            "priors={temp, symptom_days}. Indeterminate=none. "
-            "Diagnostic_ambiguity=false. Outcome=survived_with_mild_"
-            "visual_field_deficit. Tier: tier_3_imputation_within_"
-            "review. 5.3.6 wave2 VZV-Granerod-immunocompromised-zoster-"
-            "ophthalmicus."
+            "encephalitis cohort). "
+            "VZV-immunocompromised-zoster-ophthalmicus phenotype with V1 "
+            "dermatomal vesicular rash + CSF lymphocytic pleocytosis + "
+            "VZV PCR positive. Demographic anchor (65yo M NL multiple "
+            "myeloma chemotherapy with V1 dermatomal vesicular rash) "
+            "sits in VZV-immuno-compromised stratum. CSF lymphocytic. "
+            "MRI parenchyma normal in absence of overt VZV vasculopathy. "
+            "Imputation tiers: tier_1_primary={age, sex, vzv_pcr, "
+            "dermatomal_v1_rash, immunocompromise_chemotherapy}; "
+            "tier_3_within_review={csf_wbc, neutrophil_pct, glucose, "
+            "protein, gcs}; tier_4_priors={temp, symptom_days}. "
+            "Indeterminate=none. Diagnostic_ambiguity=false. "
+            "Outcome=survived_with_mild_visual_field_deficit. Tier: "
+            "tier_3_imputation_within_review. Stratum: "
+            "VZV-Granerod-immunocompromised-zoster-ophthalmicus."
         ),
         "anchoring_extras": "anchor=Granerod-Lancet-ID-2010 stratum=VZV-immunocompromised-zoster-ophthalmicus.",
-        "diagnostic_tests": _viral_wave2_dx_tests_vzv("20952256"),
+        "diagnostic_tests": _viral_set_b_dx_tests_vzv("20952256"),
     }
 
 
@@ -22264,23 +22245,23 @@ def _build_viral_vignette_116() -> dict[str, Any]:
         "narrative_en": (
             "A 71-year-old woman in the Netherlands presented to a "
             "tertiary emergency department in Amsterdam after a "
-            "resolving thoracic dermatomal zoster rash two weeks "
-            "prior, then a 4-day course of fever to 38.2 C, headache, "
-            "neck stiffness on day 2, gait ataxia (cerebellitis "
-            "phenotype) on day 3, and confusion on day 4. She had no "
-            "antecedent freshwater exposure. Examination on admission: "
-            "temperature 38.2 C, Glasgow Coma Scale 14, neck stiffness, "
-            "positive Kernig sign, focal deficit (gait ataxia consistent "
-            "with VZV cerebellitis pattern), no rash currently active. "
-            "CSF showed opening pressure 20 cmH2O, white cell count "
-            "145 per cubic millimeter (78 percent lymphocytes), glucose "
-            "54 mg/dL, protein 105 mg/dL. CSF VZV PCR positive. VZV "
-            "IgM serology positive. Brain MRI with DWI/FLAIR was "
-            "normal. Anchored to Granerod 2010 Lancet Infect Dis UK "
-            "encephalitis cohort (PMID 20952256), post-zoster-CNS-"
-            "reactivation-cerebellitis stratum. Outcome: survived with "
-            "full recovery on 14-day acyclovir course. Subphase 1.3 "
-            "commit 5.3.6 wave 2, pre-adjudication hold_for_revision."
+            "resolving thoracic dermatomal zoster rash two weeks prior, "
+            "then a 4-day course of fever to 38.2 C, headache, neck "
+            "stiffness on day 2, gait ataxia (cerebellitis phenotype) on "
+            "day 3, and confusion on day 4. She had no antecedent "
+            "freshwater exposure. Examination on admission: temperature "
+            "38.2 C, Glasgow Coma Scale 14, neck stiffness, positive "
+            "Kernig sign, focal deficit (gait ataxia consistent with VZV "
+            "cerebellitis pattern), no rash currently active. CSF showed "
+            "opening pressure 20 cmH2O, white cell count 145 per cubic "
+            "millimeter (78 percent lymphocytes), glucose 54 mg/dL, "
+            "protein 105 mg/dL. CSF VZV PCR positive. VZV IgM serology "
+            "positive. Brain MRI with DWI/FLAIR was normal. Anchored to "
+            "Granerod 2010 Lancet Infect Dis UK encephalitis cohort "
+            "(PMID 20952256), post-zoster-CNS-reactivation-cerebellitis "
+            "stratum. Outcome: survived with full recovery on 14-day "
+            "acyclovir course. Pre-adjudication status: "
+            "hold_for_revision."
         ),
         "narrative_es": (
             "Mujer de 71 anos en Paises Bajos (Amsterdam), ingresada a "
@@ -22296,33 +22277,35 @@ def _build_viral_vignette_116() -> dict[str, Any]:
             "ciento linfocitos), glucosa 54 mg/dL, proteina 105 mg/dL. "
             "PCR de VZV en LCR positiva. IgM VZV positiva. RM cerebral "
             "normal. Anclaje en cohorte Granerod 2010 Lancet ID (PMID "
-            "20952256). Subphase 1.3 commit 5.3.6 wave 2, pre-"
-            "adjudicacion hold_for_revision."
+            "20952256). Estado previo a la adjudicacion: "
+            "hold_for_revision."
         ),
         "rationale": (
             "Anchored to PMID 20952256 (Granerod 2010 Lancet ID UK "
-            "encephalitis cohort). Post-zoster CNS-reactivation-"
-            "cerebellitis phenotype: thoracic dermatomal zoster rash 2 "
-            "weeks prior, then CSF VZV-PCR-positive lymphocytic "
-            "meningitis with cerebellitis (gait ataxia) phenotype. "
-            "Demographic anchor (71yo F NL post-zoster cerebellitis) "
-            "sits in elderly-post-zoster-CNS stratum. CSF lymphocytic "
-            "(145 WBC, 78 percent lymphocytes), normal glucose 54, "
-            "mildly elevated protein 105. VZV PCR + IgM positive. "
-            "Imputation tiers: tier_1_primary={age, sex, vzv_pcr, vzv_"
-            "igm, post_zoster_window, gait_ataxia_cerebellitis}; "
+            "encephalitis cohort). Post-zoster "
+            "CNS-reactivation-cerebellitis phenotype: thoracic "
+            "dermatomal zoster rash 2 weeks prior, then CSF "
+            "VZV-PCR-positive lymphocytic meningitis with cerebellitis "
+            "(gait ataxia) phenotype. Demographic anchor (71yo F NL "
+            "post-zoster cerebellitis) sits in elderly-post-zoster-CNS "
+            "stratum. CSF lymphocytic (145 WBC, 78 percent "
+            "lymphocytes), normal glucose 54, mildly elevated protein "
+            "105. VZV PCR + IgM positive. Imputation tiers: "
+            "tier_1_primary={age, sex, vzv_pcr, vzv_igm, "
+            "post_zoster_window, gait_ataxia_cerebellitis}; "
             "tier_3_within_review={csf_wbc, neutrophil_pct, glucose, "
             "protein, gcs}; tier_4_priors={temp, symptom_days}. "
-            "Indeterminate=none. Diagnostic_ambiguity=false. Outcome="
-            "survived_full_recovery. Tier: tier_3_imputation_within_"
-            "review. 5.3.6 wave2 VZV-Granerod-post-zoster-cerebellitis."
+            "Indeterminate=none. Diagnostic_ambiguity=false. "
+            "Outcome=survived_full_recovery. Tier: "
+            "tier_3_imputation_within_review. Stratum: "
+            "VZV-Granerod-post-zoster-cerebellitis."
         ),
         "anchoring_extras": "anchor=Granerod-Lancet-ID-2010 stratum=post-zoster-cerebellitis.",
-        "diagnostic_tests": _viral_wave2_dx_tests_vzv("20952256"),
+        "diagnostic_tests": _viral_set_b_dx_tests_vzv("20952256"),
     }
 
 
-_VIRAL_WAVE2_BUILDERS: dict[int, Any] = {
+_VIRAL_SET_B_BUILDERS: dict[int, Any] = {
     91: _build_viral_vignette_091,
     93: _build_viral_vignette_093,
     94: _build_viral_vignette_094,
@@ -22340,55 +22323,55 @@ _VIRAL_WAVE2_BUILDERS: dict[int, Any] = {
 }
 
 
-def generate_viral_wave2_vignette(vignette_id: int) -> dict[str, Any]:
-    """Build one VIRAL Wave-2 (Granerod or Whitley anchored) vignette dict."""
-    if vignette_id not in VIRAL_WAVE2_IDS:
+def generate_viral_set_b_vignette(vignette_id: int) -> dict[str, Any]:
+    """Build one VIRAL set B (Granerod or Whitley anchored) vignette dict."""
+    if vignette_id not in VIRAL_SET_B_IDS:
         raise KeyError(
-            f"vignette_id {vignette_id!r} not in VIRAL_WAVE2_IDS {VIRAL_WAVE2_IDS}"
+            f"vignette_id {vignette_id!r} not in VIRAL_SET_B_IDS {VIRAL_SET_B_IDS}"
         )
     spec = next(s for s in VIRAL_DISTRIBUTION if s["vignette_id"] == vignette_id)
     pmid_meta = load_pmid_metadata(spec["pmid"])
-    clinical = _VIRAL_WAVE2_BUILDERS[vignette_id]()
+    clinical = _VIRAL_SET_B_BUILDERS[vignette_id]()
 
     region = spec["geography_region"]
     history = clinical["history"]
     if not history.get("red_flags_present"):
-        history = {**history, "red_flags_present": _viral_wave2_red_flags(spec)}
+        history = {**history, "red_flags_present": _viral_set_b_red_flags(spec)}
 
     return {
         "schema_version": "2.0",
-        "case_id": _viral_wave1_case_id(spec, pmid_meta),
+        "case_id": _viral_set_a_case_id(spec, pmid_meta),
         "ground_truth_class": 3,
         "demographics": {
             "age_years": spec["age_years"],
             "sex": spec["sex"],
-            "ethnicity": _bact_wave1_ethnicity(region),
+            "ethnicity": _bact_set_a_ethnicity(region),
             "geography_region": region,
-            "altitude_residence_m": _bact_wave1_altitude(region),
+            "altitude_residence_m": _bact_set_a_altitude(region),
         },
         "history": history,
-        "exposure": _viral_wave2_exposure(spec),
+        "exposure": _viral_set_b_exposure(spec),
         "vitals": clinical["vitals"],
         "exam": clinical["exam"],
         "labs": clinical["labs"],
         "csf": clinical["csf"],
-        "imaging": _viral_wave1_imaging_for(spec),
+        "imaging": _viral_set_a_imaging_for(spec),
         "diagnostic_tests": {"results": clinical["diagnostic_tests"]},
-        "adjudication": _viral_wave2_adjudication(spec, clinical["anchoring_extras"]),
+        "adjudication": _viral_set_b_adjudication(spec, clinical["anchoring_extras"]),
         "literature_anchors": [_build_literature_anchor(pmid_meta)],
-        "provenance": _viral_wave2_provenance(clinical["rationale"]),
+        "provenance": _viral_set_b_provenance(clinical["rationale"]),
         "narrative_es": clinical["narrative_es"],
         "narrative_en": clinical["narrative_en"],
     }
 
 
-def write_viral_wave2_vignette(
+def write_viral_set_b_vignette(
     vignette_id: int,
-    output_dir: Path = VIRAL_WAVE2_OUTPUT_DIR,
+    output_dir: Path = VIRAL_SET_B_OUTPUT_DIR,
 ) -> Path:
-    """Build, validate, and write one VIRAL Wave-2 vignette to disk."""
+    """Build, validate, and write one VIRAL set B vignette to disk."""
     spec = next(s for s in VIRAL_DISTRIBUTION if s["vignette_id"] == vignette_id)
-    vignette = generate_viral_wave2_vignette(vignette_id)
+    vignette = generate_viral_set_b_vignette(vignette_id)
     VignetteSchema.model_validate(vignette)
     output_dir.mkdir(parents=True, exist_ok=True)
     filepath = output_dir / spec["filename"]
@@ -22400,13 +22383,13 @@ def write_viral_wave2_vignette(
     return filepath
 
 
-def write_viral_wave2_corpus(
-    output_dir: Path = VIRAL_WAVE2_OUTPUT_DIR,
+def write_viral_set_b_corpus(
+    output_dir: Path = VIRAL_SET_B_OUTPUT_DIR,
 ) -> list[Path]:
-    """Build, validate, and write all 14 VIRAL Wave-2 vignettes (FINAL viral wave)."""
+    """Build, validate, and write all 14 VIRAL set B vignettes."""
     paths: list[Path] = []
-    for vid in VIRAL_WAVE2_IDS:
-        paths.append(write_viral_wave2_vignette(vid, output_dir=output_dir))
+    for vid in VIRAL_SET_B_IDS:
+        paths.append(write_viral_set_b_vignette(vid, output_dir=output_dir))
     return paths
 
 
@@ -22446,12 +22429,11 @@ def generate_vignette(
 
     Composes shared boilerplate (case_id, ground_truth_class, demographics,
     adjudication, literature_anchors, provenance) with cluster-specific
-    clinical content. Vignette 1 (splash_pad late fatal) is fully
-    implemented; other vignettes raise NotImplementedError until their
-    cluster-specific builder is added.
+    clinical content. Vignettes 1-60 each have a cluster-specific builder;
+    a vignette_id without one raises NotImplementedError.
 
     Args:
-        spec: One entry from DAY1_DISTRIBUTION.
+        spec: One entry from PAM_DISTRIBUTION_1_20 or PAM_DISTRIBUTION_21_60.
         pmid_meta: Output of load_pmid_metadata for this vignette's anchor.
 
     Returns:
@@ -22480,13 +22462,13 @@ def generate_vignette(
         18: _build_vignette_018,
         19: _build_vignette_019,
         20: _build_vignette_020,
-        # Day 2 pilot (v21-v25, primary-source-anchored)
+        # v21-v25: primary-source-anchored
         21: _build_vignette_021,
         22: _build_vignette_022,
         23: _build_vignette_023,
         24: _build_vignette_024,
         25: _build_vignette_025,
-        # Day 2 wave 1 (v26-v40, imputation_within_anchor_epidemiology)
+        # v26-v40: imputation_within_anchor_epidemiology
         26: _build_vignette_026,
         27: _build_vignette_027,
         28: _build_vignette_028,
@@ -22502,7 +22484,7 @@ def generate_vignette(
         38: _build_vignette_038,
         39: _build_vignette_039,
         40: _build_vignette_040,
-        # Day 2 wave 2 (v41-v60, mixed primary + reuses + imputations):
+        # v41-v60: mixed primary sources, PMID reuses and imputations
         41: _build_vignette_041,
         42: _build_vignette_042,
         43: _build_vignette_043,
@@ -22609,40 +22591,40 @@ def write_vignette(vignette: dict[str, Any], filepath: Path) -> None:
 
 
 # ============================================================================
-# PILOT VIGNETTE ARCHITECTURE (n=6)
+# CLASS 4-6 ANCHOR VIGNETTE ARCHITECTURE (n=6)
 # ----------------------------------------------------------------------------
-# 6 pilots, 2 per class: TBM 121, 122 + CRYPTO 151, 152 + GAE 181, 182.
-# Architecture mirrors BACT Wave 1 at L17050: clinical builder returns the
-# class-specific clinical fragment; generate_subphase_1_4_pilot_vignette()
+# 6 anchor vignettes, 2 per class: TBM 121, 122 + CRYPTO 151, 152 +
+# GAE 181, 182. Architecture mirrors BACT set A: clinical builder returns the
+# class-specific clinical fragment; generate_class_4_6_anchor_vignette()
 # composes the full VignetteSchema-compliant dict by adding case_id,
 # ground_truth_class, demographics, exposure, imaging, adjudication,
 # literature_anchors, provenance.
 #
-# Resolution #3 applied: Cape Town altitude 50m (Atlantic coastal) not the
-# 1591m empirical error in the original proposal.
+# Cape Town altitude is 50m (Atlantic coastal). An earlier draft used 1591m,
+# which was wrong.
 #
 # Pre-adjudication: inclusion_decision="hold_for_revision"; sentinel
-# adjudicator IDs PILOT-<CLASS>-<NNN>-ADJ-{1,2}; kappa 0.70-0.74 placeholder
-# pending physician review.
+# adjudicator IDs <CLASS>-<NNN>-ADJ-{1,2}; kappa 0.70 placeholder
+# pending external adjudication.
 # ============================================================================
 
-SUBPHASE_1_4_PILOT_IDS: list[int] = [121, 122, 151, 152, 181, 182]
-SUBPHASE_1_4_PILOT_CLASSES: dict[int, int] = {
+CLASS_4_6_ANCHOR_IDS: list[int] = [121, 122, 151, 152, 181, 182]
+CLASS_4_6_ANCHOR_CLASSES: dict[int, int] = {
     121: 4, 122: 4, 151: 5, 152: 5, 181: 6, 182: 6,
 }
-# Class token map extended in commit 5.4.3 to cover wave_1 TBM ids 123-136
-# (all TBM Class 4). Will continue to extend for wave_2 (137-150) and CRYPTO/
-# GAE waves at their respective build commits.
-SUBPHASE_1_4_CLASS_TOKEN: dict[int, str] = {
-    # 5.4.2 pilots
+# Class token map. Also covers the TBM series ids 123-136 (all TBM Class 4).
+# The remaining TBM (137-150), CRYPTO and GAE ids are added when their
+# builders are added.
+CLASS_4_6_CLASS_TOKEN: dict[int, str] = {
+    # Class 4-6 anchor vignettes
     121: "TBM", 122: "TBM", 151: "CRYPTO", 152: "CRYPTO",
     181: "GAE", 182: "GAE",
-    # 5.4.3 TBM wave_1 (Thwaites 123-127, Marais 128-130, Heemskerk 131-136)
+    # TBM series (Thwaites 123-127, Marais 128-130, Heemskerk 131-136)
     123: "TBM", 124: "TBM", 125: "TBM", 126: "TBM", 127: "TBM",
     128: "TBM", 129: "TBM", 130: "TBM",
     131: "TBM", 132: "TBM", 133: "TBM", 134: "TBM", 135: "TBM", 136: "TBM",
 }
-SUBPHASE_1_4_PILOT_OUTPUT_DIR: dict[int, Path] = {
+CLASS_4_6_ANCHOR_OUTPUT_DIR: dict[int, Path] = {
     121: Path("data/vignettes/v2/class_04_tb"),
     122: Path("data/vignettes/v2/class_04_tb"),
     151: Path("data/vignettes/v2/class_05_fungal"),
@@ -22650,18 +22632,18 @@ SUBPHASE_1_4_PILOT_OUTPUT_DIR: dict[int, Path] = {
     181: Path("data/vignettes/v2/class_06_gae"),
     182: Path("data/vignettes/v2/class_06_gae"),
 }
-SUBPHASE_1_4_PILOT_FILENAME: dict[int, str] = {
-    121: "tbm_121_thwaites_hcmc_adult_pilot.json",
-    122: "tbm_122_vantoorn_cape_town_pediatric_pilot.json",
-    151: "crypto_151_perfect_idsa_hiv_pilot.json",
-    152: "crypto_152_singh_transplant_pilot.json",
-    181: "gae_181_alvarez_peru_balamuthia_pilot.json",
-    182: "gae_182_visvesvara_acanthamoeba_aids_pilot.json",
+CLASS_4_6_ANCHOR_FILENAME: dict[int, str] = {
+    121: "tbm_121_thwaites_hcmc_adult.json",
+    122: "tbm_122_vantoorn_cape_town_pediatric.json",
+    151: "crypto_151_perfect_idsa_hiv.json",
+    152: "crypto_152_singh_transplant.json",
+    181: "gae_181_alvarez_peru_balamuthia.json",
+    182: "gae_182_visvesvara_acanthamoeba_aids.json",
 }
 
-# Geography label to altitude in meters. Resolution #3: Cape Town 50m.
-# Wave_1 (5.4.3) reuses HCMC + Cape Town entries from the 5.4.2 pilot map.
-_SUBPHASE_1_4_ALTITUDE_M: dict[str, int] = {
+# Geography label to altitude in meters. Cape Town is 50m.
+# The TBM series reuses the HCMC + Cape Town entries of the anchor vignettes.
+_CLASS_4_6_ALTITUDE_M: dict[str, int] = {
     "Ho Chi Minh City, Vietnam": 19,
     "Cape Town, South Africa": 50,
     "Kampala, Uganda": 1190,
@@ -22672,17 +22654,17 @@ _SUBPHASE_1_4_ALTITUDE_M: dict[str, int] = {
 
 
 # ----------------------------------------------------------------------------
-# Shared Class 4-6 helpers (5 functions, mirror BACT wave 1 pattern)
+# Shared Class 4-6 helpers (5 functions, mirror the BACT set A pattern)
 # ----------------------------------------------------------------------------
 
 
-# Loc token by vid: extended in 5.4.3 to cover wave_1 ids 123-136.
-_SUBPHASE_1_4_LOC_TOKEN: dict[int, str] = {
-    # 5.4.2 pilots
+# Loc token by vid: also covers the TBM series ids 123-136.
+_CLASS_4_6_LOC_TOKEN: dict[int, str] = {
+    # Class 4-6 anchor vignettes
     121: "HCMC", 122: "CapeTown",
     151: "Kampala", 152: "Pittsburgh",
     181: "Peru-Balamuthia", 182: "Acanthamoeba-AIDS",
-    # 5.4.3 TBM wave_1: Thwaites 123-127 + Heemskerk 131-136 all HCMC,
+    # TBM series: Thwaites 123-127 + Heemskerk 131-136 all HCMC,
     # Marais 128-130 all CapeTown.
     123: "HCMC", 124: "HCMC", 125: "HCMC", 126: "HCMC", 127: "HCMC",
     128: "CapeTown", 129: "CapeTown", 130: "CapeTown",
@@ -22690,30 +22672,24 @@ _SUBPHASE_1_4_LOC_TOKEN: dict[int, str] = {
 }
 
 
-def _subphase_1_4_case_id(
+def _class_4_6_case_id(
     spec: dict[str, Any], pmid_meta: dict[str, Any],
-    case_prefix: str = "PILOT",
 ) -> str:
-    """Build case_id of form <PREFIX>-<CLASS>-<NNN>-<AnchorShort>-<Loc>.
-
-    Generalized in 5.4.3 from the original 5.4.2 pilot helper via the
-    case_prefix parameter (default "PILOT" preserves 5.4.2 behavior;
-    "WAVE1" used by TBM Wave 1 builders).
-    """
+    """Build case_id of form <CLASS>-<NNN>-<AnchorShort>-<Loc>."""
     vid = spec["vignette_id"]
-    class_token = SUBPHASE_1_4_CLASS_TOKEN[vid]
+    class_token = CLASS_4_6_CLASS_TOKEN[vid]
     anchor_short = pmid_meta["authors_short"].split()[0].rstrip(",")
-    loc_token = _SUBPHASE_1_4_LOC_TOKEN[vid]
-    return f"{case_prefix}-{class_token}-{vid}-{anchor_short}-{loc_token}"
+    loc_token = _CLASS_4_6_LOC_TOKEN[vid]
+    return f"{class_token}-{vid}-{anchor_short}-{loc_token}"
 
 
-def _subphase_1_4_exposure(spec: dict[str, Any]) -> dict[str, Any]:
+def _class_4_6_exposure(spec: dict[str, Any]) -> dict[str, Any]:
     """Build ExposureHistory dict. All Class 4-6 slots: freshwater=False.
 
     Picks up immunocompromise_status, hiv_status, and cd4_count_cells_per_uL
     from the distribution slot. For HIV+ CRYPTO 151 the cd4_count is required
     by VignetteSchema validator _cryptococcal_cd4_required_when_hiv.
-    Wave-agnostic; reused as-is by 5.4.3 wave_1 builders.
+    Used unchanged by the TBM series builders.
     """
     return {
         "freshwater_exposure_within_14d": False,
@@ -22727,23 +22703,22 @@ def _subphase_1_4_exposure(spec: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def _subphase_1_4_adjudication(
+def _class_4_6_adjudication(
     spec: dict[str, Any], anchoring_text: str,
-    case_prefix: str = "PILOT",
 ) -> dict[str, Any]:
     """Build AdjudicationMetadata. Sentinel adjudicator IDs + kappa placeholder.
 
-    Generalized in 5.4.3 via case_prefix parameter. inclusion_decision is
-    hold_for_revision for all Class 4-6 vignettes pending physician
-    review (pending real adjudication). cohen_kappa placeholder 0.70 to satisfy
+    Adjudicator IDs are <CLASS>-<NNN>-ADJ-{1,2}. inclusion_decision is
+    hold_for_revision for all Class 4-6 vignettes, pending external
+    adjudication. cohen_kappa placeholder 0.70 to satisfy
     >=0.61 Landis-Koch substantial-agreement threshold.
     """
     vid = spec["vignette_id"]
-    class_token = SUBPHASE_1_4_CLASS_TOKEN[vid]
+    class_token = CLASS_4_6_CLASS_TOKEN[vid]
     return {
         "adjudicator_ids": [
-            f"{case_prefix}-{class_token}-{vid}-ADJ-1",
-            f"{case_prefix}-{class_token}-{vid}-ADJ-2",
+            f"{class_token}-{vid}-ADJ-1",
+            f"{class_token}-{vid}-ADJ-2",
         ],
         "cohen_kappa": 0.70,
         "disagreement_resolution": None,
@@ -22752,47 +22727,46 @@ def _subphase_1_4_adjudication(
     }
 
 
-def _subphase_1_4_provenance(
-    rationale: str, commit_marker: str = "v1.4.2-pilot",
+def _class_4_6_provenance(
+    rationale: str,
 ) -> dict[str, Any]:
-    """Build Provenance dict. ISO timestamp, manual-fixture identifier, schema 2.0.
+    """Build Provenance dict. ISO timestamp, fixed generator identifier, schema 2.0.
 
-    commit_marker default "v1.4.2-pilot" preserves 5.4.2 behavior; 5.4.3 wave_1
-    builders pass "v1.4.3-wave1" for traceability in the
-    generator_model_identifier field.
+    generator_model_identifier is the fixed module identifier
+    "scripts.generate_pam_vignettes/v1" for every Class 4-6 vignette.
     """
     return {
         "generation_timestamp_utc": "2026-05-11T18:00:00Z",
-        "generator_model_identifier": f"scripts.generate_pam_vignettes/{commit_marker}",
+        "generator_model_identifier": "scripts.generate_pam_vignettes/v1",
         "prompt_hash_sha256": "0" * 64,
         "schema_version": "2.0",
         "inclusion_decision_rationale": rationale,
     }
 
 
-_SUBPHASE_1_4_ANCHOR_TYPE_MAP: dict[str, str] = {
+_CLASS_4_6_ANCHOR_TYPE_MAP: dict[str, str] = {
     # Registry uses case_series (collection of case reports); schema enum
     # LiteratureAnchor.anchor_type accepts case_report as the closest fit.
     "case_series": "case_report",
 }
 
 
-def _subphase_1_4_literature_anchor(pmid_meta: dict[str, Any]) -> dict[str, Any]:
+def _class_4_6_literature_anchor(pmid_meta: dict[str, Any]) -> dict[str, Any]:
     """Variant of _build_literature_anchor with two adaptations.
 
     1. Converts empty-string pmid to None (retained for robustness; all
-       current Subphase 1.4 anchors carry a numeric PubMed pmid). The
+       current Class 4-6 anchors carry a numeric PubMed pmid). The
        VignetteSchema LiteratureAnchor regex requires pmid to match
        ^\\d{7,9}$ if non-None, so empty string must become None.
     2. Maps registry anchor_type='case_series' to schema anchor_type=
        'case_report' (schema enum lacks case_series; case_report is the
        semantically closest published-evidence label).
-    Wave-agnostic; reused as-is by 5.4.3 wave_1 builders.
+    Used unchanged by the TBM series builders.
     """
     pmid = pmid_meta["pmid"] or None
     doi = pmid_meta["doi"] or None
     raw_anchor_type = pmid_meta["anchor_type"]
-    anchor_type = _SUBPHASE_1_4_ANCHOR_TYPE_MAP.get(raw_anchor_type, raw_anchor_type)
+    anchor_type = _CLASS_4_6_ANCHOR_TYPE_MAP.get(raw_anchor_type, raw_anchor_type)
     return {
         "anchor_type": anchor_type,
         "pmid": pmid,
@@ -22835,7 +22809,7 @@ def _tbm_dx_tests_xpert_mtb_rif(
     CSF culture pending then positive at 4 weeks.
     Pediatric: adds gastric aspirate culture per van Toorn pediatric review.
 
-    xpert_positive=False (5.4.3 extension, backward-compatible default True):
+    xpert_positive=False (added for the TBM series; default True):
     Xpert reports negative on initial CSF specimen (sensitivity 70-85 percent
     per Hernandez TM&IH 2021); culture becomes the confirmation modality
     (positive at 4 weeks) for RCT inclusion (Heemskerk 2016) or empirical-
@@ -23168,12 +23142,12 @@ def _gae_imaging_multifocal_ring_enhancing(
 
 
 # ----------------------------------------------------------------------------
-# 6 pilot clinical builders
+# Clinical builders for the 6 Class 4-6 anchor vignettes
 # ----------------------------------------------------------------------------
 
 
 def _build_tbm_vignette_121() -> dict[str, Any]:
-    """TBM 121 Thwaites HCMC adult pilot: 35yo Vietnamese male, CN VI palsy,
+    """TBM 121 Thwaites HCMC adult anchor: 35yo Vietnamese male, CN VI palsy,
     classical lymphocytic CSF, Xpert MTB/RIF Ultra positive, AFB smear positive."""
     return {
         "history": {
@@ -23224,9 +23198,8 @@ def _build_tbm_vignette_121() -> dict[str, Any]:
             "glucose 28 mg/dL, protein 280 mg/dL, and adenosine deaminase 14 "
             "U/L. MRI with contrast demonstrated thick basal meningeal "
             "enhancement and mild communicating hydrocephalus. CSF Xpert "
-            "MTB/RIF Ultra was positive and rifampicin susceptible. Anchored "
-            "to Thwaites NEJM 2004 (PMID 15496623). Subphase 1.4 commit 5.4.2 "
-            "pilot, hold_for_revision."
+            "MTB/RIF Ultra was positive and rifampicin susceptible. Anchored to "
+            "Thwaites NEJM 2004 (PMID 15496623). Status: hold_for_revision."
         ),
         "narrative_es": (
             "Varon de 35 anos de Ho Chi Minh, Vietnam, ingresado a un hospital "
@@ -23235,21 +23208,20 @@ def _build_tbm_vignette_121() -> dict[str, Any]:
             "tres semanas y vomitos intermitentes en la ultima semana. "
             "Antecedente de primo con tuberculosis pulmonar tratada el ano "
             "previo. Examen al ingreso: temperatura 38.4 C, Glasgow 13, "
-            "somnoliento, rigidez de nuca, signo de Kernig positivo, paresia "
-            "del sexto par craneal derecho y papiledema en el fondo de ojo. "
-            "LCR con presion de apertura 24 cmH2O, leucocitos 280 por mm3 "
-            "(78 por ciento linfocitos), glucosa 28 mg/dL, proteina 280 mg/dL, "
-            "adenosina desaminasa 14 U/L. RM con contraste mostro engrosamiento "
-            "meningeo basal e hidrocefalia comunicante leve. Xpert MTB/RIF "
-            "Ultra positivo en LCR, susceptible a rifampicina. Anclaje "
-            "Thwaites NEJM 2004 (PMID 15496623). Subphase 1.4 pilot."
+            "somnoliento, rigidez de nuca, signo de Kernig positivo, paresia del "
+            "sexto par craneal derecho y papiledema en el fondo de ojo. LCR con "
+            "presion de apertura 24 cmH2O, leucocitos 280 por mm3 (78 por ciento "
+            "linfocitos), glucosa 28 mg/dL, proteina 280 mg/dL, adenosina "
+            "desaminasa 14 U/L. RM con contraste mostro engrosamiento meningeo "
+            "basal e hidrocefalia comunicante leve. Xpert MTB/RIF Ultra positivo "
+            "en LCR, susceptible a rifampicina. Anclaje Thwaites NEJM 2004 (PMID "
+            "15496623)."
         ),
         "rationale": (
-            "Subphase 1.4 commit 5.4.2 pilot 1 of 6 for Class 4 TBM. Anchored "
-            "to Thwaites NEJM 2004 dexamethasone RCT (HCMC adult HIV-negative, "
-            "drug-sensitive TBM). CSF and imaging within published case ranges; "
-            "ADA 14 U/L above Ye TM&IH 2023 cutoff of 10. CN VI palsy "
-            "present. Pre-adjudication "
+            "Anchor vignette for Class 4 TBM. Anchored to Thwaites NEJM 2004 "
+            "dexamethasone RCT (HCMC adult HIV-negative, drug-sensitive TBM). "
+            "CSF and imaging within published case ranges; ADA 14 U/L above Ye "
+            "TM&IH 2023 cutoff of 10. CN VI palsy present. Pre-adjudication "
             "hold_for_revision."
         ),
         "anchoring_extras": (
@@ -23264,7 +23236,7 @@ def _build_tbm_vignette_121() -> dict[str, Any]:
 
 
 def _build_tbm_vignette_122() -> dict[str, Any]:
-    """TBM 122 van Toorn Cape Town pediatric pilot: 18mo female, BCG vaccinated,
+    """TBM 122 van Toorn Cape Town pediatric anchor: 18mo female, BCG vaccinated,
     household TB contact, SIADH, hydrocephalus requiring VP shunt."""
     return {
         "history": {
@@ -23327,7 +23299,7 @@ def _build_tbm_vignette_122() -> dict[str, Any]:
             "enhancement with communicating hydrocephalus that required "
             "ventriculoperitoneal shunt placement. CSF Xpert MTB/RIF Ultra "
             "was positive. Anchored to van Toorn Semin Pediatr Neurol 2014 "
-            "(PMID 24655399). Pilot, hold_for_revision."
+            "(PMID 24655399). Pre-adjudication hold_for_revision."
         ),
         "narrative_es": (
             "Nina de 18 meses de Ciudad del Cabo, Sudafrica, ingresada a un "
@@ -23346,12 +23318,11 @@ def _build_tbm_vignette_122() -> dict[str, Any]:
             "peritoneal. Xpert positivo. Anclaje van Toorn 2014."
         ),
         "rationale": (
-            "Subphase 1.4 commit 5.4.2 pilot 2 of 6 for Class 4 TBM pediatric "
-            "(spec 1.4.4 pediatric median 6mo-2y stratum). Anchored "
-            "to van Toorn 2014 Semin Pediatr Neurol pediatric TBM review. "
-            "Hydrocephalus requiring VP shunt is van Toorn signature; "
-            "hyponatremia 124 reflects SIADH common in pediatric TBM. "
-            "Pre-adjudication hold_for_revision."
+            "Anchor vignette for Class 4 TBM pediatric (pediatric median "
+            "6mo-2y stratum). Anchored to van Toorn 2014 Semin Pediatr Neurol "
+            "pediatric TBM review. Hydrocephalus requiring VP shunt is van "
+            "Toorn signature; hyponatremia 124 reflects SIADH common in "
+            "pediatric TBM. Pre-adjudication hold_for_revision."
         ),
         "anchoring_extras": (
             "Anchored to van Toorn R, Solomons R, Semin Pediatr Neurol 2014 "
@@ -23364,7 +23335,7 @@ def _build_tbm_vignette_122() -> dict[str, Any]:
 
 
 def _build_crypto_vignette_151() -> dict[str, Any]:
-    """CRYPTO 151 Perfect IDSA HIV+CD4<100 pilot: 32yo Ugandan male, ART-naive,
+    """CRYPTO 151 Perfect IDSA HIV+CD4<100 anchor: 32yo Ugandan male, ART-naive,
     CD4 35, OP 38 cmH2O, CrAg LFA 1:2048, India ink positive."""
     return {
         "history": {
@@ -23426,7 +23397,7 @@ def _build_crypto_vignette_151() -> dict[str, Any]:
             "CrAg was 1:1024. Therapeutic lumbar puncture reduced the "
             "pressure from 38 to 18 cmH2O. MRI with contrast showed dilated "
             "Virchow-Robin spaces with small pseudocysts. Anchored to "
-            "Perfect CID 2010 IDSA (PMID 20047480). Pilot, hold_for_revision."
+            "Perfect CID 2010 IDSA (PMID 20047480). Pre-adjudication hold_for_revision."
         ),
         "narrative_es": (
             "Varon de 32 anos de Kampala, Uganda, ingresado a un hospital "
@@ -23445,12 +23416,11 @@ def _build_crypto_vignette_151() -> dict[str, Any]:
             "IDSA 2010 (PMID 20047480)."
         ),
         "rationale": (
-            "Subphase 1.4 commit 5.4.2 pilot 3 of 6 for Class 5 Cryptococcal "
-            "(spec 1.4.5 HIV+CD4<100 22-slot bulk stratum). Anchored "
-            "to Perfect 2010 CID IDSA guidelines. OP 38 satisfies >=25 spec "
-            "requirement; CrAg LFA positive satisfies >=28/30 "
-            "requirement. cd4_count_cells_per_uL=35 per Ford CID 2018 "
-            "validator. Pre-adjudication hold_for_revision."
+            "Anchor vignette for Class 5 Cryptococcal (HIV+CD4<100 22-slot "
+            "bulk stratum). Anchored to Perfect 2010 CID IDSA guidelines. OP "
+            "38 satisfies >=25 spec requirement; CrAg LFA positive satisfies "
+            ">=28/30 requirement. cd4_count_cells_per_uL=35 per Ford CID "
+            "2018 validator. Pre-adjudication hold_for_revision."
         ),
         "anchoring_extras": (
             "Anchored to Perfect JR et al. CID 2010 IDSA cryptococcal "
@@ -23463,7 +23433,7 @@ def _build_crypto_vignette_151() -> dict[str, Any]:
 
 
 def _build_crypto_vignette_152() -> dict[str, Any]:
-    """CRYPTO 152 Singh transplant pilot: 49yo US male 18mo post-renal-tx on
+    """CRYPTO 152 Singh transplant anchor: 49yo US male 18mo post-renal-tx on
     tacrolimus + MMF + prednisone, CrAg LFA 1:256, calcineurin-protected."""
     return {
         "history": {
@@ -23509,8 +23479,8 @@ def _build_crypto_vignette_152() -> dict[str, Any]:
         )},
         "narrative_en": (
             "A 49-year-old man in Pittsburgh presented to a transplant "
-            "infectious diseases service with a two-week subacute illness. "
-            "He was eighteen months post-cadaveric renal transplant on "
+            "infectious diseases service with a two-week subacute illness. He "
+            "was eighteen months post-cadaveric renal transplant on "
             "tacrolimus, mycophenolate mofetil, and low-dose prednisone with "
             "unchanged dosing over the prior year. He reported daily low-grade "
             "fevers, gradual frontal headache, and three days of mild "
@@ -23519,12 +23489,12 @@ def _build_crypto_vignette_152() -> dict[str, Any]:
             "14, mild confusion, neck stiffness, and no focal deficit. CSF "
             "showed an opening pressure of 22 cmH2O, white cell count 30 per "
             "cubic millimeter with 88 percent lymphocytes, glucose 45 mg/dL, "
-            "and protein 80 mg/dL. CSF cryptococcal antigen lateral flow "
-            "assay was positive at 1:256, India ink showed encapsulated "
-            "yeast, and serum CrAg was 1:128. Tacrolimus trough was 9.2 "
-            "ng/mL. MRI showed subtle dilated Virchow-Robin spaces without "
-            "mass lesion. Anchored to Singh JID 2007 transplant cohort "
-            "(PMID 17262720). Subphase 1.4 pilot, hold_for_revision."
+            "and protein 80 mg/dL. CSF cryptococcal antigen lateral flow assay "
+            "was positive at 1:256, India ink showed encapsulated yeast, and "
+            "serum CrAg was 1:128. Tacrolimus trough was 9.2 ng/mL. MRI showed "
+            "subtle dilated Virchow-Robin spaces without mass lesion. Anchored "
+            "to Singh JID 2007 transplant cohort (PMID 17262720). Status: "
+            "hold_for_revision."
         ),
         "narrative_es": (
             "Varon de 49 anos en Pittsburgh, Estados Unidos, evaluado por el "
@@ -23543,11 +23513,11 @@ def _build_crypto_vignette_152() -> dict[str, Any]:
             "discretamente dilatados sin masa."
         ),
         "rationale": (
-            "Subphase 1.4 commit 5.4.2 pilot 4 of 6 for Class 5 Cryptococcal "
-            "transplant stratum (spec 1.4.5 4-slot transplant). "
-            "Anchored to Singh 2007 JID multicenter transplant cohort; "
-            "tacrolimus exposure aligns with calcineurin-protective mortality "
-            "observation. Pre-adjudication hold_for_revision."
+            "Anchor vignette for Class 5 Cryptococcal transplant stratum "
+            "(4-slot transplant). Anchored to Singh 2007 JID multicenter "
+            "transplant cohort; tacrolimus exposure aligns with "
+            "calcineurin-protective mortality observation. Pre-adjudication "
+            "hold_for_revision."
         ),
         "anchoring_extras": (
             "Anchored to Singh N et al. JID 2007 transplant cryptococcus "
@@ -23560,7 +23530,7 @@ def _build_crypto_vignette_152() -> dict[str, Any]:
 
 
 def _build_gae_vignette_181() -> dict[str, Any]:
-    """GAE 181 Alvarez Peru Balamuthia pilot: 42yo mestizo Lima coast male,
+    """GAE 181 Alvarez Peru Balamuthia anchor: 42yo mestizo Lima coast male,
     centrofacial skin lesion 15 months preceding CNS, three ring-enhancing
     brain lesions, IFA 1:512 + brain biopsy + mNGS positive."""
     return {
@@ -23647,7 +23617,7 @@ def _build_gae_vignette_181() -> dict[str, Any]:
             "Balamuthia mandrillaris en histologia e IHC."
         ),
         "rationale": (
-            "Subphase 1.4 commit 5.4.2 pilot 5 of 6 for Class 6 GAE Balamuthia Peru stratum (spec 1.4.6: 12 of 15 Peru-Hispanic Balamuthia slots present with a centrofacial skin lesion preceding CNS disease). Anchored to Alvarez P et al. (Bravo F senior author), Cutaneous balamuthiasis: a clinicopathological study, JAAD Int 2022 (PMID 35059659, PMC8760460), which reports centrofacial lesions in 73 percent of patients and a mean cutaneous-lesion duration of 15 months (range 2 months to 5 years). Three ring-enhancing lesions match multifocal imaging mandate. Pre-adjudication hold_for_revision."
+            "Anchor vignette for Class 6 GAE Balamuthia Peru stratum (12 of 15 Peru-Hispanic Balamuthia slots present with a centrofacial skin lesion preceding CNS disease). Anchored to Alvarez P et al. (Bravo F senior author), Cutaneous balamuthiasis: a clinicopathological study, JAAD Int 2022 (PMID 35059659, PMC8760460), which reports centrofacial lesions in 73 percent of patients and a mean cutaneous-lesion duration of 15 months (range 2 months to 5 years). Three ring-enhancing lesions match multifocal imaging mandate. Pre-adjudication hold_for_revision."
         ),
         "anchoring_extras": (
             "Anchored to Alvarez P et al. (Bravo F senior author), Cutaneous balamuthiasis: a clinicopathological study, JAAD Int 2022;6:51-58 (PMID 35059659, PMC8760460, doi:10.1016/j.jdin.2021.11.005), a Peruvian cutaneous-balamuthiasis case series of centrofacial skin lesions preceding CNS disease. 42-year-old Lima mestizo male, centrofacial skin lesion 15 months preceding CNS, modest lymphocytic CSF, three ring-enhancing brain lesions, Balamuthia IFA 1:512, skin and brain biopsy positive, CSF mNGS positive. Pre-adjudication kappa 0.70."
@@ -23656,7 +23626,7 @@ def _build_gae_vignette_181() -> dict[str, Any]:
 
 
 def _build_gae_vignette_182() -> dict[str, Any]:
-    """GAE 182 Visvesvara Acanthamoeba AIDS pilot: 47yo US male with advanced
+    """GAE 182 Visvesvara Acanthamoeba AIDS anchor: 47yo US male with advanced
     HIV (CD4 38), two ring-enhancing lesions, A. castellanii IHC positive."""
     return {
         "history": {
@@ -23722,7 +23692,7 @@ def _build_gae_vignette_182() -> dict[str, Any]:
             "biopsy demonstrated granulomatous inflammation with double-"
             "walled cysts and immunohistochemistry positive for Acanthamoeba "
             "castellanii. Anchored to Visvesvara FEMS 2007 (PMID 17428307). "
-            "Pilot, hold_for_revision."
+            "Pre-adjudication hold_for_revision."
         ),
         "narrative_es": (
             "Varon de 47 anos en region sur de Estados Unidos, evaluado por "
@@ -23741,11 +23711,11 @@ def _build_gae_vignette_182() -> dict[str, Any]:
             "cerebral con Acanthamoeba castellanii en IHC."
         ),
         "rationale": (
-            "Subphase 1.4 commit 5.4.2 pilot 6 of 6 for Class 6 GAE "
-            "Acanthamoeba immunocompromised stratum (spec 1.4.6 "
-            "10/15 immunocompromised). Anchored to Visvesvara 2007 FEMS "
-            "canonical free-living amoebae review. Two ring-enhancing "
-            "lesions match multifocal imaging mandate. Pre-adjudication "
+            "Anchor vignette for Class 6 GAE Acanthamoeba "
+            "immunocompromised stratum (10/15 immunocompromised). "
+            "Anchored to Visvesvara 2007 FEMS canonical free-living "
+            "amoebae review. Two ring-enhancing lesions match "
+            "multifocal imaging mandate. Pre-adjudication "
             "hold_for_revision."
         ),
         "anchoring_extras": (
@@ -23763,7 +23733,7 @@ def _build_gae_vignette_182() -> dict[str, Any]:
 # ----------------------------------------------------------------------------
 
 
-_SUBPHASE_1_4_PILOT_BUILDERS: dict[int, Any] = {
+_CLASS_4_6_ANCHOR_BUILDERS: dict[int, Any] = {
     121: _build_tbm_vignette_121,
     122: _build_tbm_vignette_122,
     151: _build_crypto_vignette_151,
@@ -23773,30 +23743,30 @@ _SUBPHASE_1_4_PILOT_BUILDERS: dict[int, Any] = {
 }
 
 
-def generate_subphase_1_4_pilot_vignette(vignette_id: int) -> dict[str, Any]:
-    """Build one pilot vignette dict from a vignette_id.
+def generate_class_4_6_anchor_vignette(vignette_id: int) -> dict[str, Any]:
+    """Build one Class 4-6 anchor vignette dict from a vignette_id.
 
-    Looks up the distribution spec, PMID_REGISTRY metadata, and clinical
+    Looks up the distribution entry, PMID_REGISTRY metadata, and clinical
     builder, then composes the full VignetteSchema-compliant dict.
     """
-    if vignette_id not in SUBPHASE_1_4_PILOT_IDS:
+    if vignette_id not in CLASS_4_6_ANCHOR_IDS:
         raise KeyError(
-            f"vignette_id {vignette_id!r} not in SUBPHASE_1_4_PILOT_IDS "
-            f"{SUBPHASE_1_4_PILOT_IDS}"
+            f"vignette_id {vignette_id!r} not in CLASS_4_6_ANCHOR_IDS "
+            f"{CLASS_4_6_ANCHOR_IDS}"
         )
     all_dists = TBM_DISTRIBUTION + CRYPTO_DISTRIBUTION + GAE_DISTRIBUTION
     spec = next(s for s in all_dists if s["vignette_id"] == vignette_id)
     pmid_meta = load_pmid_metadata(spec["anchor_pmid"])
-    clinical = _SUBPHASE_1_4_PILOT_BUILDERS[vignette_id]()
+    clinical = _CLASS_4_6_ANCHOR_BUILDERS[vignette_id]()
 
     region = spec["geography_region"]
     ethnicity = spec.get("ethnicity") or "other"
-    altitude = _SUBPHASE_1_4_ALTITUDE_M.get(spec["geography_label"], 100)
+    altitude = _CLASS_4_6_ALTITUDE_M.get(spec["geography_label"], 100)
 
     return {
         "schema_version": "2.0",
-        "case_id": _subphase_1_4_case_id(spec, pmid_meta, case_prefix="PILOT"),
-        "ground_truth_class": SUBPHASE_1_4_PILOT_CLASSES[vignette_id],
+        "case_id": _class_4_6_case_id(spec, pmid_meta),
+        "ground_truth_class": CLASS_4_6_ANCHOR_CLASSES[vignette_id],
         "demographics": {
             "age_years": spec["age_years"],
             "sex": spec["sex"],
@@ -23805,30 +23775,30 @@ def generate_subphase_1_4_pilot_vignette(vignette_id: int) -> dict[str, Any]:
             "altitude_residence_m": altitude,
         },
         "history": clinical["history"],
-        "exposure": _subphase_1_4_exposure(spec),
+        "exposure": _class_4_6_exposure(spec),
         "vitals": clinical["vitals"],
         "exam": clinical["exam"],
         "labs": clinical["labs"],
         "csf": clinical["csf"],
         "imaging": clinical["imaging"],
         "diagnostic_tests": clinical["diagnostic_tests"],
-        "adjudication": _subphase_1_4_adjudication(
-            spec, clinical["anchoring_extras"], case_prefix="PILOT"),
-        "literature_anchors": [_subphase_1_4_literature_anchor(pmid_meta)],
-        "provenance": _subphase_1_4_provenance(
-            clinical["rationale"], commit_marker="v1.4.2-pilot"),
+        "adjudication": _class_4_6_adjudication(
+            spec, clinical["anchoring_extras"]),
+        "literature_anchors": [_class_4_6_literature_anchor(pmid_meta)],
+        "provenance": _class_4_6_provenance(
+            clinical["rationale"]),
         "narrative_es": clinical["narrative_es"],
         "narrative_en": clinical["narrative_en"],
     }
 
 
-def write_subphase_1_4_pilot_vignette(vignette_id: int) -> Path:
-    """Build, validate, and write one pilot vignette to disk."""
-    vignette = generate_subphase_1_4_pilot_vignette(vignette_id)
+def write_class_4_6_anchor_vignette(vignette_id: int) -> Path:
+    """Build, validate, and write one Class 4-6 anchor vignette to disk."""
+    vignette = generate_class_4_6_anchor_vignette(vignette_id)
     VignetteSchema.model_validate(vignette)
-    output_dir = SUBPHASE_1_4_PILOT_OUTPUT_DIR[vignette_id]
+    output_dir = CLASS_4_6_ANCHOR_OUTPUT_DIR[vignette_id]
     output_dir.mkdir(parents=True, exist_ok=True)
-    filepath = output_dir / SUBPHASE_1_4_PILOT_FILENAME[vignette_id]
+    filepath = output_dir / CLASS_4_6_ANCHOR_FILENAME[vignette_id]
     filepath.write_text(
         json.dumps(vignette, indent=2, sort_keys=False, ensure_ascii=False),
         encoding="utf-8",
@@ -23837,54 +23807,55 @@ def write_subphase_1_4_pilot_vignette(vignette_id: int) -> Path:
     return filepath
 
 
-def write_subphase_1_4_pilot_corpus() -> list[Path]:
-    """Build, validate, and write all 6 pilot vignettes."""
+def write_class_4_6_anchor_corpus() -> list[Path]:
+    """Build, validate, and write all 6 Class 4-6 anchor vignettes."""
     paths: list[Path] = []
-    for vid in SUBPHASE_1_4_PILOT_IDS:
-        paths.append(write_subphase_1_4_pilot_vignette(vid))
+    for vid in CLASS_4_6_ANCHOR_IDS:
+        paths.append(write_class_4_6_anchor_vignette(vid))
     return paths
 
 
 # ============================================================================
-# TBM WAVE 1 BUILDERS (n=14, ids 123-136)
+# TBM SERIES BUILDERS (n=14, ids 123-136)
 # ----------------------------------------------------------------------------
 # Thwaites 5 (123-127) + Marais 3 (128-130) + Heemskerk 6 (131-136).
-# All Class 4 TBM adult HIV-negative (HIV-coinfected atypical land in wave_2).
+# All Class 4 TBM adult HIV-negative (HIV-coinfected atypical cases are in
+# the mixed slots 137-150).
 # CN VI palsy True in 5/14 (123, 126, 129, 131, 133).
 # Xpert MTB/RIF Ultra positive in 12/14; slots 130 (Marais
 # possible, dx_ambig) and 134 (Heemskerk young early-stage) are Xpert NEG with
 # culture-positive confirmation.
 #
-# Resolution #4 applied: slot 125 history.red_flags_present=
+# Slot 125 history.red_flags_present=
 # ["pregnancy_postpartum"] (41yo F second-trimester pregnancy disclosed in
 # prodrome).
 #
-# Architecture: reuses 5.4.2 TBM clinical helpers (_tbm_csf_profile_classical,
-# _tbm_dx_tests_xpert_mtb_rif with xpert_positive extension, _tbm_imaging_
-# basal_meningeal, _tbm_exam_cn_vi_palsy) and 5.4.2 shared helpers generalized
-# via case_prefix="WAVE1" / commit_marker="v1.4.3-wave1".
+# Architecture: reuses the TBM clinical helpers of the anchor vignettes
+# (_tbm_csf_profile_classical, _tbm_dx_tests_xpert_mtb_rif with the
+# xpert_positive option, _tbm_imaging_basal_meningeal, _tbm_exam_cn_vi_palsy)
+# and the shared Class 4-6 helpers.
 # ============================================================================
 
-SUBPHASE_1_4_WAVE1_IDS: list[int] = list(range(123, 137))
-_W1_TBM_OUT = Path("data/vignettes/v2/class_04_tb")
-SUBPHASE_1_4_WAVE1_OUTPUT_DIR: dict[int, Path] = {
-    vid: _W1_TBM_OUT for vid in SUBPHASE_1_4_WAVE1_IDS
+TBM_SERIES_IDS: list[int] = list(range(123, 137))
+_TBM_SERIES_OUT = Path("data/vignettes/v2/class_04_tb")
+TBM_SERIES_OUTPUT_DIR: dict[int, Path] = {
+    vid: _TBM_SERIES_OUT for vid in TBM_SERIES_IDS
 }
-SUBPHASE_1_4_WAVE1_FILENAME: dict[int, str] = {
-    123: "tbm_123_thwaites_hcmc_adult_male_cnpalsy_wave1.json",
-    124: "tbm_124_thwaites_hcmc_adult_male_fatal_wave1.json",
-    125: "tbm_125_thwaites_hcmc_pregnancy_female_wave1.json",
-    126: "tbm_126_thwaites_hcmc_young_male_cnpalsy_wave1.json",
-    127: "tbm_127_thwaites_hcmc_adult_male_smearpos_wave1.json",
-    128: "tbm_128_marais_cape_town_adult_female_definite_wave1.json",
-    129: "tbm_129_marais_cape_town_adult_male_probable_wave1.json",
-    130: "tbm_130_marais_cape_town_adult_female_possible_wave1.json",
-    131: "tbm_131_heemskerk_hcmc_adult_male_standard_wave1.json",
-    132: "tbm_132_heemskerk_hcmc_adult_female_intensified_wave1.json",
-    133: "tbm_133_heemskerk_hcmc_adult_male_severe_fatal_wave1.json",
-    134: "tbm_134_heemskerk_hcmc_young_male_xpertneg_wave1.json",
-    135: "tbm_135_heemskerk_hcmc_elderly_female_sequelae_wave1.json",
-    136: "tbm_136_heemskerk_hcmc_adult_male_early_intensified_wave1.json",
+TBM_SERIES_FILENAME: dict[int, str] = {
+    123: "tbm_123_thwaites_hcmc_adult_male_cnpalsy.json",
+    124: "tbm_124_thwaites_hcmc_adult_male_fatal.json",
+    125: "tbm_125_thwaites_hcmc_pregnancy_female.json",
+    126: "tbm_126_thwaites_hcmc_young_male_cnpalsy.json",
+    127: "tbm_127_thwaites_hcmc_adult_male_smearpos.json",
+    128: "tbm_128_marais_cape_town_adult_female_definite.json",
+    129: "tbm_129_marais_cape_town_adult_male_probable.json",
+    130: "tbm_130_marais_cape_town_adult_female_possible.json",
+    131: "tbm_131_heemskerk_hcmc_adult_male_standard.json",
+    132: "tbm_132_heemskerk_hcmc_adult_female_intensified.json",
+    133: "tbm_133_heemskerk_hcmc_adult_male_severe_fatal.json",
+    134: "tbm_134_heemskerk_hcmc_young_male_xpertneg.json",
+    135: "tbm_135_heemskerk_hcmc_elderly_female_sequelae.json",
+    136: "tbm_136_heemskerk_hcmc_adult_male_early_intensified.json",
 }
 
 
@@ -23947,10 +23918,10 @@ def _build_tbm_vignette_123() -> dict[str, Any]:
             "white cell count 320 per cubic millimeter with 78 percent "
             "lymphocytes, glucose 26 mg/dL, protein 280 mg/dL, and adenosine "
             "deaminase 15 U/L. MRI with contrast demonstrated thick basal "
-            "meningeal enhancement and moderate communicating hydrocephalus. "
-            "CSF Xpert MTB/RIF Ultra was positive and rifampicin susceptible, "
-            "and AFB smear was positive on concentrated specimen. Anchored to "
-            "Thwaites NEJM 2004 (PMID 15496623). Wave 1, hold_for_revision."
+            "meningeal enhancement and moderate communicating hydrocephalus. CSF "
+            "Xpert MTB/RIF Ultra was positive and rifampicin susceptible, and "
+            "AFB smear was positive on concentrated specimen. Anchored to "
+            "Thwaites NEJM 2004 (PMID 15496623). Status: hold_for_revision."
         ),
         "narrative_es": (
             "Varon de 28 anos de Ho Chi Minh, Vietnam, ingresado a un hospital "
@@ -23962,15 +23933,14 @@ def _build_tbm_vignette_123() -> dict[str, Any]:
             "paresia del sexto par craneal izquierdo y papiledema bilateral. "
             "LCR con presion de apertura 22 cmH2O, leucocitos 320 por mm3 (78 "
             "por ciento linfocitos), glucosa 26 mg/dL, proteina 280 mg/dL, "
-            "adenosina desaminasa 15 U/L. RM con engrosamiento meningeo basal "
-            "e hidrocefalia comunicante moderada. Xpert MTB/RIF Ultra positivo "
-            "en LCR, susceptible a rifampicina; baciloscopia positiva. Anclaje "
-            "Thwaites NEJM 2004. Wave 1, pre-adjudicacion."
+            "adenosina desaminasa 15 U/L. RM con engrosamiento meningeo basal e "
+            "hidrocefalia comunicante moderada. Xpert MTB/RIF Ultra positivo en "
+            "LCR, susceptible a rifampicina; baciloscopia positiva. Anclaje "
+            "Thwaites NEJM 2004. Estado previo a la adjudicacion."
         ),
         "rationale": (
-            "Subphase 1.4 commit 5.4.3 wave 1 vignette 123 of 14 for Class 4 "
-            "TBM. Anchored to Thwaites 2004 NEJM HCMC dexamethasone RCT. CN VI "
-            "palsy positive. Pre-adjudication "
+            "Class 4 TBM vignette. Anchored to Thwaites 2004 NEJM HCMC "
+            "dexamethasone RCT. CN VI palsy positive. Pre-adjudication "
             "hold_for_revision."
         ),
         "anchoring_extras": (
@@ -24027,9 +23997,9 @@ def _build_tbm_vignette_124() -> dict[str, Any]:
             "moderate communicating hydrocephalus, and bilateral basal ganglia "
             "infarcts. CSF Xpert MTB/RIF Ultra was positive and rifampicin "
             "susceptible; AFB smear was positive. Despite anti-tuberculous "
-            "therapy and adjunctive dexamethasone, the patient died on "
-            "hospital day five. Anchored to Thwaites NEJM 2004 (PMID 15496623). "
-            "Wave 1, hold_for_revision."
+            "therapy and adjunctive dexamethasone, the patient died on hospital "
+            "day five. Anchored to Thwaites NEJM 2004 (PMID 15496623). Status: "
+            "hold_for_revision."
         ),
         "narrative_es": (
             "Varon de 52 anos de Ho Chi Minh, Vietnam, llevado a urgencias "
@@ -24048,10 +24018,9 @@ def _build_tbm_vignette_124() -> dict[str, Any]:
             "fallecio el dia hospitalario cinco. Anclaje Thwaites NEJM 2004."
         ),
         "rationale": (
-            "Subphase 1.4 commit 5.4.3 wave 1 vignette 124 of 14 for Class 4 "
-            "TBM. Anchored to Thwaites 2004 NEJM HCMC dexamethasone RCT. "
-            "Late-stage TBM mortality stratum (~31 percent cohort mortality). "
-            "Pre-adjudication hold_for_revision."
+            "Class 4 TBM vignette. Anchored to Thwaites 2004 NEJM HCMC "
+            "dexamethasone RCT. Late-stage TBM mortality stratum (~31 percent "
+            "cohort mortality). Pre-adjudication hold_for_revision."
         ),
         "anchoring_extras": (
             "Anchored to Thwaites GE et al. NEJM 2004 (PMID 15496623). "
@@ -24065,7 +24034,7 @@ def _build_tbm_vignette_124() -> dict[str, Any]:
 
 def _build_tbm_vignette_125() -> dict[str, Any]:
     """TBM 125 Thwaites HCMC, 41yo F second-trimester pregnant, mid, survived.
-    Resolution #4: red_flags_present=['pregnancy_postpartum']."""
+    red_flags_present=['pregnancy_postpartum']."""
     return {
         "history": {
             "symptom_onset_to_presentation_days": 25.0,
@@ -24109,7 +24078,8 @@ def _build_tbm_vignette_125() -> dict[str, Any]:
             "enhancement with mild communicating hydrocephalus; obstetric "
             "evaluation confirmed a viable intrauterine pregnancy. CSF Xpert "
             "MTB/RIF Ultra was positive and rifampicin susceptible. Anchored "
-            "to Thwaites NEJM 2004 (PMID 15496623). Wave 1, hold_for_revision."
+            "to Thwaites NEJM 2004 (PMID 15496623). Status: "
+            "hold_for_revision."
         ),
         "narrative_es": (
             "Mujer de 41 anos de Ho Chi Minh, Vietnam, en el segundo "
@@ -24124,20 +24094,19 @@ def _build_tbm_vignette_125() -> dict[str, Any]:
             "U/L. RM con engrosamiento meningeo basal e hidrocefalia "
             "comunicante leve; evaluacion obstetrica confirmo gestacion "
             "viable intrauterina. Xpert MTB/RIF Ultra positivo en LCR. "
-            "Anclaje Thwaites NEJM 2004. Wave 1, pre-adjudicacion."
+            "Anclaje Thwaites NEJM 2004. Estado previo a la adjudicacion."
         ),
         "rationale": (
-            "Subphase 1.4 commit 5.4.3 wave 1 vignette 125 of 14 for Class 4 "
-            "TBM. Anchored to Thwaites 2004 NEJM HCMC dexamethasone RCT. "
-            "Pregnancy red flag (Resolution #4) per schema History."
-            "red_flags_present enum availability. Pre-adjudication "
+            "Class 4 TBM vignette. Anchored to Thwaites 2004 NEJM HCMC "
+            "dexamethasone RCT. Pregnancy red flag per schema "
+            "History.red_flags_present enum availability. Pre-adjudication "
             "hold_for_revision."
         ),
         "anchoring_extras": (
             "Anchored to Thwaites GE et al. NEJM 2004 (PMID 15496623). "
             "41-year-old Vietnamese adult female, second-trimester pregnancy, "
-            "lymphocytic CSF (lymph 80 percent, protein 220, glucose 30), "
-            "ADA 13 U/L, Xpert MTB/RIF Ultra positive. Resolution #4 applied: "
+            "lymphocytic CSF (lymph 80 percent, protein 220, glucose 30), ADA "
+            "13 U/L, Xpert MTB/RIF Ultra positive. Applied: "
             "red_flags_present=['pregnancy_postpartum']. Pre-adjudication "
             "kappa 0.70."
         ),
@@ -24189,7 +24158,7 @@ def _build_tbm_vignette_126() -> dict[str, Any]:
             "U/L. MRI with contrast demonstrated early basal meningeal "
             "enhancement without significant hydrocephalus. CSF Xpert MTB/RIF "
             "Ultra was positive and rifampicin susceptible. Anchored to "
-            "Thwaites NEJM 2004 (PMID 15496623). Wave 1, hold_for_revision."
+            "Thwaites NEJM 2004 (PMID 15496623). Status: hold_for_revision."
         ),
         "narrative_es": (
             "Varon de 24 anos, obrero de construccion, de Ho Chi Minh, "
@@ -24204,12 +24173,11 @@ def _build_tbm_vignette_126() -> dict[str, Any]:
             "180 mg/dL, adenosina desaminasa 11 U/L. RM con engrosamiento "
             "meningeo basal incipiente sin hidrocefalia significativa. Xpert "
             "MTB/RIF Ultra positivo en LCR. Anclaje Thwaites NEJM 2004. "
-            "Wave 1, pre-adjudicacion."
+            "Estado previo a la adjudicacion."
         ),
         "rationale": (
-            "Subphase 1.4 commit 5.4.3 wave 1 vignette 126 of 14 for Class 4 "
-            "TBM. Anchored to Thwaites 2004 NEJM. Early-stage TBM with CN VI "
-            "palsy positive. Pre-adjudication "
+            "Class 4 TBM vignette. Anchored to Thwaites 2004 NEJM. "
+            "Early-stage TBM with CN VI palsy positive. Pre-adjudication "
             "hold_for_revision."
         ),
         "anchoring_extras": (
@@ -24265,28 +24233,27 @@ def _build_tbm_vignette_127() -> dict[str, Any]:
             "U/L. MRI with contrast demonstrated thick basal meningeal "
             "enhancement and mild communicating hydrocephalus. CSF Xpert "
             "MTB/RIF Ultra was positive and rifampicin susceptible, and AFB "
-            "smear was positive on concentrated specimen. Anchored to "
-            "Thwaites NEJM 2004 (PMID 15496623). Wave 1, hold_for_revision."
+            "smear was positive on concentrated specimen. Anchored to Thwaites "
+            "NEJM 2004 (PMID 15496623). Status: hold_for_revision."
         ),
         "narrative_es": (
-            "Varon de 38 anos de Ho Chi Minh, Vietnam, ingresado a un "
-            "hospital terciario tras cuatro semanas de fiebre baja "
-            "persistente, cefalea occipital y perdida de 6 kg. Fumador "
-            "empedernido, sin contacto documentado con tuberculosis. Examen: "
-            "temperatura 38.5 C, Glasgow 13, somnoliento, rigidez de nuca, "
-            "Kernig positivo, sin deficit motor focal, papiledema en fondo de "
-            "ojo. LCR con presion 26 cmH2O, leucocitos 360 por mm3 (75 por "
-            "ciento linfocitos), glucosa 24 mg/dL, proteina 320 mg/dL, "
-            "adenosina desaminasa 16 U/L. RM con engrosamiento meningeo basal "
-            "e hidrocefalia comunicante leve. Xpert MTB/RIF Ultra positivo en "
-            "LCR, susceptible a rifampicina; baciloscopia positiva en muestra "
-            "concentrada. Anclaje Thwaites NEJM 2004. Wave 1, pre-adjudicacion."
+            "Varon de 38 anos de Ho Chi Minh, Vietnam, ingresado a un hospital "
+            "terciario tras cuatro semanas de fiebre baja persistente, cefalea "
+            "occipital y perdida de 6 kg. Fumador empedernido, sin contacto "
+            "documentado con tuberculosis. Examen: temperatura 38.5 C, Glasgow "
+            "13, somnoliento, rigidez de nuca, Kernig positivo, sin deficit "
+            "motor focal, papiledema en fondo de ojo. LCR con presion 26 "
+            "cmH2O, leucocitos 360 por mm3 (75 por ciento linfocitos), glucosa "
+            "24 mg/dL, proteina 320 mg/dL, adenosina desaminasa 16 U/L. RM con "
+            "engrosamiento meningeo basal e hidrocefalia comunicante leve. "
+            "Xpert MTB/RIF Ultra positivo en LCR, susceptible a rifampicina; "
+            "baciloscopia positiva en muestra concentrada. Anclaje Thwaites "
+            "NEJM 2004. Estado previo a la adjudicacion."
         ),
         "rationale": (
-            "Subphase 1.4 commit 5.4.3 wave 1 vignette 127 of 14 for Class 4 "
-            "TBM. Anchored to Thwaites 2004 NEJM. Heavy-smoker risk factor; "
-            "AFB-smear-positive concentrated CSF. Pre-adjudication "
-            "hold_for_revision."
+            "Class 4 TBM vignette. Anchored to Thwaites 2004 NEJM. "
+            "Heavy-smoker risk factor; AFB-smear-positive concentrated CSF. "
+            "Pre-adjudication hold_for_revision."
         ),
         "anchoring_extras": (
             "Anchored to Thwaites GE et al. NEJM 2004 (PMID 15496623). "
@@ -24342,7 +24309,7 @@ def _build_tbm_vignette_128() -> dict[str, Any]:
             "MTB/RIF Ultra was positive and rifampicin susceptible, "
             "satisfying the Marais 2010 uniform case definition for definite "
             "tuberculous meningitis. Anchored to Marais Lancet ID 2010 (PMID "
-            "20822958). Wave 1, hold_for_revision."
+            "20822958). Status: hold_for_revision."
         ),
         "narrative_es": (
             "Mujer de 32 anos de Ciudad del Cabo, Sudafrica, ingresada a un "
@@ -24360,10 +24327,9 @@ def _build_tbm_vignette_128() -> dict[str, Any]:
             "tuberculosa definitiva. Anclaje Marais Lancet ID 2010."
         ),
         "rationale": (
-            "Subphase 1.4 commit 5.4.3 wave 1 vignette 128 of 14 for Class 4 "
-            "TBM. Anchored to Marais 2010 uniform case definition; classical "
-            "definite TBM (microbiologically confirmed). Pre-adjudication "
-            "hold_for_revision."
+            "Class 4 TBM vignette. Anchored to Marais 2010 uniform case "
+            "definition; classical definite TBM (microbiologically "
+            "confirmed). Pre-adjudication hold_for_revision."
         ),
         "anchoring_extras": (
             "Anchored to Marais S et al. Lancet ID 2010 (PMID 20822958), "
@@ -24414,14 +24380,14 @@ def _build_tbm_vignette_129() -> dict[str, Any]:
             "Glasgow Coma Scale 12, somnolent but rousable, neck stiffness, "
             "positive Kernig sign, left lateral gaze palsy consistent with "
             "sixth cranial nerve involvement, and bilateral papilledema. CSF "
-            "showed an opening pressure of 24 cmH2O, white cell count 340 "
-            "per cubic millimeter with 76 percent lymphocytes, glucose 22 "
-            "mg/dL, protein 300 mg/dL, and adenosine deaminase 16 U/L. MRI "
-            "with contrast demonstrated thick basal meningeal enhancement "
-            "with moderate communicating hydrocephalus. CSF Xpert MTB/RIF "
-            "Ultra was positive and rifampicin susceptible; the case meets "
-            "Marais 2010 probable tuberculous meningitis criteria with score "
-            "14. Anchored to Marais Lancet ID 2010. Wave 1, hold_for_revision."
+            "showed an opening pressure of 24 cmH2O, white cell count 340 per "
+            "cubic millimeter with 76 percent lymphocytes, glucose 22 mg/dL, "
+            "protein 300 mg/dL, and adenosine deaminase 16 U/L. MRI with "
+            "contrast demonstrated thick basal meningeal enhancement with "
+            "moderate communicating hydrocephalus. CSF Xpert MTB/RIF Ultra "
+            "was positive and rifampicin susceptible; the case meets Marais "
+            "2010 probable tuberculous meningitis criteria with score 14. "
+            "Anchored to Marais Lancet ID 2010. Status: hold_for_revision."
         ),
         "narrative_es": (
             "Varon de 46 anos de Ciudad del Cabo, Sudafrica, ingresado a un "
@@ -24439,9 +24405,8 @@ def _build_tbm_vignette_129() -> dict[str, Any]:
             "2010 con puntaje 14. Anclaje Marais Lancet ID 2010."
         ),
         "rationale": (
-            "Subphase 1.4 commit 5.4.3 wave 1 vignette 129 of 14 for Class 4 "
-            "TBM. Anchored to Marais 2010 probable category (score 14). CN VI "
-            "palsy positive. Pre-adjudication "
+            "Class 4 TBM vignette. Anchored to Marais 2010 probable category "
+            "(score 14). CN VI palsy positive. Pre-adjudication "
             "hold_for_revision."
         ),
         "anchoring_extras": (
@@ -24500,7 +24465,7 @@ def _build_tbm_vignette_130() -> dict[str, Any]:
             "culture remained pending. The case meets Marais 2010 possible "
             "tuberculous meningitis criteria with score 9; empirical "
             "anti-tuberculous therapy was initiated. Anchored to Marais "
-            "Lancet ID 2010 (PMID 20822958). Wave 1, hold_for_revision."
+            "Lancet ID 2010 (PMID 20822958). Status: hold_for_revision."
         ),
         "narrative_es": (
             "Mujer de 29 anos de Ciudad del Cabo, Sudafrica, ingresada a un "
@@ -24509,20 +24474,20 @@ def _build_tbm_vignette_130() -> dict[str, Any]:
             "en prueba rapida, sin contacto documentado con tuberculosis. "
             "Examen: temperatura 38.0 C, Glasgow 14, confusion leve, rigidez "
             "de nuca, Kernig positivo, sin deficit motor focal, sin "
-            "papiledema. LCR con presion 18 cmH2O, leucocitos 200 por mm3 "
-            "(76 por ciento linfocitos), glucosa 36 mg/dL, proteina 180 "
-            "mg/dL, adenosina desaminasa 11 U/L. RM con engrosamiento "
-            "meningeo basal sutil sin hidrocefalia. Xpert MTB/RIF Ultra "
-            "negativo en muestra inicial; cultivo micobacteriano pendiente. "
-            "El caso cumple criterios posibles de Marais 2010 con puntaje 9; "
-            "tratamiento antifimico empirico iniciado. Anclaje Marais Lancet "
-            "ID 2010. Wave 1, pre-adjudicacion."
+            "papiledema. LCR con presion 18 cmH2O, leucocitos 200 por mm3 (76 "
+            "por ciento linfocitos), glucosa 36 mg/dL, proteina 180 mg/dL, "
+            "adenosina desaminasa 11 U/L. RM con engrosamiento meningeo basal "
+            "sutil sin hidrocefalia. Xpert MTB/RIF Ultra negativo en muestra "
+            "inicial; cultivo micobacteriano pendiente. El caso cumple "
+            "criterios posibles de Marais 2010 con puntaje 9; tratamiento "
+            "antifimico empirico iniciado. Anclaje Marais Lancet ID 2010. "
+            "Estado previo a la adjudicacion."
         ),
         "rationale": (
-            "Subphase 1.4 commit 5.4.3 wave 1 vignette 130 of 14 for Class 4 "
-            "TBM. Anchored to Marais 2010 possible category (score 9). "
-            "Diagnostic ambiguity slot: Xpert NEG with culture pending; "
-            "empirical anti-TB therapy. Pre-adjudication hold_for_revision."
+            "Class 4 TBM vignette. Anchored to Marais 2010 possible category "
+            "(score 9). Diagnostic ambiguity slot: Xpert NEG with culture "
+            "pending; empirical anti-TB therapy. Pre-adjudication "
+            "hold_for_revision."
         ),
         "anchoring_extras": (
             "Anchored to Marais S et al. Lancet ID 2010 (PMID 20822958), "
@@ -24566,22 +24531,22 @@ def _build_tbm_vignette_131() -> dict[str, Any]:
             xpert_positive=True)},
         "narrative_en": (
             "A 36-year-old male construction worker from Ho Chi Minh City "
-            "presented to a tertiary referral hospital with a three-and-a-"
-            "half-week illness of persistent fevers, progressive frontal "
-            "headache, intermittent vomiting, and three days of binocular "
-            "diplopia in the final week. He was HIV negative and reported no "
-            "prior tuberculosis contact. Examination on admission: temperature "
-            "38.6 C, Glasgow Coma Scale 12, somnolent but rousable, neck "
-            "stiffness, positive Kernig sign, right lateral gaze palsy "
-            "consistent with sixth cranial nerve involvement, and "
+            "presented to a tertiary referral hospital with a "
+            "three-and-a-half-week illness of persistent fevers, progressive "
+            "frontal headache, intermittent vomiting, and three days of "
+            "binocular diplopia in the final week. He was HIV negative and "
+            "reported no prior tuberculosis contact. Examination on admission: "
+            "temperature 38.6 C, Glasgow Coma Scale 12, somnolent but "
+            "rousable, neck stiffness, positive Kernig sign, right lateral "
+            "gaze palsy consistent with sixth cranial nerve involvement, and "
             "papilledema. CSF showed an opening pressure of 24 cmH2O, white "
             "cell count 320 per cubic millimeter with 78 percent lymphocytes, "
             "glucose 26 mg/dL, protein 280 mg/dL, and adenosine deaminase 15 "
             "U/L. MRI with contrast demonstrated basal meningeal enhancement "
             "with mild communicating hydrocephalus. CSF Xpert MTB/RIF Ultra "
-            "was positive and rifampicin susceptible. He was randomized to "
-            "the standard anti-tuberculous arm. Anchored to Heemskerk NEJM "
-            "2016 (PMID 26760084). Wave 1, hold_for_revision."
+            "was positive and rifampicin susceptible. He was randomized to the "
+            "standard anti-tuberculous arm. Anchored to Heemskerk NEJM 2016 "
+            "(PMID 26760084). Status: hold_for_revision."
         ),
         "narrative_es": (
             "Varon de 36 anos, obrero de construccion, de Ho Chi Minh, "
@@ -24599,10 +24564,9 @@ def _build_tbm_vignette_131() -> dict[str, Any]:
             "al brazo estandar. Anclaje Heemskerk NEJM 2016."
         ),
         "rationale": (
-            "Subphase 1.4 commit 5.4.3 wave 1 vignette 131 of 14 for Class 4 "
-            "TBM. Anchored to Heemskerk 2016 NEJM intensified-anti-TB RCT, "
-            "standard arm. CN VI palsy positive. Pre-adjudication "
-            "hold_for_revision."
+            "Class 4 TBM vignette. Anchored to Heemskerk 2016 NEJM "
+            "intensified-anti-TB RCT, standard arm. CN VI palsy positive. "
+            "Pre-adjudication hold_for_revision."
         ),
         "anchoring_extras": (
             "Anchored to Heemskerk AD et al. NEJM 2016 (PMID 26760084), "
@@ -24660,7 +24624,7 @@ def _build_tbm_vignette_132() -> dict[str, Any]:
             "was positive and rifampicin susceptible. She was randomized to "
             "the intensified anti-tuberculous arm with rifampicin 15 mg/kg "
             "and levofloxacin. Anchored to Heemskerk NEJM 2016 (PMID "
-            "26760084). Wave 1, hold_for_revision."
+            "26760084). Status: hold_for_revision."
         ),
         "narrative_es": (
             "Mujer de 27 anos, profesora de escuela, de Ho Chi Minh, "
@@ -24678,9 +24642,9 @@ def _build_tbm_vignette_132() -> dict[str, Any]:
             "mg/kg y levofloxacina. Anclaje Heemskerk NEJM 2016."
         ),
         "rationale": (
-            "Subphase 1.4 commit 5.4.3 wave 1 vignette 132 of 14 for Class 4 "
-            "TBM. Anchored to Heemskerk 2016 intensified arm (rifampicin 15 "
-            "mg/kg + levofloxacin). Pre-adjudication hold_for_revision."
+            "Class 4 TBM vignette. Anchored to Heemskerk 2016 intensified "
+            "arm (rifampicin 15 mg/kg + levofloxacin). Pre-adjudication "
+            "hold_for_revision."
         ),
         "anchoring_extras": (
             "Anchored to Heemskerk AD et al. NEJM 2016 (PMID 26760084) "
@@ -24740,7 +24704,7 @@ def _build_tbm_vignette_133() -> dict[str, Any]:
             "infarcts. CSF Xpert MTB/RIF Ultra was positive; AFB smear was "
             "positive. He was randomized to the standard arm and died on "
             "hospital day four. Anchored to Heemskerk NEJM 2016 (PMID "
-            "26760084). Wave 1, hold_for_revision."
+            "26760084). Status: hold_for_revision."
         ),
         "narrative_es": (
             "Varon de 44 anos, albanil, de Ho Chi Minh, Vietnam, llevado por "
@@ -24760,9 +24724,9 @@ def _build_tbm_vignette_133() -> dict[str, Any]:
             "cuatro. Anclaje Heemskerk NEJM 2016."
         ),
         "rationale": (
-            "Subphase 1.4 commit 5.4.3 wave 1 vignette 133 of 14 for Class 4 "
-            "TBM. Anchored to Heemskerk 2016 standard arm late-stage fatal "
-            "outcome. CN VI palsy positive. Pre-adjudication hold_for_revision."
+            "Class 4 TBM vignette. Anchored to Heemskerk 2016 standard arm "
+            "late-stage fatal outcome. CN VI palsy positive. Pre-adjudication "
+            "hold_for_revision."
         ),
         "anchoring_extras": (
             "Anchored to Heemskerk AD et al. NEJM 2016 (PMID 26760084) "
@@ -24806,22 +24770,22 @@ def _build_tbm_vignette_134() -> dict[str, Any]:
             xpert_positive=False)},
         "narrative_en": (
             "A 19-year-old male university student from Ho Chi Minh City "
-            "presented to a tertiary referral hospital after a two-and-a-"
-            "half-week illness of daily low-grade fevers, frontal headache, "
-            "and progressive fatigue. He lived in a university dormitory "
-            "where several peers had been treated for pulmonary tuberculosis "
-            "in the prior year. He was HIV negative. Examination on "
-            "admission: temperature 38.2 C, Glasgow Coma Scale 13, somnolent "
-            "but rousable, neck stiffness, positive Kernig sign, no focal "
-            "motor deficit, and no papilledema. CSF showed an opening "
-            "pressure of 18 cmH2O, white cell count 220 per cubic millimeter "
-            "with 80 percent lymphocytes, glucose 30 mg/dL, protein 200 "
-            "mg/dL, and adenosine deaminase 12 U/L. MRI with contrast "
-            "demonstrated basal meningeal enhancement without hydrocephalus. "
-            "CSF Xpert MTB/RIF Ultra was negative on the initial specimen, "
-            "but mycobacterial culture was positive at four weeks. He was "
-            "randomized to the standard arm. Anchored to Heemskerk NEJM 2016 "
-            "(PMID 26760084). Wave 1, hold_for_revision."
+            "presented to a tertiary referral hospital after a "
+            "two-and-a-half-week illness of daily low-grade fevers, frontal "
+            "headache, and progressive fatigue. He lived in a university "
+            "dormitory where several peers had been treated for pulmonary "
+            "tuberculosis in the prior year. He was HIV negative. "
+            "Examination on admission: temperature 38.2 C, Glasgow Coma "
+            "Scale 13, somnolent but rousable, neck stiffness, positive "
+            "Kernig sign, no focal motor deficit, and no papilledema. CSF "
+            "showed an opening pressure of 18 cmH2O, white cell count 220 "
+            "per cubic millimeter with 80 percent lymphocytes, glucose 30 "
+            "mg/dL, protein 200 mg/dL, and adenosine deaminase 12 U/L. MRI "
+            "with contrast demonstrated basal meningeal enhancement without "
+            "hydrocephalus. CSF Xpert MTB/RIF Ultra was negative on the "
+            "initial specimen, but mycobacterial culture was positive at "
+            "four weeks. He was randomized to the standard arm. Anchored to "
+            "Heemskerk NEJM 2016 (PMID 26760084). Status: hold_for_revision."
         ),
         "narrative_es": (
             "Varon de 19 anos, estudiante universitario, de Ho Chi Minh, "
@@ -24840,10 +24804,9 @@ def _build_tbm_vignette_134() -> dict[str, Any]:
             "Anclaje Heemskerk NEJM 2016."
         ),
         "rationale": (
-            "Subphase 1.4 commit 5.4.3 wave 1 vignette 134 of 14 for Class 4 "
-            "TBM. Anchored to Heemskerk 2016 standard arm, Xpert-negative-"
-            "culture-confirmed case per RCT inclusion. Pre-adjudication "
-            "hold_for_revision."
+            "Class 4 TBM vignette. Anchored to Heemskerk 2016 standard arm, "
+            "Xpert-negative-culture-confirmed case per RCT inclusion. "
+            "Pre-adjudication hold_for_revision."
         ),
         "anchoring_extras": (
             "Anchored to Heemskerk AD et al. NEJM 2016 (PMID 26760084) "
@@ -24889,9 +24852,9 @@ def _build_tbm_vignette_135() -> dict[str, Any]:
             "A 61-year-old woman from Ho Chi Minh City presented to a "
             "tertiary referral hospital with a four-week illness of "
             "progressive headache, a five-kilogram weight loss, persistent "
-            "low-grade fevers, and increasing forgetfulness with word-"
-            "finding difficulty noted by her daughter. She was HIV negative "
-            "and had type 2 diabetes on metformin. Examination on admission: "
+            "low-grade fevers, and increasing forgetfulness with word-finding "
+            "difficulty noted by her daughter. She was HIV negative and had "
+            "type 2 diabetes on metformin. Examination on admission: "
             "temperature 38.4 C, Glasgow Coma Scale 11, stuporous, neck "
             "stiffness, positive Kernig sign, mild left-sided motor weakness, "
             "and bilateral papilledema. CSF showed an opening pressure of 26 "
@@ -24899,11 +24862,11 @@ def _build_tbm_vignette_135() -> dict[str, Any]:
             "lymphocytes, glucose 22 mg/dL, protein 320 mg/dL, and adenosine "
             "deaminase 16 U/L. MRI with contrast demonstrated thick basal "
             "meningeal enhancement, communicating hydrocephalus, and a small "
-            "left thalamic infarct. CSF Xpert MTB/RIF Ultra was positive; "
-            "AFB smear was positive. She was randomized to the intensified "
-            "arm and survived with persistent cognitive impairment and mild "
-            "left hemiparesis. Anchored to Heemskerk NEJM 2016 (PMID "
-            "26760084). Wave 1, hold_for_revision."
+            "left thalamic infarct. CSF Xpert MTB/RIF Ultra was positive; AFB "
+            "smear was positive. She was randomized to the intensified arm "
+            "and survived with persistent cognitive impairment and mild left "
+            "hemiparesis. Anchored to Heemskerk NEJM 2016 (PMID 26760084). "
+            "Status: hold_for_revision."
         ),
         "narrative_es": (
             "Mujer de 61 anos de Ho Chi Minh, Vietnam, ingresada a un "
@@ -24922,10 +24885,9 @@ def _build_tbm_vignette_135() -> dict[str, Any]:
             "deterioro cognitivo persistente y hemiparesia izquierda leve."
         ),
         "rationale": (
-            "Subphase 1.4 commit 5.4.3 wave 1 vignette 135 of 14 for Class 4 "
-            "TBM. Anchored to Heemskerk 2016 intensified arm; mid-stage "
-            "survived with cognitive + motor sequelae. Pre-adjudication "
-            "hold_for_revision."
+            "Class 4 TBM vignette. Anchored to Heemskerk 2016 intensified "
+            "arm; mid-stage survived with cognitive + motor sequelae. "
+            "Pre-adjudication hold_for_revision."
         ),
         "anchoring_extras": (
             "Anchored to Heemskerk AD et al. NEJM 2016 (PMID 26760084) "
@@ -24979,10 +24941,10 @@ def _build_tbm_vignette_136() -> dict[str, Any]:
             "millimeter with 82 percent lymphocytes, glucose 32 mg/dL, "
             "protein 180 mg/dL, and adenosine deaminase 11 U/L. MRI with "
             "contrast demonstrated subtle basal meningeal enhancement "
-            "without hydrocephalus. CSF Xpert MTB/RIF Ultra was positive "
-            "and rifampicin susceptible. He was randomized to the "
-            "intensified arm. Anchored to Heemskerk NEJM 2016 (PMID "
-            "26760084). Wave 1, hold_for_revision."
+            "without hydrocephalus. CSF Xpert MTB/RIF Ultra was positive and "
+            "rifampicin susceptible. He was randomized to the intensified "
+            "arm. Anchored to Heemskerk NEJM 2016 (PMID 26760084). Status: "
+            "hold_for_revision."
         ),
         "narrative_es": (
             "Varon de 33 anos, oficinista, de Ho Chi Minh, Vietnam, "
@@ -25000,9 +24962,9 @@ def _build_tbm_vignette_136() -> dict[str, Any]:
             "Aleatorizado al brazo intensificado. Anclaje Heemskerk NEJM 2016."
         ),
         "rationale": (
-            "Subphase 1.4 commit 5.4.3 wave 1 vignette 136 of 14 for Class 4 "
-            "TBM. Anchored to Heemskerk 2016 intensified arm, early-stage "
-            "presentation. Pre-adjudication hold_for_revision."
+            "Class 4 TBM vignette. Anchored to Heemskerk 2016 intensified "
+            "arm, early-stage presentation. Pre-adjudication "
+            "hold_for_revision."
         ),
         "anchoring_extras": (
             "Anchored to Heemskerk AD et al. NEJM 2016 (PMID 26760084) "
@@ -25015,11 +24977,11 @@ def _build_tbm_vignette_136() -> dict[str, Any]:
 
 
 # ----------------------------------------------------------------------------
-# Wave 1 composer + writer + orchestrator
+# TBM series composer + writer + orchestrator
 # ----------------------------------------------------------------------------
 
 
-_SUBPHASE_1_4_WAVE1_BUILDERS: dict[int, Any] = {
+_TBM_SERIES_BUILDERS: dict[int, Any] = {
     123: _build_tbm_vignette_123,
     124: _build_tbm_vignette_124,
     125: _build_tbm_vignette_125,
@@ -25037,31 +24999,30 @@ _SUBPHASE_1_4_WAVE1_BUILDERS: dict[int, Any] = {
 }
 
 
-def generate_subphase_1_4_wave1_vignette(vignette_id: int) -> dict[str, Any]:
-    """Build one TBM Wave 1 vignette dict from a vignette_id.
+def generate_tbm_series_vignette(vignette_id: int) -> dict[str, Any]:
+    """Build one TBM series vignette dict from a vignette_id.
 
-    Looks up the TBM_DISTRIBUTION spec, PMID_REGISTRY metadata, and the
-    wave_1 clinical builder, then composes the full VignetteSchema-compliant
-    dict. Passes case_prefix="WAVE1" and commit_marker="v1.4.3-wave1" through
-    the generalized shared helpers.
+    Looks up the TBM_DISTRIBUTION entry, PMID_REGISTRY metadata, and the
+    TBM series clinical builder, then composes the full
+    VignetteSchema-compliant dict using the shared Class 4-6 helpers.
     """
-    if vignette_id not in SUBPHASE_1_4_WAVE1_IDS:
+    if vignette_id not in TBM_SERIES_IDS:
         raise KeyError(
-            f"vignette_id {vignette_id!r} not in SUBPHASE_1_4_WAVE1_IDS "
-            f"{SUBPHASE_1_4_WAVE1_IDS}"
+            f"vignette_id {vignette_id!r} not in TBM_SERIES_IDS "
+            f"{TBM_SERIES_IDS}"
         )
     spec = next(s for s in TBM_DISTRIBUTION if s["vignette_id"] == vignette_id)
     pmid_meta = load_pmid_metadata(spec["anchor_pmid"])
-    clinical = _SUBPHASE_1_4_WAVE1_BUILDERS[vignette_id]()
+    clinical = _TBM_SERIES_BUILDERS[vignette_id]()
 
     region = spec["geography_region"]
     ethnicity = spec.get("ethnicity") or "other"
-    altitude = _SUBPHASE_1_4_ALTITUDE_M.get(spec["geography_label"], 100)
+    altitude = _CLASS_4_6_ALTITUDE_M.get(spec["geography_label"], 100)
 
     return {
         "schema_version": "2.0",
-        "case_id": _subphase_1_4_case_id(spec, pmid_meta, case_prefix="WAVE1"),
-        "ground_truth_class": 4,  # TBM (all wave_1 slots Class 4)
+        "case_id": _class_4_6_case_id(spec, pmid_meta),
+        "ground_truth_class": 4,  # TBM (all TBM series slots Class 4)
         "demographics": {
             "age_years": spec["age_years"],
             "sex": spec["sex"],
@@ -25070,30 +25031,30 @@ def generate_subphase_1_4_wave1_vignette(vignette_id: int) -> dict[str, Any]:
             "altitude_residence_m": altitude,
         },
         "history": clinical["history"],
-        "exposure": _subphase_1_4_exposure(spec),
+        "exposure": _class_4_6_exposure(spec),
         "vitals": clinical["vitals"],
         "exam": clinical["exam"],
         "labs": clinical["labs"],
         "csf": clinical["csf"],
         "imaging": clinical["imaging"],
         "diagnostic_tests": clinical["diagnostic_tests"],
-        "adjudication": _subphase_1_4_adjudication(
-            spec, clinical["anchoring_extras"], case_prefix="WAVE1"),
-        "literature_anchors": [_subphase_1_4_literature_anchor(pmid_meta)],
-        "provenance": _subphase_1_4_provenance(
-            clinical["rationale"], commit_marker="v1.4.3-wave1"),
+        "adjudication": _class_4_6_adjudication(
+            spec, clinical["anchoring_extras"]),
+        "literature_anchors": [_class_4_6_literature_anchor(pmid_meta)],
+        "provenance": _class_4_6_provenance(
+            clinical["rationale"]),
         "narrative_es": clinical["narrative_es"],
         "narrative_en": clinical["narrative_en"],
     }
 
 
-def write_subphase_1_4_wave1_vignette(vignette_id: int) -> Path:
-    """Build, validate, and write one TBM Wave 1 vignette to disk."""
-    vignette = generate_subphase_1_4_wave1_vignette(vignette_id)
+def write_tbm_series_vignette(vignette_id: int) -> Path:
+    """Build, validate, and write one TBM series vignette to disk."""
+    vignette = generate_tbm_series_vignette(vignette_id)
     VignetteSchema.model_validate(vignette)
-    output_dir = SUBPHASE_1_4_WAVE1_OUTPUT_DIR[vignette_id]
+    output_dir = TBM_SERIES_OUTPUT_DIR[vignette_id]
     output_dir.mkdir(parents=True, exist_ok=True)
-    filepath = output_dir / SUBPHASE_1_4_WAVE1_FILENAME[vignette_id]
+    filepath = output_dir / TBM_SERIES_FILENAME[vignette_id]
     filepath.write_text(
         json.dumps(vignette, indent=2, sort_keys=False, ensure_ascii=False),
         encoding="utf-8",
@@ -25102,11 +25063,11 @@ def write_subphase_1_4_wave1_vignette(vignette_id: int) -> Path:
     return filepath
 
 
-def write_subphase_1_4_wave1_corpus() -> list[Path]:
-    """Build, validate, and write all 14 TBM Wave 1 vignettes."""
+def write_tbm_series_corpus() -> list[Path]:
+    """Build, validate, and write all 14 TBM series vignettes."""
     paths: list[Path] = []
-    for vid in SUBPHASE_1_4_WAVE1_IDS:
-        paths.append(write_subphase_1_4_wave1_vignette(vid))
+    for vid in TBM_SERIES_IDS:
+        paths.append(write_tbm_series_vignette(vid))
     return paths
 
 
@@ -25117,7 +25078,7 @@ def main() -> None:
         --output-dir: override default OUTPUT_DIR.
         --dry-run: validate and print JSON to stdout instead of writing.
         --vignette-id: required; integer 1-60 selecting one entry of
-            DAY1_DISTRIBUTION (1-20) or DAY2_DISTRIBUTION (21-60).
+            PAM_DISTRIBUTION_1_20 (1-20) or PAM_DISTRIBUTION_21_60 (21-60).
     """
     parser = argparse.ArgumentParser(
         description="Generate one PAM vignette.",
@@ -25152,14 +25113,14 @@ def main() -> None:
         )
         sys.exit(1)
 
-    combined_specs = list(DAY1_DISTRIBUTION) + list(DAY2_DISTRIBUTION)
+    combined_specs = list(PAM_DISTRIBUTION_1_20) + list(PAM_DISTRIBUTION_21_60)
     spec = next(
         (v for v in combined_specs if v["vignette_id"] == args.vignette_id),
         None,
     )
     if spec is None:
         logger.error(
-            "vignette_id %d not found in DAY1+DAY2 distributions "
+            "vignette_id %d not found in the PAM distributions (vignettes 1-60) "
             "(valid range 1-60).",
             args.vignette_id,
         )

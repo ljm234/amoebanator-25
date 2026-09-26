@@ -29,7 +29,7 @@ def test_v1_5_binary_to_v2_0_nine_class_migration() -> None:
 
 
 def test_class_label_enum_stable() -> None:
-    """Sanity check: ClassLabel enum order matches V2.0 schema lock."""
+    """Sanity check: ClassLabel enum order matches the V2.0 schema."""
     expected_order = [
         ("PAM", 1),
         ("BACTERIAL", 2),

@@ -1,6 +1,6 @@
 {
   "schema_version": "2.0",
-  "case_id": "BACT-D3-063-Lancet-Infect-Dis-2016-Netherlands-SP-Late-Fatal",
+  "case_id": "BACT-063-Lancet-Infect-Dis-2016-Netherlands-SP-Late-Fatal",
   "ground_truth_class": 2,
   "demographics": {
     "age_years": 72,
@@ -101,12 +101,12 @@
   },
   "adjudication": {
     "adjudicator_ids": [
-      "WAVE2-PRE-ADJ-1",
-      "WAVE2-PRE-ADJ-2"
+      "PRE-ADJ-1",
+      "PRE-ADJ-2"
     ],
     "cohen_kappa": 0.0,
     "disagreement_resolution": null,
-    "anchoring_documentation": "stage=pre_adjudication; status=pending_external_review; self_review_disposition=hold_for_revision; self_review_notes=wave 2 vignette anchored to PMID 26652862 (Bijlsma 2016 Lancet ID); external clinical adjudication pending; classification provisional. adjudicator_ids=WAVE2-PRE-ADJ-1, WAVE2-PRE-ADJ-2 (sentinel); cohen_kappa=0.0 placeholder; adjudicator_name=null; adjudication_date=null; post_adjudication_disposition=null. Subphase 1.3 commit 5.3.4 (2026-05-08). anchor=Bijlsma-Lancet-ID-2016 stratum=elderly-fatal.",
+    "anchoring_documentation": "stage=pre_adjudication; status=pending_external_review; self_review_disposition=hold_for_revision; self_review_notes=vignette anchored to PMID 26652862 (Bijlsma 2016 Lancet ID); external clinical adjudication pending; classification provisional. adjudicator_ids=PRE-ADJ-1, PRE-ADJ-2 (sentinel); cohen_kappa=0.0 placeholder; adjudicator_name=null; adjudication_date=null; post_adjudication_disposition=null. Generated 2026-05-08. anchor=Bijlsma-Lancet-ID-2016 stratum=elderly-fatal.",
     "inclusion_decision": "hold_for_revision"
   },
   "literature_anchors": [
@@ -118,11 +118,11 @@
   ],
   "provenance": {
     "generation_timestamp_utc": "2026-05-08T15:00:00Z",
-    "generator_model_identifier": "scripts.generate_pam_vignettes/v1.subphase_1_3_commit_5_3_4",
+    "generator_model_identifier": "scripts.generate_pam_vignettes/v1",
     "prompt_hash_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
     "schema_version": "2.0",
-    "inclusion_decision_rationale": "Anchored to PMID 26652862 (Bijlsma 2016 Lancet Infect Dis), 1,412-episode prospective Netherlands cohort 2006-2014 (SP 70 percent, mortality 17 percent overall, elderly stratum elevated). Demographic anchor (72yo F elderly) sits in elderly stratum. CSF profile bacterial range. Imputation tiers: tier_1_primary={age, sex, csf_culture, csf_gram_stain}; tier_3_within_cohort={csf_wbc, neutrophil_pct, glucose, protein, gcs, hyponatremia}; tier_4_priors={temp, symptom_days, hr}. Indeterminate=none. Diagnostic_ambiguity=false. Outcome=fatal_hospital_day_3. Antibiotic_started_hours=2. Tier: tier_3_imputation_within_cohort_review. 5.3.4 wave2 SP-NL-elderly-fatal."
+    "inclusion_decision_rationale": "Anchored to PMID 26652862 (Bijlsma 2016 Lancet Infect Dis), 1,412-episode prospective Netherlands cohort 2006-2014 (SP 70 percent, mortality 17 percent overall, elderly stratum elevated). Demographic anchor (72yo F elderly) sits in elderly stratum. CSF profile bacterial range. Imputation tiers: tier_1_primary={age, sex, csf_culture, csf_gram_stain}; tier_3_within_cohort={csf_wbc, neutrophil_pct, glucose, protein, gcs, hyponatremia}; tier_4_priors={temp, symptom_days, hr}. Indeterminate=none. Diagnostic_ambiguity=false. Outcome=fatal_hospital_day_3. Antibiotic_started_hours=2. Tier: tier_3_imputation_within_cohort_review. Stratum: SP-NL-elderly-fatal."
   },
-  "narrative_es": "Mujer de 72 anos en Paises Bajos (Amsterdam), ingresada a urgencias terciarias tras tres dias de fiebre progresiva, cefalea y confusion con obnubilacion. Examen: temperatura 39.1 C, escala de Glasgow 7, rigidez de nuca, signo de Kernig positivo, sin deficit focal, sin exantema. Liquido cefalorraquideo mostro presion de apertura 27 cmH2O, leucocitos 4,400 por mm3 (82 por ciento neutrofilos), glucosa 24 mg/dL, proteina 195 mg/dL. Tincion de Gram con diplococos grampositivos y cultivo Streptococcus pneumoniae. Anclaje primario en cohorte prospectiva Bijlsma 2016 Lancet ID (PMID 26652862, 1,412 episodios 2006-2014, estrato de adultos mayores con mortalidad elevada por encima del 17 por ciento global de la cohorte). Resultado: fatal en hospital dia 3. Subphase 1.3 commit 5.3.4 wave 2.",
-  "narrative_en": "A 72-year-old woman in the Netherlands presented to a tertiary emergency department in Amsterdam after a 3-day course of progressive fever, headache, and confusion progressing to obtundation. Examination on admission: temperature 39.1 C, Glasgow Coma Scale 7, neck stiffness, positive Kernig sign, no focal deficit, no rash. CSF showed opening pressure 27 cmH2O, white cell count 4,400 per cubic millimeter (82 percent neutrophils), glucose 24 mg/dL, protein 195 mg/dL. Gram stain revealed gram-positive diplococci; culture identified Streptococcus pneumoniae. Primary anchor: PMID 26652862 (Bijlsma 2016 Lancet Infect Dis), elderly stratum mortality elevated above the 17 percent cohort-overall rate. Outcome: fatal hospital day 3. Subphase 1.3 commit 5.3.4 wave 2, pre-adjudication hold_for_revision."
+  "narrative_es": "Mujer de 72 anos en Paises Bajos (Amsterdam), ingresada a urgencias terciarias tras tres dias de fiebre progresiva, cefalea y confusion con obnubilacion. Examen: temperatura 39.1 C, escala de Glasgow 7, rigidez de nuca, signo de Kernig positivo, sin deficit focal, sin exantema. Liquido cefalorraquideo mostro presion de apertura 27 cmH2O, leucocitos 4,400 por mm3 (82 por ciento neutrofilos), glucosa 24 mg/dL, proteina 195 mg/dL. Tincion de Gram con diplococos grampositivos y cultivo Streptococcus pneumoniae. Anclaje primario en cohorte prospectiva Bijlsma 2016 Lancet ID (PMID 26652862, 1,412 episodios 2006-2014, estrato de adultos mayores con mortalidad elevada por encima del 17 por ciento global de la cohorte). Resultado: fatal en hospital dia 3.",
+  "narrative_en": "A 72-year-old woman in the Netherlands presented to a tertiary emergency department in Amsterdam after a 3-day course of progressive fever, headache, and confusion progressing to obtundation. Examination on admission: temperature 39.1 C, Glasgow Coma Scale 7, neck stiffness, positive Kernig sign, no focal deficit, no rash. CSF showed opening pressure 27 cmH2O, white cell count 4,400 per cubic millimeter (82 percent neutrophils), glucose 24 mg/dL, protein 195 mg/dL. Gram stain revealed gram-positive diplococci; culture identified Streptococcus pneumoniae. Primary anchor: PMID 26652862 (Bijlsma 2016 Lancet Infect Dis), elderly stratum mortality elevated above the 17 percent cohort-overall rate. Outcome: fatal hospital day 3. Pre-adjudication status: hold_for_revision."
 }

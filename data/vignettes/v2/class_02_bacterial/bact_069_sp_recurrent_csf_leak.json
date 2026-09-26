@@ -1,6 +1,6 @@
 {
   "schema_version": "2.0",
-  "case_id": "BACT-D3-069-CID-2004-US-South-region-SP-Mid",
+  "case_id": "BACT-069-CID-2004-US-South-region-SP-Mid",
   "ground_truth_class": 2,
   "demographics": {
     "age_years": 19,
@@ -101,12 +101,12 @@
   },
   "adjudication": {
     "adjudicator_ids": [
-      "WAVE1-PRE-ADJ-1",
-      "WAVE1-PRE-ADJ-2"
+      "PRE-ADJ-1",
+      "PRE-ADJ-2"
     ],
     "cohen_kappa": 0.0,
     "disagreement_resolution": null,
-    "anchoring_documentation": "stage=pre_adjudication; status=pending_external_review; self_review_disposition=hold_for_revision; self_review_notes=wave 1 vignette anchored to PMID 15494903 (Tunkel IDSA 2004); external clinical adjudication pending; classification provisional. adjudicator_ids=WAVE1-PRE-ADJ-1, WAVE1-PRE-ADJ-2 (sentinel); cohen_kappa=0.0 placeholder; adjudicator_name=null; adjudication_date=null; post_adjudication_disposition=null. Subphase 1.3 commit 5.3.3 (2026-05-08). anchor=Tunkel-IDSA-2004 risk_factor=anatomic-CSF-leak.",
+    "anchoring_documentation": "stage=pre_adjudication; status=pending_external_review; self_review_disposition=hold_for_revision; self_review_notes=vignette anchored to PMID 15494903 (Tunkel IDSA 2004); external clinical adjudication pending; classification provisional. adjudicator_ids=PRE-ADJ-1, PRE-ADJ-2 (sentinel); cohen_kappa=0.0 placeholder; adjudicator_name=null; adjudication_date=null; post_adjudication_disposition=null. Generated 2026-05-08. anchor=Tunkel-IDSA-2004 risk_factor=anatomic-CSF-leak.",
     "inclusion_decision": "hold_for_revision"
   },
   "literature_anchors": [
@@ -118,11 +118,11 @@
   ],
   "provenance": {
     "generation_timestamp_utc": "2026-05-08T12:00:00Z",
-    "generator_model_identifier": "scripts.generate_pam_vignettes/v1.subphase_1_3_commit_5_3_3",
+    "generator_model_identifier": "scripts.generate_pam_vignettes/v1",
     "prompt_hash_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
     "schema_version": "2.0",
-    "inclusion_decision_rationale": "Anchored to PMID 15494903 (Tunkel IDSA 2004 CID guideline) recurrent SP meningitis recommendations. Anatomic CSF rhinorrhea raises recurrent-SP risk per guideline. Demographic anchor (19yo M with anatomic CSF leak) reflects the recurrent-meningitis stratum. CSF profile bacterial range. Imputation tiers: tier_1_primary={age, sex, csf_culture, csf_gram_stain, anatomic_leak history}; tier_3_within_cohort={csf_wbc, neutrophil_pct, glucose, protein}; tier_4_priors={temp, gcs, symptom_days}. Indeterminate=none. Diagnostic_ambiguity=false. Outcome=survived. Antibiotic_started_hours=2. Tier: tier_4_imputation_idsa_guideline_anchored. 5.3.3 wave1 SP-recurrent-CSF-leak."
+    "inclusion_decision_rationale": "Anchored to PMID 15494903 (Tunkel IDSA 2004 CID guideline) recurrent SP meningitis recommendations. Anatomic CSF rhinorrhea raises recurrent-SP risk per guideline. Demographic anchor (19yo M with anatomic CSF leak) reflects the recurrent-meningitis stratum. CSF profile bacterial range. Imputation tiers: tier_1_primary={age, sex, csf_culture, csf_gram_stain, anatomic_leak history}; tier_3_within_cohort={csf_wbc, neutrophil_pct, glucose, protein}; tier_4_priors={temp, gcs, symptom_days}. Indeterminate=none. Diagnostic_ambiguity=false. Outcome=survived. Antibiotic_started_hours=2. Tier: tier_4_imputation_idsa_guideline_anchored. Stratum: SP-recurrent-CSF-leak."
   },
-  "narrative_es": "Varon de 19 anos en region sur de Estados Unidos, ingresado a urgencias terciarias con dos dias de fiebre 39.2 C, cefalea y rigidez de nuca. Antecedente de fractura de base de craneo con rinorrea de liquido cefalorraquideo tres anos antes (no corregida quirurgicamente); segundo episodio de meningitis bacteriana. Examen: temperatura 39.2 C, escala de Glasgow 13, rigidez de nuca, signo de Kernig positivo, sin deficit focal, sin exantema. Liquido cefalorraquideo mostro presion de apertura 26 cmH2O, leucocitos 4,200 por mm3 (85 por ciento neutrofilos), glucosa 25 mg/dL, proteina 180 mg/dL. Tincion de Gram con diplococos grampositivos y cultivo Streptococcus pneumoniae. Anclaje en guia IDSA Tunkel 2004 (PMID 15494903). Subphase 1.3 commit 5.3.3 wave 1.",
-  "narrative_en": "A 19-year-old man in the US South region presented to a tertiary emergency department with a 2-day history of fever to 39.2 C, headache, and neck stiffness. He had a skull-base fracture with CSF rhinorrhea three years prior following a motor vehicle accident that had not been surgically corrected; this was his second episode of bacterial meningitis. Examination on admission: temperature 39.2 C, Glasgow Coma Scale 13, neck stiffness, positive Kernig sign, no focal deficit, no rash. CSF showed opening pressure 26 cmH2O, white cell count 4,200 per cubic millimeter (85 percent neutrophils), glucose 25 mg/dL, protein 180 mg/dL. Gram stain revealed gram-positive diplococci; culture identified Streptococcus pneumoniae. Anchored to Tunkel IDSA 2004 (PMID 15494903) recurrent SP meningitis recommendations. Outcome: survived. Subphase 1.3 commit 5.3.3 wave 1, pre-adjudication hold_for_revision."
+  "narrative_es": "Varon de 19 anos en region sur de Estados Unidos, ingresado a urgencias terciarias con dos dias de fiebre 39.2 C, cefalea y rigidez de nuca. Antecedente de fractura de base de craneo con rinorrea de liquido cefalorraquideo tres anos antes (no corregida quirurgicamente); segundo episodio de meningitis bacteriana. Examen: temperatura 39.2 C, escala de Glasgow 13, rigidez de nuca, signo de Kernig positivo, sin deficit focal, sin exantema. Liquido cefalorraquideo mostro presion de apertura 26 cmH2O, leucocitos 4,200 por mm3 (85 por ciento neutrofilos), glucosa 25 mg/dL, proteina 180 mg/dL. Tincion de Gram con diplococos grampositivos y cultivo Streptococcus pneumoniae. Anclaje en guia IDSA Tunkel 2004 (PMID 15494903).",
+  "narrative_en": "A 19-year-old man in the US South region presented to a tertiary emergency department with a 2-day history of fever to 39.2 C, headache, and neck stiffness. He had a skull-base fracture with CSF rhinorrhea three years prior following a motor vehicle accident that had not been surgically corrected; this was his second episode of bacterial meningitis. Examination on admission: temperature 39.2 C, Glasgow Coma Scale 13, neck stiffness, positive Kernig sign, no focal deficit, no rash. CSF showed opening pressure 26 cmH2O, white cell count 4,200 per cubic millimeter (85 percent neutrophils), glucose 25 mg/dL, protein 180 mg/dL. Gram stain revealed gram-positive diplococci; culture identified Streptococcus pneumoniae. Anchored to Tunkel IDSA 2004 (PMID 15494903) recurrent SP meningitis recommendations. Outcome: survived. Pre-adjudication status: hold_for_revision."
 }

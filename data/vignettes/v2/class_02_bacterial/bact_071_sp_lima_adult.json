@@ -1,6 +1,6 @@
 {
   "schema_version": "2.0",
-  "case_id": "BACT-D3-071-CID-2004-Lima-SP-Mid",
+  "case_id": "BACT-071-CID-2004-Lima-SP-Mid",
   "ground_truth_class": 2,
   "demographics": {
     "age_years": 38,
@@ -101,12 +101,12 @@
   },
   "adjudication": {
     "adjudicator_ids": [
-      "WAVE1-PRE-ADJ-1",
-      "WAVE1-PRE-ADJ-2"
+      "PRE-ADJ-1",
+      "PRE-ADJ-2"
     ],
     "cohen_kappa": 0.0,
     "disagreement_resolution": null,
-    "anchoring_documentation": "stage=pre_adjudication; status=pending_external_review; self_review_disposition=hold_for_revision; self_review_notes=wave 1 vignette anchored to PMID 15494903 (Tunkel IDSA 2004); external clinical adjudication pending; classification provisional. adjudicator_ids=WAVE1-PRE-ADJ-1, WAVE1-PRE-ADJ-2 (sentinel); cohen_kappa=0.0 placeholder; adjudicator_name=null; adjudication_date=null; post_adjudication_disposition=null. Subphase 1.3 commit 5.3.3 (2026-05-08). anchor=Tunkel-IDSA-2004 region=Lima-Peru.",
+    "anchoring_documentation": "stage=pre_adjudication; status=pending_external_review; self_review_disposition=hold_for_revision; self_review_notes=vignette anchored to PMID 15494903 (Tunkel IDSA 2004); external clinical adjudication pending; classification provisional. adjudicator_ids=PRE-ADJ-1, PRE-ADJ-2 (sentinel); cohen_kappa=0.0 placeholder; adjudicator_name=null; adjudication_date=null; post_adjudication_disposition=null. Generated 2026-05-08. anchor=Tunkel-IDSA-2004 region=Lima-Peru.",
     "inclusion_decision": "hold_for_revision"
   },
   "literature_anchors": [
@@ -118,11 +118,11 @@
   ],
   "provenance": {
     "generation_timestamp_utc": "2026-05-08T12:00:00Z",
-    "generator_model_identifier": "scripts.generate_pam_vignettes/v1.subphase_1_3_commit_5_3_3",
+    "generator_model_identifier": "scripts.generate_pam_vignettes/v1",
     "prompt_hash_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
     "schema_version": "2.0",
-    "inclusion_decision_rationale": "Anchored to PMID 15494903 (Tunkel IDSA 2004 CID guideline) for adult community-acquired pneumococcal meningitis empiric coverage. Peru-anchored geography (5/30 BACT slots assigned to Peru per 5.3.1 distribution lock). Demographic anchor (38yo F adult) sits in standard adult community stratum. CSF profile bacterial range. Imputation tiers: tier_1_primary={age, sex, region, csf_culture, csf_gram_stain}; tier_3_within_cohort={csf_wbc, neutrophil_pct, glucose, protein}; tier_4_priors={temp, gcs, symptom_days}. Indeterminate=none. Diagnostic_ambiguity=false. Outcome=survived. Antibiotic_started_hours=1. Tier: tier_4_imputation_idsa_guideline_anchored. 5.3.3 wave1 SP-Lima-adult."
+    "inclusion_decision_rationale": "Anchored to PMID 15494903 (Tunkel IDSA 2004 CID guideline) for adult community-acquired pneumococcal meningitis empiric coverage. Peru-anchored geography (5/30 BACT slots were assigned to Peru in the original distribution; 4/28 after the Tumbes Listeria slot was removed). Demographic anchor (38yo F adult) sits in standard adult community stratum. CSF profile bacterial range. Imputation tiers: tier_1_primary={age, sex, region, csf_culture, csf_gram_stain}; tier_3_within_cohort={csf_wbc, neutrophil_pct, glucose, protein}; tier_4_priors={temp, gcs, symptom_days}. Indeterminate=none. Diagnostic_ambiguity=false. Outcome=survived. Antibiotic_started_hours=1. Tier: tier_4_imputation_idsa_guideline_anchored. Stratum: SP-Lima-adult."
   },
-  "narrative_es": "Mujer de 38 anos en Lima, Peru, ingresada a urgencias terciarias con dos dias de fiebre 39.0 C, cefalea intensa, rigidez de nuca y fotofobia. Examen: temperatura 39.0 C, escala de Glasgow 13, rigidez de nuca, signo de Kernig positivo, sin deficit focal, sin exantema. Liquido cefalorraquideo mostro presion de apertura 28 cmH2O, leucocitos 5,800 por mm3 (88 por ciento neutrofilos), glucosa 22 mg/dL, proteina 200 mg/dL. Tincion de Gram con diplococos grampositivos y cultivo Streptococcus pneumoniae. Anclaje en guia IDSA Tunkel 2004 (PMID 15494903) para cobertura empirica con ceftriaxona-vancomicina mas dexametasona en meningitis neumococica del adulto adquirida en la comunidad. Geografia anclada a Peru (5/30 escenarios bacterianos de la distribucion 5.3.1 asignados a Peru). Resultado: sobrevivio sin secuelas. Subphase 1.3 commit 5.3.3 wave 1, pre-adjudicacion hold_for_revision.",
-  "narrative_en": "A 38-year-old woman in Lima, Peru presented to a tertiary urban emergency department with a 2-day history of fever to 39.0 C, severe headache, neck stiffness, and photophobia. Examination on admission: temperature 39.0 C, Glasgow Coma Scale 13, neck stiffness, positive Kernig sign, no focal deficit, no rash. CSF showed opening pressure 28 cmH2O, white cell count 5,800 per cubic millimeter (88 percent neutrophils), glucose 22 mg/dL, protein 200 mg/dL. Gram stain revealed gram-positive diplococci; culture identified Streptococcus pneumoniae. Anchored to Tunkel IDSA 2004 (PMID 15494903) for empiric ceftriaxone-vancomycin coverage of adult community-acquired pneumococcal meningitis. Outcome: survived no sequelae. Subphase 1.3 commit 5.3.3 wave 1, pre-adjudication hold_for_revision."
+  "narrative_es": "Mujer de 38 anos en Lima, Peru, ingresada a urgencias terciarias con dos dias de fiebre 39.0 C, cefalea intensa, rigidez de nuca y fotofobia. Examen: temperatura 39.0 C, escala de Glasgow 13, rigidez de nuca, signo de Kernig positivo, sin deficit focal, sin exantema. Liquido cefalorraquideo mostro presion de apertura 28 cmH2O, leucocitos 5,800 por mm3 (88 por ciento neutrofilos), glucosa 22 mg/dL, proteina 200 mg/dL. Tincion de Gram con diplococos grampositivos y cultivo Streptococcus pneumoniae. Anclaje en guia IDSA Tunkel 2004 (PMID 15494903) para cobertura empirica con ceftriaxona-vancomicina mas dexametasona en meningitis neumococica del adulto adquirida en la comunidad. Geografia anclada a Peru (5/30 escenarios bacterianos asignados a Peru en la distribucion original; 4/28 tras retirar el escenario de Listeria de Tumbes). Resultado: sobrevivio sin secuelas. Estado previo a la adjudicacion: hold_for_revision.",
+  "narrative_en": "A 38-year-old woman in Lima, Peru presented to a tertiary urban emergency department with a 2-day history of fever to 39.0 C, severe headache, neck stiffness, and photophobia. Examination on admission: temperature 39.0 C, Glasgow Coma Scale 13, neck stiffness, positive Kernig sign, no focal deficit, no rash. CSF showed opening pressure 28 cmH2O, white cell count 5,800 per cubic millimeter (88 percent neutrophils), glucose 22 mg/dL, protein 200 mg/dL. Gram stain revealed gram-positive diplococci; culture identified Streptococcus pneumoniae. Anchored to Tunkel IDSA 2004 (PMID 15494903) for empiric ceftriaxone-vancomycin coverage of adult community-acquired pneumococcal meningitis. Outcome: survived no sequelae. Pre-adjudication status: hold_for_revision."
 }

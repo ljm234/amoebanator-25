@@ -40,7 +40,7 @@ def _naegleria_pcr_sensspec(obj):
 def test_pam_naegleria_pcr_nulled_in_all_60_builders():
     import scripts.vignettes.generate_pam_vignettes as g
 
-    specs = list(g.DAY1_DISTRIBUTION) + list(g.DAY2_DISTRIBUTION)
+    specs = list(g.PAM_DISTRIBUTION_1_20) + list(g.PAM_DISTRIBUTION_21_60)
     assert len(specs) == 60, f"expected 60 PAM specs, got {len(specs)}"
     total = 0
     for spec in specs:

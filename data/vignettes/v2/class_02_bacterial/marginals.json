@@ -69,7 +69,7 @@
     "PMID_35493127_Marcus_2022_OFID_serogroup_B_military_trainee",
     "PMID_35265327_Park_2022_JOGH_Hib_meningitis_burden_children",
     "PMID_29509834_Soeters_2018_CID_US_invasive_H_influenzae",
-    "PMID_27831604_Davalos_2016_RPMESP_Lima_pediatric_pneumococcal_5_3_2_pilot"
+    "PMID_27831604_Davalos_2016_RPMESP_Lima_pediatric_pneumococcal"
   ],
   "diagnostic_ambiguity_count": 5,
   "peru_anchor_count": 4,
@@ -81,6 +81,6 @@
   },
   "freshwater_exposure_within_14d_for_all": false,
   "adjudication_state": "pre_adjudication_hold_for_revision",
-  "pilots_validated_5_3_2": 3,
+  "anchor_vignette_count": 3,
   "diagnostic_ambiguity_type": "partial_antibiotic_pretreatment_sterile_cultures"
 }

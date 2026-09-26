@@ -3,9 +3,9 @@
 TBM_DISTRIBUTION (Class 4, vignette_id 121-150 without the retired 144 and
 145), CRYPTO_DISTRIBUTION (Class 5, 151-180), and GAE_DISTRIBUTION (Class 6,
 181-210). The tests check slot counts and id ranges, that every anchor PMID
-is in PMID_REGISTRY, the pilot and wave_assignment counts, the demographic
-strata and clinical-feature targets of each class, and two schema encoding
-workarounds:
+is in PMID_REGISTRY, the counts of the anchor and set_assignment fields, the
+demographic strata and clinical-feature targets of each class, and two schema
+encoding workarounds:
 - slots 184, 185 geography_region collapsed to peru_lima_coast (city in
   geography_label); schema enum lacks peru_lambayeque / peru_la_libertad keys.
 - slots 177, 178 idiopathic CD4 lymphopenia HIV-neg encoded as
@@ -112,32 +112,35 @@ def test_freshwater_exposure_within_14d_false_all_slots():
             )
 
 
-def test_pilot_flag_on_six_slots_two_per_class():
-    pilots = [
+def test_anchor_flag_on_six_slots_two_per_class():
+    flagged = [
         s for dist in (TBM_DISTRIBUTION, CRYPTO_DISTRIBUTION, GAE_DISTRIBUTION)
-        for s in dist if s.get("pilot") is True
+        for s in dist if s.get("anchor") is True
     ]
-    assert len(pilots) == 6, f"Expected 6 pilots, got {len(pilots)}: {[p['vignette_id'] for p in pilots]}"
+    assert len(flagged) == 6, (
+        f"Expected 6 slots with anchor=True, got {len(flagged)}: "
+        f"{[p['vignette_id'] for p in flagged]}"
+    )
     # 2 per class
     for dist, name in (
         (TBM_DISTRIBUTION, "TBM"),
         (CRYPTO_DISTRIBUTION, "CRYPTO"),
         (GAE_DISTRIBUTION, "GAE"),
     ):
-        n = sum(1 for s in dist if s.get("pilot") is True)
-        assert n == 2, f"{name} pilots={n}, expected 2"
+        n = sum(1 for s in dist if s.get("anchor") is True)
+        assert n == 2, f"{name} slots with anchor=True: {n}, expected 2"
 
 
-def test_wave_assignment_counts():
-    waves = {"pilot": 0, "wave_1": 0, "wave_2": 0}
+def test_set_assignment_counts():
+    sets = {"anchor": 0, "set_a": 0, "set_b": 0}
     for dist in (TBM_DISTRIBUTION, CRYPTO_DISTRIBUTION, GAE_DISTRIBUTION):
         for slot in dist:
-            wa = slot["wave_assignment"]
-            assert wa in waves, f"vid={slot['vignette_id']} bad wave_assignment={wa!r}"
-            waves[wa] += 1
-    assert waves["pilot"] == 6, f"pilot total = {waves['pilot']}, expected 6"
-    assert waves["wave_1"] == 42, f"wave_1 total = {waves['wave_1']}, expected 42"
-    assert waves["wave_2"] == 40, f"wave_2 total = {waves['wave_2']}, expected 40"
+            sa = slot["set_assignment"]
+            assert sa in sets, f"vid={slot['vignette_id']} bad set_assignment={sa!r}"
+            sets[sa] += 1
+    assert sets["anchor"] == 6, f"anchor total = {sets['anchor']}, expected 6"
+    assert sets["set_a"] == 42, f"set_a total = {sets['set_a']}, expected 42"
+    assert sets["set_b"] == 40, f"set_b total = {sets['set_b']}, expected 40"
 
 
 # ----------------------------------------------------------------------

@@ -1,6 +1,6 @@
 {
   "schema_version": "2.0",
-  "case_id": "BACT-D3-062-NEJM-2004-Netherlands-Adult",
+  "case_id": "BACT-062-NEJM-2004-Netherlands-Adult",
   "ground_truth_class": 2,
   "demographics": {
     "age_years": 55,
@@ -101,12 +101,12 @@
   },
   "adjudication": {
     "adjudicator_ids": [
-      "PILOT-PRE-ADJ-1",
-      "PILOT-PRE-ADJ-2"
+      "PRE-ADJ-1",
+      "PRE-ADJ-2"
     ],
     "cohen_kappa": 0.0,
     "disagreement_resolution": null,
-    "anchoring_documentation": "stage=pre_adjudication; status=pending_external_review; self_review_disposition=hold_for_revision; self_review_notes=pilot vignette anchored to PMID 15509818 (van de Beek 2004 NEJM NL adult); external clinical adjudication pending; classification provisional. adjudicator_ids=PILOT-PRE-ADJ-1, PILOT-PRE-ADJ-2 (sentinel); cohen_kappa=0.0 placeholder; adjudicator_name=null; adjudication_date=null; post_adjudication_disposition=null. Subphase 1.3 commit 5.3.2 (2026-05-07).",
+    "anchoring_documentation": "stage=pre_adjudication; status=pending_external_review; self_review_disposition=hold_for_revision; self_review_notes=vignette anchored to PMID 15509818 (van de Beek 2004 NEJM NL adult); external clinical adjudication pending; classification provisional. adjudicator_ids=PRE-ADJ-1, PRE-ADJ-2 (sentinel); cohen_kappa=0.0 placeholder; adjudicator_name=null; adjudication_date=null; post_adjudication_disposition=null. Generated 2026-05-07.",
     "inclusion_decision": "hold_for_revision"
   },
   "literature_anchors": [
@@ -118,11 +118,11 @@
   ],
   "provenance": {
     "generation_timestamp_utc": "2026-05-07T12:00:00Z",
-    "generator_model_identifier": "scripts.generate_pam_vignettes/v1.subphase_1_3_commit_5_3_2",
+    "generator_model_identifier": "scripts.generate_pam_vignettes/v1",
     "prompt_hash_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
     "schema_version": "2.0",
-    "inclusion_decision_rationale": "Anchored to PMID 15509818 (van de Beek 2004 NEJM), 696-episode prospective Netherlands community-acquired adult bacterial meningitis cohort 1998-2002 (SP 51 percent, classic triad 44 percent, SP mortality 30 percent, unfavorable 34 percent). Demographic anchor (55yo F) within cohort age range. CSF profile bacterial range per Tunkel IDSA 2004 (PMID 15494903). Triad present (44 percent cohort marker). Imputation tiers: tier_1_primary={age, sex, csf_culture, csf_gram_stain, triad}; tier_3_within_cohort={csf_wbc, csf_neutrophil_pct, csf_glucose, csf_protein, gcs}; tier_4_priors={temperature_celsius, symptom_onset_days}. Indeterminate=none. Diagnostic_ambiguity=false. Outcome=survived_mild_cognitive_impairment per 34 percent unfavorable rate. Abx_hours=1. Dexamethasone=true (post-2002 EU guideline). Tier: primary_source_direct. 5.3.2 pilot 2."
+    "inclusion_decision_rationale": "Anchored to PMID 15509818 (van de Beek 2004 NEJM), 696-episode prospective Netherlands community-acquired adult bacterial meningitis cohort 1998-2002 (SP 51 percent, classic triad 44 percent, SP mortality 30 percent, unfavorable 34 percent). Demographic anchor (55yo F) within cohort age range. CSF profile bacterial range per Tunkel IDSA 2004 (PMID 15494903). Triad present (44 percent cohort marker). Imputation tiers: tier_1_primary={age, sex, csf_culture, csf_gram_stain, triad}; tier_3_within_cohort={csf_wbc, csf_neutrophil_pct, csf_glucose, csf_protein, gcs}; tier_4_priors={temperature_celsius, symptom_onset_days}. Indeterminate=none. Diagnostic_ambiguity=false. Outcome=survived_mild_cognitive_impairment per 34 percent unfavorable rate. Abx_hours=1. Dexamethasone=true (post-2002 EU guideline). Tier: primary_source_direct."
   },
-  "narrative_es": "Mujer de 55 anos, Paises Bajos (Amsterdam), ingresada a urgencias terciarias con un dia de progresion rapida: fiebre 39.2 C, cefalea intensa, rigidez de nuca, fotofobia, nauseas. Examen: temperatura 39.2 C, escala de Glasgow 11, rigidez de nuca, signo de Kernig positivo, sin deficit focal, sin exantema. Triada clasica presente (subgrupo del 44 por ciento triada-positiva de la cohorte van de Beek 2004). Liquido cefalorraquideo mostro presion de apertura 28 cmH2O, leucocitos 3,200 por mm3 (88 por ciento neutrofilos), glucosa 22 mg/dL, proteina 195 mg/dL. Tincion de Gram con diplococos grampositivos y cultivo Streptococcus pneumoniae. Anclaje primario en cohorte prospectiva neerlandesa (PMID 15509818, van de Beek 2004 NEJM, 696 episodios 1998-2002, SP 51 por ciento, mortalidad SP 30 por ciento). Subphase 1.3 commit 5.3.2 pilot 2.",
-  "narrative_en": "A 55-year-old woman in the Netherlands (Amsterdam) presented to a tertiary emergency department with a 24-hour rapid progression of fever to 39.2 C, severe headache, neck stiffness, photophobia, and nausea. Examination on admission: temperature 39.2 C, Glasgow Coma Scale 11, neck stiffness, positive Kernig sign, no focal deficit, no rash. Classic triad present (this case sits in the 44 percent triad-positive subgroup of the van de Beek 2004 cohort). CSF showed opening pressure 28 cmH2O, white cell count 3,200 per cubic millimeter (88 percent neutrophils), glucose 22 mg/dL, protein 195 mg/dL. Gram stain revealed gram-positive diplococci; culture identified Streptococcus pneumoniae. Primary anchor: PMID 15509818 (van de Beek 2004 NEJM), 696-episode prospective Netherlands community-acquired adult bacterial meningitis cohort 1998-2002 (SP 51 percent, SP mortality 30 percent). Outcome: survived with mild cognitive impairment. Subphase 1.3 commit 5.3.2 pilot 2, pre-adjudication hold_for_revision."
+  "narrative_es": "Mujer de 55 anos, Paises Bajos (Amsterdam), ingresada a urgencias terciarias con un dia de progresion rapida: fiebre 39.2 C, cefalea intensa, rigidez de nuca, fotofobia, nauseas. Examen: temperatura 39.2 C, escala de Glasgow 11, rigidez de nuca, signo de Kernig positivo, sin deficit focal, sin exantema. Triada clasica presente (subgrupo del 44 por ciento triada-positiva de la cohorte van de Beek 2004). Liquido cefalorraquideo mostro presion de apertura 28 cmH2O, leucocitos 3,200 por mm3 (88 por ciento neutrofilos), glucosa 22 mg/dL, proteina 195 mg/dL. Tincion de Gram con diplococos grampositivos y cultivo Streptococcus pneumoniae. Anclaje primario en cohorte prospectiva neerlandesa (PMID 15509818, van de Beek 2004 NEJM, 696 episodios 1998-2002, SP 51 por ciento, mortalidad SP 30 por ciento).",
+  "narrative_en": "A 55-year-old woman in the Netherlands (Amsterdam) presented to a tertiary emergency department with a 24-hour rapid progression of fever to 39.2 C, severe headache, neck stiffness, photophobia, and nausea. Examination on admission: temperature 39.2 C, Glasgow Coma Scale 11, neck stiffness, positive Kernig sign, no focal deficit, no rash. Classic triad present (this case sits in the 44 percent triad-positive subgroup of the van de Beek 2004 cohort). CSF showed opening pressure 28 cmH2O, white cell count 3,200 per cubic millimeter (88 percent neutrophils), glucose 22 mg/dL, protein 195 mg/dL. Gram stain revealed gram-positive diplococci; culture identified Streptococcus pneumoniae. Primary anchor: PMID 15509818 (van de Beek 2004 NEJM), 696-episode prospective Netherlands community-acquired adult bacterial meningitis cohort 1998-2002 (SP 51 percent, SP mortality 30 percent). Outcome: survived with mild cognitive impairment. Pre-adjudication status: hold_for_revision."
 }

@@ -1,6 +1,6 @@
 {
   "schema_version": "2.0",
-  "case_id": "VIR-D3-110-Lancet-Infect-Dis-2010-Netherlands-EV-Mid",
+  "case_id": "VIR-110-Lancet-Infect-Dis-2010-Netherlands-EV-Mid",
   "ground_truth_class": 3,
   "demographics": {
     "age_years": 19,
@@ -101,12 +101,12 @@
   },
   "adjudication": {
     "adjudicator_ids": [
-      "VIRAL-WAVE2-PRE-ADJ-1",
-      "VIRAL-WAVE2-PRE-ADJ-2"
+      "PRE-ADJ-1",
+      "PRE-ADJ-2"
     ],
     "cohen_kappa": 0.0,
     "disagreement_resolution": null,
-    "anchoring_documentation": "stage=pre_adjudication; status=pending_external_review; self_review_disposition=hold_for_revision; self_review_notes=wave 5.3.6 VIRAL vignette anchored to PMID 20952256 (Granerod 2010 Lancet ID UK encephalitis cohort); external clinical adjudication pending; classification provisional. adjudicator_ids=VIRAL-WAVE2-PRE-ADJ-1, VIRAL-WAVE2-PRE-ADJ-2 (sentinel); cohen_kappa=0.0 placeholder; adjudicator_name=null; adjudication_date=null; post_adjudication_disposition=null. Subphase 1.3 commit 5.3.6 (2026-05-08, FINAL Subphase 1.3 wave). anchor=Granerod-Lancet-ID-2010 stratum=college-age-EV.",
+    "anchoring_documentation": "stage=pre_adjudication; status=pending_external_review; self_review_disposition=hold_for_revision; self_review_notes=VIRAL vignette anchored to PMID 20952256 (Granerod 2010 Lancet ID UK encephalitis cohort); external clinical adjudication pending; classification provisional. adjudicator_ids=PRE-ADJ-1, PRE-ADJ-2 (sentinel); cohen_kappa=0.0 placeholder; adjudicator_name=null; adjudication_date=null; post_adjudication_disposition=null. Generated 2026-05-08. anchor=Granerod-Lancet-ID-2010 stratum=college-age-EV.",
     "inclusion_decision": "hold_for_revision"
   },
   "literature_anchors": [
@@ -118,11 +118,11 @@
   ],
   "provenance": {
     "generation_timestamp_utc": "2026-05-08T21:00:00Z",
-    "generator_model_identifier": "scripts.generate_pam_vignettes/v1.subphase_1_3_commit_5_3_6",
+    "generator_model_identifier": "scripts.generate_pam_vignettes/v1",
     "prompt_hash_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
     "schema_version": "2.0",
-    "inclusion_decision_rationale": "Anchored to PMID 20952256 (Granerod 2010 Lancet ID UK encephalitis cohort). Enteroviral aseptic meningitis college-age summer phenotype. Demographic anchor (19yo F NL university summer) sits in college-age-enteroviral stratum. CSF lymphocytic (200 WBC, 78 percent lymphocytes), normal glucose 56, mildly elevated protein 60. EV PCR positive. Imputation tiers: tier_1_primary={age, sex, ev_pcr, season}; tier_3_within_review={csf_wbc, neutrophil_pct, glucose, protein}; tier_4_priors={temp, gcs, symptom_days}. Indeterminate=none. Diagnostic_ambiguity=false. Outcome=survived_full_recovery. Tier: tier_3_imputation_within_review. 5.3.6 wave2 EV-Granerod-college-age."
+    "inclusion_decision_rationale": "Anchored to PMID 20952256 (Granerod 2010 Lancet ID UK encephalitis cohort). Enteroviral aseptic meningitis college-age summer phenotype. Demographic anchor (19yo F NL university summer) sits in college-age-enteroviral stratum. CSF lymphocytic (200 WBC, 78 percent lymphocytes), normal glucose 56, mildly elevated protein 60. EV PCR positive. Imputation tiers: tier_1_primary={age, sex, ev_pcr, season}; tier_3_within_review={csf_wbc, neutrophil_pct, glucose, protein}; tier_4_priors={temp, gcs, symptom_days}. Indeterminate=none. Diagnostic_ambiguity=false. Outcome=survived_full_recovery. Tier: tier_3_imputation_within_review. Stratum: EV-Granerod-college-age."
   },
-  "narrative_es": "Mujer de 19 anos en Paises Bajos (Amsterdam), ingresada a urgencias terciarias en agosto con curso de dos dias: fiebre 38.7 C, cefalea intensa, rigidez de nuca, fotofobia y mialgia. Entorno universitario. Examen: temperatura 38.7 C, escala de Glasgow 15, alerta, rigidez de nuca, signo de Kernig positivo, sin deficit focal, sin exantema. Liquido cefalorraquideo mostro presion de apertura 19 cmH2O, leucocitos 200 por mm3 (78 por ciento linfocitos), glucosa 56 mg/dL, proteina 60 mg/dL. PCR de enterovirus en LCR positiva. Tincion de Gram y cultivo negativos. Sin imagenes. Anclaje en cohorte Granerod 2010 Lancet ID (PMID 20952256), estrato adulto joven enteroviral. Subphase 1.3 commit 5.3.6 wave 2, pre-adjudicacion hold_for_revision.",
-  "narrative_en": "A 19-year-old woman in the Netherlands presented to a tertiary emergency department in Amsterdam in late August with a 2-day course: fever to 38.7 C, severe headache, neck stiffness, photophobia, and myalgia. She lived in a university setting. Examination on admission: temperature 38.7 C, Glasgow Coma Scale 15, alert, neck stiffness, positive Kernig sign, no focal deficit, no rash. CSF showed opening pressure 19 cmH2O, white cell count 200 per cubic millimeter (78 percent lymphocytes), glucose 56 mg/dL, protein 60 mg/dL. CSF enterovirus PCR positive. Gram stain and culture negative. No imaging performed. Anchored to Granerod 2010 Lancet Infect Dis UK encephalitis cohort (PMID 20952256), college-age-enteroviral-meningitis stratum. Outcome: survived with full recovery in six days. Subphase 1.3 commit 5.3.6 wave 2, pre-adjudication hold_for_revision."
+  "narrative_es": "Mujer de 19 anos en Paises Bajos (Amsterdam), ingresada a urgencias terciarias en agosto con curso de dos dias: fiebre 38.7 C, cefalea intensa, rigidez de nuca, fotofobia y mialgia. Entorno universitario. Examen: temperatura 38.7 C, escala de Glasgow 15, alerta, rigidez de nuca, signo de Kernig positivo, sin deficit focal, sin exantema. Liquido cefalorraquideo mostro presion de apertura 19 cmH2O, leucocitos 200 por mm3 (78 por ciento linfocitos), glucosa 56 mg/dL, proteina 60 mg/dL. PCR de enterovirus en LCR positiva. Tincion de Gram y cultivo negativos. Sin imagenes. Anclaje en cohorte Granerod 2010 Lancet ID (PMID 20952256), estrato adulto joven enteroviral. Estado previo a la adjudicacion: hold_for_revision.",
+  "narrative_en": "A 19-year-old woman in the Netherlands presented to a tertiary emergency department in Amsterdam in late August with a 2-day course: fever to 38.7 C, severe headache, neck stiffness, photophobia, and myalgia. She lived in a university setting. Examination on admission: temperature 38.7 C, Glasgow Coma Scale 15, alert, neck stiffness, positive Kernig sign, no focal deficit, no rash. CSF showed opening pressure 19 cmH2O, white cell count 200 per cubic millimeter (78 percent lymphocytes), glucose 56 mg/dL, protein 60 mg/dL. CSF enterovirus PCR positive. Gram stain and culture negative. No imaging performed. Anchored to Granerod 2010 Lancet Infect Dis UK encephalitis cohort (PMID 20952256), college-age-enteroviral-meningitis stratum. Outcome: survived with full recovery in six days. Pre-adjudication status: hold_for_revision."
 }

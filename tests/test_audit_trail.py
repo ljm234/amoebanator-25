@@ -1489,7 +1489,7 @@ def _build_populated_log() -> AuditLog:
         event_type=AuditEventType.COMPLIANCE_CHECK,
         actor="model-server@prod",
         resource="/models/amoeba-v3",
-        action_detail="Inference batch 128 samples",
+        action_detail="Inference run on 128 samples",
     )
     return log
 

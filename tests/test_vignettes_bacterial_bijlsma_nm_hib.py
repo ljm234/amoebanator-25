@@ -27,24 +27,24 @@ from ml.schemas.vignette import VignetteSchema  # noqa: E402
 from scripts.vignettes.generate_pam_vignettes import BACTERIAL_DISTRIBUTION  # noqa: E402
 
 
-BACT_WAVE2_IDS = [61, 63, 68, 70, 72, 74, 83, 84, 85, 86, 87]
-BACT_WAVE2_AMBIGUITY_IDS = {84}
-BACT_WAVE2_PERU_IDS = {84, 86}
-WAVE2_DIR = _REPO_ROOT / "data" / "vignettes" / "v2" / "class_02_bacterial"
+BACT_SET_B_IDS = [61, 63, 68, 70, 72, 74, 83, 84, 85, 86, 87]
+BACT_SET_B_AMBIGUITY_IDS = {84}
+BACT_SET_B_PERU_IDS = {84, 86}
+BACT_DIR = _REPO_ROOT / "data" / "vignettes" / "v2" / "class_02_bacterial"
 
 
-def _wave2_slot(vid: int) -> dict:
+def _slot(vid: int) -> dict:
     return next(s for s in BACTERIAL_DISTRIBUTION if s["vignette_id"] == vid)
 
 
-def _wave2_json_path(vid: int) -> Path:
-    matches = list(WAVE2_DIR.glob(f"bact_{vid:03d}_*.json"))
+def _json_path(vid: int) -> Path:
+    matches = list(BACT_DIR.glob(f"bact_{vid:03d}_*.json"))
     assert len(matches) == 1, f"v{vid}: expected 1 match, got {matches!r}"
     return matches[0]
 
 
 def _load(vid: int) -> dict:
-    return json.loads(_wave2_json_path(vid).read_text(encoding="utf-8"))
+    return json.loads(_json_path(vid).read_text(encoding="utf-8"))
 
 
 # ----------------------------------------------------------------------
@@ -52,21 +52,21 @@ def _load(vid: int) -> dict:
 # ----------------------------------------------------------------------
 
 
-@pytest.mark.parametrize("vid", BACT_WAVE2_IDS)
+@pytest.mark.parametrize("vid", BACT_SET_B_IDS)
 def test_bact_files_exist(vid):
-    matches = list(WAVE2_DIR.glob(f"bact_{vid:03d}_*.json"))
+    matches = list(BACT_DIR.glob(f"bact_{vid:03d}_*.json"))
     assert len(matches) == 1, f"v{vid} JSON missing or duplicate: {matches}"
 
 
-@pytest.mark.parametrize("vid", BACT_WAVE2_IDS)
+@pytest.mark.parametrize("vid", BACT_SET_B_IDS)
 def test_bact_schema_validates(vid):
     VignetteSchema.model_validate(_load(vid))
 
 
-@pytest.mark.parametrize("vid", BACT_WAVE2_IDS)
+@pytest.mark.parametrize("vid", BACT_SET_B_IDS)
 def test_bact_demographics_match_spec(vid):
     data = _load(vid)
-    spec = _wave2_slot(vid)
+    spec = _slot(vid)
     assert data["demographics"]["age_years"] == spec["age_years"], f"v{vid} age"
     assert data["demographics"]["sex"] == spec["sex"], f"v{vid} sex"
     assert (
@@ -74,10 +74,10 @@ def test_bact_demographics_match_spec(vid):
     ), f"v{vid} region"
 
 
-@pytest.mark.parametrize("vid", BACT_WAVE2_IDS)
+@pytest.mark.parametrize("vid", BACT_SET_B_IDS)
 def test_bact_anchor_pmid_matches(vid):
     data = _load(vid)
-    spec = _wave2_slot(vid)
+    spec = _slot(vid)
     assert data["literature_anchors"][0]["pmid"] == spec["pmid"], f"v{vid} PMID"
 
 
@@ -88,7 +88,7 @@ def test_bact_anchor_pmid_matches(vid):
 
 def test_bact_freshwater_false():
     """No freshwater exposure in any Class 2 vignette."""
-    for vid in BACT_WAVE2_IDS:
+    for vid in BACT_SET_B_IDS:
         data = _load(vid)
         assert (
             data["exposure"]["freshwater_exposure_within_14d"] is False
@@ -96,33 +96,33 @@ def test_bact_freshwater_false():
 
 
 def test_bact_class_id_2():
-    for vid in BACT_WAVE2_IDS:
+    for vid in BACT_SET_B_IDS:
         assert _load(vid)["ground_truth_class"] == 2, f"v{vid}"
 
 
 def test_bact_csf_neutrophilic():
     """CSF is neutrophilic (>=50 percent). Listeria can be lower
     clinically; per spec, build at floor."""
-    for vid in BACT_WAVE2_IDS:
+    for vid in BACT_SET_B_IDS:
         pct = _load(vid)["csf"]["csf_neutrophil_pct"]
         assert pct >= 50, f"v{vid} csf_neutrophil_pct={pct}"
 
 
 def test_bact_csf_glucose_low():
-    for vid in BACT_WAVE2_IDS:
+    for vid in BACT_SET_B_IDS:
         glucose = _load(vid)["csf"]["csf_glucose_mg_per_dL"]
         assert glucose <= 40, f"v{vid} csf_glucose_mg_per_dL={glucose}"
 
 
 def test_bact_csf_protein_high():
-    for vid in BACT_WAVE2_IDS:
+    for vid in BACT_SET_B_IDS:
         protein = _load(vid)["csf"]["csf_protein_mg_per_dL"]
         assert protein >= 100, f"v{vid} csf_protein_mg_per_dL={protein}"
 
 
 def test_bact_pre_adjudication_hold():
     """Every vignette is on hold_for_revision, stated verbatim in anchoring_documentation."""
-    for vid in BACT_WAVE2_IDS:
+    for vid in BACT_SET_B_IDS:
         data = _load(vid)
         assert (
             data["adjudication"]["inclusion_decision"] == "hold_for_revision"
@@ -141,33 +141,33 @@ def test_bact_pre_adjudication_hold():
 def test_bact_ambiguity_count():
     """Exactly 1 of 11 (v84 NM Loreto infant) carries ambiguity markers."""
     ambiguous = []
-    for vid in BACT_WAVE2_IDS:
+    for vid in BACT_SET_B_IDS:
         rationale = (
             _load(vid)["provenance"].get("inclusion_decision_rationale") or ""
         ).lower()
         if "diagnostic_ambiguity=true" in rationale or "type=" in rationale:
             ambiguous.append(vid)
-    assert set(ambiguous) == BACT_WAVE2_AMBIGUITY_IDS, (
-        f"Expected {BACT_WAVE2_AMBIGUITY_IDS}, got {set(ambiguous)}"
+    assert set(ambiguous) == BACT_SET_B_AMBIGUITY_IDS, (
+        f"Expected {BACT_SET_B_AMBIGUITY_IDS}, got {set(ambiguous)}"
     )
 
 
 def test_bact_peru_anchors():
     """Exactly 2 of 11 (v84, v86) are Peru-anchored."""
     peru = [
-        vid for vid in BACT_WAVE2_IDS
+        vid for vid in BACT_SET_B_IDS
         if _load(vid)["demographics"]["geography_region"].startswith("peru")
     ]
-    assert set(peru) == BACT_WAVE2_PERU_IDS, (
-        f"Expected {BACT_WAVE2_PERU_IDS}, got {set(peru)}"
+    assert set(peru) == BACT_SET_B_PERU_IDS, (
+        f"Expected {BACT_SET_B_PERU_IDS}, got {set(peru)}"
     )
 
 
 def test_bact_pathogen_distribution():
     """6 SP + 3 NM + 2 Hib (the 2 Listeria slots were removed)."""
     counts: dict[str, int] = {}
-    for vid in BACT_WAVE2_IDS:
-        p = _wave2_slot(vid)["pathogen"]
+    for vid in BACT_SET_B_IDS:
+        p = _slot(vid)["pathogen"]
         counts[p] = counts.get(p, 0) + 1
     assert counts == {
         "S_pneumoniae": 6,
@@ -178,7 +178,7 @@ def test_bact_pathogen_distribution():
 
 def test_bact_no_em_dashes():
     """No em-dashes (\\u2014) or en-dashes (\\u2013)."""
-    for vid in BACT_WAVE2_IDS:
-        text = _wave2_json_path(vid).read_text(encoding="utf-8")
+    for vid in BACT_SET_B_IDS:
+        text = _json_path(vid).read_text(encoding="utf-8")
         assert chr(0x2014) not in text, f"v{vid} contains em-dash"
         assert chr(0x2013) not in text, f"v{vid} contains en-dash"

@@ -3,7 +3,7 @@
 Covers the PAM vignettes, the bacterial and viral distributions, and the
 PMID registry; each section below says what it checks.
 
-The DAY1_DISTRIBUTION, DAY2_DISTRIBUTION, BACTERIAL_DISTRIBUTION,
+The PAM_DISTRIBUTION_1_20, PAM_DISTRIBUTION_21_60, BACTERIAL_DISTRIBUTION,
 VIRAL_DISTRIBUTION and PMID_REGISTRY in
 ``scripts/vignettes/generate_pam_vignettes.py`` are the source of truth for these
 tests.
@@ -95,9 +95,9 @@ _VALID_VERIFICATION_DATES = {
     # MacNeil 2018 CID 29126310, Marcus 2022 OFID 35493127, Park 2022 JOGH
     # 35265327, Soeters 2018 CID 29509834.
     "2026-05-30",
-    # Errata 5.4.3.3 (2026-05-31): deleted both Mylonakis 2002 Listeria
-    # vignettes (v88/v89; full-text verification standard not met) and
-    # checked 3 BACT anchors against the PubMed full text -- Tunkel 2004
+    # Correction (2026-05-31): deleted both Mylonakis 2002 Listeria
+    # vignettes (v88/v89; full-text check standard not met) and checked 3
+    # BACT anchors against the PubMed full text on 2026-05-31: Tunkel 2004
     # CID 15494903, Bijlsma 2016 Lancet ID 26652862, Heckenberg 2008
     # Medicine 18626301. (van de Beek 15509818 was checked on 2026-05-30.)
     "2026-05-31",
@@ -246,7 +246,7 @@ def test_spanish_narratives_have_proper_accents(generated_vignettes):
 
 
 def test_survivor_vignettes_have_correct_outcome(generated_vignettes):
-    by_id = {v["case_id"].split("-")[2]: v for v in generated_vignettes}
+    by_id = {v["case_id"].split("-")[1]: v for v in generated_vignettes}
     # Survivors: 19, 20
     for vid_str in ("019", "020"):
         v = by_id[vid_str]
@@ -283,14 +283,14 @@ def test_survivor_vignettes_have_correct_outcome(generated_vignettes):
 
 
 # ----------------------------------------------------------------------
-# 8. literature_anchors[0].pmid matches DAY1_DISTRIBUTION assignment
+# 8. literature_anchors[0].pmid matches PAM_DISTRIBUTION_1_20 assignment
 # ----------------------------------------------------------------------
 
 
 def test_pmid_assignments_match_distribution(distribution, generated_vignettes):
     by_id = {s["vignette_id"]: s for s in distribution}
     for vignette in generated_vignettes:
-        vignette_id = int(vignette["case_id"].split("-")[2])
+        vignette_id = int(vignette["case_id"].split("-")[1])
         spec = by_id[vignette_id]
         anchor_pmid = vignette["literature_anchors"][0]["pmid"]
         assert anchor_pmid == spec["pmid"], (
@@ -306,7 +306,7 @@ def test_pmid_assignments_match_distribution(distribution, generated_vignettes):
 
 _ALLOWED_JOURNAL_CODES = {
     "MMWR", "JCM", "CID", "IDCases", "AJTMH", "EID", "IJP",
-    # Vancouver MEDLINE-style abbreviations (Day 2 canonization 2026-05-04):
+    # Vancouver MEDLINE-style abbreviations (canonical forms set 2026-05-04):
     "Emerg Infect Dis", "Front Microbiol", "Front Med (Lausanne)",
     "Pathogens", "Front Pediatr", "BMC Infect Dis", "J Trop Pediatr",
     "TexMed", "JPIDS", "EpidemiolInfect", "ExpertRevAntiInfect",
@@ -316,9 +316,8 @@ _ALLOWED_JOURNAL_CODES = {
 # Journal portion may now contain spaces and parentheses (Vancouver style).
 # Use a non-greedy capture for the journal segment, terminated by `-NNNN-`
 # (a 4-digit year) so the journal can include any chars except newline.
-# Day prefix is D1 (v1-v20) or D2 (v21-v60).
 _CASE_ID_RE = re.compile(
-    r"^PAM-D[12]-(\d{3})-(.+?)-(\d{4})-(.+)$"
+    r"^PAM-(\d{3})-(.+?)-(\d{4})-(.+)$"
 )
 
 
@@ -345,12 +344,12 @@ def test_case_id_format(generated_vignettes):
 # ======================================================================
 # Distribution of PAM vignettes 21-60 (40 vignettes)
 # ----------------------------------------------------------------------
-# Tests below validate the DAY2_DISTRIBUTION data structure in
+# Tests below validate the PAM_DISTRIBUTION_21_60 data structure in
 # scripts/vignettes/generate_pam_vignettes.py.
 # ======================================================================
 
 
-_EXPECTED_CLUSTERS_DAY2: dict[str, set[int]] = {
+_EXPECTED_CLUSTERS_21_60: dict[str, set[int]] = {
     "splash_pad": {23, 25, 50, 51, 52},
     "lake_pond": {22, 24, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40},
     "river": {21, 41, 42, 43, 44, 45, 46, 47, 48, 49},
@@ -359,77 +358,77 @@ _EXPECTED_CLUSTERS_DAY2: dict[str, set[int]] = {
     "pakistan_ablution": {60},
 }
 
-_DAY2_FILENAME_RE = re.compile(
-    r"^pam_d2_(\d{3})_[a-z][a-z0-9_]*\.json$"
+_FILENAME_21_60_RE = re.compile(
+    r"^pam_(\d{3})_[a-z][a-z0-9_]*\.json$"
 )
 
 _REUSE_CAP = 6
 
 
-def test_v21_v60_distribution_length(day2_distribution):
-    assert len(day2_distribution) == 40, (
-        f"DAY2_DISTRIBUTION has {len(day2_distribution)} entries, expected 40"
+def test_v21_v60_distribution_length(distribution_21_60):
+    assert len(distribution_21_60) == 40, (
+        f"PAM_DISTRIBUTION_21_60 has {len(distribution_21_60)} entries, expected 40"
     )
 
 
-def test_v21_v60_vignette_ids_contiguous(day2_distribution):
-    ids = sorted(s["vignette_id"] for s in day2_distribution)
+def test_v21_v60_vignette_ids_contiguous(distribution_21_60):
+    ids = sorted(s["vignette_id"] for s in distribution_21_60)
     assert ids == list(range(21, 61)), (
-        f"Day-2 vignette_ids not contiguous 21-60: {ids}"
+        f"Vignette_ids 21-60 not contiguous: {ids}"
     )
 
 
-def test_v21_v60_cluster_distribution_matches_spec(day2_distribution):
+def test_v21_v60_cluster_distribution_matches_spec(distribution_21_60):
     actual: dict[str, set[int]] = {}
-    for spec in day2_distribution:
+    for spec in distribution_21_60:
         actual.setdefault(spec["cluster"], set()).add(spec["vignette_id"])
-    assert actual == _EXPECTED_CLUSTERS_DAY2, (
-        f"Day-2 cluster distribution does not match spec.\n"
-        f"  expected: {_EXPECTED_CLUSTERS_DAY2}\n"
+    assert actual == _EXPECTED_CLUSTERS_21_60, (
+        f"Cluster distribution of vignettes 21-60 does not match spec.\n"
+        f"  expected: {_EXPECTED_CLUSTERS_21_60}\n"
         f"  actual:   {actual}"
     )
 
 
-def test_v21_v60_pmids_in_registry(day2_distribution, pmid_registry):
-    for spec in day2_distribution:
+def test_v21_v60_pmids_in_registry(distribution_21_60, pmid_registry):
+    for spec in distribution_21_60:
         assert spec["pmid"] in pmid_registry, (
-            f"Day-2 vignette {spec['vignette_id']} pmid {spec['pmid']!r} "
+            f"Vignette {spec['vignette_id']} pmid {spec['pmid']!r} "
             f"not in PMID_REGISTRY"
         )
 
 
-def test_combined_corpus_size_60(distribution, day2_distribution):
-    assert len(distribution) + len(day2_distribution) == 60, (
-        f"Combined corpus size = {len(distribution) + len(day2_distribution)}, "
+def test_combined_corpus_size_60(distribution, distribution_21_60):
+    assert len(distribution) + len(distribution_21_60) == 60, (
+        f"Combined corpus size = {len(distribution) + len(distribution_21_60)}, "
         f"expected 60"
     )
 
 
-def test_no_id_collisions(distribution, day2_distribution):
-    day1_ids = {s["vignette_id"] for s in distribution}
-    day2_ids = {s["vignette_id"] for s in day2_distribution}
-    assert day1_ids.isdisjoint(day2_ids), (
-        f"Day-1 and Day-2 vignette_ids overlap: "
-        f"{sorted(day1_ids & day2_ids)}"
+def test_no_id_collisions(distribution, distribution_21_60):
+    ids_1_20 = {s["vignette_id"] for s in distribution}
+    ids_21_60 = {s["vignette_id"] for s in distribution_21_60}
+    assert ids_1_20.isdisjoint(ids_21_60), (
+        f"Vignette_ids of vignettes 1-20 and 21-60 overlap: "
+        f"{sorted(ids_1_20 & ids_21_60)}"
     )
 
 
-def test_no_filename_collisions(distribution, day2_distribution):
-    day1_files = {s["filename"] for s in distribution}
-    day2_files = {s["filename"] for s in day2_distribution}
-    assert day1_files.isdisjoint(day2_files), (
-        f"Day-1 and Day-2 filenames overlap: "
-        f"{sorted(day1_files & day2_files)}"
+def test_no_filename_collisions(distribution, distribution_21_60):
+    files_1_20 = {s["filename"] for s in distribution}
+    files_21_60 = {s["filename"] for s in distribution_21_60}
+    assert files_1_20.isdisjoint(files_21_60), (
+        f"Filenames of vignettes 1-20 and 21-60 overlap: "
+        f"{sorted(files_1_20 & files_21_60)}"
     )
 
 
-def test_v21_v60_filename_format(day2_distribution):
-    for spec in day2_distribution:
+def test_v21_v60_filename_format(distribution_21_60):
+    for spec in distribution_21_60:
         fname = spec["filename"]
-        m = _DAY2_FILENAME_RE.match(fname)
+        m = _FILENAME_21_60_RE.match(fname)
         assert m, (
-            f"Day-2 vignette {spec['vignette_id']} filename {fname!r} "
-            f"does not match pam_d2_NNN_<tag>.json"
+            f"Vignette {spec['vignette_id']} filename {fname!r} "
+            f"does not match pam_NNN_<tag>.json"
         )
         nnn = int(m.group(1))
         assert nnn == spec["vignette_id"], (
@@ -437,11 +436,11 @@ def test_v21_v60_filename_format(day2_distribution):
         )
 
 
-def test_pmid_reuse_cap(distribution, day2_distribution):
+def test_pmid_reuse_cap(distribution, distribution_21_60):
     counts: dict[str, int] = {}
     for spec in distribution:
         counts[spec["pmid"]] = counts.get(spec["pmid"], 0) + 1
-    for spec in day2_distribution:
+    for spec in distribution_21_60:
         counts[spec["pmid"]] = counts.get(spec["pmid"], 0) + 1
     over_cap = {p: n for p, n in counts.items() if n > _REUSE_CAP}
     assert not over_cap, (
@@ -449,46 +448,46 @@ def test_pmid_reuse_cap(distribution, day2_distribution):
     )
 
 
-def test_v21_v60_sex_enum(day2_distribution):
-    for spec in day2_distribution:
+def test_v21_v60_sex_enum(distribution_21_60):
+    for spec in distribution_21_60:
         assert spec["sex"] in {"male", "female"}, (
-            f"Day-2 vignette {spec['vignette_id']} has invalid sex "
+            f"Vignette {spec['vignette_id']} has invalid sex "
             f"{spec['sex']!r}"
         )
 
 
-def test_v21_v60_outcome_enum(day2_distribution):
-    for spec in day2_distribution:
+def test_v21_v60_outcome_enum(distribution_21_60):
+    for spec in distribution_21_60:
         assert spec["outcome"] in {"fatal", "survived"}, (
-            f"Day-2 vignette {spec['vignette_id']} has invalid outcome "
+            f"Vignette {spec['vignette_id']} has invalid outcome "
             f"{spec['outcome']!r}"
         )
 
 
-def test_v21_v60_stage_enum(day2_distribution):
-    for spec in day2_distribution:
+def test_v21_v60_stage_enum(distribution_21_60):
+    for spec in distribution_21_60:
         assert spec["stage"] in {"early", "mid", "late"}, (
-            f"Day-2 vignette {spec['vignette_id']} has invalid stage "
+            f"Vignette {spec['vignette_id']} has invalid stage "
             f"{spec['stage']!r}"
         )
 
 
-def test_combined_demographic_balance(distribution, day2_distribution):
-    combined = list(distribution) + list(day2_distribution)
+def test_combined_demographic_balance(distribution, distribution_21_60):
+    combined = list(distribution) + list(distribution_21_60)
     n = len(combined)
     female = sum(1 for s in combined if s["sex"] == "female")
     adult = sum(1 for s in combined if s["age_years"] >= 18)
     assert female / n >= 0.20, (
         f"Combined female ratio {female}/{n} = {female/n:.2%} < 20% "
-        f"(target 22% per locked decisions; floor 20% allowed)"
+        f"(design target 22%; floor 20% allowed)"
     )
     assert adult / n >= 0.25, (
         f"Combined adult ratio {adult}/{n} = {adult/n:.2%} < 25%"
     )
 
 
-def test_combined_outcome_balance(distribution, day2_distribution):
-    combined = list(distribution) + list(day2_distribution)
+def test_combined_outcome_balance(distribution, distribution_21_60):
+    combined = list(distribution) + list(distribution_21_60)
     n = len(combined)
     fatal = sum(1 for s in combined if s["outcome"] == "fatal")
     survived = sum(1 for s in combined if s["outcome"] == "survived")
@@ -500,8 +499,8 @@ def test_combined_outcome_balance(distribution, day2_distribution):
     )
 
 
-def test_combined_geographic_balance(distribution, day2_distribution):
-    combined = list(distribution) + list(day2_distribution)
+def test_combined_geographic_balance(distribution, distribution_21_60):
+    combined = list(distribution) + list(distribution_21_60)
     n = len(combined)
     us_labels = {
         "Arkansas, US", "Florida, US", "Louisiana, US", "Texas, US",
@@ -514,8 +513,8 @@ def test_combined_geographic_balance(distribution, day2_distribution):
     )
 
 
-def test_v21_v60_special_cases_present(day2_distribution):
-    by_pmid = {s["pmid"]: s for s in day2_distribution}
+def test_v21_v60_special_cases_present(distribution_21_60):
+    by_pmid = {s["pmid"]: s for s in distribution_21_60}
     assert "39795618" in by_pmid, "Phung 2025 cryptic-exposure anchor missing"
     assert "39606118" in by_pmid, "Lin 2024 atypical-myocarditis anchor missing"
     assert "37727924" in by_pmid, "Hong 2023 travel-imported anchor missing"
@@ -535,18 +534,18 @@ def test_v21_v60_special_cases_present(day2_distribution):
 import json
 from pathlib import Path
 
-_PILOT_DATA_DIR = Path(__file__).resolve().parents[2] / "data" / "vignettes" / "pam"
-_PILOT_IDS = [21, 22, 23, 24, 25]
+_PAM_DATA_DIR = Path(__file__).resolve().parents[2] / "data" / "vignettes" / "pam"
+_IDS_21_25 = [21, 22, 23, 24, 25]
 
 
 @pytest.fixture(scope="session")
-def pilot_vignettes(day2_distribution):
-    """Load the 5 pilot JSON files from disk."""
+def vignettes_21_25(distribution_21_60):
+    """Load the JSON files of vignettes 21-25 from disk."""
     out: dict[int, dict[str, Any]] = {}
-    by_id = {s["vignette_id"]: s for s in day2_distribution}
-    for vid in _PILOT_IDS:
+    by_id = {s["vignette_id"]: s for s in distribution_21_60}
+    for vid in _IDS_21_25:
         spec = by_id[vid]
-        fpath = _PILOT_DATA_DIR / spec["filename"]
+        fpath = _PAM_DATA_DIR / spec["filename"]
         out[vid] = {
             "spec": spec,
             "path": fpath,
@@ -555,21 +554,21 @@ def pilot_vignettes(day2_distribution):
     return out
 
 
-@pytest.mark.parametrize("vid", _PILOT_IDS)
-def test_pilot_file_exists(vid, pilot_vignettes):
-    entry = pilot_vignettes[vid]
-    assert entry["path"].exists(), f"v{vid} pilot JSON {entry['path']} missing"
+@pytest.mark.parametrize("vid", _IDS_21_25)
+def test_v21_25_file_exists(vid, vignettes_21_25):
+    entry = vignettes_21_25[vid]
+    assert entry["path"].exists(), f"v{vid} JSON {entry['path']} missing"
 
 
-@pytest.mark.parametrize("vid", _PILOT_IDS)
-def test_pilot_schema_validates(vid, pilot_vignettes):
-    entry = pilot_vignettes[vid]
+@pytest.mark.parametrize("vid", _IDS_21_25)
+def test_v21_25_schema_validates(vid, vignettes_21_25):
+    entry = vignettes_21_25[vid]
     VignetteSchema.model_validate(entry["data"])
 
 
-@pytest.mark.parametrize("vid", _PILOT_IDS)
-def test_pilot_demographics_match_spec(vid, pilot_vignettes):
-    entry = pilot_vignettes[vid]
+@pytest.mark.parametrize("vid", _IDS_21_25)
+def test_v21_25_demographics_match_spec(vid, vignettes_21_25):
+    entry = vignettes_21_25[vid]
     spec = entry["spec"]
     demo = entry["data"]["demographics"]
     assert demo["age_years"] == spec["age_years"], (
@@ -584,9 +583,9 @@ def test_pilot_demographics_match_spec(vid, pilot_vignettes):
     )
 
 
-@pytest.mark.parametrize("vid", _PILOT_IDS)
-def test_pilot_anchor_pmid_matches(vid, pilot_vignettes):
-    entry = pilot_vignettes[vid]
+@pytest.mark.parametrize("vid", _IDS_21_25)
+def test_v21_25_anchor_pmid_matches(vid, vignettes_21_25):
+    entry = vignettes_21_25[vid]
     anchors = entry["data"]["literature_anchors"]
     assert anchors, f"v{vid}: empty literature_anchors"
     assert anchors[0]["pmid"] == entry["spec"]["pmid"], (
@@ -595,18 +594,18 @@ def test_pilot_anchor_pmid_matches(vid, pilot_vignettes):
     )
 
 
-@pytest.mark.parametrize("vid", _PILOT_IDS)
-def test_pilot_narrative_min_length(vid, pilot_vignettes):
-    entry = pilot_vignettes[vid]
+@pytest.mark.parametrize("vid", _IDS_21_25)
+def test_v21_25_narrative_min_length(vid, vignettes_21_25):
+    entry = vignettes_21_25[vid]
     en = entry["data"].get("narrative_en") or ""
     es = entry["data"].get("narrative_es") or ""
     assert len(en) >= 100, f"v{vid} narrative_en too short ({len(en)} chars)"
     assert len(es) >= 100, f"v{vid} narrative_es too short ({len(es)} chars)"
 
 
-@pytest.mark.parametrize("vid", _PILOT_IDS)
-def test_pilot_narrative_cites_anchor_pmid(vid, pilot_vignettes):
-    entry = pilot_vignettes[vid]
+@pytest.mark.parametrize("vid", _IDS_21_25)
+def test_v21_25_narrative_cites_anchor_pmid(vid, vignettes_21_25):
+    entry = vignettes_21_25[vid]
     pmid = entry["spec"]["pmid"]
     en = entry["data"].get("narrative_en") or ""
     es = entry["data"].get("narrative_es") or ""
@@ -615,8 +614,8 @@ def test_pilot_narrative_cites_anchor_pmid(vid, pilot_vignettes):
     assert needle in es, f"v{vid} narrative_es missing '{needle}'"
 
 
-def test_v25_outcome_survived(pilot_vignettes):
-    v25 = pilot_vignettes[25]
+def test_v25_outcome_survived(vignettes_21_25):
+    v25 = vignettes_21_25[25]
     spec = v25["spec"]
     assert spec["outcome"] == "survived", (
         f"v25 spec outcome {spec['outcome']!r} expected 'survived'"
@@ -631,8 +630,8 @@ def test_v25_outcome_survived(pilot_vignettes):
     assert "miltefosine" in en, "v25 narrative_en missing miltefosine reference"
 
 
-def test_v23_atypical_features_in_narrative(pilot_vignettes):
-    v23 = pilot_vignettes[23]
+def test_v23_atypical_features_in_narrative(vignettes_21_25):
+    v23 = vignettes_21_25[23]
     en = v23["data"]["narrative_en"].lower()
     es = v23["data"]["narrative_es"].lower()
     for token in ("myocarditis", "ecmo", "indoor heated"):
@@ -641,11 +640,11 @@ def test_v23_atypical_features_in_narrative(pilot_vignettes):
         assert token in es, f"v23 narrative_es missing {token!r}"
 
 
-def test_pilot_no_em_dashes(pilot_vignettes):
+def test_v21_25_no_em_dashes(vignettes_21_25):
     em = chr(0x2014)
     en_dash = chr(0x2013)
-    for vid in _PILOT_IDS:
-        content = pilot_vignettes[vid]["path"].read_text(encoding="utf-8")
+    for vid in _IDS_21_25:
+        content = vignettes_21_25[vid]["path"].read_text(encoding="utf-8")
         assert content.count(em) == 0, f"v{vid} contains {em} em-dash(es)"
         assert content.count(en_dash) == 0, f"v{vid} contains {en_dash} en-dash(es)"
 
@@ -657,16 +656,16 @@ def test_pilot_no_em_dashes(pilot_vignettes):
 # imputation_within_anchor_epidemiology.
 # ======================================================================
 
-_WAVE1_IDS = list(range(26, 41))
+_IDS_26_40 = list(range(26, 41))
 
 
 @pytest.fixture(scope="session")
-def wave1_vignettes(day2_distribution):
+def vignettes_26_40(distribution_21_60):
     out: dict[int, dict[str, Any]] = {}
-    by_id = {s["vignette_id"]: s for s in day2_distribution}
-    for vid in _WAVE1_IDS:
+    by_id = {s["vignette_id"]: s for s in distribution_21_60}
+    for vid in _IDS_26_40:
         spec = by_id[vid]
-        fpath = _PILOT_DATA_DIR / spec["filename"]
+        fpath = _PAM_DATA_DIR / spec["filename"]
         out[vid] = {
             "spec": spec,
             "path": fpath,
@@ -675,21 +674,21 @@ def wave1_vignettes(day2_distribution):
     return out
 
 
-@pytest.mark.parametrize("vid", _WAVE1_IDS)
-def test_wave1_file_exists(vid, wave1_vignettes):
-    entry = wave1_vignettes[vid]
-    assert entry["path"].exists(), f"v{vid} wave-1 JSON {entry['path']} missing"
+@pytest.mark.parametrize("vid", _IDS_26_40)
+def test_v26_40_file_exists(vid, vignettes_26_40):
+    entry = vignettes_26_40[vid]
+    assert entry["path"].exists(), f"v{vid} JSON {entry['path']} missing"
 
 
-@pytest.mark.parametrize("vid", _WAVE1_IDS)
-def test_wave1_schema_validates(vid, wave1_vignettes):
-    entry = wave1_vignettes[vid]
+@pytest.mark.parametrize("vid", _IDS_26_40)
+def test_v26_40_schema_validates(vid, vignettes_26_40):
+    entry = vignettes_26_40[vid]
     VignetteSchema.model_validate(entry["data"])
 
 
-@pytest.mark.parametrize("vid", _WAVE1_IDS)
-def test_wave1_demographics_match_spec(vid, wave1_vignettes):
-    entry = wave1_vignettes[vid]
+@pytest.mark.parametrize("vid", _IDS_26_40)
+def test_v26_40_demographics_match_spec(vid, vignettes_26_40):
+    entry = vignettes_26_40[vid]
     spec = entry["spec"]
     demo = entry["data"]["demographics"]
     assert demo["age_years"] == spec["age_years"]
@@ -697,25 +696,25 @@ def test_wave1_demographics_match_spec(vid, wave1_vignettes):
     assert demo["geography_region"] == spec["geography_region"]
 
 
-@pytest.mark.parametrize("vid", _WAVE1_IDS)
-def test_wave1_anchor_pmid_matches(vid, wave1_vignettes):
-    entry = wave1_vignettes[vid]
+@pytest.mark.parametrize("vid", _IDS_26_40)
+def test_v26_40_anchor_pmid_matches(vid, vignettes_26_40):
+    entry = vignettes_26_40[vid]
     anchors = entry["data"]["literature_anchors"]
     assert anchors and anchors[0]["pmid"] == entry["spec"]["pmid"]
 
 
-@pytest.mark.parametrize("vid", _WAVE1_IDS)
-def test_wave1_narrative_min_length(vid, wave1_vignettes):
-    entry = wave1_vignettes[vid]
+@pytest.mark.parametrize("vid", _IDS_26_40)
+def test_v26_40_narrative_min_length(vid, vignettes_26_40):
+    entry = vignettes_26_40[vid]
     en = entry["data"].get("narrative_en") or ""
     es = entry["data"].get("narrative_es") or ""
     assert len(en) >= 100, f"v{vid} narrative_en too short ({len(en)} chars)"
     assert len(es) >= 100, f"v{vid} narrative_es too short ({len(es)} chars)"
 
 
-@pytest.mark.parametrize("vid", _WAVE1_IDS)
-def test_wave1_narrative_cites_anchor_pmid(vid, wave1_vignettes):
-    entry = wave1_vignettes[vid]
+@pytest.mark.parametrize("vid", _IDS_26_40)
+def test_v26_40_narrative_cites_anchor_pmid(vid, vignettes_26_40):
+    entry = vignettes_26_40[vid]
     pmid = entry["spec"]["pmid"]
     needle = f"PMID {pmid}"
     en = entry["data"].get("narrative_en") or ""
@@ -724,10 +723,10 @@ def test_wave1_narrative_cites_anchor_pmid(vid, wave1_vignettes):
     assert needle in es, f"v{vid} narrative_es missing '{needle}'"
 
 
-@pytest.mark.parametrize("vid", _WAVE1_IDS)
-def test_wave1_narrative_imputation_disclosure(vid, wave1_vignettes):
-    """Each wave-1 narrative must honestly disclose imputation basis."""
-    entry = wave1_vignettes[vid]
+@pytest.mark.parametrize("vid", _IDS_26_40)
+def test_v26_40_narrative_imputation_disclosure(vid, vignettes_26_40):
+    """Each narrative of vignettes 26-40 must honestly disclose imputation basis."""
+    entry = vignettes_26_40[vid]
     en = (entry["data"].get("narrative_en") or "").lower()
     # Phrases that disclose how missing values were imputed.
     disclosures = (
@@ -739,11 +738,11 @@ def test_wave1_narrative_imputation_disclosure(vid, wave1_vignettes):
     )
 
 
-def test_wave1_no_em_dashes(wave1_vignettes):
+def test_v26_40_no_em_dashes(vignettes_26_40):
     em = chr(0x2014)
     en_dash = chr(0x2013)
-    for vid in _WAVE1_IDS:
-        content = wave1_vignettes[vid]["path"].read_text(encoding="utf-8")
+    for vid in _IDS_26_40:
+        content = vignettes_26_40[vid]["path"].read_text(encoding="utf-8")
         assert content.count(em) == 0, f"v{vid} contains em-dash"
         assert content.count(en_dash) == 0, f"v{vid} contains en-dash"
 
@@ -752,22 +751,22 @@ def test_wave1_no_em_dashes(wave1_vignettes):
 # Content tests for PAM vignettes 41-60
 # ----------------------------------------------------------------------
 # These tests validate the 20 JSON files of vignettes 41-60, a mix of primary-source-anchored
-# newcomers (Zhou, Sazzad, Retana, DeNapoli, Wei, Cope), Day-1 PMID
-# reuses (Lares-Villa, Rauf, Dulski, Eger, Yoder 2012 x2, Smith,
+# newcomers (Zhou, Sazzad, Retana, DeNapoli, Wei, Cope), reuses of PMIDs
+# from vignettes 1-20 (Lares-Villa, Rauf, Dulski, Eger, Yoder 2012 x2, Smith,
 # Sandi, Burki - different demographics within the same anchor), and
 # Tier-3/4 within-cohort imputations (Capewell river, Gharpure x3).
 # ======================================================================
 
-_WAVE2_IDS = list(range(41, 61))
+_IDS_41_60 = list(range(41, 61))
 
 
 @pytest.fixture(scope="session")
-def wave2_vignettes(day2_distribution):
+def vignettes_41_60(distribution_21_60):
     out: dict[int, dict[str, Any]] = {}
-    by_id = {s["vignette_id"]: s for s in day2_distribution}
-    for vid in _WAVE2_IDS:
+    by_id = {s["vignette_id"]: s for s in distribution_21_60}
+    for vid in _IDS_41_60:
         spec = by_id[vid]
-        fpath = _PILOT_DATA_DIR / spec["filename"]
+        fpath = _PAM_DATA_DIR / spec["filename"]
         out[vid] = {
             "spec": spec,
             "path": fpath,
@@ -776,21 +775,21 @@ def wave2_vignettes(day2_distribution):
     return out
 
 
-@pytest.mark.parametrize("vid", _WAVE2_IDS)
-def test_wave2_file_exists(vid, wave2_vignettes):
-    entry = wave2_vignettes[vid]
-    assert entry["path"].exists(), f"v{vid} wave-2 JSON {entry['path']} missing"
+@pytest.mark.parametrize("vid", _IDS_41_60)
+def test_v41_60_file_exists(vid, vignettes_41_60):
+    entry = vignettes_41_60[vid]
+    assert entry["path"].exists(), f"v{vid} JSON {entry['path']} missing"
 
 
-@pytest.mark.parametrize("vid", _WAVE2_IDS)
-def test_wave2_schema_validates(vid, wave2_vignettes):
-    entry = wave2_vignettes[vid]
+@pytest.mark.parametrize("vid", _IDS_41_60)
+def test_v41_60_schema_validates(vid, vignettes_41_60):
+    entry = vignettes_41_60[vid]
     VignetteSchema.model_validate(entry["data"])
 
 
-@pytest.mark.parametrize("vid", _WAVE2_IDS)
-def test_wave2_demographics_match_spec(vid, wave2_vignettes):
-    entry = wave2_vignettes[vid]
+@pytest.mark.parametrize("vid", _IDS_41_60)
+def test_v41_60_demographics_match_spec(vid, vignettes_41_60):
+    entry = vignettes_41_60[vid]
     spec = entry["spec"]
     demo = entry["data"]["demographics"]
     assert demo["age_years"] == spec["age_years"]
@@ -798,25 +797,25 @@ def test_wave2_demographics_match_spec(vid, wave2_vignettes):
     assert demo["geography_region"] == spec["geography_region"]
 
 
-@pytest.mark.parametrize("vid", _WAVE2_IDS)
-def test_wave2_anchor_pmid_matches(vid, wave2_vignettes):
-    entry = wave2_vignettes[vid]
+@pytest.mark.parametrize("vid", _IDS_41_60)
+def test_v41_60_anchor_pmid_matches(vid, vignettes_41_60):
+    entry = vignettes_41_60[vid]
     anchors = entry["data"]["literature_anchors"]
     assert anchors and anchors[0]["pmid"] == entry["spec"]["pmid"]
 
 
-@pytest.mark.parametrize("vid", _WAVE2_IDS)
-def test_wave2_narrative_min_length(vid, wave2_vignettes):
-    entry = wave2_vignettes[vid]
+@pytest.mark.parametrize("vid", _IDS_41_60)
+def test_v41_60_narrative_min_length(vid, vignettes_41_60):
+    entry = vignettes_41_60[vid]
     en = entry["data"].get("narrative_en") or ""
     es = entry["data"].get("narrative_es") or ""
     assert len(en) >= 100, f"v{vid} narrative_en too short ({len(en)} chars)"
     assert len(es) >= 100, f"v{vid} narrative_es too short ({len(es)} chars)"
 
 
-@pytest.mark.parametrize("vid", _WAVE2_IDS)
-def test_wave2_narrative_cites_anchor_pmid(vid, wave2_vignettes):
-    entry = wave2_vignettes[vid]
+@pytest.mark.parametrize("vid", _IDS_41_60)
+def test_v41_60_narrative_cites_anchor_pmid(vid, vignettes_41_60):
+    entry = vignettes_41_60[vid]
     pmid = entry["spec"]["pmid"]
     needle = f"PMID {pmid}"
     en = entry["data"].get("narrative_en") or ""
@@ -825,23 +824,23 @@ def test_wave2_narrative_cites_anchor_pmid(vid, wave2_vignettes):
     assert needle in es, f"v{vid} narrative_es missing '{needle}'"
 
 
-@pytest.mark.parametrize("vid", _WAVE2_IDS)
-def test_wave2_narrative_methodology_disclosure(vid, wave2_vignettes):
-    """Each wave-2 narrative must honestly disclose its methodology.
+@pytest.mark.parametrize("vid", _IDS_41_60)
+def test_v41_60_narrative_methodology_disclosure(vid, vignettes_41_60):
+    """Each narrative of vignettes 41-60 must honestly disclose its methodology.
 
     Acceptable disclosures: imputation/reuse phrasing for imputed and
-    Day-1 reuse vignettes; "inferred from PAM-cohort epidemiology" or
+    reuses of an anchor from vignettes 1-20; "inferred from PAM-cohort epidemiology" or
     similar for primary-source-anchored newcomers where exact source
     values were not directly reported.
     """
-    entry = wave2_vignettes[vid]
+    entry = vignettes_41_60[vid]
     en = (entry["data"].get("narrative_en") or "").lower()
     disclosures = (
         "imputation",
         "imputed",
         "within-cohort",
         "within the anchor",
-        "day-1 used",
+        "vignettes 1-20 used",
         "inferred from pam-cohort",
         "pam-cohort epidemiology",
         "case context",
@@ -852,17 +851,17 @@ def test_wave2_narrative_methodology_disclosure(vid, wave2_vignettes):
     )
 
 
-def test_wave2_no_em_dashes(wave2_vignettes):
+def test_v41_60_no_em_dashes(vignettes_41_60):
     em = chr(0x2014)
     en_dash = chr(0x2013)
-    for vid in _WAVE2_IDS:
-        content = wave2_vignettes[vid]["path"].read_text(encoding="utf-8")
+    for vid in _IDS_41_60:
+        content = vignettes_41_60[vid]["path"].read_text(encoding="utf-8")
         assert content.count(em) == 0, f"v{vid} contains em-dash"
         assert content.count(en_dash) == 0, f"v{vid} contains en-dash"
 
 
-def test_v49_outcome_survived(wave2_vignettes):
-    v49 = wave2_vignettes[49]
+def test_v49_outcome_survived(vignettes_41_60):
+    v49 = vignettes_41_60[49]
     spec = v49["spec"]
     assert spec["outcome"] == "survived"
     anchoring = v49["data"]["adjudication"]["anchoring_documentation"].lower()
@@ -874,8 +873,8 @@ def test_v49_outcome_survived(wave2_vignettes):
     assert "miltefosina" in es, "v49 narrative_es missing miltefosina"
 
 
-def test_v60_outcome_survived(wave2_vignettes):
-    v60 = wave2_vignettes[60]
+def test_v60_outcome_survived(vignettes_41_60):
+    v60 = vignettes_41_60[60]
     spec = v60["spec"]
     assert spec["outcome"] == "survived"
     anchoring = v60["data"]["adjudication"]["anchoring_documentation"].lower()
@@ -897,11 +896,11 @@ def test_v60_outcome_survived(wave2_vignettes):
 # ======================================================================
 
 
-def test_wave2_jitter_uniqueness(wave2_vignettes):
-    """No two wave-2 entries share the same (CSF WBC, protein, glucose, CRP, PCT)."""
+def test_v41_60_jitter_uniqueness(vignettes_41_60):
+    """No two entries of vignettes 41-60 share the same (CSF WBC, protein, glucose, CRP, PCT)."""
     seen: dict[tuple, int] = {}
-    for vid in _WAVE2_IDS:
-        d = wave2_vignettes[vid]["data"]
+    for vid in _IDS_41_60:
+        d = vignettes_41_60[vid]["data"]
         tup = (
             d["csf"]["csf_wbc_per_mm3"],
             d["csf"]["csf_protein_mg_per_dL"],
@@ -911,18 +910,18 @@ def test_wave2_jitter_uniqueness(wave2_vignettes):
         )
         if tup in seen:
             raise AssertionError(
-                f"Wave-2 jitter collision: v{vid} and v{seen[tup]} share "
+                f"Jitter collision in vignettes 41-60: v{vid} and v{seen[tup]} share "
                 f"identical (CSF_WBC, protein, glucose, CRP, PCT) tuple {tup}"
             )
         seen[tup] = vid
 
 
-@pytest.mark.parametrize("vid", _WAVE2_IDS)
-def test_wave2_stage_state_consistency(vid, wave2_vignettes, day2_distribution):
+@pytest.mark.parametrize("vid", _IDS_41_60)
+def test_v41_60_stage_state_consistency(vid, vignettes_41_60, distribution_21_60):
     """GCS and mental_status_grade must match the spec's stage classification."""
-    spec = next(s for s in day2_distribution if s["vignette_id"] == vid)
+    spec = next(s for s in distribution_21_60 if s["vignette_id"] == vid)
     stage = spec["stage"]
-    d = wave2_vignettes[vid]["data"]
+    d = vignettes_41_60[vid]["data"]
     gcs = d["vitals"]["glasgow_coma_scale"]
     ms = d["exam"]["mental_status_grade"]
     if stage == "early":
@@ -942,7 +941,7 @@ def test_wave2_stage_state_consistency(vid, wave2_vignettes, day2_distribution):
         )
 
 
-_WAVE2_CLUSTER_EXPOSURE_MAP: dict[str, set[str]] = {
+_CLUSTER_EXPOSURE_MAP_41_60: dict[str, set[str]] = {
     "splash_pad": {"splash_pad"},
     "lake_pond": {"lake", "river", "swimming_pool_unchlorinated", "none"},
     "river": {"river"},
@@ -952,15 +951,15 @@ _WAVE2_CLUSTER_EXPOSURE_MAP: dict[str, set[str]] = {
 }
 
 
-@pytest.mark.parametrize("vid", _WAVE2_IDS)
-def test_wave2_cluster_exposure_mapping(vid, wave2_vignettes, day2_distribution):
+@pytest.mark.parametrize("vid", _IDS_41_60)
+def test_v41_60_cluster_exposure_mapping(vid, vignettes_41_60, distribution_21_60):
     """Each cluster value must enforce a specific freshwater_exposure_type subset."""
-    spec = next(s for s in day2_distribution if s["vignette_id"] == vid)
+    spec = next(s for s in distribution_21_60 if s["vignette_id"] == vid)
     cluster = spec["cluster"]
-    expo = wave2_vignettes[vid]["data"]["exposure"]["freshwater_exposure_type"]
-    allowed = _WAVE2_CLUSTER_EXPOSURE_MAP.get(cluster)
+    expo = vignettes_41_60[vid]["data"]["exposure"]["freshwater_exposure_type"]
+    allowed = _CLUSTER_EXPOSURE_MAP_41_60.get(cluster)
     assert allowed is not None, (
-        f"v{vid} cluster {cluster!r} not in _WAVE2_CLUSTER_EXPOSURE_MAP; "
+        f"v{vid} cluster {cluster!r} not in _CLUSTER_EXPOSURE_MAP_41_60; "
         f"update the map if new clusters were added"
     )
     assert expo in allowed, (
@@ -969,10 +968,10 @@ def test_wave2_cluster_exposure_mapping(vid, wave2_vignettes, day2_distribution)
     )
 
 
-@pytest.mark.parametrize("vid", _WAVE2_IDS)
-def test_wave2_spanish_required_tokens(vid, wave2_vignettes):
-    """Each wave-2 ES narrative carries the universal Spanish-accent token set."""
-    es = wave2_vignettes[vid]["data"].get("narrative_es") or ""
+@pytest.mark.parametrize("vid", _IDS_41_60)
+def test_v41_60_spanish_required_tokens(vid, vignettes_41_60):
+    """Each ES narrative of vignettes 41-60 carries the universal Spanish-accent token set."""
+    es = vignettes_41_60[vid]["data"].get("narrative_es") or ""
     accent_chars = _SPANISH_ACCENT_CHARS & set(es)
     assert accent_chars, f"v{vid} narrative_es contains no UTF-8 Spanish accents"
     for token in _REQUIRED_SPANISH_TOKENS:
@@ -981,11 +980,11 @@ def test_wave2_spanish_required_tokens(vid, wave2_vignettes):
         )
 
 
-def test_wave2_survivor_completeness(wave2_vignettes):
+def test_v41_60_survivor_completeness(vignettes_41_60):
     """v49 and v60 survivor narratives must include miltefosine + ICP control +
     cooling protocol + ICU + discharge in both languages."""
     for vid in (49, 60):
-        d = wave2_vignettes[vid]["data"]
+        d = vignettes_41_60[vid]["data"]
         en = d["narrative_en"].lower()
         es = d["narrative_es"].lower()
         assert "miltefosine" in en, f"v{vid} EN missing miltefosine"
@@ -1009,14 +1008,14 @@ def test_wave2_survivor_completeness(wave2_vignettes):
         ), f"v{vid} adjudication missing outcome=survived"
 
 
-@pytest.mark.parametrize("vid", _WAVE2_IDS)
-def test_wave2_case_id_format(vid, wave2_vignettes):
-    """Wave-2 case_id must follow PAM-D2-NNN-<journal_short_code>-<year>-..."""
-    case_id = wave2_vignettes[vid]["data"]["case_id"]
-    assert case_id.startswith(f"PAM-D2-{vid:03d}-"), (
-        f"v{vid} case_id {case_id!r} does not follow PAM-D2-NNN- pattern"
+@pytest.mark.parametrize("vid", _IDS_41_60)
+def test_v41_60_case_id_format(vid, vignettes_41_60):
+    """The case_id of vignettes 41-60 must follow PAM-NNN-<journal_short_code>-<year>-..."""
+    case_id = vignettes_41_60[vid]["data"]["case_id"]
+    assert case_id.startswith(f"PAM-{vid:03d}-"), (
+        f"v{vid} case_id {case_id!r} does not follow PAM-NNN- pattern"
     )
-    pmid = wave2_vignettes[vid]["data"]["literature_anchors"][0]["pmid"]
+    pmid = vignettes_41_60[vid]["data"]["literature_anchors"][0]["pmid"]
     journal_short = PMID_REGISTRY[pmid]["journal_short_code"]
     assert journal_short in case_id, (
         f"v{vid} case_id {case_id!r} missing journal_short_code "
@@ -1031,20 +1030,20 @@ def test_wave2_case_id_format(vid, wave2_vignettes):
 # WBC tail coverage fails these three tests before merge.
 # ======================================================================
 
-_WAVE2_VALID_METHODOLOGY_CLASSES = {
+_VALID_METHODOLOGY_CLASSES_41_60 = {
     "primary_source_direct",
-    "day1_pmid_reuse",
+    "pmid_reuse",
     "tier_3_imputation",
     "tier_4_imputation",
 }
 
 
-@pytest.mark.parametrize("vid", _WAVE2_IDS)
-def test_wave2_methodology_tag_present(vid, wave2_vignettes):
-    """Each wave-2 entry must carry a methodology=<class>; prefix at the
+@pytest.mark.parametrize("vid", _IDS_41_60)
+def test_v41_60_methodology_tag_present(vid, vignettes_41_60):
+    """Each entry of vignettes 41-60 must carry a methodology=<class>; prefix at the
     start of adjudication.anchoring_documentation, with class drawn from
     the four canonical methodology categories."""
-    anchoring = wave2_vignettes[vid]["data"]["adjudication"][
+    anchoring = vignettes_41_60[vid]["data"]["adjudication"][
         "anchoring_documentation"
     ]
     m = re.match(r"^methodology=([a-z_0-9]+);\s+", anchoring)
@@ -1053,55 +1052,55 @@ def test_wave2_methodology_tag_present(vid, wave2_vignettes):
         f"first 80 chars: {anchoring[:80]!r}"
     )
     cls = m.group(1)
-    assert cls in _WAVE2_VALID_METHODOLOGY_CLASSES, (
+    assert cls in _VALID_METHODOLOGY_CLASSES_41_60, (
         f"v{vid} methodology={cls!r} not in valid classes "
-        f"{sorted(_WAVE2_VALID_METHODOLOGY_CLASSES)}"
+        f"{sorted(_VALID_METHODOLOGY_CLASSES_41_60)}"
     )
 
 
-def test_wave2_gcs_distribution_spread(wave2_vignettes, day2_distribution):
-    """Mid-stage wave-2 GCS values must span >= 5 distinct levels across
+def test_v41_60_gcs_distribution_spread(vignettes_41_60, distribution_21_60):
+    """Mid-stage GCS values must span >= 5 distinct levels across
     {9, 10, 11, 12, 13}, and late-stage must span >= 5 distinct levels
     across {4, 5, 6, 7, 8}."""
-    by_id = {s["vignette_id"]: s for s in day2_distribution}
+    by_id = {s["vignette_id"]: s for s in distribution_21_60}
     mid: list[int] = []
     late: list[int] = []
-    for vid in _WAVE2_IDS:
+    for vid in _IDS_41_60:
         spec = by_id[vid]
-        gcs = wave2_vignettes[vid]["data"]["vitals"]["glasgow_coma_scale"]
+        gcs = vignettes_41_60[vid]["data"]["vitals"]["glasgow_coma_scale"]
         if spec["stage"] == "mid":
             mid.append(gcs)
         elif spec["stage"] == "late":
             late.append(gcs)
     assert len(set(mid)) >= 5, (
-        f"Mid-stage wave-2 GCS distribution has only {len(set(mid))} "
+        f"Mid-stage GCS distribution has only {len(set(mid))} "
         f"distinct values: {sorted(set(mid))}; spec requires >= 5 across "
         f"{{9,10,11,12,13}}"
     )
     assert len(set(late)) >= 5, (
-        f"Late-stage wave-2 GCS distribution has only {len(set(late))} "
+        f"Late-stage GCS distribution has only {len(set(late))} "
         f"distinct values: {sorted(set(late))}; spec requires >= 5 across "
         f"{{4,5,6,7,8}}"
     )
 
 
-def test_wave2_csf_wbc_range_extremes(wave2_vignettes):
-    """Wave-2 CSF WBC must include >= 3 entries below 2,000 AND >= 3
+def test_v41_60_csf_wbc_range_extremes(vignettes_41_60):
+    """The CSF WBC of vignettes 41-60 must include >= 3 entries below 2,000 AND >= 3
     entries at or above 4,500, covering the low- and high-tail extremes
     documented in PAM cohort epidemiology."""
     wbcs = [
-        wave2_vignettes[vid]["data"]["csf"]["csf_wbc_per_mm3"]
-        for vid in _WAVE2_IDS
+        vignettes_41_60[vid]["data"]["csf"]["csf_wbc_per_mm3"]
+        for vid in _IDS_41_60
     ]
     below_2000 = sum(1 for w in wbcs if w < 2000)
     at_or_above_4500 = sum(1 for w in wbcs if w >= 4500)
     assert below_2000 >= 3, (
-        f"Wave-2 CSF WBC has only {below_2000} entries below 2,000; "
+        f"CSF WBC of vignettes 41-60 has only {below_2000} entries below 2,000; "
         f"spec requires >= 3 (extreme low tail). All values: "
         f"{sorted(wbcs)}"
     )
     assert at_or_above_4500 >= 3, (
-        f"Wave-2 CSF WBC has only {at_or_above_4500} entries at or above "
+        f"CSF WBC of vignettes 41-60 has only {at_or_above_4500} entries at or above "
         f"4,500; spec requires >= 3 (extreme high tail). All values: "
         f"{sorted(wbcs)}"
     )
@@ -1172,7 +1171,7 @@ def test_viral_pathogen_counts():
 
 def test_bacterial_peru_anchor_share():
     """4/28 Peru-anchored: 2 Lima SP + 1 Loreto NM + 1 Cusco Hib
-    (1 Tumbes Listeria removed in errata 5.4.3.3)."""
+    (1 Tumbes Listeria slot removed in the 2026-05-31 correction)."""
     peru = sum(
         1 for s in BACTERIAL_DISTRIBUTION
         if s["geography_region"] in _PERU_GEOGRAPHY_REGIONS
@@ -1191,7 +1190,7 @@ def test_viral_dengue_peru_anchor():
 
 
 def test_bacterial_viral_specs_freshwater_false():
-    """Spec 1.3.10 sanity: ALL 60 Class-2/3 specs must have
+    """Sanity check: all 58 Class-2/3 specs (28 bacterial + 30 viral) must have
     freshwater_exposure_within_14d=False."""
     for spec in BACTERIAL_DISTRIBUTION + VIRAL_DISTRIBUTION:
         assert spec["freshwater_exposure_within_14d"] is False, spec[
@@ -1200,7 +1199,7 @@ def test_bacterial_viral_specs_freshwater_false():
 
 
 def test_diagnostic_ambiguity_count():
-    """Spec 1.3.5: 5 ambiguity cases per class."""
+    """5 diagnostic ambiguity cases per class."""
     bact_amb = sum(
         1 for s in BACTERIAL_DISTRIBUTION if s.get("diagnostic_ambiguity")
     )
@@ -1233,8 +1232,8 @@ def test_dengue_platelet_mandate_present_in_specs():
 
 def test_bacterial_viral_vignette_ids_contiguous():
     """Class 2 occupies 61-90 minus 88/89 (the 2 Listeria slots removed in
-    errata 5.4.3.3); Class 3 occupies 91-120; specs are disjoint from Day-1
-    (1-20) and Day-2 (21-60)."""
+    the 2026-05-31 correction); Class 3 occupies 91-120; specs are disjoint
+    from PAM vignettes 1-20 and 21-60."""
     bact_ids = sorted(s["vignette_id"] for s in BACTERIAL_DISTRIBUTION)
     viral_ids = sorted(s["vignette_id"] for s in VIRAL_DISTRIBUTION)
     assert bact_ids == [i for i in range(61, 91) if i not in (88, 89)]
@@ -1242,7 +1241,7 @@ def test_bacterial_viral_vignette_ids_contiguous():
 
 
 def test_marginals_files_exist_and_valid():
-    """marginals.json artifacts present per spec 1.3.1 / 1.3.2."""
+    """The Class 2 and Class 3 marginals.json design files are present and valid."""
     cases = [
         ("data/vignettes/v2/class_02_bacterial/marginals.json", 2, 28),
         ("data/vignettes/v2/class_03_viral/marginals.json", 3, 30),
@@ -1292,7 +1291,7 @@ def test_marginals_freshwater_sanity_and_adjudication_state():
 
 
 def test_pmid_29462145_excluded_from_registry():
-    """Lock-in: PMID 29462145 (Jiang YH urology paper) MUST NOT be in registry.
+    """Regression guard: PMID 29462145 (Jiang YH urology paper) MUST NOT be in registry.
 
     Verified PMID = "Videourodynamic findings of lower urinary tract
     dysfunctions in men with persistent storage lower urinary tract

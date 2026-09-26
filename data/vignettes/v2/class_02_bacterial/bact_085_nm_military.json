@@ -1,6 +1,6 @@
 {
   "schema_version": "2.0",
-  "case_id": "BACT-D3-085-OFID-2022-US-South-region-NM-Mid",
+  "case_id": "BACT-085-OFID-2022-US-South-region-NM-Mid",
   "ground_truth_class": 2,
   "demographics": {
     "age_years": 22,
@@ -101,12 +101,12 @@
   },
   "adjudication": {
     "adjudicator_ids": [
-      "WAVE2-PRE-ADJ-1",
-      "WAVE2-PRE-ADJ-2"
+      "PRE-ADJ-1",
+      "PRE-ADJ-2"
     ],
     "cohen_kappa": 0.0,
     "disagreement_resolution": null,
-    "anchoring_documentation": "stage=pre_adjudication; status=pending_external_review; self_review_disposition=hold_for_revision; self_review_notes=wave 2 vignette anchored to PMID 35493127 (Marcus 2022 OFID); external clinical adjudication pending; classification provisional. adjudicator_ids=WAVE2-PRE-ADJ-1, WAVE2-PRE-ADJ-2 (sentinel); cohen_kappa=0.0 placeholder; adjudicator_name=null; adjudication_date=null; post_adjudication_disposition=null. Subphase 1.3 commit 5.3.4 (2026-05-08). anchor=Marcus-2022-OFID-serogroup-B-military-trainee stratum=young-adult-military.",
+    "anchoring_documentation": "stage=pre_adjudication; status=pending_external_review; self_review_disposition=hold_for_revision; self_review_notes=vignette anchored to PMID 35493127 (Marcus 2022 OFID); external clinical adjudication pending; classification provisional. adjudicator_ids=PRE-ADJ-1, PRE-ADJ-2 (sentinel); cohen_kappa=0.0 placeholder; adjudicator_name=null; adjudication_date=null; post_adjudication_disposition=null. Generated 2026-05-08. anchor=Marcus-2022-OFID-serogroup-B-military-trainee stratum=young-adult-military.",
     "inclusion_decision": "hold_for_revision"
   },
   "literature_anchors": [
@@ -118,11 +118,11 @@
   ],
   "provenance": {
     "generation_timestamp_utc": "2026-05-08T15:00:00Z",
-    "generator_model_identifier": "scripts.generate_pam_vignettes/v1.subphase_1_3_commit_5_3_4",
+    "generator_model_identifier": "scripts.generate_pam_vignettes/v1",
     "prompt_hash_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
     "schema_version": "2.0",
-    "inclusion_decision_rationale": "Anchored to PMID 35493127 (Marcus 2022 OFID serogroup B meningococcal disease in a military trainee). Demographic anchor (22yo F young adult military congregate setting) matches the trainee congregate-setting stratum. CSF profile bacterial range; petechial rash + classic NM serogroup B. Imputation tiers: tier_1_primary={age, sex, csf_culture, csf_gram_stain, petechial_rash, military_barracks_setting}; tier_3_within_cohort={csf_wbc, neutrophil_pct, glucose, protein}; tier_4_priors={temp, gcs, symptom_days}. Indeterminate=none. Diagnostic_ambiguity=false. Outcome=survived_no_sequelae. Tier: tier_4_imputation_literature_anchored. 5.3.4 wave2 NM-young-adult-military."
+    "inclusion_decision_rationale": "Anchored to PMID 35493127 (Marcus 2022 OFID serogroup B meningococcal disease in a military trainee). Demographic anchor (22yo F young adult military congregate setting) matches the trainee congregate-setting stratum. CSF profile bacterial range; petechial rash + classic NM serogroup B. Imputation tiers: tier_1_primary={age, sex, csf_culture, csf_gram_stain, petechial_rash, military_barracks_setting}; tier_3_within_cohort={csf_wbc, neutrophil_pct, glucose, protein}; tier_4_priors={temp, gcs, symptom_days}. Indeterminate=none. Diagnostic_ambiguity=false. Outcome=survived_no_sequelae. Tier: tier_4_imputation_literature_anchored. Stratum: NM-young-adult-military."
   },
-  "narrative_es": "Mujer de 22 anos en region sur de Estados Unidos, en cuartel militar en servicio activo, ingresada a urgencias terciarias con 24 horas de fiebre 39.4 C, cefalea intensa, rigidez de nuca y exantema petequial en extremidades. Examen: temperatura 39.4 C, escala de Glasgow 13, rigidez de nuca, signo de Kernig positivo, exantema petequial, sin deficit focal. Liquido cefalorraquideo mostro presion de apertura 26 cmH2O, leucocitos 5,200 por mm3 (90 por ciento neutrofilos), glucosa 22 mg/dL, proteina 200 mg/dL. Tincion de Gram con diplococos gramnegativos y cultivo Neisseria meningitidis serogrupo B. Anclaje en Marcus 2022 OFID (PMID 35493127, enfermedad meningococica serogrupo B en recluta militar en entorno de congregacion). Subphase 1.3 commit 5.3.4 wave 2.",
-  "narrative_en": "A 22-year-old woman in the US South region in an active-duty military barracks setting presented to a tertiary emergency department with a 24-hour history of fever to 39.4 C, severe headache, neck stiffness, and petechial rash on her extremities. Examination on admission: temperature 39.4 C, Glasgow Coma Scale 13, neck stiffness, positive Kernig sign, petechial rash, no focal deficit. CSF showed opening pressure 26 cmH2O, white cell count 5,200 per cubic millimeter (90 percent neutrophils), glucose 22 mg/dL, protein 200 mg/dL. Gram stain revealed gram-negative diplococci; culture identified Neisseria meningitidis serogroup B. Anchored to Marcus 2022 OFID (PMID 35493127, US serogroup B meningococcal disease in a military trainee in a congregate setting). Outcome: survived no sequelae. Subphase 1.3 commit 5.3.4 wave 2, pre-adjudication hold_for_revision."
+  "narrative_es": "Mujer de 22 anos en region sur de Estados Unidos, en cuartel militar en servicio activo, ingresada a urgencias terciarias con 24 horas de fiebre 39.4 C, cefalea intensa, rigidez de nuca y exantema petequial en extremidades. Examen: temperatura 39.4 C, escala de Glasgow 13, rigidez de nuca, signo de Kernig positivo, exantema petequial, sin deficit focal. Liquido cefalorraquideo mostro presion de apertura 26 cmH2O, leucocitos 5,200 por mm3 (90 por ciento neutrofilos), glucosa 22 mg/dL, proteina 200 mg/dL. Tincion de Gram con diplococos gramnegativos y cultivo Neisseria meningitidis serogrupo B. Anclaje en Marcus 2022 OFID (PMID 35493127, enfermedad meningococica serogrupo B en recluta militar en entorno de congregacion).",
+  "narrative_en": "A 22-year-old woman in the US South region in an active-duty military barracks setting presented to a tertiary emergency department with a 24-hour history of fever to 39.4 C, severe headache, neck stiffness, and petechial rash on her extremities. Examination on admission: temperature 39.4 C, Glasgow Coma Scale 13, neck stiffness, positive Kernig sign, petechial rash, no focal deficit. CSF showed opening pressure 26 cmH2O, white cell count 5,200 per cubic millimeter (90 percent neutrophils), glucose 22 mg/dL, protein 200 mg/dL. Gram stain revealed gram-negative diplococci; culture identified Neisseria meningitidis serogroup B. Anchored to Marcus 2022 OFID (PMID 35493127, US serogroup B meningococcal disease in a military trainee in a congregate setting). Outcome: survived no sequelae. Pre-adjudication status: hold_for_revision."
 }
