@@ -317,10 +317,11 @@ history (`docs/REPRODUCIBILITY.md` Section 4).
   meningitis from PAM. The app's bacterial-meningitis preset gets
   `p_high = 0.9994` and abstains at the logit-energy gate
   (`LogitEnergyAboveOODShift`); that gate also flags 15 of the 30 bundled
-  rows, so the abstention is not recognition of bacterial meningitis.
+  rows (`outputs/metrics/bundled_outcomes.json`), so the abstention is not
+  recognition of bacterial meningitis.
   Across the full pipeline, 18 of the 30 bundled rows abstain (15 at the
   logit-energy gate, 3 at the Mahalanobis gate), including 8 of the 11 High
-  rows, and only 3 High rows are labeled High
+  rows, and only 3 High rows get a High label
   (`outputs/metrics/bundled_outcomes.json`; see the limitation stated at
   the top of this card). The
   MIMIC-IV protocol (`docs/rare_class_design.md` Section 4) pre-specifies a
@@ -361,10 +362,15 @@ history (`docs/REPRODUCIBILITY.md` Section 4).
   - Do not deploy the Streamlit widget on any clinical-facing surface.
   - After a re-fit, regenerate every artifact with
     `scripts/regenerate_all_artifacts.py` and update every value this card
-    quotes from the regenerated files. The outcome of each bundled row,
-    and the abstention counts quoted at the top of this card, in Section 9,
-    in `docs/tripod-ai.md` and in the README's Limitations, are in
-    `outputs/metrics/bundled_outcomes.json`. Recompute the ones no artifact
+    quotes from the regenerated files. The outcome of each bundled row is
+    in `outputs/metrics/bundled_outcomes.json`, and so are the counts
+    derived from it: the abstention counts quoted at the top of this card,
+    in Section 9, in `docs/tripod-ai.md` and in the README's Limitations,
+    and the number of bundled rows the logit-energy gate flags (15 of the
+    30), quoted in Section 9, `docs/tripod-ai.md`,
+    `docs/REPRODUCIBILITY.md` and the bacterial preset's banner
+    (`app/presets.py`). `tests/test_bundled_outcomes.py` fails when any of
+    these quotes no longer matches the artifact. Recompute the ones no artifact
     stores: run `ml.infer.infer_one` on the regenerated artifacts for the
     bacterial preset's `p_high` and the gate at which it abstains
     (Section 9), and measure the training losses quoted in Section 1 again,

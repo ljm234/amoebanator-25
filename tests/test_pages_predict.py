@@ -42,6 +42,18 @@ def _artifact_thresholds() -> dict[str, float | int]:
     }
 
 
+# The bacterial-meningitis preset's infer_one readout on the shipped
+# artifacts: ABSTAIN at the logit-energy gate. One set of values, shared by
+# the banner tests and the fixture check.
+_BACTERIAL_FAKE: dict[str, Any] = {
+    "prediction": "ABSTAIN",
+    "p_high": 0.9994,
+    "reason": "LogitEnergyAboveOODShift",
+    "energy": -3.967,
+    "mahalanobis_d2": 15.096,
+}
+
+
 def _fake_infer_output(
     *,
     prediction: str = "Low",
@@ -434,10 +446,7 @@ def test_limitation_banner_only_on_bacterial_preset() -> None:
     """Banner is post-result + bacterial-preset-gated."""
     from app.presets import PRESETS
 
-    fake = _fake_infer_output(
-        prediction="ABSTAIN", p_high=0.9994, reason="LogitEnergyAboveOODShift",
-        energy=-3.967, mahalanobis_d2=15.096,
-    )
+    fake = _fake_infer_output(**_BACTERIAL_FAKE)
     at = _fresh_app_test()
     at.run(timeout=30)
     at.button(key="preset_bacterial_meningitis_limitation").click()
@@ -494,10 +503,7 @@ def test_limitation_banner_kept_when_symptoms_are_reselected() -> None:
     but leaves the input unchanged, so the banner is still shown."""
     from app.presets import PRESETS
 
-    fake = _fake_infer_output(
-        prediction="ABSTAIN", p_high=0.9994, reason="LogitEnergyAboveOODShift",
-        energy=-3.967, mahalanobis_d2=15.096,
-    )
+    fake = _fake_infer_output(**_BACTERIAL_FAKE)
     at = _fresh_app_test()
     at.run(timeout=30)
     at.button(key="preset_bacterial_meningitis_limitation").click()
@@ -604,9 +610,22 @@ def test_fake_output_uses_the_shipped_thresholds() -> None:
         assert fake[key] == shipped[key]
     # the default Low fake sits inside both gates; the bacterial fake is above tau_E
     assert fake["energy"] <= fake["energy_tau"] and fake["mahalanobis_d2"] <= fake["d2_tau"]
-    bacterial = _fake_infer_output(
-        prediction="ABSTAIN", p_high=0.9994, reason="LogitEnergyAboveOODShift",
-        energy=-3.967, mahalanobis_d2=15.096,
-    )
+    bacterial = _fake_infer_output(**_BACTERIAL_FAKE)
     assert bacterial["energy"] > bacterial["energy_tau"]
     assert bacterial["mahalanobis_d2"] <= bacterial["d2_tau"]
+
+
+def test_bacterial_fake_matches_the_shipped_preset() -> None:
+    """The shared bacterial values are what infer_one returns for the preset."""
+    import pytest
+
+    from app.presets import PRESETS
+    from app.utils import build_row
+    from ml.infer import infer_one
+
+    out = infer_one(build_row(**PRESETS["bacterial_meningitis_limitation"]["inputs"]))
+    assert out["prediction"] == _BACTERIAL_FAKE["prediction"]
+    assert out["reason"] == _BACTERIAL_FAKE["reason"]
+    assert out["p_high"] == pytest.approx(_BACTERIAL_FAKE["p_high"], abs=5e-5)
+    assert out["energy"] == pytest.approx(_BACTERIAL_FAKE["energy"], abs=5e-4)
+    assert out["mahalanobis_d2"] == pytest.approx(_BACTERIAL_FAKE["mahalanobis_d2"], abs=5e-4)

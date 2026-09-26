@@ -7,28 +7,31 @@ app_port: 8501
 tags:
 - streamlit
 pinned: false
-short_description: Abstention-aware PAM triage (synthetic data)
+short_description: Abstention-aware PAM triage demo (synthetic data)
 license: mit
 ---
 
 # Amoebanator
 
-Research codebase for an abstention-aware triage signal for primary amoebic
-meningoencephalitis (PAM), the rare and near-uniformly fatal CNS infection caused by
-*Naegleria fowleri*. The classifier is small by design, with temperature scaling,
-split conformal prediction and two out-of-distribution gates, and it abstains instead
-of predicting when a gate or the conformal step flags the input. Out-of-distribution
-detection is dual-gated: Mahalanobis distance on the seven non-symptom inputs and an
-energy score on the temperature-scaled logits. The conformal step abstains when the
-prediction set is empty or holds both classes. The raw logits already separate the six
-validation rows perfectly, so the temperature is not identifiable: the fit leaves T at
-essentially 1.0, and the probabilities shown are the model's own softmax outputs. A
-literature-anchored registry of 138 meningoencephalitis vignettes (60 PAM, 78 across
-five differential-diagnosis classes) is kept under `data/vignettes/`, apart from the 30
-synthetic rows the model is trained and validated on; neither the classifier nor the
-app reads it. Its adjudication fields (adjudicator IDs, Cohen's kappa, inclusion
-decision) are placeholders set by the generator script; no physician adjudication is
-recorded (`ml/schemas/SCHEMA_README.md` Section 1).
+Amoebanator is a research codebase for a triage signal for primary amoebic
+meningoencephalitis (PAM), a rare CNS infection caused by *Naegleria fowleri* that
+is almost always fatal. It is a small PyTorch classifier trained on 30 synthetic rows
+(24 for training, 6 for validation), served as a Streamlit demo.
+
+- **Abstention.** The model returns High, Low or ABSTAIN. It abstains when either of
+  two out-of-distribution gates flags the input, or when the split conformal
+  prediction set is empty or holds both classes.
+- **Out-of-distribution gates.** A Mahalanobis distance on the seven non-symptom
+  inputs, and an energy score on the temperature-scaled logits.
+- **Temperature scaling.** The raw logits already separate the six validation rows
+  perfectly, so the temperature is not identifiable. The fit leaves T at essentially
+  1.0, and the probabilities shown are the model's own softmax outputs.
+- **Vignette registry.** A registry of 138 meningoencephalitis vignettes (60 PAM, 78
+  across five other diagnostic classes), each anchored to published literature, is
+  kept under `data/vignettes/`. Neither the classifier nor the app reads it. Its
+  adjudication fields (adjudicator IDs, Cohen's kappa, inclusion decision) are
+  placeholders set by the generator script; no physician adjudication is recorded
+  (`ml/schemas/SCHEMA_README.md` Section 1).
 
 > **For research and educational use.** Not a cleared medical device, not a substitute
 > for clinical judgment, and not clinically validated.

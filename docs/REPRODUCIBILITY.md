@@ -137,8 +137,9 @@ a known limitation of the synthetic training data: the 30 rows contain no
 bacterial meningitis that is not PAM, so the model gives the
 bacterial-meningitis preset a High probability (about 0.9994), and the
 logit-energy gate then abstains, so the result is ABSTAIN rather than the Low
-the test expects. That gate also flags 15 of the 30 bundled rows, so the
-abstention is not recognition of bacterial meningitis. Two tests are
+the test expects. That gate also flags 15 of the 30 bundled rows
+(`outputs/metrics/bundled_outcomes.json`), so the abstention is not
+recognition of bacterial meningitis. Two tests are
 skipped: the skeleton in `tests/schemas/test_vignette_migration.py`, whose
 migration script has not been written, and the pre-correction diff in
 `tests/test_viral_anchor_pmid_corrections.py`, which has nothing to compare

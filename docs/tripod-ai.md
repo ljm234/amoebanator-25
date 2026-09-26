@@ -48,9 +48,9 @@ cited below carry their sample size in the same sentence.
   train on directly: a 10 percent test split of the 111 to 167 reported U.S.
   cases holds only 11 to 17 positives, too few to separate model behavior
   from sampling noise (`rare_class_design.md` Section 2; CDC 2025; Yoder
-  2010). To the author's knowledge, no published calibrated,
-  abstention-aware PAM triage model exists; the contribution is the
-  surrounding safety stack, not a new diagnostic test.
+  2010). To the author's knowledge, no published abstention-aware PAM
+  triage model exists; the contribution is the surrounding safety stack,
+  not a new diagnostic test.
 * **Objectives and intended use.** The objective is to develop and internally
   exercise an abstention-aware triage classifier together with its
   trustworthy-ML safety stack (temperature scaling, split-conformal abstain,
@@ -279,7 +279,8 @@ design, conduct, or reporting of this work.
   (`outputs/metrics/synthetic_ood_benchmark.json`) neither separates
   covariate-shifted rows from the bundled rows (AUC 0.561 for the
   Mahalanobis distance, 0.568 for the logit energy), and the logit-energy
-  gate also flags 15 of the 30 bundled rows (`model_card.md` Section 9).
+  gate also flags 15 of the 30 bundled rows
+  (`outputs/metrics/bundled_outcomes.json`; `model_card.md` Section 9).
   The most important limitation for a must-not-miss triage tool: run
   through the full pipeline, 18 of the 30 bundled rows abstain, including 8
   of the 11 High rows (6 at the logit-energy gate, 2 at the Mahalanobis
