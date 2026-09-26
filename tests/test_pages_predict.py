@@ -6,10 +6,11 @@ known-limitation banner on the bacterial preset, both research-mode
 branches, and a text-snapshot drift check.
 
 Tests of the page run it through Streamlit's AppTest; tests of the helpers
-call app.utils directly. Tests that submit the form patch ``infer_one``,
-except test_stale_lock_recovers_after_30s; that test and
+call app.utils directly. Most tests that submit the form patch
+``infer_one``. Two tests run the shipped model:
+test_stale_lock_recovers_after_30s, which submits the form, and
 test_neutral_defaults_predict_low_p_high_lt_001, which calls ml.infer
-directly, run the shipped model.
+directly.
 """
 from __future__ import annotations
 

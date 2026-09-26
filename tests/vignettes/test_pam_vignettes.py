@@ -6,8 +6,7 @@ quality (no em-dashes, Spanish accent integrity).
 
 The DAY1_DISTRIBUTION list and PMID_REGISTRY in
 ``scripts/vignettes/generate_pam_vignettes.py`` are the source of truth for these
-tests; where a demographic tally differs from an earlier target, the tests
-assert the data.
+tests.
 """
 from __future__ import annotations
 
@@ -344,11 +343,10 @@ def test_case_id_format(generated_vignettes):
 
 
 # ======================================================================
-# Day 2 distribution lock (v21-v60, 40 vignettes)
+# Distribution of PAM vignettes 21-60 (40 vignettes)
 # ----------------------------------------------------------------------
-# Tests below validate the Day-2 distribution data structure only.
-# Vignette JSON generation for v21-v60 is deferred to Commits 4-5.
-# Source of truth: DAY2_DISTRIBUTION in scripts/vignettes/generate_pam_vignettes.py.
+# Tests below validate the DAY2_DISTRIBUTION data structure in
+# scripts/vignettes/generate_pam_vignettes.py.
 # ======================================================================
 
 
@@ -1110,12 +1108,13 @@ def test_wave2_csf_wbc_range_extremes(wave2_vignettes):
 # ======================================================================
 # Bacterial and viral distribution tests
 # ----------------------------------------------------------------------
-# These twelve tests assert structural correctness of the BACTERIAL_
-# DISTRIBUTION (n=30) and VIRAL_DISTRIBUTION (n=30) lists in
-# scripts/vignettes/generate_pam_vignettes.py against the marginals.json
-# design artifacts at
+# These thirteen tests assert structural correctness of the BACTERIAL_
+# DISTRIBUTION (n=28) and VIRAL_DISTRIBUTION (n=30) lists in
+# scripts/vignettes/generate_pam_vignettes.py. Two of them compare the
+# lists with the marginals.json design artifacts at
 # data/vignettes/v2/class_02_bacterial/marginals.json and
-# data/vignettes/v2/class_03_viral/marginals.json.
+# data/vignettes/v2/class_03_viral/marginals.json; the others assert the
+# expected counts directly.
 # ======================================================================
 
 import collections as _collections
@@ -1283,7 +1282,7 @@ def test_marginals_freshwater_sanity_and_adjudication_state():
 
 
 # ======================================================================
-# Subphase 1.2.x metadata lock (commit v2.2.4-metadata-locked, 2026-05-08)
+# PMID 29462145 must stay out of the registry
 # ----------------------------------------------------------------------
 # PMID 29462145 (Jiang YH 2018 PLoS One) is a urology paper with no
 # meningitis, encephalitis or Zika content, found by manual PMC
@@ -1311,10 +1310,8 @@ def test_pmid_29462145_excluded_from_registry():
 # =========================================================================
 # Registry coverage for the bacterial and viral distributions
 # -------------------------------------------------------------------------
-# PMID 18626302, a typo, is not in PMID_REGISTRY, and slot v83 of
-# BACTERIAL_DISTRIBUTION once still referenced it.
 # test_v21_v60_pmids_in_registry covers the PAM slots 21-60 only; this test
-# covers all 60 bacterial and viral slots (IDs 61-120).
+# covers all 58 bacterial and viral slots (IDs 61-120 without 88 and 89).
 # =========================================================================
 
 
@@ -1322,7 +1319,7 @@ def test_bacterial_viral_distribution_pmids_in_registry():
     """All BACT + VIRAL slot anchor PMIDs must resolve in PMID_REGISTRY.
 
     Fails if any slot's anchor PMID is mistyped or missing from the
-    registry, as v83's 18626302 once was.
+    registry.
     """
     from scripts.vignettes.generate_pam_vignettes import (
         BACTERIAL_DISTRIBUTION,

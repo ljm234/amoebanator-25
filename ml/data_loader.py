@@ -28,8 +28,9 @@ Field mapping for the bundled simulated dataset
   * `risk_score`, `risk_label`, `pcr`, `microscopy`, `exposure` - clinical;
                      pass through.
 
-The bundled CSV has `source="simulated"` on every row, so on it the scrub is a
-no-op data-shape verification.
+On the bundled CSV the scrub blanks `physician` and truncates `timestamp_tz`
+to the year on every row; neither is a model feature and no age is above 89,
+so the feature matrix is the same as without the scrub.
 """
 from __future__ import annotations
 

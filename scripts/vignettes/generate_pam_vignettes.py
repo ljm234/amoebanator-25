@@ -38,12 +38,10 @@ OUTPUT_DIR = Path("data/vignettes/pam")
 # ----------------------------------------------------------------------------
 # 15 distinct PMIDs that anchor the 20 Day 1 vignettes.
 #
-# The Day 1 vignettes use 15 distinct PMIDs, matching the per-vignette
-# assignments.
-#
 # Each entry holds the metadata needed to populate the LiteratureAnchor,
-# DxResult and provenance fields of a vignette. Fields left "" or None are
-# unknown.
+# DxResult and provenance fields of a vignette. A field left "" or None has
+# no value for that entry (for example, no PMC mirror or no issue number);
+# the entry's caveat says when a value could not be confirmed.
 # ============================================================================
 
 PMID_REGISTRY: dict[str, dict[str, Any]] = {
