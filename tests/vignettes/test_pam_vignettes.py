@@ -1,9 +1,7 @@
 """Tests for the vignettes built by scripts/vignettes/generate_pam_vignettes.py.
 
-Validates the 60 PAM vignettes (schema conformance, PMID metadata
-completeness, distribution, and content quality: no em-dashes, Spanish
-accent integrity), the bacterial and viral distributions, and the PMID
-registry.
+Covers the PAM vignettes, the bacterial and viral distributions, and the
+PMID registry; each section below says what it checks.
 
 The DAY1_DISTRIBUTION, DAY2_DISTRIBUTION, BACTERIAL_DISTRIBUTION,
 VIRAL_DISTRIBUTION and PMID_REGISTRY in
@@ -1110,10 +1108,10 @@ def test_wave2_csf_wbc_range_extremes(wave2_vignettes):
 # ======================================================================
 # Bacterial and viral distribution tests
 # ----------------------------------------------------------------------
-# Eleven of these thirteen tests check the BACTERIAL_DISTRIBUTION (n=28)
-# and VIRAL_DISTRIBUTION (n=30) lists in
-# scripts/vignettes/generate_pam_vignettes.py: counts, id ranges and the
-# freshwater flag. The other two check the marginals.json design files at
+# Eleven of these thirteen tests check fields of the BACTERIAL_DISTRIBUTION
+# (n=28) and VIRAL_DISTRIBUTION (n=30) lists in
+# scripts/vignettes/generate_pam_vignettes.py. The other two check the
+# marginals.json design files at
 # data/vignettes/v2/class_02_bacterial/marginals.json and
 # data/vignettes/v2/class_03_viral/marginals.json.
 # ======================================================================
