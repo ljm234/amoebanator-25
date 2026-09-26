@@ -30,28 +30,41 @@ PAGE_PATH = "pages/01_predict.py"
 SNAPSHOT_PATH = Path(__file__).parent / "_snapshots" / "predict.md.snap"
 
 
+def _artifact_thresholds() -> dict[str, float | int]:
+    """The shipped thresholds and calibration size, read from the artifacts."""
+    metrics = Path(__file__).resolve().parent.parent / "outputs" / "metrics"
+    conformal = json.loads((metrics / "conformal.json").read_text())
+    return {
+        "energy_tau": float(json.loads((metrics / "energy_threshold.json").read_text())["tau"]),
+        "d2_tau": float(json.loads((metrics / "feature_stats.json").read_text())["tau"]),
+        "n_cal": int(conformal["n"]),
+        "alpha": float(conformal["alpha"]),
+    }
+
+
 def _fake_infer_output(
     *,
     prediction: str = "Low",
     p_high: float = 1.4e-9,
     reason: str | None = None,
-    n_cal: int = 6,
-    alpha: float = 0.10,
+    n_cal: int | None = None,
+    alpha: float | None = None,
     energy: float = -11.7,
-    energy_tau: float = -0.99,
+    energy_tau: float | None = None,
     mahalanobis_d2: float = 5.0,
-    d2_tau: float = 24.86,
+    d2_tau: float | None = None,
 ) -> dict[str, Any]:
     """Build a synthetic infer_one output dict matching the real shape."""
+    shipped = _artifact_thresholds()
     out: dict[str, Any] = {
         "prediction": prediction,
         "p_high": p_high,
-        "n_cal": n_cal,
-        "alpha": alpha,
+        "n_cal": shipped["n_cal"] if n_cal is None else n_cal,
+        "alpha": shipped["alpha"] if alpha is None else alpha,
         "energy": energy,
-        "energy_tau": energy_tau,
+        "energy_tau": shipped["energy_tau"] if energy_tau is None else energy_tau,
         "mahalanobis_d2": mahalanobis_d2,
-        "d2_tau": d2_tau,
+        "d2_tau": shipped["d2_tau"] if d2_tau is None else d2_tau,
     }
     if reason is not None:
         out["reason"] = reason
@@ -421,7 +434,10 @@ def test_limitation_banner_only_on_bacterial_preset() -> None:
     """Banner is post-result + bacterial-preset-gated."""
     from app.presets import PRESETS
 
-    fake = _fake_infer_output(prediction="ABSTAIN", p_high=0.9994, reason="LogitEnergyAboveOODShift")
+    fake = _fake_infer_output(
+        prediction="ABSTAIN", p_high=0.9994, reason="LogitEnergyAboveOODShift",
+        energy=-3.967, mahalanobis_d2=15.096,
+    )
     at = _fresh_app_test()
     at.run(timeout=30)
     at.button(key="preset_bacterial_meningitis_limitation").click()
@@ -478,7 +494,10 @@ def test_limitation_banner_kept_when_symptoms_are_reselected() -> None:
     but leaves the input unchanged, so the banner is still shown."""
     from app.presets import PRESETS
 
-    fake = _fake_infer_output(prediction="ABSTAIN", p_high=0.9994, reason="LogitEnergyAboveOODShift")
+    fake = _fake_infer_output(
+        prediction="ABSTAIN", p_high=0.9994, reason="LogitEnergyAboveOODShift",
+        energy=-3.967, mahalanobis_d2=15.096,
+    )
     at = _fresh_app_test()
     at.run(timeout=30)
     at.button(key="preset_bacterial_meningitis_limitation").click()
@@ -575,3 +594,13 @@ def test_visual_snapshot_baseline() -> None:
         f"snapshot drift {drift:.1%} exceeds 5% threshold "
         f"(baseline={len(baseline)} chars, captured={len(captured)} chars)"
     )
+
+
+def test_fake_output_uses_the_shipped_thresholds() -> None:
+    """The fixture's defaults are the artifacts' values, not typed numbers."""
+    shipped = _artifact_thresholds()
+    fake = _fake_infer_output()
+    for key in ("energy_tau", "d2_tau", "n_cal", "alpha"):
+        assert fake[key] == shipped[key]
+    # the default Low fake sits inside both gates; the bacterial fake is above tau_E
+    assert fake["energy"] <= fake["energy_tau"] and fake["mahalanobis_d2"] <= fake["d2_tau"]

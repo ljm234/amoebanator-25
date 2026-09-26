@@ -2,11 +2,15 @@
   "auc_calibrated_CI95": {
     "lo": 1.0,
     "hi": 1.0,
-    "mean": 1.0
+    "mean": 1.0,
+    "n_resamples": 2000,
+    "n_skipped": 181
   },
   "recall_high@0.5_CI95": {
-    "lo": 0.0,
+    "lo": 1.0,
     "hi": 1.0,
-    "mean": 0.913
+    "mean": 1.0,
+    "n_resamples": 2000,
+    "n_skipped": 174
   }
 }

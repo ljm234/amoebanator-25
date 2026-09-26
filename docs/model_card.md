@@ -7,6 +7,15 @@ comes from the files under `outputs/model/` and `outputs/metrics/` that
 quoted, the pre-V1.1 temperature in Section 9, comes from the repository
 history (`docs/REPRODUCIBILITY.md` Section 4).
 
+> **Most important limitation.** Run through the full pipeline, 18 of the 30
+> bundled rows abstain, and so do 8 of the 11 High rows: 6 at the
+> logit-energy gate and 2 at the Mahalanobis gate. Only 3 High rows get a
+> High label; none gets a Low label. For a must-not-miss triage tool, a
+> system that declines on most of the cases it exists to catch has not
+> shown it can do its job, and these are rows the model and gates were
+> built from (24 of the 30 are its training rows). Section 9 gives the
+> detail.
+
 ---
 
 ## 1. Model details
@@ -207,7 +216,11 @@ history (`docs/REPRODUCIBILITY.md` Section 4).
 * **Unitary results (overall).** Not reported (Section 4).
   `outputs/metrics/metrics.json` and `outputs/metrics/ci.json` hold the AUC
   and recall computed on the n = 6 validation rows; they are not
-  performance estimates. The fitted temperature is `T = 0.999997`
+  performance estimates. The bootstrap behind `ci.json`
+  (`scripts/calibration/bootstrap_metrics.py`, 2000 resamples) skips a
+  resample in which a metric is undefined and records how many it skipped:
+  181 for AUC (one class only) and 174 for recall (no High row). The fitted
+  temperature is `T = 0.999997`
   (`outputs/model/temperature_scale.json`), also from those six rows, on
   which it is not identifiable (Section 9).
 * **Intersectional results.** Not reported. The validation split has
@@ -302,7 +315,11 @@ history (`docs/REPRODUCIBILITY.md` Section 4).
   meningitis from PAM. The app's bacterial-meningitis preset gets
   `p_high = 0.9994` and abstains at the logit-energy gate
   (`LogitEnergyAboveOODShift`); that gate also flags 15 of the 30 bundled
-  rows, so the abstention is not recognition of bacterial meningitis. The
+  rows, so the abstention is not recognition of bacterial meningitis.
+  Across the full pipeline, 18 of the 30 bundled rows abstain (15 at the
+  logit-energy gate, 3 at the Mahalanobis gate), including 8 of the 11 High
+  rows, and only 3 High rows are labeled High (see the limitation stated at
+  the top of this card). The
   MIMIC-IV protocol (`docs/rare_class_design.md` Section 4) pre-specifies a
   real OOD evaluation (bacterial and viral meningitis test rows vs B60.2 PAM
   rows) of a separate bacterial-vs-viral classifier trained on MIMIC-IV, not

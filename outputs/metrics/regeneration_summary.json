@@ -20,7 +20,7 @@
         "outputs/metrics/val_preds.csv",
         "outputs/metrics/metrics.json"
       ],
-      "duration_s": 3.48,
+      "duration_s": 4.58,
       "exit_code": 0,
       "stdout_tail": "Validation AUC (calibrated): 1.0\nRecall(High) @0.5: 1.0\nT (temperature, clamped [0.1,10.0]): 1.0\nSaved outputs/metrics/val_preds.csv and metrics.json, plus model artifacts in outputs/model.",
       "warnings": [],
@@ -60,7 +60,7 @@
         "outputs/metrics/feature_stats.json",
         "outputs/metrics/feature_stats_train.json"
       ],
-      "duration_s": 1.08,
+      "duration_s": 1.21,
       "exit_code": 0,
       "stdout_tail": "  ]\n}\n{\n  \"replaced\": \"outputs/metrics/feature_stats.json\"\n}",
       "warnings": [],
@@ -87,7 +87,7 @@
         "outputs/metrics/energy_threshold.json",
         "outputs/metrics/ood_energy.json"
       ],
-      "duration_s": 1.71,
+      "duration_s": 1.93,
       "exit_code": 0,
       "stdout_tail": "    \"tau\": -7.16683734263492e-06,\n    \"q\": 0.95,\n    \"n\": 6\n  }\n}",
       "warnings": [],
@@ -113,7 +113,7 @@
       "artifacts": [
         "outputs/metrics/conformal.json"
       ],
-      "duration_s": 0.35,
+      "duration_s": 0.39,
       "exit_code": 0,
       "stdout_tail": "  \"alpha_fraction\": \"1/7\",\n  \"qhat\": 6.800965638831258e-05,\n  \"n\": 6,\n  \"source\": \"val_preds.csv\"\n}",
       "warnings": [
@@ -138,7 +138,7 @@
       "artifacts": [
         "outputs/metrics/conformal_eval.json"
       ],
-      "duration_s": 0.35,
+      "duration_s": 0.37,
       "exit_code": 0,
       "stdout_tail": "  \"singleton_rate\": 1.0,\n  \"empty_rate\": 0.0,\n  \"two_class_rate\": 0.0,\n  \"n\": 6\n}",
       "warnings": [],
@@ -161,21 +161,18 @@
       "artifacts": [
         "outputs/metrics/ci.json"
       ],
-      "duration_s": 2.72,
+      "duration_s": 2.91,
       "exit_code": 0,
       "stdout_tail": "Saved outputs/metrics/ci.json",
-      "warnings": [
-        "sklearn/metrics/_classification.py:1833: UndefinedMetricWarning: Recall is ill-defined and being set to 0.0 due to no true samples. Use `zero_division` parameter to control this behavior.",
-        "sklearn/metrics/_ranking.py:442: UndefinedMetricWarning: Only one class is present in y_true. ROC AUC score is not defined in that case."
-      ],
+      "warnings": [],
       "artifacts_present": {
         "outputs/metrics/ci.json": true
       },
       "artifacts_size_bytes": {
-        "outputs/metrics/ci.json": 161
+        "outputs/metrics/ci.json": 253
       },
       "artifacts_sha256": {
-        "outputs/metrics/ci.json": "8617631375196f71fb975402085c0e2b6616e500af0541f29937e3d7a9102955"
+        "outputs/metrics/ci.json": "6df82d579a78e4eecfa92b43df5f0e37214e79df88a865dae05cb02cd0b3bbe5"
       }
     },
     {
@@ -188,7 +185,7 @@
         "outputs/metrics/calibration_curve.png",
         "outputs/metrics/dca_curve.png"
       ],
-      "duration_s": 1.68,
+      "duration_s": 1.98,
       "exit_code": 0,
       "stdout_tail": "Saved calibration_curve.png and dca_curve.png in outputs/metrics/",
       "warnings": [],
@@ -215,7 +212,7 @@
         "outputs/metrics/ablation_table.json",
         "outputs/metrics/ablation_table.csv"
       ],
-      "duration_s": 27.04,
+      "duration_s": 31.12,
       "exit_code": 0,
       "stdout_tail": "  \"wrote\": [\n    \"outputs/metrics/ablation_table.json\",\n    \"outputs/metrics/ablation_table.csv\"\n  ]\n}",
       "warnings": [
@@ -244,7 +241,7 @@
         "outputs/metrics/coverage_sweep.json",
         "outputs/metrics/coverage_sweep.png"
       ],
-      "duration_s": 0.61,
+      "duration_s": 0.71,
       "exit_code": 0,
       "stdout_tail": "      \"abstain_rate\": 1.0,\n      \"n\": 3\n    }\n  ]\n}",
       "warnings": [
@@ -276,7 +273,7 @@
         "outputs/metrics/abstain_pareto.json",
         "outputs/metrics/abstain_pareto.png"
       ],
-      "duration_s": 0.59,
+      "duration_s": 0.7,
       "exit_code": 0,
       "stdout_tail": "    \"outputs/metrics/abstain_pareto.json\",\n    \"outputs/metrics/abstain_pareto.png\"\n  ],\n  \"n_points\": 51\n}",
       "warnings": [],
@@ -302,7 +299,7 @@
       "artifacts": [
         "outputs/metrics/synthetic_ood_benchmark.json"
       ],
-      "duration_s": 1.74,
+      "duration_s": 2.0,
       "exit_code": 0,
       "stdout_tail": "      \"median_in_dist\": -0.00048345964672092605,\n      \"median_ood\": -0.00048345964672092605\n    }\n  }\n}",
       "warnings": [],

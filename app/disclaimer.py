@@ -37,11 +37,11 @@ import streamlit as st
 #   - "jordanmontenegroc.99@gmail.com"
 # Source URL: github.com/ljm234/amoebanator-25
 DISCLAIMER_TEXT: str = (
-    "Research prototype, NOT a medical device. Trained on n=30 "
-    "synthetic patient vignettes (n_train=24, n_val=6); contains zero "
-    "real PHI. Outputs are temperature-scaled probabilities (T fit on "
-    "n=6 validation rows), **limited to** "
-    "the n=30 training distribution - not diagnoses. Not for clinical "
+    "Research prototype, NOT a medical device. Built on n=30 "
+    "synthetic patient vignettes, 24 for training and 6 for validation; "
+    "contains zero real PHI. Outputs are temperature-scaled probabilities "
+    "(T fit on the 6 validation rows), **limited to** the distribution of "
+    "those synthetic rows - not diagnoses. Not for clinical "
     "decision support, not validated. Source + caveats: "
     "github.com/ljm234/amoebanator-25 - Contact: "
     "jordanmontenegroc.99@gmail.com (ORCID 0009-0000-7851-7139)"

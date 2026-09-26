@@ -185,8 +185,8 @@ the current research stage.
   vignettes (24 for training, 6 for validation) containing no real protected
   health information, that the outputs are temperature-scaled probabilities
   (the temperature fit on the six validation rows) limited to the
-  distribution of those synthetic rows rather than diagnoses, and that it is not for clinical decision support and not
-  validated; it also carries the source link and the maintainer contact. A
+  distribution of those synthetic rows rather than diagnoses, and that it is
+  not for clinical decision support and not validated; it also carries the source link and the maintainer contact. A
   set of mandatory tokens in that banner, including the not-a-medical-device
   statement and the sample size, is asserted by the test suite
   (`app/disclaimer.py`; `tests/test_app_disclaimer.py`). The full set of

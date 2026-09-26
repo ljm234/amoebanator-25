@@ -33,6 +33,16 @@ recorded (`ml/schemas/SCHEMA_README.md` Section 1).
 > **For research and educational use.** Not a cleared medical device, not a substitute
 > for clinical judgment, and not clinically validated.
 
+## Limitations
+
+The most important limitation of this demo as a must-not-miss triage tool:
+run through the full pipeline, 18 of the 30 bundled rows abstain, including 8
+of the 11 High rows (6 at the logit-energy gate, 2 at the Mahalanobis gate).
+Only 3 High rows get a High label, and none gets a Low label. These are the
+rows the model was built from (24 of them are its training rows), so the
+abstention stack declines on most of the cases it exists to catch
+(`docs/model_card.md`, top and Section 9).
+
 ## Scope and status
 
 Amoebanator is a clinical-ML infrastructure project for CNS-infection triage, using

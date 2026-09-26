@@ -19,18 +19,40 @@ def boot_ci(
     y: np.ndarray,
     p: np.ndarray,
     rng: np.random.Generator,
-) -> tuple[float, float, float]:
+    defined: Callable[[np.ndarray], bool],
+) -> dict[str, float | int]:
+    """
+    Percentile bootstrap over N_BOOT resamples of the rows. A resample for
+    which the metric is undefined (``defined(yy)`` is False) is skipped and
+    counted, not scored, so it cannot pull the interval toward a
+    placeholder value such as recall = 0 when a resample has no High row.
+    """
     stats = []
+    skipped = 0
     n = len(y)
     for _ in range(N_BOOT):
         idx = rng.integers(0, n, size=n)
         yy, pp = y[idx], p[idx]
-        try:
-            stats.append(stat_fn(yy, pp))
-        except Exception:
-            pass
+        if not defined(yy):
+            skipped += 1
+            continue
+        stats.append(stat_fn(yy, pp))
     arr = np.array(stats, dtype=float)
-    return float(np.nanpercentile(arr, 2.5)), float(np.nanpercentile(arr, 97.5)), float(np.nanmean(arr))
+    return {
+        "lo": float(np.percentile(arr, 2.5)),
+        "hi": float(np.percentile(arr, 97.5)),
+        "mean": float(np.mean(arr)),
+        "n_resamples": N_BOOT,
+        "n_skipped": skipped,
+    }
+
+
+def _has_both_classes(yy: np.ndarray) -> bool:
+    return len(np.unique(yy)) == 2
+
+
+def _has_high_row(yy: np.ndarray) -> bool:
+    return bool((yy == 1).any())
 
 
 def main() -> None:
@@ -42,14 +64,18 @@ def main() -> None:
     p = df["p_high_cal"].astype(float).to_numpy()  # temperature-scaled probabilities
     rng = np.random.default_rng(42)
 
-    auc_ci = boot_ci(lambda yy, pp: roc_auc_score(yy, pp), y, p, rng)
-    rec_ci = boot_ci(lambda yy, pp: recall_score(yy, (pp >= 0.5).astype(int), pos_label=1), y, p, rng)
+    # AUC needs both classes in a resample; recall needs at least one High row.
+    auc_ci = boot_ci(lambda yy, pp: roc_auc_score(yy, pp), y, p, rng, _has_both_classes)
+    rec_ci = boot_ci(
+        lambda yy, pp: recall_score(yy, (pp >= 0.5).astype(int), pos_label=1),
+        y, p, rng, _has_high_row,
+    )
 
     os.makedirs("outputs/metrics", exist_ok=True)
     with open(OUT, "w") as f:
         json.dump({
-            "auc_calibrated_CI95": {"lo": auc_ci[0], "hi": auc_ci[1], "mean": auc_ci[2]},
-            "recall_high@0.5_CI95": {"lo": rec_ci[0], "hi": rec_ci[1], "mean": rec_ci[2]}
+            "auc_calibrated_CI95": auc_ci,
+            "recall_high@0.5_CI95": rec_ci,
         }, f, indent=2)
 
     print(f"Saved {OUT}")

@@ -69,6 +69,24 @@ def test_alert_selectors_match_streamlit_markup() -> None:
     assert "stAlertContent${" in bundle
 
 
+def test_outer_alert_box_rule_exists() -> None:
+    """
+    The kind rules color the inner content node; the outer
+    [data-testid="stAlertContainer"] box must be made transparent, unpadded
+    and untransitioned, or Streamlit's default wash and padding frame every
+    alert (and its 0.2 s transition delays the change).
+    """
+    m = re.search(
+        r'\.stAlert\s+\[data-testid="stAlertContainer"\]\s*\{(?P<body>[^}]*)\}',
+        _INJECTED_CSS,
+    )
+    assert m, "outer alert box rule missing from _INJECTED_CSS"
+    body = m.group("body")
+    assert re.search(r"background:\s*transparent", body)
+    assert re.search(r"padding:\s*0", body)
+    assert re.search(r"transition:\s*none", body)
+
+
 @pytest.mark.parametrize("kind, fg, bg", ALERT_COMBOS)
 def test_alert_combo_meets_aa(kind: str, fg: str, bg: str) -> None:
     """Each alert's text-on-wash contrast clears the AA threshold of 4.5:1."""
