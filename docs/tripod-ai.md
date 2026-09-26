@@ -56,9 +56,11 @@ cited below carry their sample size in the same sentence.
   trustworthy-ML safety stack (temperature scaling, split-conformal abstain,
   Mahalanobis and energy OOD gates, decision curve analysis), and to
   pre-specify the real-data proxy study. V1.1 is development plus an
-  infrastructure proof on synthetic data; internal validation on a real
-  cohort belongs to the proxy study, which is pre-specified but not
-  scheduled. Intended users, intended use, and out-of-scope uses are
+  infrastructure proof on synthetic data; no real-cohort validation of this
+  model exists. The proxy study, which is pre-specified but not scheduled,
+  would develop and internally validate a separate bacterial-vs-viral
+  classifier on a real cohort, not this model (Section 6, Model evaluation
+  and updating). Intended users, intended use, and out-of-scope uses are
   enumerated in `model_card.md` Section 2; the model is explicitly not for
   any clinical decision.
 
@@ -230,14 +232,16 @@ design, conduct, or reporting of this work.
 * **Model development.** The final model is the state_dict at
   `outputs/model/model.pt`, with the feature schema in `features.json` and
   the input scaler in `scaler.json`; `python -m ml.training_calib_dca`
-  regenerates all three and reproduces `model.pt` bit for bit only in the
-  environment recorded in `REPRODUCIBILITY.md` Section 2 (`model_card.md`
-  Sections 1 and 7). Its calibration temperature, fit by L-BFGS on the 6
+  regenerates all three and reproduces `model.pt` bit for bit in the
+  environment recorded in `REPRODUCIBILITY.md` Section 2; on another device
+  the weights can differ (`REPRODUCIBILITY.md` Section 3; `model_card.md`
+  Sections 1 and 6). Its calibration temperature, fit by L-BFGS on the 6
   validation rows, is T = 0.999997,
   essentially the starting value of 1.0: the raw logits classify all six
   rows correctly, so the validation loss has no finite minimum in T, the
   temperature is not identifiable, and the probabilities are the model's own
-  softmax outputs (`outputs/model/temperature_scale.json`).
+  softmax outputs (`outputs/model/temperature_scale.json`; `model_card.md`
+  Section 7).
 * **Model performance.** No performance metrics are reported, because on
   six validation rows they would not be meaningful; see `model_card.md`
   Sections 4, 7 and 9. **Proxy study:** the protocol's measures listed in
@@ -270,7 +274,12 @@ design, conduct, or reporting of this work.
   validation rows that fit the calibration, the conformal threshold and the
   energy gate cap the conformal target at 6/7 coverage (`model_card.md`
   Section 9), and the raw logits separate them perfectly, so the temperature
-  is not identifiable (Section 6).
+  is not identifiable (Section 6). How well the two OOD gates detect shifted
+  inputs is not established: on the bundled synthetic OOD benchmark
+  (`outputs/metrics/synthetic_ood_benchmark.json`) neither separates
+  covariate-shifted rows from the bundled rows (AUC 0.561 for the
+  Mahalanobis distance, 0.568 for the logit energy), and the logit-energy
+  gate also flags 15 of the 30 bundled rows (`model_card.md` Section 9).
 * **Usability and future research.** Out-of-scope uses, namely no clinical
   triage, no PAM diagnosis or rule-out, and no EHR or clinical-decision-support
   deployment, are enumerated in `model_card.md` Section 2. The PhysioNet
@@ -303,7 +312,7 @@ schema has no sex field; see Section 3 (Fairness).
 
 See `docs/references.bib` for full BibTeX entries. Key citations: Collins GS
 et al. BMJ 2024 (TRIPOD+AI); Collins GS et al. 2015 (original TRIPOD,
-superseded by TRIPOD+AI); Mitchell M et al. FAccT 2019 (model cards);
+superseded by TRIPOD+AI); Mitchell M et al. FAT\* 2019 (model cards);
 Gebru T et al. CACM 2021 (datasheets); Guo C et al. ICML 2017 (temperature
 scaling); Vovk V Mach Learn 2013 and Lei J et al. JASA 2018 (split conformal);
 Liu W et al. NeurIPS 2020 (energy OOD); Lee K et al. NeurIPS 2018 (Mahalanobis

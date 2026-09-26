@@ -1,5 +1,5 @@
 """
-Canonical model architecture for Amoebanator V1.0.
+Canonical model architecture for Amoebanator V1.1 (unchanged since V1.0).
 
 Single source of truth for the trained MLP, shared by the trainer
 (ml/training_calib_dca.py) and inference (ml/infer.py), so loading model.pt

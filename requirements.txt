@@ -16,6 +16,10 @@ scipy==1.16.3
 matplotlib==3.10.6
 streamlit==1.52.0
 
+# Vignette schema
+pydantic>=2.5.0
+jsonschema>=4.20.0
+
 # --- Dev / test / lint (not needed at run time; the Dockerfile installs them too) ---
 pytest==9.0.2
 pytest-cov==7.0.0
@@ -28,7 +32,3 @@ mypy==1.19.1
 #   --extra-index-url https://download.pytorch.org/whl/cpu
 # to pip, as the Dockerfile does; torch==2.9.1 then resolves to 2.9.1+cpu.
 # CI installs the default wheel.
-
-# Vignette schema
-pydantic>=2.5.0
-jsonschema>=4.20.0

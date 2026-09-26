@@ -368,13 +368,17 @@ def test_temperature_note_states_each_case() -> None:
     assert "where the optimizer stopped" in temperature_note(0.1, 6, True)
     assert "sharpens" in temperature_note(0.5, 6, False)
     assert "softens" in temperature_note(1.5, 6, False)
+    assert "essentially 1" in temperature_note(0.9999974, 6, None)
+    assert "essentially 1" in temperature_note(1.0, 6, False)
+    assert "is below 1" not in temperature_note(0.9999974, 6, None)
 
 
 def test_min_calibration_rows_matches_the_rank_rule() -> None:
     from app.utils import min_calibration_rows
     from ml.conformal_advanced import finite_sample_rank
 
-    for alpha, expected in [(0.10, 9), (0.05, 19), (1 / 7, 6), (0.20, 4)]:
+    for alpha, expected in [(0.10, 9), (0.05, 19), (1 / 7, 6), (0.20, 4),
+                            (0.5, 1), (1e-4, 9999), (1e-7, 10_000_000)]:
         n = min_calibration_rows(alpha)
         assert n == expected
         assert finite_sample_rank(n, alpha) <= n
@@ -440,9 +444,14 @@ def test_limitation_banner_only_on_bacterial_preset() -> None:
         at2.button[3].click()
         at2.run(timeout=30)
     errors2 = [e.value for e in at2.error]
-    # The INVALID conformal-regime error is allowed; the limitation description is not.
+    # The INVALID conformal-regime error is allowed; no preset description is.
     assert not any(bacterial_desc[:60] in e for e in errors2), (
         "limitation banner spuriously rendered on non-bacterial preset"
+    )
+    hr_desc = PRESETS["high_risk_pam"]["description"]
+    assert not PRESETS["high_risk_pam"]["limitation_banner"]
+    assert not any(hr_desc[:60] in e for e in errors2), (
+        "a preset without limitation_banner rendered its description as a banner"
     )
 
 
@@ -464,15 +473,42 @@ def test_limitation_banner_hidden_after_inputs_are_edited() -> None:
     assert not any(bacterial_desc[:60] in e.value for e in at.error)
 
 
+def test_limitation_banner_kept_when_symptoms_are_reselected() -> None:
+    """Deselecting and reselecting a symptom reorders the multiselect value
+    but leaves the input unchanged, so the banner is still shown."""
+    from app.presets import PRESETS
+
+    fake = _fake_infer_output(prediction="ABSTAIN", p_high=0.9994, reason="LogitEnergyAboveOODShift")
+    at = _fresh_app_test()
+    at.run(timeout=30)
+    at.button(key="preset_bacterial_meningitis_limitation").click()
+    at.run(timeout=30)
+    at.multiselect(key="symptoms").unselect("fever").run(timeout=30)
+    at.multiselect(key="symptoms").select("fever").run(timeout=30)
+    assert at.multiselect(key="symptoms").value == ["headache", "nuchal_rigidity", "fever"]
+    with patch("ml.infer.infer_one", return_value=fake):
+        at.button[3].click()
+        at.run(timeout=30)
+    bacterial_desc = PRESETS["bacterial_meningitis_limitation"]["description"]
+    assert any(bacterial_desc[:60] in e.value for e in at.error)
+    # Removing a symptom for real is an edit, so the banner goes away.
+    at.multiselect(key="symptoms").unselect("fever").run(timeout=30)
+    with patch("ml.infer.infer_one", return_value=fake):
+        at.button[3].click()
+        at.run(timeout=30)
+    assert not any(bacterial_desc[:60] in e.value for e in at.error)
+
+
 # ---------------------------------------------------------------------
-# RESEARCH_MODE=1 -> red banner + IRB_STATUS_CHANGE audit emit
+# RESEARCH_MODE=1/true/TRUE/yes -> red banner + IRB_STATUS_CHANGE audit emit
 # ---------------------------------------------------------------------
-def test_research_mode_active_renders_banner_and_emits_event() -> None:
-    """RESEARCH_MODE=1 branch."""
+@pytest.mark.parametrize("value", ["1", "true", "TRUE", "yes"])
+def test_research_mode_active_renders_banner_and_emits_event(value: str) -> None:
+    """Research-mode branch, for every value the IRB gate treats as research mode."""
     with tempfile.NamedTemporaryFile(mode="w", suffix=".jsonl", delete=False) as f:
         tmp_path = Path(f.name)
     os.environ["AMOEBANATOR_AUDIT_PATH"] = str(tmp_path)
-    os.environ["AMOEBANATOR_RESEARCH_MODE"] = "1"
+    os.environ["AMOEBANATOR_RESEARCH_MODE"] = value
     try:
         at = _fresh_app_test()
         at.run(timeout=30)

@@ -9,14 +9,19 @@ dataset detail; this document is the operational recipe and its limits.
 
 ## 1. Scope
 
-A clean checkout reproduces every V1.1 synthetic-data result: the trained
-model with its input scaler and temperature, and the conformal,
-out-of-distribution, and decision-curve artifacts, along with the full test
-suite. The results match bit for bit only in the environment recorded in
-Section 2. There is no real-data result to reproduce: the MIMIC-IV proxy
-study in `docs/rare_class_design.md` is a pre-specified protocol that is not
-scheduled and has not been run, and MIMIC-IV data is not redistributable; it
-must be obtained from PhysioNet under credentialed access.
+In the environment recorded in Section 2, a clean checkout reproduces every
+V1.1 synthetic-data result bit for bit: the trained model with its input
+scaler and temperature, and the conformal, out-of-distribution, and
+decision-curve artifacts. Elsewhere, and in particular on a different device,
+training can give different weights (Section 3), so `model.pt` and the
+artifacts computed from it should not be expected to match Section 8. The
+test suite (Section 5) checks the shipped files against Section 8 and checks
+that two training runs in the same environment give the same `model.pt`; it
+does not compare a new training run with the shipped one. There is no
+real-data result to reproduce: the MIMIC-IV proxy study in
+`docs/rare_class_design.md` is a pre-specified protocol that is not scheduled
+and has not been run, and MIMIC-IV data is not redistributable; it must be
+obtained from PhysioNet under credentialed access.
 
 ## 2. Environment
 
@@ -185,7 +190,7 @@ run.
 | `outputs/metrics/conformal_eval.json` | `2224eff53712f66a56a6acecf446a4723e8c3a03b6d334be3cfa90460fa86b7e` |
 | `outputs/metrics/ci.json` | `8617631375196f71fb975402085c0e2b6616e500af0541f29937e3d7a9102955` |
 | `outputs/metrics/calibration_curve.png` | `bccfc4c4db31cc85b276b142cc82abffcfdaf3f3d51a091d1b424160f7b998bf` |
-| `outputs/metrics/dca_curve.png` | `f3edb6404f403e92f9e484c88376aca9e903a69b13d8e7fe1c3507a69e23cfb6` |
+| `outputs/metrics/dca_curve.png` | `fcafd91caeb3684776ace899c519c9ca9a0a412003b20a7d0f06bdf9be149eee` |
 | `outputs/metrics/ablation_table.json` | `2d18bb586d998b580aa683d09f5744faa93198564f226ca5e5bf7c8d3da86202` |
 | `outputs/metrics/ablation_table.csv` | `ac4f4bccb01c4ca3fd1e3402c14916b913e2ff6c64f8d65d675f50b91eb0e5a0` |
 | `outputs/metrics/coverage_sweep.json` | `47e120db4c41ff8c8e7a79a5733f9803b89ccd8d0456c011afddc039a29e81df` |
@@ -199,10 +204,10 @@ run.
 In the environment of Section 2 the synthetic-data results reproduce
 deterministically, but what they reproduce is an infrastructure check on a
 6-row validation split, not clinical performance. No performance claims are
-made: the values in `metrics.json` (AUC 1.0 and recall(High) 1.0 on the six
-validation rows) are not meaningful at that size. No real-data evaluation
-exists. The MIMIC-IV proxy study in `docs/rare_class_design.md` is a
-pre-specified protocol that is not scheduled; it would fit a separate
+made: the AUC and recall in `metrics.json`, computed on the six validation
+rows, are not meaningful at that size. No real-data evaluation exists. The
+MIMIC-IV proxy study in `docs/rare_class_design.md` is a pre-specified
+protocol that is not scheduled; it would fit a separate
 bacterial-versus-viral classifier on MIMIC-IV and test the calibration,
 abstention, and OOD machinery on real data, with PAM rows used only as an OOD
 hold-out, so it would not measure the V1.1 model or its performance on PAM.

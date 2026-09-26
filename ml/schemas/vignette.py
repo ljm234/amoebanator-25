@@ -1,12 +1,16 @@
 """Pydantic v2 vignette schema for 9-class meningitis/encephalitis differential
-diagnosis (Amoebanator V1.0).
+diagnosis (Amoebanator V1.1).
 
 Schema version: 2.0
 Date frozen: 2026-05-02
-Target: 270-vignette corpus, UPCH-aligned, bilingual ES/EN.
+Corpus: 138 vignettes under data/vignettes/ (6 of the 9 classes), each with
+Spanish and English narratives; no model code reads it.
 
-Every numeric range and every enum is justified by at least one peer-reviewed
-citation in the field docstring. Cross-field validators enforce class-conditional
+Many field descriptions cite a peer-reviewed paper or guideline for the
+clinical findings or thresholds they describe. Not every numeric range or enum
+is cited: diastolic_bp_mmHg, oxygen_saturation_pct, DxResult.sensitivity_pct
+and specificity_pct, and AdjudicationMetadata.inclusion_decision, among others,
+carry no citation. Cross-field validators enforce class-conditional
 requirements (e.g., PAM always-flag rule per CDC 2017 case definition).
 
 Citations summary:
@@ -15,7 +19,7 @@ Citations summary:
     PAM: CDC PAM 2017 case definition; MMWR 2025 (PMID 40146665)
     TB meningitis: Marais Lancet ID 2010; Ye TM&IH 2023 (doi:10.1111/tmi.13849)
     Cryptococcal: Ford CID 2018 (PMC5850628); NIH OI guidelines
-    GAE/Balamuthia: Bravo PMC8760460
+    GAE/Balamuthia: Alvarez 2022, JAAD Int (PMC8760460)
     NCC: Del Brutto 2017 (PMID 28017213); Allen Pathogens 2023
     Inter-rater: Cohen 1960; Landis & Koch 1977; McHugh 2012 (PMC3900052)
 """
@@ -63,8 +67,9 @@ class Demographics(BaseModel):
         "unknown",
     ]] = Field(
         None,
-        description="Self-identified ethnicity. Hispanic/mestizo overrepresentation in "
-                    "Balamuthia documented in Latin American series (Bravo PMC8760460).",
+        description="Self-identified ethnicity. Hispanic Americans are overrepresented "
+                    "among US Balamuthia cases (Cope CID 2019, PMID 30239654; Schuster "
+                    "EID 2004, PMID 15503402; cited in Alvarez 2022, PMC8760460).",
     )
     geography_region: Literal[
         "peru_lima_coast",
@@ -298,7 +303,7 @@ class PhysicalExam(BaseModel):
     Citations:
         - IDSA bacterial meningitis 2004 (van de Beek triad)
         - IDSA encephalitis 2008
-        - Bravo PMC8760460 (centrofacial Balamuthia 73%)
+        - Alvarez 2022 PMC8760460 (centrofacial 73%, 22/30, Peruvian cutaneous series)
         - StatPearls Meningococcal NBK549849 (petechiae 62-81%)
     """
     model_config = ConfigDict(extra="forbid")
@@ -343,8 +348,10 @@ class PhysicalExam(BaseModel):
     )
     skin_lesion_centrofacial_chronic: Optional[bool] = Field(
         None,
-        description="Centrofacial skin lesion preceding CNS by months. 73% of Peruvian "
-                    "Balamuthia cases (Bravo PMC8760460); median 15 months pre-CNS.",
+        description="Chronic centrofacial skin lesion; in Balamuthia it can precede "
+                    "CNS involvement by months. Centrofacial in 73% (22/30) of a "
+                    "Peruvian cutaneous balamuthiasis series (Alvarez 2022, "
+                    "PMC8760460); mean skin-lesion duration at diagnosis 15 months.",
     )
     petechial_or_purpuric_rash: bool = Field(
         ...,
@@ -798,12 +805,11 @@ class VignetteSchema(BaseModel):
     provenance: Provenance
     narrative_es: Optional[str] = Field(
         None, max_length=4000,
-        description="Spanish-language clinical narrative for bilingual deployment "
-                    "(UPCH/Peru target).",
+        description="Spanish-language clinical narrative.",
     )
     narrative_en: Optional[str] = Field(
         None, max_length=4000,
-        description="English-language clinical narrative for bilingual deployment.",
+        description="English-language clinical narrative.",
     )
 
     @model_validator(mode="after")

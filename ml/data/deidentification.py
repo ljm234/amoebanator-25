@@ -1,9 +1,10 @@
 """
-HIPAA-Compliant Data De-identification Pipeline.
+Data de-identification helpers modeled on HIPAA 45 CFR 164.514(b).
 
-Implements both Safe Harbor and Expert Determination methods as defined
-in 45 CFR 164.514(b), along with statistical privacy mechanisms for
-enhanced protection of clinical records and epidemiological data.
+Implements the Safe Harbor method (45 CFR 164.514(b)(2)) in part and
+offers re-identification risk estimates, but no determination workflow,
+for the Expert Determination method (45 CFR 164.514(b)(1)), along with
+statistical privacy mechanisms. This is not a compliance claim.
 
 Privacy Mechanisms
 ------------------
@@ -13,39 +14,42 @@ The pipeline applies a layered de-identification strategy:
     |              LAYERED DE-IDENTIFICATION PIPELINE              |
     +--------------------------------------------------------------+
     |                                                              |
-    |  LAYER 1 - HIPAA Safe Harbor (section 164.514(b)(2))               |
-    |  +-- Remove 18 identifier categories                        |
-    |  +-- Date generalization to year only                       |
-    |  +-- Geographic truncation (3-digit ZIP)                    |
-    |  +-- Age capping at 89+                                     |
+    |  LAYER 1 - HIPAA Safe Harbor (164.514(b)(2)), in part        |
+    |  +-- Drop columns named on a fixed 24-name list              |
+    |  +-- Date generalization to year only                        |
+    |  +-- Geographic truncation (3-digit ZIP)                     |
+    |  +-- Age capping at 89+                                      |
     |                                                              |
     |  LAYER 2 - k-Anonymity (ISO/IEC 29101 Privacy Architecture)  |
-    |  +-- Quasi-identifier detection                             |
-    |  +-- Generalization hierarchies for each QI                 |
-    |  +-- Suppression for low-frequency cells                    |
+    |  +-- Quasi-identifiers from a configured list                |
+    |  +-- Generalization hierarchies for each QI                  |
+    |  +-- Suppression for low-frequency cells                     |
     |  +-- Verification: every equivalence class >= k              |
     |                                                              |
-    |  LAYER 3 - Differential Privacy (Dwork & Roth 2014)          |
-    |  +-- Calibrated Laplace mechanism for numeric values        |
-    |  +-- Exponential mechanism for categorical values            |
-    |  +-- Composition accounting (Rényi DP, Balle et al. 2020)  |
-    |  +-- Privacy budget tracking per field and per dataset       |
+    |  LAYER 3 - Laplace noise (mechanism of Dwork & Roth 2014)    |
+    |  +-- Per-record noise; not a differential-privacy guarantee  |
+    |  +-- Laplace noise on the configured numeric fields          |
+    |  +-- Epsilon split evenly across those fields; the per-field |
+    |      epsilons add up (basic sequential composition,          |
+    |      PrivacyBudget)                                          |
     |                                                              |
-    |  LAYER 4 - Beyond k-Anonymity                                |
+    |  SEPARATE HELPERS (not applied by the pipeline)              |
     |  +-- l-Diversity: at least l distinct sensitive values/class |
     |  +-- t-Closeness: QI-group distribution <= t from global     |
-    |  +-- Truncated Laplace for bounded-range outputs            |
-    |  +-- Rényi DP composition with optimal conversion bounds    |
+    |  +-- Exponential and Gaussian mechanisms                     |
+    |  +-- Truncated Laplace for bounded-range outputs             |
+    |  +-- Renyi DP accountant (RenyiDPAccountant, Mironov 2017)   |
     |                                                              |
-    |  OUTPUT - De-identified dataset with privacy guarantee:      |
-    |  (epsilon, delta)-differentially private, k-anonymous, l-diverse,     |
-    |  t-close, HIPAA Safe Harbor compliant                        |
+    |  OUTPUT - Records after the layers the privacy level selects |
+    |  (Safe Harbor, then k-anonymity, then Laplace noise). Not a  |
+    |  compliance or privacy guarantee; Safe Harbor removal uses   |
+    |  column names only.                                          |
     +--------------------------------------------------------------+
 
-Standards Implemented
----------------------
-- HIPAA Safe Harbor: 45 CFR 164.514(b)(2)(i)(A-R)
-- HIPAA Expert Determination: 45 CFR 164.514(b)(1)
+Design References
+-----------------
+- HIPAA Safe Harbor: 45 CFR 164.514(b)(2)(i)(A-R) (in part)
+- HIPAA Expert Determination: 45 CFR 164.514(b)(1) (risk estimates only)
 - k-Anonymity: Samarati 2001; Sweeney 2002
 - l-Diversity: Machanavajjhala et al. 2007 (distinct and entropy variants)
 - t-Closeness: Li, Li & Venkatasubramanian 2007 (Earth Mover's Distance)
@@ -171,10 +175,16 @@ class SafeHarborConfig:
 
 
 class SafeHarborProcessor:
-    """Applies HIPAA Safe Harbor de-identification rules.
+    """Applies part of the HIPAA Safe Harbor de-identification rules.
 
-    Removes or generalizes all 18 categories of protected health
-    information (PHI) as specified in 45 CFR 164.514(b)(2)(i)(A-R).
+    Drops columns named on SAFE_HARBOR_IDENTIFIERS (24 names spanning
+    the 18 categories of 45 CFR 164.514(b)(2)(i)), caps ages at 89,
+    truncates other ZIP or postal fields to 3 digits and cuts other date
+    fields to the year (both found by column name), and scrubs phone
+    numbers, SSNs, e-mail addresses and slash-format dates in string
+    values over 20 characters. An identifier under another column name
+    (such as patient_name), or in another form in free text, passes
+    through.
 
     Parameters
     ----------
@@ -336,7 +346,8 @@ class SafeHarborProcessor:
         text = re.sub(r"\b\d{3}-\d{2}-\d{4}\b", "[REDACTED]", text)
         # Email addresses
         text = re.sub(r"\b[\w.+-]+@[\w-]+\.[\w.-]+\b", "[REDACTED]", text)
-        # Dates in common formats (MM/DD/YYYY, YYYY-MM-DD)
+        # Slash-format dates (M/D/YY through MM/DD/YYYY); ISO dates such as
+        # YYYY-MM-DD are not matched
         text = re.sub(
             r"\b\d{1,2}/\d{1,2}/\d{2,4}\b", "[DATE_REDACTED]", text
         )
@@ -365,7 +376,9 @@ class KAnonymityConfig:
     generalization_hierarchies : dict[str, list[Any]]
         Ordered generalization steps per quasi-identifier.
     suppress_threshold : float
-        Fraction of records to suppress before generalizing.
+        Not read by KAnonymityProcessor. enforce() generalizes through each
+        hierarchy first, then suppresses every record in an equivalence class
+        still smaller than k, with no limit on the fraction suppressed.
     """
 
     k: int = 5
@@ -540,8 +553,9 @@ class KAnonymityProcessor:
 class PrivacyBudget:
     """Tracks cumulative privacy spending under composition.
 
-    Uses Rényi Differential Privacy (RDP) accounting for tighter
-    composition bounds compared to naive sequential composition.
+    Allocations add up (basic sequential composition); the pipeline
+    splits total_epsilon evenly across the numeric fields.
+    RenyiDPAccountant is a separate helper the pipeline does not use.
 
     Attributes
     ----------
@@ -841,7 +855,9 @@ class DeidentificationReport:
     output_count : int
         Number of output records (after suppression).
     safe_harbor_actions : int
-        Number of Safe Harbor operations applied.
+        Safe Harbor actions logged, summed over all records (column
+        removals, age caps, date and ZIP truncations); free-text
+        scrubbing is not logged or counted.
     suppressed_records : int
         Records removed for k-anonymity.
     epsilon_spent : float
@@ -880,9 +896,10 @@ class DeidentificationReport:
 class DeidentificationPipeline:
     """Orchestrates the full de-identification pipeline.
 
-    Applies Safe Harbor, k-anonymity, and differential privacy in
-    sequence, producing a privacy-guaranteed dataset suitable for
-    machine learning training.
+    Applies Safe Harbor, k-anonymity, and Laplace noise on numeric
+    fields in sequence, stopping at the configured privacy level. The
+    output has only the properties of the layers applied; it is not a
+    compliance or privacy guarantee.
 
     Parameters
     ----------
@@ -921,7 +938,7 @@ class DeidentificationPipeline:
         Returns
         -------
         list[RecordDict]
-            De-identified, k-anonymous, differentially private records.
+            Records after the layers the configured privacy level selects.
         """
         self._report = DeidentificationReport(
             input_count=len(records),
@@ -931,9 +948,14 @@ class DeidentificationPipeline:
 
         level = self._config.privacy_level
 
-        # Layer 1: Safe Harbor
-        working = self._safe_harbor.process_batch(records)
-        self._report.safe_harbor_actions = len(self._safe_harbor.actions)
+        # Layer 1: Safe Harbor (process_record resets its action log for
+        # each record, so sum the per-record counts)
+        working: list[RecordDict] = []
+        n_actions = 0
+        for record in records:
+            working.append(self._safe_harbor.process_record(record))
+            n_actions += len(self._safe_harbor.actions)
+        self._report.safe_harbor_actions = n_actions
 
         if level == PrivacyLevel.SAFE_HARBOR_ONLY:
             self._report.output_count = len(working)
@@ -950,7 +972,7 @@ class DeidentificationPipeline:
             self._report.output_count = len(working)
             return working
 
-        # Layer 3: Differential Privacy (numeric perturbation)
+        # Layer 3: Laplace noise on numeric fields (not a DP guarantee)
         budget = self._config.privacy_budget
         budget.reset()
 
@@ -1319,7 +1341,7 @@ class RenyiDPAccountant:
     sequential composition (Mironov 2017).
 
     The accountant stores (alpha, epsilon_R) pairs and converts to standard
-    (epsilon, delta)-DP using the optimal conversion:
+    (epsilon, delta)-DP using the standard conversion (Mironov 2017, Proposition 3):
       epsilon = epsilon_R + log(1/delta) / (alpha - 1)
 
     Attributes
@@ -1393,7 +1415,9 @@ class RenyiDPAccountant:
     def get_epsilon(self, delta: float) -> float:
         """Convert accumulated RDP to (epsilon, delta)-DP.
 
-        Uses optimal conversion: epsilon = min_alpha [epsilon_R(alpha) + log(1/delta)/(alpha-1)].
+        Uses the standard conversion (Mironov 2017, Proposition 3), minimized over the
+        tracked orders: epsilon = min_alpha [epsilon_R(alpha) + log(1/delta)/(alpha-1)].
+        Tighter conversions exist (Balle et al. 2020); this one is not optimal.
 
         Parameters
         ----------

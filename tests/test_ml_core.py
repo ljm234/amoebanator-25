@@ -4,7 +4,7 @@ Tests for the core ML modules.
 Covers:
   ml/calibration.py      - TemperatureScaler, fit_temperature
   ml/conformal.py        - set_from_p_high, decision_from_p_high
-  ml/ood_energy.py       - energy-based OOD signal on the calibrated probability
+  ml/ood_energy.py       - neg-energy signal on the temperature-scaled probability
   ml/robust.py           - Mahalanobis gate statistics and scoring, energy score
 
 All tests are self-contained (no disk I/O side-effects on persistent paths).

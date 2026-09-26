@@ -1,5 +1,5 @@
 """ml.schemas - Pydantic v2 vignette schema for 9-class meningitis/encephalitis
-differential diagnosis (Amoebanator V1.0).
+differential diagnosis (Amoebanator V1.1).
 
 Public API:
     ClassLabel  - IntEnum for 9 ground-truth diagnostic classes

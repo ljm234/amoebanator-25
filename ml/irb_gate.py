@@ -4,16 +4,22 @@ IRB compliance gate for the training pipeline.
 Behavior:
   * If the dataset declares itself synthetic (column `source` exclusively
     contains values starting with `simulated`, `synthetic`, or `bridge`),
-    the gate is a no-op. Synthetic data does not require IRB approval.
+    the gate permits it without reading an IRB record and, when `emit_audit`
+    is True (the default), logs a compliance-check audit event. Synthetic
+    data does not require IRB approval.
   * Otherwise, the gate reads `outputs/irb/current_irb.json`. If the JSON
     contains an `irb_status` field whose value is APPROVED or
-    CONDITIONALLY_APPROVED (case-insensitive, hyphens/underscores ignored),
+    CONDITIONALLY_APPROVED (case-insensitive, surrounding whitespace trimmed;
+    hyphens and spaces count as underscores),
     training proceeds. Any other status - including missing file or
     malformed JSON - raises `IRBGateBlocked` with an actionable message.
 
-The IRB record schema is intentionally minimal so it can be hand-edited or
-populated from `ml.data.compliance.IRBApplication.to_dict()`. Required
-fields:
+The IRB record schema is intentionally minimal so it can be hand-edited.
+`ml.data.compliance.IRBApplication.to_dict()` does not produce it: that
+method writes the status under `status`, not `irb_status`, so its output is
+blocked here as '(missing)'. The gate reads only `irb_status`; the other
+fields document the approval for a reviewer and are not checked (the gate
+does not compare `expiration_date` with today's date):
 
     {
       "irb_protocol_id":   "<short id>",
@@ -25,9 +31,11 @@ fields:
 
 Configuration:
   * AMOEBANATOR_IRB_PATH - override path to current_irb.json
-  * AMOEBANATOR_RESEARCH_MODE - when set to "1"/"true"/"yes", skip the check
-    entirely (synthetic-data research mode; the Docker image sets it). The
-    override is recorded in the audit log so it is never invisible.
+  * AMOEBANATOR_RESEARCH_MODE - when set to "1", "true", "TRUE" or "yes"
+    (`research_mode_enabled`, the rule the Predict page also uses), skip the
+    check entirely (synthetic-data research mode; the Docker image sets it
+    to 1). The override is recorded in the audit log so it is never
+    invisible.
 """
 from __future__ import annotations
 
@@ -45,6 +53,18 @@ from ml.data.compliance import IRBStatus
 
 IRB_PATH_ENV: str = "AMOEBANATOR_IRB_PATH"
 RESEARCH_MODE_ENV: str = "AMOEBANATOR_RESEARCH_MODE"
+_RESEARCH_MODE_VALUES: frozenset[str] = frozenset({"1", "true", "TRUE", "yes"})
+
+
+def research_mode_enabled() -> bool:
+    """True when AMOEBANATOR_RESEARCH_MODE is "1", "true", "TRUE" or "yes".
+
+    Surrounding whitespace is ignored. The gate and the Predict page share
+    this rule, so the page shows its research-mode banner for exactly the
+    values that make the gate skip the IRB check.
+    """
+    return os.environ.get(RESEARCH_MODE_ENV, "").strip() in _RESEARCH_MODE_VALUES
+
 
 _REPO_ROOT: Path = Path(__file__).resolve().parent.parent
 DEFAULT_IRB_PATH: Path = _REPO_ROOT / "outputs" / "irb" / "current_irb.json"
@@ -99,8 +119,8 @@ def evaluate_irb_record(path: Path | None = None) -> IRBDecision:
             permitted=False,
             reason=(
                 f"No IRB record found at {target}. "
-                f"Place an IRB exemption letter or approval JSON at this path "
-                f"or set AMOEBANATOR_RESEARCH_MODE=1 for synthetic-data research mode (audit-logged)."
+                "Place a JSON record whose irb_status is \"approved\" or \"conditionally_approved\" at this path; "
+                "set AMOEBANATOR_RESEARCH_MODE=1 (audit-logged) only while the data are synthetic."
             ),
             status=None,
             record={},
@@ -145,7 +165,7 @@ def check_irb_or_raise(
     Top-level gate. Call from the training entry point. Raises `IRBGateBlocked`
     on failure with a clear remediation message; returns the decision on success.
     """
-    research_mode = os.environ.get(RESEARCH_MODE_ENV, "").strip() in {"1", "true", "TRUE", "yes"}
+    research_mode = research_mode_enabled()
     if research_mode:
         decision = IRBDecision(permitted=True, reason="research mode via AMOEBANATOR_RESEARCH_MODE env var", status="research_mode")
         if emit_audit:

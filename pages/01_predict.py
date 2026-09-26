@@ -18,13 +18,13 @@ trained on 24 of the 30 synthetic rows. Wires ml.infer.infer_one into:
 - Result badges: decision, the temperature T read from the model
   artifacts with a tooltip, a small-calibration-set warning if n_cal<30,
   and a 3-state conformal regime badge (green/blue/red).
-- Research-mode env-var branch:
-  AMOEBANATOR_RESEARCH_MODE=1 -> red banner + IRB_STATUS_CHANGE emit.
+- Research-mode env-var branch: AMOEBANATOR_RESEARCH_MODE set to
+  1/true/TRUE/yes (ml.irb_gate.research_mode_enabled, the values the IRB
+  gate accepts) -> red banner + IRB_STATUS_CHANGE emit.
 """
 from __future__ import annotations
 
 import html
-import os
 import time
 import uuid
 from typing import Any
@@ -46,6 +46,7 @@ from ml.data.audit_trail import AuditEventType
 from ml.config import conformal_alpha
 from ml.conformal_advanced import finite_sample_rank
 from ml.infer import calibration_info, infer_one
+from ml.irb_gate import RESEARCH_MODE_ENV, research_mode_enabled
 
 
 st.set_page_config(page_title="Predict - Amoebanator 25")
@@ -53,12 +54,12 @@ render_disclaimer()
 
 
 # -- research-mode branch -------------
-_research_mode_active = os.environ.get("AMOEBANATOR_RESEARCH_MODE") == "1"
+_research_mode_active = research_mode_enabled()
 if _research_mode_active and not st.session_state.get("_research_mode_emitted"):
     _emit(
         AuditEventType.IRB_STATUS_CHANGE,
         actor="env_var",
-        resource="AMOEBANATOR_RESEARCH_MODE",
+        resource=RESEARCH_MODE_ENV,
         action_detail="synthetic-data research mode, no IRB required",
         metadata={"research_mode": True},
     )
@@ -209,9 +210,23 @@ def _render_result(out: dict[str, Any]) -> None:
 
 
 def _render_metrics(out: dict[str, Any]) -> None:
-    """Key numeric metrics - _fmt_metric tolerates missing/None/garbage."""
+    """Key numeric metrics - _fmt_metric tolerates missing/None/garbage.
+
+    p_high is shown to 6 significant digits because the conformal cut-offs
+    (qhat and 1 - qhat) are finer than 0.001; the cut-offs follow it when
+    the result carries a finite qhat (the conformal branches of infer_one).
+    """
+    try:
+        qhat = float(out.get("qhat"))
+    except (TypeError, ValueError):
+        qhat = float("nan")
+    cutoffs = (
+        f" (Low if <= {qhat:.6g}, High if >= {1.0 - qhat:.6g})"
+        if 0.0 <= qhat <= 1.0
+        else ""
+    )
     st.markdown(
-        f"**p_high:** {_fmt_metric(out, 'p_high')} &nbsp;&nbsp; "
+        f"**p_high:** {_fmt_metric(out, 'p_high', '{:.6g}')}{cutoffs} &nbsp;&nbsp; "
         f"**Mahalanobis d^2:** {_fmt_metric(out, 'mahalanobis_d2')} "
         f"(tau={_fmt_metric(out, 'd2_tau')}) &nbsp;&nbsp; "
         f"**Logit energy:** {_fmt_metric(out, 'energy')} "
@@ -263,12 +278,15 @@ if submitted:
         _submitted = {
             "age": age, "csf_glucose": csf_glucose, "csf_protein": csf_protein,
             "csf_wbc": csf_wbc, "pcr": pcr, "microscopy": microscopy,
-            "exposure": exposure, "symptoms": list(symptoms),
+            "exposure": exposure, "symptoms": sorted(symptoms),
         }
         if (
             _active in PRESETS
             and PRESETS[_active]["limitation_banner"]
-            and _submitted == _preset_form_values(_active)
+            and _submitted == {
+                **_preset_form_values(_active),
+                "symptoms": sorted(PRESETS[_active]["inputs"]["symptoms"]),
+            }
         ):
             st.error(PRESETS[_active]["description"])
         p_high = out.get("p_high")

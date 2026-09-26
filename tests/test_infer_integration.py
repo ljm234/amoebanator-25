@@ -227,16 +227,24 @@ def test_real_logits_distinct_inputs_distinct_outputs() -> None:
 
 
 def test_real_logits_applies_temperature_scaling() -> None:
-    """Verify scaled = model(standardized x) / T to within float32 precision."""
-    model, feats, T, scaler = _load_model_artifacts()
+    """Verify scaled = model(standardized x) / T to within float32 precision.
+
+    The shipped T is 0.9999974, so dividing by it moves the logits by less
+    than the 1e-5 tolerance. The check therefore substitutes T = 0.5, where
+    a missing division would fail.
+    """
+    model, feats, _, scaler = _load_model_artifacts()
     row = pd.Series(_SEVERE)
     x = apply_scaler(_build_feature_vector(row, feats), feats, scaler)
     with torch.no_grad():
         raw = model(torch.from_numpy(x).unsqueeze(0)).squeeze(0).numpy()
-    expected = (float(raw[0] / T), float(raw[1] / T))
-    actual = _real_logits(row)
-    assert actual[0] == pytest.approx(expected[0], rel=1e-5)
-    assert actual[1] == pytest.approx(expected[1], rel=1e-5)
+    T_test = 0.5
+    with patch.object(
+        infer_mod, "_load_model_artifacts", return_value=(model, feats, T_test, scaler)
+    ):
+        actual = _real_logits(row)
+    assert actual[0] == pytest.approx(float(raw[0] / T_test), rel=1e-5)
+    assert actual[1] == pytest.approx(float(raw[1] / T_test), rel=1e-5)
 
 
 def test_load_model_artifacts_is_cached() -> None:
@@ -384,3 +392,10 @@ def test_non_dict_pickle_raises_value_error(_isolated_model_dir: Path) -> None:
     (_isolated_model_dir / "temperature_scale.json").write_text(json.dumps({"T": 1.0}))
     with pytest.raises(ValueError, match="state_dict"):
         _load_model_artifacts()
+
+
+def test_calibration_info_empty_val_preds_is_unknown(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    p = tmp_path / "val_preds.csv"
+    p.write_text("y_true,p_high_uncal,p_high_cal,logit_low,logit_high\n")
+    monkeypatch.setattr(infer_mod, "VAL_PREDS_CSV", p)
+    assert infer_mod.calibration_info()["val_separated"] is None

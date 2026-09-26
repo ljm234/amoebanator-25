@@ -221,7 +221,7 @@ def qhat_to_json(qhat: float) -> float | str:
 
 def nonconformity_from_p(p_high: np.ndarray, y_true: np.ndarray) -> np.ndarray:
     """
-    Standard nonconformity score for binary classification with calibrated
+    Standard nonconformity score for binary classification from predicted
     probabilities: 1 - probability assigned to the true class.
     """
     p = np.asarray(p_high, dtype=float).ravel()

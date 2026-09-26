@@ -110,9 +110,12 @@ def test_real_dataset_with_missing_record_blocks(tmp_path: Path, tmp_audit: Path
     df = pd.DataFrame({"source": ["real_ehr"] * 3})
     with (
         patch.dict(os.environ, {IRB_PATH_ENV: str(tmp_path / "missing.json")}),
-        pytest.raises(IRBGateBlocked, match="No IRB record"),
+        pytest.raises(IRBGateBlocked, match="No IRB record") as excinfo,
     ):
         check_irb_or_raise(df=df)
+    # The remediation names only the statuses the gate permits.
+    assert '"approved" or "conditionally_approved"' in str(excinfo.value)
+    assert "exemption" not in str(excinfo.value)
 
 
 def test_malformed_json_blocks(tmp_path: Path, tmp_audit: Path) -> None:

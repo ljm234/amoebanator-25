@@ -39,7 +39,7 @@ def main() -> None:
 
     df = pd.read_csv(SRC)
     y = df["y_true"].astype(int).to_numpy()
-    p = df["p_high_cal"].astype(float).to_numpy()  # calibrated probabilities
+    p = df["p_high_cal"].astype(float).to_numpy()  # temperature-scaled probabilities
     rng = np.random.default_rng(42)
 
     auc_ci = boot_ci(lambda yy, pp: roc_auc_score(yy, pp), y, p, rng)

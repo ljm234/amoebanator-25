@@ -537,6 +537,19 @@ class TestDeidentificationPipeline:
         assert report.privacy_level == "safe_harbor"
         assert report.safe_harbor_actions > 0
 
+    def test_safe_harbor_actions_counts_whole_batch(self) -> None:
+        pipeline = create_deidentification_pipeline(
+            privacy_level=PrivacyLevel.SAFE_HARBOR_ONLY,
+        )
+        records: list[dict[str, Any]] = [
+            {"name": "a", "mrn": "1", "age": 95},
+            {"name": "b", "mrn": "2", "age": 30},
+            {"name": "c", "age": 30},
+        ]
+        pipeline.process(records)
+        # 5 column removals + 1 age cap, summed over the three records
+        assert pipeline.report.safe_harbor_actions == 6
+
     def test_k_anonymous(self) -> None:
         pipeline = create_deidentification_pipeline(
             privacy_level=PrivacyLevel.K_ANONYMOUS,

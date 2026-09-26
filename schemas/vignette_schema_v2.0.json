@@ -295,7 +295,7 @@
             }
           ],
           "default": null,
-          "description": "Self-identified ethnicity. Hispanic/mestizo overrepresentation in Balamuthia documented in Latin American series (Bravo PMC8760460).",
+          "description": "Self-identified ethnicity. Hispanic Americans are overrepresented among US Balamuthia cases (Cope CID 2019, PMID 30239654; Schuster EID 2004, PMID 15503402; cited in Alvarez 2022, PMC8760460).",
           "title": "Ethnicity"
         },
         "geography_region": {
@@ -823,7 +823,7 @@
     },
     "PhysicalExam": {
       "additionalProperties": false,
-      "description": "Physical examination findings.\n\nCitations:\n    - IDSA bacterial meningitis 2004 (van de Beek triad)\n    - IDSA encephalitis 2008\n    - Bravo PMC8760460 (centrofacial Balamuthia 73%)\n    - StatPearls Meningococcal NBK549849 (petechiae 62-81%)",
+      "description": "Physical examination findings.\n\nCitations:\n    - IDSA bacterial meningitis 2004 (van de Beek triad)\n    - IDSA encephalitis 2008\n    - Alvarez 2022 PMC8760460 (centrofacial 73%, 22/30, Peruvian cutaneous series)\n    - StatPearls Meningococcal NBK549849 (petechiae 62-81%)",
       "properties": {
         "mental_status_grade": {
           "description": "Categorical mental status. Required for IDSA encephalitis case definition (Tunkel 2008): altered MS, behavioral change, seizure, focal.",
@@ -884,7 +884,7 @@
             }
           ],
           "default": null,
-          "description": "Centrofacial skin lesion preceding CNS by months. 73% of Peruvian Balamuthia cases (Bravo PMC8760460); median 15 months pre-CNS.",
+          "description": "Chronic centrofacial skin lesion; in Balamuthia it can precede CNS involvement by months. Centrofacial in 73% (22/30) of a Peruvian cutaneous balamuthiasis series (Alvarez 2022, PMC8760460); mean skin-lesion duration at diagnosis 15 months.",
           "title": "Skin Lesion Centrofacial Chronic"
         },
         "petechial_or_purpuric_rash": {
@@ -1109,7 +1109,7 @@
         }
       ],
       "default": null,
-      "description": "Spanish-language clinical narrative for bilingual deployment (UPCH/Peru target).",
+      "description": "Spanish-language clinical narrative.",
       "title": "Narrative Es"
     },
     "narrative_en": {
@@ -1123,7 +1123,7 @@
         }
       ],
       "default": null,
-      "description": "English-language clinical narrative for bilingual deployment.",
+      "description": "English-language clinical narrative.",
       "title": "Narrative En"
     }
   },

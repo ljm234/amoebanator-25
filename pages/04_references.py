@@ -66,7 +66,7 @@ st.markdown(
 st.subheader("Governance & model documentation")
 st.markdown(
     """
-- **`mitchell2019modelcards`** Mitchell M, Wu S, Zaldivar A, et al. *Model Cards for Model Reporting.* **FAccT** 2019. DOI 10.1145/3287560.3287596. Format used for `docs/model_card.md`.
+- **`mitchell2019modelcards`** Mitchell M, Wu S, Zaldivar A, et al. *Model Cards for Model Reporting.* **FAT\\*** 2019. DOI 10.1145/3287560.3287596. Format used for `docs/model_card.md`.
 - **`vasey2022decideai`** Vasey B, Nagendran M, Campbell B, et al. *Reporting guideline for the early-stage clinical evaluation of decision support systems driven by artificial intelligence: DECIDE-AI.* **Nature Medicine** 2022. PMID 35585198. DOI 10.1038/s41591-022-01772-9.
 - **`collins2024tripodai`** Collins GS, Moons KGM, Dhiman P, et al. *TRIPOD+AI statement: updated guidance for reporting clinical prediction models that use regression or machine learning methods.* **BMJ** 2024. PMID 38626948. DOI 10.1136/bmj-2023-078378. Format used for `docs/tripod-ai.md`.
 - **`collins2015tripod`** Collins GS, et al. *Transparent Reporting of a multivariable prediction model for Individual Prognosis Or Diagnosis (TRIPOD): the TRIPOD statement.* **Annals of Internal Medicine** 2015. DOI 10.7326/M14-0697. Original TRIPOD; comparison anchor for the TRIPOD+AI doc.

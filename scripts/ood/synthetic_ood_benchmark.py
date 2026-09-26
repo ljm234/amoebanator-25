@@ -1,21 +1,27 @@
 """
 Synthetic OOD shift benchmarks.
 
-Generates two adversarial shifts of the bundled simulated data and reports
-the detection rate of each OOD/uncertainty gate (Mahalanobis, logit-energy,
-neg-energy):
+Generates two random synthetic shifts of the bundled simulated data and
+reports how well each score separates the shifted rows: the two OOD gates
+(Mahalanobis, logit-energy) and the secondary neg-energy signal, which never
+abstains:
 
   * covariate_shift - multiply CSF lab values by random factors in [0.5, 2.0]
                       and add Gaussian noise; keep labels as-is.
-  * label_shift     - flip labels with probability 0.5 (model now sees a
-                      population whose label distribution is uniform-random).
+  * label_shift     - flip risk_label with probability 0.5. Neither the model
+                      nor any gate reads the label, so every shifted row
+                      scores exactly like its bundled row and every AUC is 0.5
+                      by construction; this is a sanity check, not a
+                      detectable shift.
 
 The in-distribution rows are the 30 bundled rows. For each shift type and
-gate we report the AUC of the gate's continuous score as an OOD
-discriminator, and, at the gate's fitted threshold, the detection rate (share
-of shifted rows the gate flags) and the false-alarm rate (share of bundled
-rows it flags). Every score is oriented the way its gate uses it: a higher
-score is more OOD, and the gate flags a score above its threshold.
+score we report the AUC of the continuous score as an OOD discriminator,
+and, at its fitted threshold, the detection rate (share of shifted rows
+flagged) and the false-alarm rate (share of bundled rows flagged). Each score
+is used the way ml/infer.py flags it: above its threshold. For the two gates
+a higher score is more OOD, and a flag means abstention. The neg-energy
+score is log(1 - p_high), so a higher value means only a smaller p_high (a
+more confident Low prediction); its flag never causes an abstention.
 
 Output: outputs/metrics/synthetic_ood_benchmark.json
 """
@@ -43,7 +49,7 @@ NUMERIC_FEATURES = ["age", "csf_glucose", "csf_protein", "csf_wbc", "pcr", "micr
 
 
 def _row_signals(row: pd.Series, stats: dict) -> dict[str, float]:
-    """Return the three gate scores for a single row."""
+    """Return the Mahalanobis, logit-energy and neg-energy scores for a single row."""
     ood = score_tabular(row=row, stats=stats)
     d2 = float(ood["d2"])
     try:
@@ -78,9 +84,9 @@ def covariate_shift(df: pd.DataFrame, seed: int = 0) -> pd.DataFrame:
 
 
 def label_shift(df: pd.DataFrame, seed: int = 1) -> pd.DataFrame:
-    """Randomly flip risk_label with prob 0.5 (gate will not see the label, but the
-    *covariate* distribution conditional on label changes - equivalent to a label
-    shift relative to training)."""
+    """Randomly flip risk_label with probability 0.5 (High becomes Low; Low and
+    Moderate become High). Only the label changes; the input features, and so
+    every gate score, are identical to the input rows'."""
     rng = np.random.default_rng(seed)
     shifted = df.copy()
     if "risk_label" in shifted.columns:
@@ -96,10 +102,11 @@ def label_shift(df: pd.DataFrame, seed: int = 1) -> pd.DataFrame:
 
 def gate_thresholds(stats: dict) -> dict[str, float]:
     """
-    The threshold each gate flags above, as inference applies it: the
+    The threshold each score is flagged above, as inference applies it: the
     Mahalanobis tau from feature_stats.json, and the energy taus from
     energy_threshold.json and ood_energy.json (ml/infer.py abstains when
-    d2 > tau and when the logit energy > tau).
+    d2 > tau and when the logit energy > tau, and flags a neg energy > tau
+    without abstaining).
     """
     return {
         "mahalanobis_d2": float(stats.get("tau", float("inf"))),
@@ -124,8 +131,8 @@ def evaluate(
         if mask.sum() < 2 or len(np.unique(y[mask])) < 2:
             out[gate] = {"auc": float("nan"), "n_finite": int(mask.sum())}
             continue
-        # Every gate flags a score above its threshold, so a higher score is
-        # more OOD and the score is used as is.
+        # ml/infer.py flags each score above its threshold, so the score is
+        # used as is (for neg-energy, higher only means a smaller p_high).
         flagged = s > taus[gate]
         out[gate] = {
             "auc": float(roc_auc_score(y[mask], s[mask])),

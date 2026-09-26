@@ -11,9 +11,18 @@ May 2026.
 The vignette schema is the contract that every clinical case in the vignette
 corpus under `data/vignettes/` must satisfy. The corpus holds 138 vignettes in 6
 of the 9 classes (60 PAM, 28 bacterial, 30 viral, 16 TB, 2 cryptococcal, 2 GAE),
-and all 138 validate against the schema. The corpus is not used to train,
-calibrate or evaluate the bundled binary classifier, which uses a separate
-30-row synthetic dataset (`outputs/diagnosis_log_pro.csv`). The
+and all 138 validate against the schema. No physician adjudication of the
+corpus is recorded: every vignette's `adjudication` block is set by the
+generator (`scripts/vignettes/generate_pam_vignettes.py`), not by reviewers,
+and no `cohen_kappa` in it was measured. The 60 PAM vignettes carry
+adjudicator IDs `ADJ-001` and `ADJ-002`, `cohen_kappa` 0.99 and
+`inclusion_decision` "include", all fixed in `_build_adjudication`; the other
+78 carry placeholder adjudicator IDs, `inclusion_decision`
+"hold_for_revision" and a placeholder `cohen_kappa` of 0.0 (bacterial, viral)
+or 0.7 (TB, cryptococcal, GAE). Section 7 lists the questions for a physician
+review. The corpus is not used to train, calibrate or evaluate the bundled
+binary classifier, which uses a separate 30-row synthetic dataset
+(`outputs/diagnosis_log_pro.csv`). The
 schema is defined in `ml/schemas/vignette.py` as a hierarchy of 14 Pydantic v2
 `BaseModel` classes, with cross-field validators enforcing class-conditional
 clinical rules.
@@ -163,7 +172,7 @@ The primary diagnostic discriminator across the 9 classes.
 | `csf_ada_U_per_L` | `Optional[float]` | 0-100 | >=10 U/L optimal TB cutoff (Ye TM&IH 2023) |
 | `csf_crag_lfa_result` | `Optional[Literal]` | positive / negative / not_done | Williams CID 2015 (~100% sens HIV-cryptococcal) |
 | `csf_wet_mount_motile_amoebae` | `Optional[Literal]` | positive / negative / not_done | N. fowleri (Balamuthia/Acanthamoeba usually negative) |
-| `csf_xanthochromia_present` | `Optional[bool]` | required for SAH workup | Perry BMJ 2015 |
+| `csf_xanthochromia_present` | `Optional[bool]` | optional; SAH marker on LP (no validator enforces it) | Perry BMJ 2015 |
 | `csf_rbc_per_mm3` | `Optional[int]` | 0-1,000,000 | SAH discrimination |
 | `csf_rbc_decreasing_across_tubes` | `Optional[bool]` | traumatic vs SAH | tube 1 to 4 trend |
 
@@ -208,7 +217,9 @@ free-living amebae mNGS.
 
 ### 2.11 AdjudicationMetadata (5 fields)
 
-Physician adjudication metadata.
+Physician adjudication metadata. In the current corpus these fields hold
+placeholder values set by the generator, not the result of a review (see
+Section 1).
 
 | Field | Type | Constraint |
 |---|---|---|
@@ -519,8 +530,8 @@ in brackets.
 
 ## Section 7: Adjudicator review request
 
-This SCHEMA_README.md is intended for forwarding to the physician collaborator
-network for clinical-fidelity review. Specific questions per class:
+This section lists the per-class questions for a physician clinical-fidelity
+review of the schema:
 
 - **Class 1 (PAM):** Confirm freshwater always-flag rule is appropriate clinical
   safety policy. Acceptable to enforce as schema-level validator?

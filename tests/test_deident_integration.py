@@ -3,7 +3,8 @@ Integration tests for de-identification wiring.
 
 Verifies that:
   * Ages > 89 are capped at 89 per Safe Harbor
-  * Dates are generalized to the year
+  * Dates are generalized to the year, including date-named columns that
+    are not on the processor's identifier list
   * Physician (actor) field is blanked
   * AMOEBANATOR_SKIP_DEIDENT=1 bypass flag works (with summary.bypassed=True)
   * load_tabular_safe_harbor returns the same (X, y) shape as ml.training_calib_dca.load_tabular
@@ -86,6 +87,16 @@ def test_dates_generalized_to_year() -> None:
     assert "2025" in out["timestamp_tz"].astype(str).tolist()
 
 
+def test_date_named_columns_keep_the_year() -> None:
+    """A column named like a date (not on the identifier list) keeps its
+    year: the processor's date rule, which cannot parse a bare year, must
+    not see it after the loader has truncated it."""
+    df = _sample_df()
+    df["visit_date"] = ["2025-11-01", "2024-01-15", None]
+    out, _ = deidentify_dataframe(df)
+    assert out["visit_date"].tolist()[:2] == ["2025", "2024"]
+
+
 def test_clinical_columns_pass_through_unchanged() -> None:
     df = _sample_df()
     out, _ = deidentify_dataframe(df)
@@ -109,7 +120,7 @@ def test_bypass_via_env_var() -> None:
 
 
 def test_load_tabular_safe_harbor_matches_existing_shape(tmp_path: Path, isolated_audit_path: Path) -> None:
-    """The drop-in loader must produce the same (X, y) shape as ml.training_calib_dca.load_tabular."""
+    """The Safe Harbor loader must produce the same (X, y) shapes and feature names as ml.training_calib_dca.load_tabular."""
     df = _sample_df()
     csv = tmp_path / "log.csv"
     df.to_csv(csv, index=False)
@@ -134,5 +145,17 @@ def test_load_emits_audit_entry(tmp_path: Path, isolated_audit_path: Path) -> No
     deident_entries = [e for e in entries if e["event_type"] == "data_verified"]
     assert len(deident_entries) >= 1
     assert deident_entries[0]["metadata"]["n_rows"] == 3
+    assert deident_entries[0]["action_detail"].startswith("partial Safe Harbor-style scrub")
     status, _ = verify_persisted_chain(isolated_audit_path)
     assert status == IntegrityStatus.VALID
+
+
+def test_bypassed_load_audit_entry_says_bypassed(tmp_path: Path, isolated_audit_path: Path) -> None:
+    df = _sample_df()
+    csv = tmp_path / "log.csv"
+    df.to_csv(csv, index=False)
+    load_tabular_safe_harbor(str(csv), bypass=True)
+    entries = [json.loads(line) for line in isolated_audit_path.read_text().splitlines() if line.strip()]
+    last = [e for e in entries if e["event_type"] == "data_verified"][-1]
+    assert last["metadata"]["bypassed"] is True
+    assert "bypassed" in last["action_detail"]

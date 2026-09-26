@@ -119,10 +119,10 @@ st.markdown(
 
 # -- section 3. Calibration summary -------------------------------------------
 st.subheader("Calibration")
-_n_txt = f"n={n_cal}" if n_cal else "the"
+_n_txt = f"n={n_cal} " if n_cal is not None else ""
 _calibration = (
     "Temperature scaling (Guo et al. 2017), fitted by L-BFGS on the "
-    f"{_n_txt} validation rows. Current `T = {T:.6f}`. "
+    f"{_n_txt}validation rows. Current `T = {T:.6f}`. "
 )
 if info["val_separated"]:
     _calibration += (
@@ -141,6 +141,11 @@ if info["val_separated"]:
     _calibration += (
         "Treat T as a property of these six rows, not as evidence about the "
         "model's calibration. "
+    )
+elif abs(T - 1.0) < 1e-3:
+    _calibration += (
+        "T is essentially 1, so temperature scaling leaves the model's own "
+        "softmax outputs unchanged. "
     )
 elif T < 1.0:
     _calibration += "T < 1, so temperature scaling sharpens the probabilities. "
@@ -188,31 +193,38 @@ with st.expander("Advanced: explore conformal coverage"):
         format_func=lambda a: str(parse_alpha(a)),
         key="conformal_alpha_slider",
     )
-    n = int(n_cal) if n_cal else 0  # the shipped calibration-set size
-    k = finite_sample_rank(n, alpha)
-    st.markdown(
-        f"With `n_cal = {n}`, `alpha = {parse_alpha(alpha)}` -> "
-        f"`k = ceil((n+1)(1-alpha)) = {k}`."
-    )
-    if n >= k and n >= 100:
-        st.success(
-            "ASYMPTOTIC: coverage >= 1-alpha holds on average under "
-            "exchangeability; with untied scores the finite-sample bound "
-            "1-alpha + 1/(n+1) is tight."
-        )
-    elif n >= k:
+    if n_cal is None:
         st.info(
-            "FINITE-SAMPLE: split conformal coverage still holds on average "
-            f"under exchangeability, but with n = {n} the realized "
-            "coverage varies widely."
+            "The calibration-set size is not recorded "
+            "(`outputs/metrics/conformal.json` is missing, malformed or has "
+            "no `n`), so the rank k and the regime cannot be computed."
         )
     else:
-        st.error(
-            f"INVALID: k = {k} > n = {n}, so no finite threshold "
-            "guarantees 1-alpha coverage; qhat is +inf and every input "
-            f"abstains. This alpha needs at least {min_calibration_rows(alpha)} "
-            "calibration rows."
+        n = int(n_cal)  # the shipped calibration-set size
+        k = finite_sample_rank(n, alpha)
+        st.markdown(
+            f"With `n_cal = {n}`, `alpha = {parse_alpha(alpha)}` -> "
+            f"`k = ceil((n+1)(1-alpha)) = {k}`."
         )
+        if n >= k and n >= 100:
+            st.success(
+                "ASYMPTOTIC: coverage >= 1-alpha holds on average under "
+                "exchangeability; with untied scores the finite-sample bound "
+                "1-alpha + 1/(n+1) is tight."
+            )
+        elif n >= k:
+            st.info(
+                "FINITE-SAMPLE: split conformal coverage still holds on average "
+                f"under exchangeability, but with n = {n} the realized "
+                "coverage varies widely."
+            )
+        else:
+            st.error(
+                f"INVALID: k = {k} > n = {n}, so no finite threshold "
+                "guarantees 1-alpha coverage; qhat is +inf and every input "
+                f"abstains. This alpha needs at least {min_calibration_rows(alpha)} "
+                "calibration rows."
+            )
 
 
 # -- section 6. Authorship + handle disclosure ------------------------

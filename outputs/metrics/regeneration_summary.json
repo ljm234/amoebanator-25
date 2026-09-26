@@ -117,7 +117,7 @@
       "exit_code": 0,
       "stdout_tail": "  \"alpha_fraction\": \"1/7\",\n  \"qhat\": 6.800965638831258e-05,\n  \"n\": 6,\n  \"source\": \"val_preds.csv\"\n}",
       "warnings": [
-        "scripts/conformal/conformal_fit_from_probs.py:48: SmallCalibrationWarning: Conformal calibration set size n=6 is below the recommended floor of 100. Split conformal coverage still holds on average under exchangeability, but with n = 6 the realized coverage varies widely, and a valid threshold cannot target more than 6/7 coverage, about 86 percent, without abstaining on every input."
+        "scripts/conformal/conformal_fit_from_probs.py:49: SmallCalibrationWarning: Conformal calibration set size n=6 is below the recommended floor of 100. Split conformal coverage still holds on average under exchangeability, but with n = 6 the realized coverage varies widely, and a valid threshold cannot target more than 6/7 coverage, about 86 percent, without abstaining on every input."
       ],
       "artifacts_present": {
         "outputs/metrics/conformal.json": true
@@ -198,11 +198,11 @@
       },
       "artifacts_size_bytes": {
         "outputs/metrics/calibration_curve.png": 60695,
-        "outputs/metrics/dca_curve.png": 47978
+        "outputs/metrics/dca_curve.png": 49536
       },
       "artifacts_sha256": {
         "outputs/metrics/calibration_curve.png": "bccfc4c4db31cc85b276b142cc82abffcfdaf3f3d51a091d1b424160f7b998bf",
-        "outputs/metrics/dca_curve.png": "f3edb6404f403e92f9e484c88376aca9e903a69b13d8e7fe1c3507a69e23cfb6"
+        "outputs/metrics/dca_curve.png": "fcafd91caeb3684776ace899c519c9ca9a0a412003b20a7d0f06bdf9be149eee"
       }
     },
     {

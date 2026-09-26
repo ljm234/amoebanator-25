@@ -7,8 +7,9 @@ This card documents `outputs/diagnosis_log_pro.csv`, the only dataset the
 V1.1 model is trained and evaluated on. It is **30 simulated patient
 vignettes**, not real patient data. The literature-anchored vignette registry
 under `data/vignettes/` (138 vignettes across six diagnostic classes) also
-ships with the repository; no model code reads it, and this card does not
-cover it. The card also documents, in its last section, the MIMIC-IV cohort
+ships with the repository. Its adjudication fields are placeholders set by
+the generator, not the result of a physician review; no model code reads
+it, and this card does not cover it. The card also documents, in its last section, the MIMIC-IV cohort
 that the proxy-study protocol in `docs/rare_class_design.md` would use. That
 protocol is pre-specified but not scheduled; the cohort is described here so
 that the data lineage of any future figure is traceable.
@@ -231,10 +232,11 @@ that the data lineage of any future figure is traceable.
   tag and remains accessible through the repository history.
 * **Mechanism for contributions.** Pull requests via the project
   repository. Adding new synthetic rows requires (a) explicit
-  `source = "synthetic_*"` provenance, (b) re-running the audit chain to
-  record the addition, (c) re-fitting the input scaler, the model and all
-  downstream metrics (`scripts/regenerate_all_artifacts.py` re-runs the
-  whole pipeline) so the model card stays synchronized.
+  `source = "synthetic_*"` provenance and (b) re-fitting the input scaler,
+  the model and all downstream metrics (`scripts/regenerate_all_artifacts.py`
+  re-runs the whole pipeline; its training step logs the new row count to
+  the audit log, not which rows were added) so the model card stays
+  synchronized. Nothing in the code enforces these steps.
 
 ---
 

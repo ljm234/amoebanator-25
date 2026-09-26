@@ -1,5 +1,6 @@
 """
-Fit a split-conformal qhat from calibrated probabilities in val_preds.csv.
+Fit a split-conformal qhat from the temperature-scaled probabilities
+(p_high_cal) in val_preds.csv.
 
 The conformal math is `ml.conformal_advanced.compute_qhat` and
 `nonconformity_from_p`, so running this script on a small calibration set

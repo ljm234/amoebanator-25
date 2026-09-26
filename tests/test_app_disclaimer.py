@@ -48,9 +48,11 @@ def test_four_alert_combos_parsed() -> None:
 
 def test_alert_selectors_match_streamlit_markup() -> None:
     """
-    The rules target the test ids the pinned Streamlit frontend renders, not a
-    ``kind`` attribute: Streamlit 1.52 puts no ``kind`` attribute on any alert
-    element, so a ``[kind=...]`` selector would match nothing.
+    The rules target the markup the pinned Streamlit frontend renders: the
+    ``stAlert`` wrapper class and the ``stAlertContainer`` /
+    ``stAlertContent<Kind>`` test ids, not a ``kind`` attribute. Streamlit 1.52
+    puts no ``kind`` attribute on any alert element, so a ``[kind=...]``
+    selector would match nothing.
     """
     import streamlit
     from pathlib import Path
@@ -61,6 +63,8 @@ def test_alert_selectors_match_streamlit_markup() -> None:
         p.read_text(encoding="utf-8", errors="ignore")
         for p in (Path(streamlit.__file__).parent / "static" / "static" / "js").glob("index.*.js")
     )
+    # every rule is scoped under the .stAlert wrapper that AlertElement renders
+    assert 'className:"stAlert","data-testid":"stAlert"' in bundle
     assert '"data-testid":"stAlertContainer"' in bundle
     assert "stAlertContent${" in bundle
 

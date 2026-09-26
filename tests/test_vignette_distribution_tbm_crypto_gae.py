@@ -258,8 +258,9 @@ def test_gae_acanthamoeba_corneal_cns_5_of_15():
 
 
 def test_gae_skin_lesion_centrofacial_balamuthia_ge_12_of_15():
-    """At least 12 of 15 Balamuthia slots have a centrofacial skin lesion preceding
-    CNS disease by a mean of 15 months (Alvarez/Bravo 2022 JAAD Int)."""
+    """At least 12 of 15 Balamuthia slots have a chronic centrofacial skin lesion
+    (Alvarez 2022 JAAD Int: centrofacial in 22/30; mean skin-lesion duration at
+    diagnosis 15 months)."""
     n = sum(
         1 for s in GAE_DISTRIBUTION
         if s["pathogen_subtype"].startswith("balamuthia")
@@ -279,7 +280,8 @@ def test_gae_all_30_chronic_ge_14_days():
 
 def test_gae_skin_lesion_interval_window_when_present():
     """When skin_lesion_centrofacial_chronic=True, interval to CNS must be 6-30 months
-    (Alvarez/Bravo mean ~15 months per JAAD Int 2022)."""
+    (Alvarez 2022 JAAD Int: mean skin-lesion duration at diagnosis 15 months,
+    range 2 months to 5 years)."""
     for s in GAE_DISTRIBUTION:
         if s.get("skin_lesion_centrofacial_chronic") is True:
             interval = s.get("skin_lesion_to_cns_interval_months")

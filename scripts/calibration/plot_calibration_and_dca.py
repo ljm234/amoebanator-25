@@ -69,7 +69,7 @@ def main() -> None:
     ts = np.linspace(0.01, 0.99, 99)
     dca = net_benefit(np.asarray(y), np.asarray(p_cal), ts)
     plt.figure()
-    plt.plot(dca[:,0], dca[:,1], label="Model (calibrated)")  # single chart, multiple lines
+    plt.plot(dca[:,0], dca[:,1], label="Model (temperature-scaled)")  # single chart, multiple lines
     plt.plot(dca[:,0], dca[:,2], linestyle="--", label="Treat all")
     plt.plot(dca[:,0], dca[:,3], linestyle="--", label="Treat none")
     plt.xlabel("Threshold probability")

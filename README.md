@@ -26,7 +26,9 @@ essentially 1.0, and the probabilities shown are the model's own softmax outputs
 literature-anchored registry of 138 meningoencephalitis vignettes (60 PAM, 78 across
 five differential-diagnosis classes) is kept under `data/vignettes/`, apart from the 30
 synthetic rows the model is trained and validated on; neither the classifier nor the
-app reads it.
+app reads it. Its adjudication fields (adjudicator IDs, Cohen's kappa, inclusion
+decision) are placeholders set by the generator script; no physician adjudication is
+recorded (`ml/schemas/SCHEMA_README.md` Section 1).
 
 > **For research and educational use.** Not a cleared medical device, not a substitute
 > for clinical judgment, and not clinically validated.

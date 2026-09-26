@@ -76,13 +76,15 @@ PRESETS: dict[str, dict[str, Any]] = {
             "rows (24 training, 6 validation) contain no bacterial "
             "meningitis that is not PAM, so the model cannot tell bacterial "
             "meningitis from PAM: it gives this input a High probability of "
-            "0.9994. The result is ABSTAIN only because the logit-energy "
-            "gate flags the input, and that gate, fit on six validation "
-            "rows, also flags 15 of the 30 bundled rows, so it does not "
-            "recognize bacterial meningitis. Telling the two apart needs "
-            "real data in which bacterial meningitis and PAM carry different "
-            "labels. Try the other 2 presets to see a High and a Low "
-            "prediction."
+            "0.9994. The result is ABSTAIN because the logit-energy gate "
+            "flags the input. Without that gate the conformal step would "
+            "still abstain, because 0.9994 is below its High cut-off of "
+            "about 0.99993. The logit-energy gate, fit on six validation "
+            "rows, also flags 15 of the 30 bundled rows, so the abstention "
+            "is not recognition of bacterial meningitis. Telling the two "
+            "apart needs real data in which bacterial meningitis and PAM "
+            "carry different labels. Try the other 2 presets to see a High "
+            "and a Low prediction."
         ),
         "inputs": {
             "age": 45,

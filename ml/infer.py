@@ -27,9 +27,11 @@ SCALER_JSON: Path = MODEL_DIR / SCALER_FILENAME
 
 
 def _read_json(p: Path) -> dict:
+    """The JSON object stored at p; {} when the file is missing, unreadable or not a JSON object."""
     try:
         if p.exists():
-            return json.loads(p.read_text())
+            data = json.loads(p.read_text())
+            return data if isinstance(data, dict) else {}
     except Exception:
         return {}
     return {}
@@ -171,22 +173,26 @@ def calibration_info() -> dict[str, float | int | bool | None]:
 
     * ``T`` - the temperature of the loaded model;
     * ``n_cal`` - the conformal calibration-set size recorded in
-      conformal.json (None when absent);
+      conformal.json (None when the file is missing or malformed, or its
+      ``n`` is absent or not a non-negative integer);
     * ``val_separated`` - True when the raw logits classify every
       validation row correctly (val_preds.csv), in which case the
       validation loss has no finite minimum in T and the temperature is not
-      identifiable; None when val_preds.csv is missing or malformed.
+      identifiable; None when val_preds.csv is missing, malformed or has no rows.
     """
     _, _, T, _ = _load_model_artifacts()
     n_raw = _read_json(CONF_JSON).get("n")
+    n_cal = n_raw if isinstance(n_raw, int) and not isinstance(n_raw, bool) and n_raw >= 0 else None
     separated: bool | None = None
     try:
         dfv = pd.read_csv(VAL_PREDS_CSV)
+        if dfv.empty:
+            raise ValueError("val_preds.csv has no rows")
         pred_high = dfv["logit_high"].to_numpy(dtype=float) > dfv["logit_low"].to_numpy(dtype=float)
         separated = bool(np.all(pred_high == (dfv["y_true"].to_numpy(dtype=int) == 1)))
     except (OSError, KeyError, ValueError):
         separated = None
-    return {"T": T, "n_cal": int(n_raw) if n_raw is not None else None, "val_separated": separated}
+    return {"T": T, "n_cal": n_cal, "val_separated": separated}
 
 
 def _conformal_threshold() -> tuple[float, float]:
@@ -216,7 +222,7 @@ def _energy_tau() -> float:
 
 
 def _neg_energy_from_p(p: float) -> float:
-    """Energy on a calibrated binary probability: -log(1 + exp(logit(p)))."""
+    """Energy on a temperature-scaled binary probability: -log(1 + exp(logit(p)))."""
     p_c = float(min(max(p, 1e-8), 1.0 - 1e-8))
     z = math.log(p_c / (1.0 - p_c))
     return -math.log(1.0 + math.exp(z))
@@ -224,12 +230,19 @@ def _neg_energy_from_p(p: float) -> float:
 
 def _neg_energy_signal(p_high: float) -> tuple[float, float | None, bool]:
     """
-    Secondary OOD/uncertainty signal on the calibrated probability.
+    Secondary signal on the temperature-scaled probability: log(1 - p_high),
+    with p_high clamped to [1e-8, 1 - 1e-8]. It is not an uncertainty
+    measure. It falls as p_high rises and is largest when p_high is near 0,
+    so its flag (value > tau from `ood_energy.json`, about -7.2e-06 as
+    shipped, i.e. p_high below about 7.2e-06) marks only the most confident
+    Low predictions; p_high = 0.5 is not flagged.
 
-    Returns (neg_energy, tau, abstain_flag). When `ood_energy.json` has not
-    been fit yet, tau is None and the abstain flag is False (no-op).
-    Independent of the primary logit-energy gate; reported for transparency
-    so the dashboard and CLI surface both signals.
+    Returns (neg_energy, tau, flag). When `ood_energy.json` has not been fit
+    yet, or its tau is unreadable, tau is None and the flag is False.
+    Independent of the logit-energy gate and never used to abstain. infer_one
+    returns it as `energy_neg`, `energy_neg_tau` and `energy_neg_flag` whenever
+    the model scores the input (not when the Mahalanobis gate abstains), so the
+    CLI's JSON shows it; the Predict page does not.
     """
     e = _neg_energy_from_p(p_high)
     gate = _read_json(NEG_ENERGY_JSON)
@@ -252,15 +265,15 @@ def infer_one(row_in: dict | pd.Series) -> dict:
     assignment -> label.
 
     Returns a dict with `prediction` (one of "Low", "High", "ABSTAIN"), the
-    calibrated `p_high` in [0, 1] (None when the Mahalanobis gate abstains,
-    because the model never scores that input), conformal band membership,
-    Mahalanobis distance, and energy-gate readout. A label is returned only
-    when the conformal prediction set holds exactly one class. ABSTAIN always
-    carries a `reason` field: "OOD", "LogitEnergyAboveOODShift" (the energy of
-    the temperature-scaled logits is above the gate threshold, following the
-    high-energy-is-OOD convention of Liu et al. 2020), "ConformalAmbiguity"
-    (both classes in the set), or "ConformalEmptySet" (neither class in the
-    set).
+    temperature-scaled `p_high` in [0, 1] (None when the Mahalanobis gate
+    abstains, because the model never scores that input), conformal band
+    membership, Mahalanobis distance, and energy-gate readout. A label is
+    returned only when the conformal prediction set holds exactly one class.
+    ABSTAIN always carries a `reason` field: "OOD",
+    "LogitEnergyAboveOODShift" (the energy of the temperature-scaled logits
+    is above the gate threshold, following the high-energy-is-OOD convention
+    of Liu et al. 2020), "ConformalAmbiguity" (both classes in the set), or
+    "ConformalEmptySet" (neither class in the set).
     """
     row = pd.Series(row_in) if not isinstance(row_in, pd.Series) else row_in
     stats = load_stats()
@@ -284,7 +297,7 @@ def infer_one(row_in: dict | pd.Series) -> dict:
     energy = score_energy(np.array([lo, hi], dtype=float))
     tau_e = _energy_tau()
     p_high = _softmax_high(lo, hi)
-    neg_e, neg_e_tau, ood_neg = _neg_energy_signal(p_high)
+    neg_e, neg_e_tau, neg_flag = _neg_energy_signal(p_high)
     if energy > tau_e:
         return {
             "prediction": "ABSTAIN",
@@ -296,7 +309,7 @@ def infer_one(row_in: dict | pd.Series) -> dict:
             "energy_tau": float(tau_e),
             "energy_neg": float(neg_e),
             "energy_neg_tau": neg_e_tau,
-            "ood_abstain_energy_neg": ood_neg,
+            "energy_neg_flag": neg_flag,
             "include_low": False,
             "include_high": False,
             "contrib": ood.get("contrib")
@@ -315,7 +328,7 @@ def infer_one(row_in: dict | pd.Series) -> dict:
             "energy_tau": float(tau_e),
             "energy_neg": float(neg_e),
             "energy_neg_tau": neg_e_tau,
-            "ood_abstain_energy_neg": ood_neg,
+            "energy_neg_flag": neg_flag,
             "include_low": include_low,
             "include_high": include_high,
             "qhat": float(qhat),
@@ -336,7 +349,7 @@ def infer_one(row_in: dict | pd.Series) -> dict:
         "energy_tau": float(tau_e),
         "energy_neg": float(neg_e),
         "energy_neg_tau": neg_e_tau,
-        "ood_abstain_energy_neg": ood_neg,
+        "energy_neg_flag": neg_flag,
         "contrib": ood.get("contrib")
     }
     return out

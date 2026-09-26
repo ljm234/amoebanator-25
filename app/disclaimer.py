@@ -18,10 +18,10 @@ Three responsibilities, one module:
                                 each color combo achieves the
                                 AA threshold of 4.5:1.
 
-The render function emits via ``st.markdown`` (NOT ``st.info`` /
-``st.warning``) because those framework primitives carry injected
-styling that would compete with the wash+border CSS we're trying to
-own.
+The render function injects the CSS, then renders the disclaimer with
+``st.markdown`` as ordinary page text, not as an alert box. The CSS
+restyles the alert boxes the pages render with ``st.error`` /
+``st.warning`` / ``st.info`` / ``st.success``.
 """
 from __future__ import annotations
 
@@ -153,10 +153,10 @@ def render_disclaimer() -> None:
     """Inject the WCAG-AA + reduced-motion CSS and render the disclaimer.
 
     Called at the top of every page. Idempotent under Streamlit's rerun
-    model (CSS injection is harmless to re-emit). Uses ``st.markdown``
-    (NOT ``st.info``/``st.warning``) because those primitives carry
-    framework-injected styling that would compete with our wash+border
-    CSS.
+    model (CSS injection is harmless to re-emit). The disclaimer is
+    rendered with ``st.markdown`` as ordinary page text, not as an alert
+    box; the injected CSS restyles the alert boxes that the pages render
+    with ``st.error`` / ``st.warning`` / ``st.info`` / ``st.success``.
     """
     st.markdown(_INJECTED_CSS, unsafe_allow_html=True)
     st.markdown(DISCLAIMER_TEXT)

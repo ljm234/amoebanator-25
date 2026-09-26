@@ -4,13 +4,18 @@ Integration tests for audit-trail wiring.
 Verifies that:
   * a full training run emits the five expected event types
   * the persisted JSONL chain is hash-valid (verify_chain -> VALID)
-  * tampering with the file is detected (verify_chain -> TAMPERED)
+  * an entry edited in place without recomputing the hashes is detected
+    (verify_chain -> TAMPERED); the chain is unkeyed, so a rewrite that
+    recomputes them, or a truncated tail, still verifies
   * AMOEBANATOR_AUDIT_PATH env var redirects writes
+  * concurrent emitters in one process (Streamlit sessions are threads)
+    still write the file in chain order
 """
 from __future__ import annotations
 
 import json
 import os
+import threading
 from pathlib import Path
 from unittest.mock import patch
 
@@ -18,6 +23,7 @@ import pytest
 
 from ml.audit_hooks import (
     AUDIT_PATH_ENV,
+    _emit,
     default_audit_path,
     get_audit_log,
     record_calibration_fit,
@@ -28,7 +34,7 @@ from ml.audit_hooks import (
     reset_audit_log,
     verify_persisted_chain,
 )
-from ml.data.audit_trail import IntegrityStatus
+from ml.data.audit_trail import AuditEventType, IntegrityStatus
 
 
 @pytest.fixture()
@@ -106,6 +112,33 @@ def test_tampering_detected(isolated_audit_path: Path) -> None:
     # The mutated entry's hash is now stale -> either it itself is flagged or
     # every later entry's previous_hash mismatch is flagged.
     assert tampered, "tampered list should be non-empty"
+
+
+def test_concurrent_emits_keep_the_persisted_chain_valid(isolated_audit_path: Path) -> None:
+    """Threads emitting at once (concurrent Streamlit sessions) must append
+    their entries in chain order, so an honest log still verifies."""
+    n_threads, n_events = 4, 100
+    barrier = threading.Barrier(n_threads)
+
+    def worker(i: int) -> None:
+        barrier.wait()
+        for j in range(n_events):
+            _emit(
+                AuditEventType.WEB_PREDICT_RETURNED,
+                actor=f"thread-{i}",
+                resource="tests/test_audit_integration.py",
+                action_detail=f"event {j}",
+            )
+
+    threads = [threading.Thread(target=worker, args=(i,)) for i in range(n_threads)]
+    for t in threads:
+        t.start()
+    for t in threads:
+        t.join()
+
+    lines = [ln for ln in isolated_audit_path.read_text().splitlines() if ln.strip()]
+    assert len(lines) == n_threads * n_events
+    assert verify_persisted_chain(isolated_audit_path) == (IntegrityStatus.VALID, [])
 
 
 def test_singleton_resumes_existing_chain(isolated_audit_path: Path) -> None:

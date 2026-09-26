@@ -15,12 +15,13 @@ the current research stage.
 ## 1. Scope and posture
 
 * **Posture.** Research stage, synthetic data, no clinical deployment. The
-  controls below are implemented and tested so that the lineage to any
-  real-data study would be governed from the first commit, not so that the
-  system can be called governed for any clinical use. On the bundled
-  synthetic dataset two controls (de-identification, the IRB gate) would be
-  no-op safeguards for the model, and no training entry point calls either
-  (Sections 2 and 3).
+  controls below are implemented and tested as groundwork for governing a
+  real-data study, not so that the system can be called governed for any
+  clinical use. As they stand they would not govern one: no training entry
+  point calls the Safe Harbor loader or the IRB gate, and the loader passes
+  identifier columns such as `name` or `mrn` through unchanged (Sections 2
+  and 3). On the bundled synthetic dataset both would be no-op safeguards
+  for the model.
 * **Frameworks.** No formal external AI-governance or quality-management
   framework (for example, a regulatory software-as-a-medical-device system)
   is adopted. The data-privacy controls map to the HIPAA Privacy Rule
@@ -44,9 +45,14 @@ the current research stage.
   year in other fields whose names contain `zip`, `postal` or `date`, and a
   pattern scrub of phone numbers, SSNs, e-mail addresses and slash-format
   dates in string values over 20 characters (`SafeHarborConfig`,
-  `SafeHarborProcessor`). Statistical layers above it provide k-anonymity
-  (every equivalence class at least size k) and Laplace noise on numeric
-  fields, and separate helpers enforce l-diversity and check t-closeness for
+  `SafeHarborProcessor`). Statistical layers above it enforce k-anonymity
+  on a configured list of quasi-identifiers (by default `age`, `sex` and
+  `geographic_region`; after that step every equivalence class has at least
+  k records) and then add Laplace noise to the configured numeric fields. In
+  the default configuration that noise also perturbs `age`, so unless age
+  was generalized all the way to `*` the full pipeline's output is no longer
+  k-anonymous; stopping at `PrivacyLevel.K_ANONYMOUS` keeps that property.
+  Separate helpers enforce l-diversity and check t-closeness for
   quasi-identifier risk; for the expert-determination method (45 CFR
   164.514(b)(1)) the module offers re-identification risk estimates
   (`ReidentificationRiskEstimator`) but no determination workflow.
@@ -110,9 +116,9 @@ the current research stage.
   PhysioNet credentialing and the MIMIC-IV data use agreement, outside the
   repository (`data_card.md` Sections 3 and 7).
 
-## 4. Audit governance: the tamper-evident trail
+## 4. Audit governance: the hash-chained trail
 
-* **Hash chain.** `ml/data/audit_trail.py` maintains a tamper-evident log.
+* **Hash chain.** `ml/data/audit_trail.py` maintains a hash-chained log.
   Each entry is linked to the previous one through a SHA-256 hash chain (the
   entry hash is computed over the entry fields together with the previous
   hash), and every 100 entries an in-memory Merkle-tree checkpoint
@@ -157,22 +163,29 @@ the current research stage.
   on standardized inputs (`outputs/model/scaler.json`) for 500 full-batch
   steps. The tagged artifacts remain retrievable from history
   (`model_card.md` Section 1; `data_card.md` Section 7).
-* **Change control.** Re-fitting the model requires re-running the audit
-  chain and re-fitting every downstream metric so that the model card stays
-  synchronized with the artifacts it describes. Adding synthetic rows
-  requires explicit `source` provenance, an audit re-run to record the
-  addition, and a downstream re-fit (`data_card.md` Section 7;
-  `model_card.md` Section 9).
+* **Change control.** A documented procedure, not an enforced control.
+  `scripts/regenerate_all_artifacts.py` re-fits the model and regenerates
+  every downstream artifact; its training step (`ml.training_calib_dca`)
+  appends data-received, training start and end, temperature-fit and
+  model-save events to the audit log. The values the model card quotes must
+  then be updated by hand (`model_card.md` Section 9). The one automatic
+  check is `tests/test_reproducibility_checksums.py`, which fails whenever a
+  regenerated artifact no longer matches the SHA-256 listed in
+  `docs/REPRODUCIBILITY.md` Section 8. Rows added to the bundled CSV should
+  carry explicit `source` provenance, which the training pipeline does not
+  check; at the next
+  training run the audit log records the new row count, not which rows were
+  added (`data_card.md` Section 7).
 
 ## 6. Runtime safety governance
 
-* **Intended-use enforcement.** The Streamlit application renders a research
+* **Intended-use disclaimer.** The Streamlit application renders a research
   prototype disclaimer above every prediction surface. The banner states that
-  the system is not a medical device, that it was trained on thirty synthetic
-  vignettes containing no real protected health information, that the outputs
-  are temperature-scaled probabilities (the temperature fit on six
-  validation rows) limited to that training distribution rather than
-  diagnoses, and that it is not for clinical decision support and not
+  the system is not a medical device, that it was built on thirty synthetic
+  vignettes (24 for training, 6 for validation) containing no real protected
+  health information, that the outputs are temperature-scaled probabilities
+  (the temperature fit on the six validation rows) limited to the
+  distribution of those synthetic rows rather than diagnoses, and that it is not for clinical decision support and not
   validated; it also carries the source link and the maintainer contact. A
   set of mandatory tokens in that banner, including the not-a-medical-device
   statement and the sample size, is asserted by the test suite
@@ -209,9 +222,12 @@ These controls are real and tested, but their posture is research governance,
 not deployment governance. On synthetic data the de-identification pass and
 the IRB gate would be no-op safeguards for the model, and no training entry
 point calls either (Sections 2 and 3); the audit chain governs a pipeline
-that has never processed a real patient. They exist so that any
-transition to real data would be governed from the first commit, not to
-assert that the system is cleared for any clinical setting.
+that has never processed a real patient. They are groundwork for a
+transition to real data, not controls that would govern one as they stand:
+before one, the training entry point would have to call the IRB gate and a
+de-identification step that removes identifiers, which the Safe Harbor
+loader does not (Sections 2 and 3). They do not assert that the system is
+cleared for any clinical setting.
 
 ## References
 

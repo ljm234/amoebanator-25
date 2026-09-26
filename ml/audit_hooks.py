@@ -31,6 +31,10 @@ Design notes:
     the singleton ahead of the file; later calls in the same process append
     only their own entry, so the file's chain then has a gap that
     verify_persisted_chain() reports as tampered.
+  - _emit() records and appends under one module lock, so threads in one
+    process (concurrent Streamlit sessions) write the file in chain order.
+    Separate processes appending to the same file each keep their own
+    in-memory chain, so their entries fork the chain on disk.
   - The wrapper is intentionally thin. If callers need the raw API
     (e.g. anomaly detection, archival, exports), import ml.data.audit_trail
     directly.
@@ -57,6 +61,11 @@ _DEFAULT_AUDIT_FILENAME: str = "audit.jsonl"
 _singleton_lock = threading.Lock()
 _singleton_log: AuditLog | None = None
 _singleton_path: Path | None = None
+
+# Serializes record() + file append so concurrent Streamlit sessions (threads
+# in one process) write the JSONL in chain order. Separate from the
+# non-reentrant _singleton_lock, which get_audit_log() takes.
+_emit_lock = threading.Lock()
 
 
 def default_audit_path() -> Path:
@@ -165,14 +174,15 @@ def _emit(
 ) -> AuditEntry:
     log = get_audit_log(path)
     target = (path or default_audit_path()).resolve()
-    entry = log.record(
-        event_type=event_type,
-        actor=actor,
-        resource=resource,
-        action_detail=action_detail,
-        metadata=metadata or {},
-    )
-    _append_entry(target, entry)
+    with _emit_lock:
+        entry = log.record(
+            event_type=event_type,
+            actor=actor,
+            resource=resource,
+            action_detail=action_detail,
+            metadata=metadata or {},
+        )
+        _append_entry(target, entry)
     return entry
 
 

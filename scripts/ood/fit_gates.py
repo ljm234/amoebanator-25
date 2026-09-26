@@ -1,10 +1,12 @@
 """
-Fit both energy-based OOD/uncertainty gates from validation predictions.
+Fit the logit-energy OOD gate and the neg-energy signal from validation predictions.
 
 Writes:
   outputs/metrics/energy_threshold.json - Liu et al. 2020 energy on temperature-scaled
                                           logits (raw / T), the scale ml/infer.py scores
-  outputs/metrics/ood_energy.json       - neg-energy-from-probability gate
+  outputs/metrics/ood_energy.json       - neg-energy signal on the probability,
+                                          log(1 - p_high); flags the smallest
+                                          p_high and never causes an abstention
 
 If outputs/metrics/val_preds.csv lacks logit_low/logit_high columns (older
 trainings did not emit them), this script recomputes the validation logits by
@@ -85,7 +87,13 @@ def fit_logit_energy(logits: np.ndarray, q: float, T: float) -> dict[str, float 
 
 
 def fit_neg_energy_from_p(p_high: np.ndarray, q: float) -> dict[str, float | int | str]:
-    """Energy-from-probability gate. Higher entropy -> larger neg-energy -> flag."""
+    """
+    Fit the probability-based signal: E = -log(1 + p/(1 - p)) = log(1 - p_high),
+    with tau the q-quantile of E over the validation p_high_cal. E falls as
+    p_high rises, so ml/infer.py's flag (E > tau) marks the inputs with the
+    smallest p_high (the most confident Low predictions), not the most
+    uncertain ones.
+    """
     e = np.asarray([_neg_energy_from_p(float(p)) for p in p_high], dtype=float)
     tau = float(np.quantile(e, q))
     return {"method": "energy_neg", "tau": tau, "q": float(q), "n": int(len(e))}

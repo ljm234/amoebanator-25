@@ -23,9 +23,11 @@ offered because the model never saw them.
 """
 from __future__ import annotations
 
+import math
+from fractions import Fraction
 from typing import Any
 
-from ml.conformal_advanced import finite_sample_rank
+from ml.config import parse_alpha
 
 # Only the 3 symptoms the model scores. Offering more in the UI would
 # collect inputs the model ignores.
@@ -138,6 +140,11 @@ def temperature_note(T: float, n_cal: int | None, separated: bool | None) -> str
             )
         else:
             note += f"T = {T:.4g} is where the optimizer stopped."
+    elif abs(T - 1.0) < 1e-3:
+        note += (
+            f"T = {T:.6f} is essentially 1, so temperature scaling leaves the "
+            "model's own softmax outputs unchanged."
+        )
     elif T < 1.0:
         note += f"T = {T:.4g} is below 1, so it sharpens the model's probabilities."
     else:
@@ -145,9 +152,13 @@ def temperature_note(T: float, n_cal: int | None, separated: bool | None) -> str
     return note + " See docs/model_card.md section 9."
 
 
-def min_calibration_rows(alpha: float) -> int:
-    """Smallest calibration-set size n with k = ceil((n+1)(1-alpha)) <= n."""
-    n = 1
-    while finite_sample_rank(n, alpha) > n and n < 1_000_000:
-        n += 1
-    return n
+def min_calibration_rows(alpha: float | Fraction) -> int:
+    """
+    Smallest calibration-set size n with k = ceil((n+1)(1-alpha)) <= n.
+
+    For integer n that holds exactly when (n+1)*alpha >= 1, so the answer is
+    ceil((1-alpha)/alpha), computed in exact arithmetic after
+    ml.config.parse_alpha.
+    """
+    a = parse_alpha(alpha)
+    return max(1, math.ceil((1 - a) / a))
