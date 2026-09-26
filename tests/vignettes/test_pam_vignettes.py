@@ -528,8 +528,8 @@ def test_v21_v60_special_cases_present(day2_distribution):
 # These tests validate the 5 JSON files of vignettes 21-25.
 # Each of these vignettes is anchored to a primary-source case report
 # checked against its PubMed record; as each file's
-# inclusion_decision_rationale records, some vitals and labs are imputed
-# from the literature.
+# inclusion_decision_rationale records, the vitals and some labs are
+# imputed from the literature.
 # ======================================================================
 
 import json
