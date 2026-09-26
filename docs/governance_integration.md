@@ -173,9 +173,12 @@ the current research stage.
   regenerated artifact no longer matches the SHA-256 listed in
   `docs/REPRODUCIBILITY.md` Section 8. `tests/test_bundled_outcomes.py` fails
   when `outputs/metrics/bundled_outcomes.json` no longer matches a fresh run
-  of the shipped model on the 30 bundled rows, or when the abstention counts
-  quoted in `README.md`, `model_card.md` and `tripod-ai.md` no longer match
-  that artifact. Rows added to the bundled CSV should
+  of the shipped model on the 30 bundled rows, or when any copy of a count
+  quoted from it no longer matches: the abstention counts in `README.md`,
+  `model_card.md` and `tripod-ai.md` (overall, per gate and for the High
+  rows), and the number of rows the logit-energy gate flags in
+  `model_card.md`, `tripod-ai.md`, `REPRODUCIBILITY.md` and the bacterial
+  preset's banner (`app/presets.py`). Rows added to the bundled CSV should
   carry explicit `source` provenance, which the training pipeline does not
   check; at the next
   training run the audit log records the new row count, not which rows were

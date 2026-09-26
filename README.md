@@ -15,7 +15,7 @@ license: mit
 
 Amoebanator is a research codebase for a triage signal for primary amoebic
 meningoencephalitis (PAM), a rare CNS infection caused by *Naegleria fowleri* that
-is almost always fatal. It is a small PyTorch classifier trained on 30 synthetic rows
+is almost always fatal. It is a small PyTorch classifier built on 30 synthetic rows
 (24 for training, 6 for validation), served as a Streamlit demo.
 
 - **Abstention.** The model returns High, Low or ABSTAIN. It abstains when either of

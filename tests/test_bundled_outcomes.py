@@ -87,15 +87,15 @@ def test_docs_quote_the_high_row_counts(doc: str) -> None:
     text = _flat(doc)
     assert f"{c['n_abstain']} of the {c['n_rows']} bundled rows abstain" in text
     assert f"{c['high_abstain']} of the {c['n_high']} High rows" in text
-    assert f"{c['high_energy']} at the logit-energy gate" in text
-    assert f"{c['high_ood']} at the Mahalanobis gate" in text
+    assert re.search(rf"\b{c['high_energy']} at the logit-energy gate", text)
+    assert re.search(rf"\b{c['high_ood']} at the Mahalanobis gate", text)
     assert re.search(rf"only {c['high_high']} High rows get a High label", text, re.IGNORECASE)
     assert "outputs/metrics/bundled_outcomes.json" in text
     _all_equal(r"(\d+) of the (\d+) bundled rows abstain", text, (str(c["n_abstain"]), str(c["n_rows"])))
     _all_equal(r"(\d+) of the (\d+) High rows", text, (str(c["high_abstain"]), str(c["n_high"])))
     _all_equal(r"only (\d+) High rows (?:get a High label|are labeled High)", text, (str(c["high_high"]),))
     splits = {(str(c["n_energy"]), str(c["n_ood"])), (str(c["high_energy"]), str(c["high_ood"]))}
-    for split in re.findall(r"(\d+) at the logit-energy gate,? (?:and )?(\d+) at the Mahalanobis gate", text):
+    for split in re.findall(r"\b(\d+) at the logit-energy gate,? (?:and )?(\d+) at the Mahalanobis gate", text):
         assert split in splits, split
     if doc != "docs/tripod-ai.md":  # README and model card also say no High row is labeled Low
         assert c["high_low"] == 0

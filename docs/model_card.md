@@ -70,8 +70,8 @@ history (`docs/REPRODUCIBILITY.md` Section 4).
 
 ## 2. Intended use
 
-* **Primary intended use.** Methodology research on calibrated,
-  abstention-aware triage models for low-prevalence neurological
+* **Primary intended use.** Methodology research on calibration and
+  abstention in triage models for low-prevalence neurological
   infections. The classifier exists to exercise the surrounding safety
   stack (temperature scaling, split-conformal abstain, Mahalanobis + energy
   OOD gates, decision curve analysis) on a clinically relevant target. The
