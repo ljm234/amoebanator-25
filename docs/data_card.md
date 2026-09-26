@@ -219,17 +219,20 @@ that the data lineage of any future figure is traceable.
   been regenerated since those tags, most recently for V1.1, which
   standardizes the continuous inputs (Section 4) and trains for 500 steps
   instead of 60.
-  Every correction since `v1.0.1` is listed in the `v1.1.0` release notes:
-  https://github.com/ljm234/amoebanator-25/releases/tag/v1.1.0
+  The release notes on the Releases page
+  (https://github.com/ljm234/amoebanator-25/releases) summarize what each
+  later release changed; the commit history has every change.
 * **Will the dataset be updated?** No update is scheduled. The MIMIC-IV
   bacterial-vs-viral meningitis proxy study (`docs/rare_class_design.md`;
   cohort schema in the last section of this card) is a pre-specified
   protocol that is not scheduled; the author has PhysioNet credentialed
   access to MIMIC-IV.
 * **Retention limits?** Not applicable (synthetic).
-* **Older versions supported?** Yes. The V1.0 release is tagged `v1.0.0`
-  and `v1.0.1`, and V1.1 is tagged `v1.1.0`; the CSV is the same at every
-  tag and remains accessible through the repository history.
+* **Older versions supported?** Yes. Every version is tagged. All tags are
+  listed at https://github.com/ljm234/amoebanator-25/tags, and the release
+  notes are on the Releases page
+  (https://github.com/ljm234/amoebanator-25/releases). The CSV is the same
+  at every tag and remains accessible through the repository history.
 * **Mechanism for contributions.** Pull requests via the project
   repository. Adding new synthetic rows requires (a) explicit
   `source = "synthetic_*"` provenance and (b) re-fitting the input scaler,

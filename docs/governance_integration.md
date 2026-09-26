@@ -168,10 +168,14 @@ the current research stage.
   every downstream artifact; its training step (`ml.training_calib_dca`)
   appends data-received, training start and end, temperature-fit and
   model-save events to the audit log. The values the model card quotes must
-  then be updated by hand (`model_card.md` Section 9). The one automatic
-  check is `tests/test_reproducibility_checksums.py`, which fails whenever a
+  then be updated by hand (`model_card.md` Section 9). Two automatic
+  checks exist. `tests/test_reproducibility_checksums.py` fails whenever a
   regenerated artifact no longer matches the SHA-256 listed in
-  `docs/REPRODUCIBILITY.md` Section 8. Rows added to the bundled CSV should
+  `docs/REPRODUCIBILITY.md` Section 8. `tests/test_bundled_outcomes.py` fails
+  when `outputs/metrics/bundled_outcomes.json` no longer matches a fresh run
+  of the shipped model on the 30 bundled rows, or when the abstention counts
+  quoted in `README.md`, `model_card.md` and `tripod-ai.md` no longer match
+  that artifact. Rows added to the bundled CSV should
   carry explicit `source` provenance, which the training pipeline does not
   check; at the next
   training run the audit log records the new row count, not which rows were
@@ -182,11 +186,12 @@ the current research stage.
 * **Intended-use disclaimer.** The Streamlit application renders a research
   prototype disclaimer above every prediction surface. The banner states that
   the system is not a medical device, that it was built on thirty synthetic
-  vignettes (24 for training, 6 for validation) containing no real protected
+  rows (24 for training, 6 for validation) containing no real protected
   health information, that the outputs are temperature-scaled probabilities
   (the temperature fit on the six validation rows) limited to the
   distribution of those synthetic rows rather than diagnoses, and that it is
-  not for clinical decision support and not validated; it also carries the source link and the maintainer contact. A
+  not for clinical decision support and not validated; it also carries the
+  source link and the maintainer contact. A
   set of mandatory tokens in that banner, including the not-a-medical-device
   statement and the sample size, is asserted by the test suite
   (`app/disclaimer.py`; `tests/test_app_disclaimer.py`). The full set of
@@ -210,8 +215,9 @@ the current research stage.
 ## 7. Accountability
 
 This is a single-author research project. The maintainer is reachable through
-the repository, the corrections since `v1.0.1` are listed in the `v1.1.0`
-release notes (https://github.com/ljm234/amoebanator-25/releases/tag/v1.1.0),
+the repository, the release notes on the Releases page
+(https://github.com/ljm234/amoebanator-25/releases) summarize what each
+release since `v1.0.1` changed (the commit history has every change),
 and the governance code, covering de-identification, the audit trail, the
 IRB gate, and the safety stack, is open-sourced under the license stated in
 `README.md` (`model_card.md` Section 1; `data_card.md` Section 7).

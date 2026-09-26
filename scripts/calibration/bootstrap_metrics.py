@@ -20,12 +20,13 @@ def boot_ci(
     p: np.ndarray,
     rng: np.random.Generator,
     defined: Callable[[np.ndarray], bool],
-) -> dict[str, float | int]:
+) -> dict[str, float | int | None]:
     """
     Percentile bootstrap over N_BOOT resamples of the rows. A resample for
     which the metric is undefined (``defined(yy)`` is False) is skipped and
     counted, not scored, so it cannot pull the interval toward a
     placeholder value such as recall = 0 when a resample has no High row.
+    When every resample is skipped, lo, hi and mean are None.
     """
     stats = []
     skipped = 0
@@ -37,6 +38,10 @@ def boot_ci(
             skipped += 1
             continue
         stats.append(stat_fn(yy, pp))
+    if not stats:
+        # The metric is undefined in every resample (for example, no High
+        # row at all): report the interval as undefined with the skip count.
+        return {"lo": None, "hi": None, "mean": None, "n_resamples": N_BOOT, "n_skipped": skipped}
     arr = np.array(stats, dtype=float)
     return {
         "lo": float(np.percentile(arr, 2.5)),

@@ -76,8 +76,9 @@ weights, so a CPU run should not be expected to reproduce the shipped
   validation predictions used for the calibration and decision-curve plots.
 * **Metrics and figures.** The artifacts under `outputs/metrics/` (calibration
   curve, coverage sweep, decision-curve, abstain Pareto, the conformal and
-  OOD JSON, the synthetic OOD benchmark, bootstrap confidence intervals, and
-  the ablation table) are produced by the training and evaluation pipeline;
+  OOD JSON, the synthetic OOD benchmark, bootstrap confidence intervals, the
+  ablation table, and the outcome of each bundled row through the pipeline,
+  `bundled_outcomes.json`) are produced by the training and evaluation pipeline;
   `outputs/metrics/regeneration_summary.json` records the regeneration. Every
   file under `outputs/model/` and `outputs/metrics/` that the model card
   cites is reproducible from the bundled synthetic CSV. Some values the card
@@ -92,7 +93,7 @@ weights, so a CPU run should not be expected to reproduce the shipped
   PYTHONPATH=. python scripts/regenerate_all_artifacts.py
   ```
 
-  It runs eleven steps in order, which write the 22 artifacts listed in
+  It runs twelve steps in order, which write the 23 artifacts listed in
   Section 8, and writes `outputs/metrics/regeneration_summary.json` with each
   step's command, exit code, duration, any warnings it printed, and whether
   each artifact the step is expected to write exists afterwards, with its
@@ -168,7 +169,7 @@ expected to reproduce the shipped `model.pt` (Section 3).
 
 ## 8. Artifact checksums
 
-SHA-256 of `model.pt` and of the 21 other artifacts that
+SHA-256 of `model.pt` and of the 22 other artifacts that
 `scripts/regenerate_all_artifacts.py` writes, as shipped in V1.1. The same
 values are recorded in `outputs/metrics/regeneration_summary.json`, which is
 not listed because it also records per-step durations, which change on every
@@ -198,6 +199,7 @@ run.
 | `outputs/metrics/abstain_pareto.json` | `434d45b7a6b56e456d13f25cb3652458a61d54054a59b50919320275366c0b5e` |
 | `outputs/metrics/abstain_pareto.png` | `8cce301b99f340a39aad5ee1f678b628217deb5b94fd2f868fcbfabbf2df5bbe` |
 | `outputs/metrics/synthetic_ood_benchmark.json` | `bb89593c4f9ebf429681996283d9ce5dd3e94486e0bcb1aa6b16c92256237fc4` |
+| `outputs/metrics/bundled_outcomes.json` | `d04809df20f857f131d746e2b3ae18a0d6347c9ef419fd0ea6e515a082398d9b` |
 
 ## What a reproduction shows
 

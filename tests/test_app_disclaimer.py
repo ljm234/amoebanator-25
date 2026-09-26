@@ -83,7 +83,7 @@ def test_outer_alert_box_rule_exists() -> None:
     assert m, "outer alert box rule missing from _INJECTED_CSS"
     body = m.group("body")
     assert re.search(r"background:\s*transparent", body)
-    assert re.search(r"padding:\s*0", body)
+    assert re.search(r"padding:\s*0(?:px|rem|em)?\s*(?:;|$)", body)
     assert re.search(r"transition:\s*none", body)
 
 

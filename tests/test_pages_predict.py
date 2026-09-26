@@ -604,3 +604,9 @@ def test_fake_output_uses_the_shipped_thresholds() -> None:
         assert fake[key] == shipped[key]
     # the default Low fake sits inside both gates; the bacterial fake is above tau_E
     assert fake["energy"] <= fake["energy_tau"] and fake["mahalanobis_d2"] <= fake["d2_tau"]
+    bacterial = _fake_infer_output(
+        prediction="ABSTAIN", p_high=0.9994, reason="LogitEnergyAboveOODShift",
+        energy=-3.967, mahalanobis_d2=15.096,
+    )
+    assert bacterial["energy"] > bacterial["energy_tau"]
+    assert bacterial["mahalanobis_d2"] <= bacterial["d2_tau"]

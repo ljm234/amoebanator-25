@@ -280,6 +280,11 @@ design, conduct, or reporting of this work.
   covariate-shifted rows from the bundled rows (AUC 0.561 for the
   Mahalanobis distance, 0.568 for the logit energy), and the logit-energy
   gate also flags 15 of the 30 bundled rows (`model_card.md` Section 9).
+  The most important limitation for a must-not-miss triage tool: run
+  through the full pipeline, 18 of the 30 bundled rows abstain, including 8
+  of the 11 High rows (6 at the logit-energy gate, 2 at the Mahalanobis
+  gate), and only 3 High rows get a High label
+  (`outputs/metrics/bundled_outcomes.json`; `model_card.md`, top).
 * **Usability and future research.** Out-of-scope uses, namely no clinical
   triage, no PAM diagnosis or rule-out, and no EHR or clinical-decision-support
   deployment, are enumerated in `model_card.md` Section 2. The PhysioNet

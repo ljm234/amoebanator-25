@@ -42,3 +42,9 @@ def test_auc_needs_both_classes() -> None:
     assert bm._has_both_classes(np.array([0, 1]))
     assert not bm._has_both_classes(np.array([1, 1]))
     assert not bm._has_high_row(np.array([0, 0]))
+
+
+def test_interval_is_undefined_when_every_resample_is_skipped() -> None:
+    y = np.zeros(6, dtype=int)  # no High row anywhere
+    out = bm.boot_ci(_recall, y, np.zeros(6), np.random.default_rng(0), bm._has_high_row)
+    assert out == {"lo": None, "hi": None, "mean": None, "n_resamples": bm.N_BOOT, "n_skipped": bm.N_BOOT}

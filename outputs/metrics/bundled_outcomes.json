@@ -1,0 +1,270 @@
+{
+  "summary": {
+    "n_rows": 30,
+    "n_abstain": 18,
+    "overall": {
+      "ABSTAIN:LogitEnergyAboveOODShift": 15,
+      "ABSTAIN:OOD": 3,
+      "High": 3,
+      "Low": 9
+    },
+    "by_label": {
+      "High": {
+        "ABSTAIN:LogitEnergyAboveOODShift": 6,
+        "ABSTAIN:OOD": 2,
+        "High": 3
+      },
+      "Low": {
+        "ABSTAIN:LogitEnergyAboveOODShift": 8,
+        "ABSTAIN:OOD": 1,
+        "Low": 7
+      },
+      "Moderate": {
+        "ABSTAIN:LogitEnergyAboveOODShift": 1,
+        "Low": 2
+      }
+    }
+  },
+  "rows": [
+    {
+      "case_id": "e5aaa07e-bc44-44a9-bb29-81bac028de23",
+      "risk_label": "High",
+      "prediction": "High",
+      "reason": null,
+      "outcome": "High",
+      "p_high": 0.999999098177378
+    },
+    {
+      "case_id": "a7f5f041-604c-4a63-8fe4-1130069b3e4e",
+      "risk_label": "High",
+      "prediction": "ABSTAIN",
+      "reason": "OOD",
+      "outcome": "ABSTAIN:OOD",
+      "p_high": null
+    },
+    {
+      "case_id": "71b0b26b-1863-4b9f-b2b4-f20296548fa4",
+      "risk_label": "High",
+      "prediction": "High",
+      "reason": null,
+      "outcome": "High",
+      "p_high": 0.9999966921657536
+    },
+    {
+      "case_id": "89ff97c6-47dd-465a-b782-63b43ac46f6a",
+      "risk_label": "High",
+      "prediction": "ABSTAIN",
+      "reason": "LogitEnergyAboveOODShift",
+      "outcome": "ABSTAIN:LogitEnergyAboveOODShift",
+      "p_high": 0.9991767484562336
+    },
+    {
+      "case_id": "b0c3bd66-d3a4-48a3-a3f4-e46c56300273",
+      "risk_label": "High",
+      "prediction": "ABSTAIN",
+      "reason": "OOD",
+      "outcome": "ABSTAIN:OOD",
+      "p_high": null
+    },
+    {
+      "case_id": "60a50b62-a8f9-4891-b325-7c45c5b17f66",
+      "risk_label": "High",
+      "prediction": "ABSTAIN",
+      "reason": "LogitEnergyAboveOODShift",
+      "outcome": "ABSTAIN:LogitEnergyAboveOODShift",
+      "p_high": 0.9999053480739412
+    },
+    {
+      "case_id": "31f9ddc1-4827-437b-9d35-4bbfd6ea0d77",
+      "risk_label": "High",
+      "prediction": "ABSTAIN",
+      "reason": "LogitEnergyAboveOODShift",
+      "outcome": "ABSTAIN:LogitEnergyAboveOODShift",
+      "p_high": 0.9994376604475592
+    },
+    {
+      "case_id": "e56a4321-01c2-4d8b-8c9a-26f863de9262",
+      "risk_label": "High",
+      "prediction": "High",
+      "reason": null,
+      "outcome": "High",
+      "p_high": 0.9999873124974075
+    },
+    {
+      "case_id": "2be9d996-d3d7-462e-a90d-07f3f908f7e6",
+      "risk_label": "High",
+      "prediction": "ABSTAIN",
+      "reason": "LogitEnergyAboveOODShift",
+      "outcome": "ABSTAIN:LogitEnergyAboveOODShift",
+      "p_high": 0.9955022169608848
+    },
+    {
+      "case_id": "9868439e-7383-490b-aa95-81e967b37d57",
+      "risk_label": "High",
+      "prediction": "ABSTAIN",
+      "reason": "LogitEnergyAboveOODShift",
+      "outcome": "ABSTAIN:LogitEnergyAboveOODShift",
+      "p_high": 0.9997857019999558
+    },
+    {
+      "case_id": "e7aa3b52-9148-45d2-9b4b-82332a6ee6f4",
+      "risk_label": "Moderate",
+      "prediction": "ABSTAIN",
+      "reason": "LogitEnergyAboveOODShift",
+      "outcome": "ABSTAIN:LogitEnergyAboveOODShift",
+      "p_high": 0.007008887624621121
+    },
+    {
+      "case_id": "853a8365-04c9-4c9c-8e23-28e6cb399c26",
+      "risk_label": "High",
+      "prediction": "ABSTAIN",
+      "reason": "LogitEnergyAboveOODShift",
+      "outcome": "ABSTAIN:LogitEnergyAboveOODShift",
+      "p_high": 0.9977971494186205
+    },
+    {
+      "case_id": "946d0846-02f8-4f5d-a9fb-0c0b86bceecd",
+      "risk_label": "Low",
+      "prediction": "ABSTAIN",
+      "reason": "LogitEnergyAboveOODShift",
+      "outcome": "ABSTAIN:LogitEnergyAboveOODShift",
+      "p_high": 0.0029906022652744836
+    },
+    {
+      "case_id": "f9bbc359-9da0-4918-be8c-b82297ea8418",
+      "risk_label": "Low",
+      "prediction": "Low",
+      "reason": null,
+      "outcome": "Low",
+      "p_high": 5.536093992490418e-05
+    },
+    {
+      "case_id": "285dcfec-6bdd-4954-a60b-d241351a4b7d",
+      "risk_label": "Low",
+      "prediction": "ABSTAIN",
+      "reason": "LogitEnergyAboveOODShift",
+      "outcome": "ABSTAIN:LogitEnergyAboveOODShift",
+      "p_high": 0.00010443955416596906
+    },
+    {
+      "case_id": "fca95277-0d3a-43ce-b04f-6cdedcd07b6a",
+      "risk_label": "Moderate",
+      "prediction": "Low",
+      "reason": null,
+      "outcome": "Low",
+      "p_high": 4.827508788038078e-06
+    },
+    {
+      "case_id": "d213f7da-4f83-412b-871b-5ff8ef63308d",
+      "risk_label": "Low",
+      "prediction": "ABSTAIN",
+      "reason": "LogitEnergyAboveOODShift",
+      "outcome": "ABSTAIN:LogitEnergyAboveOODShift",
+      "p_high": 0.0002064832471044547
+    },
+    {
+      "case_id": "115078c3-5357-489e-b7cf-c7e4c8bfd3f4",
+      "risk_label": "Moderate",
+      "prediction": "Low",
+      "reason": null,
+      "outcome": "Low",
+      "p_high": 6.45331619490474e-05
+    },
+    {
+      "case_id": "675699f0-e7aa-4a95-877e-565294048201",
+      "risk_label": "Low",
+      "prediction": "Low",
+      "reason": null,
+      "outcome": "Low",
+      "p_high": 2.6692182110767406e-05
+    },
+    {
+      "case_id": "d931066d-028e-4d42-ace5-5b151f2484f3",
+      "risk_label": "Low",
+      "prediction": "ABSTAIN",
+      "reason": "LogitEnergyAboveOODShift",
+      "outcome": "ABSTAIN:LogitEnergyAboveOODShift",
+      "p_high": 0.00010770987929253
+    },
+    {
+      "case_id": "6519a526-dcae-4a91-820a-dfd32c1e97bb",
+      "risk_label": "Low",
+      "prediction": "Low",
+      "reason": null,
+      "outcome": "Low",
+      "p_high": 9.016721268254452e-07
+    },
+    {
+      "case_id": "532a1004-2bd4-4ff7-8a76-2ef0540d5f6d",
+      "risk_label": "Low",
+      "prediction": "Low",
+      "reason": null,
+      "outcome": "Low",
+      "p_high": 6.582660948952191e-07
+    },
+    {
+      "case_id": "87989c77-eb6d-4466-a7ce-110511514d2e",
+      "risk_label": "Low",
+      "prediction": "Low",
+      "reason": null,
+      "outcome": "Low",
+      "p_high": 5.1192792586347565e-06
+    },
+    {
+      "case_id": "b8fcb5d1-b57b-47cd-bf23-6780990ccf33",
+      "risk_label": "Low",
+      "prediction": "Low",
+      "reason": null,
+      "outcome": "Low",
+      "p_high": 1.1109199962507422e-06
+    },
+    {
+      "case_id": "1e9b3084-33e7-46c6-86ae-e8cecebf67f6",
+      "risk_label": "Low",
+      "prediction": "ABSTAIN",
+      "reason": "OOD",
+      "outcome": "ABSTAIN:OOD",
+      "p_high": null
+    },
+    {
+      "case_id": "6e9b67f2-5d67-448f-a699-6fa792b272c7",
+      "risk_label": "Low",
+      "prediction": "ABSTAIN",
+      "reason": "LogitEnergyAboveOODShift",
+      "outcome": "ABSTAIN:LogitEnergyAboveOODShift",
+      "p_high": 6.800969390274142e-05
+    },
+    {
+      "case_id": "333bcc98-7446-4aa3-b8cb-34d0cf74d959",
+      "risk_label": "Low",
+      "prediction": "ABSTAIN",
+      "reason": "LogitEnergyAboveOODShift",
+      "outcome": "ABSTAIN:LogitEnergyAboveOODShift",
+      "p_high": 0.00077886457253338
+    },
+    {
+      "case_id": "98ab4aa2-7f5f-4bdf-8df1-1069fb86b22c",
+      "risk_label": "Low",
+      "prediction": "ABSTAIN",
+      "reason": "LogitEnergyAboveOODShift",
+      "outcome": "ABSTAIN:LogitEnergyAboveOODShift",
+      "p_high": 0.00020684369874092516
+    },
+    {
+      "case_id": "97712399-99b7-4524-a581-f1162f9590d4",
+      "risk_label": "Low",
+      "prediction": "Low",
+      "reason": null,
+      "outcome": "Low",
+      "p_high": 2.391665461075529e-05
+    },
+    {
+      "case_id": "136f37ff-dd87-42db-bfa9-71dd0779c77e",
+      "risk_label": "Low",
+      "prediction": "ABSTAIN",
+      "reason": "LogitEnergyAboveOODShift",
+      "outcome": "ABSTAIN:LogitEnergyAboveOODShift",
+      "p_high": 0.0007597654315639876
+    }
+  ]
+}

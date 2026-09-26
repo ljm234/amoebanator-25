@@ -108,6 +108,11 @@ PIPELINE: list[tuple[str, list[str], list[str]]] = [
         [sys.executable, str(REPO_ROOT / "scripts" / "ood" / "synthetic_ood_benchmark.py")],
         ["outputs/metrics/synthetic_ood_benchmark.json"],
     ),
+    (
+        "Outcome of each bundled row through the pipeline",
+        [sys.executable, str(REPO_ROOT / "scripts" / "inference" / "bundled_outcomes.py")],
+        ["outputs/metrics/bundled_outcomes.json"],
+    ),
 ]
 
 

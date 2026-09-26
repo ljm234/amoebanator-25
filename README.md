@@ -41,7 +41,8 @@ of the 11 High rows (6 at the logit-energy gate, 2 at the Mahalanobis gate).
 Only 3 High rows get a High label, and none gets a Low label. These are the
 rows the model was built from (24 of them are its training rows), so the
 abstention stack declines on most of the cases it exists to catch
-(`docs/model_card.md`, top and Section 9).
+(`outputs/metrics/bundled_outcomes.json`; `docs/model_card.md`, top and
+Section 9).
 
 ## Scope and status
 
