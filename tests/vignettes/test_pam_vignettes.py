@@ -1,10 +1,12 @@
-"""Tests for the PAM vignettes built by scripts/vignettes/generate_pam_vignettes.py.
+"""Tests for the vignettes built by scripts/vignettes/generate_pam_vignettes.py.
 
-Validates the 20-vignette PAM corpus end-to-end: schema conformance,
-PMID metadata completeness, distribution against the spec, and content
-quality (no em-dashes, Spanish accent integrity).
+Validates the 60 PAM vignettes (schema conformance, PMID metadata
+completeness, distribution, and content quality: no em-dashes, Spanish
+accent integrity), the bacterial and viral distributions, and the PMID
+registry.
 
-The DAY1_DISTRIBUTION list and PMID_REGISTRY in
+The DAY1_DISTRIBUTION, DAY2_DISTRIBUTION, BACTERIAL_DISTRIBUTION,
+VIRAL_DISTRIBUTION and PMID_REGISTRY in
 ``scripts/vignettes/generate_pam_vignettes.py`` are the source of truth for these
 tests.
 """
@@ -1108,13 +1110,12 @@ def test_wave2_csf_wbc_range_extremes(wave2_vignettes):
 # ======================================================================
 # Bacterial and viral distribution tests
 # ----------------------------------------------------------------------
-# These thirteen tests assert structural correctness of the BACTERIAL_
-# DISTRIBUTION (n=28) and VIRAL_DISTRIBUTION (n=30) lists in
-# scripts/vignettes/generate_pam_vignettes.py. Two of them compare the
-# lists with the marginals.json design artifacts at
+# Eleven of these thirteen tests check the BACTERIAL_DISTRIBUTION (n=28)
+# and VIRAL_DISTRIBUTION (n=30) lists in
+# scripts/vignettes/generate_pam_vignettes.py: counts, id ranges and the
+# freshwater flag. The other two check the marginals.json design files at
 # data/vignettes/v2/class_02_bacterial/marginals.json and
-# data/vignettes/v2/class_03_viral/marginals.json; the others assert the
-# expected counts directly.
+# data/vignettes/v2/class_03_viral/marginals.json.
 # ======================================================================
 
 import collections as _collections

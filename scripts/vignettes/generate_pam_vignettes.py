@@ -36,7 +36,8 @@ OUTPUT_DIR = Path("data/vignettes/pam")
 # ============================================================================
 # PMID_REGISTRY
 # ----------------------------------------------------------------------------
-# 15 distinct PMIDs that anchor the 20 Day 1 vignettes.
+# The PMIDs that anchor the vignettes (72 entries); the 20 Day 1 PAM
+# vignettes use 15 of them.
 #
 # Each entry holds the metadata needed to populate the LiteratureAnchor,
 # DxResult and provenance fields of a vignette. A field left "" or None has
