@@ -2,7 +2,8 @@
 
 14 vignettes split: 9 anchored to Granerod 2010 Lancet ID UK encephalitis
 cohort (PMID 20952256, anchor_type=cohort) + 5 anchored to Whitley 2006
-Lancet ID HSE pathogenesis review (PMID 16675036, anchor_type=review).
+Antiviral Res HSE review in adolescents and adults (PMID 16675036,
+anchor_type=review).
 
 Pathogens: 8 HSV1 (3 Granerod + 5 Whitley) + 2 HSV-PCR-negative-72h
 (Granerod, ambiguity) + 2 enterovirus (Granerod) + 2 VZV (Granerod).

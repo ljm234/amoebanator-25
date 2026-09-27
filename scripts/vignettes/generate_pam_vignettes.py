@@ -20452,7 +20452,8 @@ def write_viral_set_a_corpus(
 # Slot IDs: 91, 93, 94, 95, 97, 98, 100, 101, 103, 104, 110, 112, 115, 116.
 # 9 anchored to Granerod 2010 Lancet Infect Dis (PMID 20952256, anchor_type=
 # cohort, prospective UK encephalitis cohort N=203) + 5 anchored to Whitley
-# 2006 Antiviral Res (PMID 16675036, anchor_type=review, HSE pathogenesis).
+# 2006 Antiviral Res (PMID 16675036, anchor_type=review, HSE review in
+# adolescents and adults).
 # Pathogens: 8 HSV1 + 2 HSV_PCR_negative_72h (ambiguity) + 2 enterovirus + 2
 # VZV (zoster ophthalmicus immunocompromised + post-zoster encephalitis).
 # Diagnostic ambiguity: 2 of 14 (v103, v104 HSV-PCR-negative-72h with empiric
@@ -20511,7 +20512,7 @@ def _viral_set_b_adjudication(
     if pmid == "20952256":
         anchor_short = "Granerod 2010 Lancet ID UK encephalitis cohort"
     elif pmid == "16675036":
-        anchor_short = "Whitley 2006 Lancet ID HSE pathogenesis review"
+        anchor_short = "Whitley 2006 Antiviral Res HSE adolescents/adults review"
     else:
         raise KeyError(f"Unexpected viral anchor PMID {pmid!r}")
     base = (
@@ -20715,10 +20716,10 @@ def _build_viral_vignette_091() -> dict[str, Any]:
             "with xanthochromia (canonical hemorrhagic component). CSF "
             "HSV-1 PCR positive. Brain MRI with DWI/FLAIR showed mesial "
             "temporal T2/FLAIR hyperintensity asymmetric. Acyclovir "
-            "initiated within four hours. Anchored to Whitley 2006 Lancet "
-            "Infect Dis HSE pathogenesis review (PMID 16675036). Outcome: "
-            "survived with moderate cognitive sequelae. Pre-adjudication "
-            "status: hold_for_revision."
+            "initiated within four hours. Anchored to Whitley 2006 "
+            "Antiviral Res HSE adolescents/adults review (PMID 16675036). "
+            "Outcome: survived with moderate cognitive sequelae. "
+            "Pre-adjudication status: hold_for_revision."
         ),
         "narrative_es": (
             "Nina de 8 anos en region sur de Estados Unidos, ingresada a "
@@ -20734,17 +20735,17 @@ def _build_viral_vignette_091() -> dict[str, Any]:
             "mg/dL, eritrocitos 38 con xantocromia. PCR de HSV-1 positiva. "
             "RM cerebral con hiperintensidad temporal mesial T2/FLAIR. "
             "Aciclovir en cuatro horas. Anclaje en revision Whitley 2006 "
-            "Lancet ID HSE (PMID 16675036). Estado previo a la "
+            "Antiviral Res HSE (PMID 16675036). Estado previo a la "
             "adjudicacion: hold_for_revision."
         ),
         "rationale": (
-            "Anchored to PMID 16675036 (Whitley 2006 Lancet ID HSE "
-            "pathogenesis review). Pediatric HSE phenotype with classic "
-            "limbic-frontal extension and late-presentation obtundation. "
-            "Demographic anchor (8yo F US South pediatric HSE) sits in "
-            "Whitley's pediatric-HSE-residual-deficit stratum. CSF "
-            "lymphocytic with hemorrhagic component (RBC 38, "
-            "xanthochromia). MRI mesial temporal pattern. Imputation "
+            "Anchored to PMID 16675036 (Whitley 2006 Antiviral Res HSE "
+            "adolescents/adults review). Pediatric HSE phenotype with "
+            "classic limbic-frontal extension and late-presentation "
+            "obtundation. Demographic anchor (8yo F US South pediatric "
+            "HSE) sits in Whitley's pediatric-HSE-residual-deficit "
+            "stratum. CSF lymphocytic with hemorrhagic component (RBC "
+            "38, xanthochromia). MRI mesial temporal pattern. Imputation "
             "tiers: tier_1_primary={age, sex, hsv1_pcr, imaging_pattern, "
             "focal_aphasia, behavioral_change}; "
             "tier_3_within_review={csf_wbc, neutrophil_pct, glucose, "
@@ -20755,7 +20756,7 @@ def _build_viral_vignette_091() -> dict[str, Any]:
             "Acyclovir_hours=4. Tier: tier_3_imputation_within_review. "
             "Stratum: HSV1-Whitley-pediatric-sequelae."
         ),
-        "anchoring_extras": "anchor=Whitley-Lancet-ID-2006 stratum=pediatric-HSE-sequelae.",
+        "anchoring_extras": "anchor=Whitley-Antiviral-Res-2006 stratum=pediatric-HSE-sequelae.",
         "diagnostic_tests": _viral_set_a_dx_tests_hsv1_pcr("16675036"),
     }
 
@@ -20836,7 +20837,7 @@ def _build_viral_vignette_093() -> dict[str, Any]:
             "with DWI/FLAIR showed mesial temporal T2/FLAIR "
             "hyperintensity bilateral. Acyclovir initiated at hour 12 "
             "(delayed by atypical presentation). Anchored to Whitley "
-            "2006 Lancet Infect Dis HSE pathogenesis review (PMID "
+            "2006 Antiviral Res HSE adolescents/adults review (PMID "
             "16675036). Outcome: fatal hospital day 5 per Whitley HSE "
             "elderly-mortality data. Pre-adjudication status: "
             "hold_for_revision."
@@ -20855,27 +20856,28 @@ def _build_viral_vignette_093() -> dict[str, Any]:
             "xantocromia. PCR de HSV-1 positiva. RM cerebral con "
             "hiperintensidad temporal mesial T2/FLAIR bilateral. "
             "Aciclovir en hora 12 (retraso por presentacion atipica). "
-            "Anclaje en revision Whitley 2006 Lancet ID HSE (PMID "
+            "Anclaje en revision Whitley 2006 Antiviral Res HSE (PMID "
             "16675036)."
         ),
         "rationale": (
-            "Anchored to PMID 16675036 (Whitley 2006 Lancet ID HSE "
-            "pathogenesis review). Elderly HSE with delayed-acyclovir "
-            "fatal outcome per Whitley elderly-mortality stratum. "
-            "Demographic anchor (67yo F NL elderly HSE delayed-treatment) "
-            "sits in elderly-fatal-HSE stratum. CSF lymphocytic with "
-            "prominent hemorrhagic component (RBC 50, xanthochromia). MRI "
-            "bilateral mesial temporal. Imputation tiers: "
-            "tier_1_primary={age, sex, hsv1_pcr, imaging_pattern, "
-            "focal_aphasia, delayed_acyclovir}; "
-            "tier_3_within_review={csf_wbc, neutrophil_pct, glucose, "
-            "protein, rbc, xanthochromia, gcs}; tier_4_priors={temp, "
-            "symptom_days, hyponatremia}. Indeterminate=none. "
-            "Diagnostic_ambiguity=false. Outcome=fatal_hospital_day_5. "
-            "Acyclovir_hours=12. Tier: tier_3_imputation_within_review. "
-            "Stratum: HSV1-Whitley-elderly-fatal."
+            "Anchored to PMID 16675036 (Whitley 2006 Antiviral Res HSE "
+            "adolescents/adults review). Elderly HSE with "
+            "delayed-acyclovir fatal outcome per Whitley "
+            "elderly-mortality stratum. Demographic anchor (67yo F NL "
+            "elderly HSE delayed-treatment) sits in elderly-fatal-HSE "
+            "stratum. CSF lymphocytic with prominent hemorrhagic "
+            "component (RBC 50, xanthochromia). MRI bilateral mesial "
+            "temporal. Imputation tiers: tier_1_primary={age, sex, "
+            "hsv1_pcr, imaging_pattern, focal_aphasia, "
+            "delayed_acyclovir}; tier_3_within_review={csf_wbc, "
+            "neutrophil_pct, glucose, protein, rbc, xanthochromia, gcs}; "
+            "tier_4_priors={temp, symptom_days, hyponatremia}. "
+            "Indeterminate=none. Diagnostic_ambiguity=false. "
+            "Outcome=fatal_hospital_day_5. Acyclovir_hours=12. Tier: "
+            "tier_3_imputation_within_review. Stratum: "
+            "HSV1-Whitley-elderly-fatal."
         ),
-        "anchoring_extras": "anchor=Whitley-Lancet-ID-2006 stratum=elderly-fatal-delayed-treatment.",
+        "anchoring_extras": "anchor=Whitley-Antiviral-Res-2006 stratum=elderly-fatal-delayed-treatment.",
         "diagnostic_tests": _viral_set_a_dx_tests_hsv1_pcr("16675036"),
     }
 
@@ -21072,8 +21074,8 @@ def _build_viral_vignette_095() -> dict[str, Any]:
             "with xanthochromia. CSF HSV-1 PCR positive. Brain MRI with "
             "DWI/FLAIR showed mesial temporal T2/FLAIR hyperintensity "
             "asymmetric. Acyclovir initiated within five hours. "
-            "Anchored to Whitley 2006 Lancet Infect Dis HSE "
-            "pathogenesis review (PMID 16675036), adolescent-HSE "
+            "Anchored to Whitley 2006 Antiviral Res HSE "
+            "adolescents/adults review (PMID 16675036), adolescent-HSE "
             "stratum. Outcome: survived with mild memory deficit. "
             "Pre-adjudication status: hold_for_revision."
         ),
@@ -21091,16 +21093,16 @@ def _build_viral_vignette_095() -> dict[str, Any]:
             "mg/dL, eritrocitos 28 con xantocromia. PCR de HSV-1 "
             "positiva. RM cerebral con hiperintensidad temporal mesial "
             "T2/FLAIR. Aciclovir en cinco horas. Anclaje en revision "
-            "Whitley 2006 Lancet ID HSE (PMID 16675036)."
+            "Whitley 2006 Antiviral Res HSE (PMID 16675036)."
         ),
         "rationale": (
-            "Anchored to PMID 16675036 (Whitley 2006 Lancet ID HSE "
-            "pathogenesis review). Adolescent HSE phenotype with classic "
-            "limbic-frontal pattern. Demographic anchor (14yo M US South "
-            "adolescent HSE) sits in Whitley adolescent-HSE stratum. CSF "
-            "lymphocytic with hemorrhagic component. MRI mesial "
-            "temporal. Imputation tiers: tier_1_primary={age, sex, "
-            "hsv1_pcr, imaging_pattern, focal_aphasia, "
+            "Anchored to PMID 16675036 (Whitley 2006 Antiviral Res HSE "
+            "adolescents/adults review). Adolescent HSE phenotype with "
+            "classic limbic-frontal pattern. Demographic anchor (14yo M "
+            "US South adolescent HSE) sits in Whitley adolescent-HSE "
+            "stratum. CSF lymphocytic with hemorrhagic component. MRI "
+            "mesial temporal. Imputation tiers: tier_1_primary={age, "
+            "sex, hsv1_pcr, imaging_pattern, focal_aphasia, "
             "behavioral_change}; tier_3_within_review={csf_wbc, "
             "neutrophil_pct, glucose, protein, rbc, xanthochromia, gcs}; "
             "tier_4_priors={temp, symptom_days}. Indeterminate=none. "
@@ -21109,7 +21111,7 @@ def _build_viral_vignette_095() -> dict[str, Any]:
             "Tier: tier_3_imputation_within_review. Stratum: "
             "HSV1-Whitley-adolescent."
         ),
-        "anchoring_extras": "anchor=Whitley-Lancet-ID-2006 stratum=adolescent-HSE.",
+        "anchoring_extras": "anchor=Whitley-Antiviral-Res-2006 stratum=adolescent-HSE.",
         "diagnostic_tests": _viral_set_a_dx_tests_hsv1_pcr("16675036"),
     }
 
@@ -21307,9 +21309,9 @@ def _build_viral_vignette_098() -> dict[str, Any]:
             "HSV-1 PCR positive. Brain MRI with DWI/FLAIR showed mesial "
             "temporal T2/FLAIR hyperintensity asymmetric. Acyclovir "
             "initiated within four hours. Anchored to Whitley 2006 "
-            "Lancet Infect Dis HSE pathogenesis review (PMID 16675036), "
-            "pediatric-HSE stratum. Outcome: survived with mild "
-            "cognitive sequelae. Pre-adjudication status: "
+            "Antiviral Res HSE adolescents/adults review (PMID "
+            "16675036), pediatric-HSE stratum. Outcome: survived with "
+            "mild cognitive sequelae. Pre-adjudication status: "
             "hold_for_revision."
         ),
         "narrative_es": (
@@ -21326,14 +21328,14 @@ def _build_viral_vignette_098() -> dict[str, Any]:
             "eritrocitos 30 con xantocromia. PCR de HSV-1 positiva. RM "
             "cerebral con hiperintensidad temporal mesial T2/FLAIR. "
             "Aciclovir en cuatro horas. Anclaje en revision Whitley "
-            "2006 Lancet ID HSE (PMID 16675036). Estado previo a la "
-            "adjudicacion: hold_for_revision."
+            "2006 Antiviral Res HSE (PMID 16675036). Estado previo a "
+            "la adjudicacion: hold_for_revision."
         ),
         "rationale": (
-            "Anchored to PMID 16675036 (Whitley 2006 Lancet ID HSE "
-            "pathogenesis review). Pediatric HSE with classic limbic "
-            "phenotype. Demographic anchor (9yo F US South pediatric "
-            "HSE) sits in Whitley pediatric-HSE stratum. CSF "
+            "Anchored to PMID 16675036 (Whitley 2006 Antiviral Res HSE "
+            "adolescents/adults review). Pediatric HSE with classic "
+            "limbic phenotype. Demographic anchor (9yo F US South "
+            "pediatric HSE) sits in Whitley pediatric-HSE stratum. CSF "
             "lymphocytic with hemorrhagic component. MRI mesial "
             "temporal. Imputation tiers: tier_1_primary={age, sex, "
             "hsv1_pcr, imaging_pattern, focal_aphasia, "
@@ -21345,7 +21347,7 @@ def _build_viral_vignette_098() -> dict[str, Any]:
             "Acyclovir_hours=4. Tier: tier_3_imputation_within_review. "
             "Stratum: HSV1-Whitley-pediatric."
         ),
-        "anchoring_extras": "anchor=Whitley-Lancet-ID-2006 stratum=pediatric-HSE.",
+        "anchoring_extras": "anchor=Whitley-Antiviral-Res-2006 stratum=pediatric-HSE.",
         "diagnostic_tests": _viral_set_a_dx_tests_hsv1_pcr("16675036"),
     }
 
@@ -21540,9 +21542,9 @@ def _build_viral_vignette_101() -> dict[str, Any]:
             "PCR positive. Brain MRI with DWI/FLAIR showed mesial "
             "temporal T2/FLAIR hyperintensity asymmetric. Acyclovir "
             "initiated within four hours. Anchored to Whitley 2006 "
-            "Lancet Infect Dis HSE pathogenesis review (PMID 16675036), "
-            "older-adolescent-HSE stratum. Outcome: survived with mild "
-            "memory deficit. Pre-adjudication status: "
+            "Antiviral Res HSE adolescents/adults review (PMID "
+            "16675036), older-adolescent-HSE stratum. Outcome: survived "
+            "with mild memory deficit. Pre-adjudication status: "
             "hold_for_revision."
         ),
         "narrative_es": (
@@ -21559,12 +21561,12 @@ def _build_viral_vignette_101() -> dict[str, Any]:
             "mg/dL, eritrocitos 30 con xantocromia. PCR de HSV-1 "
             "positiva. RM cerebral con hiperintensidad temporal mesial "
             "T2/FLAIR. Aciclovir en cuatro horas. Anclaje en revision "
-            "Whitley 2006 Lancet ID HSE (PMID 16675036). Estado previo "
-            "a la adjudicacion: hold_for_revision."
+            "Whitley 2006 Antiviral Res HSE (PMID 16675036). Estado "
+            "previo a la adjudicacion: hold_for_revision."
         ),
         "rationale": (
-            "Anchored to PMID 16675036 (Whitley 2006 Lancet ID HSE "
-            "pathogenesis review). Older-adolescent HSE phenotype. "
+            "Anchored to PMID 16675036 (Whitley 2006 Antiviral Res HSE "
+            "adolescents/adults review). Older-adolescent HSE phenotype. "
             "Demographic anchor (17yo M US South older-adolescent HSE) "
             "sits in Whitley adolescent-HSE stratum. CSF lymphocytic "
             "with hemorrhagic component. MRI mesial temporal. Imputation "
@@ -21578,7 +21580,7 @@ def _build_viral_vignette_101() -> dict[str, Any]:
             "Tier: tier_3_imputation_within_review. Stratum: "
             "HSV1-Whitley-older-adolescent."
         ),
-        "anchoring_extras": "anchor=Whitley-Lancet-ID-2006 stratum=older-adolescent-HSE.",
+        "anchoring_extras": "anchor=Whitley-Antiviral-Res-2006 stratum=older-adolescent-HSE.",
         "diagnostic_tests": _viral_set_a_dx_tests_hsv1_pcr("16675036"),
     }
 
