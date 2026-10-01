@@ -61,10 +61,7 @@ neither OOD gate separates the shifted rows from the bundled ones (AUC 0.56 for
 Mahalanobis, 0.57 for logit energy). Validation on real clinical data is not part of
 this release. Not for clinical use.
 
-Amoebanator is the methodological prototype for the abstention architecture carried
-into a national multicenter network in Peru on opportunistic CNS infection in people
-living with HIV, where a new abstention-aware model is to be trained from scratch on
-the network's own data. That work is separate from this repository.
+Amoebanator's code, models and data are not used in any clinical study.
 
 ## License and disclaimer
 

@@ -77,12 +77,8 @@ history (`docs/REPRODUCIBILITY.md` Section 4).
   OOD gates, decision curve analysis) on a clinically relevant target. The
   model output is a temperature-scaled probability of the "high-risk" tier
   given a sparse set of presenting features; with the fitted `T` at about
-  1.0 it is the model's own softmax output (Section 9). Amoebanator is the
-  methodological prototype for the abstention architecture carried into a
-  national multicenter network in Peru on opportunistic CNS infection in
-  people living with HIV, where a new abstention-aware model is to be
-  trained from scratch on the network's own data; that work is separate
-  from this repository.
+  1.0 it is the model's own softmax output (Section 9). Amoebanator's
+  code, models and data are not used in any clinical study.
 * **Primary intended users.** Methods researchers evaluating the
   calibration / OOD / DCA pipeline. Educators teaching
   rare-disease ML. The Streamlit Predict page exists to make the
