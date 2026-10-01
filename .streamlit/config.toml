@@ -29,3 +29,7 @@ primaryColor = "#0D47A1"            # Material Blue 900
 backgroundColor = "#FFFFFF"
 secondaryBackgroundColor = "#F5F5F5"
 textColor = "#212121"               # dark slate
+
+[browser]
+# Send no usage statistics to Streamlit (the default is true).
+gatherUsageStats = false
