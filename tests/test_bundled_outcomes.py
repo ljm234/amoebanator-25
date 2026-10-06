@@ -1,8 +1,11 @@
 """
 outputs/metrics/bundled_outcomes.json records what the shipped pipeline does
 with each of the 30 bundled rows. Every stored field must match a fresh run,
-its summary must match its rows, and every copy of every count the docs and
-the app quote from it (overall and per label, per gate) must match it.
+its summary must match its rows, and every copy of a count quoted from it
+must match it: the outcome counts in README.md, docs/model_card.md and
+docs/tripod-ai.md (overall, per gate and for the High rows), and the number
+of rows the logit-energy gate flags in docs/model_card.md, docs/tripod-ai.md,
+docs/REPRODUCIBILITY.md and the bacterial preset's banner (app/presets.py).
 """
 from __future__ import annotations
 
