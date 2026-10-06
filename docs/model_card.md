@@ -362,8 +362,8 @@ history (`docs/REPRODUCIBILITY.md` Section 4).
     in `outputs/metrics/bundled_outcomes.json`, and so are the counts
     derived from it: the abstention counts quoted at the top of this card,
     in Section 9, in `docs/tripod-ai.md` and in the README's Limitations,
-    and the number of bundled rows the logit-energy gate flags (15 of the
-    30), quoted in Section 9, `docs/tripod-ai.md`,
+    and the statement that the logit-energy gate flags 15 of the 30 bundled
+    rows, quoted in Section 9, `docs/tripod-ai.md`,
     `docs/REPRODUCIBILITY.md` and the bacterial preset's banner
     (`app/presets.py`). `tests/test_bundled_outcomes.py` fails when any of
     these quotes no longer matches the artifact. Recompute the ones no artifact
