@@ -292,9 +292,7 @@ design, conduct, or reporting of this work.
   MIMIC-IV proxy study in `docs/rare_class_design.md` is a pre-specified
   protocol that is not scheduled, and it specifies no subgroup analysis;
   `model_card.md` Section 3 notes that age-band and sex-stratified
-  evaluation would need a real test set. `model_card.md` Section 2 states
-  where the abstention architecture prototyped here has been carried; that
-  work is separate from this repository.
+  evaluation would need a real test set.
 
 ## Other information
 
